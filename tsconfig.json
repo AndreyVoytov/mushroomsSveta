@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"target": "es6",
+		"module": "commonjs",
+		"sourceMap": false,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"node_modules/phaser-nineslice/build/phaser-nineslice.d.ts",
+		"node_modules/phaser-kinetic-scrolling-plugin/typescript/phaser-kinetic-scrolling-plugin.d.ts",
+		// "node_modules/phaser-ce/typescript/p2.d.ts",
+		// "node_modules/phaser-ce/typescript/pixi.d.ts",
+		// "node_modules/phaser-ce/typescript/phaser.d.ts",
+		// "node_modules/gameanalytics/dist/GameAnalytics.d.ts",
+		"src/",
+	]
+}

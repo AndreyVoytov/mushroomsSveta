@@ -1,0 +1,44 @@
+{"frames": {
+
+"minigame3/bgDark.jpg":
+{
+	"frame": {"x":275,"y":700,"w":118,"h":118},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":118,"h":118},
+	"sourceSize": {"w":118,"h":118}
+},
+"minigame3/darkStump.png":
+{
+	"frame": {"x":1,"y":700,"w":272,"h":183},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":272,"h":183},
+	"sourceSize": {"w":272,"h":183}
+},
+"minigame3/forestHeader2.png":
+{
+	"frame": {"x":1,"y":1,"w":960,"h":546},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":546},
+	"sourceSize": {"w":960,"h":546}
+},
+"minigame3/grassDark.png":
+{
+	"frame": {"x":1,"y":549,"w":960,"h":149},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":149},
+	"sourceSize": {"w":960,"h":149}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "minigame3.png",
+	"format": "RGBA8888",
+	"size": {"w":962,"h":884},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:06f4a5f922b4173b8c0c81b325de5779:34a50e3b3769a8d2f750745cf1472373:32849680501c3cf0613ddb0350c96238$"
+}
+}

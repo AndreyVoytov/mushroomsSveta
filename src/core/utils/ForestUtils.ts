@@ -1,0 +1,657 @@
+
+import SeparatorType from '../model/enum/SeparatorType';
+import Environment from '../model/enum/Environment';
+import ForestAim from './../model/forest/ForestAim';
+import ForestCell from '../model/forest/ForestCell';
+import ForestType from './../model/forest/ForestType';
+import AimType from '../model/enum/AimType';
+import BiomType from '../model/enum/BiomType';
+import CellType from '../model/enum/CellType';
+import NeverError from './NeverError';
+import Utils from './Utils';
+import OpeningType from '../model/enum/OpeningType';
+import BoosterInfo from '../model/forest/BoosterInfo';
+import { ContentType, ItemContents, AnimalsContents, BoostersContents, DecorationsContents, InteractiveContents } from '../model/enum/ContentType';
+import BoosterType from '../model/enum/BoosterType';
+import UserService from '../service/UserService';
+import AnimationUtils from './AnimationUtils';
+import StoryLocation from '../model/enum/StoryLocation';
+export default class ForestUtils {
+
+    public static ADDITIONAL_STEPS_GEM_PRICE = 100;
+    public static ADDITIONAL_STEPS_COUNT = 5;
+    public static MAX_AIMS_COUNT = 3;
+
+    public static getAims(forestType: ForestType): ForestAim[] {
+        let res: ForestAim[] = [];
+
+        Utils.enumValues(AimType).forEach(at => {
+            let type: AimType = at;
+            switch (type) {
+                case AimType.itemsBunch:
+                    if (forestType.randomItems) {
+                        res.push(new ForestAim(AimType.itemsBunch, "smth", forestType.randomItems));
+                    }
+                    break;
+                case AimType.item:
+                    if (forestType.items) {
+                        forestType.items.forEach(itemType => {
+                            if (itemType.count > 0 && ContentType[itemType.name] in ItemContents) {
+                                res.push(new ForestAim(AimType.item, itemType.name, itemType.count));
+                            }
+                        })
+                    }
+                    break;
+                case AimType.ladybug:
+                    if (forestType.ladybugs && forestType.ladybugs.length > 0) {
+                        let darkForest = forestType.environment == Environment.darkForest;
+                        res.push(new ForestAim(AimType.ladybug, darkForest ? "bug3" : "ladybug", forestType.ladybugs.length));
+                    }
+                    break;
+                case AimType.flower:
+                    if (forestType.flowers && forestType.flowers != 0) {
+                        res.push(new ForestAim(AimType.flower, "chamomileSmall", forestType.flowers));
+                    }
+                    break;
+                case AimType.cankerberry:
+                    if (forestType.cankerberries && forestType.cankerberries != 0) {
+                        res.push(new ForestAim(AimType.cankerberry, "cankerberry", forestType.cankerberries));
+                    }
+                    break;
+                case AimType.blueberry:
+                    if (forestType.blueberries && forestType.blueberries != 0) {
+                        res.push(new ForestAim(AimType.blueberry, "blueberry", forestType.blueberries));
+                    }
+                    break;
+                case AimType.pearl:
+                    if (forestType.pearls && forestType.pearls != 0) {
+                        res.push(new ForestAim(AimType.pearl, "pearl", forestType.pearls));
+                    }
+                    break;
+                case AimType.jelly:
+                    if (forestType.jellyMushrooms && forestType.jellyMushrooms != 0) {
+                        res.push(new ForestAim(AimType.jelly, "jellyMushroom", forestType.jellyMushrooms));
+                    }
+                    break;
+                case AimType.acorn:
+                    if (forestType.acorns && forestType.acorns != 0) {
+                        res.push(new ForestAim(AimType.acorn, "acorn", forestType.acorns));
+                    }
+                    break;
+                case AimType.dragonfly:
+                    if (forestType.dragonflies && forestType.dragonflies != 0) {
+                        res.push(new ForestAim(AimType.dragonfly, "dragonfly", forestType.dragonflies));
+                    }
+                    break;
+                case AimType.honey:
+                    if (forestType.honey && forestType.honey != 0) {
+                        res.push(new ForestAim(AimType.honey, "honey", forestType.honey));
+                    }
+                    break;
+                case AimType.book:
+                    if (forestType.books && forestType.books != 0) {
+                        res.push(new ForestAim(AimType.book, "book3", forestType.books));
+                    }
+                    break;
+                case AimType.moonflower:
+                    if (forestType.moonflowers && forestType.moonflowers != 0) {
+                        res.push(new ForestAim(AimType.moonflower, "moonflower", forestType.moonflowers));
+                    }
+                    break;
+                case AimType.boat:
+                    let boatsCount = forestType.mask.split(ForestUtils.getChar(CellType.BOAT)).length - 1;
+                    if (boatsCount > 0) {
+                        res.push(new ForestAim(AimType.boat, "boat", boatsCount));
+                    }
+                    break;
+                default:
+                    throw new NeverError(type);
+            }
+        })
+        return res;
+    }
+
+    public static isCoverFreeNotBoosterItem(type: CellType): boolean {
+        return this.getCoverFreeNotBoosterItem(type) ? true : false;
+    }
+
+    public static getCoverFreeNotBoosterItem(type: CellType) : ContentType {
+        switch (type) {
+            case CellType.HIVE: return ContentType.hive;
+            case CellType.ACORN: return ContentType.acorn;;
+
+            case CellType.COMPASS_FREE:
+            case CellType.ROCKET:
+            case CellType.ROCKET2:
+            case CellType.ROCKET3:
+            case CellType.VISION:
+            case CellType.VISION_IVY:
+            case CellType.ROCKET_IVY3:
+            case CellType.ROCKET_IVY:
+            case CellType.COMPASS_IVY:
+            case CellType.ROCKET_IVY2:
+            case CellType.EMPTY:
+            case CellType.IVY_SMALL:
+            case CellType.IVY:
+            case CellType.IVY_STRONG:
+            case CellType.CANKERBERRY1:
+            case CellType.CANKERBERRY2:
+            case CellType.DRAGONFLY:
+            case CellType.COLD:
+            case CellType.JELLY:
+            case CellType.WATER:
+            case CellType.FOREST:
+            case CellType.MOUNTAIN:
+            case CellType.BERRY_FIELD:
+            case CellType.SAND:
+            case CellType.PLANK1:
+            case CellType.PLANK2:
+            case CellType.PLANK3:
+            case CellType.IVY_SMALL_M:
+            case CellType.IVY_M:
+            case CellType.IVY_STRONG_M:
+            case CellType.PLANK1_M:
+            case CellType.PLANK2_M:
+            case CellType.PLANK3_M:
+            case CellType.BOAT:
+                return null;
+
+            default:
+                throw new NeverError(type);
+        }
+    }
+
+    public static getForestCellBg(type: ForestType, cellType: CellType) {
+        if (ForestUtils.getBiom(cellType) == BiomType.WATER) {
+            return "water"
+        }
+
+        if (ForestUtils.getBiom(cellType) == BiomType.SAND) {
+            return "sand"
+        }
+
+        if (ForestUtils.getBiom(cellType) == BiomType.BERRY_FIELD) {
+            return "grassFlower"
+        }
+
+        switch (type.environment) {
+            case Environment.forest:
+                return "grass";
+            case Environment.house:
+                return "hexWood";
+            case Environment.darkForest:
+                return "grassDF"; //TODO
+            case Environment.flowerFields:
+            case Environment.lake:
+                return "grass"; //TODO
+            default:
+                throw new NeverError(type.environment);
+        }
+    }
+
+    public static getPrizeGemsCount(stepsLeft: number) {
+        return Math.floor(14 + 7 * (Math.min(1, stepsLeft / 10)));
+        // return Math.ceil(Math.floor(14 + 7 * (Math.min(1, stepsLeft / 10)))/1.5);
+    }
+
+    public static getCellType(char: string): CellType {
+        return Utils.enumValues(CellType).filter(t => this.getChar(t) == char).shift();
+    }
+
+    public static getChar(type: CellType): string {
+        switch (type) {
+            case CellType.EMPTY: return "0";
+            case CellType.FOREST: return "g";
+            case CellType.MOUNTAIN: return "m";
+            case CellType.WATER: return "w";
+            case CellType.IVY_SMALL: return "l";
+            case CellType.IVY: return "i";
+            case CellType.IVY_STRONG: return "j";
+            case CellType.COMPASS_IVY: return "t";
+            case CellType.COMPASS_FREE: return "s";
+            case CellType.VISION: return "v";
+            case CellType.VISION_IVY: return "V";
+            case CellType.ROCKET: return "r";
+            case CellType.ROCKET_IVY: return "R";
+            case CellType.ROCKET2: return "q";
+            case CellType.ROCKET_IVY2: return "Q";
+            case CellType.ROCKET3: return "y";
+            case CellType.ROCKET_IVY3: return "Y";
+
+
+            case CellType.JELLY: return "c";
+            case CellType.COLD: return "C";
+            case CellType.HIVE: return "h";
+            case CellType.CANKERBERRY1: return "k";
+            case CellType.CANKERBERRY2: return "K";
+            case CellType.ACORN: return "a";
+            case CellType.DRAGONFLY: return "f";
+            case CellType.PLANK1: return "p";
+            case CellType.PLANK2: return "P";
+            case CellType.PLANK3: return "z";
+            case CellType.BOAT: return "b";
+
+            case CellType.IVY_SMALL_M: return "A";
+            case CellType.IVY_M: return "B";
+            case CellType.IVY_STRONG_M: return "D";
+            case CellType.PLANK1_M: return "E";
+            case CellType.PLANK2_M: return "F";
+            case CellType.PLANK3_M: return "d";
+            case CellType.BERRY_FIELD: return "1";
+            case CellType.SAND: return "2";
+            default:
+                throw new NeverError(type);
+        }
+    }
+
+
+    public static isBoosterType(type: CellType): boolean {
+        return ForestUtils.getBoosterInfo(type) ? true : false;
+    }
+
+    public static isIvyFreeBoosterType(type: CellType): boolean {
+        let boosterInfo = ForestUtils.getBoosterInfo(type);
+        return boosterInfo? !boosterInfo.isContainIvy() : false;
+    }
+
+    public static getBoosterContentType(type: CellType): ContentType {
+        let boosterInfo = ForestUtils.getBoosterInfo(type);
+        return boosterInfo? boosterInfo.getContentType() : null;
+    }
+
+    public static getOpeningTypeByBooster(type: CellType):OpeningType{
+        let boosterInfo = ForestUtils.getBoosterInfo(type);
+        return boosterInfo? boosterInfo.getOpeningType() : null;
+    }
+
+    public static getBoosterInfo(type:CellType):BoosterInfo{
+        switch (type) {
+            case CellType.COMPASS_IVY:
+                return new BoosterInfo(ContentType.compass, OpeningType.byCompass, true)
+            case CellType.COMPASS_FREE:
+                return new BoosterInfo(ContentType.compass, OpeningType.byCompass, false)
+            case CellType.ROCKET_IVY:
+                return new BoosterInfo(ContentType.rocket1, OpeningType.byRocket, true)
+            case CellType.ROCKET:
+                return new BoosterInfo(ContentType.rocket1, OpeningType.byRocket, false)
+            case CellType.ROCKET_IVY2:
+                return new BoosterInfo(ContentType.rocket2, OpeningType.byRocket, true)
+            case CellType.ROCKET2:
+                return new BoosterInfo(ContentType.rocket2, OpeningType.byRocket, false)
+            case CellType.ROCKET_IVY3:
+                return new BoosterInfo(ContentType.rocket3, OpeningType.byRocket, true)
+            case CellType.ROCKET3:
+                return new BoosterInfo(ContentType.rocket3, OpeningType.byRocket, false)
+            case CellType.VISION_IVY:
+                return new BoosterInfo(ContentType.vision, OpeningType.byVision, true)
+            case CellType.VISION:
+                return new BoosterInfo(ContentType.vision, OpeningType.byVision, true)
+            case CellType.EMPTY:
+            case CellType.IVY_SMALL:
+            case CellType.IVY:
+            case CellType.IVY_STRONG:
+            case CellType.CANKERBERRY1:
+            case CellType.DRAGONFLY:
+            case CellType.CANKERBERRY2:
+            case CellType.COLD:
+            case CellType.JELLY:
+            case CellType.WATER:
+            case CellType.HIVE:
+            case CellType.FOREST:
+            case CellType.MOUNTAIN:
+            case CellType.ACORN:
+            case CellType.PLANK1:
+            case CellType.PLANK2:
+            case CellType.PLANK3:
+            case CellType.BOAT:
+            case CellType.IVY_SMALL_M:
+            case CellType.IVY_M:
+            case CellType.IVY_STRONG_M:
+            case CellType.PLANK1_M:
+            case CellType.PLANK2_M:
+            case CellType.PLANK3_M:
+            case CellType.BERRY_FIELD:
+            case CellType.SAND:
+                return null;
+            default:
+                throw new NeverError(type);
+        }
+    }
+
+    
+    public static containIvyOrIce(type: CellType): boolean {
+        switch (type) {
+            case CellType.COMPASS_IVY:
+            case CellType.VISION_IVY:
+            case CellType.ROCKET_IVY:
+            case CellType.ROCKET_IVY2:
+            case CellType.ROCKET_IVY3:
+            case CellType.IVY_SMALL:
+            case CellType.IVY:
+            case CellType.IVY_STRONG:
+            case CellType.CANKERBERRY1:
+            case CellType.DRAGONFLY:
+            case CellType.CANKERBERRY2:
+            case CellType.COLD:
+            case CellType.JELLY:
+            case CellType.PLANK1:
+            case CellType.PLANK2:
+            case CellType.PLANK3:
+            case CellType.IVY_SMALL_M:
+            case CellType.IVY_M:
+            case CellType.IVY_STRONG_M:
+            case CellType.PLANK1_M:
+            case CellType.PLANK2_M:
+            case CellType.PLANK3_M:
+                return true;
+            case CellType.EMPTY:
+            case CellType.COMPASS_FREE:
+            case CellType.ROCKET:
+            case CellType.ROCKET2:
+            case CellType.ROCKET3:
+            case CellType.VISION:
+            case CellType.WATER:
+            case CellType.HIVE:
+            case CellType.FOREST:
+            case CellType.MOUNTAIN:
+            case CellType.ACORN:
+            case CellType.BOAT:
+            case CellType.BERRY_FIELD:
+            case CellType.SAND:
+                return false;
+            default:
+                throw new NeverError(type);
+        }
+    }
+
+    //TODO remove
+    public static isLandscapeType(type: CellType): boolean {
+        switch (type) {
+            case CellType.EMPTY:
+            case CellType.COMPASS_IVY:
+            case CellType.COMPASS_FREE:
+            case CellType.IVY_SMALL:
+            case CellType.IVY:
+            case CellType.IVY_STRONG:
+
+            case CellType.COLD:
+            case CellType.JELLY:
+            case CellType.HIVE:
+            case CellType.CANKERBERRY1:
+            case CellType.CANKERBERRY2:
+            case CellType.DRAGONFLY:
+            case CellType.ACORN:
+            case CellType.ROCKET:
+            case CellType.ROCKET_IVY:
+            case CellType.ROCKET2:
+            case CellType.ROCKET_IVY2:
+            case CellType.ROCKET3:
+            case CellType.ROCKET_IVY3:
+            case CellType.VISION:
+            case CellType.VISION_IVY:
+            case CellType.PLANK1:
+            case CellType.PLANK2:
+            case CellType.PLANK3:
+            case CellType.BOAT:
+            case CellType.IVY_SMALL_M:
+            case CellType.IVY_M:
+            case CellType.IVY_STRONG_M:
+            case CellType.PLANK1_M:
+            case CellType.PLANK2_M:
+            case CellType.PLANK3_M:
+                return false;
+            case CellType.FOREST:
+            case CellType.MOUNTAIN:
+            case CellType.WATER:
+            case CellType.BERRY_FIELD:
+            case CellType.SAND:
+                return true;
+            default:
+                throw new NeverError(type);
+        }
+    }
+
+    //можно зарефакторить forestType.mask, сделать биом на отдельной кисти
+    public static getBiom(type: CellType): BiomType {
+        switch (type) {
+            case CellType.PLANK1:
+            case CellType.PLANK2:
+            case CellType.PLANK3:
+            case CellType.EMPTY:
+
+            case CellType.HIVE:
+            case CellType.IVY_SMALL:
+            case CellType.IVY:
+            case CellType.IVY_STRONG:
+            case CellType.FOREST:
+            case CellType.COMPASS_IVY:
+            case CellType.COMPASS_FREE:
+            case CellType.VISION:
+            case CellType.VISION_IVY:
+            case CellType.ROCKET:
+            case CellType.ROCKET_IVY:
+            case CellType.ROCKET2:
+            case CellType.ROCKET_IVY2:
+            case CellType.ROCKET3:
+            case CellType.ROCKET_IVY3:
+            case CellType.CANKERBERRY1:
+            case CellType.CANKERBERRY2:
+            case CellType.ACORN:
+            case CellType.DRAGONFLY:
+            case CellType.JELLY:
+                return BiomType.FOREST;
+            case CellType.COLD:
+            case CellType.WATER:
+            case CellType.BOAT:
+                return BiomType.WATER;
+            case CellType.MOUNTAIN:
+            case CellType.IVY_SMALL_M:
+            case CellType.IVY_M:
+            case CellType.IVY_STRONG_M:
+            case CellType.PLANK1_M:
+            case CellType.PLANK2_M:
+            case CellType.PLANK3_M:
+                return BiomType.MOUNTAIN;
+            case CellType.BERRY_FIELD:
+                return BiomType.BERRY_FIELD;
+            case CellType.SAND:
+                return BiomType.SAND;
+            default:
+                throw new NeverError(type);
+        }
+    }
+
+    public static isOccupied(forestCell: ForestCell) : boolean {
+        let res = false;
+        let c = forestCell.state.content;
+
+        this.visitContents(c, (c:ItemContents)=>{
+            res = false;
+        }, (c:AnimalsContents)=>{
+            res = false;
+        }, (c:BoostersContents)=>{
+            res = true;
+        }, (c: DecorationsContents)=>{
+            res = false;
+        }, (c: InteractiveContents)=>{
+            switch(c){
+                case InteractiveContents.empty:
+                    res = false;
+                    break;
+                case InteractiveContents.acorn:
+                case InteractiveContents.book1:
+                case InteractiveContents.bush:
+                case InteractiveContents.hive:
+                case InteractiveContents.lockpick:
+                case InteractiveContents.moonflowerClosed:
+                case InteractiveContents.shell:
+                    res = true;
+                    break;
+                default:
+                    throw new NeverError(c);
+            }
+        });
+
+        return res;
+    }
+
+    public static canBeOccupiedByLadybug(type: CellType): boolean {
+        return type != CellType.EMPTY;
+    }
+
+    public static getSeparatorImage(type: SeparatorType): string {
+        switch (type) {
+            case SeparatorType.left:
+                // return "separator1"
+            case SeparatorType.leftbottom:
+                // return "separator2"
+            case SeparatorType.lefttop:
+                // return "separator3"
+
+                return "separator";
+            case SeparatorType.right:
+            case SeparatorType.righttop:
+            case SeparatorType.rightbottom:
+                return "";
+            default:
+                throw new NeverError(type);
+        }
+    }
+
+    public static visitContents(content: ContentType, 
+                                visitItemContents: (c:ItemContents)=>void, 
+                                visitAnimalsContents: (c:AnimalsContents)=>void,
+                                visitBoostersContents: (c:BoostersContents)=>void,
+                                visitDecorationsContents: (c:DecorationsContents)=>void,
+                                visitInteractiveContents: (c:InteractiveContents)=>void) : void {
+
+        if(content in AnimalsContents){
+            visitAnimalsContents(content as AnimalsContents);
+            return;
+        } else if (content in BoostersContents){
+            visitBoostersContents(content as BoostersContents);
+            return;
+        } else if (content in DecorationsContents){
+            visitDecorationsContents(content as DecorationsContents);
+            return;
+        } else if (content in ItemContents){
+            visitItemContents(content as ItemContents);
+            return;
+        } else if (content in InteractiveContents){
+            visitInteractiveContents(content as InteractiveContents);
+            return;
+        }
+
+        alert("Неизвестный контент для ячейки: " + content);
+    }
+
+    public static getBoosterNamePlural(type: BoosterType):string{
+        switch(type){
+            case BoosterType.compass:
+                return "компасов"
+            case BoosterType.rocket:
+                return "сигнальных ракет"
+            case BoosterType.vision:
+                return "волшебных сфер"
+            case BoosterType.beans:
+                return "волшебных бобов"
+            case BoosterType.glove:
+                return "перчаток"
+            case BoosterType.rainbow:
+                return "флаконов с радугой"            
+            default: 
+                throw new NeverError(type);
+        }
+    }
+
+    public static isBoosterSeen(boosterType: BoosterType):boolean{
+        let user = UserService.getUser();
+        return user.getMarkers().indexOf(ForestUtils.getMarker(boosterType)) != -1;
+    }
+
+    public static markBoosterSeen(boosterType: BoosterType):void{
+        let user = UserService.getUser();
+        if(user.getMarkers().indexOf(ForestUtils.getMarker(boosterType)) == -1){
+            user.addMarker(ForestUtils.getMarker(boosterType));
+        }
+    }
+
+    private static getMarker(boosterType: BoosterType):string{
+        return boosterType + "Seen";
+    }
+
+    public static tryAnimateBooster(game: Phaser.Game, cell: ForestCell){
+        if(cell.state.content in BoostersContents && cell.state.cover && !cell.state.cover.isLocked()){
+            let booster:BoostersContents = <BoostersContents>cell.state.content;
+            game.tweens.removeFrom(cell.state.sprite);
+
+            switch(booster){
+                case BoostersContents.compass:
+                    AnimationUtils.heartBeat(game, cell.state.sprite);
+                    break;
+                case BoostersContents.rocket1:
+                case BoostersContents.rocket2:
+                case BoostersContents.rocket3:
+                    AnimationUtils.wiggle(game, cell.state.sprite);
+                    break;
+                case BoostersContents.vision:
+                    AnimationUtils.levitate(game, cell.state.sprite);
+                    break;
+                default:
+                    throw new NeverError(booster);
+            }
+        }
+    }
+
+    // ATLASES loading
+    public static getMinigameScreenImage(env: Environment):string{
+        switch(env){
+            case Environment.forest:
+                return "minigame1";
+            case Environment.house:
+                return "minigame2";
+            case Environment.darkForest:
+                return "minigame3";
+            case Environment.lake:
+                return "minigame4";
+            case Environment.flowerFields:
+                return "minigame5";
+            default:
+                throw new NeverError(env);
+        }
+    }
+
+    public static getScreenImage(location: StoryLocation):string{
+        switch (location) {
+            case StoryLocation.house_boiler:
+            case StoryLocation.house_chestClosed:
+            case StoryLocation.house_chestOpened:
+                return "houseBg";
+            case StoryLocation.forest:
+            case StoryLocation.forest_campfire:
+            case StoryLocation.forest_watermill:
+            case StoryLocation.forest_camp:
+                return "forestBg";
+            case StoryLocation.darkForest:
+            case StoryLocation.darkForest_unicorn:
+                return "darkForestBg";
+            case StoryLocation.attic:
+                return "atticBg";
+            case StoryLocation.flowerFields:
+                return "fieldsBg";
+            case StoryLocation.nearHouse://using for loadingScreen
+            case StoryLocation.none:
+                return null;
+            default:
+                throw new NeverError(location);
+        }
+
+    }
+
+    public static getAllMinigameScreenImages():string[]{
+        return Utils.enumValues(Environment).map(e => this.getMinigameScreenImage(e));
+    }
+    public static getAllScreenImages():string[]{
+        return Utils.enumValues(StoryLocation).map(l => this.getScreenImage(l));
+    }
+}
