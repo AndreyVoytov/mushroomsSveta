@@ -224,15 +224,15 @@ export default class AnimationUtils {
         return game.add.tween(sprite).to({ width: [0], height: [0], alpha: [0] }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false)
     }
 
-    public static fadeOut(game: Phaser.Game, sprite: PIXI.Sprite, delay?: number): Phaser.Tween {
-        return game.add.tween(sprite).to({ alpha: 0 }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false)
+    public static fadeOut(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Graphics | Phaser.Group, delay?: number, time?:number): Phaser.Tween {
+        return game.add.tween(sprite).to({ alpha: 0 }, time || 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false)
     }
     public static fadeOut2(game: Phaser.Game, sprite: PIXI.Sprite, delay?: number): Phaser.Tween {
         return game.add.tween(sprite).to({ alpha: 0 }, 600, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false)
     }
-    public static fadeIn(game: Phaser.Game, sprite: PIXI.Sprite, delay?: number): Phaser.Tween {
-        sprite.alpha = 0.001;
-        return game.add.tween(sprite).to({ alpha: 1 }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.Out, true, delay || 0, 0, false)
+    public static fadeIn(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Group, delay?: number, time?:number): Phaser.Tween {
+        sprite.alpha = 0;
+        return game.add.tween(sprite).to({ alpha: 1 }, time || 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.Out, true, delay || 0, 0, false)
     }
 
     public static glint(game: Phaser.Game, parent: Phaser.Sprite, x: number, y: number, delay?:number, scale?:number): Phaser.Sprite {

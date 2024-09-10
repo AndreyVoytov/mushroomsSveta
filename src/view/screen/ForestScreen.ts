@@ -408,10 +408,21 @@ export default class ForestScreen extends BaseForestScreen {
 
         this.justOpenedCells[0].bg.visible = true;
         if (this.justOpenedCells[0].state.sprite) {
-            this.justOpenedCells[0].state.sprite.visible = true;
+            // this.justOpenedCells[0].state.sprite.alpha = 0;
+            this.justOpenedCells[0].state.sprite.updateTransform();
+            this.game.time.events.add(1, ()=>{
+                this.justOpenedCells[0].state.sprite.visible = true;
+            });
+            // this.game.add.tween(this.justOpenedCells[0].state.sprite).to({alpha:1}, 1, Easing.Linear.None, true, 0)
+            
         }
         if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != "") {
-            this.justOpenedCells[0].state.label.visible = true;
+            // this.justOpenedCells[0].state.label.alpha = 0;
+            this.justOpenedCells[0].state.label.updateTransform();
+            this.game.time.events.add(1, ()=>{
+                this.justOpenedCells[0].state.label.visible = true;
+            });
+            // this.game.add.tween(this.justOpenedCells[0].state.label).to({alpha:1}, 1, Easing.Linear.None, true, 0)
         }
 
         // if(this.justOpenedCells[0].Y > maxY){

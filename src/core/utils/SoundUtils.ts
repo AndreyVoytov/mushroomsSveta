@@ -81,8 +81,9 @@ export default class SoundUtils {
     }
 
     public static bushMovingIn(){
-        let sound = Game.getInstance().sound.play("bushMoving", 0.5 * this.volumeRatio)
+        let sound = Game.getInstance().sound.play("bushMoving", 0.2 * this.volumeRatio)
     }
+
     public static bushMovingOut(){
     }
 
@@ -109,8 +110,8 @@ export default class SoundUtils {
         })
     }
 
-    public static fastPanelWhooshIn(){
-        Game.getInstance().time.events.add(1500, () => {
+    public static fastPanelWhooshIn(delay:number){
+        Game.getInstance().time.events.add(delay, () => {
             let sound = Game.getInstance().sound.play("whooshIn2", 0.03 * this.volumeRatio);
         })
     }

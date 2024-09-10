@@ -74,6 +74,7 @@ export default class EducationPanel extends BasePanel {
 
                 this.arrow = SpriteUtils.createSprite(this.game, openedCell.state.sprite.x,
                     openedCell.state.sprite.y - openedCell.state.sprite.height / 2 + 10, "arrow");
+                this.arrow.alpha = 0;
                 this.game.add.existing(this.arrow);
                 this.arrow.anchor.set(0.5, 1);
                 AnimationUtils.jump(this.game, this.arrow, 0)
@@ -575,6 +576,10 @@ export default class EducationPanel extends BasePanel {
     }
 
     private switchContent(cell: ForestCell, secondCell: ForestCell) {
+        cell.state.sprite.visible = false;
+        secondCell.state.sprite.visible = false;
+        cell.state.sprite.autoCull = true;
+        secondCell.state.sprite.autoCull = true;
         let x = cell.state.sprite.x;
         let y = cell.state.sprite.y;
         let content = cell.state.content;
@@ -590,7 +595,8 @@ export default class EducationPanel extends BasePanel {
         cell.state.sprite = secondCell.state.sprite;
         cell.state.label = secondCell.state.label;
         // cell.state.sprite.visible = secondCell.state.sprite.visible;
-        cell.state.sprite.visible = true;
+        cell.state.sprite.updateTransform();
+        
 
         secondCell.state.sprite.x = x;
         secondCell.state.sprite.y = y;
@@ -600,7 +606,12 @@ export default class EducationPanel extends BasePanel {
         secondCell.state.sprite = sprite;
         secondCell.state.label = label;
         // secondCell.state.sprite.visible = visibility;
-        secondCell.state.sprite.visible = true;
+        secondCell.state.sprite.updateTransform();
+
+        this.game.time.events.add(1, ()=>{
+            cell.state.sprite.visible = true;
+            secondCell.state.sprite.visible = true;
+        })
 
         cell.orderAndBringToTop();
         secondCell.orderAndBringToTop();

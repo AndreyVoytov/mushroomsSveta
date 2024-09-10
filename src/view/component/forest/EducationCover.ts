@@ -8,6 +8,7 @@ export default class EducationCover extends BasePanel {
     constructor(game: Phaser.Game, x: number, y: number, width: number, height: number) {
         super(game, 0, 0);
         this.game = game;
+        this.alpha = 0;
 
         let graphics = new Phaser.Graphics(this.game, 0, 0);
 
@@ -24,13 +25,14 @@ export default class EducationCover extends BasePanel {
             k *= 1.1;
         }
 
-        this.cover = new Phaser.Sprite(this.game, this.game.width / 2, this.game.height, graphics.generateTexture());
+        this.cover = new Phaser.Sprite(this.game, this.game.width / 2, this.game.height-500, graphics.generateTexture());
         this.cover.anchor = new Phaser.Point(0.5, 1);
+        this.cover.y += 500;
         this.cover.inputEnabled = true;
         this.addSprite(this.cover);
 
         graphics.destroy();
-        this.alpha = 0;
+     
     }
 
     show(delay: number) {

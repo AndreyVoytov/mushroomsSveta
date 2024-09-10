@@ -79,22 +79,21 @@ export default class AimsStartPanel extends BasePanel {
 
         let delay = 300 + treesTime * 2;
         let time = 500;
-        let showFor = 1500;
+        let showFor = 1300;
         this.game.add.tween(this).to({ y: [this.game.height / 2 + 50, this.game.height / 2] }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, delay, 0, false);
-        SoundUtils.fastPanelWhooshIn()
-
-        this.game.time.events.add(time + delay + (showFor - delay), () => {
+        SoundUtils.fastPanelWhooshIn(delay + time - 200);
+        this.game.time.events.add(time + delay + (showFor), () => {
             if (!this.aimsPanelShowed) {
                 this.aimsPanelShowed = true;
-                this.game.add.tween(this).to({ y: [this.game.height / 2 + 50, -220] }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay, 0, false);
+                this.game.add.tween(this).to({ y: [this.game.height / 2 + 50, -220] }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
                 this.game.time.events.add(delay, onHideCallback);
-                SoundUtils.fastPanelWhooshOut(delay);
+                SoundUtils.fastPanelWhooshOut(0);
             }
         });
 
         //если игрок кликает, цели убираются раньше
         this.game.time.events.add(time + delay, () => {
-            this.game.time.events.repeat(100, (time + delay + (showFor - delay)) / 100, () => {
+            this.game.time.events.repeat(100, (time + delay + (showFor)) / 100, () => {
                 if (this.needSkipAims && !this.aimsPanelShowed) {
                     this.aimsPanelShowed = true;
                     this.game.add.tween(this).to({ y: [this.game.height / 2 + 50, -220] }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 500, 0, false);

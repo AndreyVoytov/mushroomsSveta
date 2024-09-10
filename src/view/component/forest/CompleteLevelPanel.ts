@@ -21,12 +21,14 @@ export default class LevelCompletePanel extends BasePanel {
         super(game, x, y);
         this.game = game;
         this.screen = screen;
+        this.alpha = 0;
 
         let environment = forestType.environment;
         let level = ForestDao.indexOf(forestType);
 
-        let background = SpriteUtils.createSprite(this.game, 0, 23, LocationUtils.getBanner(environment));
+        let background = SpriteUtils.createSprite(this.game, 0, -300 + 23, LocationUtils.getBanner(environment));
         background.anchor = new Phaser.Point(0, 0.5);
+        background.y += 300;
         this.addChild(background);
 
         let catHelper : boolean = level >= LocationUtils.CAT_FROM_LEVEL;
@@ -66,14 +68,15 @@ export default class LevelCompletePanel extends BasePanel {
 
         let deltaY = this.screen.camera.y;
 
-        SoundUtils.fastPanelWhooshIn()
+        SoundUtils.fastPanelWhooshIn(delay + showFor - 200)
         
 
         this.bringToTop();
+        this.game.add.tween(this).to({ alpha:1 }, 50, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, delay, 0, false);
         this.game.add.tween(this).to({ y: [this.game.height / 2 + 50 + deltaY, this.game.height / 2 + deltaY] }, animationTime, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, delay, 0, false);
-        this.game.time.events.add(animationTime + delay, () => {
-            this.game.add.tween(this).to({ y: [this.game.height / 2 + 50 + deltaY, -220 + deltaY] }, animationTime, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, showFor, 0, false);
-            SoundUtils.fastPanelWhooshOut(showFor);
+        this.game.time.events.add(animationTime + delay + showFor, () => {
+            this.game.add.tween(this).to({ y: [this.game.height / 2 + 50 + deltaY, -220 + deltaY] }, animationTime, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
+            SoundUtils.fastPanelWhooshOut(0);
         }, this);
 
         if (this.gemsCloud) {

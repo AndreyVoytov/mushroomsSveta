@@ -7,32 +7,30 @@ import Utils from './../../../core/utils/Utils';
 import Preset from './../../game/Preset';
 export default class TreesPart extends Phaser.Group {
 
+    public static texture:Phaser.RenderTexture;
+
     constructor(game: Phaser.Game, name:string, tintHarder?:boolean) {
         super(game);
         this.name = name;
         this.game = game;
+        this.visible = false;
+
+        if(TreesPart.texture){
+            let sprite = new Phaser.Sprite(this.game, 0,0, TreesPart.texture);
+            // sprite.anchor.set(1.5);
+            this.addChild(sprite);
+            return;
+        }
 
         let b1 = this.attachSprite("bushes", "bushes1")
         let b2 = this.attachSprite("bushes", "bushes2")
-        let lakeHeaderDecor = this.attachSprite("lakeHeaderDecor")
-        lakeHeaderDecor.tint = 0x114411;
+        let lakeHeaderDecor = this.attachSprite("lakeHeaderDecor", "lakeHeaderDecor", 0x114411)
         let b3 = this.attachSprite("bushes", "bushes3")
         let b4 = this.attachSprite("bushDark", "bushes4")
         if(tintHarder){
-            let lakeHeaderDecor2 = this.attachSprite("lakeHeaderDecor", "lakeHeaderDecor")
-            lakeHeaderDecor2.tint = 0x114411;
+            let lakeHeaderDecor2 = this.attachSprite("lakeHeaderDecor", "lakeHeaderDecor", 0x114411)
             lakeHeaderDecor2.alpha = 0.5;
         }
-
-        // b1.tint = 0xEEEEEE;
-        // b2.tint = 0xEEEEEE;
-
-        // if(tintHarder){
-            // b1.tint = 0xCCCCCC;
-            // b2.tint = 0xCCCCCC;
-            // b3.tint = 0xCCCCCC;
-            // b4.tint = 0xCCCCCC;
-        // }
 
         this.applyPreset([{"spriteId":"bushes1","x":134.06896551724128,"y":406.3584710743801,"scaleX":1.8027586206896555/1.5,"scaleY":1.637556818181818/1.5,"anchorX":0.5,"anchorY":0.5,"rotation":0.9900000000000007},
         {"spriteId":"bushes2","x":342.6206896551722,"y":244.07128099173553,"scaleX":1.7117241379310344/1.5,"scaleY":1.637556818181818/1.5,"anchorX":0.5,"anchorY":0.5,"rotation":1.1453793103448275},
@@ -42,12 +40,16 @@ export default class TreesPart extends Phaser.Group {
         {"spriteId":"lakeHeaderDecor2","x":331.6551724137931,"y":311.2159090909091,"scaleX":18.579999999999991,"scaleY":22.379999999999963,"anchorX":0.5,"anchorY":0.5,"rotation":-1.5700000000000012}
     ])
 
-        this.cacheAsBitmap = true;
+        //TODO оптимизация производительности
+        if(window.location.href.indexOf("treesTest") != -1){
+            TreesPart.texture =  this.generateTexture();
+        }
 
     }
 
-    protected attachSprite(spriteId: string, name?: string): Phaser.Sprite {
-        let sprite = SpriteUtils.createSprite(this.game, 0, 100, spriteId);
+    protected attachSprite(spriteId: string, name?: string, tintColor?:number): Phaser.Sprite {
+        let sprite = tintColor? SpriteUtils.createSpriteWithTint(this.game, 0, 0, spriteId, tintColor) :
+                                 SpriteUtils.createSprite(this.game, 0, 100, spriteId);
         sprite.anchor.set(0.5)
         sprite.name = name || spriteId;
         this.addChild(sprite);

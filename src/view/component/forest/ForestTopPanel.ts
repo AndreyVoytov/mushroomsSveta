@@ -77,10 +77,13 @@ export default class ForestTopPanel extends BasePanel {
                 if (aim.count <= 0) {
                     aim.label.visible = false;
 
-                    let checkLabel = SpriteUtils.createSprite(this.game, aim.label.x, aim.label.y, "check");
+                    let checkLabel = SpriteUtils.createSprite(this.game, aim.label.x, aim.label.y-500, "check");
+                    checkLabel.alpha = 0;
                     checkLabel.anchor = new Phaser.Point(0.5, 0);
                     checkLabel.scale = new Phaser.Point(0.5, 0.5);
                     this.addChild(checkLabel);
+                    checkLabel.y+= 500;
+                    this.game.add.tween(checkLabel).to({ alpha:1}, 50, Phaser.Easing.Linear.None, true, 0, 0, false);
                 }
             }, this);
         }
@@ -198,13 +201,14 @@ export default class ForestTopPanel extends BasePanel {
     }
 
     public collectItem(cellState: CellState) {
+        let self = this;
         this.aims.forEach(aim => {
 
             //TODO refactor panel
             if (ContentType[cellState.content] == aim.image || (aim.type == AimType.itemsBunch && cellState.content == ItemContents.randomItem)) {
 
                 aim.count--;
-                this.updateAimCounters(700);
+                self.updateAimCounters(700);
 
                 let delay = 200;
                 let animationTime = 700;
@@ -216,17 +220,18 @@ export default class ForestTopPanel extends BasePanel {
                     let w = sprite.width;
                     let h = sprite.height;
 
-                    this.game.add.tween(sprite).to({ alpha: 0 }, animationTime - 300, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.In,
+                    self.game.add.tween(sprite).to({ alpha: 0 }, animationTime - 300, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.In,
                         true, delay + 300, 0, false)
-                    this.game.time.events.add(delay + animationTime, () => {
+                    self.game.time.events.add(delay + animationTime, () => {
                         sprite.visible = false;
                     });
 
-                    this.game.add.tween(sprite).to({ width: [w * 2, w * 1.5, w, w], height: [h * 2, h * 1.5, h, h] }, animationTime, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In, true, delay, 0, false)
+                    self.game.add.tween(sprite).to({ width: [w * 2, w * 1.5, w, w], height: [h * 2, h * 1.5, h, h] }, animationTime, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In, true, delay, 0, false)
                 } else {
-                    this.game.add.tween(sprite).to({ alpha: 0 }, 100, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.In,
+                    self.game.add.tween(sprite).to({ alpha: 0 }, 100, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.In,
                         true, delay + animationTime - 100, 0, false);
-                    this.game.time.events.add(delay + animationTime, () => {
+                        
+                    self.game.time.events.add(delay + animationTime, () => {
                         sprite.visible = false;
                     });
 
@@ -234,15 +239,15 @@ export default class ForestTopPanel extends BasePanel {
 
                 sprite.inputEnabled = false;
 
-                this.game.add.tween(sprite).to(
+                self.game.add.tween(sprite).to(
                     {
                         angle: 0, x: [sprite.x, aim.sprite.x],
-                        y: [sprite.y, aim.sprite.y + this.screen.camera.y]
+                        y: [sprite.y, aim.sprite.y + self.screen.camera.y]
                     },
                     animationTime, Phaser.Easing.Linear.None, true, delay, 0, false).interpolation(Phaser.Math.bezierInterpolation).start();
 
                 aim.label.bringToTop();
-                this.game.time.events.add(1, () => {
+                self.game.time.events.add(1, () => {
                     sprite.bringToTop();
                     // this.screen.bringUiToTop();
                 })

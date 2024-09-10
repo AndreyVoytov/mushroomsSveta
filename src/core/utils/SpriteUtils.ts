@@ -9,6 +9,7 @@ export default class SpriteUtils {
 
     public static images: {key:string, path:string}[] = [];
     public static atlases: string[] = [];
+    private static tintedTextures: {id:string, texture: Phaser.RenderTexture}[] = [];
 
     public static createSprite(game: Phaser.Game, x:number, y:number, key:string, name?:string):Phaser.Sprite{
         let keyAndFrame = this.getAtlasKeyAndFrame(game, key);
@@ -117,5 +118,25 @@ export default class SpriteUtils {
         var area = new Phaser.Rectangle(frame.x, frame.y, frame.width, frame.height);	
 
         return {atlasKey: keyAndFrame.atlasKey, atlasRect:area}
+    }
+
+    public static createSpriteWithTint(game: Phaser.Game, x:number, y:number, key:string, color:number, name?:string):Phaser.Sprite{
+        let textureKey =  key + color;
+        let textureWithKey = SpriteUtils.tintedTextures.find(t => t.id == textureKey);  
+        let texture = textureWithKey? textureWithKey.texture : null;     
+                
+        if(!texture){
+            let sprite = SpriteUtils.createSprite(game, 0,0,key);
+            sprite.tint = color;
+            texture = sprite.generateTexture();
+            SpriteUtils.tintedTextures.push({id: textureKey, texture:texture});
+        }
+
+        let res = new Phaser.Sprite(game, x, y, texture);
+        if(name) res.name = name;
+
+        // SpriteUtils.checkAtlasMatchScreen(game, key)    
+        // SpriteUtils.saveObjectForAtlasDebug(key,res);  
+        return res;
     }
 }

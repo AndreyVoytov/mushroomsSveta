@@ -68,12 +68,12 @@ export default abstract class BaseScreen extends DebugScreen {
 
         let user = UserService.getUser()
 
-        if (user.getCurrentForest() >= ReplicaDao.getEntity().getById("r41").context.level || AdminService.isEditMode()) {
+        if (!AdminService.isEditMode() &&  user.getCurrentForest() >= ReplicaDao.getEntity().getById("r41").context.level || AdminService.isEditMode()) {
             this.loadAtlas("chapter1_0", "assets/_atlases/chapter1_0");
             this.loadAtlas("additional0", "assets/_atlases/additional0");
         }
 
-        if(EventUtils.getActualEvents().filter(e => e.eventType == EventType.lukoshko).length > 0 || AdminService.isEditMode()){
+        if(!AdminService.isEditMode() && EventUtils.getActualEvents().filter(e => e.eventType == EventType.lukoshko).length > 0 || AdminService.isEditMode()){
             this.loadAtlas("event1", "assets/_atlases/event1");
         }
         
@@ -139,18 +139,18 @@ export default abstract class BaseScreen extends DebugScreen {
             })
         }
 
-        if (AdminService.cacheComplexImages() && AdminService.isEditMode()) {
+        if (/*AdminService.cacheComplexImages()&&*/  AdminService.isEditMode()) {
 
             this.game.time.advancedTiming = true;
 
             let fps = new Label(this.game, 100, this.game.height - 200, "FPS: " + this.game.time.fps)
+            fps.anchor.set(0, 0.5);
             this.game.add.existing(fps);
             this.game.time.events.loop(500, () => {
                 fps.bringToTop();
-                fps.text = "FPS: " + this.game.time.fps;
+                fps.text = "FPS: " + this.game.time.fps + " DFPS: " + this.game.time.desiredFps;
             })
         }
-
     }
 
     public startScreen(scene: any, clearWorld?: boolean, clearCache?: boolean) {

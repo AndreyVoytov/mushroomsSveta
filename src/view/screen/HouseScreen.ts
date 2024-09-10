@@ -106,6 +106,11 @@ export default class HouseScreen extends DialogScreen {
 
         this.eventsToShow = EventUtils.updateEvents();
         this.loadOptionalAtlases()
+
+        // let start = Date.now();
+        // while (Date.now() - start < 1500) {
+        //     // Пустой цикл, ожидаем истечения времени
+        //   }
     }
 
     public initialize(blackFadeOut?: boolean): void {
@@ -349,20 +354,24 @@ export default class HouseScreen extends DialogScreen {
             });
         }
 
-        let transitionTime = 500;
+        let transitionTime = 2000;
+        let transitionDelay = 500;
 
         if (blackFadeOut) {
             this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
             this.dialogPanel.bringToTop();
             this.hideUI(0, false, true)
+        } else if (Game.WHITE_TRANSITION) {
+            this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
+            Game.WHITE_TRANSITION = false;
         } else {
-            if (Game.WHITE_TRANSITION) {
-                this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
-                Game.WHITE_TRANSITION = false;
-            } else {
-                this.add.existing(new TreesTransitionPanel(this.game, false, transitionTime, transitionTime));
-            }
+            this.add.existing(new TreesTransitionPanel(this.game, false, transitionTime, transitionDelay));
+            // let start = Date.now();
+            // while (Date.now() - start < 500) {
+            //     // Пустой цикл, ожидаем истечения времени
+            // }
         }
+
 
         if(this.fakeTrees){
             this.fakeTrees.alpha = 0;

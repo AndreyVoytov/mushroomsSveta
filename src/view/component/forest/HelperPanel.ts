@@ -16,9 +16,11 @@ export default class HelperPanel extends BasePanel {
         super(game, x, y);
         this.game = game;
         this.fromLeft = fromLeft;
+        this.alpha = 0;
 
-        this.dialogPnl = SpriteUtils.createSprite(this.game, 0, 0, 'helperPanel');
+        this.dialogPnl = SpriteUtils.createSprite(this.game, 0, -500, 'helperPanel');
         this.dialogPnl.anchor = new Phaser.Point(0.5, okButton ? 0.4 : 0.5);
+        this.dialogPnl.y += 500;
         this.dialogPnl.scale = new Phaser.Point(1.1, okButton ? (images && images.length > 0 ? 1.5 : 1.3) : 1);
         this.addChild(this.dialogPnl);
 
@@ -66,6 +68,7 @@ export default class HelperPanel extends BasePanel {
         }
 
         this.game.add.tween(this).to({ y: toY, x: toX }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out, true, delay, 0, false);
+        this.game.add.tween(this).to({alpha:1 }, 50, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out, true, delay, 0, false);
     }
 
     hide(delay: number) {

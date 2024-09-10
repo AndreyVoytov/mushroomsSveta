@@ -105,6 +105,26 @@ export default class Game extends Phaser.Game {
         return false;
     }
 
+    public overrideTweenMethod() {
+        const originalAddTween = this.add.tween.bind(this.add); // Сохраняем оригинальный метод tween
+
+        this.add.tween = (target) => {
+            const tween = originalAddTween(target);
+
+            // Сохраняем оригинальный метод to
+            const originalToMethod = tween.to;
+
+            // Переопределяем метод to
+            tween.to = (properties, duration, ease, autoStart, delay, repeat, yoyo) => {
+                let adjustedDuration = duration * Math.min(1, this.time.desiredFps / this.time.fps); // Умножаем на коэффициент K 
+                // let adjustedDuration = duration;
+                return originalToMethod.call(tween, properties, adjustedDuration, ease, autoStart, delay, repeat, yoyo);
+            };
+
+            return tween;
+        };
+    }
+
     // FPS checking:
     //     this.time.advancedTiming = true;
     //     console.log("FPS: " + this.time.fps)

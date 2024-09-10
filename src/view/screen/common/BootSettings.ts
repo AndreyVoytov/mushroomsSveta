@@ -7,6 +7,8 @@ import BaseScreen from "./BaseScreen";
 export default class BootSettings extends BaseScreen {
 
     preload() {
+        this.time.desiredFps = 60;
+        (this.game as Game).overrideTweenMethod();
         this.loadScreenSprite("forestHouseBg")
 
         if (Settings.isGraphicsFromAtlases()) {

@@ -468,10 +468,10 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
                 this.levelStopped = true;
 
-                let completePanel = new LevelCompletePanel(this.game, this, 0, 10, this.topPanel.getAims(), this.getForestType());
+                let completePanel = new LevelCompletePanel(this.game, this, 0, 10-220, this.topPanel.getAims(), this.getForestType());
                 completePanel.anchor = new Phaser.Point(0, 0.5);
                 this.addSprite(completePanel);
-                completePanel.y = -220;
+                // completePanel.y = -220;
 
                 let delay = 1000;
                 let animationTime = 500;
