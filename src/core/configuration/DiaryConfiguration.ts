@@ -109,7 +109,7 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec2",
-            title: "Грибной суп для КБ",
+            title: "Грибной суп для Бориса",
             details: "Секретный ингредиент - хрустящий мухомор. Объеденье!",
             fromReplica: "r10b",
             resultImage: "dish2",
@@ -122,7 +122,7 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec3",
-            title: "Ягодный напиток для КБ",
+            title: "Ягодный напиток для Бориса",
             details: "Ведьмин гриб пробуждает скрытые способности.",
             fromReplica: "r16",
             resultImage: "dish1",

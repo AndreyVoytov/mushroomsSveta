@@ -7,7 +7,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r1",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 1
                 },
@@ -20,7 +20,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r2",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "location": 1,
                 "context": {
                     "level": 2
@@ -30,7 +30,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r2b",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 2
                 },
@@ -42,7 +42,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r3",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "delay": 500,
                 "location": 2,
                 "context": {
@@ -53,7 +53,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r4",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 2
                 },
@@ -65,7 +65,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r5",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 3
                 },
@@ -88,7 +88,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r6",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "location": 3,
                 "afterLevelLocation": 4,
                 "context": {
@@ -102,7 +102,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r7",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "afterAnimation": "cooking",
                 "context": {
                     "level": 7
@@ -115,7 +115,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r8",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "afterAnimation": "boilerBurst",
                 "context": {
                     "level": 7
@@ -132,7 +132,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r9",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 7
                 },
@@ -149,7 +149,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r10",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "afterLevelLocation": 9,
                 "context": {
                     "level": 7
@@ -182,7 +182,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r11",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 14
                 },
@@ -205,7 +205,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r14",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 14
                 },
@@ -214,12 +214,12 @@ export default class ReplicasConfiguration {
             {
                 "id": "r15",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 14
                 },
                 "showDiary": true,
-                "text": "Получается, наш котик и есть ~КБ~? Какие-то ~странные вкусы~ у него. Попробуем накормить!",
+                "text": "Получается, наш котик и есть ~Борис~? Какие-то ~странные вкусы~ у него. Попробуем накормить!",
                 "buttonName": "За грибами",
                 "decor": {
                     "image": "bookDecor",
@@ -232,7 +232,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r16",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 17
                 },
@@ -286,7 +286,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r18",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 17
                 },
@@ -304,7 +304,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r19",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 20
                 },
@@ -363,7 +363,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r21",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 20
                 },
@@ -382,11 +382,11 @@ export default class ReplicasConfiguration {
             {
                 "id": "r23",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 20
                 },
-                "text": "Я ~Света~. А ты, наверное, ~КБ~?"
+                "text": "Я ~Эмма~. А ты, наверное, ~Борис~?"
             },
             {
                 "id": "r24",
@@ -395,13 +395,13 @@ export default class ReplicasConfiguration {
                 "context": {
                     "level": 20
                 },
-                "text": "Здравствуй, ~Све-Та~.. А вот ~кто я~ - я тебе сказать не могу. Сам не помню.",
+                "text": "Здравствуй, ~Эм-ма~.. А вот ~кто я~ - я тебе сказать не могу. Сам не помню.",
                 "rightSide": true
             },
             {
                 "id": "r25",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 20
                 },
@@ -410,7 +410,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r26",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 20
                 },
@@ -452,7 +452,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r29",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 24
                 },
@@ -493,7 +493,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r30b",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 24
                 },
@@ -540,7 +540,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r32b",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "showDiary": true,
                 "buttonName": "За грибами",
                 "context": {
@@ -564,7 +564,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r34",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 28
                 },
@@ -583,7 +583,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r34bb",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "buttonName": "В лес",
                 "showDiary": true,
                 "context": {
@@ -598,7 +598,7 @@ export default class ReplicasConfiguration {
                 "context": {
                     "level": 32
                 },
-                "text": "Вспомнил. Хозяйка сказала: ~Если я не вернусь до осени, проси помощи у Све-Та~",
+                "text": "Вспомнил. Хозяйка сказала: ~Если я не вернусь до осени, проси помощи у Эм-ма~",
                 "rightSide": true,
                 "personalAnimation": "ideaBubble",
                 "delay": 1000,
@@ -607,11 +607,11 @@ export default class ReplicasConfiguration {
             {
                 "id": "r35",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 32
                 },
-                "text": "Све-Та?"
+                "text": "Эм-ма?"
             },
             {
                 "id": "r36",
@@ -626,7 +626,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r37",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "context": {
                     "level": 32
                 },
@@ -647,7 +647,7 @@ export default class ReplicasConfiguration {
                 "id": "r39",
                 "delay": 3800,
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "location": 5,
                 "context": {
                     "level": 32
@@ -657,7 +657,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r40",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "text": "Надо выбираться отсюда поскорее.",
                 "context": {
                     "level": 32
@@ -668,7 +668,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r41",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "text": "Пока выхода из леса не видно...",
                 "context": {
                     "level": 37
@@ -679,7 +679,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r41b",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "text": "А что это за ~лошадка~ там?",
                 "context": {
                     "level": 37
@@ -700,7 +700,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r43",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Да это же настоящий ~единорог~!        Эй, погоди.. Куда же ты?\n",
                 "context": {
@@ -712,7 +712,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r44",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Пойду следом за единорогом. Может он выведет меня из леса?",
                 "context": {
@@ -728,7 +728,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r45",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Единорог скрылся из виду.               Но лес здесь становится реже.      ",
                 "context": {
@@ -739,7 +739,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r46",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Похоже, я на ~правильном пути~!\n",
                 "context": {
@@ -751,7 +751,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r47",
                 "personImage": "sveta5",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Уф. Не знала, что буду так радоваться оказавшись в чаще ~нормального леса~!",
                 "context": {
@@ -762,7 +762,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r48",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Надо поискать чего-нибудь поесть.\n",
                 "context": {
@@ -775,7 +775,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r49",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Теперь нужны ~поленья~, чтобы развести огонь.\n",
                 "context": {
@@ -787,7 +787,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r50",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Вот и отлично, наконец-то пообедаю! ",
                 "context": {
@@ -815,7 +815,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r52",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Я заблудилась и проголодалась. Только что вышла из мрачного леса и …\n",
                 "context": {
@@ -844,7 +844,7 @@ export default class ReplicasConfiguration {
                 "personImage": "leshii2",
                 "personName": "Леший",
                 "rightSide": true,
-                "text": "Если ты конечно не… Све-Та? Та самая? Из ~легенды~? ",
+                "text": "Если ты конечно не… Эм-ма? Та самая? Из ~легенды~? ",
                 "context": {
                     "level": 47
                 }
@@ -852,9 +852,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r54b",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
-                "text": "Что? Нет, я самая обычная Света.",
+                "text": "Что? Нет, я самая обычная Эмма.",
                 "context": {
                     "level": 47
                 },
@@ -889,7 +889,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r57",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Ну, я попала в мрачный лес и …\n",
                 "context": {
@@ -901,7 +901,7 @@ export default class ReplicasConfiguration {
                 "personImage": "cat1",
                 "personName": "Котёнок",
                 "rightSide": true,
-                "text": "Знаю-знаю. Все слышали  Легенду.       Но я думал, что ~Великая Све-та~ выйдет из мрачного леса побыстрее...",
+                "text": "Знаю-знаю. Все слышали  Легенду.       Но я думал, что ~Великая Эм-ма~ выйдет из мрачного леса побыстрее...",
                 "context": {
                     "level": 54
                 }
@@ -919,7 +919,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r60",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Совёнка?",
                 "context": {
@@ -956,7 +956,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r63",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Серьезно? А как узнать нашего? ",
                 "context": {
@@ -984,7 +984,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r65",
                 "personImage": "sveta3",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Неплохо. А ты не мог сказать об этом раньше?\n",
                 "context": {
@@ -1052,7 +1052,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r70",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Милый чердачок! Ну что ж, на поиски.\n",
                 "context": {
@@ -1188,7 +1188,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r76",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Это точно ~нужные сапоги~?",
                 "context": {
@@ -1241,7 +1241,7 @@ export default class ReplicasConfiguration {
                 "personImage": "belka1",
                 "personName": "Белка",
                 "rightSide": true,
-                "text": "Здравствуй, легендарная Све-Та! Куда это ты идешь?\n",
+                "text": "Здравствуй, легендарная Эм-ма! Куда это ты идешь?\n",
                 "context": {
                     "level": 81
                 }
@@ -1249,7 +1249,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r80",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Здравствуй, Белка. Мы направляемся ~к Лешему~. А ты почему интересуешься?",
                 "context": {
@@ -1313,7 +1313,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r86",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Предлагаю план: Совёнок, ты ~изучай маршрут~. Кот, ты ~готовь припасы~.    А я пока ~наберу корешков~ для зелья. ",
                 "context": {
@@ -1327,7 +1327,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r87",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Все ~ингредиенты собраны~! Не будем терять времени - закидываем сапоги в котел!",
                 "context": {
@@ -1347,7 +1347,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r88",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "...",
                 "context": {
@@ -1427,7 +1427,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r93",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Подожди до ~привала~. На привале поедим.",
                 "context": {
@@ -1450,7 +1450,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r95",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Уже почти пришли!",
                 "context": {
@@ -1463,9 +1463,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r96",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
-                "text": "КБ, что с тобой??",
+                "text": "Борис, что с тобой??",
                 "context": {
                     "level": 99
                 }
@@ -1493,7 +1493,7 @@ export default class ReplicasConfiguration {
                 "personImage": "sova3",
                 "personName": "Совёнок",
                 "rightSide": true,
-                "text": "Эх, КБ, КБ.. Он скоро ~придёт в себя~. Но как же мы теперь выручим хозяйку   без припасов?\n",
+                "text": "Эх, Борис, Борис.. Он скоро ~придёт в себя~. Но как же мы теперь выручим хозяйку   без припасов?\n",
                 "context": {
                     "level": 99
                 }
@@ -1501,7 +1501,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r99",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Есть идея! Наберём ~колосков~ в округе и ~перемелем~ их с помощью заброшенной водяной мельницы, что виднеется позади",
                 "context": {
@@ -1514,7 +1514,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r100",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Колоски собраны, Время ~молоть~!",
                 "context": {
@@ -1527,7 +1527,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r101",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Отлично, ~запасы пополнены~!         Пора отправляться в путь.",
                 "context": {
@@ -1558,7 +1558,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r103",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Похоже, сапоги разрядились. Устроим ~привал~, чтобы набрать в округе корешков и зарядить сапоги.",
                 "context": {
@@ -1586,7 +1586,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r104",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Сейчас ~зарядим сапоги~ и продолжим   путь!",
                 "context": {
@@ -1598,7 +1598,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r105",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Отлично, ~сапоги заряжены~, палатка собрана. Пора отправляться!\n",
                 "context": {
@@ -1698,7 +1698,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r112",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Давайте мы вам поможем!",
                 "context": {
@@ -1710,7 +1710,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r112b",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Посмотрите! Это тот инструмент, который вам нужен?",
                 "context": {
@@ -1752,7 +1752,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r112с",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Что скажете насчет этого?",
                 "context": {
@@ -1794,7 +1794,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r113",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Вот ваша ~валторна~, господин Циклоп!",
                 "context": {
@@ -1880,7 +1880,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r117",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Тем временем сапоги снова разрядились. Совсем не держат заряд!\n",
                 "context": {
@@ -1949,7 +1949,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r123",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Что-то совёнок ~долго~ не возвращается.",
                 "context": {
@@ -2007,7 +2007,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r128",
                 "personImage": "sveta4",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Но ведь эта птица не умеет петь, это ~совёнок~. А вам нужен ~соловей~!",
                 "context": {
@@ -2039,7 +2039,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r131",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Мы нашли вам замену для соловья.     Это ~Магнитофон~!",
                 "context": {
@@ -2124,7 +2124,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r137",
                 "personImage": "sveta2",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "И снова настала пора ~заряжать сапоги~...\n",
                 "context": {
@@ -2134,7 +2134,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r138",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Надеюсь, на этот раз заряда хватит до самого конца!",
                 "context": {
@@ -2166,7 +2166,7 @@ export default class ReplicasConfiguration {
             {
                 "id": "r141",
                 "personImage": "sveta1",
-                "personName": "Света",
+                "personName": "Эмма",
                 "rightSide": false,
                 "text": "Скоро узнаем. Вперёд!",
                 "context": {

@@ -93,7 +93,7 @@ export default class TreesTransitionPanel extends BasePanel {
             this.scale.set(this.game.height / 1600);
         }
 
-        let loading = new Label(this.game, this.game.width/2, this.game.height*4/5, "Загрузка...", { "font": "bold 60px BalsamiqSansBold", "fill": "#ffffff" });
+        let loading = new Label(this.game, this.game.width/2, this.game.height*4/5, "Загрузка...", { "font": "bold 60px Arial", "fill": "#ffffff" });
         loading.addStrokeColor("#194c3f", 0)
         loading.strokeThickness = 6;
 

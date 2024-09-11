@@ -23,7 +23,7 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr1",
             personImage: "sveta2",
-            personName: "Света",
+            personName: "Эмма",
             context: {
                 level: 1,
                 requiredMarker: "homeFound"
@@ -36,7 +36,7 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr2",
             personImage: "sveta2",
-            personName: "Света",
+            personName: "Эмма",
             context: {
                 level: 3,
                 requiredMarker: "notebookFound"
@@ -50,7 +50,7 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr3",
             personImage: "sveta3",
-            personName: "Света",
+            personName: "Эмма",
             context: {
                 level: 13,
                 requiredMarker: "catFound"
@@ -71,7 +71,7 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr5",
             personImage: "sveta1",
-            personName: "Света",
+            personName: "Эмма",
             context: {
                 level: 13,
                 requiredMarker: "catFound"
@@ -83,7 +83,7 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr6",
             personImage: "sveta1",
-            personName: "Света",
+            personName: "Эмма",
             context: {
                 level: 58,
                 requiredMarker: "owl1found"
@@ -100,7 +100,7 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr7",
             personImage: "sveta5",
-            personName: "Света",
+            personName: "Эмма",
             context: {
                 level: 58,
                 requiredMarker: "owl1found"
@@ -121,12 +121,12 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr8",
             personImage: "sveta1",
-            personName: "Света",
+            personName: "Эмма",
             context: {
                 level: 63,
                 requiredMarker: "owl2found"
             },
-            text: "Здравствуйте! Я - ~Света~.",
+            text: "Здравствуйте! Я - ~Эмма~.",
         },
         {
             id: "fr9",

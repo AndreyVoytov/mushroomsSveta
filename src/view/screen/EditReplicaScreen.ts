@@ -61,7 +61,7 @@ import ReplicaDecorConfiguration from "../../core/configuration/ReplicaDecorConf
 
     private getPersName(characterImage: string){
         if(characterImage.startsWith("sveta")){
-            return "Света"
+            return "Эмма"
         } else if(characterImage.startsWith("cat")){
             return "Котёнок"
         } else if(characterImage.startsWith("sova")){

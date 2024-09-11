@@ -8,7 +8,7 @@ export default class MapPresetConfiguration {
     //Грибные холмы
     public static MAP_1 : MapPreset =
     { 
-        notes: ["КБ. Искать \n тут."],
+        notes: ["Борис. Искать \n тут."],
         preset:
         [{"spriteId":"title","x":30,"y":-382,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":45},
         {"spriteId":"mapBirch_1","x":175,"y":263,"scaleX":0.7599999999999998,"scaleY":0.49999999999999956,"anchorX":0,"anchorY":0,"rotation":-3.469446951953614e-18},
