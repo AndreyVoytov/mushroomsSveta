@@ -113,12 +113,19 @@ export default class Game extends Phaser.Game {
 
             // Сохраняем оригинальный метод to
             const originalToMethod = tween.to;
+            const originalFromMethod = tween.from;
 
             // Переопределяем метод to
             tween.to = (properties, duration, ease, autoStart, delay, repeat, yoyo) => {
                 let adjustedDuration = duration * Math.min(1, this.time.desiredFps / this.time.fps); // Умножаем на коэффициент K 
                 // let adjustedDuration = duration;
                 return originalToMethod.call(tween, properties, adjustedDuration, ease, autoStart, delay, repeat, yoyo);
+            };
+
+            tween.from = (properties, duration, ease, autoStart, delay, repeat, yoyo) => {
+                let adjustedDuration = duration * Math.min(1, this.time.desiredFps / this.time.fps); // Умножаем на коэффициент K 
+                // let adjustedDuration = duration;
+                return originalFromMethod.call(tween, properties, adjustedDuration, ease, autoStart, delay, repeat, yoyo);
             };
 
             return tween;

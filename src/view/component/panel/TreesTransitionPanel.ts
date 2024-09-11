@@ -19,7 +19,7 @@ export default class TreesTransitionPanel extends BasePanel {
         super(game, 0, 0);
         this.game = game;
 
-        if(time != 0) time = 400;
+        if(time != 0) time = 960;
 
         let g = new Phaser.Graphics(this.game, 0, 0);
         g.beginFill(0x23520d, 1);
@@ -125,12 +125,14 @@ export default class TreesTransitionPanel extends BasePanel {
 
         if (from && time != 0 && window.location.href.indexOf("treesStop") == -1 ) {
 
+            let k = 2.4;
+
             SoundUtils.bushMovingIn()
 
-            tweens.push(AnimationUtils.fadeIn(this.game, tp1, delay + 50 ))
-            tweens.push(AnimationUtils.fadeIn(this.game, tp2, delay  ))
-            tweens.push(AnimationUtils.fadeIn(this.game, tp3, delay  +  100))
-            tweens.push(AnimationUtils.fadeIn(this.game, tp4, delay +  200 ))
+            tweens.push(AnimationUtils.fadeIn(this.game, tp1, delay + 50 , 300*k ))
+            tweens.push(AnimationUtils.fadeIn(this.game, tp2, delay  , 300*k ))
+            tweens.push(AnimationUtils.fadeIn(this.game, tp3, delay  +  100, 300*k ))
+            tweens.push(AnimationUtils.fadeIn(this.game, tp4, delay +  200 , 300*k ))
             
             tweens.push(this.game.add.tween(tp1).from({ x: tp1.x- 250, y: tp1.y-300 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 50, 0, false));
             tweens.push(this.game.add.tween(tp3).from({ x: tp3.x+ 200, y: tp3.y-380 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay, 0, false));
@@ -146,10 +148,10 @@ export default class TreesTransitionPanel extends BasePanel {
 
             tweens.push(this.game.add.tween(tp0).from({ x: tp0.x- 100, y: tp0.y-100 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 250 + delay2, 0, false));
 
-            tweens.push(AnimationUtils.fadeIn(this.game, tp11, delay + delay2 + 50 ))
-            tweens.push(AnimationUtils.fadeIn(this.game, tp31, delay + delay2  +100 ))
-            tweens.push(AnimationUtils.fadeIn(this.game, tp41, delay + delay2 + 200 ))
-            tweens.push(AnimationUtils.fadeIn(this.game, tp21, delay + delay2  ))
+            tweens.push(AnimationUtils.fadeIn(this.game, tp11, delay + delay2 + 50 , 300*k ))
+            tweens.push(AnimationUtils.fadeIn(this.game, tp31, delay + delay2  +100 , 300*k ))
+            tweens.push(AnimationUtils.fadeIn(this.game, tp41, delay + delay2 + 200 , 300*k ))
+            tweens.push(AnimationUtils.fadeIn(this.game, tp21, delay + delay2  , 300*k ))
 
             tweens.push(game.add.tween(g).to({ alpha: 1}, 800, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay +  200 , 0, false))
             tp0.alpha = 0.001;

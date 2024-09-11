@@ -8,6 +8,10 @@ export default class BootSettings extends BaseScreen {
 
     preload() {
         this.time.desiredFps = 60;
+        this.game.time.advancedTiming = true;
+
+        // this.game.renderer.renderSession.roundPixels = true; // Округление пикселей для лучшего рендеринга
+
         (this.game as Game).overrideTweenMethod();
         this.loadScreenSprite("forestHouseBg")
 

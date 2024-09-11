@@ -14,7 +14,7 @@ export default class LocalStoreComponent {
             return null;
         }
         
-        let userData = null;
+        let userData = localStorage.getItem(this.LS_USER);
         
         if(!Settings.PLAIN_MODE && userData){
             userData = this.decryptUserData(userData, this.getLocalUserId())

@@ -148,11 +148,12 @@ export default class DiaryPanel extends ClosablePanel {
         
         this.game.time.events.add(500, () => {
             this.showPage(currentPage - 1);
-            this.pageBg0 = SpriteUtils.createSprite(this.game, 0, 0, "bookPage");
-            Utils.applyPreset(this.pageBg0, { "spriteId": "bookPage", "x": 49, "y": 27, "scaleX": 1.08*4/1.5, "scaleY": 1.04*4/1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 })
-            this.addSprite(this.pageBg0);
-            this.game.add.tween(this.pageBg0).to({alpha: 0}, 200, Easing.Linear.None, true, 0)
-            this.game.add.tween(this.pageBg).to({alpha: 0}, 200, Easing.Linear.None, true, 0)
+
+            // this.pageBg0 = SpriteUtils.createSprite(this.game, 0, 0, "bookPage");
+            // Utils.applyPreset(this.pageBg0, { "spriteId": "bookPage", "x": 49, "y": 27, "scaleX": 1.08*4/1.5, "scaleY": 1.04*4/1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 })
+            // this.addSprite(this.pageBg0);
+            // this.game.add.tween(this.pageBg0).to({alpha: 0}, 200, Easing.Linear.None, true, 0)
+            // this.game.add.tween(this.pageBg).to({alpha: 0}, 200, Easing.Linear.None, true, 0)
 
         })
 

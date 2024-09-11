@@ -194,7 +194,7 @@ export default class DiaryMapLayout extends BasePanel {
 
             let refreshButton  = SpriteUtils.createButton(this.game, 200 - 100, this.game.height/2 - 150, "resetIcon", ()=>{
                 this.setLocalPreset(null);
-                window.location.reload(false); 
+                window.location.reload(); 
             });
             refreshButton.anchor.set(0.5)
             this.addChild(refreshButton);

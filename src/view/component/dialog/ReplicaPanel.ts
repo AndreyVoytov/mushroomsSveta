@@ -171,10 +171,13 @@ export default class ReplicaPanel extends BasePanel {
             }
         }
 
-        this.dialogPnl = SpriteUtils.createSprite(this.game, 0, 0, 'dialogPnl');
+        // this.dialogPnl = SpriteUtils.createSprite(this.game, 0, -500, 'dialogPnl');
+        this.dialogPnl = SpriteUtils.createSprite(this.game,  this.x, this.y, 'dialogPnl');
+        this.dialogPnl.alpha = 0;
         this.dialogPnl.anchor = new Phaser.Point(0, 0);
         // this.addChild(this.dialogPnl);
-        parentCont.addChild(this.dialogPnl); this.dialogPnl.x += this.x; this.dialogPnl.y += this.y;
+        // this.dialogPnl.x += this.x; this.dialogPnl.y += this.y + 500;
+        parentCont.addChild(this.dialogPnl);
         this.dialogPnl.inputEnabled = false;
 
         if (UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL) {
@@ -187,34 +190,41 @@ export default class ReplicaPanel extends BasePanel {
         }
 
         this.text = new Label(this.game, 67, 45, r.text, Label.DIALOG_STYLE, false, this.SYMBOLS_IN_ROW);
+        this.text.alpha = 0;
         this.text.anchor = new Phaser.Point(0, 0);
         this.text.inputEnabled = false;
         // this.dialogPnl.addChild(this.text);
         parentCont.addChild(this.text); this.text.x += this.x; this.text.y += this.y;
 
         if (r.rightSide) {
-            this.titlePnl = SpriteUtils.createSprite(this.game, this.game.width - 50, 0, 'titlePnl');
+            this.titlePnl = SpriteUtils.createSprite(this.game, this.game.width - 50, -500, 'titlePnl');
+            this.titlePnl.alpha = 0;
             this.titlePnl.anchor = new Phaser.Point(1, 0.5);
             this.titlePnl.scale = new Phaser.Point(1, 1.1)
             this.titlePnl.inputEnabled = false;
             // this.addChild(this.titlePnl);
-            parentCont.addChild(this.titlePnl); this.titlePnl.x += this.x; this.titlePnl.y += this.y;
+            this.titlePnl.x += this.x; this.titlePnl.y += this.y + 500;
+            parentCont.addChild(this.titlePnl); 
 
             this.title = new Label(this.game, /*this.titlePnl.x*/ - this.titlePnl.width / 2, /*this.titlePnl.y*/0, r.personName, Label.DIALOG_TITLE_STYLE);
+            this.title.alpha = 0;
             this.title.anchor = new Phaser.Point(0.5, 0.5);
             this.title.inputEnabled = false;
             this.titlePnl.addChild(this.title);
             // this.addChild(this.title);
             // parentCont.addChild(this.title); this.title.x += this.x; this.title.y += this.y;
         } else {
-            this.titlePnl = SpriteUtils.createSprite(this.game, 50, 0, 'titlePnl');
+            this.titlePnl = SpriteUtils.createSprite(this.game, 50, -500, 'titlePnl');
+            this.titlePnl.alpha = 0;
             this.titlePnl.anchor = new Phaser.Point(0, 0.5);
             this.titlePnl.scale = new Phaser.Point(1, 1.1)
             this.titlePnl.inputEnabled = false;
             // this.addChild(this.titlePnl);
-            parentCont.addChild(this.titlePnl); this.titlePnl.x += this.x; this.titlePnl.y += this.y;
+            this.titlePnl.x += this.x; this.titlePnl.y += this.y + 500;
+            parentCont.addChild(this.titlePnl); 
 
             this.title = new Label(this.game, /*this.titlePnl.x*/ + this.titlePnl.width / 2, /*this.titlePnl.y*/0, r.personName, Label.DIALOG_TITLE_STYLE);
+            this.title.alpha = 0;
             this.title.anchor = new Phaser.Point(0.5, 0.5);
             this.title.inputEnabled = false;
             this.titlePnl.addChild(this.title);
@@ -287,10 +297,10 @@ export default class ReplicaPanel extends BasePanel {
         if (this.secondPersonImage) {
             this.secondPersonImage.alpha = 0
         }
-        this.text.alpha = 0
-        this.title.alpha = 0;
-        this.titlePnl.alpha = 0;
-        this.dialogPnl.alpha = 0;
+        // this.text.alpha = 0
+        // this.title.alpha = 0;
+        // this.titlePnl.alpha = 0;
+        // this.dialogPnl.alpha = 0;
     }
 
     public firstShow() {
@@ -341,7 +351,7 @@ export default class ReplicaPanel extends BasePanel {
 
         this.title.alpha = 0;
         this.titlePnl.alpha = 0;
-        this.dialogPnl.height = this.dialogPnl.height * 0.3;
+        // this.dialogPnl.height = this.dialogPnl.height * 0.3;
         this.dialogPnl.alpha = 0;
         this.text.alpha = 0;
 
@@ -372,6 +382,7 @@ export default class ReplicaPanel extends BasePanel {
             this.game.add.tween(this.title).to({ alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
             this.game.add.tween(this.titlePnl).to({ alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
             this.game.add.tween(this.dialogPnl).to({ height: this.dialogPnl.height / 0.3, alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
+            // this.game.add.tween(this.dialogPnl).to({ height: this.dialogPnl.height / 0.3 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
 
             this.title.scale.set(0);
             this.titlePnl.scale.set(0);
@@ -460,9 +471,14 @@ export default class ReplicaPanel extends BasePanel {
         //     this.decorImage.alpha = 1
         // }
         // this.text.alpha = 0
-        this.title.alpha = 1;
-        this.titlePnl.alpha = 1;
-        this.dialogPnl.alpha = 1;
+
+
+        // this.title.alpha = 1;
+        // this.titlePnl.alpha = 1;
+        // this.dialogPnl.alpha = 1;
+        this.game.add.tween(this.dialogPnl).to({ alpha: 1 }, 10, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
+        this.game.add.tween(this.titlePnl).to({ alpha: 1 }, 10, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
+        this.game.add.tween(this.title).to({ alpha: 1 }, 10, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
         // this.bringToTop();
         console.log("REPLICA SHOW: " + this.r.text)
 

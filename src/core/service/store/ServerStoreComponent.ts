@@ -100,6 +100,15 @@ export default class ServerStoreComponent extends LocalStoreComponent {
         }).catch((e)=>{
             console.log("ServerStoreComponent: error on syncronizeUserWithServer")
             console.log(e); 
+
+            let localId = LocalStoreComponent.getLocalUserId();
+
+            if(!localId){
+                localId = Utils.UUID();
+                LocalStoreComponent.saveLocalUserId(localId);
+            }
+            LocalStoreComponent.saveLocalUser(UserService.getUser());
+
             UserService.userLoaded = true;
         })
     } 
