@@ -113,6 +113,11 @@ export default abstract class BaseCellsProvider {
             !otherCell.state.opened).length;
     }
 
+    public getAdjucentClosedCount(cells: ForestCell[], cell: ForestCell): number {
+        return cells.filter(otherCell => this.areAdjucent(cell, otherCell) &&
+            !otherCell.state.opened && !otherCell.state.cover.isDark()).length;
+    }
+
     public isInteractive(cell: ForestCell): boolean {
         return this.isInteractiveState(cell.state);
     }

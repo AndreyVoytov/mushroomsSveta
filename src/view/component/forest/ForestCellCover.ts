@@ -25,6 +25,7 @@ export default class ForestCellCover extends Phaser.Group {
     private decoration4: Phaser.Sprite;
     private decoration5: Phaser.Sprite;
     private decoration6: Phaser.Sprite;
+    private frame: Phaser.Sprite;
     private locked = false;
 
     private cankerberry: Phaser.Sprite;
@@ -227,6 +228,24 @@ export default class ForestCellCover extends Phaser.Group {
         }
     }
 
+    public setFrame(alpha:number){
+        if(this.frame) {
+            this.frame.alpha = alpha;
+        } else { 
+            let frameImage = this.environment == Environment.house? "hexFrame2" : "hexFrame";
+            this.frame = SpriteUtils.createSprite(this.game, 0, 0, frameImage);
+            this.frame.anchor = new Phaser.Point(0.5, 0.5);
+            this.frame.alpha = alpha;
+            this.frame.width = this.w;
+            this.frame.height = this.h;
+            this.frame.inputEnabled = false;
+            this.addChild(this.frame);
+            // if(!AdminService.cacheComplexImages()){
+            //     AnimationUtils.fadeIn(this.game, this.frame)
+            // }
+        }
+    }
+
     public getCankerBerriesCount() {
         // if (this.cankerberry) {
         //     return this.lockedTimes() - 1;
@@ -320,6 +339,10 @@ export default class ForestCellCover extends Phaser.Group {
             this.game.add.tween(this.darkCover).to({ alpha: 1 }, 500, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
         }
         
+        if(this.frame){
+            this.frame.alpha = 0;
+        }
+
         this.openableCover.inputEnabled = false;
     }
 
@@ -648,17 +671,17 @@ export default class ForestCellCover extends Phaser.Group {
 
     private getCoverBg(environment: Environment) {
         switch (environment) {
-            case Environment.forest:
-            case Environment.lake:
-                return "hex";
             case Environment.house:
                 return "hexHouse";
-            case Environment.darkForest:
-                return "hexDF";
+                case Environment.darkForest:
+                    return "hexDF";
             case Environment.flowerFields:
-                return "hex";
+            case Environment.forest:
+            case Environment.lake:
+            case Environment.jungles:
             default:
-                throw new NeverError(environment);
+                return "hex";
+                // throw new NeverError(environment);
         }
     }
 
@@ -676,15 +699,17 @@ export default class ForestCellCover extends Phaser.Group {
         }
 
         switch (this.environment) {
+            case Environment.house:
+                return "hexHouseDark";
             case Environment.forest:
             case Environment.darkForest:
             case Environment.flowerFields:
             case Environment.lake:
-                return "hexDark";
-            case Environment.house:
-                return "hexHouseDark";
+            case Environment.jungles:
+            case Environment.bugForest:
             default:
-                throw new NeverError(this.environment);
+                return "hexDark";
+                // throw new NeverError(this.environment);
         }
     }
 

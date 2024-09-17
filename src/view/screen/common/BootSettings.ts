@@ -16,7 +16,7 @@ export default class BootSettings extends BaseScreen {
         this.loadScreenSprite("forestHouseBg")
 
         if (Settings.isGraphicsFromAtlases()) {
-            this.loadAtlas("load", "assets/_atlases/load")
+            this.loadAtlas("load", "assets/atlases/load")
         }
 
         this.loadImage('preloadBar', 'assets/load/loader.png');

@@ -44,8 +44,8 @@ export default abstract class BaseScreen extends DebugScreen {
             console.log("loadScreenSprite: " + name + "; " + (this.cache.getFrameData(name) ? true : false))
         }
         if (Settings.isGraphicsFromAtlases() && !this.cache.getFrameData(name)) {
-            this.loadImage(name, 'assets/_atlases/screens/' + name + this.getExtension());
-            this.load.image(name, 'assets/_atlases/screens/' + name + this.getExtension() + "?" + Settings.ATLASES_VERSION);
+            this.loadImage(name, 'assets/atlases/screens/' + name + this.getExtension());
+            this.load.image(name, 'assets/atlases/screens/' + name + this.getExtension() + "?" + Settings.ATLASES_VERSION);
         } else {
             this.loadImage(name, 'assets/screens/' + name + this.getExtension());
         }
@@ -56,12 +56,12 @@ export default abstract class BaseScreen extends DebugScreen {
     }
 
     protected loadBaseAtlases(): void {
-        this.loadAtlas("base-0", "assets/_atlases/base-0");
-        this.loadAtlas("base-1", "assets/_atlases/base-1");
-        this.loadAtlas("base-2", "assets/_atlases/base-2");
-        this.loadAtlas("base-3", "assets/_atlases/base-3");
+        this.loadAtlas("base-0", "assets/atlases/base-0");
+        this.loadAtlas("base-1", "assets/atlases/base-1");
+        this.loadAtlas("base-2", "assets/atlases/base-2");
+        this.loadAtlas("base-3", "assets/atlases/base-3");
 
-        this.loadAtlas("basehq", "assets/_atlases/basehq");
+        this.loadAtlas("basehq", "assets/atlases/basehq");
     }
 
     protected loadOptionalAtlases(): void {
@@ -69,12 +69,12 @@ export default abstract class BaseScreen extends DebugScreen {
         let user = UserService.getUser()
 
         if (!AdminService.isEditMode() &&  user.getCurrentForest() >= ReplicaDao.getEntity().getById("r41").context.level || AdminService.isEditMode()) {
-            this.loadAtlas("chapter1_0", "assets/_atlases/chapter1_0");
-            this.loadAtlas("additional0", "assets/_atlases/additional0");
+            this.loadAtlas("chapter1_0", "assets/atlases/chapter1_0");
+            this.loadAtlas("additional0", "assets/atlases/additional0");
         }
 
         if(!AdminService.isEditMode() && EventUtils.getActualEvents().filter(e => e.eventType == EventType.lukoshko).length > 0 || AdminService.isEditMode()){
-            this.loadAtlas("event1", "assets/_atlases/event1");
+            this.loadAtlas("event1", "assets/atlases/event1");
         }
         
         let forest = ForestDao.getForestType(user.getCurrentForest());
@@ -107,7 +107,7 @@ export default abstract class BaseScreen extends DebugScreen {
 
         allMinigameScreens.forEach(s => {
             if (minigameScreensToLoad.indexOf(s) != -1 || AdminService.isEditMode()) {
-                this.loadAtlas(s, "assets/_atlases/" + s)
+                this.loadAtlas(s, "assets/atlases/" + s)
             } else if (s) {
                 this.cache.removeImage(s)
                 Utils.delete(SpriteUtils.atlases, s)

@@ -16,6 +16,7 @@ export default class AnalyticUtils {
         // } else {
         //     return CustomizationType.android;
         }
+        return CustomizationType.webDev;
     }
 
     private static needLogging():boolean{
@@ -32,29 +33,31 @@ export default class AnalyticUtils {
     }
 
     public static haveLocalStorage():boolean{
-        let c = AnalyticUtils.getCustomization();
-        switch(c){
-            case CustomizationType.odkl:
-                return false;
-            case CustomizationType.webDev:
-            case CustomizationType.android:
-                return true;
-            default:
-                throw new NeverError(c);
-        }
+        return true;
+        // let c = AnalyticUtils.getCustomization();
+        // switch(c){
+        //     case CustomizationType.odkl:
+        //         return false;
+        //     case CustomizationType.webDev:
+        //     case CustomizationType.android:
+        //         return true;
+        //     default:
+        //         throw new NeverError(c);
+        // }
     }
 
     public static canPlayWithoutInternet():boolean{
-        let c = AnalyticUtils.getCustomization();
-        switch(c){
-            case CustomizationType.odkl:
-                case CustomizationType.webDev:
-                return false;
-            case CustomizationType.android:
-                return true;
-            default:
-                throw new NeverError(c);
-        }
+        return true;
+        // let c = AnalyticUtils.getCustomization();
+        // switch(c){
+        //     case CustomizationType.odkl:
+        //         case CustomizationType.webDev:
+        //         return false;
+        //     case CustomizationType.android:
+        //         return true;
+        //     default:
+        //         throw new NeverError(c);
+        // }
     }
 
     public static init(): void {

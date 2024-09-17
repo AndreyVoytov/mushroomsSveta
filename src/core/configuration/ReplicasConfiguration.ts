@@ -395,7 +395,7 @@ export default class ReplicasConfiguration {
                 "context": {
                     "level": 20
                 },
-                "text": "Здравствуй, ~Эм-ма~.. А вот ~кто я~ - я тебе сказать не могу. Сам не помню.",
+                "text": "Здравствуй, ~Эм-ма~.. К сожалению, я не помню, кто я такой, и как меня зовут.",
                 "rightSide": true
             },
             {
@@ -433,7 +433,7 @@ export default class ReplicasConfiguration {
                     "level": 24
                 },
                 "afterAnimation": null,
-                "text": "Я вспомнил свое имя: ~Баюн~. К вашим услугам! ",
+                "text": "Я вспомнил свое имя; действительно ~Борис~. К вашим услугам! ",
                 "rightSide": true,
                 "personalAnimation": "ideaBubble",
                 "beforeAnimation": "memoryRestoration1",

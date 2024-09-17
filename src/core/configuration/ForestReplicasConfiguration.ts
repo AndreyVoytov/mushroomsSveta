@@ -8,7 +8,7 @@ export default class ForestReplicasConfiguration {
             if (user.getCompletedReplicas().indexOf(r.id) != -1) {
                 continue;
             }
-            if (r.context && r.context.level && r.context.level > user.getCurrentForest()) {
+            if (r.context && r.context.level && r.context.level != user.getCurrentForest()) {
                 continue;
             }
             if (r.context && r.context.requiredMarker && user.getMarkers().indexOf(r.context.requiredMarker) == -1) {

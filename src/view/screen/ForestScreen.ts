@@ -613,6 +613,8 @@ export default class ForestScreen extends BaseForestScreen {
         this.refreshBushesAndShells(this.justOpenedCells[0]);
         this.refreshIvyAndIce(cellState, openingType);
         this.refreshBoats();
+        // this.markValuableCells(this.justOpenedCells[0]);
+        
         this.game.time.events.add(710, () => {
             this.refreshBoats(true);
         });
@@ -623,6 +625,7 @@ export default class ForestScreen extends BaseForestScreen {
         if (this.justOpenedCells[0] && !ForestUtils.getBoosterInfo(this.justOpenedCells[0].type)) {
             this.refreshCovers();
         }
+        this.markValuableCells();
 
         let flowerAim = this.topPanel.getAims().filter(aim => aim.type == AimType.flower)[0] || null;
         this.flowersProvider.refreshFlowers(flowerAim);
@@ -872,6 +875,7 @@ export default class ForestScreen extends BaseForestScreen {
 
     private refreshLabelForCell(cell: ForestCell): void {
         let adjucentCount = this.cellsProvider.getAdjucentInteractiveCount(this.cellsProvider.getCells(), cell);
+        let adjucentClosedCount = this.cellsProvider.getAdjucentClosedCount(this.cellsProvider.getCells(), cell);
         if (adjucentCount == 0) {
             cell.state.label.text = "";
             cell.state.label.visible = false;
@@ -880,6 +884,7 @@ export default class ForestScreen extends BaseForestScreen {
             if(cell.state.opened){
                 cell.state.label.visible = true;
             }
+            cell.state.adjucentValueProbability = adjucentClosedCount > 0? adjucentCount/adjucentClosedCount : 0;
         }
 
         if (ForestUtils.getBoosterContentType(cell.type)) {
@@ -1136,6 +1141,61 @@ export default class ForestScreen extends BaseForestScreen {
                 }
             }
         }
+    }
+
+    private markValuableCells(): void {
+        let closedCells = this.cellsProvider.getCells().filter(cell =>
+            !cell.state.opened && !cell.state.cover.isDark() && cell.type != CellType.COMPASS_FREE
+        );
+
+        closedCells.forEach(closedCell => {
+            let adjucentOpenedCells = this.cellsProvider.getCells().filter(cell =>
+                this.cellsProvider.areAdjucent(cell, closedCell) && cell.state.opened && cell.state.label.text && cell.type != CellType.COMPASS_FREE
+            );
+
+            closedCell.state.valueProbability = 0;
+
+            adjucentOpenedCells.forEach(adjucentOpenedCell => {
+                closedCell.state.valueProbability = Math.max(closedCell.state.valueProbability, adjucentOpenedCell.state.adjucentValueProbability);
+                if(closedCell.state.valueProbability <= 0.5) closedCell.state.valueProbability = 0;
+                let alpha = closedCell.state.valueProbability > 0? closedCell.state.valueProbability * 0.999 + 0: 0;
+                closedCell.state.cover.setFrame(alpha);
+            });
+        })
+    }
+
+    private markValuableCells2(openedCell: ForestCell): void {
+        //TODO достойный арт!
+        let adjucentsCells = this.cellsProvider.getCells().filter(cell =>
+            this.cellsProvider.areAdjucent(cell, openedCell) && cell.state.opened && cell.state.label.text && cell.type != CellType.COMPASS_FREE
+        );
+
+        if(openedCell.state.label.text){
+            adjucentsCells.push(openedCell);
+        }
+
+        adjucentsCells.forEach(adjucentCell => {
+            let affectedCells = this.cellsProvider.getCells().filter(cell =>
+                this.cellsProvider.areAdjucent(cell, adjucentCell) && !cell.state.opened && !cell.state.cover.isDark() && cell.type != CellType.COMPASS_FREE
+            );
+
+            affectedCells.forEach(affectedCell =>{
+                let cellsToCheck = this.cellsProvider.getCells().filter(cell =>
+                    this.cellsProvider.areAdjucent(cell, affectedCell) && cell.state.opened && cell.type != CellType.COMPASS_FREE
+                );
+
+                affectedCell.state.valueProbability = 0;
+
+                cellsToCheck.forEach(cellToCheck => {
+                    let num = cellToCheck.state.label.text? Number(cellToCheck.state.label.text) : 0;
+
+                    affectedCell.state.valueProbability = Math.max(affectedCell.state.valueProbability, num/cellsToCheck.length);
+                    if(affectedCell.state.valueProbability <= 0.5) affectedCell.state.valueProbability = 0;
+                    let alpha = affectedCell.state.valueProbability > 0? affectedCell.state.valueProbability * 0.999 + 0: 0;
+                    affectedCell.state.cover.setFrame(alpha);
+                })
+            })
+        })
     }
 
     private reduceIceOrJelly(cellType: CellType, openedCell: ForestCell): boolean {

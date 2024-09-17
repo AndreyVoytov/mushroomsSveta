@@ -372,11 +372,6 @@ export default class CellsProvider extends BaseCellsProvider {
                         }
 
                         switch (this.forestType.environment) {
-                            case Environment.forest:
-                            case Environment.lake:
-                                // index = this.getEmptyCell(types, [BiomType.FOREST]);
-                                types[index] = Utils.randomBoolean() ? ContentType.rabbit : ContentType.butterfly;
-                                break;
                             case Environment.darkForest:
                                 // index = this.getEmptyCell(types, [BiomType.FOREST]);
                                 types[index] = ContentType.owlFlying;//или bet?
@@ -389,8 +384,13 @@ export default class CellsProvider extends BaseCellsProvider {
                                 // index = this.getEmptyCell(types, [BiomType.FOREST]);
                                 types[index] = Utils.randomBoolean() ? ContentType.bird : ContentType.butterfly2;
                                 break;
+                            case Environment.forest:
+                            case Environment.jungles:
+                            case Environment.lake:
                             default:
-                                throw new NeverError(this.forestType.environment);
+                                // index = this.getEmptyCell(types, [BiomType.FOREST]);
+                                types[index] = Utils.randomBoolean() ? ContentType.rabbit : ContentType.butterfly;
+                                // throw new NeverError(this.forestType.environment);
                         }
                         
                         break;

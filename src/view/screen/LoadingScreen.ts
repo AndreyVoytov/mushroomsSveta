@@ -38,8 +38,8 @@ export default class LoadingScreen extends BaseScreen {
         this.game.add.existing(preloadBarBg);
         preloadBarBg.anchor.set(0.5);
 
-        let preloadBarWidth = 637;
-        let preloadBarHeight = 107;
+        let preloadBarWidth = 655;
+        let preloadBarHeight = 143;
 
         this.preloadBar = SpriteUtils.createSprite(this.game, this.world.centerX - preloadBarWidth / 2, this.world.centerY - preloadBarHeight / 2, 'preloadBar');
         this.game.add.existing(this.preloadBar);
@@ -88,6 +88,7 @@ export default class LoadingScreen extends BaseScreen {
                     OkHelper.init();
                     break;
                 default:
+                    console.log("test " + cust);
                     throw new NeverError(cust);
             }
         })
@@ -261,6 +262,8 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('statusPanel', 'assets/base/ui/statusPanel.png');
         this.loadImage('slotOpened', 'assets/base/ui/slotOpened.png');
         this.loadImage('helperPanel', 'assets/base/ui/helperPanel.png');
+        // this.loadImage('helperPanel2', 'assets/base/ui/helperPanel.png');
+        this.loadImage('helperPanel2', 'assets/base/ui/helperPanel2.png');
         this.loadImage('steps', 'assets/base/ui/steps.png');
         this.loadImage('heart', 'assets/base/ui/heart.png');
         this.loadImage('gems', 'assets/base/ui/gems.png');
@@ -341,6 +344,8 @@ export default class LoadingScreen extends BaseScreen {
 
         this.loadImage('flowersFieldHeader', 'assets/minigame5/flowersFieldHeader.png');
         this.loadImage('mountinesHeader', 'assets/minigame1/mountinesHeader.png');
+        this.loadImage('junglesHeader', 'assets/minigame6/junglesHeader.png');
+        this.loadImage('bugForestHeader', 'assets/minigame7/bugForestHeader.png');
         this.loadImage('forestHeader1', 'assets/base/ui/forestHeader1.png');
         this.loadImage('forestHeader2', 'assets/minigame3/forestHeader2.png');
 
@@ -483,6 +488,8 @@ export default class LoadingScreen extends BaseScreen {
         // this.loadImage('ivy', 'assets/base/hex/ivy.png');
 
         this.loadImage('hexDF', 'assets/base/hex/hexDF.png');
+        this.loadImage('hexFrame', 'assets/base/hex/hexFrame.png');
+        this.loadImage('hexFrame2', 'assets/base/hex/hexFrame2.png');
         this.loadImage('grassDF', 'assets/base/hex/grassDF.png');
         this.loadImage('hex', 'assets/base/hex/hex.png');
         this.loadImage('hex2', 'assets/base/hex/hex2.png');

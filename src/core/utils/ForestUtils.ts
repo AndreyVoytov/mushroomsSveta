@@ -183,9 +183,11 @@ export default class ForestUtils {
                 return "grassDF"; //TODO
             case Environment.flowerFields:
             case Environment.lake:
-                return "grass"; //TODO
+            case Environment.jungles:
             default:
-                throw new NeverError(type.environment);
+                return "grass"; //TODO
+            
+                // throw new NeverError(type.environment);
         }
     }
 
@@ -616,6 +618,10 @@ export default class ForestUtils {
                 return "minigame4";
             case Environment.flowerFields:
                 return "minigame5";
+            case Environment.jungles:
+                return "minigame6";
+            case Environment.bugForest:
+                return "minigame7";
             default:
                 throw new NeverError(env);
         }

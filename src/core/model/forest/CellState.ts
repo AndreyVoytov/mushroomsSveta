@@ -14,6 +14,9 @@ export default class CellState {
     
     metaValue:string;
 
+    valueProbability: number;
+    adjucentValueProbability: number;
+
     underSprite: Phaser.Sprite;
     berries: Phaser.Sprite[] = [];
     honeyLabel: Label;
@@ -23,6 +26,7 @@ export default class CellState {
         this.content = content;
         this.opened = false;
         this.metaValue = metaValue;
+        this.valueProbability = 0;
     }
 
     public static getImage(content: string): string {

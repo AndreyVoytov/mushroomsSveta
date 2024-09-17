@@ -9,7 +9,7 @@
 }
 body {
     font-family: 'Segoe UI', sans-serif;
-    background: url(assets/other/texture.jpg);
+    background: #000 url(assets/other/pc-bg.jpg?) no-repeat fixed 50% 0;
     background-color:#010b17; margin:0px;
 }
 span {

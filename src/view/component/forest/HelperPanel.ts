@@ -18,10 +18,10 @@ export default class HelperPanel extends BasePanel {
         this.fromLeft = fromLeft;
         this.alpha = 0;
 
-        this.dialogPnl = SpriteUtils.createSprite(this.game, 0, -500, 'helperPanel');
-        this.dialogPnl.anchor = new Phaser.Point(0.5, okButton ? 0.4 : 0.5);
-        this.dialogPnl.y += 500;
-        this.dialogPnl.scale = new Phaser.Point(1.1, okButton ? (images && images.length > 0 ? 1.5 : 1.3) : 1);
+        this.dialogPnl = SpriteUtils.createSprite(this.game, 0, -500, 'helperPanel2');
+        this.dialogPnl.anchor = new Phaser.Point(okButton ? 0.5 : 0.5, okButton ? 0.4 : 0.5);
+        this.dialogPnl.y += 500 - (okButton? 0 : 15);
+        this.dialogPnl.scale = new Phaser.Point(okButton ? 1.3 : 1.35, okButton ? (images && images.length > 0 ? 1.53 : 1.33) : 0.95);
         this.addChild(this.dialogPnl);
 
         console.log("HELPER PANEL!")
@@ -32,7 +32,7 @@ export default class HelperPanel extends BasePanel {
         this.personImage.scale.set(0.7);
         this.addChild(this.personImage);
 
-        this.text = new Label(this.game, -110, 0, text, { font: "bold 40px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: this.dialogPnl.width - 80 - 200 });
+        this.text = new Label(this.game, -110, okButton? 0: -7, text, { font: "bold 40px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: this.dialogPnl.width - 80 - 200-60 });
         this.text.anchor = new Phaser.Point(0.5, 0.5);
         this.text.lineSpacing = -5;
         this.addChild(this.text);

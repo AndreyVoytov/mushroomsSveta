@@ -110,15 +110,16 @@ export default class LocationUtils {
 
     private static getHeaderHeight(forestType: ForestType){
         switch (forestType.environment) {
+            case Environment.house:
+                return 400;
             case Environment.forest:  
             case Environment.darkForest:
             case Environment.flowerFields:
             case Environment.lake:
-                return 570;
-            case Environment.house:
-                return 400;
+            case Environment.jungles:
             default:
-                throw new NeverError(forestType.environment);
+                return 570;
+                // throw new NeverError(forestType.environment);
         }
 
     } 
@@ -133,106 +134,23 @@ export default class LocationUtils {
 
         let res = [];
         switch (environment) {
-            case Environment.forest:
-                
-                let background;
-                background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, "bg");
-                background.inputEnabled = true;
-                res.push(background);
-                
-                res.push(SpriteUtils.createSprite(game, 500, 500, 'grassLight', 'grassLight2'));
-                
-                let visibleHeaderHeight = LocationUtils.getVisibleHeaderHeight(game, forestType);
-                let headerImage = forestType.header || "forestHeader1";
-
-                let forestHeader = SpriteUtils.createSprite(game, 0, -this.getHeaderHeight(forestType) +visibleHeaderHeight, headerImage);
-                res.push(forestHeader);
-
-                this.addMaple(game, cellProvider,  forestType, res);
-
-                if(Game.CAN_USE_WEBP && Settings.USE_WEBP_ATLASES){
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_1'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_2'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_3'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_4'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_5'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_6'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_7'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_8'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_9'));
-                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_10'));
-                }
-                
-                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_1'));
-                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_2'));
-                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_3'));
-                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_5'));
-                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_6'));
-                let bushes2_1;
-                let bushes2_2;
-                res.push(bushes2_1 = SpriteUtils.createSprite(game, 500, 500, 'bushes2', 'bushes2_1'));
-                res.push(bushes2_2 = SpriteUtils.createSprite(game, 500, 500, 'bushes2', 'bushes2_2'));
-                res.push(SpriteUtils.createSprite(game, 500, 500, 'stoneBig', 'stoneBig'));
-
-                Utils.applyPresetToArray(res, [
-                {"spriteId":"grassLight2","x":968.655172413793,"y":443.32024793388393+9 +forestHeader.y,"scaleX":-1.1200000000000012,"scaleY":1.12,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_1","x":720.1379310344828,"y":958.7097107438012,"scaleX":3.160000000000002,"scaleY":2.9000000000000017,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_2","x":651.1724137931035,"y":858.2221074380165,"scaleX":2.4400000000000013,"scaleY":3.380000000000002,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_3","x":447.1034482758621,"y":1188.3243801652895,"scaleX":-3.380000000000003,"scaleY":3.8000000000000025,"anchorX":0,"anchorY":0,"rotation":0.26000000000000006},
-                {"spriteId":"flowersBg_4","x":461.93103448275883,"y":1274.572314049587,"scaleX":3.220000000000002,"scaleY":4.679999999999988,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_5","x":193.79310344827593,"y":572.8636363636364,"scaleX":2.6600000000000015,"scaleY":3.340000000000002,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_6","x":536.4137931034481,"y":498.352272727273,"scaleX":3.140000000000002,"scaleY":2.7200000000000015,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_7","x":1.7931034482757866,"y":796.422520661157,"scaleX":2.4200000000000013,"scaleY":3.020000000000002,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_8","x":634.5962005942196,"y":1650.2857998788902,"scaleX":3.220000000000002,"scaleY":2.8400000000000016,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_9","x":233.62068965517244,"y":447.74380165289244,"scaleX":2.280000000000001,"scaleY":1.5800000000000005,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"flowersBg_10","x":88.32015845862969,"y":1418.5383819904644,"scaleX":3.6000000000000023,"scaleY":2.8000000000000016,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"bushes_1","x":-75.44827586206895,"y":372.5444214876032+9 +forestHeader.y,"scaleX":1/1.5,"scaleY":1/1.5,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"bushes_2","x":-79.68965517241378,"y":game.height - 1603 +1552.7086776859508,"scaleX":1/1.5,"scaleY":1/1.5,"anchorX":0,"anchorY":0,"rotation":-1.6300000000000012},
-                // {"spriteId":"bushes_2","x":-79.68965517241378,"y":game.height - 1603 +1165.7086776859508,"scaleX":1,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"bushes_3","x":1029.655172413793,"y":game.height - 1603 +1654.2262396694216,"scaleX":1.1193085391409658/1.5,"scaleY":-1.215549138817601/1.5,"anchorX":0,"anchorY":0,"rotation":-1.2957241379310345},
-
-                {"spriteId":"bushes_5","x":51.10344827586215,"y":game.height - 1603 +1528.0030991735537,"scaleX":0.9526620689655171/1.5,"scaleY":0.9753697382630554/1.5,"anchorX":0,"anchorY":0,"rotation":-1.0645517241379308},
-                {"spriteId":"bushes_6","x":1036.8275862068967,"y":723.3667355371903+9 +forestHeader.y,"scaleX":-0.9335928190577711/1.5,"scaleY":-0.9728640006285858/1.5,"anchorX":0,"anchorY":0,"rotation":0},
-                // {"spriteId":"bushes_5","x":53.10344827586215,"y":game.height - 1603 +1482.0030991735537,"scaleX":0.9526620689655171,"scaleY":0.9753697382630554,"anchorX":0,"anchorY":0,"rotation":-1.264551724137931},
-                // {"spriteId":"bushes_6","x":1004.8275862068966,"y":753.3667355371903,"scaleX":-0.9335928190577711,"scaleY":-0.9728640006285858,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"bushes2_1","x":1004.6551724137929,"y":1029.7975206611575,"scaleX":-0.9200000000000012,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0.4200000000000002},
-                {"spriteId":"bushes2_2","x":-29.655172413793025,"y":965.3336776859505,"scaleX":1,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0},
-                {"spriteId":"stoneBig","x":-3.1724137931034875,"y":game.height - 1603 +1394.0516528925618,"scaleX":1,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0}
-                ]);
-
-                if(game.height < 1600){
-                    bushes2_1.visible = false;
-                    bushes2_2.visible = false;
-                } else {
-                    bushes2_1.y = 835 + Utils.random(game.height - (1600 - 1267) - 835);
-                    bushes2_2.y = 914 + Utils.random(game.height - (1600 - 1105) - 914);
-                }
-
-                if(forestType.header){
-                    res.forEach(s => {
-                        if(s.name == "bushes_1" || s.name == "bushes_6"){
-                            s.x = game.width - s.x;
-                            s.scale.set(-s.scale.x, s.scale.y);
-                        }
-                    })
-                }
-
-                break;
             case Environment.lake:
-                background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, "bgLake");
+                let background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, "bgLake");
                 background.inputEnabled = true;
                 res.push(background);
                 
                 res.push(SpriteUtils.createSprite(game, 500, 500, 'grassLight', 'grassLight2'));
                 res.push(SpriteUtils.createSprite(game, 500, 500, 'lakeHeaderDecor', "lakeDecor"));
                 
-                visibleHeaderHeight = LocationUtils.getVisibleHeaderHeight(game, forestType);
-                headerImage = forestType.header || "lakeHeader";
+                let visibleHeaderHeight = LocationUtils.getVisibleHeaderHeight(game, forestType);
+                let headerImage = forestType.header || "lakeHeader";
                 
-                forestHeader = SpriteUtils.createSprite(game, 0, -this.getHeaderHeight(forestType) +visibleHeaderHeight, headerImage);
+                let forestHeader = SpriteUtils.createSprite(game, 0, -this.getHeaderHeight(forestType) +visibleHeaderHeight, headerImage);
                 res.push(forestHeader);
                 
                 this.addMaple(game, cellProvider, forestType, res);
+                let bushes2_1;
+                let bushes2_2;
 
                 res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_1'));
                 res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_2'));
@@ -506,11 +424,96 @@ export default class LocationUtils {
                     {"spriteId":"carpet","x":116,"y":119,"scaleX":1,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0},
                     {"spriteId":"table","x":0,"y":game.height - 1603 + 1598,"scaleX":1.08,"scaleY":1.1400000000000001,"anchorX":0,"anchorY":1,"rotation":0},
                 ]);
+                
+                
+                break;
 
+            case Environment.forest:
+            case Environment.jungles:
+            default:
+                
+                background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, "bg");
+                background.inputEnabled = true;
+                res.push(background);
+                
+                res.push(SpriteUtils.createSprite(game, 500, 500, 'grassLight', 'grassLight2'));
+                
+                visibleHeaderHeight = LocationUtils.getVisibleHeaderHeight(game, forestType);
+                headerImage = forestType.header || "forestHeader1";
+
+                forestHeader = SpriteUtils.createSprite(game, 0, -this.getHeaderHeight(forestType) +visibleHeaderHeight, headerImage);
+                res.push(forestHeader);
+
+                this.addMaple(game, cellProvider,  forestType, res);
+
+                if(Game.CAN_USE_WEBP && Settings.USE_WEBP_ATLASES){
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_1'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_2'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_3'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_4'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_5'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_6'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_7'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_8'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_9'));
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'flowersBg', 'flowersBg_10'));
+                }
+                
+                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_1'));
+                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_2'));
+                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_3'));
+                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_5'));
+                res.push(SpriteUtils.createSprite(game, 500, 500, 'bushes', 'bushes_6'));
+               
+                res.push(bushes2_1 = SpriteUtils.createSprite(game, 500, 500, 'bushes2', 'bushes2_1'));
+                res.push(bushes2_2 = SpriteUtils.createSprite(game, 500, 500, 'bushes2', 'bushes2_2'));
+                res.push(SpriteUtils.createSprite(game, 500, 500, 'stoneBig', 'stoneBig'));
+
+                Utils.applyPresetToArray(res, [
+                {"spriteId":"grassLight2","x":968.655172413793,"y":443.32024793388393+9 +forestHeader.y,"scaleX":-1.1200000000000012,"scaleY":1.12,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_1","x":720.1379310344828,"y":958.7097107438012,"scaleX":3.160000000000002,"scaleY":2.9000000000000017,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_2","x":651.1724137931035,"y":858.2221074380165,"scaleX":2.4400000000000013,"scaleY":3.380000000000002,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_3","x":447.1034482758621,"y":1188.3243801652895,"scaleX":-3.380000000000003,"scaleY":3.8000000000000025,"anchorX":0,"anchorY":0,"rotation":0.26000000000000006},
+                {"spriteId":"flowersBg_4","x":461.93103448275883,"y":1274.572314049587,"scaleX":3.220000000000002,"scaleY":4.679999999999988,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_5","x":193.79310344827593,"y":572.8636363636364,"scaleX":2.6600000000000015,"scaleY":3.340000000000002,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_6","x":536.4137931034481,"y":498.352272727273,"scaleX":3.140000000000002,"scaleY":2.7200000000000015,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_7","x":1.7931034482757866,"y":796.422520661157,"scaleX":2.4200000000000013,"scaleY":3.020000000000002,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_8","x":634.5962005942196,"y":1650.2857998788902,"scaleX":3.220000000000002,"scaleY":2.8400000000000016,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_9","x":233.62068965517244,"y":447.74380165289244,"scaleX":2.280000000000001,"scaleY":1.5800000000000005,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"flowersBg_10","x":88.32015845862969,"y":1418.5383819904644,"scaleX":3.6000000000000023,"scaleY":2.8000000000000016,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"bushes_1","x":-75.44827586206895,"y":372.5444214876032+9 +forestHeader.y,"scaleX":1/1.5,"scaleY":1/1.5,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"bushes_2","x":-79.68965517241378,"y":game.height - 1603 +1552.7086776859508,"scaleX":1/1.5,"scaleY":1/1.5,"anchorX":0,"anchorY":0,"rotation":-1.6300000000000012},
+                // {"spriteId":"bushes_2","x":-79.68965517241378,"y":game.height - 1603 +1165.7086776859508,"scaleX":1,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"bushes_3","x":1029.655172413793,"y":game.height - 1603 +1654.2262396694216,"scaleX":1.1193085391409658/1.5,"scaleY":-1.215549138817601/1.5,"anchorX":0,"anchorY":0,"rotation":-1.2957241379310345},
+
+                {"spriteId":"bushes_5","x":51.10344827586215,"y":game.height - 1603 +1528.0030991735537,"scaleX":0.9526620689655171/1.5,"scaleY":0.9753697382630554/1.5,"anchorX":0,"anchorY":0,"rotation":-1.0645517241379308},
+                {"spriteId":"bushes_6","x":1036.8275862068967,"y":723.3667355371903+9 +forestHeader.y,"scaleX":-0.9335928190577711/1.5,"scaleY":-0.9728640006285858/1.5,"anchorX":0,"anchorY":0,"rotation":0},
+                // {"spriteId":"bushes_5","x":53.10344827586215,"y":game.height - 1603 +1482.0030991735537,"scaleX":0.9526620689655171,"scaleY":0.9753697382630554,"anchorX":0,"anchorY":0,"rotation":-1.264551724137931},
+                // {"spriteId":"bushes_6","x":1004.8275862068966,"y":753.3667355371903,"scaleX":-0.9335928190577711,"scaleY":-0.9728640006285858,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"bushes2_1","x":1004.6551724137929,"y":1029.7975206611575,"scaleX":-0.9200000000000012,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0.4200000000000002},
+                {"spriteId":"bushes2_2","x":-29.655172413793025,"y":965.3336776859505,"scaleX":1,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0},
+                {"spriteId":"stoneBig","x":-3.1724137931034875,"y":game.height - 1603 +1394.0516528925618,"scaleX":1,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0}
+                ]);
+
+                if(game.height < 1600){
+                    bushes2_1.visible = false;
+                    bushes2_2.visible = false;
+                } else {
+                    bushes2_1.y = 835 + Utils.random(game.height - (1600 - 1267) - 835);
+                    bushes2_2.y = 914 + Utils.random(game.height - (1600 - 1105) - 914);
+                }
+
+                if(forestType.header){
+                    res.forEach(s => {
+                        if(s.name == "bushes_1" || s.name == "bushes_6"){
+                            s.x = game.width - s.x;
+                            s.scale.set(-s.scale.x, s.scale.y);
+                        }
+                    })
+                }
 
                 break;
-            default:
-                throw new NeverError(environment);
+                // throw new NeverError(environment);
         }
         return res;
     }
@@ -575,6 +578,8 @@ export default class LocationUtils {
         //TODO make more banners
 
         switch (env) {
+            case Environment.house:
+                return 'banner2';
             case Environment.darkForest:
                 // return 'banner3';
             case Environment.lake:
@@ -582,18 +587,15 @@ export default class LocationUtils {
             case Environment.flowerFields:
                 // return 'banner5';
             case Environment.forest:
-                return 'banner1';
-            case Environment.house:
-                return 'banner2';
+            case Environment.jungles:
             default:
-                throw new NeverError(env);
+                return 'banner1';
+                // throw new NeverError(env);
         }
     }
 
     public static getBg(env: Environment): string {
         switch (env) {
-            case Environment.forest:
-                return 'bg';
             case Environment.lake:
                 return 'bgLake';
             case Environment.flowerFields:
@@ -602,8 +604,11 @@ export default class LocationUtils {
                 return 'bgHouse';
             case Environment.darkForest:
                 return 'bgDark';
+            case Environment.forest:
+            case Environment.jungles:
             default:
-                throw new NeverError(env);
+                return 'bg';
+                // throw new NeverError(env);
         }
     }
 
