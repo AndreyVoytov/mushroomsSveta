@@ -439,9 +439,10 @@ export default class ForestScreen extends BaseForestScreen {
         cellState.cover.visible = false;
         cellState.cover.openableCover.kill();
         cellState.cover.darkCover.kill();
+        let cellByState =  this.cellsProvider.getCells().filter(cell => cell.state == cellState).shift();
 
         let openedCells = this.cellsProvider.getCells().filter(cell => cell.state.opened);
-        console.log("OPENED CELLS COUNT: " + openedCells.length)
+        // console.log("OPENED CELLS COUNT: " + openedCells.length)
 
         this.spawnCellsCountdown++;
 
@@ -644,6 +645,21 @@ export default class ForestScreen extends BaseForestScreen {
             UserService.getUser().increaseBoostersCount(BoosterType.glove, -1);
             ServerStoreComponent.syncronizeUserWithServer();
             this.bottomPanel.refresh();
+        }
+
+        if(!this.cellsProvider.isInteractiveState(cellState) && cellState.label && !cellState.label.text && openingType == OpeningType.usual){
+            let count = 0;
+            console.log("xsaxax count 0 for (" + cellByState.X + " " + cellByState.Y + ")")
+            this.cellsProvider.getCells().forEach(cell =>{
+                if (this.cellsProvider.areAdjucent(cell, cellByState) && !cell.state.opened && !cell.state.cover.isLocked() && !cell.state.cover.isDark()){
+                    // this.game.time.events.add(100, ()=>{
+                        cell.state.cover.openCell(OpeningType.byCompass);
+                        count ++;
+                        // this.onCellOpen(cell.state, OpeningType.byCompass);
+                    // })
+                }
+            })
+            console.log("xsaxax2 count " + count + " for (" + cellByState.X + " " + cellByState.Y + ")")
         }
 
         this.delayWinOrLooseCheck(500);

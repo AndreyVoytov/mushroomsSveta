@@ -350,6 +350,8 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('forestHeader2', 'assets/minigame3/forestHeader2.png');
 
         this.loadImage('envLake', 'assets/other/editor/envLake.png');
+        this.loadImage('envJungle', 'assets/other/editor/envJungle.png');
+        this.loadImage('envBugForest', 'assets/other/editor/envBugForest.png');
         this.loadImage('envMountines', 'assets/other/editor/envMountines.png');
         this.loadImage('envForest', 'assets/other/editor/envForest.png');
         this.loadImage('envDarkForest', 'assets/other/editor/envDarkFrst.png');

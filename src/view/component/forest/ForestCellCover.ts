@@ -307,11 +307,11 @@ export default class ForestCellCover extends Phaser.Group {
         return 0;
     }
 
-    public openCell(): void {
+    public openCell(openingType?:OpeningType): void {
         if (this.callback) {
             this.cacheAsBitmap = false;
             let callbackBinded = this.callback.bind(this.callbackContext);
-            callbackBinded(this.cellState, OpeningType.usual);
+            callbackBinded(this.cellState, openingType || OpeningType.usual);
         }
     }
 

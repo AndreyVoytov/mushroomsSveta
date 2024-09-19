@@ -90,7 +90,11 @@ export default class TreesTransitionPanel extends BasePanel {
         this.fixedToCamera = true;
 
         if(this.game.height > 1600){
-            this.scale.set(this.game.height / 1600);
+            let scale = this.game.height / 1600;
+            this.scale.set(scale);
+            this.cameraOffset.x -=  960 * (scale - 1) / 2;
+            this.x -=  960 * (scale - 1) / 2;
+            //тут непонятно, почему требуется и cameraOffset и х 
         }
 
         let loading = new Label(this.game, this.game.width/2, this.game.height*4/5, "Загрузка...", { "font": "bold 60px Arial", "fill": "#ffffff" });

@@ -32,7 +32,8 @@ export default class HelperPanel extends BasePanel {
         this.personImage.scale.set(0.7);
         this.addChild(this.personImage);
 
-        this.text = new Label(this.game, -110, okButton? 0: -7, text, { font: "bold 40px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: this.dialogPnl.width - 80 - 200-60 });
+        let textWidth = 656*1.1 - 80 - 200;// this.dialogPnl.width - 80 - 200-60;
+        this.text = new Label(this.game, -110, okButton? 0: -7, text, { font: "bold 40px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: textWidth });
         this.text.anchor = new Phaser.Point(0.5, 0.5);
         this.text.lineSpacing = -5;
         this.addChild(this.text);
