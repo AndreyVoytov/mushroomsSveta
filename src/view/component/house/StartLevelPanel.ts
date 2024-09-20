@@ -45,7 +45,7 @@ export default class StartLevelPanel extends ClosablePanel {
         let showBoosters = UserService.getUser().getCurrentForest() > PreboosterPanel.LEVEL_WITH_PRIZE_COMPASSES;
 
         let currentForest = ForestDao.getForestType(UserService.getUser().getCurrentForest());
-        let isHard = currentForest ? currentForest.isHardLevel : false;
+        let isHard = currentForest ? currentForest.hardLevel : false;
 
         let panel = this.attachSprite(showBoosters? 'panel' : 'panel2', 'panel');
         panel.inputEnabled = true;

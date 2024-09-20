@@ -13,7 +13,14 @@ enum ItemContent {
     t1, t24, t25, t27,
     goldRoot, wheat,
     randomItem,
-    specificItem
+    specificItem,
+    emerald,
+    candy,
+    witchMushroom2,
+    amanita2,
+    yellowLilly,
+    apple
+
 }
 
 enum AnimalsContent {
@@ -58,7 +65,9 @@ enum InteractiveContent {
     moonflowerClosed,
     book1, 
     lockpick,
-    empty
+    empty,
+    bush2,
+    chamomileSmall
 }
 
 // export const Contents = { ItemContent, AnimalsContent, BoostersContent, DecorationsContent, InteractiveContent};

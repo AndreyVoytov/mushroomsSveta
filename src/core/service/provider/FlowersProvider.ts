@@ -153,7 +153,7 @@ export default class FlowersProvider {
         return true;
     }
 
-    private containFlower(cell: ForestCell, flowerX: number, flowerY: number, r: number, ): boolean {
+    public containFlower(cell: ForestCell, flowerX: number, flowerY: number, r: number, ): boolean {
         // console.log("x: " + flowerX + "; y: " + flowerY + "; cell.x: " +cell.X + "; cell.y: " + cell.Y)
         // console.log(Utils.dist(cell.X, cell.Y, flowerX, flowerY) + " vs r="+r)
 

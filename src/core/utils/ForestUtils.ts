@@ -5,7 +5,6 @@ import ForestAim from './../model/forest/ForestAim';
 import ForestCell from '../model/forest/ForestCell';
 import ForestType from './../model/forest/ForestType';
 import AimType from '../model/enum/AimType';
-import BiomType from '../model/enum/BiomType';
 import CellType from '../model/enum/CellType';
 import NeverError from './NeverError';
 import Utils from './Utils';
@@ -13,14 +12,33 @@ import OpeningType from '../model/enum/OpeningType';
 import BoosterInfo from '../model/forest/BoosterInfo';
 import { ContentType, ItemContents, AnimalsContents, BoostersContents, DecorationsContents, InteractiveContents } from '../model/enum/ContentType';
 import BoosterType from '../model/enum/BoosterType';
-import UserService from '../service/UserService';
 import AnimationUtils from './AnimationUtils';
+import UserService from './../service/UserService';
+import ForestDao from './../dao/ForestDao';
+import SpecialItemsConfiguration from './../configuration/SpecialItemsConfiguration';
+import User from './../model/user/User';
+import BiomType from './../model/enum/BiomType';
+import ForestItemType from '../model/forest/ForestItemType';
+import ItemUtils from './ItemUtils';
+import AnalyticUtils from './AnalyticUtils';
 import StoryLocation from '../model/enum/StoryLocation';
 export default class ForestUtils {
 
-    public static ADDITIONAL_STEPS_GEM_PRICE = 100;
+    public static FOREST_STEPS_ADDITION = 5;
+
+    public static SECRET_FOREST_OPEN_PRICE = 5;
+
+    public static ADDITIONAL_STEPS_GEM_PRICE = 50;
     public static ADDITIONAL_STEPS_COUNT = 5;
     public static MAX_AIMS_COUNT = 3;
+
+    public static AVG_BERRIES_ON_BUSH = 4;
+
+    public static SECRET_FOREST_COOLDOWN_MINUTES = 5 ;
+    public static FOREST_COOLDOWN_SMALL = 15 * 1000;
+    // public static FOREST_COOLDOWN_SMALL = 0;
+    public static FOREST_COOLDOWN_BIG = 60 * 60 * 1000;
+    public static FOREST_PASS_TIMES = 3;
 
     public static getAims(forestType: ForestType): ForestAim[] {
         let res: ForestAim[] = [];
@@ -59,13 +77,19 @@ export default class ForestUtils {
                     }
                     break;
                 case AimType.blueberry:
-                    if (forestType.blueberries && forestType.blueberries != 0) {
-                        res.push(new ForestAim(AimType.blueberry, "blueberry", forestType.blueberries));
+                    if (forestType.interactiveItems) {
+                        let item = forestType.interactiveItems.find(i => i.name == ContentType[ContentType.bush2]);
+                        if(item){
+                            res.push(new ForestAim(AimType.blueberry, "blueberry", item.count * ForestUtils.AVG_BERRIES_ON_BUSH ));
+                        }
                     }
                     break;
-                case AimType.pearl:
-                    if (forestType.pearls && forestType.pearls != 0) {
-                        res.push(new ForestAim(AimType.pearl, "pearl", forestType.pearls));
+                case AimType.redberry:
+                    if (forestType.interactiveItems) {
+                        let item = forestType.interactiveItems.find(i => i.name == ContentType[ContentType.bush]);
+                        if(item){
+                            res.push(new ForestAim(AimType.redberry, "redberry", item.count * ForestUtils.AVG_BERRIES_ON_BUSH));
+                        }
                     }
                     break;
                 case AimType.jelly:
@@ -89,13 +113,27 @@ export default class ForestUtils {
                     }
                     break;
                 case AimType.book:
-                    if (forestType.books && forestType.books != 0) {
-                        res.push(new ForestAim(AimType.book, "book3", forestType.books));
+                    if (forestType.interactiveItems) {
+                        let item = forestType.interactiveItems.find(i => i.name == ContentType[ContentType.book1]);
+                        if(item){
+                            res.push(new ForestAim(AimType.book, "book3", item.count));
+                        }
                     }
                     break;
                 case AimType.moonflower:
-                    if (forestType.moonflowers && forestType.moonflowers != 0) {
-                        res.push(new ForestAim(AimType.moonflower, "moonflower", forestType.moonflowers));
+                    if (forestType.interactiveItems) {
+                        let item = forestType.interactiveItems.find(i => i.name == ContentType[ContentType.moonflowerClosed]);
+                        if(item){
+                            res.push(new ForestAim(AimType.moonflower, "moonflower", item.count));
+                        }
+                    }
+                    break;
+                case AimType.pearl:
+                    if (forestType.interactiveItems) {
+                        let item = forestType.interactiveItems.find(i => i.name == ContentType[ContentType.shell]);
+                        if(item){
+                            res.push(new ForestAim(AimType.pearl, "pearl", item.count));
+                        }
                     }
                     break;
                 case AimType.boat:
@@ -108,6 +146,8 @@ export default class ForestUtils {
                     throw new NeverError(type);
             }
         })
+
+        // res.forEach(a => a.count = 0);
         return res;
     }
 
@@ -184,14 +224,15 @@ export default class ForestUtils {
             case Environment.flowerFields:
             case Environment.lake:
             case Environment.jungles:
-            default:
+            case Environment.bugForest:
                 return "grass"; //TODO
-            
-                // throw new NeverError(type.environment);
+            default:
+                throw new NeverError(type.environment);
         }
     }
 
-    public static getPrizeGemsCount(stepsLeft: number) {
+    public static getPrizeGemsCount(stepsLeft:number):number {
+        // return 10;
         return Math.floor(14 + 7 * (Math.min(1, stepsLeft / 10)));
         // return Math.ceil(Math.floor(14 + 7 * (Math.min(1, stepsLeft / 10)))/1.5);
     }
@@ -244,6 +285,20 @@ export default class ForestUtils {
             default:
                 throw new NeverError(type);
         }
+    }
+
+    private static straightIvyContents = [CellType.IVY_SMALL_M, CellType.IVY_M, CellType.IVY_STRONG_M, CellType.PLANK1_M, CellType.PLANK2_M, CellType.PLANK3_M,
+        CellType.IVY_SMALL, CellType.IVY, CellType.IVY_STRONG, CellType.PLANK1, CellType.PLANK2, CellType.PLANK3];
+    
+    public static containIvyChar(mask:string):boolean{
+        for(let type of this.straightIvyContents){
+            if(mask.indexOf(this.getChar(type)) != -1){
+                console.log("containIvyChar: result = true");
+                return true;
+            }
+        }
+
+        return false;
     }
 
 
@@ -478,11 +533,13 @@ export default class ForestUtils {
         }, (c: InteractiveContents)=>{
             switch(c){
                 case InteractiveContents.empty:
+                case InteractiveContents.chamomileSmall:
                     res = false;
                     break;
                 case InteractiveContents.acorn:
                 case InteractiveContents.book1:
                 case InteractiveContents.bush:
+                case InteractiveContents.bush2:
                 case InteractiveContents.hive:
                 case InteractiveContents.lockpick:
                 case InteractiveContents.moonflowerClosed:
@@ -627,7 +684,7 @@ export default class ForestUtils {
         }
     }
 
-    public static getScreenImage(location: StoryLocation):string{
+	public static getScreenImage(location: StoryLocation):string{
         switch (location) {
             case StoryLocation.house_boiler:
             case StoryLocation.house_chestClosed:
@@ -654,10 +711,432 @@ export default class ForestUtils {
 
     }
 
+
     public static getAllMinigameScreenImages():string[]{
         return Utils.enumValues(Environment).map(e => this.getMinigameScreenImage(e));
     }
+
     public static getAllScreenImages():string[]{
         return Utils.enumValues(StoryLocation).map(l => this.getScreenImage(l));
     }
+
+    private static getItemCount(forestType:ForestType, itemName:string):number{
+        let item = forestType.items.filter(i => i.name == itemName).shift();
+        return item? item.count : 0;
+    }
+
+
+    public static getNeededTowerLevel(forestIndex:number):number{
+        switch(forestIndex){
+            case 0:
+            case 1:
+            case 2:
+                return 1;
+            case 3: 
+                return 2;
+            case 4: 
+                return 3;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                return Math.floor(3 + (forestIndex - 4) * 1.5);
+            default:
+                return Math.floor(3 + (forestIndex - 4) * 1.5) + 2;//19 forest on 27 level
+
+            // case 5: 
+            //     re
+        }
+        // return forestIndex  * 3 - 7;
+    }
+
+    // public static GIVE_KEY_ON_AVAILABLE_FORESTS = 1;
+    public static AVAILABLE_FORESTS_COUNT = 4;
+    public static forestTypeToPLay : ForestType;
+    public static withMaxSteps : boolean;
+
+    // public static getLevelByBioms(bioms:BiomType[], hardLevel?:boolean):ForestType{
+    //     let user = UserService.getUser();
+    //     let res = null;
+
+    //     let availableBioms:BiomType[] = this.getAllAvailableBioms();
+
+    //     if(user.getUsedNotOrderedLevels().length < 30){ //если уже слишком много уровней взято не по-порядку, берём по-порядку
+    //         for(let i= user.getUsedOrderedForests(); i< ForestDao.getAllForests().length; i++){
+    //             let forestType = ForestDao.getAllForests()[i];
+    //             if(user.getUsedNotOrderedLevels().indexOf(forestType.id) == -1 &&                                               //ещё не открыт
+    //                     (bioms.length == 0 ||  bioms.filter(b => forestType.slots.find(slot => slot.biom == b)? true : false).length > 0) &&       //присутствует место для самого дорогого предмета                                     
+    //                     forestType.slots.filter(slot => availableBioms.indexOf(slot.biom) == -1).length == 0 &&               //отсутствуют недоступные биомы
+    //                     (!hardLevel || ForestUtils.isHardLevel(forestType)) 
+    //             ) {
+    //                 res = forestType;
+    //                 break;
+    //             }
+    //         }
+    //     } 
+
+    //     if(!res){
+    //         res = ForestDao.getAllForests()[user.getUsedOrderedForests()];
+    //     }
+
+    //     return res;
+    // }
+
+    // public static getAllAvailableBioms():BiomType[]{
+    //     let user = UserService.getUser();
+    //     let allAvailableBioms:BiomType[] = [];
+    //     user.getUnlockedItems().forEach(i => {
+    //         ForestUtils.getBioms(i).forEach(b => {
+    //             if(allAvailableBioms.indexOf(b) == -1){
+    //                 allAvailableBioms.push(b);
+    //             }
+    //         })
+    //     })
+    //     return allAvailableBioms;
+    // }
+
+    public static KEY_IMAGE = "keyHex";
+
+    // public static updateLastVisitSteps(forestInfo:ForestInfo):void{
+    //     let user = UserService.getUser();
+    //     forestInfo.lastVisitSteps = this.getStepsCount(forestInfo.forestType);
+    //     forestInfo.lastVisitOnLevel = user.getTowerLevel();
+    // }
+
+    // public static getStepsAddition(forestType: ForestType):number{
+    //     let user = UserService.getUser();
+    //     let forestInfo = user.getAllForests().filter(af => af.forestType.id == forestType.id).shift();
+
+    //     if(!forestInfo || !forestInfo.lastVisitSteps || forestInfo.lastVisitSteps >= forestType.mask.length){
+    //         return 0;
+    //     }
+
+    //     // console.log("forestInfo.lastVisitSteps: " + forestInfo.lastVisitSteps)
+    //     // console.log("this.getStepsCount(forestType): " + this.getStepsCount(forestType))
+    //     return this.getStepsCount(forestType) - forestInfo.lastVisitSteps;
+    // }
+
+    private static MINIMAL_STEPS_COUNT = 4;
+    public static LEVEL_STEPS_RATIO = 2;
+
+
+    public static getStepsCount(forestType: ForestType):number{
+        return forestType.steps;
+    }
+
+    private static between(num:number, range:number[]):boolean{
+        return num >= range[0] && num <= range[1];
+    }
+
+    // public static getStepsMaxCount(forestType: ForestType):number{
+    //     return forestType.maxSteps || forestType.steps + 4;
+    // }
+
+    // public static getAvailableForest(forestType:ForestType):ForestInfo{
+    //     let user = UserService.getUser();
+    //     return user.getAllForests().find(af => af.forestType.id == forestType.id);
+    // }
+
+    // public static getSpeedUpForestPrice(forestInfo:ForestInfo):number{
+    //     if(forestInfo.availableAt - Date.now() < 2 * 60 * 1000 ){
+    //         return 1;
+    //     }
+
+    //     return Math.floor(60 * Math.min(1, (forestInfo.availableAt - Date.now())/ForestUtils.FOREST_COOLDOWN_BIG));
+    // }
+
+    public static getSlotsOfBiom(forestType:ForestType, biomType: BiomType):number{
+        //TODO!!!
+        switch(biomType){
+            case BiomType.WATER:
+                let wlilly = forestType.items.find(i => i.name == ContentType[ContentType.lilly]);
+                return wlilly? wlilly.count : 0;
+            case BiomType.FOREST:
+            case BiomType.MOUNTAIN:
+            case BiomType.BERRY_FIELD:
+                case BiomType.SAND:
+                    return 0;
+                    default:
+                        throw new NeverError(biomType);
+                    }
+                    return 0;
+                }
+                
+    public static getBioms(content:ContentType):BiomType[]{
+        if(content in ItemContents){
+            let c = <ItemContents>content;
+            switch(c){
+                case ItemContents.lilly:  
+                    return [BiomType.WATER];
+                case ItemContents.goldRoot:
+                case ItemContents.lavanda:  
+                    return [BiomType.MOUNTAIN];
+                case ItemContents.emerald:  
+                    return [BiomType.SAND];
+                case ItemContents.candy:  
+                    return [BiomType.MOUNTAIN];
+                case ItemContents.amber:
+                    return [BiomType.SAND];
+                case ItemContents.strawberry:          
+                case ItemContents.blackberry:
+                    // return [BiomType.FOREST, BiomType.BERRY_FIELD, BiomType.MOUNTAIN];
+                    return [BiomType.BERRY_FIELD];
+                case ItemContents.mushroom4:
+                    return [BiomType.FOREST]//, BiomType.SAND];
+                case ItemContents.witchMushroom2:
+                case ItemContents.amanita2:          
+                    return [BiomType.FOREST]//, BiomType.MOUNTAIN];
+                
+                case ItemContents.mushroom:  
+                case ItemContents.poleno:     
+                case ItemContents.t27:       
+                case ItemContents.mushroom3:     
+                case ItemContents.mushroom5:     
+                case ItemContents.wheat:
+                case ItemContents.yellowLilly:
+                case ItemContents.amanita:         
+                case ItemContents.t24:          
+                case ItemContents.t1:
+                case ItemContents.t25: 
+                case ItemContents.witchMushroom:   
+                case ItemContents.randomItem:       
+                case ItemContents.specificItem:       
+                case ItemContents.apple:       
+                        return [BiomType.FOREST];
+                default:
+                    throw new NeverError(c);
+            }
+        }
+
+        if(content in InteractiveContents){
+            let c = <InteractiveContents>content;
+            switch(c){
+                case InteractiveContents.shell:
+                    return [BiomType.WATER, BiomType.SAND];
+                case InteractiveContents.book1:
+                case InteractiveContents.lockpick:
+                    return [BiomType.MOUNTAIN];
+                case InteractiveContents.bush:
+                case InteractiveContents.bush2:
+                case InteractiveContents.chamomileSmall:
+                    return [BiomType.FOREST, BiomType.MOUNTAIN];
+                case InteractiveContents.moonflowerClosed:
+                    return [BiomType.FOREST, BiomType.BERRY_FIELD];
+                case InteractiveContents.hive:
+                case InteractiveContents.acorn:
+                case InteractiveContents.empty:
+                    return [BiomType.FOREST];
+                default:
+                    throw new NeverError(c);
+            }
+        }
+
+        return [];
+    }
+
+    public static getCellsByBiom(forestType:ForestType) : {count:number, cellsCount:number, biom:BiomType}[] {
+        let res : {count:number, cellsCount:number, biom:BiomType}[] = [];
+        for (let i = 0; i < forestType.mask.length; i++) {
+            let biom = ForestUtils.getBiom(ForestUtils.getCellType(forestType.mask[i]));
+            let placingForBiom = res.find(cb => cb.biom == biom);
+            if(!placingForBiom){
+                placingForBiom = {count:0, cellsCount:0, biom:biom};
+                res.push(placingForBiom);
+            }
+            placingForBiom.cellsCount++;
+        }
+        return res;
+    }
+
+    public static placeItemToCorrectBiom(placing: {count:number, cellsCount:number, biom:BiomType}[], bioms:BiomType[] ): void {
+        let choosenBiom = bioms[0];
+        let minDencity = 1;
+        bioms.forEach(b => {
+            let placingForBiom = placing.find(p => p.biom == b);
+            if(placingForBiom && placingForBiom.cellsCount > placingForBiom.count){
+                let dencity =  placingForBiom.count/placingForBiom.cellsCount;
+                if(dencity < minDencity){
+                    choosenBiom = b;
+                    minDencity = minDencity;
+                }
+            }
+        });
+        placing.forEach(p => {
+            if(p.biom == choosenBiom){
+                p.count ++;
+            }
+        })
+    }
+
+    private static baseAdjectives: {mascline:string, feminine:string, neuter:string}[]=[
+        {mascline:"радужный", feminine:"радужная", neuter:"радужное"},
+        {mascline:"дождевой", feminine:"дождевая", neuter:"дождевое"},
+        {mascline:"радужный", feminine:"радужная", neuter:"радужное"},
+        {mascline:"волшебный", feminine:"волшебная", neuter:"волшебное"},
+        {mascline:"мистический", feminine:"мистическая", neuter:"мистическое"},
+        {mascline:"заячий", feminine:"заячья", neuter:"заячье"},
+        {mascline:"барсучий", feminine:"барсучья", neuter:"барсучье"},
+        {mascline:"волчий", feminine:"волчья", neuter:"волчье"},
+    ];
+    private static forestAdjectives: {mascline:string, feminine:string, neuter:string}[]=[
+        {mascline:"дремучий", feminine:"дремучая", neuter:"дремучее"},
+        {mascline:"осенний", feminine:"осенняя", neuter:"осеннее"},
+        {mascline:"лиственный", feminine:"лиственная", neuter:"лиственное"},
+        {mascline:"хвойный", feminine:"хвойная", neuter:"хвойное"},
+        {mascline:"молодой", feminine:"молодая", neuter:"молодое"},
+    ];
+    private static waterAdjectives: {mascline:string, feminine:string, neuter:string}[]=[
+        {mascline:"пресный", feminine:"пресная", neuter:"пресное"},
+        {mascline:"соленый", feminine:"соленая", neuter:"соленое"},
+        {mascline:"изумрудный", feminine:"изумрудная", neuter:"изумрудное"},
+        {mascline:"ракушечий", feminine:"ракушечья", neuter:"ракушечье"},
+    ];
+    private static mountineAdjectives: {mascline:string, feminine:string, neuter:string}[]=[
+        {mascline:"железный", feminine:"железная", neuter:"железное"},
+        {mascline:"медный", feminine:"медная", neuter:"медное"},
+        {mascline:"самоцветный", feminine:"самоцветная", neuter:"самоцветное"},
+        {mascline:"высокий", feminine:"высокая", neuter:"высокое"},
+        {mascline:"пологий", feminine:"пологая", neuter:"пологое"},
+    ];
+
+    // private static baseObjectives: {name:string, genus:string}[]=[];
+    private static forestObjectives: {name:string, genus:string}[]=[
+        {name:"перелесок", genus:"m"},
+        {name:"лес", genus:"m"},
+        {name:"бор", genus:"m"},
+        {name:"валежник", genus:"m"},
+      
+        {name:"просека", genus:"f"},
+        {name:"роща", genus:"f"},
+        {name:"чаща", genus:"f"},
+        {name:"пуща", genus:"f"},
+        {name:"тайга", genus:"f"},
+        {name:"чащоба", genus:"f"},
+        {name:"глушь", genus:"f"},
+
+        {name:"редколесье", genus:"n"},
+    ];
+    private static waterObjectives: {name:string, genus:string}[]=[
+        {name:"озеро", genus:"n"},
+        {name:"болото", genus:"n"},
+        {name:"русло", genus:"n"},
+
+        {name:"пруд", genus:"m"},
+        {name:"водоем", genus:"m"},
+        
+        {name:"лагуна", genus:"f"},
+
+        {name:"великие озера", genus:null},
+        {name:"соленые озера", genus:null},
+    ];
+    private static mountineObjectives: {name:string, genus:string}[]=[
+        {name:"взгорье", genus:"n"},
+
+        {name:"склон", genus:"m"},
+        {name:"холм", genus:"m"},
+        {name:"бугор", genus:"m"},
+        {name:"перешеек", genus:"m"},
+        
+        {name:"гора", genus:"f"},
+
+    ];
+
+    // public static generateForestName(bioms?:BiomType[]):string{
+
+    //     let biom1 = bioms? bioms[Utils.random(bioms.length)] : BiomType.BERRY_FIELD;
+    //     let biom2 = bioms? bioms[Utils.random(bioms.length)] : BiomType.BERRY_FIELD;
+
+    //     let objectivesArray:{name:string, genus:string}[];
+    //     let adjectivesArray:{mascline:string, feminine:string, neuter:string}[];
+
+    //     switch(biom1){
+    //         case BiomType.FOREST: objectivesArray = this.forestObjectives; break;
+    //         case BiomType.WATER: objectivesArray = this.waterObjectives; break;
+    //         case BiomType.MOUNTAIN: objectivesArray = this.mountineObjectives; break;
+    //         default:
+    //             objectivesArray = this.forestObjectives;
+    //     }
+    //     // if(Utils.randomBoolean()) objectivesArray = this.baseObjectives;
+
+    //     switch(biom2){
+    //         case BiomType.FOREST: adjectivesArray = this.forestAdjectives; break;
+    //         case BiomType.WATER: adjectivesArray = this.waterAdjectives; break;
+    //         case BiomType.MOUNTAIN: adjectivesArray = this.mountineAdjectives; break;
+    //         default:
+    //             adjectivesArray = this.baseAdjectives;
+    //     }
+    //     if(Utils.randomBoolean()) adjectivesArray = this.baseAdjectives;
+
+    //     let choosenObjective = objectivesArray[Utils.random(objectivesArray.length)];
+    //     let res = choosenObjective.name;
+    //     if(choosenObjective.genus == "m"){
+    //         res = adjectivesArray[Utils.random(adjectivesArray.length)].mascline + " " + res;
+    //     } else if(choosenObjective.genus == "f"){
+    //         res = adjectivesArray[Utils.random(adjectivesArray.length)].feminine + " " + res;
+    //     } else if(choosenObjective.genus == "n"){
+    //         res = adjectivesArray[Utils.random(adjectivesArray.length)].neuter + " " + res;
+    //     }
+
+    //     for(let avf of UserService.getUser().getAvailableForests()){
+    //         if(res == avf.forestType.name){
+    //             return this.generateForestName(bioms);
+    //         }
+    //     }
+
+    //     return res;
+    // }
+
+    public static isHardLevel(forestType:ForestType):boolean{
+        return forestType.maxSteps && forestType.maxSteps != forestType.steps;
+    } 
+
+    public static getHardLevelOffset(forestType:ForestType):number{
+        return 5 - forestType.name.length%3;
+    }
+
+    // private static fixedHardLevels = [4, 7, 10, 15];
+
+    // private static specialStepsAdditions:{level:number, addition:number}[] = [
+    //     {level:4, addition:6}
+    // ]
+
+    public static nextLevelIsHard():boolean{
+        let currentForest = ForestDao.getForestType(UserService.getUser().getCurrentForest());
+        return currentForest.hardLevel;
+
+
+        // let index = user.getCurrentForest() + 1;
+        // if(index <= this.fixedHardLevels[this.fixedHardLevels.length-1]){
+        //     return this.fixedHardLevels.indexOf(index) != -1;
+        // }
+
+        // let lastForestType = user.getAvailableForests()[user.getAvailableForests().length -1].forestType;
+        // return user.getHardLevelOffset() >= ForestUtils.getHardLevelOffset(lastForestType);
+    }
+
+    // private static getSpecialAddition(forestInfo:ForestInfo):number{
+    //     let user = UserService.getUser();
+    //     if(forestInfo && !forestInfo.specialItemOrCreature){
+    //         let index = user.getCurrentForest() - user.getAvailableForests().length + 2 + user.getAvailableForests().indexOf(forestInfo);
+    //         let specialAddition = this.specialStepsAdditions.find(a => a.level == index);
+    //         if(specialAddition){
+    //             return specialAddition.addition;
+    //         }
+    //     }
+    //     return 0;
+    // }
+
+    // //Эта добавка нужна для игрока, который долго строил башню и не проходил уровни
+    // private static getExpectedLevelStepsAddition(forestInfo:ForestInfo):number{
+    //     // let user = UserService.getUser();
+    //     // let index = user.getCurrentForest() - user.getAvailableForests().length + 1 + user.getAvailableForests().indexOf(forestInfo);
+
+    //     // let expectedLevel = Math.ceil(index/10); //TODO сложная зависимость...
+    //     // let delta = user.getLevel() - expectedLevel;
+    //     // if(delta > 0){
+    //     //     return delta;
+    //     // }
+    //     return 0;
+    // }
+
 }

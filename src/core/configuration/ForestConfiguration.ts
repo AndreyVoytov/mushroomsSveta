@@ -237,7 +237,7 @@ export default class ForestsConfiguration {
 					{
 						"count": 8,
 						"name": "lilly"
-					}
+					}					
 				],
 				"id": "15",
 				"header": null,
@@ -321,7 +321,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "00ggg0000gggg00gg0gg00gg00gg0gg0gg000gggg000ggg0",
 				"bonuses": 2,
-				"blueberries": 22,
+				// "blueberries": 22,
 				"ladybugs": []
 			},
 			{
@@ -339,7 +339,7 @@ export default class ForestsConfiguration {
 				"bushes": 2,
 				"mask": "0jiljt00iiggijlgglggl0ggllgglgglggl0jiggii0tjlij",
 				"bonuses": 3,
-				"blueberries": 22,
+				// "blueberries": 22,
 				"ladybugs": [],
 				"flowers": 0
 			},
@@ -361,7 +361,7 @@ export default class ForestsConfiguration {
 				"bushes": 2,
 				"mask": "0ggggg00gwggwgggwwwgg0gwwwwggwwgwwg0gwggwg0ggggg",
 				"bonuses": 3,
-				"blueberries": 16
+				// "blueberries": 16
 			},
 			{
 				"items": [
@@ -511,7 +511,7 @@ export default class ForestsConfiguration {
 				"mask": "00ggg000iiigii0ijigi00giiiig0igiji00iigiii00ggg0",
 				"bonuses": 0,
 				"cankerberries": 15,
-				"blueberries": 25
+				// "blueberries": 25
 			},
 			{
 				"items": [
@@ -526,7 +526,7 @@ export default class ForestsConfiguration {
 				"steps": 15,
 				"mask": "00000000ww00wwwwgggww0wllllwwpipipw0gliilg0wlllw00wwggww0w0g0w00",
 				"bonuses": 2,
-				"blueberries": 17
+				// "blueberries": 17
 			},
 			{
 				"items": [
@@ -852,7 +852,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "0ggggg00wgwwgw0wwwww00gwwwwg0wgwgw000gwwg00wwgww0000gg00",
 				"bonuses": 1,
-				"blueberries": 0,
+				// "blueberries": 0,
 				"waterCenter": null
 			},
 			{
@@ -896,7 +896,7 @@ export default class ForestsConfiguration {
 				"steps": 14,
 				"mask": "gg0ggg0gal0lagggw0gg0glwwwlggwwwwg0glwwwlggg0wgg0gal0lagggg0gg00",
 				"bonuses": 3,
-				"blueberries": 24,
+				// "blueberries": 24,
 				"acorns": 4
 			},
 			{
@@ -1105,7 +1105,7 @@ export default class ForestsConfiguration {
 				"mask": "mmiiw00mjijiw0jjikw0000jtj000wkijj00wijijm0wiimm",
 				"bonuses": 2,
 				"cankerberries": 2,
-				"blueberries": 9
+				// "blueberries": 9
 			},
 			{
 				"items": [
@@ -1224,7 +1224,7 @@ export default class ForestsConfiguration {
 				"bushes": 2,
 				"mask": "0000000gj0t0jgggjjgg0fljljlfglfflg0fljljlfggjjgg0gj0t0jg",
 				"bonuses": 3,
-				"blueberries": 20,
+				// "blueberries": 20,
 				"dragonflies": 6
 			},
 			{
@@ -1330,7 +1330,7 @@ export default class ForestsConfiguration {
 				"bushes": 1,
 				"mask": "0000000000g0000gffg00gflllfggljjlg0gflflfggljjlg0gflllfg0gffg0000g0g0000",
 				"bonuses": 0,
-				"blueberries": 0,
+				// "blueberries": 0,
 				"flowers": 0,
 				"dragonflies": 11
 			},
@@ -2329,6 +2329,12 @@ export default class ForestsConfiguration {
 						"name": "mushroom5"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 5,
+						"name": "shell"
+					}
+				],
 				"separators": [],
 				"id": "93",
 				"header": null,
@@ -2339,8 +2345,8 @@ export default class ForestsConfiguration {
 				"mask": "0gggg0002gggg022gggg02220ggg2222gg002222g0022220",
 				"bonuses": 2,
 				"cankerberries": 0,
-				"blueberries": 0,
-				"pearls": 5,
+				// "blueberries": 0,
+				// "pearls": 5,
 				"ladybugs": [],
 				"dragonflies": 0,
 				"waterCenter": null
@@ -2356,6 +2362,12 @@ export default class ForestsConfiguration {
 						"name": "lilly"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 7,
+						"name": "shell"
+					}
+				],
 				"id": "94",
 				"header": null,
 				"environment": 4,
@@ -2364,7 +2376,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "02ww220022www22www222022www22www222022www202ww22",
 				"bonuses": 3,
-				"pearls": 7,
+				// "pearls": 7,
 				"dragonflies": 0,
 				"waterCenter": null
 			},
@@ -2379,6 +2391,12 @@ export default class ForestsConfiguration {
 						"name": "amanita"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 6,
+						"name": "shell"
+					}
+				],
 				"id": "95",
 				"header": null,
 				"environment": 4,
@@ -2387,7 +2405,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "00000000022000022200000220000000220022022222202200220000",
 				"bonuses": 1,
-				"pearls": 6,
+				// "pearls": 6,
 				"dragonflies": 0,
 				"waterCenter": null
 			},
@@ -2402,6 +2420,12 @@ export default class ForestsConfiguration {
 						"name": "amanita"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 14,
+						"name": "shell"
+					}
+				],
 				"id": "96",
 				"header": null,
 				"environment": 4,
@@ -2410,7 +2434,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "000000000000000ggggg00222222022222000000000ggggg00222222022222000000000ggggg00222222022222000000",
 				"bonuses": 3,
-				"pearls": 14,
+				// "pearls": 14,
 				"dragonflies": 0,
 				"waterCenter": null
 			},
@@ -2429,6 +2453,12 @@ export default class ForestsConfiguration {
 						"name": "lilly"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 5,
+						"name": "shell"
+					}
+				],
 				"id": "97",
 				"header": null,
 				"environment": 4,
@@ -2437,7 +2467,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "022220002www202wwww202wwbww22wwww2002www20022220",
 				"bonuses": 2,
-				"pearls": 5,
+				// "pearls": 5,
 				"dragonflies": 0,
 				"waterCenter": null
 			},
@@ -2452,6 +2482,12 @@ export default class ForestsConfiguration {
 						"name": "lilly"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 9,
+						"name": "shell"
+					}
+				],
 				"id": "98",
 				"header": null,
 				"environment": 4,
@@ -2459,7 +2495,7 @@ export default class ForestsConfiguration {
 				"steps": 11,
 				"mask": "220www0220wwww20w22w02ww222ww2222w0w222ww2w22w020wwww022www02200",
 				"bonuses": 2,
-				"pearls": 9,
+				// "pearls": 9,
 				"dragonflies": 0
 			},
 			{
@@ -2651,7 +2687,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "00000000mm0000mww0mm0mwwwwwmwwwwww0mwwwwwmmm0wwm00000mm0",
 				"bonuses": 3,
-				"pearls": 0,
+				// "pearls": 0,
 				"dragonflies": 0
 			},
 			{
@@ -2765,13 +2801,19 @@ export default class ForestsConfiguration {
 						"name": "mushroom"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 18,
+						"name": "shell"
+					}
+				],
 				"id": "112",
 				"environment": 0,
 				"leafType": "leaf1",
 				"steps": 14,
 				"mask": "00www000wwwwwwlwwwwwl0lwwwwllwwwwwl0lpwwpllfpwpfl0lpwwpllwwwwwl0lwwwwllwwwwwl0wwwwww00www0000000",
 				"bonuses": 5,
-				"pearls": 18,
+				// "pearls": 18,
 				"dragonflies": 2
 			},
 			{
@@ -2840,6 +2882,12 @@ export default class ForestsConfiguration {
 						"name": "mushroom5"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 5,
+						"name": "shell"
+					}
+				],
 				"id": "115",
 				"header": null,
 				"environment": 4,
@@ -2848,7 +2896,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "00000000000000000000000gggg00g222g00g2w2g0g2ww2g00g2ww2g0g2w2g00g222g00gggg00000",
 				"bonuses": 2,
-				"pearls": 5,
+				// "pearls": 5,
 				"dragonflies": 0,
 				"waterCenter": null
 			},
@@ -2922,6 +2970,12 @@ export default class ForestsConfiguration {
 						"name": "amber"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 9,
+						"name": "shell"
+					}
+				],
 				"id": "118",
 				"header": null,
 				"environment": 4,
@@ -2930,7 +2984,7 @@ export default class ForestsConfiguration {
 				"bushes": 2,
 				"mask": "022w220022ww2222www2202wwww222www22022ww22022w22",
 				"bonuses": 4,
-				"pearls": 9,
+				// "pearls": 9,
 				"dragonflies": 0,
 				"waterCenter": null
 			},
@@ -2970,6 +3024,12 @@ export default class ForestsConfiguration {
 						"name": "lilly"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 9,
+						"name": "shell"
+					}
+				],
 				"id": "120",
 				"header": null,
 				"environment": 1,
@@ -2977,7 +3037,7 @@ export default class ForestsConfiguration {
 				"steps": 11,
 				"mask": "w0cc0w0wCcwcCwwcwwcw0wCcwcCwwcwwcw0wCcwcCwwcwwcw0wCcwcCww0cc0w00",
 				"bonuses": 4,
-				"pearls": 9,
+				// "pearls": 9,
 				"dragonflies": 0
 			},
 			{
@@ -3137,6 +3197,12 @@ export default class ForestsConfiguration {
 						"name": "mushroom3"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 11,
+						"name": "shell"
+					}
+				],
 				"id": "129",
 				"header": null,
 				"environment": 1,
@@ -3145,7 +3211,7 @@ export default class ForestsConfiguration {
 				"mask": "0kl0ww000lipw0gkp0www0ipwwwwgkp0www0iiipwwgkp0www00pwww00kl0ww00",
 				"bonuses": 3,
 				"cankerberries": 10,
-				"pearls": 11,
+				// "pearls": 11,
 				"dragonflies": 0
 			},
 			{
@@ -3168,6 +3234,7 @@ export default class ForestsConfiguration {
 				"mask": "ll00ll0lglllglgggggg0gagagaggaaaag0jjaaajjYj00jQ",
 				"ladybugs": [],
 				"acorns": 10,
+				"bonuses": 0,
 				hardLevel: true
 			},
 			{
@@ -3312,6 +3379,12 @@ export default class ForestsConfiguration {
 						"name": "lilly"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 3,
+						"name": "shell"
+					}
+				],
 				"id": "136",
 				"header": null,
 				"environment": 3,
@@ -3319,7 +3392,7 @@ export default class ForestsConfiguration {
 				"steps": 10,
 				"mask": "ll00ww0lll0wwwlllwww0lll0wwwlllwww0lll0wwwll00ww",
 				"bonuses": 2,
-				"pearls": 3,
+				// "pearls": 3,
 				"dragonflies": 0
 			},
 			{
@@ -3355,6 +3428,12 @@ export default class ForestsConfiguration {
 						"name": "lilly"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 9,
+						"name": "shell"
+					}
+				],
 				"id": "138",
 				"header": null,
 				"environment": 3,
@@ -3363,7 +3442,7 @@ export default class ForestsConfiguration {
 				"bushes": 2,
 				"mask": "Cb00CCC0CwwwbCCwwwwwC0CwbbwCCwwwwwC0CbwwwCCCC00bC0000000",
 				"bonuses": 3,
-				"pearls": 9,
+				// "pearls": 9,
 				"dragonflies": 0
 			},
 			{
@@ -3373,6 +3452,12 @@ export default class ForestsConfiguration {
 						"name": "amanita"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 16,
+						"name": "shell"
+					}
+				],
 				"id": "139",
 				"header": null,
 				"environment": 3,
@@ -3380,7 +3465,7 @@ export default class ForestsConfiguration {
 				"steps": 12,
 				"mask": "wwll0w0C0ll0bwwwll0w0lwbwlwClwwwwl0lwCCClllC00Cl0llCCCwllwwwwl0Cwlwbwlw0llww0wb0ll0Cw0llww000000",
 				"bonuses": 6,
-				"pearls": 16,
+				// "pearls": 16,
 				"dragonflies": 0
 			},
 			{
@@ -3402,7 +3487,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "0000gg00000g0000gggg000111110111111001111100111100001110",
 				"bonuses": 0,
-				"moonflowers": 3,
+				// "moonflowers": 3,
 				"dragonflies": 0,
 				"waterCenter": null
 			},
@@ -3424,7 +3509,7 @@ export default class ForestsConfiguration {
 				"steps": 9,
 				"mask": "ww0l0g0ww0wl0gwwwlgg0iwwzPggipwwpi0ggPzwwigglwww0g0lw0wwg0l0ww00",
 				"bonuses": 2,
-				"moonflowers": 5,
+				// "moonflowers": 5,
 				"dragonflies": 0
 			},
 			{
@@ -3446,6 +3531,12 @@ export default class ForestsConfiguration {
 						"name": "blackberry"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 11,
+						"name": "shell"
+					}
+				],
 				"id": "142",
 				"header": null,
 				"environment": 3,
@@ -3454,7 +3545,7 @@ export default class ForestsConfiguration {
 				"bushes": 3,
 				"mask": "011110001www101wwww101wwwww11wwww1001www1001ww10001www101wwww1001www100111100000",
 				"bonuses": 4,
-				"pearls": 11,
+				// "pearls": 11,
 				"ladybugs": [],
 				"dragonflies": 0,
 				"waterCenter": null
@@ -3561,6 +3652,12 @@ export default class ForestsConfiguration {
 						"name": "lavanda"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 6,
+						"name": "shell"
+					}
+				],
 				"id": "146",
 				"header": null,
 				"environment": 3,
@@ -3568,7 +3665,7 @@ export default class ForestsConfiguration {
 				"steps": 10,
 				"mask": "00mmm000mmmwmmmwmmwm00w1mwmmmwm1mwm0mmwm1w0mwmmwm0mmwmmm00mmm000",
 				"bonuses": 3,
-				"pearls": 6,
+				// "pearls": 6,
 				"dragonflies": 0,
 				"waterCenter": null
 			},
@@ -3620,6 +3717,12 @@ export default class ForestsConfiguration {
 						"name": "mushroom3"
 					}
 				],
+				"interactiveItems":[
+					{
+						"count": 10,
+						"name": "shell"
+					}
+				],
 				"id": "149",
 				"header": null,
 				"environment": 3,
@@ -3627,7 +3730,7 @@ export default class ForestsConfiguration {
 				"steps": 15,
 				"mask": "w0ll0w0wlllllwww00ww0lhwlwhlllwwll0lww0wwlwwllww0whlwlhwwwllww0lww0wwlllwwll0lhwlwhlww00ww0wllwllww0ll0w",
 				"bonuses": 5,
-				"pearls": 10,
+				// "pearls": 10,
 				"honey": 20,
 				"dragonflies": 0
 			},
@@ -3645,7 +3748,7 @@ export default class ForestsConfiguration {
 				"steps": 7,
 				"mask": "m0mA0m0mA0A0AmmAAAAm0mEADAEmAA00AA0mEADAEmmAAAAm0mA0A0Amm0Am0m00",
 				"bonuses": 4,
-				"books": 6,
+				// "books": 6,
 				"dragonflies": 0
 			},
 			{

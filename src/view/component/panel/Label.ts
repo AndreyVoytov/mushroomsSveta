@@ -33,6 +33,15 @@ export default class Label extends Phaser.Text{
 
     private static DEFAULT_STYLE: Phaser.PhaserTextStyle = { font: "40px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 800 }; 
 
+    public static BalsamiqSansBold(size:number, color?:string, width?:number):Phaser.PhaserTextStyle{
+        return  { font: ""+size+"px BalsamiqSansBold", fill: color || "#ffffff", wordWrap:width? true : false, wordWrapWidth: width || 5000}
+    }
+
+    public static BalsamiqSansBoldBold(size:number, color?:string, width?:number):Phaser.PhaserTextStyle{
+        // return  { font: "bold "+size+"px BalsamiqSansBold", fill: color || "#ffffff", wordWrap:width? true : false, wordWrapWidth: width || 5000};
+        return  { font: "bold "+size+"px BalsamiqSansBold", fill: color || "#ffffff", wordWrap:width? true : false, wordWrapWidth: width || 5000};
+    }
+
     constructor(game: Phaser.Game, x: number, y: number, text: string, style?:Phaser.PhaserTextStyle, ignoreVioletHighlight?:boolean, symbolsInRow?:number){
         super(game, x, y, Label.splitRows(text, symbolsInRow).split(Label.GREEN_ESCAPE_SYMBOL).join("").split(ignoreVioletHighlight? "*" : Label.VIOLET_ESCAPE_SYMBOL).join(""), style || Label.DEFAULT_STYLE)
 

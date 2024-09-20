@@ -589,7 +589,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('acorn', 'assets/base/items/acorn.png');
         this.loadImage('acorn2', 'assets/base/items/acorn2.png');
         this.loadImage('berry', 'assets/base/items/berry.png');
-        // this.loadImage('berry2', 'assets/base/items/berry2.png');
+        this.loadImage('berry2', 'assets/base/items/berry2.png');
         // this.loadImage('bell', 'assets/base/items/bell.png');
         this.loadImage('lilly', 'assets/base/items/lilly.png');
         this.loadImage('amber', 'assets/base/items/amber.png');
@@ -790,9 +790,15 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('objectBg', 'assets/other/editor/objectBg.png');
         this.loadImage('openButton', 'assets/other/editor/openButton.png');
         this.loadImage('playButtonEditor', 'assets/other/editor/playButton.png');
+        this.loadImage('playMaxButtonEditor', 'assets/other/editor/playButtonMax.png');
+        this.loadImage('playAutoButtonEditor', 'assets/other/editor/playButtonAuto.png');
         this.loadImage('renameButton', 'assets/other/editor/renameButton.png');
         this.loadImage('editorPlusButton', 'assets/other/editor/editorPlusButton.png');
         this.loadImage('saveButton', 'assets/other/editor/saveButton.png');
+        this.loadImage('v', 'assets/other/editor/v.png');
+        this.loadImage('vm', 'assets/other/editor/vm.png');
+        this.loadImage('v1', 'assets/other/editor/v1.png');
+        this.loadImage('vm1', 'assets/other/editor/vm1.png');
 
         this.loadImage('panelCorner', 'assets/base/ui/panelCorner.png');
         this.loadImage('panelBody', 'assets/base/ui/panelBody.png');

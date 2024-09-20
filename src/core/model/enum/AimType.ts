@@ -1,6 +1,6 @@
 
 enum AimType {
-    item, itemsBunch, ladybug, flower, cankerberry, blueberry, pearl, acorn, jelly, dragonfly, honey, book, moonflower, boat
+    item, itemsBunch, ladybug, flower, cankerberry, blueberry, pearl, acorn, jelly, dragonfly, honey, book, moonflower, boat, redberry
 }
 export default AimType;
 

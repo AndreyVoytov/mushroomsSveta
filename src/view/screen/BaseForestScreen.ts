@@ -442,7 +442,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         user.restoreLifeForWin();
 
         if (user.getCurrentForest() == ForestDao.indexOf(this.getForestType())) {
-            let hardLevelAddition = this.getForestType().isHardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
+            let hardLevelAddition = this.getForestType().hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
             user.setSupermoney(user.getSupermoney() + ForestUtils.getPrizeGemsCount(this.topPanel.getStepsLeft()) + hardLevelAddition)
             user.incrementCurrentForest();
         }
@@ -493,7 +493,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 AnalyticUtils.logLevelComplete(this.topPanel.getStepsLeft());
 
                 if (user.getCurrentForest() == ForestDao.indexOf(this.getForestType())) {
-                    let hardLevelAddition = this.getForestType().isHardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
+                    let hardLevelAddition = this.getForestType().hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
                     user.setSupermoney(user.getSupermoney() + ForestUtils.getPrizeGemsCount(this.topPanel.getStepsLeft()) + hardLevelAddition)
                     user.incrementCurrentForest();
                 }
@@ -647,6 +647,8 @@ export default abstract class BaseForestScreen extends DialogScreen {
     }
 
     public getForestType(): ForestType {
+        if(ForestUtils.forestTypeToPLay) return ForestUtils.forestTypeToPLay;
+
         return ForestDao.getForestType(UserService.getUser().getCurrentForest());
     }
 

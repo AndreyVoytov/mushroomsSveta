@@ -12,7 +12,7 @@ import Movable from '../../model/forest/Movable';
 import WaterPart from '../../model/forest/WaterPart';
 import ForestCellCover from '../../../view/component/forest/ForestCellCover';
 import BaseCellsProvider from './BaseCellsProvider';
-import { ContentType } from '../../model/enum/ContentType';
+import { ContentType, InteractiveContents, ItemContents } from '../../model/enum/ContentType';
 import TypesInfo from '../../model/forest/TypesInfo';
 import HouseItemsConfiguration from '../../configuration/HouseItemsConfiguration';
 import SpecialItemsConfiguration from '../../configuration/SpecialItemsConfiguration';
@@ -27,6 +27,7 @@ export default class CellsProvider extends BaseCellsProvider {
 
     private waterParts: WaterPart[];
     public additionalCellTypes: {type: ContentType, metaValue:string}[];
+    public taskItems: {image: string, count:number};
 
     private static MAX_GENERATION_ATTEMPTS_COUNT = 100;
 
@@ -214,7 +215,7 @@ export default class CellsProvider extends BaseCellsProvider {
                         attempts++;
                     }
     
-                    while (this.getForestType().cellsToSpawn && attempts < 1000 && this.forestType.honey > honeyCount) {
+                    while (/*this.getForestType().cellsToSpawn && */ attempts < 1000 && this.forestType.honey > honeyCount) {
                         let choosen = Utils.getRandomElement(hiveIndexes);
                         let honeyNumber = Number(metaDataByIndex[choosen]);
                         // if (honeyNumber == 1) {
@@ -242,80 +243,91 @@ export default class CellsProvider extends BaseCellsProvider {
             this.getMask().push(new MaskCell(100, i, CellType.FOREST, "leaf4"))
         }
 
-        if (this.forestType.blueberries) {
-            let avrg = 4;
-            let bushesCount = Math.ceil(this.forestType.blueberries / avrg);
+        let bush = forestType.interactiveItems? forestType.interactiveItems.find(i => i.name == ContentType[ContentType.bush]) : null;
+        if (bush) {
+            let avrg = ForestUtils.AVG_BERRIES_ON_BUSH;
+            let bushesCount = bush.count;
 
             let berries = [];
-            let avgCount = this.forestType.blueberries - bushesCount * (avrg - 1);
-            for (let i = 0; i < avgCount; i++) {
+            //заполняем 4-ками
+            for (let i = 0; i < bushesCount; i++) {
                 berries.push(avrg);
             }
-            for (let i = 0; i < bushesCount - avgCount; i++) {
-                berries.push(avrg - 1);
-            }
-            for (let i = 0; i < Math.floor(avgCount / 2); i++) {
-                berries[i]++; berries[i + Math.floor(avgCount / 2)]--;
+            //половину четверок делаем пятерками, половину тройками
+            for (let i = 0; i < Math.floor(bushesCount / 2); i++) {
+                berries[i]++; berries[i + Math.floor(bushesCount / 2)]--;
             }
 
             for (let i = 0; i < bushesCount; i++) {
-                let index = this.getEmptyCell(types, [BiomType.FOREST, BiomType.MOUNTAIN]);
+                let index = this.getEmptyCell(types, ForestUtils.getBioms(InteractiveContents.bush));
                 types[index] = ContentType.bush;
                 metaDataByIndex[index] = berries[i]; 
             }
         }
 
-        if (this.forestType.books) {
-            for (let i = 0; i < this.forestType.books; i++) {
-                let index1 = this.getEmptyCell(types, [BiomType.MOUNTAIN]);
-                types[index1] = ContentType.book1;
-                let index2 = this.getEmptyCell(types, [BiomType.MOUNTAIN]);
-                types[index2] = ContentType.lockpick;
+
+        let bush2 = forestType.interactiveItems? forestType.interactiveItems.find(i => i.name == ContentType[ContentType.bush2]) : null;
+        if (bush2) {
+            let avrg = ForestUtils.AVG_BERRIES_ON_BUSH;
+            let bushesCount = bush2.count;
+
+            let berries = [];
+            for (let i = 0; i < bushesCount; i++) {
+                berries.push(avrg);
+            }
+            for (let i = 0; i < Math.floor(bushesCount / 2); i++) {
+                berries[i]++; berries[i + Math.floor(bushesCount / 2)]--;
+            }
+
+            for (let i = 0; i < bushesCount; i++) {
+                let index = this.getEmptyCell(types, ForestUtils.getBioms(InteractiveContents.bush2));
+                types[index] = ContentType.bush2;
+                metaDataByIndex[index] = berries[i]; 
             }
         }
 
-        if (this.forestType.pearls) {
-            for (let i = 0; i < this.forestType.pearls; i++) {
-                // let index = this.getEmptyCell(types, [BiomType.WATER]);
-                let index = this.getEmptyCell(types, [BiomType.SAND, BiomType.WATER]);
-                types[index] = ContentType.shell;
-            }
-        }
-
-        if (this.forestType.moonflowers) {
-            for (let i = 0; i < this.forestType.moonflowers; i++) {
-                let index = this.getEmptyCell(types, [BiomType.FOREST, BiomType.BERRY_FIELD]);
-                types[index] = ContentType.moonflowerClosed;
-            }
+        if(forestType.interactiveItems){
+            forestType.interactiveItems.forEach(item => {
+                if(item.name != ContentType[ContentType.bush2] && item.name != ContentType[ContentType.bush]){
+                    for (let i = 0; i < item.count; i++) {
+                        let index = this.getEmptyCell(types, ForestUtils.getBioms(InteractiveContents[item.name]));
+                        types[index] = InteractiveContents[item.name];
+                    }
+                }
+            });
         }
 
         forestType.items.forEach(item => {
             for (let i = 0; i < item.count; i++) {
-                let index;
-                if (item.name == ContentType[ContentType.lilly]) {
-                    index = this.getEmptyCell(types, [BiomType.WATER]);
-                } else if (item.name == ContentType[ContentType.lavanda]) {
-                    index = this.getEmptyCell(types, [BiomType.MOUNTAIN]);
-                } else if (item.name == ContentType[ContentType.blackberry]) {
-                    index = this.getEmptyCell(types, [BiomType.BERRY_FIELD]);
-                } else if (item.name == ContentType[ContentType.strawberry]) {
-                    index = this.getEmptyCell(types, [BiomType.BERRY_FIELD]);
-                } else if (item.name == ContentType[ContentType.amber]) {
-                    index = this.getEmptyCell(types, [BiomType.SAND]);
-                } else {
-                    index = this.getEmptyCell(types, [BiomType.FOREST]);
-                }
-
-                // if(!ContentType[item.name]){
-                //     types[index] = ContentType.specificItem;
-                //     metaDataByIndex[index] = item.name;
-                // } else {
-                    types[index] = ContentType[item.name];
-                // }
+                let index = this.getEmptyCell(types, ForestUtils.getBioms(ItemContents[item.name]));
+                types[index] = ContentType[item.name];
             }
         });
 
-        
+        // let collectableTask = TasksConfiguration.findItemCollectActiveTask();
+
+        // if(collectableTask){
+        //     let items = UserService.getUser().getItems().find(i => i.name == collectableTask.aim_id);
+        //     let maxCountToGenerate = items? collectableTask.count - items.count : collectableTask.count;
+        //     let taskItemsCount = Math.min(Utils.random(3)+ 1, maxCountToGenerate);
+
+        //     //выбираем, где размещать предметы. Есть ест лес - в лес; иначе в горы и т.д.
+        //     let bioms = Utils.enumValues(BiomType);
+        //     let biom:BiomType = null;
+        //     for(let i=0; i<bioms.length && !biom; i++){
+        //         if(this.getMask().find(c => ForestUtils.getBiom(c.type) == bioms[i])){
+        //             biom = bioms[i];
+        //         }
+        //     }
+
+        //     for (let i = 0; i < taskItemsCount ; i++) {
+        //         let index = this.getEmptyCell(types, [biom]);
+        //         types[index] = ContentType[collectableTask.aim_id];
+        //     }
+        //     this.taskItems = {image: collectableTask.aim_id, count: taskItemsCount};
+        // } else {
+            this.taskItems = null;
+        // }
 
         // let haveSpecificItem = false;
         // specificItems.forEach(i=> {
@@ -330,14 +342,14 @@ export default class CellsProvider extends BaseCellsProvider {
         // })
 
         if(forestType.randomItems){
-            let specificItems = SpecialItemsConfiguration.allItems.filter(i => i.usual && i.level == forestType.id);
-            specificItems.forEach(i=> {
-                let index = this.getEmptyCell(types, [BiomType.FOREST]);
-                types[index] = ContentType.randomItem;
-                metaDataByIndex[index] = i.image;
-            })
+            // let specificItems = SpecialItemsConfiguration.allItems.filter(i => i.usual && i.level == forestType.id);
+            // specificItems.forEach(i=> {
+            //     let index = this.getEmptyCell(types, [BiomType.FOREST]);
+            //     types[index] = ContentType.randomItem;
+            //     metaDataByIndex[index] = i.image;
+            // })
 
-            let choosenItems = Utils.getDifferentRandomElements(HouseItemsConfiguration.getOptions(forestType), forestType.randomItems - specificItems.length)
+            let choosenItems = Utils.getDifferentRandomElements(HouseItemsConfiguration.getOptions(forestType), forestType.randomItems)// - specificItems.length)
             choosenItems.forEach(itemName => {
                 let index = this.getEmptyCell(types);
                 types[index] = ContentType.randomItem;
@@ -345,12 +357,37 @@ export default class CellsProvider extends BaseCellsProvider {
             })
         }
 
-        let eventInfo = EventUtils.getActualEvents().filter(e => e.eventType == EventType.lukoshko).shift();
+        // let luckyStrike = EventUtils.getActiveEventByType(EventType.luckyStrike);
         let user = UserService.getUser();
-        let handicap = eventInfo && user.getWinsInRow() >= 3;
-        let strongHandicap = eventInfo && user.getWinsInRow() >= 4 && user.getCurrentForest() - user.getSpendOnLevel() >= 4;
 
-        let finalBonuses = Math.max(0, (forestType.bonuses || 0) - (handicap? 1:0) - (strongHandicap? 1:0));
+        // let forestInfo = user.getAllForests().find(f => f.forestType.id == forestType.id);
+        // let isSecret = forestInfo && forestInfo.specialItemOrCreature;
+        // let isMonster = forestInfo && forestInfo.monster;
+        // let isHard = ForestUtils.isHardLevel(forestType);
+
+        // let fora = Utils.randomBoolean() && user.getCurrentForest()>=9 && user.getCurrentForest() - user.getBuildStageOnLevel() < 4 &&  
+        //     !luckyStrike && !isSecret && !isMonster;                    //помогаем пройти 4 уровня после постройки этажа
+        // fora = fora || !isHard && forestInfo && forestInfo.looses >= 4; //если 4 поражения на обычном уровне - помогаем пройти
+        
+        // let strongFora = fora && isHard;
+        // strongFora =  strongFora || isHard && !isSecret && forestInfo && forestInfo.looses >= 10 && Utils.randomBoolean(); //если 10 поражения на сложном уровне - помогаем пройти
+        // strongFora =  strongFora || isHard && isSecret && forestInfo && forestInfo.looses >= 15 && Utils.randomBoolean(); //если 15 поражения на секретном уровне - помогаем пройти
+
+        // let handicap = Utils.randomBoolean() && luckyStrike && !isHard && user.getWinsInRow() >= 3;
+        
+
+        // let finalBonuses = Math.max(0, (forestType.bonuses || 0)- (handicap? 1:0)  /*- (strongHandicap? 1:0)*/ + (fora?1:0) + (strongFora?1:0));
+
+        let finalBonuses = forestType.bonuses;
+
+        //???? not strong - давать пройти после 2-хпоражений
+        //Strong - ослаблять на 3-й день и после 9 поражений 
+
+
+
+
+
+        // let strongHandicap = !handicap && luckyStrike && user.getWinsInRow() >= 4 && user.getCurrentForest() - user.getSpendOnLevel() >= 4;
         
         for (let i = 0; i < finalBonuses; i++) {
             let possibleAnimalBioms = [BiomType.FOREST, BiomType.MOUNTAIN, BiomType.SAND, BiomType.BERRY_FIELD];
@@ -372,6 +409,13 @@ export default class CellsProvider extends BaseCellsProvider {
                         }
 
                         switch (this.forestType.environment) {
+                            case Environment.forest:
+                            case Environment.lake:
+                            case Environment.jungles:
+                            case Environment.bugForest:
+                                // index = this.getEmptyCell(types, [BiomType.FOREST]);
+                                types[index] = Utils.randomBoolean() ? ContentType.rabbit : ContentType.butterfly;
+                                break;
                             case Environment.darkForest:
                                 // index = this.getEmptyCell(types, [BiomType.FOREST]);
                                 types[index] = ContentType.owlFlying;//или bet?
@@ -384,13 +428,8 @@ export default class CellsProvider extends BaseCellsProvider {
                                 // index = this.getEmptyCell(types, [BiomType.FOREST]);
                                 types[index] = Utils.randomBoolean() ? ContentType.bird : ContentType.butterfly2;
                                 break;
-                            case Environment.forest:
-                            case Environment.jungles:
-                            case Environment.lake:
                             default:
-                                // index = this.getEmptyCell(types, [BiomType.FOREST]);
-                                types[index] = Utils.randomBoolean() ? ContentType.rabbit : ContentType.butterfly;
-                                // throw new NeverError(this.forestType.environment);
+                                throw new NeverError(this.forestType.environment);
                         }
                         
                         break;
@@ -452,16 +491,16 @@ export default class CellsProvider extends BaseCellsProvider {
                     return;
                 }
 
-                console.log("littleIvyCells.length: " + littleIvyCells.length)
-                console.log("bigIvyCells.length: " + bigIvyCells.length)
-                console.log("cankerberriesLeft: " + cankerberriesLeft)
+                // console.log("littleIvyCells.length: " + littleIvyCells.length)
+                // console.log("bigIvyCells.length: " + bigIvyCells.length)
+                // console.log("cankerberriesLeft: " + cankerberriesLeft)
 
                 if (littleIvyCells.length != 0 && (cankerberriesLeft == 1 || bigIvyCells.length == 0 || (Utils.randomBoolean() && cankerberriesLeft != 2))) {
                     let cell = littleIvyCells[Utils.random(littleIvyCells.length)];
                     let added = cell.addCankerBerries(transparent);
                     Utils.delete(littleIvyCells, cell)
                     cankerberriesLeft -= added;
-                    console.log("littleIvyCells used")
+                    // console.log("littleIvyCells used")
 
                     if(added == 0){
                         alert("Недостаточно кустов для шиповника!");
@@ -473,7 +512,7 @@ export default class CellsProvider extends BaseCellsProvider {
                     let added = cell.addCankerBerries(transparent);
                     Utils.delete(bigIvyCells, cell)
                     cankerberriesLeft -= added;
-                    console.log("bigIvyCells used")
+                    // console.log("bigIvyCells used")
 
                     if(added == 0){
                         alert("Недостаточно кустов для шиповника!");
@@ -490,19 +529,37 @@ export default class CellsProvider extends BaseCellsProvider {
     }
 
     private getEmptyCell(contents: ContentType[], bioms?: BiomType[]): number {
-        let position = Utils.random(contents.length);
-        let counter = 0;
-        while (contents[position] || (bioms && bioms.indexOf(ForestUtils.getBiom(this.getMask()[position].type)) == -1)) {
-            position = Utils.random(contents.length);
-            counter++;
-            if (counter == CellsProvider.MAX_GENERATION_ATTEMPTS_COUNT) {
-                this.message = "Не удалось разместить объект на поле!";
-                console.error("Can not place grass object!");
-                return -1;
+        let position = Utils.random(contents.filter((c,i) => !contents[i] && (!bioms || bioms.indexOf(ForestUtils.getBiom(this.getMask()[i].type)) != -1)).length);
+        let currentPosition = 0;
+
+        for(let i=0; i<contents.length; i++){
+            if(!bioms || bioms.indexOf(ForestUtils.getBiom(this.getMask()[i].type)) != -1){
+                
+                if (!contents[i]) {
+                    if(currentPosition == position) return i;
+                    currentPosition++;
+                } 
             }
         }
-        return position;
+
+        this.message = "Не удалось разместить объект на поле! ";
+        console.error("Can not place grass object!"  );
+        return -1;
     }
+    // private getEmptyCell(contents: ContentType[], bioms?: BiomType[]): number {
+    //     let position = Utils.random(contents.length);
+    //     let counter = 0;
+    //     while (contents[position] || (bioms && bioms.indexOf(ForestUtils.getBiom(this.getMask()[position].type)) == -1)) {
+    //         position = Utils.random(contents.length);
+    //         counter++;
+    //         if (counter == CellsProvider.MAX_GENERATION_ATTEMPTS_COUNT) {
+    //             this.message = "Не удалось разместить объект на поле! ";
+    //             console.error("Can not place grass object!"  );
+    //             return -1;
+    //         }
+    //     }
+    //     return position;
+    // }
 
     public canSpawnOnCell(cell: ForestCell):boolean {
         if (!cell.state.opened) {
@@ -510,7 +567,7 @@ export default class CellsProvider extends BaseCellsProvider {
         }
 
         if (this.isInteractive(cell) && cell.type != CellType.HIVE) {
-            if (cell.state.content == ContentType.bush) {
+            if (cell.state.content == ContentType.bush || cell.state.content == ContentType.bush2 ) {
                 return cell.state.berries.length == 0;
             }
             return true;

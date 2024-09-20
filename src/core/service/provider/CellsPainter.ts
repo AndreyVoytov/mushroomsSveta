@@ -58,13 +58,14 @@ export default class CellsPainter extends CellsProvider {
             })
         }
 
-        if (cell.state.content == ContentType.bush) {
+        if (cell.state.content == ContentType.bush || cell.state.content == ContentType.bush2) {
+            let isBlue = cell.state.content == ContentType.bush2;
             let berriesCount = Number(cell.state.metaValue);
             // let angleStart = Utils.random(180);
             let angleStart = 0;
             for (let i = 0; i < berriesCount; i++) {
                 let berryAngle = angleStart + i * 360 / berriesCount;
-                let berry = SpriteUtils.createSprite(game, this.calculateX(cell), this.calculateY(cell), "blueberry");
+                let berry = SpriteUtils.createSprite(game, this.calculateX(cell), this.calculateY(cell), isBlue ? "blueberry" : "redberry");
                 berry.angle = berryAngle;
                 berry.scale.set(0.5);
                 berry.anchor.set(0.5)
@@ -82,7 +83,7 @@ export default class CellsPainter extends CellsProvider {
 
         if (cell.state.content == ContentType.hive) {
             let honeyCount = Number(cell.state.metaValue);
-            cell.state.honeyLabel = new Label(game, 20, 20, "" + honeyCount, { font: "35px Arial", fill: "#fde700" })
+            cell.state.honeyLabel = new Label(game, 20, 20, "" + honeyCount, Label.BalsamiqSansBoldBold(35, "#fde700"))
             cell.state.honeyLabel.addStrokeColor("#6c2e11", 0)
             cell.state.honeyLabel.strokeThickness = 8;
 

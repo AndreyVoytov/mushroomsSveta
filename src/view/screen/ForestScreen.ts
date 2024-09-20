@@ -44,9 +44,38 @@ export default class ForestScreen extends BaseForestScreen {
     private spawnCellsCountdown: number = 0;
     private forceSpawn = false;
     private canSpawn = false;
+    
+    private haveShells = false;
+    private haveMoonflowers = false;
+    private haveBushes = false;
+
 
     create() {
         super.create();
+        // ServerStoreComponent.syncronizeUserWithServer();
+        // // ForestsConfiguration.allForests.forEach(f =>{
+        // //     if(!ForestUtils.isHardLevel(f)){
+        // //         let slots = 0;
+        // //         if(f.slots)f.slots.forEach(s => slots += s.count);
+        // //         console.log("frst" + "\t" + f.id+ "\t" + f.mask.split("0").join("").length + "\t" + (slots + f.bonuses) + "\t" + f.steps + "\t" + (f.bonuses *2))
+        // //     }
+        // // })
+
+        // if(EditorScreen.test_levelId && EditorScreen.test_looses + EditorScreen.test_wins <= (EditorScreen.TEST_WITH_100_STEPS? 1: EditorScreen.TEST_ATTEMPTS)){
+        //     let label = new Label(this.game, this.game.width/2, 80,  "testLog[" + EditorScreen.test_levelId + "]: win/loose=" + EditorScreen.test_wins + "/" + EditorScreen.test_looses +
+        //     "; avg_steps_left=" + EditorScreen.test_stepsOnWin/EditorScreen.test_wins  +
+        //     "; avg_aims_left=" + EditorScreen.test_aimsOnLoose/EditorScreen.test_looses)
+        //     this.add.existing(label);
+        //     console.log(label.text)
+        //     if(EditorScreen.test_looses + EditorScreen.test_wins < (EditorScreen.TEST_WITH_100_STEPS? 1: EditorScreen.TEST_ATTEMPTS)
+        //                                                          || EditorScreen.LEVELS_TO_TEST > 1){
+        //         this.game.time.events.add(2000, () => {
+        //             this.testLevel(ForestScreen.DEFAULT_TEST_ATTEMPTS);
+        //         });
+        //     } else {
+        //         EditorScreen.test_levelId = null;
+        //     }
+        // }
     }
 
     protected createCells() {
@@ -91,6 +120,12 @@ export default class ForestScreen extends BaseForestScreen {
         this.forceSpawn = false;
         this.spawnedCells = 0;
         this.spawnCellsCountdown = 0;
+
+        this.haveShells = this.getForestType().interactiveItems && this.getForestType().interactiveItems.find(i => i.name == ContentType[ContentType.shell]) ? true : false;
+        this.haveMoonflowers = this.getForestType().interactiveItems && this.getForestType().interactiveItems.find(i => i.name == ContentType[ContentType.moonflowerClosed])? true : false; 
+        this.haveBushes = this.getForestType().interactiveItems && this.getForestType().interactiveItems.find(i => i.name == ContentType[ContentType.bush])? true : false; 
+
+   
         // if (!AdminService.isAdminUser()) {
             this.cellsProvider.getCells().forEach((cell, i) => {
                 this.drawCellBgShadow(cell);
@@ -101,6 +136,10 @@ export default class ForestScreen extends BaseForestScreen {
         });
 
         this.flowersProvider.generateFlowers(this.getForestType().flowers || 0);
+        if(this.getForestType().flowers){
+            this.getForestType().flowers = this.flowersProvider.flowers.length;
+        }
+
 
         this.cellsProvider.getCells().forEach((cell, i) => {
             this.drawCell(cell);
@@ -161,9 +200,9 @@ export default class ForestScreen extends BaseForestScreen {
         let bgShadow = SpriteUtils.createSprite(this.game, this.cellsProvider.calculateX(cell), this.cellsProvider.calculateY(cell), "hex2");
         bgShadow.anchor = new Phaser.Point(0.5, 0.5);
         bgShadow.alpha = 0.3;
-        // bgShadow.width = BaseCellsProvider.CELL_WIDTH;
-        // bgShadow.height = BaseCellsProvider.CELL_HEIGHT;
-        this.add.existing(bgShadow);
+        // this.add.existing(bgShadow);
+        this.layoutHolder.addChild(bgShadow);
+        cell.bgShadow = bgShadow;
     }
     protected drawCellBg(cell: ForestCell) {
         let cellBg = SpriteUtils.createSprite(this.game, this.cellsProvider.calculateX(cell), this.cellsProvider.calculateY(cell), ForestUtils.getForestCellBg(this.getForestType(), cell.type));
@@ -346,34 +385,70 @@ export default class ForestScreen extends BaseForestScreen {
         return {x: cell.state.sprite.x, y: cell.state.sprite.y};
     }
 
+    // onMouseUp(event: MouseEvent): void {
+    //     if(!this.isLocked() && AdminService.cacheComplexImages()) { //TODO do not ignore education!
+    //         let X = this.cellsProvider.calculateRelativeXByRealPosition(this.ruler.aimX, this.ruler.aimY);
+    //         let Y = this.cellsProvider.calculateRelativeYByRealPosition(this.ruler.aimX, this.ruler.aimY);
+
+    //         let closestCellOrder = Y * BaseCellsProvider.MAX_WIDTH + X;
+
+    //         console.log("Y: " + Y)
+    //         console.log("X: " + X)
+    //         console.log("ORDER: " + closestCellOrder)
+
+    //         let coordinates = this.cellsProvider.calculateRelativePosition(closestCellOrder);
+    //         let x = this.cellsProvider.calculateRealX(coordinates.x, coordinates.y);
+    //         let y = this.cellsProvider.calculateRealY(coordinates.x, coordinates.y);
+
+    //         let cell = this.cellsProvider.getCells().filter(c => c.X == coordinates.x && c.Y == coordinates.y).shift();
+    //         if(cell && cell.state.cover && !cell.state.opened && !cell.state.cover.isLocked() && !cell.state.cover.isDark() &&
+    //             !this.educationPanel.shownWithOkButton && !this.levelStopped && !InGameSettingsPanel.shown && (!this.boosterInfoPanel || this.boosterInfoPanel.boosterType == BoosterType.glove)
+    //             && !this.isUnderFadeStrip(cell) && !cell.state.cover.boat) { 
+
+    //             if (ForestUtils.isBoosterType(cell.type)) {
+    //                 this.boostersProvider.activateBooster(cell);
+    //             } else {
+    //                 cell.state.cover.openCell();
+    //             }
+    //         }
+    //     }
+    //     super.onMouseUp(event);
+    // }
+
     onMouseUp(event: MouseEvent): void {
-        if(!this.isLocked() && AdminService.cacheComplexImages()) { //TODO do not ignore education!
-            let X = this.cellsProvider.calculateRelativeXByRealPosition(this.ruler.aimX, this.ruler.aimY);
-            let Y = this.cellsProvider.calculateRelativeYByRealPosition(this.ruler.aimX, this.ruler.aimY);
+        this.onMouseUpOnCoorinates(this.ruler.aimX, this.ruler.aimY);
+        super.onMouseUp(event);
+    }
+
+    public onMouseUpOnCoorinates(cursorX: number, cursorY:number, cacheComplexImages?:boolean): void {
+        if(!this.isLocked() && (AdminService.cacheComplexImages() || cacheComplexImages)) { //TODO do not ignore education!
+            // console.log("onMouseUpOnCoorinates: " + cursorX + " " + cursorY);
+            let X = this.cellsProvider.calculateRelativeXByRealPosition(cursorX, cursorY);
+            let Y = this.cellsProvider.calculateRelativeYByRealPosition(cursorX, cursorY);
 
             let closestCellOrder = Y * BaseCellsProvider.MAX_WIDTH + X;
 
-            console.log("Y: " + Y)
-            console.log("X: " + X)
-            console.log("ORDER: " + closestCellOrder)
+            // console.log("Y: " + Y)
+            // console.log("X: " + X)
+            // console.log("ORDER: " + closestCellOrder)
 
             let coordinates = this.cellsProvider.calculateRelativePosition(closestCellOrder);
-            let x = this.cellsProvider.calculateRealX(coordinates.x, coordinates.y);
-            let y = this.cellsProvider.calculateRealY(coordinates.x, coordinates.y);
+            // let x = this.cellsProvider.calculateRealX(coordinates.x, coordinates.y);
+            // let y = this.cellsProvider.calculateRealY(coordinates.x, coordinates.y);
 
             let cell = this.cellsProvider.getCells().filter(c => c.X == coordinates.x && c.Y == coordinates.y).shift();
             if(cell && cell.state.cover && !cell.state.opened && !cell.state.cover.isLocked() && !cell.state.cover.isDark() &&
-                !this.educationPanel.shownWithOkButton && !this.levelStopped && !InGameSettingsPanel.shown && (!this.boosterInfoPanel || this.boosterInfoPanel.boosterType == BoosterType.glove)
+                !this.educationPanel.shownWithOkButton && !this.levelStopped && !InGameSettingsPanel.shown 
                 && !this.isUnderFadeStrip(cell) && !cell.state.cover.boat) { 
 
                 if (ForestUtils.isBoosterType(cell.type)) {
-                    this.boostersProvider.activateBooster(cell);
+                    this.boostersProvider.activateBooster(cell);//, cacheComplexImages && AdminService.isEditMode());
                 } else {
                     cell.state.cover.openCell();
                 }
             }
         }
-        super.onMouseUp(event);
+       
     }
 
     protected onCellOpen(cellState: CellState, openingType: OpeningType, byGlove?: boolean) {
@@ -406,24 +481,37 @@ export default class ForestScreen extends BaseForestScreen {
 
         this.justOpenedCells = this.cellsProvider.getCells().filter(cell => cell.state == cellState);
 
-        this.justOpenedCells[0].bg.visible = true;
-        if (this.justOpenedCells[0].state.sprite) {
-            // this.justOpenedCells[0].state.sprite.alpha = 0;
-            this.justOpenedCells[0].state.sprite.updateTransform();
-            this.game.time.events.add(1, ()=>{
-                this.justOpenedCells[0].state.sprite.visible = true;
-            });
-            // this.game.add.tween(this.justOpenedCells[0].state.sprite).to({alpha:1}, 1, Easing.Linear.None, true, 0)
+
+        if(this.justOpenedCells[0]){
+            this.justOpenedCells[0].bg.visible = true;
+   
+           if (this.justOpenedCells[0].state.sprite) {
+               this.justOpenedCells[0].state.sprite.visible = true;
+           }
+           if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != "") {
+               this.justOpenedCells[0].state.label.visible = true;
+           }
+        }
+
+        //commented
+        // this.justOpenedCells[0].bg.visible = true;
+        // if (this.justOpenedCells[0].state.sprite) {
+        //     // this.justOpenedCells[0].state.sprite.alpha = 0;
+        //     this.justOpenedCells[0].state.sprite.updateTransform();
+        //     this.game.time.events.add(1, ()=>{
+        //         this.justOpenedCells[0].state.sprite.visible = true;
+        //     });
+        //     // this.game.add.tween(this.justOpenedCells[0].state.sprite).to({alpha:1}, 1, Easing.Linear.None, true, 0)
             
-        }
-        if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != "") {
-            // this.justOpenedCells[0].state.label.alpha = 0;
-            this.justOpenedCells[0].state.label.updateTransform();
-            this.game.time.events.add(1, ()=>{
-                this.justOpenedCells[0].state.label.visible = true;
-            });
-            // this.game.add.tween(this.justOpenedCells[0].state.label).to({alpha:1}, 1, Easing.Linear.None, true, 0)
-        }
+        // }
+        // if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != "") {
+        //     // this.justOpenedCells[0].state.label.alpha = 0;
+        //     this.justOpenedCells[0].state.label.updateTransform();
+        //     this.game.time.events.add(1, ()=>{
+        //         this.justOpenedCells[0].state.label.visible = true;
+        //     });
+        //     // this.game.add.tween(this.justOpenedCells[0].state.label).to({alpha:1}, 1, Easing.Linear.None, true, 0)
+        // }
 
         // if(this.justOpenedCells[0].Y > maxY){
         //     return;
@@ -681,7 +769,12 @@ export default class ForestScreen extends BaseForestScreen {
                 this.game.tweens.removeFrom(c.state.cover.boat)
                 this.addSprite(c.state.cover.boat)
                 if(AdminService.cacheComplexImages()) c.state.cover.cacheAsBitmap = false;
-                if(AdminService.cacheComplexImages()) c.state.cover.cacheAsBitmap = true;
+                if(AdminService.cacheComplexImages()) {
+                    c.state.cover.cacheAsBitmap = true;
+                    c.state.cover.onDestroy.add(()=>{
+                        c.state.cover.cacheAsBitmap = false;
+                    })
+                }
                 c.state.cover.boat.inputEnabled = false;
                 this.bringUiToTop();
             }
@@ -723,6 +816,8 @@ export default class ForestScreen extends BaseForestScreen {
     }
 
     private tryUnlockBooks(cell: ForestCell) {
+        if(!cell) return;
+
         let lockpick: ForestCell;
         let book: ForestCell;
         if (cell.state.content == ContentType.book1) {
@@ -811,7 +906,8 @@ export default class ForestScreen extends BaseForestScreen {
                     adjucentCountLabel.addStrokeColor("#114e00", 0);
                     break;
                 case DecorationsContents.mirror:
-                    adjucentCountLabel.addStrokeColor("#34888e", 0);
+                    // adjucentCountLabel.addStrokeColor("#34888e", 0);
+                    adjucentCountLabel.addStrokeColor("#6c5c4a", 0);
                     break;
                 case DecorationsContents.stone:
                     adjucentCountLabel.addStrokeColor("#8b704d", 0);
@@ -890,6 +986,8 @@ export default class ForestScreen extends BaseForestScreen {
     }
 
     private refreshLabelForCell(cell: ForestCell): void {
+        if(!cell) return;
+
         let adjucentCount = this.cellsProvider.getAdjucentInteractiveCount(this.cellsProvider.getCells(), cell);
         let adjucentClosedCount = this.cellsProvider.getAdjucentClosedCount(this.cellsProvider.getCells(), cell);
         if (adjucentCount == 0) {
@@ -996,7 +1094,8 @@ export default class ForestScreen extends BaseForestScreen {
 
             //Следим, чтобы желудь, изначально лежащий на дне, можно было вскрыть
             let adjucentAcornsOnTheGround = this.ladybugsProvider.getLadybugs().filter(l => !l.isLadybug
-                && this.cellsProvider.getBottomCells(l.X, l.Y).filter(c => !c.state.cover.isLocked()).length > 0
+                // && this.cellsProvider.getBottomCells(l.X, l.Y).filter(c => !c.state.cover.isLocked()).length > 0
+                && this.cellsProvider.getBottomCells(l.X, l.Y).filter(c => !c.state.cover.isLocked()).length == 0
                 && this.cellsProvider.areAdjucentAndNoSeparatorsForCoordinates(cell, l.X, l.Y));
 
             if (adjucentAcornsOnTheGround.length > 0) {
@@ -1055,6 +1154,13 @@ export default class ForestScreen extends BaseForestScreen {
             newCell.state.label.alpha = 1;
             newCell.state.berries.forEach(b => { b.alpha = 1; })
         })
+
+        this.flowersProvider.flowers.forEach(f => {
+            if(!f.collected && this.flowersProvider.containFlower(newCell, f.x, f.y, f.type.r)){
+                newCell.occupiedByFlower = true;
+            };
+        })
+
         return newCell;
     }
 
@@ -1084,19 +1190,40 @@ export default class ForestScreen extends BaseForestScreen {
 
                 affectedHives.forEach(cell => {
                     let countWas = Number(cell.state.honeyLabel.text);
-                    cell.state.honeyLabel.text = "" + (countWas - 1);
-                    if (countWas == 1) {
-                        this.game.add.tween(cell.state.sprite.scale).to({ x: 0, y: 0 }, 400, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true, 300);
-                        this.game.time.events.add(700, () => {
-                            cell.state.content = ContentType.empty;
-                        })
+                    let openableCells = this.cellsProvider.getCells().filter(cc => this.cellsProvider.areAdjucent(cell, cc) &&
+                    !cc.state.opened && !cc.state.cover.isLocked() && !cc.state.cover.isDark()).length;
+
+
+                    if (openableCells == 0) {
+                    // if (countWas == 1) {
+                        for(let i=0; i<countWas; i++){
+                            this.game.time.events.add(i*100+1, ()=>{
+                                cell.state.honeyLabel.text = "" + (countWas - i - 1);
+                                this.topPanel.collectHoney(cell);
+                                SoundUtils.honey();
+
+                                if(countWas - i - 1 == 0){
+                                    this.game.add.tween(cell.state.sprite.scale).to({ x: 0, y: 0 }, 400, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true, 300);
+                                    this.game.time.events.add(700, () => {
+                                        cell.state.content = ContentType.empty;
+                                    })
+                                }   
+                            })
+                        }
                     } else {
+                        cell.state.honeyLabel.text = "" + (countWas - 1);
                         this.game.tweens.removeFrom(cell.state.sprite)
                         cell.state.sprite.scale.set(1, 1);
                         AnimationUtils.jelly(this.game, cell.state.sprite, 0, true)
+                        this.topPanel.collectHoney(cell);
+                        SoundUtils.honey();
+                        if(countWas - 1 == 0){
+                            this.game.add.tween(cell.state.sprite.scale).to({ x: 0, y: 0 }, 400, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true, 300);
+                            this.game.time.events.add(700, () => {
+                                cell.state.content = ContentType.empty;
+                            })
+                        }
                     }
-                    SoundUtils.honey();
-                    this.topPanel.collectHoney(cell);
                 });
             }
 
@@ -1121,11 +1248,11 @@ export default class ForestScreen extends BaseForestScreen {
                     let jellyCells = this.cellsProvider.getCells().filter(cell =>
                         cell.type == CellType.JELLY && !cell.state.opened && cell.state.cover.isLocked());
 
-                    let jellyAdjucentCells = this.cellsProvider.getCells().filter(cell =>
+                    let jellyAdjucentCells = this.cellsProvider.getCells().filter(cell => !cell.state.cover.dragonfly &&
                         !cell.state.opened && !cell.state.cover.isLocked() && !cell.state.cover.isDark() &&
                         ForestUtils.getBiom(cell.type) != BiomType.WATER &&
                         !ForestUtils.isBoosterType(cell.type) &&
-                        jellyCells.filter(c => this.cellsProvider.areAdjucent(c, cell) && !this.cellsProvider.haveSeparatorsBetween(c, cell.X, cell.Y)).length > 0 &&
+                        jellyCells.filter(c => !this.isUnderFadeStrip(c)).filter(c => this.cellsProvider.areAdjucent(c, cell) && !this.cellsProvider.haveSeparatorsBetween(c, cell.X, cell.Y)).length > 0 &&
                         this.cellsProvider.getCells().filter(c => this.cellsProvider.areAdjucent(c, cell) &&
                             !c.state.opened && !c.state.cover.isDark() && !c.state.cover.isLocked()).length > 0); //TODO вложенный цикл
 
@@ -1313,7 +1440,10 @@ export default class ForestScreen extends BaseForestScreen {
     }
 
     private refreshBushesAndShells(openedCell: ForestCell): void {
-        if (this.getForestType().blueberries) {
+        if(!openedCell) return;
+
+        // if (this.getForestType().blueberries) {
+        if (this.haveBushes) {
             this.cellsProvider.getCells().filter(c => c.state.berries.length > 0
                 && c.state.opened && (this.cellsProvider.areAdjucent(c, openedCell) || c == openedCell)).forEach(c => {
 
@@ -1338,13 +1468,15 @@ export default class ForestScreen extends BaseForestScreen {
 
                     if (c.state.berries.length == 0) {
                         c.state.content = ContentType.empty;
+                        this.game.add.tween(c.state.sprite.scale).to({x:0, y:0}, 1000, Easing.Linear.None, true, 200)
                     }
 
                     this.topPanel.tryCollectBlueberry(berriesToTakeOff);
                 });
         }
 
-        if (this.getForestType().pearls) {
+        // if (this.getForestType().pearls) {
+        if (this.haveShells) {
             this.cellsProvider.getCells().filter(c => c.state.content == ContentType.shell &&
                 c.state.opened && (this.cellsProvider.areAdjucent(c, openedCell) || c == openedCell) && c.state.metaValue != "pearlCollected").forEach(c => {
 
@@ -1368,7 +1500,8 @@ export default class ForestScreen extends BaseForestScreen {
                 })
         }
 
-        if (this.getForestType().moonflowers) {
+        // if (this.getForestType().moonflowers) {
+        if (this.haveMoonflowers) {
             this.cellsProvider.getCells().filter(c => c.state.content == ContentType.moonflowerClosed &&
                 c.state.opened && (this.cellsProvider.areAdjucent(c, openedCell) || c == openedCell)).forEach(c => {
 

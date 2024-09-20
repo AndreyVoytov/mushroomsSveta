@@ -289,4 +289,15 @@ export default class Utils {
         var results = regex.exec( url );
         return results == null ? null : results[1];
     }
+
+    public static hashCode(str: string): number {
+        var h: number = 0;
+        for (var i = 0; i < str.length; i++) {
+            h = 31 * h + str.charCodeAt(i);
+            // console.log("HASH: " + h)
+            if(h > 0xFFFFFF) h = h & 0xFFFFFF;
+            // console.log("HASH: " + h)
+        }
+        return h //& 0xFFFFFFFF;
+    }
 }

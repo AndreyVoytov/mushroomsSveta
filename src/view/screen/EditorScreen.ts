@@ -21,15 +21,19 @@ import EditorService from '../../core/service/EditorService';
 import BasePanel from '../component/panel/BasePanel';
 import LeafController from '../component/editor/LeafController';
 import EditorContentPanel from '../component/editor/EditorContentPanel';
-import Label from '../component/panel/Label';
 import ForestCellCover from '../component/forest/ForestCellCover';
 import ForestDao from '../../core/dao/ForestDao';
-import SpriteUtils from '../../core/utils/SpriteUtils';
 import HeaderController from '../component/editor/HeaderController';
 import ForestsConfiguration from '../../core/configuration/ForestConfiguration';
 import BaseForestScreen from './BaseForestScreen';
 import AnimationUtils from '../../core/utils/AnimationUtils';
 import EditorCheckBoxPanel from '../component/editor/EditorCheckBoxPanel';
+import EditorValuePanel from './../component/editor/EditorValuePanel';
+import SpriteUtils from './../../core/utils/SpriteUtils';
+import BiomType from './../../core/model/enum/BiomType';
+import Label from './../component/panel/Label';
+import LogPanel from './../component/panel/LogPanel';
+import TestLevelRecord from './../../core/model/editor/TestLevelRecord';
 
 export default class EditorScreen extends BaseScreen {
 
@@ -48,6 +52,7 @@ export default class EditorScreen extends BaseScreen {
     private brushes: (Phaser.Group | Phaser.Sprite)[] = [];
 
     private stepsPanel: EditorContentPanel;
+    private maxStepsPanel: EditorContentPanel;
     private bushesPanel: EditorContentPanel;
 
     private contentPage = 0;
@@ -63,6 +68,20 @@ export default class EditorScreen extends BaseScreen {
     private static OFFSET_LAYOUT_Y = -250;
     private static OFFSET_CELL_Y = EditorScreen.OFFSET_LAYOUT_Y - 85
 
+
+    public static test_levelId:string;
+    public static test_wins:number = 0;
+    public static test_looses:number = 0;
+    public static test_stepsOnWin:number = 0;
+    public static test_aimsOnLoose:number = 0;
+    public static test_withMaxSteps = false;
+
+    public static TEST_WITH_100_STEPS = false;
+    public static TEST_ATTEMPTS = 30;
+    // public static TEST_ATTEMPTS = 3;
+    public static LEVELS_TO_TEST = 1;
+    public static SAVE_RESULTS = false;
+
     private cellCovers: ForestCellCover[] = [];
     private separators: Phaser.Sprite[] = [];
 
@@ -74,7 +93,11 @@ export default class EditorScreen extends BaseScreen {
     private Z_IsDown: boolean = false;
 
     private topPanel;
-    private bottomPanel;
+    private bottomPanel : Phaser.Sprite;
+    private namePanel: EditorValuePanel;
+    private iconPanel: EditorValuePanel;
+    private iconPanelSprite: Phaser.Sprite;
+    // private valuesLabel: Label;
 
     public create(): void {
         this.Z_IsDown = false;
@@ -149,15 +172,16 @@ export default class EditorScreen extends BaseScreen {
         this.addButton(nextLevelButton);
 
         
-        this.hardCheckbox = new EditorCheckBoxPanel(this.game, "             hard", () => this.forestType.isHardLevel? true : false, (p:EditorCheckBoxPanel) => {
-            this.forestType.isHardLevel = !this.forestType.isHardLevel;
-            this.saveCreatedLevel();
-            p.resetPanel();
-        })
-        this.hardCheckbox.x += 0;
-        this.hardCheckbox.y += 100 * (3 + 1/2) - 150 ;
-        this.addSprite(this.hardCheckbox);
-        this.hardCheckbox.resetPanel();
+        // this.hardCheckbox = new EditorCheckBoxPanel(this.game, "             hard", () => this.forestType.isHardLevel? true : false, (p:EditorCheckBoxPanel) => {
+        //     this.forestType.isHardLevel = !this.forestType.isHardLevel;
+        //     this.saveCreatedLevel();
+        //     p.resetPanel();
+        // })
+        // this.hardCheckbox.x += 0;
+        // this.hardCheckbox.y += 100 * (3 + 1/2) - 150 ;
+        // this.addSprite(this.hardCheckbox);
+        // this.hardCheckbox.resetPanel();
+        // this.hardCheckbox.visible = false;
 
 
 
@@ -188,6 +212,77 @@ export default class EditorScreen extends BaseScreen {
         playButtonEditor.fixedToCamera = true;
         this.addButton(playButtonEditor);
 
+        // let playTestButtonEditor = SpriteUtils.createButton(this.game, 0, 0, "playButtonEditor", () => {
+        //     this.testLevel();
+        // });
+        // playTestButtonEditor.name = "playTestButtonEditor";
+        // playTestButtonEditor.fixedToCamera = true;
+        // this.addButton(playTestButtonEditor);
+
+        let playMaxButtonEditor = SpriteUtils.createButton(this.game, 0, 0, "playMaxButtonEditor", () => {
+            this.playCreatedLevel(true);
+        });
+        playMaxButtonEditor.name = "playMaxButtonEditor";
+        playMaxButtonEditor.fixedToCamera = true;
+        this.addButton(playMaxButtonEditor);
+
+        // let playMaxTestButtonEditor = SpriteUtils.createButton(this.game, 0, 0, "playMaxButtonEditor", () => {
+        //     this.testLevel(true);
+        // });
+        // playMaxTestButtonEditor.name = "playMaxTestButtonEditor";
+        // playMaxTestButtonEditor.fixedToCamera = true;
+        // this.addButton(playMaxTestButtonEditor);
+
+        // let playAutoButtonEditor = SpriteUtils.createButton(this.game, 0, 0, "playAutoButtonEditor", () => {
+        //     this.testForBugs();
+        // });
+        // playAutoButtonEditor.name = "playAutoButtonEditor";
+        // playAutoButtonEditor.fixedToCamera = true;
+        // this.addButton(playAutoButtonEditor);
+
+        let playAutoFullButtonEditor = SpriteUtils.createButton(this.game, 0, 0, "playAutoButtonEditor", () => {
+            let pnl = this.attachSprite("panel2");
+            pnl.x = this.game.width/2;
+            pnl.y = this.game.height - 350+120+12;
+            pnl.inputEnabled = true;
+            pnl.fixedToCamera = true;
+            pnl.scale.set(3, 0.7)
+
+            let closeButton = this.attachButton("closeButtonBlue", () => pnl.kill());
+            closeButton.x += 140+5;
+            closeButton.y -= 270+10+10;
+            closeButton.scale.set(0.6/pnl.scale.x, 0.6/pnl.scale.y)
+            pnl.addChild(closeButton);
+
+            let buttons = [
+                {name: "reset & full test", sprite: "panelButton", action: () => this.testForBalance()},
+                {name: "continue Ftest", sprite: "panelButton", action: () => this.continueTestForBalance()},
+                {name: "test curr", sprite: "panelButton", action: () => this.testLevel()},
+                {name: "test curr MAX", sprite: "panelButton", action: () => this.testLevel(true)},
+
+                {name: "fast test", sprite: "pnlButton", action: () => this.testForBugs()},
+                {name: "fast test from 1", sprite: "pnlButton", action: () => this.testForBugs(true)},
+                {name: "print results", sprite: "pnlButton", action: () => EditorScreen.printTestedLevels()},
+            ];
+            
+            let columns = 4;
+            let startX = this.game.width/columns/2 - this.game.width/2;
+            let startY = -200;
+
+            buttons.forEach((b,i) =>{
+                let b1 = this.attachButton(b.sprite, b.action);
+                b1.y = startY + Math.floor(i/columns) * 100;
+                b1.x = (startX + i%columns * this.game.width/columns)/pnl.scale.x;
+                b1.scale.set(0.5/pnl.scale.x, 0.5/pnl.scale.y)
+                b1.addChild(new Label(this.game, 0, -30, b.name,  { font: "bold 54px BalsamiqSansBold", fill: "#ffffff"}));
+                pnl.addChild(b1);
+            })
+        });
+        playAutoFullButtonEditor.name = "playAutoFullButtonEditor";
+        playAutoFullButtonEditor.fixedToCamera = true;
+        this.addButton(playAutoFullButtonEditor);
+
+
         let openButton = SpriteUtils.createButton(this.game, 0, 0, "openButton", () => {
             EditorService.showLevelEditorDialog(this.game);
         });
@@ -195,6 +290,47 @@ export default class EditorScreen extends BaseScreen {
         openButton.name = "openButton";
         openButton.fixedToCamera = true;
         this.addButton(openButton);
+
+        // this.namePanel = new EditorValuePanel(this.game, "name", () => this.forestType.name || "", (p:EditorValuePanel) => {
+        //     EditorService.showTextField("Изменить name", p.getValue(), (value:string) => {
+        //         this.forestType.name = value;
+        //         this.saveCreatedLevel();
+
+        //         p.resetPanel()
+        //     });
+        // });
+        // this.namePanel.x = 845+30;    
+        // this.namePanel.y = 365- 212-20;
+        // this.namePanel.scale.set(0.7)
+        // this.namePanel.fixedToCamera = true;
+        // this.addPanel(this.namePanel);
+
+        // this.iconPanel = new EditorValuePanel(this.game, "icon", () => this.forestType.icon || "", (p:EditorValuePanel) => {
+        //     EditorService.showTextField("Изменить icon", p.getValue(), (value:string) => {
+        //         this.forestType.icon = value;
+        //         this.saveCreatedLevel();
+        //         SpriteUtils.loadTexture(this.iconPanelSprite, value);
+
+        //         p.resetPanel()
+        //     });
+        // });
+        // this.iconPanel.x = 845;    
+        // this.iconPanel.y = 365 - 212 + this.namePanel.height;
+        // this.addPanel(this.iconPanel);
+
+        // this.iconPanelSprite = SpriteUtils.createSprite(this.game, -256/1.12, -33, this.forestType.icon);
+        // this.iconPanelSprite.scale.set(0.5);
+        // this.iconPanel.addChild(this.iconPanelSprite);
+
+        // this.valuesLabel = new Label(this.game, this.iconPanel.x-460, this.iconPanel.y + 50 - 164, "   0   0   0   0   0");
+        // this.addSprite(this.valuesLabel);
+        // this.valuesLabel.addColor("#FF0000", 4)
+        // this.valuesLabel.addColor("#00FF00", 8)
+        // this.valuesLabel.addColor("#e8fb1e", 12)
+        // this.valuesLabel.addColor("#7e0f9d", 16)
+        // this.game.time.events.loop(500, ()=>{
+        //     this.valuesLabel.text = ForestUtils.getValuesString(this.forestType);
+        // });
 
         this.applyPreset(this.preset)
 
@@ -259,6 +395,33 @@ export default class EditorScreen extends BaseScreen {
         this.stepsPanel.fixedToCamera = true;
         this.addPanel(this.stepsPanel);
 
+        this.maxStepsPanel = new EditorContentPanel(this.game, this, 620, 58 - 17 - 50-20, this.forestType, EditorContentPanel.MAX_STEPS_TYPE);
+        this.maxStepsPanel.fixedToCamera = true;
+        this.addPanel(this.maxStepsPanel);
+
+
+        let v = this.attachButton("v", ()=> this.duplicateVertical());
+        let v1 = this.attachButton("v1", ()=> this.duplicateVerticalWithMargin());
+        let vm = this.attachButton("vm", ()=> this.duplicateVertical(true));
+        // let vm1 = this.attachButton("vm1", ()=> this.duplicateVerticalWithMargin(true));
+        let vm1 = this.attachButton("vm1", ()=> this.addEmptyStringToTop());
+        
+        v.y+=15;
+        v1.y+=15;
+        vm.y+=15;
+        vm1.y+=15;
+        
+        v.x+=36;
+        v1.x+=36 +75;
+        vm.x+=36 +75*2;
+        vm1.x+=36 +75*3;
+
+        v.fixedToCamera = true;
+        v1.fixedToCamera = true;
+        vm.fixedToCamera = true;
+        vm1.fixedToCamera = true;
+
+
         let cellTypes = Utils.enumValues(CellType);
         Utils.delete(cellTypes, CellType.EMPTY);
 
@@ -276,24 +439,29 @@ export default class EditorScreen extends BaseScreen {
             let brush = new ForestCellCover(Environment.forest, "leaf1", this.getBrushX(i % totalOnPage), this.getBrushY(i % totalOnPage, startY),
                 BaseCellsProvider.CELL_WIDTH, BaseCellsProvider.CELL_HEIGHT, this.game, null, t, () => this.chooseBrush(BrushType.CELL_DEPENDENT, t), this);
 
-            brush.scale.set(0.7);
+            // brush.scale.set(0.7);
             brush.openableCover.inputEnabled = true;
-            brush.fixedToCamera = true;
-            this.add.existing(brush);
+            // this.add.existing(brush);
+            this.bottomPanel.addChild(brush);
+            brush.x-=this.bottomPanel.x;
+            brush.y-=this.bottomPanel.y - 30;
+            brush.scale.set(0.7/ this.bottomPanel.scale.x, 0.7/ this.bottomPanel.scale.y);
+
             this.brushes.push(brush);
 
             let coverFreeImage = ForestUtils.getBoosterContentType(t) || ForestUtils.getCoverFreeNotBoosterItem(t);
             if (coverFreeImage) {
                 brush.visible = true;
                 brush.openableCover.loadTexture(SpriteUtils.key("grass"), SpriteUtils.frame("grass"));
-                brush.openableCover.scale.set(1.5)
+                // brush.openableCover.scale.set(1.5)
+                brush.openableCover.scale.set(1)
 
                 let compass = SpriteUtils.createSprite(this.game, 0, 0, ContentType[coverFreeImage]);
                 compass.anchor.set(0.5);
-                compass.scale.set(1)
+                // compass.scale.set(1.5)
                 // compass.alpha = 0.1;
-                compass.width = 100;
-                compass.height = 100;
+                compass.width = 140;
+                compass.height = 140;
                 brush.openableCover.addChild(compass);
                 brush.leaf.visible = false;
             }
@@ -330,7 +498,7 @@ export default class EditorScreen extends BaseScreen {
         ladybugPlusBrush.fixedToCamera = true;
         this.addSprite(ladybugPlusBrush);
         this.brushes.push(ladybugPlusBrush);
-        ladybugPlusBrush.addChild(new Label(this.game, 0, -40, "+", { font: "bold 70px Arial", fill: "#000000"}));
+        ladybugPlusBrush.addChild(new Label(this.game, 0, -40, "+", { font: "bold 70px BalsamiqSansBold", fill: "#000000"}));
 
         ladybugPlusBrush.visible = contentPage == this.contentPage;
         ladybugPlusBrush.inputEnabled = ladybugBrush.visible;
@@ -340,13 +508,13 @@ export default class EditorScreen extends BaseScreen {
         let separatorBrush = SpriteUtils.createSprite(this.game, this.getBrushX(i % totalOnPage), this.getBrushY(i % totalOnPage, startY), "hex");
         let sep = SpriteUtils.createSprite(this.game, 0, 0, "separator");
         sep.anchor.set(0.5)
-        sep.scale.set(1)
+        sep.scale.set(1*1.5)
         separatorBrush.addChild(sep)
         separatorBrush.anchor.set(0.5)
         separatorBrush.name = "separator";
         separatorBrush.inputEnabled = true;
         separatorBrush.events.onInputDown.add(() => this.chooseBrush(BrushType.SEPARATOR), this);
-        separatorBrush.scale.set(0.7);
+        separatorBrush.scale.set(0.7/1.5);
         separatorBrush.fixedToCamera = true;
         this.addSprite(separatorBrush);
         this.brushes.push(separatorBrush);
@@ -381,7 +549,7 @@ export default class EditorScreen extends BaseScreen {
         arrowRight.scale.set(0.6);
         this.addButton(arrowRight);
 
-        this.contentPageLabel = new Label(this.game, 355 + 10, this.bottomPanel.y + 14 - this.bottomPanel.height / 2, "(" + (this.contentPage + 1) + ")", { font: "30px Arial", fill: "#ffffff" });
+        this.contentPageLabel = new Label(this.game, 355 + 10, this.bottomPanel.y + 14 - this.bottomPanel.height / 2, "(" + (this.contentPage + 1) + ")", { font: "30px BalsamiqSansBold", fill: "#ffffff" });
         // this.contentPageLabel.anchor.set(0.5);
         this.contentPageLabel.fixedToCamera = true;
         this.addSprite(this.contentPageLabel);
@@ -401,13 +569,72 @@ export default class EditorScreen extends BaseScreen {
         arrowRightBrushes.scale.set(0.6);
         this.addButton(arrowRightBrushes);
 
-        this.brushesPageLabel = new Label(this.game, 355 + 10 + 500, this.bottomPanel.y + 14 - this.bottomPanel.height / 2, "(" + (this.brushesPage + 1) + ")", { font: "30px Arial", fill: "#ffffff" });
+        this.brushesPageLabel = new Label(this.game, 355 + 10 + 500, this.bottomPanel.y + 14 - this.bottomPanel.height / 2, "(" + (this.brushesPage + 1) + ")", { font: "30px BalsamiqSansBold", fill: "#ffffff" });
         // this.contentPageLabel.anchor.set(0.5);
         this.brushesPageLabel.fixedToCamera = true;
         this.addSprite(this.brushesPageLabel);
 
         this.redrawCells();
     } 
+
+    private duplicateVertical(mirror?:boolean):void{
+        this.forestType = this.trimHard(this.forestType);
+        while(this.forestType.mask.length % BaseCellsProvider.MAX_WIDTH != 0) this.forestType.mask += "0";
+
+        this.forestType.mask =this.forestType.mask + (mirror?
+            this.shiftEvenLines(this.forestType.mask.split("").reverse().join("")):
+            this.shiftEvenLines(this.forestType.mask));
+        this.saveCreatedLevel();
+        this.redrawCells();
+        this.expandForestType();
+        console.log("editor: v")
+    }
+    
+    private addEmptyStringToTop():void{
+        let margin = "";
+        for(let i=0; i<BaseCellsProvider.MAX_WIDTH;i++){
+            margin += "0";
+        }
+        this.forestType.mask = margin + this.forestType.mask;
+        this.saveCreatedLevel();
+        this.redrawCells();
+    }
+
+    private duplicateVerticalWithMargin(mirror?:boolean):void{
+        this.forestType = this.trimHard(this.forestType);
+        while(this.forestType.mask.length % BaseCellsProvider.MAX_WIDTH != 0) this.forestType.mask += "0";
+        
+        let margin = "";
+        for(let i=0; i<BaseCellsProvider.MAX_WIDTH;i++){
+            margin += "0";
+        }
+
+        this.forestType.mask =this.forestType.mask + margin + (mirror?
+                this.shiftEvenLines(this.forestType.mask.split("").reverse().join(""), mirror):
+                this.shiftEvenLines(this.forestType.mask, mirror));
+        this.saveCreatedLevel();
+        this.redrawCells();
+        this.expandForestType();
+        console.log("editor: v1")
+    }
+
+    private shiftEvenLines(mask:string, margin?:boolean):string{
+        let lines:string[] = [];
+        for(let i=0; i < mask.length; i++){
+            let line = Math.floor(i/BaseCellsProvider.MAX_WIDTH);
+            if(i % BaseCellsProvider.MAX_WIDTH ==0 ) lines[line] = mask[i];
+            else lines[line] += mask[i];
+        }
+        for(let j=0; j<lines.length; j++){
+            console.log("shift: j=" + j + " lines.length=" + lines.length)
+            // if(((j  + lines.length + (margin?1:0)) % 2) == 1){//(lines.length%2==0?1:0)){
+            //     console.log("shift at j=" + j)
+            //     lines[j] = "0" + lines[j].substring(0, Math.min(BaseCellsProvider.MAX_WIDTH-1, lines[j].length));
+            // }
+        }
+        console.log("editor: " + lines.join(""))
+        return lines.join("");
+    }
 
     private scrollContentToPage(page: number) {
         page = Math.max(0, page)
@@ -455,14 +682,14 @@ export default class EditorScreen extends BaseScreen {
         // let startY = 1067;
         let startX = 523;
         let dx = 100;
-        let dy = 100;
+        let dy = 95;
 
         let BRUSHES_IN_ROW = 5;
         return startY + dy * Math.floor(i / BRUSHES_IN_ROW)
     }
 
     private chooseBrush(brushType: BrushType, cellType?: CellType) {
-        this.brushes.forEach(b => b.scale.set(0.7))
+        this.brushes.forEach(b => b.scale.set(0.7/ this.bottomPanel.scale.x, 0.7/ this.bottomPanel.scale.y))
         this.brushType = brushType;
         console.log("BRUSH CELL CHOOSEN: " + cellType)
 
@@ -494,6 +721,28 @@ export default class EditorScreen extends BaseScreen {
             this.forestTypeHistory.splice(0, 1);
         } 
 
+        let cellsAndItemsByBiom: {count:number, cellsCount:number, biom:BiomType}[] = ForestUtils.getCellsByBiom(this.forestType);
+        
+        this.forestType.items.forEach(item => {
+            for(let i=0; i<item.count; i++){
+                ForestUtils.placeItemToCorrectBiom(cellsAndItemsByBiom, ForestUtils.getBioms(ContentType[item.name]));
+            }
+        });
+        if(this.forestType.interactiveItems){
+            this.forestType.interactiveItems.forEach(item => {
+                for(let i=0; i<item.count; i++){ 
+                    ForestUtils.placeItemToCorrectBiom(cellsAndItemsByBiom, ForestUtils.getBioms(ContentType[item.name]));
+                }
+            });
+        }
+
+        let slots : {count:number, biom:BiomType}[] = []; 
+        cellsAndItemsByBiom.forEach(cib => {
+            slots.push({count: cib.count, biom:cib.biom});
+        });
+
+        this.forestType.slots = slots;
+
         EditorService.saveLevel(this.trimForestType(this.forestType));
     }
 
@@ -519,12 +768,186 @@ export default class EditorScreen extends BaseScreen {
         }
     }
 
+    private continueTestForBalance():void{
+        this.resetTestParams();
+        EditorScreen.resetToNextLevel();
+        // if(localStorage.getItem("testedLevelLast")){
+        //     let index = ForestDao.getAllForests().findIndex(f => f.id == localStorage.getItem("testedLevelLast"));
+        //     if(index < ForestDao.getAllForests().length - 1){
+        //         EditorScreen.test_levelId = ForestDao.getAllForests()[index + 1].id;
+        //         ForestUtils.forestTypeToPLay = ForestDao.getAllForests()[index + 1];
+        //     } 
+        // }
+        EditorScreen.SAVE_RESULTS = true;
+        EditorScreen.TEST_WITH_100_STEPS = false;
+        EditorScreen.LEVELS_TO_TEST = ForestDao.getAllForests().length;
+
+        this.startScreen(ForestScreen, true, false)
+    }
+
+    public static getStatistics(): TestLevelRecord[]{
+        if(localStorage.getItem("testLevels")){
+            return JSON.parse(localStorage.getItem("testLevels"));
+        }
+        return [];
+    }
+    public static updateTestStatisticsRecord(record: TestLevelRecord):void{
+        let statistics = this.getStatistics();
+        let toReplace = statistics.find(r => r.id == record.id);
+        if(toReplace){
+            toReplace.wins = record.wins;
+            toReplace.looses = record.looses;
+            toReplace.stepsLeft = record.stepsLeft;
+            toReplace.aimsLeft = record.aimsLeft;
+            toReplace.hash = record.hash;
+        } else {
+            statistics.push(record);
+        }
+
+        localStorage.setItem("testLevels", JSON.stringify(statistics));
+    }
+
+    public static resetTestStatistics():void{
+        localStorage.setItem("testLevels", "[]"); 
+    }
+
+    private testForBalance():void{ 
+        this.resetTestParams();
+        EditorScreen.resetTestStatistics();
+        // localStorage.setItem("testedLevelLast", "");
+        EditorScreen.test_levelId = ForestDao.getAllForests()[0].id;
+        EditorScreen.TEST_WITH_100_STEPS = false;
+        EditorScreen.SAVE_RESULTS = true;
+        EditorScreen.LEVELS_TO_TEST = ForestDao.getAllForests().length;
+
+        ForestUtils.forestTypeToPLay = ForestDao.getAllForests()[0];
+        this.startScreen(ForestScreen, true, false)
+    }
+
+    private static printTestedLevels():void{
+        let data = "";
+        this.getStatistics().forEach(r => {
+            data += r.id + "|" + r.wins + "|" + r.looses + "|" + r.stepsLeft + "|" + r.aimsLeft + "|" + r.hash + "\n";
+        })
+        console.log(data);
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + data);
+        element.setAttribute('download', "testLevelsData");
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        Game.getInstance().add.existing(new LogPanel("Результаты напечатаны \n в консоль!"));
+    }
+
+    private testForBugs(fromStart?:boolean):void{
+        this.resetTestParams();
+        EditorScreen.test_levelId =  fromStart? ForestDao.getAllForests()[0].id : this.forestType.id;
+        EditorScreen.TEST_WITH_100_STEPS = true;
+        EditorScreen.LEVELS_TO_TEST = ForestDao.getAllForests().length;
+
+        ForestUtils.forestTypeToPLay = fromStart? ForestDao.getAllForests()[0] : this.forestType;
+        this.startScreen(ForestScreen, true, false)
+    }
+
+    private testLevel(withMaxSteps?:boolean):void{
+        this.resetTestParams();
+        EditorScreen.SAVE_RESULTS = true;
+        EditorScreen.test_levelId = this.forestType.id;
+        ForestUtils.withMaxSteps = withMaxSteps;
+        EditorScreen.test_withMaxSteps = withMaxSteps;
+
+        this.playCreatedLevel(withMaxSteps);
+    }
+
+    public static resetToNextLevel():void{
+        EditorScreen.test_wins =0;
+        EditorScreen.test_looses =0;
+        EditorScreen.test_aimsOnLoose =0;
+        EditorScreen.test_stepsOnWin =0;
+        EditorScreen.test_withMaxSteps = false;
+
+        if(EditorScreen.TEST_WITH_100_STEPS){
+            let index = ForestDao.getAllForests().findIndex(f => f.id == EditorScreen.test_levelId);
+        // console.log("LEVEL ID 1: " + EditorScreen.test_levelId)
+            if(ForestDao.getAllForests().length > index+1){
+                EditorScreen.test_levelId = ForestDao.getAllForests()[index+1].id;
+                ForestUtils.forestTypeToPLay = ForestDao.getAllForests()[index+1];
+                EditorScreen.LEVELS_TO_TEST--;
+                // console.log("LEVEL ID 2: " + EditorScreen.test_levelId)
+            } else {
+                EditorScreen.LEVELS_TO_TEST = 1;
+                EditorScreen.test_levelId = null;
+            }
+            return;
+        }
+        
+        
+        if(localStorage.getItem("testLevels")){
+            console.log("RESET1")
+            let statistics = EditorScreen.getStatistics();
+            let noLevels = true;
+            for(let f of ForestDao.getAllForests()){
+                if(!statistics.find(s => s.id == f.id && s.hash == Utils.hashCode(JSON.stringify(f)))){ //пересчитываем только обновленные уровни
+                    // console.log("RESET f.id: " + f.id)
+                    // console.log("RESET " + JSON.stringify(statistics))
+                    EditorScreen.test_levelId = f.id;
+                    ForestUtils.forestTypeToPLay = f;
+                    EditorScreen.LEVELS_TO_TEST--;//TODO can delete
+                    noLevels = false;
+                    break;
+                }
+
+                if(f.maxSteps && f.steps != f.maxSteps && !statistics.find(s => s.id == f.id+"_h" && s.hash == Utils.hashCode(JSON.stringify(f)))){
+                    // console.log("RESET f.id h: " + f.id)
+                    EditorScreen.test_levelId = f.id;
+                    ForestUtils.forestTypeToPLay = f;
+                    EditorScreen.test_withMaxSteps = true;
+                    // EditorScreen.LEVELS_TO_TEST--;
+                    noLevels = false;
+                    break;
+                }
+            }
+
+            if(noLevels){
+                console.log("RESET no levels: ")
+                EditorScreen.LEVELS_TO_TEST = 1;
+                EditorScreen.test_levelId = null;
+            }
+        }
+
+        // let index = ForestDao.getAllForests().findIndex(f => f.id == EditorScreen.test_levelId);
+        // // console.log("LEVEL ID 1: " + EditorScreen.test_levelId)
+        // if(ForestDao.getAllForests().length > index+1){
+        //     EditorScreen.test_levelId = ForestDao.getAllForests()[index+1].id;
+        //     ForestUtils.forestTypeToPLay = ForestDao.getAllForests()[index+1];
+        //     EditorScreen.LEVELS_TO_TEST--;
+        //     // console.log("LEVEL ID 2: " + EditorScreen.test_levelId)
+        // } else {
+        //     EditorScreen.LEVELS_TO_TEST = 1;
+        //     EditorScreen.test_levelId = null;
+        // }
+    }
+
+    private resetTestParams(){
+        EditorScreen.test_levelId = null;
+        EditorScreen.test_wins =0;
+        EditorScreen.test_looses =0;
+        EditorScreen.test_aimsOnLoose =0;
+        EditorScreen.test_stepsOnWin =0;
+        EditorScreen.test_withMaxSteps = false;
+
+        EditorScreen.LEVELS_TO_TEST = 1;
+        EditorScreen.TEST_WITH_100_STEPS = false;
+        EditorScreen.SAVE_RESULTS = false;
+    }
 
 
-    private playCreatedLevel() {
-
+    private playCreatedLevel(withMaxSteps?:boolean) {
+        ForestUtils.forestTypeToPLay = this.forestType;
+        ForestUtils.withMaxSteps = withMaxSteps;
         let user = UserService.getUser();
-        user.setCurrentForest(ForestDao.indexOf(ForestDao.getForestById(this.forestType.id)))
+        // user.setCurrentForest(ForestDao.indexOf(ForestDao.getForestById(this.forestType.id)))
         this.startScreen(ForestScreen, true, false)
     }
 
@@ -533,6 +956,22 @@ export default class EditorScreen extends BaseScreen {
             this.forestType.mask = this.forestType.mask.concat(ForestUtils.getChar(CellType.EMPTY));
         }
         console.log()
+    }
+
+    private trimHard(forestType:ForestType):ForestType {
+        let res = new ForestType(forestType);
+        let allCellsEmpty = true;
+        let i= res.mask.length - 1;
+        while (allCellsEmpty && i>=0) {
+            if (res.mask[i] != ForestUtils.getChar(CellType.EMPTY)) {
+                allCellsEmpty = false;
+            }
+            if (allCellsEmpty) {
+                res.mask = res.mask.substring(0, res.mask.length - 1);
+            }
+            i--;
+        }
+        return res;
     }
 
     private trimForestType(forestType:ForestType):ForestType {
@@ -572,14 +1011,15 @@ export default class EditorScreen extends BaseScreen {
             if (coverFreeImage) {
                 cellCover.visible = true;
                 cellCover.openableCover.loadTexture(SpriteUtils.key("grass"), SpriteUtils.frame("grass"));
-                cellCover.openableCover.scale.set(1.5)
+                // cellCover.openableCover.scale.set(1.5)
+                cellCover.openableCover.scale.set(1)
 
                 let booster = SpriteUtils.createSprite(this.game, 0, 0, ContentType[coverFreeImage]);
                 booster.anchor.set(0.5);
-                booster.scale.set(1)
+                // booster.scale.set(1.5)
                 // compass.alpha = 0.1;
-                booster.width = 100;
-                booster.height = 100;
+                booster.width = 140;
+                booster.height = 140;
                 cellCover.openableCover.addChild(booster);
                 cellCover.openableCover.visible = true;
                 cellCover.leaf.visible = false;
@@ -872,14 +1312,30 @@ export default class EditorScreen extends BaseScreen {
     }
 
     private preset: Preset[] = [
-        , { "spriteId": "downloadButton", "x": 868, "y": 37+17, "scaleX": 0.7599999999999998, "scaleY": 0.9199999999999999, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        , { "spriteId": "downloadButton", "x": 868 + 50+50-20-5, "y": 37+17, "scaleX": 0.6599999999999998, "scaleY": 0.9199999999999999, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
         , { "spriteId": "saveButton", "x": 500, "y": 57, "scaleX": 0.7599999999999998, "scaleY": 0.9199999999999999, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
         //  ,{"spriteId":"renameButton","x":379,"y":56,"scaleX":0.7999999999999998,"scaleY":0.9199999999999999,"anchorX":0.5,"anchorY":0.5,"rotation":0}
         , { "spriteId": "openButton", "x": 255, "y": 52, "scaleX": 0.8599999999999999, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
         , { "spriteId": "editorTopPanel", "x": 479, "y": 50, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
-        , { "spriteId": "playButtonEditor", "x": 742, "y": 56, "scaleX": 0.8599999999999999, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        
+        
+        , { "spriteId": "playButtonEditor", "x": 742-30, "y": 56, "scaleX": 0.8599999999999999/1.8, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        , { "spriteId": "playTestButtonEditor", "x": 742-30, "y": 56+80, "scaleX": 0.8599999999999999/1.8, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        
+        , { "spriteId": "playAutoFullButtonEditor", "x": 842-20+50-10-5, "y": 56, "scaleX": 0.8599999999999999/1.8, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        , { "spriteId": "playMaxTestButtonEditor", "x": 842-20-10-5, "y": 56+80, "scaleX": 0.8599999999999999/1.8, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        
+        , { "spriteId": "playMaxButtonEditor", "x": 742+50-20+20-5, "y": 56, "scaleX": 0.8599999999999999/1.8, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        // , { "spriteId": "playAutoButtonEditor", "x": 742+50-20, "y": 56, "scaleX": 0.6599999999999999/1.8, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        // , { "spriteId": "playAutoFullButtonEditor", "x": 742+50-20, "y": 56+80, "scaleX": 0.6599999999999999/1.8, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+        
+
         , { "spriteId": "editorBottomPanel", "x": 478, "y": 1396, "scaleX": 1, "scaleY": 1.1600000000000001, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
     ]
+    
+    getAtlasType(){
+        return null;
+    }
 
 }
 

@@ -12,6 +12,7 @@ export default class ForestCell {
     occupiedByFlower: boolean = false;
     state: CellState;
     bg: Phaser.Sprite;
+    bgShadow: Phaser.Sprite;
     separators: SeparatorType[] = [];
 
     constructor(X: number, Y: number, content: ContentType, type: CellType, biomType: BiomType, leafType: string, metaValue?: string) {
