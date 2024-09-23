@@ -490,7 +490,7 @@ export default class EducationPanel extends BasePanel {
         let specificItem = SpecialItemsConfiguration.allItems.filter(i => !i.usual && i.level == this.screen.getForestType().id).shift();
 
         let count: number = this.aims.filter(a => ContentType[a.image] != ContentType.lilly && (a.type == AimType.item || a.type == AimType.itemsBunch)).
-            map(a => a.count).reduce((a, b) => a + b, 0)
+            map(a => a.countLeft).reduce((a, b) => a + b, 0)
         // map(a => a.count).shift();
 
         if (specificItem && count == onAimsLeft + 1 && cellState != null && cellState.content in ItemContents) {

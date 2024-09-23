@@ -95,7 +95,8 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 
 
                 //Если на пути клетка-декорация, тогда обмениваем клетки
-                if (currentCell != null && !this.cellsProvider.isInteractive(choosen) 
+                if (currentCell != null && //currentCell.state.content != ContentType.bush && currentCell.state.content != ContentType.bush2 &&
+                     !this.cellsProvider.isInteractive(choosen) 
                     && ForestUtils.getBiom(currentCell.type) != BiomType.WATER && ForestUtils.getBiom(choosen.type) != BiomType.WATER) {
                     
                     this.cellsProvider.switchCellsByCircle([currentCell, choosen], null, true);
@@ -142,10 +143,12 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                             this.collectLadybug(ladybug);
                         })
                     } else {
+                        this.screen.delayWinOrLooseCheck(1500);
                         this.game.time.events.add(1000, () => {
                             this.touchAcorn(ladybug);
                             this.game.time.events.add(400, () => {
                                 this.touchAcorn(ladybug);
+                                // this.screen.delayWinOrLooseCheck(1000);
                             })
                         });
                     }
@@ -194,9 +197,10 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
 
         this.screen.topPanel.updateAimCounters(700);
         let ladybugAim = this.screen.getAimWithType(AimType.ladybug);
-        ladybugAim.count = this.cellsProvider.getForestType().ladybugs.length - this.ladybugsAndAcorns.filter(l => l.collected).length;
+        ladybugAim.countLeft = this.cellsProvider.getForestType().ladybugs.length - this.ladybugsAndAcorns.filter(l => l.collected).length;
+        ladybugAim.countCollected = ladybugAim.startCount - ladybugAim.countLeft;
 
-        if(ladybugAim.count == 0){
+        if(ladybugAim.countLeft == 0){
             (<ForestScreen>this.screen).bottomArrows.forEach(a => {
                 this.game.tweens.removeFrom(a);
                 AnimationUtils.fadeOut(this.game, a, 500);

@@ -140,7 +140,7 @@ export default abstract class BaseScreen extends DebugScreen {
         }
 
         if (/*AdminService.cacheComplexImages()&&*/  AdminService.isEditMode()) {
-            let fps = new Label(this.game, 100, this.game.height - 200, "FPS: " + this.game.time.fps)
+            let fps = new Label(this.game, 100, this.game.height - 30, "FPS: " + this.game.time.fps)
             fps.anchor.set(0, 0.5);
             this.game.add.existing(fps);
             this.game.time.events.loop(500, () => {

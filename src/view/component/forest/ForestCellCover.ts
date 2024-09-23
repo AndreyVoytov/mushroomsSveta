@@ -48,6 +48,7 @@ export default class ForestCellCover extends Phaser.Group {
     constructor(environment: Environment, leafType: string, x: number, y: number, width: number, height: number,
         game: Phaser.Game, cellState: CellState, cellType: CellType, callback: Function, callbackContext: any) {
         super(game);
+
         this.x =  x;
         this.y = y;
         this.game = game;
@@ -232,7 +233,21 @@ export default class ForestCellCover extends Phaser.Group {
         if(this.frame) {
             this.frame.alpha = alpha;
         } else { 
-            let frameImage = this.environment == Environment.house? "hexFrame2" : "hexFrame";
+            let frameImage = "hexFrame";
+            switch(ForestUtils.getBiom(this.cellType)){
+                case BiomType.SAND:
+                case BiomType.WATER:
+                    frameImage = "hexFrame2";
+                    break;    
+                case BiomType.BERRY_FIELD:
+                case BiomType.FOREST:
+                case BiomType.MOUNTAIN:
+                    break;
+            }
+
+            if (this.environment == Environment.house){
+                frameImage = "hexFrame2";
+            }
             this.frame = SpriteUtils.createSprite(this.game, 0, 0, frameImage);
             this.frame.anchor = new Phaser.Point(0.5, 0.5);
             this.frame.alpha = alpha;

@@ -51,10 +51,10 @@ export default class ComplexAnimationUtils {
             case ItemContents.lilly:        
                     return ["petalPink"];   
             case ItemContents.randomItem:       
-            case ItemContents.specificItem:       
-                    return null;
+            case ItemContents.specificItem:     
             default:
-                throw new NeverError(contentType);
+                return null;
+                // throw new NeverError(contentType);
         }
         return null;
     }

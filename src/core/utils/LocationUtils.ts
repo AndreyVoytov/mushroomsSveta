@@ -35,7 +35,14 @@ export default class LocationUtils {
         }
         return LocationUtils.doGetLocationLayout(game, user.getLocation());
         // return LocationUtils.doGetLocationLayout(game, user.getCurrentForest(), user.getMarkers());
-    }   
+    }  
+    
+    public static isHouseStoryLocation(user: User){
+        // if(user.getLocation() == StoryLocation.house_chestOpened || user.getLocation() == StoryLocation.house_chestClosed || user.getLocation() == StoryLocation.house_boiler){
+        //     return true;
+        // } 
+        return false;
+    }
 
     // //TODO remove
     // public static getLocationLayoutByReplica(game: Phaser.Game, replica: ReplicaType): BaseLayout {
@@ -521,17 +528,25 @@ export default class LocationUtils {
     private static addMaple(game:Phaser.Game, cellProvider:CellsProvider, forestType:ForestType, res:Phaser.Sprite[]):void{
         if (forestType.cellsToSpawn) {
             let visibleHeaderHeight = LocationUtils.getVisibleHeaderHeight(game, forestType);
+            let mapleFace = SpriteUtils.createSprite(game, game.width / 2, visibleHeaderHeight - 50, "mapleFace");
+            mapleFace.name = "mapleFace";
+            mapleFace.alpha = 0;
+            mapleFace.anchor.set(0.5, 1);
             let maple = SpriteUtils.createSprite(game, game.width / 2, visibleHeaderHeight - 50, "maple");
             maple.name = "maple";
             maple.anchor.set(0.5, 1);
-            maple.scale.set(1.5)
-            Utils.applyPreset(maple, {"spriteId":"maple","x":449,"y":546.05,"scaleX":2.1600000000000006,"scaleY":2.0000000000000004,"anchorX":0.5,"anchorY":1,"rotation":0.10999999999999999})
-            res.push(maple);
+            let mapleDy = 50;
 
-            let labelBg = SpriteUtils.createSprite(game, maple.x, maple.y - 112, "circleOrange");
+            Utils.applyPreset(maple, {"spriteId":"maple","x":479,"y":546.05 + mapleDy,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":1,"rotation":0})
+            res.push(maple);
+            Utils.applyPreset(mapleFace, {"spriteId":"maple","x":479,"y":546.05 + mapleDy,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":1,"rotation":0})
+            res.push(mapleFace);
+
+
+            let labelBg = SpriteUtils.createSprite(game, maple.x, maple.y - 112, "circleSmall");
             labelBg.name = "labelBg";
-            // Utils.applyPreset(labelBg, {"spriteId":"labelBg","x":434,"y":396.04999999999995,"scaleX":1.5600000000000005,"scaleY":1.5200000000000005,"anchorX":0,"anchorY":0,"rotation":0})
-            Utils.applyPreset(labelBg, {"spriteId":"labelBg","x":477.3103448275863,"y":389.4663223140496,"scaleX":1.6200000000000006/2,"scaleY":1.6200000000000005/2,"anchorX":0.5,"anchorY":0.5,"rotation":0})
+            // Utils.applyPreset(labelBg, {"spriteId":"labelBg","x":477.3103448275863,"y":389.4663223140496 + 100 + mapleDy,"scaleX":1.6200000000000006/2,"scaleY":1.6200000000000005/2,"anchorX":0.5,"anchorY":0.5,"rotation":0})
+            Utils.applyPreset(labelBg, {"spriteId":"labelBg","x":477.3103448275863,"y":389.4663223140496 + 100 + mapleDy,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0})
             // labelBg.tint = 0x8a4910;
             // labelBg.tint = 0xf45725;
             // labelBg.tint = 0xa92900;
@@ -545,21 +560,21 @@ export default class LocationUtils {
             // mapleLabel.alpha = 0.7;
             mapleLabel.strokeThickness = 4;
             // Utils.applyPreset(mapleLabel, {"spriteId":"mapleLabel","x":476,"y":413.04999999999995,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0,"rotation":0,"fontSize":44})
-            Utils.applyPreset(mapleLabel,   {"spriteId":"mapleLabel","x":477.3103448275862,"y":393.4663223140495,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":44})
+            Utils.applyPreset(mapleLabel,   {"spriteId":"mapleLabel","x":477.3103448275862,"y":393.4663223140495+ 100 + mapleDy,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":44})
             mapleLabel.name = "mapleLabel";
             res.push(mapleLabel);
 
             let leafs1;
             let leafs2;
-            res.push(leafs1 = SpriteUtils.createSprite(game, game.width/2, game.height/2+240, 'leafs1', 'leafsMaple1'));
+            res.push(leafs1 = SpriteUtils.createSprite(game, game.width/2, game.height/2+240 , 'leafs1', 'leafsMaple1'));
             res.push(leafs2 = SpriteUtils.createSprite(game, game.width/2, game.height/2+240, 'leafs1', 'leafsMaple2'));
             // res.push(SpriteUtils.createSprite(game, game.width/2, game.height/2+240, 'leafs1', 'leafs1_3'));
             // res.push(SpriteUtils.createSprite(game, game.width/2, game.height/2+240, 'leafs1', 'leafs1_4'));
             leafs1.alpha = 0.76;
             leafs2.alpha = 0.76;
 
-            Utils.applyPresetToArray(res, [{"spriteId":"leafsMaple1","x":567,"y":443.5,"scaleX":0.5399999999999996,"scaleY":0.35999999999999943,"anchorX":0,"anchorY":0,"rotation":0.41000000000000014},
-            {"spriteId":"leafsMaple2","x":485,"y":509.5,"scaleX":0.3399999999999994,"scaleY":0.47999999999999954,"anchorX":0,"anchorY":0,"rotation":1.6200000000000012}])
+            Utils.applyPresetToArray(res, [{"spriteId":"leafsMaple1","x":567,"y":443.5 + mapleDy,"scaleX":0.5399999999999996,"scaleY":0.35999999999999943,"anchorX":0,"anchorY":0,"rotation":0.41000000000000014},
+            {"spriteId":"leafsMaple2","x":485,"y":509.5 + mapleDy,"scaleX":0.3399999999999994,"scaleY":0.47999999999999954,"anchorX":0,"anchorY":0,"rotation":1.6200000000000012}])
         }
 
         if (forestType.darkStump && forestType.ladybugs) {

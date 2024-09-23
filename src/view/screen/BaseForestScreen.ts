@@ -77,6 +77,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     protected mapleLabel: Label;
     protected mapleLabelBg: Phaser.Sprite;
     protected maple: Phaser.Sprite;
+    protected mapleFace: Phaser.Sprite;
 
     protected abstract createCells(): void;
     protected abstract onCellOpen(cellState: CellState, openingType: OpeningType): void;
@@ -144,9 +145,12 @@ export default abstract class BaseForestScreen extends DialogScreen {
                         this.mapleLabel = <Label>d;
                     } else if (d.name == "labelBg") {
                         this.mapleLabelBg = <Phaser.Sprite>d;
-                    } else if (d.name == "maple") {
+                    } else if (d.name == "maple" ) {
                         this.maple = <Phaser.Sprite>d;
                         AnimationUtils.heartBeat3(this.game, this.maple)
+                    } else if (d.name == "mapleFace") {
+                        this.mapleFace = <Phaser.Sprite>d;
+                        AnimationUtils.heartBeat3(this.game, this.mapleFace)
                     }
                 }
             );
@@ -461,7 +465,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         if (!this.levelStopped) {
             this.tryToScroll();
             let closedCells = this.cellsProvider.getCells().filter(c => !c.state.opened && !c.state.cover.isDark() && !c.state.cover.isLocked()).length;
-            if (this.topPanel.getAims().filter(aim => aim.count > 0).length == 0 || closedCells == 0) {
+            if (this.topPanel.getAims().filter(aim => aim.countLeft > 0).length == 0 || closedCells == 0) {
                 console.log("WIN!")
 
                 SoundUtils.winLevel();
@@ -589,7 +593,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
             return;
         }
 
-        AnalyticUtils.logContinueLevelComplete(this.topPanel.aims.map(a => a.count).reduce((sum, current) => sum + current, 0));
+        AnalyticUtils.logContinueLevelComplete(this.topPanel.aims.map(a => a.countLeft).reduce((sum, current) => sum + current, 0));
 
         user.setSpendOnLevel(user.getCurrentForest() + 1);
         SoundUtils.restoreSteps();
@@ -622,7 +626,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     }
 
     public giveUp(): void {
-        AnalyticUtils.logLevelFail(this.topPanel.aims.map(a => a.count).reduce((sum, current) => sum + current, 0));
+        AnalyticUtils.logLevelFail(this.topPanel.aims.map(a => a.countLeft).reduce((sum, current) => sum + current, 0));
 
         let user =  UserService.getUser();
         user.setInterruptWinsRow(false);
@@ -718,7 +722,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.educationPanel.hideEducation();
             this.dialogPanel.updateReplica();
             this.topPanel.getAims().forEach(aim => {
-                aim.count = 0;
+                aim.countLeft = 0;
             })
             this.topPanel.updateAimCounters(0);
             this.winOrLooseChecker.clear();

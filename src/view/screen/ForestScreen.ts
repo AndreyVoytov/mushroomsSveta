@@ -32,6 +32,7 @@ import Settings from '../../core/service/Settings';
 import InGameSettingsPanel from './../component/forest/InGameSettingsPanel';
 import EventUtils from '../../core/utils/EventUtils';
 import EventType from '../../core/model/event/EventType';
+import LocationUtils from '../../core/utils/LocationUtils';
 export default class ForestScreen extends BaseForestScreen {
 
     private previousCellClicked: ForestCell;
@@ -123,7 +124,7 @@ export default class ForestScreen extends BaseForestScreen {
 
         this.haveShells = this.getForestType().interactiveItems && this.getForestType().interactiveItems.find(i => i.name == ContentType[ContentType.shell]) ? true : false;
         this.haveMoonflowers = this.getForestType().interactiveItems && this.getForestType().interactiveItems.find(i => i.name == ContentType[ContentType.moonflowerClosed])? true : false; 
-        this.haveBushes = this.getForestType().interactiveItems && this.getForestType().interactiveItems.find(i => i.name == ContentType[ContentType.bush])? true : false; 
+        this.haveBushes = this.getForestType().interactiveItems && this.getForestType().interactiveItems.find(i => i.name == ContentType[ContentType.bush] || i.name == ContentType[ContentType.bush2])? true : false; 
 
    
         // if (!AdminService.isAdminUser()) {
@@ -557,6 +558,9 @@ export default class ForestScreen extends BaseForestScreen {
                 this.forceSpawn = true;
             }
 
+            
+            let sound = SoundUtils.treeSpawnCells();
+
             for (let i = 0; i < (this.forceSpawn ? 6 : 3); i++) {
                 if (this.getForestType().cellsToSpawn > this.spawnedCells && cellWhereCanSpawn.length > 0) {
                     let choosen = Utils.getRandomElement(cellWhereCanSpawn);
@@ -581,7 +585,13 @@ export default class ForestScreen extends BaseForestScreen {
             }
 
             this.game.tweens.removeFrom(this.maple)
+            this.game.tweens.removeFrom(this.mapleFace)
             AnimationUtils.jelly(this.game, this.maple, 0, true)
+            AnimationUtils.jelly(this.game, this.mapleFace, 0, true)
+
+            this.mapleFace.alpha = 1; 
+            this.game.add.tween(this.mapleFace).to({alpha:0}, 25, Easing.Linear.None,true, 350);
+
 
             let cellToSpawnLeft = (this.getForestType().cellsToSpawn - this.spawnedCells)
             this.mapleLabel.text = "" + cellToSpawnLeft;
@@ -591,6 +601,7 @@ export default class ForestScreen extends BaseForestScreen {
                 this.game.add.tween(this.mapleLabelBg.scale).to({ x: 0, y: 0 }, 700, Easing.Linear.None, true, 300)
             } else {
                 AnimationUtils.heartBeat3(this.game, this.maple, 500)
+                AnimationUtils.heartBeat3(this.game, this.mapleFace, 500)
             }
 
             this.spawnCellsCountdown = 0;
@@ -721,7 +732,7 @@ export default class ForestScreen extends BaseForestScreen {
 
         this.topPanel.getAims().forEach(aim => {
             if (aim.type == AimType.flower) {
-                aim.count = this.getForestType().flowers - this.flowersProvider.flowersCollected;
+                aim.countLeft = this.getForestType().flowers - this.flowersProvider.flowersCollected;
                 this.topPanel.updateAimCounters(1000);
             }
         })
@@ -976,7 +987,8 @@ export default class ForestScreen extends BaseForestScreen {
         if (AdminService.isSpyCellsMode()) {
             this.cellsProvider.getCells().filter(cell => {
                 cell.state.label.visible = true;
-                cell.state.label.text = ContentType[cell.state.content];
+                // cell.state.label.text = ContentType[cell.state.content];
+                cell.state.label.text =  cell.state.cover.type + " " + CellType[cell.state.cover.type];
             });
         } else {
             this.cellsProvider.getCells().filter(cell => !this.cellsProvider.isInteractive(cell)).forEach(cell => {
@@ -1443,6 +1455,7 @@ export default class ForestScreen extends BaseForestScreen {
         if(!openedCell) return;
 
         // if (this.getForestType().blueberries) {
+
         if (this.haveBushes) {
             this.cellsProvider.getCells().filter(c => c.state.berries.length > 0
                 && c.state.opened && (this.cellsProvider.areAdjucent(c, openedCell) || c == openedCell)).forEach(c => {
@@ -1471,6 +1484,7 @@ export default class ForestScreen extends BaseForestScreen {
                         this.game.add.tween(c.state.sprite.scale).to({x:0, y:0}, 1000, Easing.Linear.None, true, 200)
                     }
 
+                    this.topPanel.tryCollectBlueberry(berriesToTakeOff);
                     this.topPanel.tryCollectBlueberry(berriesToTakeOff);
                 });
         }
@@ -1569,18 +1583,20 @@ export default class ForestScreen extends BaseForestScreen {
             if (variation == "4" && i == 3) particleVariation = "p8";
             if (variation == "4" && i == 4) particleVariation = "p1";
 
+            let delay = i * 100;
+
             let firefly = SpriteUtils.createSprite(this.game, x, y, particleVariation);
-            firefly.scale.set(0);
+            firefly.scale.set(0.3, 0.5);
             firefly.anchor.set(0.5);
             this.addSprite(firefly);
             this.game.add.tween(firefly).to({ x: choosen.state.sprite.x, y: [Math.min(choosen.state.sprite.y, y) - 300, choosen.state.sprite.y] },
-                1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.In, true, 300).interpolation(Phaser.Math.bezierInterpolation).start();
+                1000 + delay, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.In, true, 300).interpolation(Phaser.Math.bezierInterpolation).start();
 
             firefly.alpha = 0;
-            this.game.add.tween(firefly).to({ alpha: 1 }, 150, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.In, true, 300);
-            this.game.add.tween(firefly.scale).to({ x: 2, y: 2 }, 150, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.In, true, 300);
+            this.game.add.tween(firefly).to({ alpha: 1 }, 150, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.In, true, 300 + delay);
+            this.game.add.tween(firefly.scale).to({ x: 2, y: 2 }, 300, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.In, true, 300 + delay);
             firefly.alpha = 1;
-            this.game.add.tween(firefly).to({ alpha: 0 }, 50, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.In, true, 950 + 300);
+            this.game.add.tween(firefly).to({ alpha: 0 }, 50, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.In, true, 950 + 300 + delay);
             firefly.alpha = 0;
 
             let splashVariation = "splashG";
@@ -1592,7 +1608,7 @@ export default class ForestScreen extends BaseForestScreen {
             if (variation == "4" && i == 3) particleVariation = "splashG";
             if (variation == "4" && i == 4) particleVariation = "splashY";
 
-            this.time.events.add(1300, () => {
+            this.time.events.add(1300 + delay, () => {
                 choosen.state.cover.openCellSmoothly(0, OpeningType.byCompass);
                 AnimationUtils.highlight(this.game, choosen.state.sprite.x, choosen.state.sprite.y, "splashG", 0, 1.5);
                 // AnimationUtils.highlight(this.game, choosen.state.sprite.x, choosen.state.sprite.y, "splashG", 0);

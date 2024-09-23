@@ -87,10 +87,10 @@ export default class FailPanel extends ClosablePanel {
             image.scale = new Phaser.Point(1.7, 1.7);
             this.addChild(image);
 
-            let statusImage = SpriteUtils.createSprite(this.game, 7 + shiftX, -160+ 30, aim.count <= 0 ? "check" : "cross");
-            statusImage.scale.set(1.5 * (aim.count <= 0 ? 0.5 : 1))
+            let statusImage = SpriteUtils.createSprite(this.game, 7 + shiftX, -160+ 30, aim.countLeft <= 0 ? "check" : "cross");
+            statusImage.scale.set(1.5 * (aim.countLeft <= 0 ? 0.5 : 1))
             this.addChild(statusImage);
-            statusImage.visible = aim.count <= 0;
+            statusImage.visible = aim.countLeft <= 0;
 
             // console.log("aim.count: " + aim.count)
             // let label = new Label(this.game, shiftX, -160 + 115, "" + (aim.startCount - aim.count) + "/" + aim.startCount, { font: "bold 45px Gilroy", fill: "#ffffff" });
@@ -98,14 +98,14 @@ export default class FailPanel extends ClosablePanel {
             // this.addChild(label);
             // label.strokeThickness = 4;
             // label.addStrokeColor("#b6691b", 0);
-            console.log("aim.count: " + aim.count)
-            let label = new Label(this.game, shiftX + 40, -160 + 50+ 30, "" + aim.count, { font: "bold 50px Gilroy", fill: "#ffffff" });
+            console.log("aim.count: " + aim.countLeft)
+            let label = new Label(this.game, shiftX + 40, -160 + 50+ 30, "" + aim.countLeft, { font: "bold 50px Gilroy", fill: "#ffffff" });
             label.anchor = new Phaser.Point(0.5, 0.5);
             this.addChild(label);
             label.strokeThickness = 4;
             // label.addStrokeColor("#b6691b", 0);
             label.addStrokeColor("#78512c", 0);
-            label.visible = aim.count > 0;
+            label.visible = aim.countLeft > 0;
         })
 
         // this.applyPreset([{ "spriteId": "panel", "x": 0, "y": 0, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },

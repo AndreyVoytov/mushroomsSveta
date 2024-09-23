@@ -43,10 +43,10 @@ export default class AimsStartPanel extends BasePanel {
 
                 console.log("Aim.image: " + aim.image)
                 if(wideImages.indexOf(aim.image) != -1){
-                    labelShift += 5*(Math.floor(aim.count+10)/10);
+                    labelShift += 5*(Math.floor(aim.countLeft+10)/10);
                 }
 
-                let label = new Label(this.game, 550 + 90 + shiftX + labelShift, 3, "" + aim.count, { font: aims.length > 1? "bold 55px Arial" : "bold 60px Arial", fill: "#ffffff" });
+                let label = new Label(this.game, 550 + 90 + shiftX + labelShift, 3, "" + aim.countLeft, { font: aims.length > 1? "bold 55px Arial" : "bold 60px Arial", fill: "#ffffff" });
                 this.addChild(label);
                 label.anchor = new Phaser.Point(0.5, 0.5);
                 label.strokeThickness = 4;

@@ -30,7 +30,7 @@ export default class GiveUpPanel extends ClosablePanel {
         this.level = level;
 
         let currentForest = screen.getForestType();
-        let isHard = currentForest ? currentForest.isHardLevel : false;
+        let isHard = currentForest ? currentForest.hardLevel : false;
 
         let panel = this.attachSprite('panel');
         panel.inputEnabled = true;
@@ -85,7 +85,7 @@ export default class GiveUpPanel extends ClosablePanel {
             // this.addChild(statusImage);
 
             // let label = new Label(this.game, shiftX, -160 + 80, "" + aim.count, Label.WHITE_STYLE_SMALLEST);
-            let label = new Label(this.game, shiftX, -160 + 115, "" + aim.count, { font: "bold 45px Gilroy", fill: "#ffffff" });
+            let label = new Label(this.game, shiftX, -160 + 115, "" + aim.countLeft, { font: "bold 45px Gilroy", fill: "#ffffff" });
             label.anchor = new Phaser.Point(0.5, 0.5);
             this.addChild(label);
             label.strokeThickness = 4;

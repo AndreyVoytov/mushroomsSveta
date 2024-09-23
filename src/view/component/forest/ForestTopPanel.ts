@@ -72,9 +72,9 @@ export default class ForestTopPanel extends BasePanel {
     public updateAimCounters(delay: number): void {
         this.aims.forEach(aim => {
             this.game.time.events.add(delay + 200, () => {
-                aim.label.text = "" + aim.count;
+                aim.label.text = "" + aim.countLeft;
 
-                if (aim.count <= 0) {
+                if (aim.countLeft <= 0) {
                     aim.label.visible = false;
 
                     let checkLabel = SpriteUtils.createSprite(this.game, aim.label.x, aim.label.y-500, "check");
@@ -186,7 +186,7 @@ export default class ForestTopPanel extends BasePanel {
     public decreaseCounter(type: AimType) {
         this.aims.forEach(aim => {
             if (aim.type == type) {
-                aim.count--;
+                aim.countLeft--;
             }
         })
         this.updateAimCounters(0);
@@ -194,7 +194,7 @@ export default class ForestTopPanel extends BasePanel {
     public increaseCounter(type: AimType) {
         this.aims.forEach(aim => {
             if (aim.type == type) {
-                aim.count++;
+                aim.countLeft++;
             }
         })
         this.updateAimCounters(0);
@@ -207,7 +207,7 @@ export default class ForestTopPanel extends BasePanel {
             //TODO refactor panel
             if (ContentType[cellState.content] == aim.image || (aim.type == AimType.itemsBunch && cellState.content == ItemContents.randomItem)) {
 
-                aim.count--;
+                aim.countLeft--;
                 self.updateAimCounters(700);
 
                 let delay = 200;
@@ -262,7 +262,7 @@ export default class ForestTopPanel extends BasePanel {
 
         if (aim && dragonfly && !cover.isLocked()) {
             cover.dragonfly = null;
-            aim.count--;
+            aim.countLeft--;
 
             this.updateAimCounters(700);
 
@@ -343,7 +343,7 @@ export default class ForestTopPanel extends BasePanel {
         let aim = this.aims.filter(aim => aim.type == aimType).shift();
 
         if (aim) {
-            aim.count--;
+            aim.countLeft--;
 
             this.updateAimCounters(700);
 
@@ -375,7 +375,7 @@ export default class ForestTopPanel extends BasePanel {
 
         if (aim && cankerberry) {
             
-            aim.count--;
+            aim.countLeft--;
 
             this.updateAimCounters(700);
 
@@ -415,18 +415,18 @@ export default class ForestTopPanel extends BasePanel {
         }
     }
 
-    public tryCollectBlueberry(blueberries: Phaser.Sprite[]) {
-        let aim = this.aims.filter(aim => aim.type == AimType.blueberry).shift();
+    public tryCollectBlueberry(berries: Phaser.Sprite[]) {
+        let aim = this.aims.filter(aim => aim.type == AimType.blueberry || aim.type == AimType.redberry).shift();
 
-        if (aim && blueberries) {
-            aim.count -= blueberries.length;
+        if (aim && berries) {
+            aim.countLeft -= berries.length;
 
             this.updateAimCounters(700);
 
             let delay = 200;
             let animationTime = 700;
 
-            blueberries.forEach(berry => {
+            berries.forEach(berry => {
                 this.game.add.tween(berry).to({ rotation: 0, width: BaseCellsProvider.CELL_WIDTH, height: BaseCellsProvider.CELL_HEIGHT }, animationTime, Phaser.Easing.Linear.None, true, delay, 0, false);
 
                 this.game.add.tween(berry).to({ alpha: 0 }, 100, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.In, true, delay + animationTime - 100, 0, false)
@@ -444,7 +444,7 @@ export default class ForestTopPanel extends BasePanel {
             aim.label.bringToTop();
 
             this.game.time.events.add(1, () => {
-                blueberries.forEach(berry => {
+                berries.forEach(berry => {
                     berry.bringToTop();
                 })
                 // this.screen.bringUiToTop();
@@ -458,7 +458,7 @@ export default class ForestTopPanel extends BasePanel {
         // image.scale = new Phaser.Point(1.5, 1.5);
         this.addSprite(image);
 
-        let label = new Label(this.game, 370 + 18 + shiftX, 60, "" + aim.count, Label.AIM_STYLE);
+        let label = new Label(this.game, 370 + 18 + shiftX, 60, "" + aim.countLeft, Label.AIM_STYLE);
         this.addSprite(label);
         label.strokeThickness = 4;
         label.addStrokeColor("#62321c", 0);

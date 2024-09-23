@@ -171,27 +171,29 @@ export default class SoundUtils {
     public static specialItemFound(){
         // Game.getInstance().sound.play("itemFound", 0.3);
         Game.getInstance().time.events.add(700, ()=>{
-            let sound = Game.getInstance().sound.play("win", 0.03 * this.volumeRatio);
+            let sound = Game.getInstance().sound.play("win", 0.015 * this.volumeRatio);
         })
     }
     public static honey(){
         let sound = Game.getInstance().sound.play("mushroomTaking", 0.015 * this.volumeRatio);
     }
     public static mushroomFound(){
-        if(Utils.randomBoolean()){
-            let sound = Game.getInstance().sound.play("mushroomTaking", 0.015 * this.volumeRatio);
-        } else {
-            Game.getInstance().time.events.add(200, ()=>{
-                let sound2 = Game.getInstance().sound.play("collect3", 0.025 * this.volumeRatio);
-            })
-        }
+        // if(Utils.randomBoolean()){
+            let sound = Game.getInstance().sound.play("mushroomTaking", 0.0045 * this.volumeRatio);
+            // TODO тут вероятно надо сделать 2 звука на уровнях, где нет дерева/желудей/мёда
+        // } 
+        // else {
+        //     Game.getInstance().time.events.add(200, ()=>{
+        //         let sound2 = Game.getInstance().sound.play("collect3", 0.0125 * this.volumeRatio);
+        //     })
+        // }
 
     }
     public static houseItemFound(){
         let sound2 = Game.getInstance().sound.play("collect3", 0.025 * this.volumeRatio);
     }
     public static animalFound(){
-        let sound = Game.getInstance().sound.play("itemFound", 0.04 * this.volumeRatio);
+        let sound = Game.getInstance().sound.play("itemFound", 0.015 * this.volumeRatio);
     }
     
     public static cellBushOff(){
@@ -239,7 +241,7 @@ export default class SoundUtils {
     
 
     public static simpleCellOpen(){
-        let sound = Game.getInstance().sound.play("click", 0.1 * this.volumeRatio);
+        let sound = Game.getInstance().sound.play("click", 0.05 * this.volumeRatio);
     }
     public static boosterSelect(){
         let sound = Game.getInstance().sound.play("click", 0.3 * this.volumeRatio);
@@ -264,6 +266,12 @@ export default class SoundUtils {
     public static beanGrowing(){
     }
     public static rainbowPotionSparkle(){
+    }
+
+    public static treeSpawnCells(){
+        // Game.getInstance().time.events.add(300, ()=>{
+            let sound = SoundUtils.addSound("jellyBlob", 0.05 * this.volumeRatio);
+        // })
     }
 
     public static ladybugMove(){

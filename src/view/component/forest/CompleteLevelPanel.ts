@@ -39,7 +39,7 @@ export default class LevelCompletePanel extends BasePanel {
         this.addChild(helper);
 
         if (UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL) {
-            let hardLevelAddition = forestType.isHardLevel? StartLevelPanel.hardLevelAwardAddition : 0;
+            let hardLevelAddition = forestType.hardLevel? StartLevelPanel.hardLevelAwardAddition : 0;
             console.log(forestType)
             let gemsCount = ForestUtils.getPrizeGemsCount(this.screen.topPanel.getStepsLeft()) + hardLevelAddition;
 

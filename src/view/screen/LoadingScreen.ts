@@ -17,10 +17,14 @@ import ForestScreen from './ForestScreen';
 import HouseScreen from './HouseScreen';
 import Utils from '../../core/utils/Utils';
 import EventUtils from '../../core/utils/EventUtils';
+import LocationUtils from '../../core/utils/LocationUtils';
+import { Easing } from 'phaser-ce';
 
 export default class LoadingScreen extends BaseScreen {
 
     private preloadBar: Phaser.Sprite;
+    private preloadBarBg: Phaser.Sprite;
+    private preloadBarFooter: Phaser.Sprite;
 
     preload() {
 
@@ -37,6 +41,7 @@ export default class LoadingScreen extends BaseScreen {
         let preloadBarBg = SpriteUtils.createSprite(this.game, this.world.centerX, this.world.centerY, 'preloadBarBg');
         this.game.add.existing(preloadBarBg);
         preloadBarBg.anchor.set(0.5);
+        this.preloadBarBg = preloadBarBg;
 
         let preloadBarWidth = 655;
         let preloadBarHeight = 143;
@@ -49,6 +54,7 @@ export default class LoadingScreen extends BaseScreen {
         let preloadBarFooter = SpriteUtils.createSprite(this.game, 0, this.world.height, 'preloadBarFooter');
         this.game.add.existing(preloadBarFooter);
         preloadBarFooter.anchor.set(0, 1);
+        this.preloadBarFooter = preloadBarFooter;
 
         bg.alpha = 0;
         preloadBarBg.alpha = 0;
@@ -133,8 +139,14 @@ export default class LoadingScreen extends BaseScreen {
             if (UserService.userLoaded) {
                 let timePortion = 500;
 
-                this.add.existing(new ColorTransitionPanel(this.game, 0x000000, 200, timePortion, true));
-                Game.WHITE_TRANSITION = true;
+                if(!LocationUtils.isHouseStoryLocation(UserService.getUser())){
+                    this.add.existing(new ColorTransitionPanel(this.game, 0x000000, 200, timePortion, true));
+                    Game.WHITE_TRANSITION = true;
+                } else {
+                    this.game.add.tween(this.preloadBar).to({alpha:0}, timePortion, Easing.Linear.None, true, 0);
+                    this.game.add.tween(this.preloadBarBg).to({alpha:0}, timePortion, Easing.Linear.None, true, 0);
+                    this.game.add.tween(this.preloadBarFooter).to({alpha:0}, timePortion, Easing.Linear.None, true, 0);
+                }
 
                 this.game.time.events.add(200 + timePortion, () => {
                     let user = UserService.getUser();
@@ -169,6 +181,8 @@ export default class LoadingScreen extends BaseScreen {
         //UI
         this.loadImage('blank', 'assets/base/ui/blank.png');
 
+        // this.loadImage('houseFrame', 'assets/screens/houseFrame.png');
+
         this.loadImage('skipButton', 'assets/base/ui/skipButton.png');
         // this.loadImage('progress', 'assets/base/ui/progressbar/progress.png');
         this.loadImage('progressBody', 'assets/base/ui/progressbar/body.jpg');
@@ -183,6 +197,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('ribbon', 'assets/base/ui/progressbar/ribbon.png');
         this.loadImage('ribbon2', 'assets/base/ui/progressbar/ribbon2.png');
         this.loadImage('circle', 'assets/base/ui/progressbar/circle.png');
+        this.loadImage('circleSmall', 'assets/base/ui/progressbar/circleSmall.png');
         this.loadImage('forestHeader', 'assets/base/ui/progressbar/forestHeader.png');
         // this.loadImage('darkForestHeader', 'assets/base/ui/progressbar/darkForestHeader.png');
         this.loadImage('potionHeader', 'assets/base/ui/progressbar/potionsHeader.png');
@@ -637,10 +652,12 @@ export default class LoadingScreen extends BaseScreen {
 
         // this.loadImage('berry', 'assets/base/items/berry.png');
         this.loadImage('bush', 'assets/base/items/bush.png');
+        this.loadImage('bush2', 'assets/base/items/bush2.png');
         this.loadImage('bushberry', 'assets/base/items/bushberry.png');
         this.loadImage('lavanda', 'assets/base/items/lavanda.png');
 
         this.loadImage('maple', 'assets/base/ui/maple.png');
+        this.loadImage('mapleFace', 'assets/base/ui/mapleFace.png');
         this.loadImage('mapleSeed', 'assets/base/ui/mapleSeed.png');
 
 
@@ -654,6 +671,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('witchMushroom', 'assets/base/items/witchMushroom.png');
         // this.loadImage('blackberry', 'assets/base/items/blackberry.png');
         this.loadImage('blueberry', 'assets/base/items/berry.png');
+        this.loadImage('redberry', 'assets/base/items/berry2.png');
         this.loadImage('strawberry', 'assets/base/items/strawberry.png');
         this.loadImage('blackberry', 'assets/base/items/blackberry.png');
         this.loadImage('pearl', 'assets/base/items/pearl.png');

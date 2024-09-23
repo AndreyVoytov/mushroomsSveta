@@ -45,6 +45,8 @@ import Label from '../component/panel/Label';
 import EventUtils from './../../core/utils/EventUtils';
 import EventInfo from './../../core/model/event/EventInfo';
 import EventType from './../../core/model/event/EventType';
+import HouseFrameLayout from '../component/house/layout/HouseFrameLayout';
+import HouseLayout from '../component/house/layout/HouseLayout';
 export default class HouseScreen extends DialogScreen {
 
     private layout: BaseLayout;
@@ -85,7 +87,7 @@ export default class HouseScreen extends DialogScreen {
 
     public progressAnimation: boolean = false;
 
-    private fakeTrees: TreesTransitionPanel;
+    private fakeTrees: Phaser.Sprite;
 
     private eventsToShow: EventType[] = [];
 
@@ -101,7 +103,11 @@ export default class HouseScreen extends DialogScreen {
 
     public preload(){
         if (!Game.WHITE_TRANSITION) {
-            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0));
+            if(LocationUtils.isHouseStoryLocation(UserService.getUser())){
+                this.fakeTrees = this.add.existing(new BaseLayout(this.game, "NearHouseLayout", "forestHouseBg"));
+            } else {
+                this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0));
+            }
         }
 
         this.eventsToShow = EventUtils.updateEvents();
@@ -358,9 +364,11 @@ export default class HouseScreen extends DialogScreen {
         let transitionDelay = 500;
 
         if (blackFadeOut) {
-            this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
-            this.dialogPanel.bringToTop();
-            this.hideUI(0, false, true)
+            if(!LocationUtils.isHouseStoryLocation(user)){
+                this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
+                this.dialogPanel.bringToTop();
+                this.hideUI(0, false, true)
+            }
         } else if (Game.WHITE_TRANSITION) {
             this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
             Game.WHITE_TRANSITION = false;
@@ -397,7 +405,10 @@ export default class HouseScreen extends DialogScreen {
                     this.game.tweens.removeFrom(this.playButton);
                 }
             })
+        }
 
+        if(LocationUtils.isHouseStoryLocation(user)){
+            this.addPanel(new HouseFrameLayout(this.game, ""));
         }
 
         // let p = new EventPanel(this.game, new EventInfo(EventType.lukoshko, Date.now(), Date.now() +  1000 * 60*60*24));
