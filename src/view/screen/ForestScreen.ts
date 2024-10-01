@@ -746,20 +746,20 @@ export default class ForestScreen extends BaseForestScreen {
             this.bottomPanel.refresh();
         }
 
-        if(!this.cellsProvider.isInteractiveState(cellState) && cellState.label && !cellState.label.text && openingType == OpeningType.usual){
-            let count = 0;
-            console.log("xsaxax count 0 for (" + cellByState.X + " " + cellByState.Y + ")")
-            this.cellsProvider.getCells().forEach(cell =>{
-                if (this.cellsProvider.areAdjucent(cell, cellByState) && !cell.state.opened && !cell.state.cover.isLocked() && !cell.state.cover.isDark()){
-                    // this.game.time.events.add(100, ()=>{
-                        cell.state.cover.openCell(OpeningType.byCompass);
-                        count ++;
-                        // this.onCellOpen(cell.state, OpeningType.byCompass);
-                    // })
-                }
-            })
-            console.log("xsaxax2 count " + count + " for (" + cellByState.X + " " + cellByState.Y + ")")
-        }
+        // if(!this.cellsProvider.isInteractiveState(cellState) && cellState.label && !cellState.label.text && openingType == OpeningType.usual){
+        //     let count = 0;
+        //     console.log("xsaxax count 0 for (" + cellByState.X + " " + cellByState.Y + ")")
+        //     this.cellsProvider.getCells().forEach(cell =>{
+        //         if (this.cellsProvider.areAdjucent(cell, cellByState) && !cell.state.opened && !cell.state.cover.isLocked() && !cell.state.cover.isDark()){
+        //             // this.game.time.events.add(100, ()=>{
+        //                 cell.state.cover.openCell(OpeningType.byCompass);
+        //                 count ++;
+        //                 // this.onCellOpen(cell.state, OpeningType.byCompass);
+        //             // })
+        //         }
+        //     })
+        //     console.log("xsaxax2 count " + count + " for (" + cellByState.X + " " + cellByState.Y + ")")
+        // }
 
         this.delayWinOrLooseCheck(500);
         this.tryToScroll();

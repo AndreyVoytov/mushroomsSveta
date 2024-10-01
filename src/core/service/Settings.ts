@@ -5,7 +5,7 @@ import AdminService from "./AdminService";
 export default class Settings {
 
     private static GRAPHICS_FROM_ATLASES = true;
-    public static USE_WEBP_ATLASES = true;
+    public static USE_WEBP_ATLASES = false;
     public static ATLASES_VERSION = "v1";
     public static isGraphicsFromAtlases():boolean{
         return Settings.GRAPHICS_FROM_ATLASES && !AdminService.isEditMode();

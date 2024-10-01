@@ -102,8 +102,8 @@ export default class ForestsConfiguration {
 					}
 				],
 				"id": "7",
-				"header": "mountinesHeader",
-				"environment": 0,
+				"header": "snailForestHeader",
+				"environment": 7,
 				"leafType": "leaf1",
 				"steps": 10,
 				"bushes": 2,
@@ -118,8 +118,8 @@ export default class ForestsConfiguration {
 					}
 				],
 				"id": "8",
-				"header": "junglesHeader",
-				"environment": 0,
+				"header": "snailForestHeader",
+				"environment": 7,
 				"leafType": "leaf3",
 				"steps": 7,
 				"bushes": 3,

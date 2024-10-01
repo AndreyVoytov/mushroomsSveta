@@ -225,6 +225,7 @@ export default class ForestUtils {
             case Environment.lake:
             case Environment.jungles:
             case Environment.bugForest:
+            case Environment.snailForest:
                 return "grass"; //TODO
             default:
                 throw new NeverError(type.environment);
@@ -679,6 +680,8 @@ export default class ForestUtils {
                 return "minigame6";
             case Environment.bugForest:
                 return "minigame7";
+            case Environment.snailForest:
+                return "minigame8";
             default:
                 throw new NeverError(env);
         }

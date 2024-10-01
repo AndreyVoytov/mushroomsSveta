@@ -1,0 +1,21 @@
+{"frames": {
+
+
+"minigame6/junglesHeader.png":
+{
+	"frame": {"x":1,"y":1,"w":960,"h":570},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":570},
+	"sourceSize": {"w":960,"h":590}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "base-4.png",
+	"format": "RGBA8888",
+	"size": {"w":962,"h":692},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:31464efc9ab6af44c3c600d62bb7b8d0:d6a906ba053717ff5015ffb3d3684c99:efd12c467720e4b71f23083f0fa0ce9c$"
+}
+}

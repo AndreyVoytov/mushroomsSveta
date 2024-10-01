@@ -150,7 +150,7 @@ export default class EducationPanel extends BasePanel {
         } else if (level == 7) {
             if (openedCells == 0) {
                 let compassCell = this.cells.filter(c => c.type == CellType.COMPASS_FREE)[0];
-                this.doShowEducation("Смотрите, ~компас~! Активируйте его нажатием", "sveta1", [compassCell],
+                this.doShowEducation("Смотрите, ~улитка~! Активируйте её нажатием", "sveta1", [compassCell],
                     CoverMode.noneVisible, 200, null);
 
                 this.arrow = SpriteUtils.createSprite(this.game, compassCell.state.sprite.x,

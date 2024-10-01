@@ -1,0 +1,52 @@
+{"frames": {
+
+"base/ui/bg.jpg":
+{
+	"frame": {"x":470,"y":271,"w":118,"h":118},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":118,"h":118},
+	"sourceSize": {"w":118,"h":118}
+},
+"base/items/boosters/compass.png":
+{
+	"frame": {"x":365,"y":271,"w":103,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":103,"h":128},
+	"sourceSize": {"w":120,"h":170}
+},
+"base/ui/helperPanel2.png":
+{
+	"frame": {"x":1,"y":1,"w":656,"h":268},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":656,"h":268},
+	"sourceSize": {"w":656,"h":268}
+},
+"base/hex/hexFrame.png":
+{
+	"frame": {"x":1,"y":271,"w":180,"h":191},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":191},
+	"sourceSize": {"w":180,"h":191}
+},
+"base/hex/hexFrame2.png":
+{
+	"frame": {"x":183,"y":271,"w":180,"h":191},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":180,"h":191},
+	"sourceSize": {"w":180,"h":191}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "base-4.png",
+	"format": "RGBA8888",
+	"size": {"w":658,"h":463},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:1508a1799543aca8ec77e025c5481acf:8500229c5cc4cdddbf3dbbd8cb60c4e3:efd12c467720e4b71f23083f0fa0ce9c$"
+}
+}

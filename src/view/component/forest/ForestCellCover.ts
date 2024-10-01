@@ -722,6 +722,7 @@ export default class ForestCellCover extends Phaser.Group {
             case Environment.lake:
             case Environment.jungles:
             case Environment.bugForest:
+            case Environment.snailForest:
             default:
                 return "hexDark";
                 // throw new NeverError(this.environment);

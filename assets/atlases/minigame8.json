@@ -1,0 +1,20 @@
+{"frames": {
+
+"minigame8/snailForestHeader.png":
+{
+	"frame": {"x":1,"y":1,"w":960,"h":590},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":590},
+	"sourceSize": {"w":960,"h":590}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "base-4.png",
+	"format": "RGBA8888",
+	"size": {"w":962,"h":592},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:9caa5d08b00bb721db1c41abdbeeb207:145cabe8194d83809958f72310e67940:efd12c467720e4b71f23083f0fa0ce9c$"
+}
+}

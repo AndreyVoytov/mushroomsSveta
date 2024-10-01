@@ -65,6 +65,8 @@ export default class HeaderController extends EditorImageControlPanel {
                 return "envJungle";
             case Environment.bugForest:
                 return "envBugForest";
+            case Environment.snailForest:
+                return "envSnailForest";
             default:
                 throw new NeverError(forestType.environment);
         }

@@ -1224,30 +1224,7 @@
         "y": 0.5
       }
     },
-    "base/items/boosters/compass.png": {
-      "frame": {
-        "x": 528,
-        "y": 1925,
-        "w": 87,
-        "h": 87
-      },
-      "rotated": false,
-      "trimmed": true,
-      "spriteSourceSize": {
-        "x": 17,
-        "y": 20,
-        "w": 87,
-        "h": 87
-      },
-      "sourceSize": {
-        "w": 120,
-        "h": 127
-      },
-      "pivot": {
-        "x": 0.5,
-        "y": 0.5
-      }
-    },
+    
     "base/action/actionMap.png": {
       "frame": {
         "x": 383,

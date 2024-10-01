@@ -350,7 +350,7 @@ export default class LoadingScreen extends BaseScreen {
 
         this.loadImage('grassLight', 'assets/base/ui/grassLight.png');
         this.loadImage('grassDark', 'assets/minigame3/grassDark.png');
-        this.loadImage('bg', 'assets/minigame1/bg.jpg');
+        this.loadImage('bg', 'assets/base/ui/bg.jpg');
         this.loadImage('bgHouse', 'assets/minigame2/bgHouse.jpg');
         this.loadImage('bgDark', 'assets/minigame3/bgDark.jpg');
         this.loadImage('bgLake', 'assets/minigame4/bgLake.jpg');
@@ -361,12 +361,14 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('mountinesHeader', 'assets/minigame1/mountinesHeader.png');
         this.loadImage('junglesHeader', 'assets/minigame6/junglesHeader.png');
         this.loadImage('bugForestHeader', 'assets/minigame7/bugForestHeader.png');
+        this.loadImage('snailForestHeader', 'assets/minigame8/snailForestHeader.png');
         this.loadImage('forestHeader1', 'assets/base/ui/forestHeader1.png');
         this.loadImage('forestHeader2', 'assets/minigame3/forestHeader2.png');
 
         this.loadImage('envLake', 'assets/other/editor/envLake.png');
         this.loadImage('envJungle', 'assets/other/editor/envJungle.png');
         this.loadImage('envBugForest', 'assets/other/editor/envBugForest.png');
+        this.loadImage('envSnailForest', 'assets/other/editor/envSnailForest.png');
         this.loadImage('envMountines', 'assets/other/editor/envMountines.png');
         this.loadImage('envForest', 'assets/other/editor/envForest.png');
         this.loadImage('envDarkForest', 'assets/other/editor/envDarkFrst.png');

@@ -413,6 +413,7 @@ export default class CellsProvider extends BaseCellsProvider {
                             case Environment.lake:
                             case Environment.jungles:
                             case Environment.bugForest:
+                            case Environment.snailForest:
                                 // index = this.getEmptyCell(types, [BiomType.FOREST]);
                                 types[index] = Utils.randomBoolean() ? ContentType.rabbit : ContentType.butterfly;
                                 break;

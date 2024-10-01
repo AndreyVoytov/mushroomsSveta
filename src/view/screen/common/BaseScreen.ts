@@ -60,6 +60,7 @@ export default abstract class BaseScreen extends DebugScreen {
         this.loadAtlas("base-1", "assets/atlases/base-1");
         this.loadAtlas("base-2", "assets/atlases/base-2");
         this.loadAtlas("base-3", "assets/atlases/base-3");
+        this.loadAtlas("base-4", "assets/atlases/base-4");
 
         this.loadAtlas("basehq", "assets/atlases/basehq");
     }
