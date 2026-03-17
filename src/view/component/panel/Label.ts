@@ -73,6 +73,25 @@
         return this;
     }
 
+    public bringToTop(): Label {
+        let parentAny: any = (this as any).parent;
+        if (!parentAny) {
+            return this;
+        }
+
+        if (typeof parentAny.bringChildToTop === "function") {
+            parentAny.bringChildToTop(this);
+            return this;
+        }
+
+        if (typeof parentAny.removeChild === "function" && typeof parentAny.addChild === "function") {
+            parentAny.removeChild(this);
+            parentAny.addChild(this);
+        }
+
+        return this;
+    }
+
     public set fill(value: any) {
         this.tint = Label.toTint(value);
     }
