@@ -8,12 +8,12 @@ import AnimationUtils from '../../../core/utils/AnimationUtils';
 import Label from './Label';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import Settings from '../../../core/service/Settings';
-import { Easing } from 'phaser-ce';
 export default class TreesTransitionPanel extends BasePanel {
     private tree1: Phaser.Sprite;
     private tree2: Phaser.Sprite;
     private tree3: Phaser.Sprite;
     private tree4: Phaser.Sprite;
+    private overlay: Phaser.Graphics;
 
     constructor(game: Phaser.Game, from: boolean, time: number, delay: number) {
         super(game, 0, 0);
@@ -21,15 +21,14 @@ export default class TreesTransitionPanel extends BasePanel {
 
         if(time != 0) time = 960;
 
-        let g = new Phaser.Graphics(this.game, 0, 0);
-        g.beginFill(0x23520d, 1);
-        g.drawRect(0, 0, this.game.width, this.game.height);
-        g.endFill();
-        g.alpha = 0;
-        g.inputEnabled = false;
-        g.fixedToCamera = true;
-        this.game.add.existing(g);
-        g.alpha = 0;
+        this.overlay = new Phaser.Graphics(this.game, 0, 0);
+        this.overlay.beginFill(0x23520d, 1);
+        this.overlay.drawRect(0, 0, this.game.width, this.game.height);
+        this.overlay.endFill();
+        this.overlay.alpha = 0;
+        this.overlay.inputEnabled = false;
+        this.overlay.fixedToCamera = true;
+        this.addChild(this.overlay);
 
         // if(!TreesPart.texture){
         //     let tt = this.addChild(new TreesPart(this.game, "", false));
@@ -45,11 +44,11 @@ export default class TreesTransitionPanel extends BasePanel {
         // let tp41 = new Phaser.Sprite(this.game, 0,0, TreesPart.texture);tp41.name="tp41";this.addSprite(tp41);
 
 
-        let tp0 = new TreesPart(game, "tp0", true); this.addChild(tp0);
-        let tp11 = new TreesPart(game, "tp11", true);this.addChild(tp11);
-        let tp21 = new TreesPart(game, "tp21", true);this.addChild(tp21);
-        let tp31 = new TreesPart(game, "tp31", true);this.addChild(tp31);
-        let tp41 = new TreesPart(game, "tp41", true);this.addChild(tp41);
+        let tp0 = new TreesPart(game, "tp0", true); tp0.visible = false; this.addChild(tp0);
+        let tp11 = new TreesPart(game, "tp11", true); tp11.visible = false; this.addChild(tp11);
+        let tp21 = new TreesPart(game, "tp21", true); tp21.visible = false; this.addChild(tp21);
+        let tp31 = new TreesPart(game, "tp31", true); tp31.visible = false; this.addChild(tp31);
+        let tp41 = new TreesPart(game, "tp41", true); tp41.visible = false; this.addChild(tp41);
 
 
         this.applyPreset([         {"spriteId":"tp41","x":116.89655172413796,"y":1502.64152892562,"scaleX":1.1859675127300187,"scaleY":1.161736611853477,"anchorX":0,"anchorY":0,"rotation":-1.9001379310344828},
@@ -64,10 +63,10 @@ export default class TreesTransitionPanel extends BasePanel {
         // let tp3 = new Phaser.Sprite(this.game, 0,0, TreesPart.texture);tp3.name="tp3"; this.addSprite(tp3);
         // let tp4 = new Phaser.Sprite(this.game, 0,0, TreesPart.texture);tp4.name="tp4"; this.addSprite(tp4);
 
-        let tp1 = new TreesPart(game, "tp1"); this.addChild(tp1);
-        let tp2 = new TreesPart(game, "tp2");this.addChild(tp2);
-        let tp3 = new TreesPart(game, "tp3");this.addChild(tp3);
-        let tp4 = new TreesPart(game, "tp4");this.addChild(tp4);
+        let tp1 = new TreesPart(game, "tp1"); tp1.visible = false; this.addChild(tp1);
+        let tp2 = new TreesPart(game, "tp2"); tp2.visible = false; this.addChild(tp2);
+        let tp3 = new TreesPart(game, "tp3"); tp3.visible = false; this.addChild(tp3);
+        let tp4 = new TreesPart(game, "tp4"); tp4.visible = false; this.addChild(tp4);
 
 
         this.applyPreset([ {"spriteId":"tp2","x":1016.2758620689655,"y":1617.9039256198346,"scaleX":1.1986206896551728,"scaleY":1.149039256198347,"anchorX":0,"anchorY":0,"rotation":2.774068965517242},
@@ -79,9 +78,8 @@ export default class TreesTransitionPanel extends BasePanel {
         let branches = [tp0,tp11,tp21,tp31,tp41,tp1,tp2,tp3,tp4];
         branches.forEach(b => {
             b.visible = true;
-            if(window.location.href.indexOf("treesStop") ==-1){
-                b.cacheAsBitmap = true;
-            }
+            // Keep dynamic transforms stable on low FPS devices; cacheAsBitmap can cause one-frame jumps.
+            b.cacheAsBitmap = false;
             b.onDestroy.add(()=>{
                 this.cacheAsBitmap = false;
             })
@@ -157,7 +155,7 @@ export default class TreesTransitionPanel extends BasePanel {
             tweens.push(AnimationUtils.fadeIn(this.game, tp41, delay + delay2 + 200 , 300*k ))
             tweens.push(AnimationUtils.fadeIn(this.game, tp21, delay + delay2  , 300*k ))
 
-            tweens.push(game.add.tween(g).to({ alpha: 1}, 800, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay +  200 , 0, false))
+            tweens.push(game.add.tween(this.overlay).to({ alpha: 1}, 800, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay +  200 , 0, false))
             tp0.alpha = 0.001;
             tweens.push(game.add.tween(tp0).to({ alpha:0.8}, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.Out, true, delay + delay2 + 250 , 0, false))
 
@@ -167,49 +165,35 @@ export default class TreesTransitionPanel extends BasePanel {
 
         } else if (time != 0 && window.location.href.indexOf("treesStop") == -1 ){
             time = 960;
-            let tw = this.game.add.tween(this).to({x: this.x}, 10, Easing.Linear.None, true);
-            tw.frameBased = true;
-            tw.onComplete.add(()=>{
-                SoundUtils.bushMovingOut()
-                
-                g.alpha = 1;
-
-                let delay2 = 150;
-
-                let k = 2.4;
-
-                tweens.push(AnimationUtils.fadeOut(this.game, tp1, delay +delay2  + 100, 300*k ))
-                tweens.push(AnimationUtils.fadeOut(this.game, tp2, delay + delay2 + 100, 300*k))
-                tweens.push(AnimationUtils.fadeOut(this.game, tp3, delay  +  delay2 + 100, 300*k ))
-                tweens.push(AnimationUtils.fadeOut(this.game, tp4, delay +delay2  + 100, 300*k ))
-                
-
-                tweens.push(this.game.add.tween(tp1).to({ x: tp1.x- 350, y: tp1.y-400 }, time - 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 50 + delay2, 0, false));
-                tweens.push(this.game.add.tween(tp3).to({ x: tp3.x+ 300, y: tp3.y-480 }, time- 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + delay2, 0, false));
-                tweens.push(this.game.add.tween(tp4).to({ x: tp4.x- 450, y: tp4.y+350 }, time- 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +80 + delay2, 0, false));
-                tweens.push(this.game.add.tween(tp2).to({ x: tp2.x+ 450, y: tp2.y+400 }, time- 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +100+ delay2, 0, false));
-
-
-                tweens.push(this.game.add.tween(tp11).to({ x: tp11.x+ 200, y: tp11.y-200 }, time- 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 50 , 0, false));
-                tweens.push(this.game.add.tween(tp31).to({ x: tp31.x- 150, y: tp31.y-280 }, time- 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 100 , 0, false));
-                tweens.push(this.game.add.tween(tp41).to({ x: tp41.x- 250, y: tp41.y+250 }, time- 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +130 , 0, false));
-                tweens.push(this.game.add.tween(tp21).to({ x: tp21.x+ 250, y: tp21.y+300 }, time- 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +30 , 0, false));
-
-                tweens.push(this.game.add.tween(tp0).to({ x: tp0.x- 100, y: tp0.y-100 }, time- 150, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay , 0, false));
-
-                tweens.push(AnimationUtils.fadeOut(this.game,  tp11, delay + 50 - 150, 300*k   ))
-                tweens.push(AnimationUtils.fadeOut(this.game,  tp31, delay + 100 - 150 , 300*k))
-                tweens.push(AnimationUtils.fadeOut(this.game,  tp41, delay +  130 - 150, 300*k ))
-                tweens.push(AnimationUtils.fadeOut(this.game,  tp21, delay  +30 - 150, 300*k ))
-
+            SoundUtils.bushMovingOut()
             
-                tweens.push(game.add.tween(g).to({ alpha: 0}, 400 * k, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay, 0, false))
-                tp0.alpha = 0.8;
-                tweens.push(game.add.tween(tp0).to({ alpha:0}, 300 * k, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.Out, true, delay, 0, false))
+            // Rewritten stable start transition: only alpha animation (no delayed position tweens).
+            // This avoids one-frame teleports on slower devices.
+            this.overlay.alpha = 1;
 
-                tweens.push(AnimationUtils.fadeOut(this.game, loading, delay, 300*k))
-                tweens.forEach(t => t.frameBased = true);
-            })
+            let k = 2.0;
+            let fadeTime = 380 * k;
+            let stagger = 40;
+            let allBranches = [tp0,tp11,tp21,tp31,tp41,tp1,tp2,tp3,tp4];
+
+            allBranches.forEach((b, i) => {
+                b.alpha = 1;
+                tweens.push(AnimationUtils.fadeOut(this.game, b, Math.max(0, delay - 80) + i * stagger, fadeTime));
+            });
+
+            tweens.push(game.add.tween(this.overlay).to({ alpha: 0}, 520 * k, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay, 0, false))
+            tweens.push(AnimationUtils.fadeOut(this.game, loading, delay, 320*k))
+            tweens.forEach(t => t.frameBased = true);
+        }
+
+        // This panel is transitional and should not survive between level/screen states.
+        if (time > 0) {
+            let disposeDelay = delay + time + 1200;
+            this.game.time.events.add(disposeDelay, () => {
+                if (this && this.parent) {
+                    this.destroy(true);
+                }
+            });
         }
     }
 
