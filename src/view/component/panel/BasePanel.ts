@@ -9,7 +9,7 @@ import Settings from "../../../core/service/Settings";
 export default class BasePanel extends Phaser.Sprite {
 
     public tileSprites: Phaser.TileSprite[] = [];
-    public sprites: Phaser.Sprite[] = [];
+    public sprites: PIXI.DisplayObject[] = [];
     public buttons: Phaser.Button[] = [];
 
     constructor(game: Phaser.Game, x: number, y: number, name?: string, image?: string) {
@@ -20,7 +20,7 @@ export default class BasePanel extends Phaser.Sprite {
 
     public onKill():void{}
 
-    public addSprite(sprite: Phaser.Sprite | Phaser.TileSprite) {
+    public addSprite(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText) {
         if (sprite instanceof Phaser.TileSprite) {
             this.tileSprites.push(sprite);
         } else {
@@ -51,9 +51,9 @@ export default class BasePanel extends Phaser.Sprite {
         //TODO use Utils method
         presets.forEach(preset => {
             this.children.forEach(child => {
-                if (preset.spriteId != "" && (child instanceof Phaser.Sprite || child instanceof Phaser.TileSprite || child instanceof Phaser.Button || child instanceof Phaser.Group) 
+                if (preset.spriteId != "" && (child instanceof Phaser.Sprite || child instanceof Phaser.TileSprite || child instanceof Phaser.Button || child instanceof Phaser.Group || child instanceof Phaser.BitmapText)
                 && child.name == preset.spriteId) {
-                    Utils.applyPreset(child, preset);
+                    Utils.applyPreset(<any>child, preset);
                 }
             });
         });
@@ -89,7 +89,7 @@ export default class BasePanel extends Phaser.Sprite {
         }
         return sprite;
     }
-    public bringChildToTop(child: Phaser.Sprite | Phaser.Button) {
+    public bringChildToTop(child: Phaser.Sprite | Phaser.Button | Phaser.BitmapText) {
         if (child) {
             this.setChildIndex(child, this.children.length - 1);
         }

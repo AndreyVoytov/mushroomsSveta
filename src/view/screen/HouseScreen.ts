@@ -64,7 +64,7 @@ export default class HouseScreen extends DialogScreen {
     private rightButtonsX: number ;
 
     //TODO compose into playButton
-    private level: Phaser.Text;
+    private level: Label;
     private playButton: Phaser.Button;
 
     private notebookButton: Phaser.Button;
@@ -194,10 +194,8 @@ export default class HouseScreen extends DialogScreen {
         this.playButton.anchor = new Phaser.Point(0.5, 0.5);
         this.addButton(this.playButton);
 
-        this.level = new Phaser.Text(this.game, -10, 5, "" + (user.getCurrentForest() + 1), { "font": "bold 60px Arial", "fill": "#ffffff" });
+        this.level = new Label(this.game, -10, 5, "" + (user.getCurrentForest() + 1), { "font": "bold 60px Arial", "fill": "#ffffff" });
         this.level.anchor = new Phaser.Point(0.5, 0.5)
-        this.level.addStrokeColor("#f67f10", 0)
-        this.level.strokeThickness = 4;
         this.playButton.addChild(this.level);
 
         this.notebookButton = SpriteUtils.createButton(this.game, 90, this.game.height - 200 - 75, 'diary', () => {

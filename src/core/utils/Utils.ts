@@ -144,7 +144,7 @@ export default class Utils {
            );
     }
 
-    public static applyPreset(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.Group, preset: Preset): void {
+    public static applyPreset(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.Group | Phaser.BitmapText, preset: Preset): void {
         let fixedToTheCamera = sprite.fixedToCamera;
         sprite.fixedToCamera = false;
 
@@ -153,12 +153,12 @@ export default class Utils {
         sprite.scale.x = preset.scaleX;
         sprite.scale.y = preset.scaleY;
         if(!(sprite instanceof Phaser.Group)){
-            sprite.anchor.x = preset.anchorX;
-            sprite.anchor.y = preset.anchorY;
+            (<any>sprite).anchor.x = preset.anchorX;
+            (<any>sprite).anchor.y = preset.anchorY;
         }
         sprite.rotation = preset.rotation;
-        if (sprite instanceof Phaser.Text) {
-            sprite.fontSize = sprite.fontSize;
+        if (sprite instanceof Phaser.Text || sprite instanceof Phaser.BitmapText) {
+            (<any>sprite).fontSize = (<any>sprite).fontSize;
         }
 
         sprite.fixedToCamera = fixedToTheCamera;
@@ -186,18 +186,18 @@ export default class Utils {
         });
     }
 
-    public static presetOf(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button): Preset {
+    public static presetOf(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.BitmapText): Preset {
         let preset = new Preset();
         preset.spriteId = sprite.name;
         preset.x = sprite.x;
         preset.y = sprite.y;
         preset.scaleX = sprite.scale.x;
         preset.scaleY = sprite.scale.y;
-        preset.anchorX = sprite.anchor.x;
-        preset.anchorY = sprite.anchor.y;
+        preset.anchorX = (<any>sprite).anchor.x;
+        preset.anchorY = (<any>sprite).anchor.y;
         preset.rotation = sprite.rotation;
-        if (sprite instanceof Phaser.Text) {
-            preset.fontSize = this.incrementFontSize(sprite.fontSize, 0);
+        if (sprite instanceof Phaser.Text || sprite instanceof Phaser.BitmapText) {
+            preset.fontSize = this.incrementFontSize((<any>sprite).fontSize, 0);
         }
         return preset;
     }
@@ -208,8 +208,8 @@ export default class Utils {
 
         let presets = [];
         panel.children.forEach(children => {
-            if ((children instanceof Phaser.Sprite || children instanceof Phaser.TileSprite || children instanceof Phaser.Button) && children.name) {
-                presets.push(Utils.presetOf(children));
+            if ((children instanceof Phaser.Sprite || children instanceof Phaser.TileSprite || children instanceof Phaser.Button || children instanceof Phaser.BitmapText) && children.name) {
+                presets.push(Utils.presetOf(<any>children));
             }
         })
 

@@ -1,4 +1,4 @@
-import UserService from '../../../core/service/UserService';
+﻿import UserService from '../../../core/service/UserService';
 import Utils from '../../../core/utils/Utils';
 import DiaryConfiguration from '../../../core/configuration/DiaryConfiguration';
 import HouseScreen from '../../screen/HouseScreen';
@@ -91,7 +91,7 @@ export default class DiaryPanel extends ClosablePanel {
         this.addButton(this.arrowRight);
         this.arrowRight.visible = currentPage < this.pagesCount;
 
-        let pageNumber = new Label(this.game, 0, 0, "" + currentPage , Label.MAP_POINT_STYLE);
+        let pageNumber = new Label(this.game, 0, 0, "" + currentPage , { font: "bold 40px DiaryDigits", fill: "#000000" });
         pageNumber.name = "pageNumber";
         Utils.applyPreset(pageNumber, {"spriteId":"pageNumber","x":11,"y":412,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0,"rotation":0,"fontSize":40})
         this.addSprite(pageNumber);

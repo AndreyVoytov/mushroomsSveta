@@ -65,12 +65,12 @@ export default abstract class DebugScreen extends Phaser.State {
     }
 
     //debug sprites
-    protected addSprite(sprite: Phaser.Sprite | Phaser.TileSprite) {
+    protected addSprite(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText) {
         if (DebugScreen.DEBUG_MODE) {
             sprite.inputEnabled = true;
         }
 
-        sprite.events.onInputOver.add(() => this.over(sprite), this);
+        sprite.events.onInputOver.add(() => this.over(<any>sprite), this);
         this.add.existing(sprite);
     }
 
@@ -252,11 +252,11 @@ export default abstract class DebugScreen extends Phaser.State {
             }
         } else {
             //SCALE
-            if (toModify instanceof Phaser.Text) {
+            if (toModify instanceof Phaser.Text || toModify instanceof Phaser.BitmapText) {
                 if (this.cursors.up.isDown || this.cursors.right.isDown) {
-                    toModify.fontSize = Utils.incrementFontSize(toModify.fontSize, mult);
+                    (<any>toModify).fontSize = Utils.incrementFontSize((<any>toModify).fontSize, mult);
                 } else if (this.cursors.down.isDown || this.cursors.left.isDown) {
-                    toModify.fontSize = Utils.incrementFontSize(toModify.fontSize, -mult);
+                    (<any>toModify).fontSize = Utils.incrementFontSize((<any>toModify).fontSize, -mult);
                 }
             } else {
                 let k = 50;

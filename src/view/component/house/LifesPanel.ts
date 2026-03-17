@@ -2,13 +2,14 @@ import UserService from '../../../core/service/UserService';
 import AnimationUtils from './../../../core/utils/AnimationUtils';
 import HouseScreen from './../../screen/HouseScreen';
 import BasePanel from '../panel/BasePanel';
+import Label from '../panel/Label';
 import ShopPanel from './ShopPanel';
 import LifeUtils from '../../../core/utils/LifeUtils';
 import LifeDetailsPanel from './LifeDetailsPanel';
 export default class LifesPanel extends BasePanel {
 
-    private lifesLabel: Phaser.Text;
-    private lifesStatus: Phaser.Text;
+    private lifesLabel: Label;
+    private lifesStatus: Label;
     public startX: number;
 
     constructor(game: Phaser.Game, houseScreen: HouseScreen) {

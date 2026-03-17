@@ -1,4 +1,4 @@
-import AnimationUtils from '../../../core/utils/AnimationUtils';
+﻿import AnimationUtils from '../../../core/utils/AnimationUtils';
 import Utils from '../../../core/utils/Utils';
 import DiaryContentType from '../../../core/model/diary/DiaryContentType';
 import Label from '../../component/panel/Label';
@@ -79,7 +79,7 @@ export default class DiaryRecipeLayout extends BasePanel {
             ingredientBg.addChild(item);
 
             // let count = new Label(this.game, 40, 10, "" + recipeContent.requiredItems[i].count, { font: "40px Arial", fill: "#571044" })
-            let count = new Label(this.game, 40, 10, "" + recipeContent.requiredItems[i].count, { font: "bold 40px Bookman Old Style", fill: "#571044" })
+            let count = new Label(this.game, 40, 10, "" + recipeContent.requiredItems[i].count, { font: "bold 40px DiaryDigits", fill: "#571044" })
             ingredientBg.addChild(count);
             count.anchor.set(0.8, 0)
             count.x += 10;

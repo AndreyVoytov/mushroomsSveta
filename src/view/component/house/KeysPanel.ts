@@ -2,10 +2,11 @@ import UserService from '../../../core/service/UserService';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import HouseScreen from '../../screen/HouseScreen';
 import BasePanel from '../../component/panel/BasePanel';
+import Label from '../../component/panel/Label';
 import ShopPanel from './ShopPanel';
 export default class KeysPanel extends BasePanel {
 
-    private keysLabel: Phaser.Text;
+    private keysLabel: Label;
 
     public startX: number;
 

@@ -1,4 +1,4 @@
-
+﻿
 import CustomizationType from '../../core/model/enum/CustomizationType';
 import AdminService from '../../core/service/AdminService';
 import OkHelper from '../../core/service/integration/OkHelper';
@@ -82,7 +82,7 @@ export default class LoadingScreen extends BaseScreen {
             onUpdate: null //A function to get the delta values if it's required (deltaX, deltaY)
         });
 
-        //инициализация платежного js API 
+        //РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РїР»Р°С‚РµР¶РЅРѕРіРѕ js API 
         this.game.time.events.add(500, () => {
             let cust = AnalyticUtils.getCustomization();
             switch (cust) {
@@ -176,9 +176,15 @@ export default class LoadingScreen extends BaseScreen {
             this.loadOptionalAtlases();
         }
 
-        //TODO распределить картинки в соответствии с атласами
+        //TODO СЂР°СЃРїСЂРµРґРµР»РёС‚СЊ РєР°СЂС‚РёРЅРєРё РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ Р°С‚Р»Р°СЃР°РјРё
 
         //UI
+        this.load.bitmapFont('bm_arial', 'assets/base/fonts/bitmap/bm_arial.png', 'assets/base/fonts/bitmap/bm_arial.fnt');
+        this.load.bitmapFont('bm_bookman', 'assets/base/fonts/bitmap/bm_bookman.png', 'assets/base/fonts/bitmap/bm_bookman.fnt');
+        this.load.bitmapFont('bm_gilroy', 'assets/base/fonts/bitmap/bm_gilroy.png', 'assets/base/fonts/bitmap/bm_gilroy.fnt');
+        this.load.bitmapFont('bm_balsamiq', 'assets/base/fonts/bitmap/bm_balsamiq.png', 'assets/base/fonts/bitmap/bm_balsamiq.fnt');
+        this.load.bitmapFont('bm_times', 'assets/base/fonts/bitmap/bm_times.png', 'assets/base/fonts/bitmap/bm_times.fnt');
+        this.load.bitmapFont('bm_diary_digits', 'assets/base/fonts/bitmap/bm_diary_digits.png', 'assets/base/fonts/bitmap/bm_diary_digits.fnt');
         this.loadImage('blank', 'assets/base/ui/blank.png');
 
         // this.loadImage('houseFrame', 'assets/screens/houseFrame.png');
@@ -925,3 +931,4 @@ export default class LoadingScreen extends BaseScreen {
 
     protected playAnimation(animationId: string) { }
 }
+

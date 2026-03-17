@@ -1,4 +1,4 @@
-import Utils from '../../../core/utils/Utils';
+﻿import Utils from '../../../core/utils/Utils';
 import DiaryContentType from '../../../core/model/diary/DiaryContentType';
 import Label from '../../component/panel/Label';
 import BasePanel from '../../component/panel/BasePanel';
@@ -49,7 +49,7 @@ export default class DiaryMapLayout extends BasePanel {
                     this.addSprite(obj);
 
                     if (parts.length > 1 && parts[0].startsWith("mapAim")) {
-                        let number = new Label(this.game, 0, 0, parts[1], Label.MAP_POINT_STYLE)
+                        let number = new Label(this.game, 0, 0, parts[1], { font: "bold 40px DiaryDigits", fill: "#000000" })
                         number.anchor.set(0.5);
                         obj.addChild(number);
                     }
@@ -72,7 +72,7 @@ export default class DiaryMapLayout extends BasePanel {
                         // }
                     } else {
                         if (parts.length > 1 && parts[0] == "mapPoint") {
-                            let number = new Label(this.game, 0, 0, parts[1], { font: "bold 24px Bookman Old Style", fill: "#ffffff", wordWrap: true, wordWrapWidth: 800 })
+                            let number = new Label(this.game, 0, 0, parts[1], { font: "bold 24px DiaryDigits", fill: "#ffffff", wordWrap: true, wordWrapWidth: 800 })
                             number.anchor.set(0.5);
                             obj.addChild(number);
                         }
@@ -93,7 +93,7 @@ export default class DiaryMapLayout extends BasePanel {
 
         this.applyPreset(preset);
 
-        //двигаем персонажа по карте
+        //РґРІРёРіР°РµРј РїРµСЂСЃРѕРЅР°Р¶Р° РїРѕ РєР°СЂС‚Рµ
         let characterMap = preset.filter(p => p.spriteId == "character").shift();
         if(characterMap){
             let userLevel = UserService.getUser().getCurrentForest()
@@ -146,16 +146,16 @@ export default class DiaryMapLayout extends BasePanel {
             Utils.applyPreset(char,  {"spriteId":"character","x":charX,"y":charY,"scaleX":1.44,"scaleY":1.4,"anchorX":0.5,"anchorY":0.5,"rotation":0});
         }
 
-        //компас
+        //РєРѕРјРїР°СЃ
         let compassMap = preset.filter(p => p.spriteId == "compassMap").shift();
         if(compassMap){
             let delta = 10;
             let w = 190 * compassMap.scaleX;
             let h = 180 * compassMap.scaleY;
-            let l1 = new Label(this.game, compassMap.x, compassMap.y + h/2 + delta, "Ю", Label.MAP_POINT_STYLE2)
-            let l2 = new Label(this.game, compassMap.x, compassMap.y -h/2 - delta, "С", Label.MAP_POINT_STYLE2)
-            let l3 = new Label(this.game, compassMap.x-w/2 - delta, compassMap.y, "З", Label.MAP_POINT_STYLE2)
-            let l4 = new Label(this.game, compassMap.x+w/2 + delta, compassMap.y, "В", Label.MAP_POINT_STYLE2)
+            let l1 = new Label(this.game, compassMap.x, compassMap.y + h/2 + delta, "Р®", Label.MAP_POINT_STYLE2)
+            let l2 = new Label(this.game, compassMap.x, compassMap.y -h/2 - delta, "РЎ", Label.MAP_POINT_STYLE2)
+            let l3 = new Label(this.game, compassMap.x-w/2 - delta, compassMap.y, "Р—", Label.MAP_POINT_STYLE2)
+            let l4 = new Label(this.game, compassMap.x+w/2 + delta, compassMap.y, "Р’", Label.MAP_POINT_STYLE2)
             l1.anchor.set(0.5, 0.35)
             l2.anchor.set(0.5, 0.35)
             l3.anchor.set(0.5, 0.35)
@@ -175,7 +175,7 @@ export default class DiaryMapLayout extends BasePanel {
             })
 
             let button  = SpriteUtils.createButton(this.game, 200, this.game.height/2 - 150, "renameButton", ()=> {
-                EditorService.showSimpleList("Добавить картинку", this.objectIds, (value:string) => {
+                EditorService.showSimpleList("Р”РѕР±Р°РІРёС‚СЊ РєР°СЂС‚РёРЅРєСѓ", this.objectIds, (value:string) => {
                     let sprite = SpriteUtils.createSprite(game, 0, 0, value)
                     sprite.name = value +"_"+ this.counter;
                     this.counter ++;

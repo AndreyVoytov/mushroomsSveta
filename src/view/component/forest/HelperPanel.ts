@@ -7,7 +7,7 @@ export default class HelperPanel extends BasePanel {
 
     private personImage: Phaser.Sprite;
     private dialogPnl: Phaser.Sprite;
-    private text: Phaser.Text;
+    private text: Label;
 
     private fromLeft: boolean = false;
 

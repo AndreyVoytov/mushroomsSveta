@@ -23,8 +23,8 @@ export default class ReplicaPanel extends BasePanel {
     private bigBublePanel: BigBubblePanel;
     private dialogPnl: Phaser.Sprite;
     private titlePnl: Phaser.Sprite;
-    private title: Phaser.Text;
-    private text: Phaser.Text;
+    private title: Label;
+    private text: Label;
 
     private printing: boolean;
     private printingEvents = [];
@@ -34,7 +34,7 @@ export default class ReplicaPanel extends BasePanel {
 
     private diaryPanel: ReplicaDiaryPanel;
     private actionButton: Phaser.Button;
-    private clickToSkipInfo: Phaser.Text;
+    private clickToSkipInfo: Label;
 
     private playAnimation : (animation:string)=> void;
 

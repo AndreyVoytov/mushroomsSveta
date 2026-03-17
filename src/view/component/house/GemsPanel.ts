@@ -2,10 +2,11 @@ import UserService from '../../../core/service/UserService';
 import AnimationUtils from './../../../core/utils/AnimationUtils';
 import HouseScreen from './../../screen/HouseScreen';
 import BasePanel from '../panel/BasePanel';
+import Label from '../panel/Label';
 import ShopPanel from './ShopPanel';
 export default class GemsPanel extends BasePanel {
 
-    private gemsLabel: Phaser.Text;
+    private gemsLabel: Label;
 
     public startX: number;
 
