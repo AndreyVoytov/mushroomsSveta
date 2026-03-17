@@ -1,4 +1,4 @@
-import ForestDao from '../../../core/dao/ForestDao';
+﻿import ForestDao from '../../../core/dao/ForestDao';
 import ReplicaDao from '../../../core/dao/ReplicaDao';
 import AdminService from '../../../core/service/AdminService';
 import Settings from '../../../core/service/Settings';
@@ -13,7 +13,7 @@ import Utils from './../../../core/utils/Utils';
 import DebugScreen from './DebugScreen';
 import EventType from './../../../core/model/event/EventType';
 export default abstract class BaseScreen extends DebugScreen {
-    private lockedMarker: Label;
+    private lockedMarker: Label | Phaser.Text;
     private transitionBlocker: Phaser.Graphics;
 
     private lastLockedAt: number;
@@ -126,10 +126,10 @@ export default abstract class BaseScreen extends DebugScreen {
         this.add.existing(this.transitionBlocker);
 
         if (AdminService.isEditMode()) {
-            // this.lockedMarker = new Label(this.game, 0, this.game.height/2, "•" )
+            // this.lockedMarker = new Label(this.game, 0, this.game.height/2, "вЂў" )
             // this.lockedMarker.fixedToCamera  = true;
             // this.lockedMarker.scale.set(20);
-            this.lockedMarker = new Label(this.game, 0, this.game.height - 120, "•")
+            this.lockedMarker = this.game.add.text(0, this.game.height - 120, "•", { font: "40px Arial", fill: "#ffffff" })
             this.lockedMarker.fixedToCamera = true;
             this.lockedMarker.scale.set(5);
             this.addSprite(this.lockedMarker);
@@ -141,9 +141,8 @@ export default abstract class BaseScreen extends DebugScreen {
         }
 
         if (/*AdminService.cacheComplexImages()&&*/  AdminService.isEditMode()) {
-            let fps = new Label(this.game, 100, this.game.height - 30, "FPS: " + this.game.time.fps)
+            let fps = this.game.add.text(100, this.game.height - 30, "FPS: " + this.game.time.fps, { font: "24px Arial", fill: "#ffffff" })
             fps.anchor.set(0, 0.5);
-            this.game.add.existing(fps);
             this.game.time.events.loop(500, () => {
                 fps.bringToTop();
                 fps.text = "FPS: " + this.game.time.fps + " DFPS: " + this.game.time.desiredFps;
@@ -234,6 +233,9 @@ export default abstract class BaseScreen extends DebugScreen {
 
 
 }
+
+
+
 
 
 
