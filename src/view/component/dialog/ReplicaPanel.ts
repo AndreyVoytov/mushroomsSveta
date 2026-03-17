@@ -77,6 +77,25 @@ export default class ReplicaPanel extends BasePanel {
 
     public r: ReplicaType;
 
+    private setNameplateVisible(visible: boolean): void {
+        this.titlePnl.visible = visible;
+        this.titlePnl.renderable = visible;
+        this.title.visible = visible;
+        this.title.renderable = visible;
+    }
+
+    private setNameplatePreparedHidden(): void {
+        this.setNameplateVisible(true);
+        this.titlePnl.alpha = 0;
+        this.title.alpha = 0;
+    }
+
+    private ensureNameplateOnTop(): void {
+        if (this.parentCont && this.titlePnl) {
+            this.parentCont.bringChildToTop(this.titlePnl);
+        }
+    }
+
     constructor(game: Phaser.Game, parentCont: DialogPanel, x: number, y: number, r: ReplicaType, 
         playAnimationCallback: (animation:string)=> void, diaryPrest?: Preset) {
 
@@ -340,6 +359,7 @@ export default class ReplicaPanel extends BasePanel {
         if (this.secondPersonImage) {
             this.secondPersonImage.alpha = 0
         }
+        this.setNameplatePreparedHidden();
         // this.text.alpha = 0
         // this.title.alpha = 0;
         // this.titlePnl.alpha = 0;
@@ -393,8 +413,7 @@ export default class ReplicaPanel extends BasePanel {
             this.secondPersonImage.alpha = 1;
         }
 
-        this.title.alpha = 0;
-        this.titlePnl.alpha = 0;
+        this.setNameplatePreparedHidden();
         // this.dialogPnl.height = this.dialogPnl.height * 0.3;
         this.dialogPnl.alpha = 0;
         this.text.alpha = 1;
@@ -429,16 +448,19 @@ export default class ReplicaPanel extends BasePanel {
                 }
             }
 
-            this.game.add.tween(this.title).to({ alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
-            this.game.add.tween(this.titlePnl).to({ alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
+            this.setNameplateVisible(true);
+            this.ensureNameplateOnTop();
+            let titleDelay = Math.max(0, timePerson - 120);
+            this.game.add.tween(this.title).to({ alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
+            this.game.add.tween(this.titlePnl).to({ alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
             this.game.add.tween(this.dialogPnl).to({ height: this.dialogPnl.height / 0.3, alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
             // this.game.add.tween(this.dialogPnl).to({ height: this.dialogPnl.height / 0.3 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
 
             this.title.scale.set(0, 0);
-            this.titlePnl.scale.set(0);
+            this.titlePnl.scale.set(0, 0);
             this.dialogPnl.scale.set(0);
-            this.game.add.tween(this.title.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
-            this.game.add.tween(this.titlePnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
+            this.game.add.tween(this.title.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
+            this.game.add.tween(this.titlePnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
             this.game.add.tween(this.dialogPnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
 
             if (token !== this.eventToken) {
@@ -560,11 +582,11 @@ export default class ReplicaPanel extends BasePanel {
 
         let showEvent = this.game.time.events.add(this.r.showDiary && screen instanceof ForestScreen? 1500 : 1, () => {
             this.dialogPnl.alpha = 0;
-            this.titlePnl.alpha = 0;
-            this.title.alpha = 0;
+            this.setNameplatePreparedHidden();
+            this.ensureNameplateOnTop();
             this.game.add.tween(this.dialogPnl).to({ alpha: 1 }, 120, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 40, 0, false);
-            this.game.add.tween(this.titlePnl).to({ alpha: 1 }, 120, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 40, 0, false);
-            this.game.add.tween(this.title).to({ alpha: 1 }, 120, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 40, 0, false);
+            this.game.add.tween(this.titlePnl).to({ alpha: 1 }, 120, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
+            this.game.add.tween(this.title).to({ alpha: 1 }, 120, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
 
             let scaleRatio = this.r.rightSide? -1 : 1;
             if(sideSwitched && this.secondPersonImage){
@@ -828,6 +850,7 @@ export default class ReplicaPanel extends BasePanel {
         this.game.tweens.removeFrom(this.dialogPnl)
         this.game.tweens.removeFrom(this.titlePnl)
         this.game.tweens.removeFrom(this.title)
+        this.setNameplatePreparedHidden();
         this.game.tweens.removeFrom(this.textHolder)
         this.game.tweens.removeFrom(this.text)
         this.textHolder.alpha = 1;
