@@ -22,3 +22,4 @@ yarn.lock
 package-lock.json
 assets_hq
 assets_lq
+/.history
