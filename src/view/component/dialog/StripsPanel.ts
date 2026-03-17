@@ -5,7 +5,6 @@ import DialogPanel from './DialogPanel';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import Settings from '../../../core/service/Settings';
 export default class StripsPanel extends BasePanel {
-
     private stripTop: Phaser.Graphics;
     private stripBottom: Phaser.Graphics;
 
@@ -31,7 +30,6 @@ export default class StripsPanel extends BasePanel {
         this.stripTop.drawRect(0, 0, this.game.width, this.TOP_STRIP_HEIGHT);
         this.stripTop.endFill();
         this.stripTop.alpha = 1;
-        // this.stripTop.fixedToCamera = true;
         stripsHolder.addChild(this.stripTop);
         this.stripTop.y = -this.TOP_STRIP_HEIGHT;
 

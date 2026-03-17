@@ -14,6 +14,9 @@ import BigBubblePanel from './BigBubblePanel';
 import { Easing } from 'phaser-ce';
 import Settings from '../../../core/service/Settings';
 export default class ReplicaPanel extends BasePanel {
+    private static REVEAL_DELAY_MS = 40;
+    private static TEXT_OFFSCREEN_X = -5000;
+    private static TEXT_OFFSCREEN_Y = -5000;
 
     private personImage: Phaser.Sprite;
     private secondPersonImage: Phaser.Sprite;
@@ -24,12 +27,16 @@ export default class ReplicaPanel extends BasePanel {
     private dialogPnl: Phaser.Sprite;
     private titlePnl: Phaser.Sprite;
     private title: Label;
+    private textHolder: Phaser.Group;
     private text: Label;
+    private textHolderTargetX: number;
+    private textHolderTargetY: number;
 
     private printing: boolean;
     private printingEvents = [];
     private delayedEvents: Phaser.TimerEvent[] = [];
     private textToPrint: string;
+    private eventToken: number = 0;
 
     private glint: Phaser.Sprite;
 
@@ -208,17 +215,25 @@ export default class ReplicaPanel extends BasePanel {
             this.dialogPnl.addChild(skipButton);
         }
 
-        this.text = new Label(this.game, 67, 45, r.text, Label.DIALOG_STYLE, false, this.SYMBOLS_IN_ROW);
-        this.text.alpha = 0;
+        this.textHolderTargetX = this.x + 67;
+        this.textHolderTargetY = this.y + 45;
+        this.textHolder = this.game.add.group(parentCont);
+        this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
+        this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
+        this.textHolder.alpha = 1;
+        this.textHolder.visible = false;
+        this.textHolder.renderable = false;
+        this.textHolder.inputEnableChildren = false;
+
+        this.text = new Label(this.game, 0, 0, r.text, Label.DIALOG_STYLE, false, this.SYMBOLS_IN_ROW);
+        this.text.alpha = 1;
         this.text.visible = false;
         this.text.renderable = false;
         this.text.anchor = new Phaser.Point(0, 0);
         this.text.inputEnabled = false;
         this.textToPrint = this.text.text;
         this.text.text = "";
-        // this.dialogPnl.addChild(this.text);
-        this.text.x += this.x; this.text.y += this.y;
-        parentCont.addChild(this.text);
+        this.textHolder.add(this.text);
 
         if (r.rightSide) {
             this.titlePnl = SpriteUtils.createSprite(this.game, this.game.width - 50, -500, 'titlePnl');
@@ -332,6 +347,7 @@ export default class ReplicaPanel extends BasePanel {
     }
 
     public firstShow() {
+        const token = ++this.eventToken;
 
         this.bringToTop();
         console.log("FIRST REPLICA SHOW: " + this.r.text)
@@ -381,7 +397,12 @@ export default class ReplicaPanel extends BasePanel {
         this.titlePnl.alpha = 0;
         // this.dialogPnl.height = this.dialogPnl.height * 0.3;
         this.dialogPnl.alpha = 0;
-        this.text.alpha = 0;
+        this.text.alpha = 1;
+        this.textHolder.alpha = 1;
+        this.textHolder.visible = false;
+        this.textHolder.renderable = false;
+        this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
+        this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
 
         if (this.diaryPanel) {
             this.diaryPanel.visible = true;
@@ -413,14 +434,17 @@ export default class ReplicaPanel extends BasePanel {
             this.game.add.tween(this.dialogPnl).to({ height: this.dialogPnl.height / 0.3, alpha: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
             // this.game.add.tween(this.dialogPnl).to({ height: this.dialogPnl.height / 0.3 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
 
-            this.title.scale.set(0);
+            this.title.scale.set(0, 0);
             this.titlePnl.scale.set(0);
             this.dialogPnl.scale.set(0);
             this.game.add.tween(this.title.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
             this.game.add.tween(this.titlePnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
             this.game.add.tween(this.dialogPnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
 
-            this.printText(timeText + timePerson);
+            if (token !== this.eventToken) {
+                return;
+            }
+            this.printText(timeText + timePerson, token);
 
             if (this.bublePanel) {
                 this.bublePanel.show(timeText + timePerson)
@@ -435,7 +459,7 @@ export default class ReplicaPanel extends BasePanel {
 
             if (this.r.glint) {
                 let glintEvent = this.game.time.events.add(900, () => {
-                    if (!this.parent || !this.r || !this.r.glint) {
+                    if (token !== this.eventToken || !this.parent || !this.r || !this.r.glint) {
                         return;
                     }
                     this.spawnGlint(this.r.glint.x, this.r.glint.y + this.y);
@@ -475,7 +499,7 @@ export default class ReplicaPanel extends BasePanel {
         }
 
         this.parentCont.bringChildToTop(nextReplica.dialogPnl);
-        this.parentCont.bringChildToTop(nextReplica.text);
+        this.parentCont.bringChildToTop(<any>nextReplica.textHolder);
         this.parentCont.bringChildToTop(nextReplica.titlePnl);
 
         if(this.r.decor && this.r.decor.overDialog){
@@ -499,6 +523,7 @@ export default class ReplicaPanel extends BasePanel {
     }
 
     private show(sideSwitched: boolean): void {
+        const token = ++this.eventToken;
         // this.personImage.alpha = 1
         // if (this.decorImage) {
         //     this.decorImage.alpha = 1
@@ -521,7 +546,12 @@ export default class ReplicaPanel extends BasePanel {
         if(this.secondPersonImage){
             this.secondPersonImage.alpha = 0;
         }
-        this.text.alpha = 0
+        this.text.alpha = 1
+        this.textHolder.alpha = 1;
+        this.textHolder.visible = false;
+        this.textHolder.renderable = false;
+        this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
+        this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
 
         if (this.diaryPanel) {
             this.diaryPanel.visible = true;
@@ -564,7 +594,10 @@ export default class ReplicaPanel extends BasePanel {
                 }
             }
 
-            this.printText(0);
+            if (token !== this.eventToken) {
+                return;
+            }
+            this.printText(0, token);
             if (this.bublePanel) {
                 this.bublePanel.show()
             }
@@ -578,7 +611,7 @@ export default class ReplicaPanel extends BasePanel {
 
             if (this.r.glint) {
                 let glintEvent = this.game.time.events.add(400, () => {
-                    if (!this.parent || !this.r || !this.r.glint) {
+                    if (token !== this.eventToken || !this.parent || !this.r || !this.r.glint) {
                         return;
                     }
                     this.spawnGlint(this.r.glint.x, this.r.glint.y + this.y);
@@ -610,11 +643,11 @@ export default class ReplicaPanel extends BasePanel {
         this.game.add.tween(this.title).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
         this.game.add.tween(this.titlePnl).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
         this.game.add.tween(this.dialogPnl).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
-        this.game.add.tween(this.text).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
+        this.game.add.tween(this.textHolder).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
         this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.title.kill())
         this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.titlePnl.kill())
         this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.dialogPnl.kill())
-        this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.text.kill())
+        this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.textHolder.kill())
         if (this.decorImage) {
             this.game.add.tween(this.decorImage).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
             this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.decorImage.kill())
@@ -669,38 +702,75 @@ export default class ReplicaPanel extends BasePanel {
         this.game.add.tween(this.title).to({ alpha: 0 }, timeText, Phaser.Easing.Linear.None, true, 0, 0, false)
         this.game.add.tween(this.titlePnl).to({ alpha: 0 }, timeText, Phaser.Easing.Linear.None, true, 0, 0, false)
         this.game.add.tween(this.dialogPnl).to({ height: this.dialogPnl.height * 0.3, alpha: 0 }, timeText, Phaser.Easing.Linear.None, true, 0, 0, false)
-        this.game.add.tween(this.text).to({ height: this.text.height * 0.3, alpha: 0 }, timeText, Phaser.Easing.Linear.None, true, 0, 0, false)
+        this.game.add.tween(this.textHolder).to({ alpha: 0 }, timeText, Phaser.Easing.Linear.None, true, 0, 0, false)
 
         if (this.bublePanel) {
             this.bublePanel.hide()
         }
     }
 
-    private printText(delay: number): void {
+    private printText(delay: number, token?: number): void {
+        const expectedToken = token !== undefined ? token : this.eventToken;
         if (!this.textToPrint || this.textToPrint.length == 0) {
             this.textToPrint = this.text.text;
         }
-        this.text.text = "";
-        this.text.alpha = 0;
+        this.text.text = this.textToPrint;
+        this.text.alpha = 1;
         this.text.visible = false;
         this.text.renderable = false;
+        this.textHolder.alpha = 1;
+        this.textHolder.visible = false;
+        this.textHolder.renderable = false;
+        this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
+        this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
 
         let portion = 3;
 
         let startPrintEvent = this.game.time.events.add(delay, ()=>{
+            if (expectedToken !== this.eventToken) {
+                return;
+            }
+            this.textHolder.x = this.textHolderTargetX;
+            this.textHolder.y = this.textHolderTargetY;
+            this.textHolder.visible = true;
+            this.textHolder.renderable = false;
             this.text.visible = true;
             this.text.alpha = 1;
             this.text.renderable = true;
-            this.printing = true;
+            let revealEvent = this.game.time.events.add(ReplicaPanel.REVEAL_DELAY_MS, () => {
+                if (expectedToken !== this.eventToken) {
+                    return;
+                }
+                let holderAny: any = this.textHolder as any;
+                let textAny: any = this.text as any;
+                if (holderAny && typeof holderAny.updateTransform === "function") {
+                    holderAny.updateTransform();
+                }
+                if (textAny && typeof textAny.updateTransform === "function") {
+                    textAny.updateTransform();
+                }
+                this.setGlyphVisibility(0);
+                this.textHolder.visible = true;
+                this.textHolder.renderable = true;
+                this.printing = true;
+            });
+            this.printingEvents.push(revealEvent);
         });
         this.printingEvents.push(startPrintEvent);
 
-        for (let i = 0; i < this.textToPrint.length; i += portion) {
-            this.printingEvents.push(this.game.time.events.add(delay + 10 * i, function () {
-                for (let j = 0; j < portion; j++) {
-                    if (i + j < this.textToPrint.length) this.text.text += this.textToPrint[i + j];
+        const totalGlyphs = this.getTextGlyphs().length;
+        if (totalGlyphs === 0) {
+            this.printing = false;
+            return;
+        }
+
+        for (let i = 0; i < totalGlyphs; i += portion) {
+            this.printingEvents.push(this.game.time.events.add(delay + ReplicaPanel.REVEAL_DELAY_MS + 10 * i, function () {
+                if (expectedToken !== this.eventToken) {
+                    return;
                 }
-                if (this.text.text.length == this.textToPrint.length){
+                this.setGlyphVisibility(Math.min(totalGlyphs, i + portion));
+                if (i + portion >= totalGlyphs){
                     console.log("FINISH PRINTING")
                     this.printing = false;
                 }
@@ -708,7 +778,19 @@ export default class ReplicaPanel extends BasePanel {
         }
     }
 
+    private getTextGlyphs(): Phaser.DisplayObject[] {
+        return this.text.children || [];
+    }
+
+    private setGlyphVisibility(visibleCount: number): void {
+        let glyphs = this.getTextGlyphs();
+        for (let i = 0; i < glyphs.length; i++) {
+            glyphs[i].visible = i < visibleCount;
+        }
+    }
+
     private cleanAnimations(): void {
+        this.eventToken++;
         this.delayedEvents.forEach(e => this.game.time.events.remove(e));
         this.delayedEvents = [];
         this.printingEvents.forEach(e => this.game.time.events.remove(e));
@@ -736,7 +818,13 @@ export default class ReplicaPanel extends BasePanel {
         this.game.tweens.removeFrom(this.dialogPnl)
         this.game.tweens.removeFrom(this.titlePnl)
         this.game.tweens.removeFrom(this.title)
+        this.game.tweens.removeFrom(this.textHolder)
         this.game.tweens.removeFrom(this.text)
+        this.textHolder.alpha = 1;
+        this.textHolder.visible = false;
+        this.textHolder.renderable = false;
+        this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
+        this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
         this.text.renderable = false;
         this.text.visible = false;
 
@@ -751,23 +839,30 @@ export default class ReplicaPanel extends BasePanel {
         this.glint.anchor = new Phaser.Point(0.5, 0.5);
         this.glint.width = 0;
         this.glint.height = 0;
+        this.glint.alpha = 0;
         this.parentCont.addChild(this.glint);
 
-        // Short controlled pulse without hidden delayed callbacks.
-        let tw = this.game.add.tween(this.glint).to(
-            { width: [100, 0], height: [100, 0], alpha: [1, 0] },
-            260,
-            Settings.isOnlyLinearAnimations()? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
-            true,
-            0,
-            0,
-            false
-        );
-        tw.onComplete.add(() => {
-            if (this.glint) {
-                this.glint.kill();
+        let revealEvent = this.game.time.events.add(ReplicaPanel.REVEAL_DELAY_MS, () => {
+            if (!this.glint) {
+                return;
             }
+            // Short controlled pulse without hidden delayed callbacks.
+            let tw = this.game.add.tween(this.glint).to(
+                { width: [100, 0], height: [100, 0], alpha: [1, 0] },
+                260,
+                Settings.isOnlyLinearAnimations()? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
+                true,
+                0,
+                0,
+                false
+            );
+            tw.onComplete.add(() => {
+                if (this.glint) {
+                    this.glint.kill();
+                }
+            });
         });
+        this.delayedEvents.push(revealEvent);
     }
 
     private playPersonalAnimation(animation:string, delay?:number):void{
@@ -847,14 +942,19 @@ export default class ReplicaPanel extends BasePanel {
         return this.printing;
     }
     public stopPrinting():void{
-        if(this.isPrinting && this.textToPrint){
+        if(this.isPrinting() && this.textToPrint){
             this.printingEvents.forEach(e => {
                 this.game.time.events.remove(e);
             })
+            this.textHolder.x = this.textHolderTargetX;
+            this.textHolder.y = this.textHolderTargetY;
+            this.textHolder.visible = true;
+            this.textHolder.renderable = true;
             this.text.visible = true;
             this.text.alpha = 1;
             this.text.renderable = true;
             this.text.text = this.textToPrint;
+            this.setGlyphVisibility(this.getTextGlyphs().length);
             this.printing = false;
         }
     }
