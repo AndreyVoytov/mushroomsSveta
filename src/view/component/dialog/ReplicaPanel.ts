@@ -714,7 +714,7 @@ export default class ReplicaPanel extends BasePanel {
         if (!this.textToPrint || this.textToPrint.length == 0) {
             this.textToPrint = this.text.text;
         }
-        this.text.text = this.textToPrint;
+        this.text.text = "";
         this.text.alpha = 1;
         this.text.visible = false;
         this.text.renderable = false;
@@ -749,7 +749,6 @@ export default class ReplicaPanel extends BasePanel {
                 if (textAny && typeof textAny.updateTransform === "function") {
                     textAny.updateTransform();
                 }
-                this.setGlyphVisibility(0);
                 this.textHolder.visible = true;
                 this.textHolder.renderable = true;
                 this.printing = true;
@@ -758,34 +757,45 @@ export default class ReplicaPanel extends BasePanel {
         });
         this.printingEvents.push(startPrintEvent);
 
-        const totalGlyphs = this.getTextGlyphs().length;
-        if (totalGlyphs === 0) {
+        if (this.textToPrint.length === 0) {
             this.printing = false;
             return;
         }
 
-        for (let i = 0; i < totalGlyphs; i += portion) {
+        for (let i = 0; i < this.textToPrint.length; i += portion) {
             this.printingEvents.push(this.game.time.events.add(delay + ReplicaPanel.REVEAL_DELAY_MS + 10 * i, function () {
                 if (expectedToken !== this.eventToken) {
                     return;
                 }
-                this.setGlyphVisibility(Math.min(totalGlyphs, i + portion));
-                if (i + portion >= totalGlyphs){
+                let prevX = this.textHolder.x;
+                let prevY = this.textHolder.y;
+                this.textHolder.visible = false;
+                this.textHolder.renderable = false;
+                this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
+                this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
+
+                this.text.text = this.textToPrint.substring(0, Math.min(this.textToPrint.length, i + portion));
+                let holderAny: any = this.textHolder as any;
+                let textAny: any = this.text as any;
+                if (textAny && typeof textAny.updateText === "function") {
+                    textAny.updateText();
+                }
+                if (holderAny && typeof holderAny.updateTransform === "function") {
+                    holderAny.updateTransform();
+                }
+                if (textAny && typeof textAny.updateTransform === "function") {
+                    textAny.updateTransform();
+                }
+
+                this.textHolder.x = prevX;
+                this.textHolder.y = prevY;
+                this.textHolder.visible = true;
+                this.textHolder.renderable = true;
+                if (this.text.text.length >= this.textToPrint.length){
                     console.log("FINISH PRINTING")
                     this.printing = false;
                 }
             }, this));
-        }
-    }
-
-    private getTextGlyphs(): Phaser.DisplayObject[] {
-        return this.text.children || [];
-    }
-
-    private setGlyphVisibility(visibleCount: number): void {
-        let glyphs = this.getTextGlyphs();
-        for (let i = 0; i < glyphs.length; i++) {
-            glyphs[i].visible = i < visibleCount;
         }
     }
 
@@ -954,7 +964,6 @@ export default class ReplicaPanel extends BasePanel {
             this.text.alpha = 1;
             this.text.renderable = true;
             this.text.text = this.textToPrint;
-            this.setGlyphVisibility(this.getTextGlyphs().length);
             this.printing = false;
         }
     }
