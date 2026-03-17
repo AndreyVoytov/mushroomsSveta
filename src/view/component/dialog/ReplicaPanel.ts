@@ -28,6 +28,7 @@ export default class ReplicaPanel extends BasePanel {
 
     private printing: boolean;
     private printingEvents = [];
+    private delayedEvents: Phaser.TimerEvent[] = [];
     private textToPrint: string;
 
     private glint: Phaser.Sprite;
@@ -85,7 +86,9 @@ export default class ReplicaPanel extends BasePanel {
         if (r.showDiary) {
             this.diaryPanel = new ReplicaDiaryPanel(this.game, 0, 0, r, diaryPrest);
             // this.addSprite(this.diaryPanel);
-            parentCont.addChild(this.diaryPanel); this.diaryPanel.x += this.x; this.diaryPanel.y += this.y;
+            this.diaryPanel.visible = false;
+            this.diaryPanel.x += this.x; this.diaryPanel.y += this.y;
+            parentCont.addChild(this.diaryPanel);
         }
 
         if (r.personalAnimation && r.personalAnimation.endsWith("Bubble")) { 
@@ -104,15 +107,19 @@ export default class ReplicaPanel extends BasePanel {
             this.personImage = SpriteUtils.createSprite(this.game, this.game.width - 5 - offsetX, 65 - offsetY, r.personImage);
             this.personImage.anchor = new Phaser.Point(0, 1);
             this.personImage.scale.set(-ReplicaPanel.MAIN_PERSON_SCALE, ReplicaPanel.MAIN_PERSON_SCALE);
+            this.personImage.alpha = 0;
             // this.addChild(this.personImage);
-            parentCont.addChild(this.personImage); this.personImage.x += this.x; this.personImage.y += this.y;
+            this.personImage.x += this.x; this.personImage.y += this.y;
+            parentCont.addChild(this.personImage);
         } else {
             this.personImage = SpriteUtils.createSprite(this.game, 0 + offsetX, 65 - offsetY, r.personImage);
             this.personImage.anchor = new Phaser.Point(0, 1);
             this.personImage.scale.set(ReplicaPanel.MAIN_PERSON_SCALE);
+            this.personImage.alpha = 0;
             // this.addChild(this.personImage);
 
-            parentCont.addChild(this.personImage); this.personImage.x += this.x; this.personImage.y += this.y;
+            this.personImage.x += this.x; this.personImage.y += this.y;
+            parentCont.addChild(this.personImage);
         }
 
         //TODO use images from previous replicas?
@@ -122,13 +129,17 @@ export default class ReplicaPanel extends BasePanel {
                 this.secondPersonImage.anchor = new Phaser.Point(0, 1);
                 this.secondPersonImage.scale.set(ReplicaPanel.SECOND_PERSON_SCALE);
                 this.secondPersonImage.tint = ReplicaPanel.SECOND_PERSON_TINT;
-                parentCont.addChild(this.secondPersonImage); this.secondPersonImage.x += this.x; this.secondPersonImage.y += this.y;
+                this.secondPersonImage.alpha = 0;
+                this.secondPersonImage.x += this.x; this.secondPersonImage.y += this.y;
+                parentCont.addChild(this.secondPersonImage);
             } else {
                 this.secondPersonImage = SpriteUtils.createSprite(this.game, this.game.width - 5, 65, r.secondPersonImage);
                 this.secondPersonImage.anchor = new Phaser.Point(0, 1);
                 this.secondPersonImage.scale.set(-ReplicaPanel.SECOND_PERSON_SCALE, ReplicaPanel.SECOND_PERSON_SCALE);
                 this.secondPersonImage.tint = ReplicaPanel.SECOND_PERSON_TINT;
-                parentCont.addChild(this.secondPersonImage); this.secondPersonImage.x += this.x; this.secondPersonImage.y += this.y;
+                this.secondPersonImage.alpha = 0;
+                this.secondPersonImage.x += this.x; this.secondPersonImage.y += this.y;
+                parentCont.addChild(this.secondPersonImage);
             }
         }
 
@@ -137,16 +148,20 @@ export default class ReplicaPanel extends BasePanel {
                 this.decorImage = SpriteUtils.createSprite(this.game, this.game.width - 5 - r.decor.x, 65 - r.decor.y, r.decor.image.split("_")[0]);
                 this.decorImage.anchor = new Phaser.Point(1, 1);
                 this.decorImage.inputEnabled = false;
+                this.decorImage.alpha = 0;
                 // this.addChild(this.decorImage);
-                parentCont.addChild(this.decorImage); this.decorImage.x += this.x; this.decorImage.y += this.y;
+                this.decorImage.x += this.x; this.decorImage.y += this.y;
+                parentCont.addChild(this.decorImage);
             } else {
                 this.decorImage = SpriteUtils.createSprite(this.game, 185 + r.decor.x, 65 - r.decor.y, r.decor.image.split("_")[0]);
                 this.decorImage.anchor = new Phaser.Point(0.5, 1);
                 this.decorImage.scale = new Phaser.Point(-1, 1);
 
                 this.decorImage.inputEnabled = false;
+                this.decorImage.alpha = 0;
                 // this.addChild(this.decorImage);
-                parentCont.addChild(this.decorImage); this.decorImage.x += this.x; this.decorImage.y += this.y;
+                this.decorImage.x += this.x; this.decorImage.y += this.y;
+                parentCont.addChild(this.decorImage);
             }
             if(r.decor.image == "owl"){
                 this.decorImage.scale.set(this.decorImage.scale.x * 2, this.decorImage.scale.y * 2)
@@ -158,16 +173,20 @@ export default class ReplicaPanel extends BasePanel {
                 this.decorImage2 = SpriteUtils.createSprite(this.game, this.game.width - 5 - r.decor2.x, 65 - r.decor2.y, r.decor2.image.split("_")[0]);
                 this.decorImage2.anchor = new Phaser.Point(1, 1);
                 this.decorImage2.inputEnabled = false;
+                this.decorImage2.alpha = 0;
                 // this.addChild(this.decorImage);
-                parentCont.addChild(this.decorImage2); this.decorImage2.x += this.x; this.decorImage2.y += this.y;
+                this.decorImage2.x += this.x; this.decorImage2.y += this.y;
+                parentCont.addChild(this.decorImage2);
             } else {
                 this.decorImage2 = SpriteUtils.createSprite(this.game, 185 + r.decor2.x, 65 - r.decor2.y, r.decor2.image.split("_")[0]);
                 this.decorImage2.anchor = new Phaser.Point(0.5, 1);
                 this.decorImage2.scale = new Phaser.Point(-1, 1);
 
                 this.decorImage2.inputEnabled = false;
+                this.decorImage2.alpha = 0;
                 // this.addChild(this.decorImage);
-                parentCont.addChild(this.decorImage2); this.decorImage2.x += this.x; this.decorImage2.y += this.y;
+                this.decorImage2.x += this.x; this.decorImage2.y += this.y;
+                parentCont.addChild(this.decorImage2);
             }
         }
 
@@ -191,10 +210,15 @@ export default class ReplicaPanel extends BasePanel {
 
         this.text = new Label(this.game, 67, 45, r.text, Label.DIALOG_STYLE, false, this.SYMBOLS_IN_ROW);
         this.text.alpha = 0;
+        this.text.visible = false;
+        this.text.renderable = false;
         this.text.anchor = new Phaser.Point(0, 0);
         this.text.inputEnabled = false;
+        this.textToPrint = this.text.text;
+        this.text.text = "";
         // this.dialogPnl.addChild(this.text);
-        parentCont.addChild(this.text); this.text.x += this.x; this.text.y += this.y;
+        this.text.x += this.x; this.text.y += this.y;
+        parentCont.addChild(this.text);
 
         if (r.rightSide) {
             this.titlePnl = SpriteUtils.createSprite(this.game, this.game.width - 50, -500, 'titlePnl');
@@ -254,8 +278,10 @@ export default class ReplicaPanel extends BasePanel {
 
             this.actionButton = SpriteUtils.createButton(this.game, this.game.width / 2 - 25, gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 20, "pnlButton", callback);
             this.actionButton.anchor.set(0.5);
+            this.actionButton.alpha = 0;
             // this.addButton(this.actionButton);
-            parentCont.addChild(this.actionButton); this.actionButton.x += this.x; this.actionButton.y += this.y;
+            this.actionButton.x += this.x; this.actionButton.y += this.y;
+            parentCont.addChild(this.actionButton);
 
             let actionCircle = SpriteUtils.createSprite(this.game, this.actionButton.width / 2 + 10, 0, 'actionCircle');
             actionCircle.anchor.set(0.5);
@@ -274,6 +300,7 @@ export default class ReplicaPanel extends BasePanel {
             actionCircle.addChild(image);
 
             AnimationUtils.appear(this.game, this.actionButton, 1000)
+            this.game.add.tween(this.actionButton).to({ alpha: 1 }, 160, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 1000, 0, false);
 
             this.game.time.events.add(5000, function () {
                 AnimationUtils.wiggle(this.game, this.actionButton, 0)
@@ -284,7 +311,8 @@ export default class ReplicaPanel extends BasePanel {
             this.clickToSkipInfo.anchor.set(0.5)
             AnimationUtils.blinking(this.game, this.clickToSkipInfo, 2000);
             // this.addChild(this.clickToSkipInfo);
-            parentCont.addChild(this.clickToSkipInfo); this.clickToSkipInfo.x += this.x; this.clickToSkipInfo.y += this.y;
+            this.clickToSkipInfo.x += this.x; this.clickToSkipInfo.y += this.y;
+            parentCont.addChild(this.clickToSkipInfo);
         }
 
         this.personImage.alpha = 0
@@ -313,40 +341,40 @@ export default class ReplicaPanel extends BasePanel {
 
         
         let startX = this.personImage.x;
-        this.personImage.alpha = 1;
         if (this.r.rightSide) {
             this.personImage.x = startX + this.PERSON_DELTA_X;
         } else {
             this.personImage.x = startX - this.PERSON_DELTA_X;
         }
+        this.personImage.alpha = 1;
 
         let decorStartX = this.decorImage ? this.decorImage.x : 0;
         if (this.decorImage) {
-            this.decorImage.alpha = 1;
             if (this.r.decor.rightSide) {
                 this.decorImage.x = decorStartX + this.PERSON_DELTA_X;
             } else {
                 this.decorImage.x = decorStartX - this.PERSON_DELTA_X;
             }
+            this.decorImage.alpha = 1;
         }
         let decor2StartX = this.decorImage2 ? this.decorImage2.x : 0;
         if (this.decorImage2) {
-            this.decorImage2.alpha = 1;
             if (this.r.decor2.rightSide) {
                 this.decorImage2.x = decor2StartX + this.PERSON_DELTA_X;
             } else {
                 this.decorImage2.x = decor2StartX - this.PERSON_DELTA_X;
             }
+            this.decorImage2.alpha = 1;
         }
 
         let secondPersonStartX = this.secondPersonImage? this.secondPersonImage.x : 0;
         if(this.secondPersonImage){
-            this.secondPersonImage.alpha = 1;
             if (this.r.rightSide) {
                 this.secondPersonImage.x = secondPersonStartX - this.PERSON_DELTA_X;
             } else {
                 this.secondPersonImage.x = secondPersonStartX + this.PERSON_DELTA_X;
             }
+            this.secondPersonImage.alpha = 1;
         }
 
         this.title.alpha = 0;
@@ -356,10 +384,11 @@ export default class ReplicaPanel extends BasePanel {
         this.text.alpha = 0;
 
         if (this.diaryPanel) {
+            this.diaryPanel.visible = true;
             this.diaryPanel.show();
         }
 
-        this.game.time.events.add(this.r.showDiary && screen instanceof ForestScreen? 1500 : 1, () => {
+            let showEvent = this.game.time.events.add(this.r.showDiary && screen instanceof ForestScreen? 1500 : 1, () => {
             this.game.add.tween(this.personImage).to({ x: startX }, timePerson, Phaser.Easing.Linear.None, true, 0, 0, false)
 
             if(this.secondPersonImage){
@@ -405,9 +434,16 @@ export default class ReplicaPanel extends BasePanel {
             }
 
             if (this.r.glint) {
-                this.glint = AnimationUtils.glint(this.game, this.parentCont, this.r.glint.x, this.r.glint.y + this.y, 900);
+                let glintEvent = this.game.time.events.add(900, () => {
+                    if (!this.parent || !this.r || !this.r.glint) {
+                        return;
+                    }
+                    this.spawnGlint(this.r.glint.x, this.r.glint.y + this.y);
+                });
+                this.delayedEvents.push(glintEvent);
             }
-        })
+        });
+        this.delayedEvents.push(showEvent);
     }
 
     public replaceWith(nextReplica: ReplicaPanel): void {
@@ -438,11 +474,8 @@ export default class ReplicaPanel extends BasePanel {
             this.parentCont.bringChildToTop(nextReplica.decorImage2);
         }
 
-        this.parentCont.bringChildToTop(this.dialogPnl);
         this.parentCont.bringChildToTop(nextReplica.dialogPnl);
-        this.parentCont.bringChildToTop(this.text);
         this.parentCont.bringChildToTop(nextReplica.text);
-        this.parentCont.bringChildToTop(this.titlePnl);
         this.parentCont.bringChildToTop(nextReplica.titlePnl);
 
         if(this.r.decor && this.r.decor.overDialog){
@@ -476,10 +509,6 @@ export default class ReplicaPanel extends BasePanel {
         // this.title.alpha = 1;
         // this.titlePnl.alpha = 1;
         // this.dialogPnl.alpha = 1;
-        this.game.add.tween(this.dialogPnl).to({ alpha: 1 }, 10, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
-        this.game.add.tween(this.titlePnl).to({ alpha: 1 }, 10, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
-        this.game.add.tween(this.title).to({ alpha: 1 }, 10, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
-        // this.bringToTop();
         console.log("REPLICA SHOW: " + this.r.text)
 
         this.personImage.alpha = 0
@@ -495,10 +524,17 @@ export default class ReplicaPanel extends BasePanel {
         this.text.alpha = 0
 
         if (this.diaryPanel) {
+            this.diaryPanel.visible = true;
             this.diaryPanel.show();
         }
 
-        this.game.time.events.add(this.r.showDiary && screen instanceof ForestScreen? 1500 : 1, () => {
+        let showEvent = this.game.time.events.add(this.r.showDiary && screen instanceof ForestScreen? 1500 : 1, () => {
+            this.dialogPnl.alpha = 0;
+            this.titlePnl.alpha = 0;
+            this.title.alpha = 0;
+            this.game.add.tween(this.dialogPnl).to({ alpha: 1 }, 120, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 40, 0, false);
+            this.game.add.tween(this.titlePnl).to({ alpha: 1 }, 120, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 40, 0, false);
+            this.game.add.tween(this.title).to({ alpha: 1 }, 120, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 40, 0, false);
 
             let scaleRatio = this.r.rightSide? -1 : 1;
             if(sideSwitched && this.secondPersonImage){
@@ -541,9 +577,16 @@ export default class ReplicaPanel extends BasePanel {
             }
 
             if (this.r.glint) {
-                this.glint = AnimationUtils.glint(this.game, this.parentCont, this.r.glint.x, this.r.glint.y + this.y, 400);
+                let glintEvent = this.game.time.events.add(400, () => {
+                    if (!this.parent || !this.r || !this.r.glint) {
+                        return;
+                    }
+                    this.spawnGlint(this.r.glint.x, this.r.glint.y + this.y);
+                });
+                this.delayedEvents.push(glintEvent);
             }
-        })
+        });
+        this.delayedEvents.push(showEvent);
     }
 
     private hide(): void {
@@ -562,11 +605,16 @@ export default class ReplicaPanel extends BasePanel {
 
         if(this.secondPersonImage){
             this.game.add.tween(this.secondPersonImage).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
+            this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.secondPersonImage.kill())
         }
-        this.title.visible = false;
-        this.titlePnl.visible = false;
-        this.dialogPnl.visible = false;
-        this.text.visible = false;
+        this.game.add.tween(this.title).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
+        this.game.add.tween(this.titlePnl).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
+        this.game.add.tween(this.dialogPnl).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
+        this.game.add.tween(this.text).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
+        this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.title.kill())
+        this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.titlePnl.kill())
+        this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.dialogPnl.kill())
+        this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.text.kill())
         if (this.decorImage) {
             this.game.add.tween(this.decorImage).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
             this.game.time.events.add(ReplicaPanel.CHANGE_PERSON_DURATION + 1, () => this.decorImage.kill())
@@ -629,16 +677,23 @@ export default class ReplicaPanel extends BasePanel {
     }
 
     private printText(delay: number): void {
-        this.text.alpha = 1;
-
-        this.textToPrint = this.text.text;
+        if (!this.textToPrint || this.textToPrint.length == 0) {
+            this.textToPrint = this.text.text;
+        }
         this.text.text = "";
+        this.text.alpha = 0;
+        this.text.visible = false;
+        this.text.renderable = false;
 
         let portion = 3;
 
-        this.game.time.events.add(delay, ()=>{
+        let startPrintEvent = this.game.time.events.add(delay, ()=>{
+            this.text.visible = true;
+            this.text.alpha = 1;
+            this.text.renderable = true;
             this.printing = true;
-        })
+        });
+        this.printingEvents.push(startPrintEvent);
 
         for (let i = 0; i < this.textToPrint.length; i += portion) {
             this.printingEvents.push(this.game.time.events.add(delay + 10 * i, function () {
@@ -654,7 +709,15 @@ export default class ReplicaPanel extends BasePanel {
     }
 
     private cleanAnimations(): void {
+        this.delayedEvents.forEach(e => this.game.time.events.remove(e));
+        this.delayedEvents = [];
+        this.printingEvents.forEach(e => this.game.time.events.remove(e));
+        this.printingEvents = [];
+        this.printing = false;
         this.game.tweens.removeFrom(this.personImage)
+        if (this.secondPersonImage) {
+            this.game.tweens.removeFrom(this.secondPersonImage)
+        }
         if (this.decorImage) {
             this.game.tweens.removeFrom(this.decorImage)
         }
@@ -674,8 +737,37 @@ export default class ReplicaPanel extends BasePanel {
         this.game.tweens.removeFrom(this.titlePnl)
         this.game.tweens.removeFrom(this.title)
         this.game.tweens.removeFrom(this.text)
+        this.text.renderable = false;
+        this.text.visible = false;
 
         if(this.glint) this.glint.kill();
+    }
+
+    private spawnGlint(x: number, y: number): void {
+        if (this.glint) {
+            this.glint.kill();
+        }
+        this.glint = SpriteUtils.createSprite(this.game, x, y, "glint");
+        this.glint.anchor = new Phaser.Point(0.5, 0.5);
+        this.glint.width = 0;
+        this.glint.height = 0;
+        this.parentCont.addChild(this.glint);
+
+        // Short controlled pulse without hidden delayed callbacks.
+        let tw = this.game.add.tween(this.glint).to(
+            { width: [100, 0], height: [100, 0], alpha: [1, 0] },
+            260,
+            Settings.isOnlyLinearAnimations()? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        );
+        tw.onComplete.add(() => {
+            if (this.glint) {
+                this.glint.kill();
+            }
+        });
     }
 
     private playPersonalAnimation(animation:string, delay?:number):void{
@@ -732,7 +824,13 @@ export default class ReplicaPanel extends BasePanel {
 
     private hideActionButton(delay?: number): void {
         if (this.actionButton) {
-            AnimationUtils.disappear(this.game, this.actionButton, delay || 0)
+            this.game.tweens.removeFrom(this.actionButton);
+            AnimationUtils.fadeOut(this.game, this.actionButton, delay || 0, 140);
+            this.game.time.events.add((delay || 0) + 160, () => {
+                if (this.actionButton) {
+                    this.actionButton.kill();
+                }
+            });
         }
     }
     private hideSckipToClickInfo(): void {
@@ -753,6 +851,9 @@ export default class ReplicaPanel extends BasePanel {
             this.printingEvents.forEach(e => {
                 this.game.time.events.remove(e);
             })
+            this.text.visible = true;
+            this.text.alpha = 1;
+            this.text.renderable = true;
             this.text.text = this.textToPrint;
             this.printing = false;
         }
