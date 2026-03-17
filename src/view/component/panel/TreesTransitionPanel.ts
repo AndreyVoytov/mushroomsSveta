@@ -167,22 +167,73 @@ export default class TreesTransitionPanel extends BasePanel {
             time = 960;
             SoundUtils.bushMovingOut()
             
-            // Rewritten stable start transition: only alpha animation (no delayed position tweens).
-            // This avoids one-frame teleports on slower devices.
+            // Stable start transition: quick start + deterministic movement/fade (no long idle full-screen flash).
             this.overlay.alpha = 1;
+            loading.alpha = 1;
 
-            let k = 2.0;
-            let fadeTime = 380 * k;
-            let stagger = 40;
-            let allBranches = [tp0,tp11,tp21,tp31,tp41,tp1,tp2,tp3,tp4];
+            let startDelay = 60;
+            let moveTime = time + 420;
+            let fadeTime = 180;
+            let moveMultiplier = 0.95;
+            let branchesForHide = [tp1,tp3,tp4,tp2,tp11,tp31,tp41,tp21,tp0];
+            let cx = this.game.width / 2;
+            let cy = this.game.height / 2;
+            let branchMetrics = branchesForHide.map(branch => {
+                let vx = branch.x - cx;
+                let vy = branch.y - cy;
+                let len = Math.sqrt(vx * vx + vy * vy);
+                return { branch, vx, vy, len };
+            });
+            let minLen = Math.min.apply(null, branchMetrics.map(m => m.len));
+            let maxLen = Math.max.apply(null, branchMetrics.map(m => m.len));
+            let lenRange = Math.max(1, maxLen - minLen);
+            let delaySpan = 220;
 
-            allBranches.forEach((b, i) => {
-                b.alpha = 1;
-                tweens.push(AnimationUtils.fadeOut(this.game, b, Math.max(0, delay - 80) + i * stagger, fadeTime));
+            branchMetrics.forEach((m, i) => {
+                let branch = m.branch;
+                branch.alpha = 1;
+
+                // Move each branch away from the screen center; this matches the "inner flat edge" direction.
+                let vx = m.vx;
+                let vy = m.vy;
+                let len = m.len;
+
+                // Fallback for near-center branch to avoid ambiguous direction.
+                if (len < 1) {
+                    vx = -1;
+                    vy = -1;
+                    len = Math.sqrt(2);
+                }
+
+                let nx = vx / len;
+                let ny = vy / len;
+                let distance = 900 * moveMultiplier;
+                if (branch === tp0) {
+                    // This central piece has the largest footprint; push it farther to fully leave frame.
+                    distance *= 2.0;
+                }
+                // Center branches should leave first; edge branches can start a bit later.
+                let localDelay = startDelay + ((len - minLen) / lenRange) * delaySpan;
+
+                tweens.push(this.game.add.tween(branch).to(
+                    { x: branch.x + nx * distance, y: branch.y + ny * distance },
+                    moveTime,
+                    Settings.isOnlyLinearAnimations()? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
+                    true,
+                    localDelay,
+                    0,
+                    false
+                ));
+
+                let fadeStart = localDelay + moveTime - 220;
+                if (branch === tp0) {
+                    fadeStart -= 120;
+                }
+                tweens.push(AnimationUtils.fadeOut(this.game, branch, fadeStart, fadeTime));
             });
 
-            tweens.push(game.add.tween(this.overlay).to({ alpha: 0}, 520 * k, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay, 0, false))
-            tweens.push(AnimationUtils.fadeOut(this.game, loading, delay, 320*k))
+            tweens.push(game.add.tween(this.overlay).to({ alpha: 0}, 520, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, startDelay, 0, false))
+            tweens.push(AnimationUtils.fadeOut(this.game, loading, startDelay + moveTime - 220, 180))
             tweens.forEach(t => t.frameBased = true);
         }
 
