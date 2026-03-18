@@ -24,6 +24,7 @@ export default class DiaryPanel extends ClosablePanel {
     private static PAGE_TURN_SCALE_X = 1.08 * 4 / 1.5;
     private static PAGE_TURN_SCALE_Y = 1.04 * 4 / 1.5;
     private static PAGE_TURN_DURATION_MS = 500;
+    private static PAGE_TURN_FADE_OUT_MS = 90;
     private screen: HouseScreen;
     private layout: BasePanel;
     private layoutRevealEvent: Phaser.TimerEvent;
@@ -77,7 +78,9 @@ export default class DiaryPanel extends ClosablePanel {
         } else {
             this.layout = new DiaryRecipeLayout(this.game, recipeToDraw, 0, 0);
         }
-        this.stageLayoutPageBackground(this.layout);
+        if (animateReveal) {
+            this.stageLayoutPageBackground(this.layout);
+        }
         this.addSprite(this.layout)
         if ((<any>this).updateTransform) {
             (<any>this).updateTransform();
@@ -467,14 +470,22 @@ export default class DiaryPanel extends ClosablePanel {
         let pageTurnTween = this.game.add.tween(this.pageBg).from({skewY: -2}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
         this.game.add.tween(this.pageBg.scale).from({x: 0}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
         pageTurnTween.onComplete.addOnce(() => {
-            this.showPage(currentPage - 1, false);
-            this.pageTurnInProgress = false;
+            this.showPage(currentPage - 1, false, true);
+            this.pageBg.alpha = 1;
+            this.pageBg.visible = true;
+            this.pageBg.renderable = true;
+            this.showPageTurnLayer();
+            this.pageTurnEvent = this.game.time.events.add(DiaryPanel.REVEAL_DELAY_MS, () => {
+                this.pageTurnEvent = null;
+                let fadeTween = this.game.add.tween(this.pageBg).to({alpha: 0}, DiaryPanel.PAGE_TURN_FADE_OUT_MS, Easing.Linear.None, true, 0);
+                fadeTween.onComplete.addOnce(this.finishPageTurn, this);
+            });
         }, this);
 
         SoundUtils.diaryPrevPage();
     }
 
-    private showPage(page?:number, animateReveal:boolean = true) {
+    private showPage(page?:number, animateReveal:boolean = true, keepPageTurnCover:boolean = false) {
         if (this.layoutRevealEvent) {
             this.game.time.events.remove(this.layoutRevealEvent);
             this.layoutRevealEvent = null;
@@ -484,7 +495,9 @@ export default class DiaryPanel extends ClosablePanel {
             this.navRevealEvent = null;
         }
         this.clearPageTurnEvent();
-        this.hidePageTurnSprites();
+        if (!keepPageTurnCover) {
+            this.hidePageTurnSprites();
+        }
         this.clearStagedLayoutPageBg(true);
         if (this.layout) {
             this.game.tweens.removeFrom(this.layout);
@@ -498,7 +511,10 @@ export default class DiaryPanel extends ClosablePanel {
             }
         });
         this.ensurePersistentPageBackground();
-        this.initialize(page, animateReveal)
+        this.initialize(page, animateReveal);
+        if (keepPageTurnCover) {
+            this.showPageTurnLayer();
+        }
     }
 
     protected onClose() {
