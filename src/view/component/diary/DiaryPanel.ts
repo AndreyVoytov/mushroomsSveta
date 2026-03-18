@@ -15,15 +15,22 @@ import { Easing } from 'phaser-ce';
 import SoundUtils from '../../../core/utils/SoundUtils';
 export default class DiaryPanel extends ClosablePanel {
     private static REVEAL_DELAY_MS = 40;
+    private static PAGE_TURN_X = 49;
+    private static PAGE_TURN_Y = 27;
+    private static PAGE_TURN_SCALE_X = 1.08 * 4 / 1.5;
+    private static PAGE_TURN_SCALE_Y = 1.04 * 4 / 1.5;
+    private static PAGE_TURN_DURATION_MS = 500;
     private screen: HouseScreen;
     private layout: BasePanel;
     private layoutRevealEvent: Phaser.TimerEvent;
     private navRevealEvent: Phaser.TimerEvent;
     private stagedPageBgRevealEvent: Phaser.TimerEvent;
+    private pageTurnEvent: Phaser.TimerEvent;
     private pagesCount:number;    
     private arrowRight: Phaser.Button;
     private arrowLeft: Phaser.Button;
     private pageBgStagingLayer: Phaser.Group;
+    private pageTurnLayer: Phaser.Group;
     private stagedLayoutPageBg: Phaser.Sprite;
     private stagedLayoutOwner: BasePanel;
 
@@ -122,7 +129,7 @@ export default class DiaryPanel extends ClosablePanel {
 
 
     private pageBg0:Phaser.Sprite;
-    private pageBg:Phaser.Sprite;
+    private pageBg:Skewable;
 
     private ensurePageBgStagingLayer(): Phaser.Group {
         if (!this.pageBgStagingLayer || !this.pageBgStagingLayer.parent) {
@@ -133,6 +140,131 @@ export default class DiaryPanel extends ClosablePanel {
         }
         this.game.world.sendToBack(this.pageBgStagingLayer);
         return this.pageBgStagingLayer;
+    }
+
+    private ensurePageTurnSprites(): void {
+        if (!this.pageTurnLayer || !this.pageTurnLayer.parent) {
+            this.pageTurnLayer = this.game.add.group();
+            this.pageTurnLayer.name = "diaryPageTurnLayer";
+            this.pageTurnLayer.visible = false;
+            this.pageTurnLayer.renderable = false;
+            this.addChild(this.pageTurnLayer);
+        }
+
+        if (!this.pageBg0 || !this.pageBg0.parent) {
+            this.pageBg0 = SpriteUtils.createSprite(this.game, 0, 0, "bookPage");
+            this.pageBg0.name = "pageTurnStatic";
+            this.pageBg0.alpha = 0;
+            this.pageBg0.visible = false;
+            this.pageBg0.renderable = false;
+            this.pageTurnLayer.add(this.pageBg0);
+        }
+
+        if (!this.pageBg || !this.pageBg.parent) {
+            this.pageBg = new Skewable(this.game, 0, 0, "bookPage", "pageTurnSkewable");
+            this.pageBg.alpha = 0;
+            this.pageBg.visible = false;
+            this.pageBg.renderable = false;
+            this.pageTurnLayer.add(this.pageBg);
+        }
+    }
+
+    private applyPageTurnPreset(sprite: Phaser.Sprite | Skewable): void {
+        Utils.applyPreset(sprite, {
+            "spriteId": "bookPage",
+            "x": DiaryPanel.PAGE_TURN_X,
+            "y": DiaryPanel.PAGE_TURN_Y,
+            "scaleX": DiaryPanel.PAGE_TURN_SCALE_X,
+            "scaleY": DiaryPanel.PAGE_TURN_SCALE_Y,
+            "anchorX": 0.5,
+            "anchorY": 0.5,
+            "rotation": 0
+        });
+    }
+
+    private resetStaticPageTurnSprite(): void {
+        this.ensurePageTurnSprites();
+        if (this.pageBg0) {
+            this.game.tweens.removeFrom(this.pageBg0);
+        }
+        this.applyPageTurnPreset(this.pageBg0);
+        this.pageBg0.alpha = 1;
+        this.pageBg0.visible = true;
+        this.pageBg0.renderable = true;
+    }
+
+    private resetSkewPageTurnSprite(): void {
+        this.ensurePageTurnSprites();
+        if (this.pageBg) {
+            this.game.tweens.removeFrom(this.pageBg);
+            this.game.tweens.removeFrom(this.pageBg.scale);
+        }
+        this.applyPageTurnPreset(this.pageBg);
+        this.pageBg.anchor.set(0, 1);
+        this.pageBg.x -= this.pageBg.width / 2;
+        this.pageBg.y += this.pageBg.height / 2;
+        this.pageBg.skewX = 0;
+        this.pageBg.skewY = 0;
+        this.pageBg.alpha = 1;
+        this.pageBg.visible = true;
+        this.pageBg.renderable = true;
+    }
+
+    private showPageTurnLayer(): void {
+        this.ensurePageTurnSprites();
+        this.pageTurnLayer.visible = true;
+        this.pageTurnLayer.renderable = true;
+        this.setChildIndex(this.pageTurnLayer, this.children.length - 1);
+        if ((<any>this).updateTransform) {
+            (<any>this).updateTransform();
+        }
+        if ((<any>this.pageTurnLayer).updateTransform) {
+            (<any>this.pageTurnLayer).updateTransform();
+        }
+        if ((<any>this.pageBg0).updateTransform) {
+            (<any>this.pageBg0).updateTransform();
+        }
+        if ((<any>this.pageBg).updateTransform) {
+            (<any>this.pageBg).updateTransform();
+        }
+    }
+
+    private clearPageTurnEvent(): void {
+        if (this.pageTurnEvent) {
+            this.game.time.events.remove(this.pageTurnEvent);
+            this.pageTurnEvent = null;
+        }
+    }
+
+    private hidePageTurnSprites(): void {
+        if (this.pageBg0) {
+            this.game.tweens.removeFrom(this.pageBg0);
+        }
+        if (this.pageBg) {
+            this.game.tweens.removeFrom(this.pageBg);
+        }
+        if (this.pageBg && this.pageBg.scale) {
+            this.game.tweens.removeFrom(this.pageBg.scale);
+        }
+
+        if (this.pageBg0) {
+            this.pageBg0.alpha = 0;
+            this.pageBg0.visible = false;
+            this.pageBg0.renderable = false;
+        }
+
+        if (this.pageBg) {
+            this.pageBg.alpha = 0;
+            this.pageBg.visible = false;
+            this.pageBg.renderable = false;
+            this.pageBg.skewX = 0;
+            this.pageBg.skewY = 0;
+        }
+
+        if (this.pageTurnLayer) {
+            this.pageTurnLayer.visible = false;
+            this.pageTurnLayer.renderable = false;
+        }
     }
 
     private clearStagedLayoutPageBg(destroySprite?: boolean) {
@@ -264,52 +396,36 @@ export default class DiaryPanel extends ClosablePanel {
 
     public showNextPage(currentPage:number){
         this.arrowRight.inputEnabled = false;
-        if (this.pageBg) this.pageBg.destroy()
-        if (this.pageBg0) this.pageBg0.destroy()
-
         this.showPage(currentPage + 1);
 
-        this.pageBg0 = SpriteUtils.createSprite(this.game, 0, 0, "bookPage");
-        Utils.applyPreset(this.pageBg0, { "spriteId": "bookPage", "x": 49, "y": 27, "scaleX": 1.08*4/1.5, "scaleY": 1.04*4/1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 })
-        this.addSprite(this.pageBg0);
-        this.game.add.tween(this.pageBg0).to({alpha: 0}, 300, Easing.Linear.None, true, 0)
-
-        this.pageBg = new Skewable(this.game, 0, 0, "bookPage");
-        Utils.applyPreset(this.pageBg, { "spriteId": "bookPage", "x": 49, "y": 27, "scaleX": 1.08*4/1.5, "scaleY": 1.04*4/1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 })
-        this.pageBg.anchor.set(0, 1);
-        this.pageBg.x -= this.pageBg.width/2;
-        this.pageBg.y += this.pageBg.height/2;
-        this.addSprite(this.pageBg);
-        this.game.add.tween(this.pageBg).to({skewY: [-2]}, 500, Easing.Linear.None, true, 0)
-        this.game.add.tween(this.pageBg.scale).to({x: 0}, 500, Easing.Linear.None, true, 0)
+        this.resetStaticPageTurnSprite();
+        this.resetSkewPageTurnSprite();
+        this.showPageTurnLayer();
+        this.game.add.tween(this.pageBg0).to({alpha: 0}, 300, Easing.Linear.None, true, 0);
+        let pageTurnTween = this.game.add.tween(this.pageBg).to({skewY: [-2]}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
+        this.game.add.tween(this.pageBg.scale).to({x: 0}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
+        pageTurnTween.onComplete.addOnce(this.hidePageTurnSprites, this);
 
         SoundUtils.diaryNextPage();
     }
 
     public showPrevPage(currentPage:number){
         this.arrowLeft.inputEnabled = false;
-        if (this.pageBg) this.pageBg.destroy()
-        if (this.pageBg0) this.pageBg0.destroy()
+        this.clearPageTurnEvent();
+        this.hidePageTurnSprites();
 
-        this.pageBg = new Skewable(this.game, 0, 0, "bookPage");
-        Utils.applyPreset(this.pageBg, { "spriteId": "bookPage", "x": 49, "y": 27, "scaleX": 1.08*4/1.5, "scaleY": 1.04*4/1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 })
-        this.pageBg.anchor.set(0, 1);
-        this.pageBg.x -= this.pageBg.width/2;
-        this.pageBg.y += this.pageBg.height/2;
-        this.addSprite(this.pageBg);
-        this.game.add.tween(this.pageBg).from({skewY: -2}, 500, Easing.Linear.None, true, 0)
-        this.game.add.tween(this.pageBg.scale).from({x: 0}, 500, Easing.Linear.None, true, 0)
+        this.resetSkewPageTurnSprite();
+        this.pageBg0.visible = false;
+        this.pageBg0.renderable = false;
+        this.showPageTurnLayer();
+        this.game.add.tween(this.pageBg).from({skewY: -2}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
+        this.game.add.tween(this.pageBg.scale).from({x: 0}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
         
-        this.game.time.events.add(500, () => {
+        this.clearPageTurnEvent();
+        this.pageTurnEvent = this.game.time.events.add(DiaryPanel.PAGE_TURN_DURATION_MS, () => {
+            this.pageTurnEvent = null;
             this.showPage(currentPage - 1);
-
-            // this.pageBg0 = SpriteUtils.createSprite(this.game, 0, 0, "bookPage");
-            // Utils.applyPreset(this.pageBg0, { "spriteId": "bookPage", "x": 49, "y": 27, "scaleX": 1.08*4/1.5, "scaleY": 1.04*4/1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 })
-            // this.addSprite(this.pageBg0);
-            // this.game.add.tween(this.pageBg0).to({alpha: 0}, 200, Easing.Linear.None, true, 0)
-            // this.game.add.tween(this.pageBg).to({alpha: 0}, 200, Easing.Linear.None, true, 0)
-
-        })
+        });
 
         SoundUtils.diaryPrevPage();
     }
@@ -323,6 +439,8 @@ export default class DiaryPanel extends ClosablePanel {
             this.game.time.events.remove(this.navRevealEvent);
             this.navRevealEvent = null;
         }
+        this.clearPageTurnEvent();
+        this.hidePageTurnSprites();
         this.clearStagedLayoutPageBg(true);
         if (this.layout) {
             this.game.tweens.removeFrom(this.layout);
@@ -347,6 +465,8 @@ export default class DiaryPanel extends ClosablePanel {
             this.game.time.events.remove(this.navRevealEvent);
             this.navRevealEvent = null;
         }
+        this.clearPageTurnEvent();
+        this.hidePageTurnSprites();
         this.clearStagedLayoutPageBg(true);
         this.screen.showUI();
     }
