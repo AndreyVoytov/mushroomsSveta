@@ -14,13 +14,18 @@ import Skewable from '../panel/Skewable';
 import { Easing } from 'phaser-ce';
 import SoundUtils from '../../../core/utils/SoundUtils';
 export default class DiaryPanel extends ClosablePanel {
+    private static REVEAL_DELAY_MS = 40;
     private screen: HouseScreen;
     private layout: BasePanel;
     private layoutRevealEvent: Phaser.TimerEvent;
     private navRevealEvent: Phaser.TimerEvent;
+    private stagedPageBgRevealEvent: Phaser.TimerEvent;
     private pagesCount:number;    
     private arrowRight: Phaser.Button;
     private arrowLeft: Phaser.Button;
+    private pageBgStagingLayer: Phaser.Group;
+    private stagedLayoutPageBg: Phaser.Sprite;
+    private stagedLayoutOwner: BasePanel;
 
     constructor(game: Phaser.Game, screen: HouseScreen, x: number, y: number) {
         super(game, x, y, true, "diaryPanel", 1.18);
@@ -57,7 +62,14 @@ export default class DiaryPanel extends ClosablePanel {
         } else {
             this.layout = new DiaryRecipeLayout(this.game, recipeToDraw, 0, 0);
         }
+        this.stageLayoutPageBackground(this.layout);
         this.addSprite(this.layout)
+        if ((<any>this).updateTransform) {
+            (<any>this).updateTransform();
+        }
+        if ((<any>this.layout).updateTransform) {
+            (<any>this.layout).updateTransform();
+        }
         this.scheduleLayoutReveal();
 
        
@@ -112,6 +124,78 @@ export default class DiaryPanel extends ClosablePanel {
     private pageBg0:Phaser.Sprite;
     private pageBg:Phaser.Sprite;
 
+    private ensurePageBgStagingLayer(): Phaser.Group {
+        if (!this.pageBgStagingLayer || !this.pageBgStagingLayer.parent) {
+            this.pageBgStagingLayer = this.game.add.group();
+            this.pageBgStagingLayer.name = "diaryPageBgStagingLayer";
+            this.pageBgStagingLayer.fixedToCamera = true;
+            this.pageBgStagingLayer.cameraOffset.set(0, 0);
+        }
+        this.game.world.sendToBack(this.pageBgStagingLayer);
+        return this.pageBgStagingLayer;
+    }
+
+    private clearStagedLayoutPageBg(destroySprite?: boolean) {
+        if (this.stagedPageBgRevealEvent) {
+            this.game.time.events.remove(this.stagedPageBgRevealEvent);
+            this.stagedPageBgRevealEvent = null;
+        }
+
+        if (this.stagedLayoutPageBg) {
+            if (this.stagedLayoutPageBg.parent) {
+                this.stagedLayoutPageBg.parent.removeChild(this.stagedLayoutPageBg);
+            }
+            if (destroySprite) {
+                this.stagedLayoutPageBg.destroy(true);
+            }
+        }
+
+        this.stagedLayoutPageBg = null;
+        this.stagedLayoutOwner = null;
+    }
+
+    private stageLayoutPageBackground(layout: BasePanel) {
+        this.clearStagedLayoutPageBg();
+
+        if (!layout) {
+            return;
+        }
+
+        let pageBg = <Phaser.Sprite>layout.children.filter(child => child && (<any>child).name == "pageBg").shift();
+        if (!pageBg) {
+            return;
+        }
+
+        let stagingLayer = this.ensurePageBgStagingLayer();
+        stagingLayer.cameraOffset.set(this.x + layout.x, this.y + layout.y);
+        stagingLayer.add(pageBg);
+        this.stagedLayoutPageBg = pageBg;
+        this.stagedLayoutOwner = layout;
+
+        this.stagedPageBgRevealEvent = this.game.time.events.add(DiaryPanel.REVEAL_DELAY_MS, () => {
+            let stagedPageBg = this.stagedLayoutPageBg;
+            let stagedLayoutOwner = this.stagedLayoutOwner;
+            this.stagedPageBgRevealEvent = null;
+
+            if (!stagedPageBg) {
+                this.clearStagedLayoutPageBg();
+                return;
+            }
+
+            if (!stagedLayoutOwner || !stagedLayoutOwner.parent || !stagedLayoutOwner.alive) {
+                this.clearStagedLayoutPageBg(true);
+                return;
+            }
+
+            if (stagedPageBg.parent) {
+                stagedPageBg.parent.removeChild(stagedPageBg);
+            }
+            stagedLayoutOwner.addChildAt(stagedPageBg, 0);
+            this.stagedLayoutPageBg = null;
+            this.stagedLayoutOwner = null;
+        });
+    }
+
     private scheduleLayoutReveal() {
         if (this.layoutRevealEvent) {
             this.game.time.events.remove(this.layoutRevealEvent);
@@ -124,7 +208,7 @@ export default class DiaryPanel extends ClosablePanel {
         let layout = this.layout;
         let revealTargets: { target: PIXI.DisplayObject, alpha: number }[] = [];
         layout.children.forEach(child => {
-            if (!child || child.name == "pageBg") {
+            if (!child || (<any>child).name == "pageBg") {
                 return;
             }
             if (child instanceof Phaser.Sprite || child instanceof Phaser.Button || child instanceof Phaser.BitmapText || child instanceof Phaser.Group) {
@@ -133,13 +217,13 @@ export default class DiaryPanel extends ClosablePanel {
                 revealTargets.push({ target: child, alpha: targetAlpha });
             }
         });
-        this.layoutRevealEvent = this.game.time.events.add(1, () => {
+        this.layoutRevealEvent = this.game.time.events.add(DiaryPanel.REVEAL_DELAY_MS, () => {
             if (!layout || !layout.parent || !layout.alive) {
                 return;
             }
             revealTargets.forEach(item => {
                 let target = item.target;
-                if (!target || !target.parent || !target.alive) {
+                if (!target || !target.parent || !(<any>target).alive) {
                     return;
                 }
                 (<any>target).alpha = 0;
@@ -165,10 +249,10 @@ export default class DiaryPanel extends ClosablePanel {
             revealTargets.push({ target: target, alpha: targetAlpha });
         });
 
-        this.navRevealEvent = this.game.time.events.add(1, () => {
+        this.navRevealEvent = this.game.time.events.add(DiaryPanel.REVEAL_DELAY_MS, () => {
             revealTargets.forEach(item => {
                 let target = item.target;
-                if (!target || !target.parent || !target.alive) {
+                if (!target || !target.parent || !(<any>target).alive) {
                     return;
                 }
                 (<any>target).alpha = 0;
@@ -239,6 +323,7 @@ export default class DiaryPanel extends ClosablePanel {
             this.game.time.events.remove(this.navRevealEvent);
             this.navRevealEvent = null;
         }
+        this.clearStagedLayoutPageBg(true);
         if (this.layout) {
             this.game.tweens.removeFrom(this.layout);
             this.layout.children.forEach(c => this.game.tweens.removeFrom(c));
@@ -262,6 +347,7 @@ export default class DiaryPanel extends ClosablePanel {
             this.game.time.events.remove(this.navRevealEvent);
             this.navRevealEvent = null;
         }
+        this.clearStagedLayoutPageBg(true);
         this.screen.showUI();
     }
 
