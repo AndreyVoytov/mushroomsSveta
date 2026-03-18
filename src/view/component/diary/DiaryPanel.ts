@@ -466,9 +466,12 @@ export default class DiaryPanel extends ClosablePanel {
         this.resetSkewPageTurnSprite();
         this.pageBg0.visible = false;
         this.pageBg0.renderable = false;
+        let targetScaleX = this.pageBg.scale.x;
+        this.pageBg.scale.x = 0;
+        this.pageBg.skewY = -2;
         this.showPageTurnLayer();
-        let pageTurnTween = this.game.add.tween(this.pageBg).from({skewY: -2}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
-        this.game.add.tween(this.pageBg.scale).from({x: 0}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
+        let pageTurnTween = this.game.add.tween(this.pageBg).to({skewY: 0}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
+        this.game.add.tween(this.pageBg.scale).to({x: targetScaleX}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
         pageTurnTween.onComplete.addOnce(() => {
             this.showPage(currentPage - 1, false, true);
             this.pageBg.alpha = 1;
