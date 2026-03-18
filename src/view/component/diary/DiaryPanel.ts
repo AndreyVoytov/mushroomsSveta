@@ -16,6 +16,7 @@ import SoundUtils from '../../../core/utils/SoundUtils';
 export default class DiaryPanel extends ClosablePanel {
     private screen: HouseScreen;
     private layout: BasePanel;
+    private layoutRevealEvent: Phaser.TimerEvent;
     private pagesCount:number;    
     private arrowRight: Phaser.Button;
     private arrowLeft: Phaser.Button;
@@ -56,6 +57,7 @@ export default class DiaryPanel extends ClosablePanel {
             this.layout = new DiaryRecipeLayout(this.game, recipeToDraw, 0, 0);
         }
         this.addSprite(this.layout)
+        this.scheduleLayoutReveal();
 
        
 
@@ -107,6 +109,43 @@ export default class DiaryPanel extends ClosablePanel {
 
     private pageBg0:Phaser.Sprite;
     private pageBg:Phaser.Sprite;
+
+    private scheduleLayoutReveal() {
+        if (this.layoutRevealEvent) {
+            this.game.time.events.remove(this.layoutRevealEvent);
+            this.layoutRevealEvent = null;
+        }
+        if (!this.layout) {
+            return;
+        }
+
+        let layout = this.layout;
+        let revealTargets: { target: PIXI.DisplayObject, alpha: number }[] = [];
+        layout.children.forEach(child => {
+            if (!child || child.name == "pageBg") {
+                return;
+            }
+            if (child instanceof Phaser.Sprite || child instanceof Phaser.Button || child instanceof Phaser.BitmapText || child instanceof Phaser.Group) {
+                let targetAlpha = typeof (<any>child).alpha === "number" ? (<any>child).alpha : 1;
+                (<any>child).alpha = 0;
+                revealTargets.push({ target: child, alpha: targetAlpha });
+            }
+        });
+        this.layoutRevealEvent = this.game.time.events.add(1, () => {
+            if (!layout || !layout.parent || !layout.alive) {
+                return;
+            }
+            revealTargets.forEach(item => {
+                let target = item.target;
+                if (!target || !target.parent || !target.alive) {
+                    return;
+                }
+                (<any>target).alpha = 0;
+                this.game.add.tween(target).to({ alpha: item.alpha }, 120, Easing.Linear.None, true, 0);
+            });
+            this.layoutRevealEvent = null;
+        });
+    }
 
     public showNextPage(currentPage:number){
         this.arrowRight.inputEnabled = false;
@@ -161,7 +200,13 @@ export default class DiaryPanel extends ClosablePanel {
     }
 
     private showPage(page?:number) {
+        if (this.layoutRevealEvent) {
+            this.game.time.events.remove(this.layoutRevealEvent);
+            this.layoutRevealEvent = null;
+        }
         if (this.layout) {
+            this.game.tweens.removeFrom(this.layout);
+            this.layout.children.forEach(c => this.game.tweens.removeFrom(c));
             this.layout.onKill();
             this.layout.destroy(true);
         }
@@ -174,6 +219,10 @@ export default class DiaryPanel extends ClosablePanel {
     }
 
     protected onClose() {
+        if (this.layoutRevealEvent) {
+            this.game.time.events.remove(this.layoutRevealEvent);
+            this.layoutRevealEvent = null;
+        }
         this.screen.showUI();
     }
 

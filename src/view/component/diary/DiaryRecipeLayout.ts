@@ -11,6 +11,7 @@ export default class DiaryRecipeLayout extends BasePanel {
         super(game, x, y, "diaryLayout", "blank");
 
         let bg = SpriteUtils.createSprite(this.game, 0, 0, "bookBg");
+        bg.name = "pageBg";
         Utils.applyPreset(bg, { "spriteId": "", "x": 49, "y": 27, "scaleX": 1.08, "scaleY": 1.04, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 })
         bg.anchor.set(0.5);
         this.addSprite(bg);
