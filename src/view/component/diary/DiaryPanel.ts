@@ -17,6 +17,7 @@ export default class DiaryPanel extends ClosablePanel {
     private screen: HouseScreen;
     private layout: BasePanel;
     private layoutRevealEvent: Phaser.TimerEvent;
+    private navRevealEvent: Phaser.TimerEvent;
     private pagesCount:number;    
     private arrowRight: Phaser.Button;
     private arrowLeft: Phaser.Button;
@@ -97,6 +98,7 @@ export default class DiaryPanel extends ClosablePanel {
         pageNumber.name = "pageNumber";
         Utils.applyPreset(pageNumber, {"spriteId":"pageNumber","x":11,"y":412,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0,"rotation":0,"fontSize":40})
         this.addSprite(pageNumber);
+        this.scheduleNavigationReveal([closeBtn, closeBtn2, diaryArrowBg, this.arrowLeft, this.arrowRight, pageNumber]);
 
         this.screen.attachForDebug(this);
     }
@@ -144,6 +146,35 @@ export default class DiaryPanel extends ClosablePanel {
                 this.game.add.tween(target).to({ alpha: item.alpha }, 120, Easing.Linear.None, true, 0);
             });
             this.layoutRevealEvent = null;
+        });
+    }
+
+    private scheduleNavigationReveal(targets: PIXI.DisplayObject[]) {
+        if (this.navRevealEvent) {
+            this.game.time.events.remove(this.navRevealEvent);
+            this.navRevealEvent = null;
+        }
+
+        let revealTargets: { target: PIXI.DisplayObject, alpha: number }[] = [];
+        targets.forEach(target => {
+            if (!target || !(target instanceof Phaser.Sprite || target instanceof Phaser.Button || target instanceof Phaser.BitmapText || target instanceof Phaser.Group)) {
+                return;
+            }
+            let targetAlpha = typeof (<any>target).alpha === "number" ? (<any>target).alpha : 1;
+            (<any>target).alpha = 0;
+            revealTargets.push({ target: target, alpha: targetAlpha });
+        });
+
+        this.navRevealEvent = this.game.time.events.add(1, () => {
+            revealTargets.forEach(item => {
+                let target = item.target;
+                if (!target || !target.parent || !target.alive) {
+                    return;
+                }
+                (<any>target).alpha = 0;
+                this.game.add.tween(target).to({ alpha: item.alpha }, 120, Easing.Linear.None, true, 0);
+            });
+            this.navRevealEvent = null;
         });
     }
 
@@ -204,6 +235,10 @@ export default class DiaryPanel extends ClosablePanel {
             this.game.time.events.remove(this.layoutRevealEvent);
             this.layoutRevealEvent = null;
         }
+        if (this.navRevealEvent) {
+            this.game.time.events.remove(this.navRevealEvent);
+            this.navRevealEvent = null;
+        }
         if (this.layout) {
             this.game.tweens.removeFrom(this.layout);
             this.layout.children.forEach(c => this.game.tweens.removeFrom(c));
@@ -222,6 +257,10 @@ export default class DiaryPanel extends ClosablePanel {
         if (this.layoutRevealEvent) {
             this.game.time.events.remove(this.layoutRevealEvent);
             this.layoutRevealEvent = null;
+        }
+        if (this.navRevealEvent) {
+            this.game.time.events.remove(this.navRevealEvent);
+            this.navRevealEvent = null;
         }
         this.screen.showUI();
     }
