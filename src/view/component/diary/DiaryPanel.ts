@@ -15,6 +15,10 @@ import { Easing } from 'phaser-ce';
 import SoundUtils from '../../../core/utils/SoundUtils';
 export default class DiaryPanel extends ClosablePanel {
     private static REVEAL_DELAY_MS = 40;
+    private static PAGE_BG_X = 49;
+    private static PAGE_BG_Y = 27;
+    private static PAGE_BG_SCALE_X = 1.08;
+    private static PAGE_BG_SCALE_Y = 1.04;
     private static PAGE_TURN_X = 49;
     private static PAGE_TURN_Y = 27;
     private static PAGE_TURN_SCALE_X = 1.08 * 4 / 1.5;
@@ -31,6 +35,8 @@ export default class DiaryPanel extends ClosablePanel {
     private arrowRight: Phaser.Button;
     private arrowLeft: Phaser.Button;
     private pageBgStagingLayer: Phaser.Group;
+    private persistentPageBgLayer: Phaser.Group;
+    private persistentPageBg: Phaser.Sprite;
     private pageTurnLayer: Phaser.Group;
     private stagedLayoutPageBg: Phaser.Sprite;
     private stagedLayoutOwner: BasePanel;
@@ -38,6 +44,7 @@ export default class DiaryPanel extends ClosablePanel {
     constructor(game: Phaser.Game, screen: HouseScreen, x: number, y: number) {
         super(game, x, y, true, "diaryPanel", 1.18);
         this.screen = screen;
+        this.ensurePersistentPageBackground();
     }
 
     private initialize(currentPage?:number, animateReveal:boolean = true) {
@@ -135,6 +142,31 @@ export default class DiaryPanel extends ClosablePanel {
 
     private pageBg0:Phaser.Sprite;
     private pageBg:Skewable;
+
+    private ensurePersistentPageBackground(): void {
+        if (!this.persistentPageBgLayer || !this.persistentPageBgLayer.parent) {
+            this.persistentPageBgLayer = this.game.add.group();
+            this.persistentPageBgLayer.name = "diaryPersistentPageBgLayer";
+            this.addChildAt(this.persistentPageBgLayer, 0);
+        } else if (this.persistentPageBgLayer.parent === this) {
+            this.setChildIndex(this.persistentPageBgLayer, 0);
+        }
+
+        if (!this.persistentPageBg || !this.persistentPageBg.parent) {
+            this.persistentPageBg = SpriteUtils.createSprite(this.game, 0, 0, "bookBg", "persistentPageBg");
+            Utils.applyPreset(this.persistentPageBg, {
+                "spriteId": "bookBg",
+                "x": DiaryPanel.PAGE_BG_X,
+                "y": DiaryPanel.PAGE_BG_Y,
+                "scaleX": DiaryPanel.PAGE_BG_SCALE_X,
+                "scaleY": DiaryPanel.PAGE_BG_SCALE_Y,
+                "anchorX": 0.5,
+                "anchorY": 0.5,
+                "rotation": 0
+            });
+            this.persistentPageBgLayer.add(this.persistentPageBg);
+        }
+    }
 
     private ensurePageBgStagingLayer(): Phaser.Group {
         if (!this.pageBgStagingLayer || !this.pageBgStagingLayer.parent) {
@@ -465,6 +497,7 @@ export default class DiaryPanel extends ClosablePanel {
                 c.destroy(true);
             }
         });
+        this.ensurePersistentPageBackground();
         this.initialize(page, animateReveal)
     }
 
