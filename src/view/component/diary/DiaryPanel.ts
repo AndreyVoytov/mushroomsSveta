@@ -348,29 +348,12 @@ export default class DiaryPanel extends ClosablePanel {
         }
 
         let layout = this.layout;
-        let revealTargets: { target: PIXI.DisplayObject, alpha: number }[] = [];
-        layout.children.forEach(child => {
-            if (!child || (<any>child).name == "pageBg") {
-                return;
-            }
-            if (child instanceof Phaser.Sprite || child instanceof Phaser.Button || child instanceof Phaser.BitmapText || child instanceof Phaser.Group) {
-                let targetAlpha = typeof (<any>child).alpha === "number" ? (<any>child).alpha : 1;
-                (<any>child).alpha = 0;
-                revealTargets.push({ target: child, alpha: targetAlpha });
-            }
-        });
+        let revealTargets = this.prepareRevealTargets(layout.children.filter(child => child && (<any>child).name != "pageBg"));
         this.layoutRevealEvent = this.game.time.events.add(DiaryPanel.REVEAL_DELAY_MS, () => {
             if (!layout || !layout.parent || !layout.alive) {
                 return;
             }
-            revealTargets.forEach(item => {
-                let target = item.target;
-                if (!target || !target.parent || !(<any>target).alive) {
-                    return;
-                }
-                (<any>target).alpha = 0;
-                this.game.add.tween(target).to({ alpha: item.alpha }, 120, Easing.Linear.None, true, 0);
-            });
+            this.revealTargets(revealTargets, 120);
             this.layoutRevealEvent = null;
         });
     }
@@ -381,6 +364,15 @@ export default class DiaryPanel extends ClosablePanel {
             this.navRevealEvent = null;
         }
 
+        let revealTargets = this.prepareRevealTargets(targets);
+
+        this.navRevealEvent = this.game.time.events.add(DiaryPanel.REVEAL_DELAY_MS, () => {
+            this.revealTargets(revealTargets, 120);
+            this.navRevealEvent = null;
+        });
+    }
+
+    private prepareRevealTargets(targets: PIXI.DisplayObject[]): { target: PIXI.DisplayObject, alpha: number }[] {
         let revealTargets: { target: PIXI.DisplayObject, alpha: number }[] = [];
         targets.forEach(target => {
             if (!target || !(target instanceof Phaser.Sprite || target instanceof Phaser.Button || target instanceof Phaser.BitmapText || target instanceof Phaser.Group)) {
@@ -390,17 +382,21 @@ export default class DiaryPanel extends ClosablePanel {
             (<any>target).alpha = 0;
             revealTargets.push({ target: target, alpha: targetAlpha });
         });
+        return revealTargets;
+    }
 
-        this.navRevealEvent = this.game.time.events.add(DiaryPanel.REVEAL_DELAY_MS, () => {
-            revealTargets.forEach(item => {
-                let target = item.target;
-                if (!target || !target.parent || !(<any>target).alive) {
-                    return;
-                }
-                (<any>target).alpha = 0;
-                this.game.add.tween(target).to({ alpha: item.alpha }, 120, Easing.Linear.None, true, 0);
-            });
-            this.navRevealEvent = null;
+    private revealTargets(targets: { target: PIXI.DisplayObject, alpha: number }[], duration?: number): void {
+        targets.forEach(item => {
+            let target = item.target;
+            if (!target || !target.parent || !(<any>target).alive) {
+                return;
+            }
+            (<any>target).alpha = 0;
+            if (duration && duration > 0) {
+                this.game.add.tween(target).to({ alpha: item.alpha }, duration, Easing.Linear.None, true, 0);
+            } else {
+                (<any>target).alpha = item.alpha;
+            }
         });
     }
 
@@ -431,7 +427,6 @@ export default class DiaryPanel extends ClosablePanel {
         this.arrowLeft.inputEnabled = false;
         this.clearPageTurnEvent();
         this.hidePageTurnSprites();
-        this.showPage(currentPage - 1, false);
 
         this.resetSkewPageTurnSprite();
         this.pageBg0.visible = false;
@@ -439,7 +434,10 @@ export default class DiaryPanel extends ClosablePanel {
         this.showPageTurnLayer();
         let pageTurnTween = this.game.add.tween(this.pageBg).from({skewY: -2}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
         this.game.add.tween(this.pageBg.scale).from({x: 0}, DiaryPanel.PAGE_TURN_DURATION_MS, Easing.Linear.None, true, 0);
-        pageTurnTween.onComplete.addOnce(this.finishPageTurn, this);
+        pageTurnTween.onComplete.addOnce(() => {
+            this.showPage(currentPage - 1, false);
+            this.pageTurnInProgress = false;
+        }, this);
 
         SoundUtils.diaryPrevPage();
     }
