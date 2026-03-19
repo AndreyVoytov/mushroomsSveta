@@ -91,10 +91,10 @@ export default class BoosterSlot extends BasePanel {
         }
 
         if(this.boosterCountLabel.text == "+"){
-            this.boosterCountLabel.scale.set(1.4); 
+            this.boosterCountLabel.scale.set(1.4, 1.4); 
             this.boosterCountLabel.setStyle({ font: "40px Arial", fill: "#ffffff"})
         } else {
-            this.boosterCountLabel.scale.set(0.85);
+            this.boosterCountLabel.scale.set(0.85, 0.85);
             this.boosterCountLabel.setStyle({ font: "bold 40px Arial", fill: "#ffffff"})
         }
 

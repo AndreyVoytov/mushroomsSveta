@@ -119,7 +119,7 @@ export default class BoosterInfoPanel extends BasePanel {
         let circle = this.attachSprite( "circleBoosterBlue");
         let boosterCountLabel = new Label(this.game, 0,-44, "" + UserService.getUser().getBoostersCount(boosterType), { font: "bold 40px Arial", fill: "#ffffff"});
         boosterCountLabel.name = "boosterCountLabel";
-        boosterCountLabel.scale.set(2)
+        boosterCountLabel.scale.set(2, 2)
         circle.scale.set(0.5)
         circle.addChild(boosterCountLabel);
 

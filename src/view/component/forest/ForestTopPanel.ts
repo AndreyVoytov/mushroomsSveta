@@ -106,7 +106,7 @@ export default class ForestTopPanel extends BasePanel {
 
     private highlightStepsOnRestore() {
         this.game.tweens.removeFrom(this.energyLabel);
-        this.energyLabel.scale.set(1);
+        this.energyLabel.scale.set(1, 1);
         //TODO анимация ломается:
         // AnimationUtils.wiggle(this.game, this.energyLabel, 0, true);
 

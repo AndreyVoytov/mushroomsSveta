@@ -37,7 +37,7 @@ export default abstract class DebugScreen extends Phaser.State {
     private mouseMiddleDownAt: Phaser.Point;
     private selectedRotationWas: number;
 
-    public selected: PIXI.Sprite;
+    public selected: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.BitmapText | Phaser.Text;
     private panels: BasePanel[] = [];
 
     public init() {
@@ -65,7 +65,7 @@ export default abstract class DebugScreen extends Phaser.State {
     }
 
     //debug sprites
-    protected addSprite(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText) {
+    protected addSprite(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text) {
         if (DebugScreen.DEBUG_MODE) {
             sprite.inputEnabled = true;
         }
@@ -110,7 +110,7 @@ export default abstract class DebugScreen extends Phaser.State {
         // panel.events.onInputOver.add(() => this.over(panel), this);
     }
 
-    private over(sprite: PIXI.Sprite) {
+    private over(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.BitmapText | Phaser.Text) {
         if(DebugScreen.DEBUG_MODE && this.TAB.isDown){
             if(this.selected){
                 this.selected.tint = 0xffffff;

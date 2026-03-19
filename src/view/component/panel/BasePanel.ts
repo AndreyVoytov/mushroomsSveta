@@ -9,7 +9,7 @@ import Settings from "../../../core/service/Settings";
 export default class BasePanel extends Phaser.Sprite {
 
     public tileSprites: Phaser.TileSprite[] = [];
-    public sprites: PIXI.DisplayObject[] = [];
+    public sprites: (Phaser.Sprite | Phaser.BitmapText | Phaser.Text)[] = [];
     public buttons: Phaser.Button[] = [];
 
     constructor(game: Phaser.Game, x: number, y: number, name?: string, image?: string) {
@@ -20,7 +20,7 @@ export default class BasePanel extends Phaser.Sprite {
 
     public onKill():void{}
 
-    public addSprite(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText) {
+    public addSprite(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text) {
         if (sprite instanceof Phaser.TileSprite) {
             this.tileSprites.push(sprite);
         } else {
@@ -89,7 +89,7 @@ export default class BasePanel extends Phaser.Sprite {
         }
         return sprite;
     }
-    public bringChildToTop(child: Phaser.Sprite | Phaser.Button | Phaser.BitmapText) {
+    public bringChildToTop(child: Phaser.Sprite | Phaser.Button | Phaser.BitmapText | Phaser.Text) {
         if (child) {
             this.setChildIndex(child, this.children.length - 1);
         }

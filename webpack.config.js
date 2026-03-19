@@ -59,6 +59,7 @@ module.exports = {
                 baseDir: ['./', './build']
             },
             https:true,
+            open: false,
         })
     ],
     module: {

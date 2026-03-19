@@ -4,7 +4,8 @@
 		"module": "commonjs",
 		"sourceMap": false,
 		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"types": []
 	},
 	"include": [
 		"node_modules/phaser-nineslice/build/phaser-nineslice.d.ts",

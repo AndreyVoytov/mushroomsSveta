@@ -2,9 +2,13 @@ import Utils from './Utils';
 import { Easing } from 'phaser-ce';
 import SpriteUtils from './SpriteUtils';
 import Settings from '../service/Settings';
+
+type FadeTarget = PIXI.Sprite | Phaser.Group | Phaser.Graphics | Phaser.BitmapText | Phaser.Text;
+type TintedTarget = PIXI.Sprite | Phaser.BitmapText | Phaser.Text;
+
 export default class AnimationUtils {
 
-    public static tint(game: Phaser.Game, sprite: PIXI.Sprite, startColor: number, endColor: number, time: number, delay: number) {
+    public static tint(game: Phaser.Game, sprite: TintedTarget, startColor: number, endColor: number, time: number, delay: number) {
         var colorBlend = { step: 0 };
         var colorTween = game.add.tween(colorBlend).to({ step: 100 }, time);
         colorTween.onUpdateCallback(function () {
@@ -166,7 +170,7 @@ export default class AnimationUtils {
         return tween;
     }
 
-    public static appear(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Group, delay?: number): Phaser.Tween {
+    public static appear(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Group | Phaser.BitmapText | Phaser.Text, delay?: number): Phaser.Tween {
         if (sprite) {
             let w = sprite.width;
             let h = sprite.height;
@@ -212,25 +216,25 @@ export default class AnimationUtils {
         game.add.tween(sprite.scale).to({ x: [sx * 0.8, sx * 1, sx * 1.2, sx * 1], y: [sy * 1.2, sy * 1, sy * 0.8, sy * 1] }, 800, Phaser.Easing.Linear.None, true, delay || 0, -1, false)
     }
 
-    public static blinking(game: Phaser.Game, sprite: PIXI.Sprite, delay?: number): Phaser.Tween {
+    public static blinking(game: Phaser.Game, sprite: TintedTarget, delay?: number): Phaser.Tween {
         sprite.alpha = 0;
         return game.add.tween(sprite).to({ alpha: 1 }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.Out, true, delay || 0, 1000000, true)
     }
 
-    public static disappear(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Group, delay?: number): Phaser.Tween {
+    public static disappear(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Group | Phaser.BitmapText | Phaser.Text, delay?: number): Phaser.Tween {
         let w = sprite.width;
         let h = sprite.height;
         // return game.add.tween(sprite).to( {width: [w * 1.1, w * 1.05, w*1.1, 0], height: [h * 1.1, h * 1.05, h*1.1, 0]  }, 500, Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false  )
         return game.add.tween(sprite).to({ width: [0], height: [0], alpha: [0] }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false)
     }
 
-    public static fadeOut(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Graphics | Phaser.Group, delay?: number, time?:number): Phaser.Tween {
+    public static fadeOut(game: Phaser.Game, sprite: FadeTarget, delay?: number, time?:number): Phaser.Tween {
         return game.add.tween(sprite).to({ alpha: 0 }, time || 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false)
     }
     public static fadeOut2(game: Phaser.Game, sprite: PIXI.Sprite, delay?: number): Phaser.Tween {
         return game.add.tween(sprite).to({ alpha: 0 }, 600, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false)
     }
-    public static fadeIn(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Group, delay?: number, time?:number): Phaser.Tween {
+    public static fadeIn(game: Phaser.Game, sprite: PIXI.Sprite | Phaser.Group | Phaser.BitmapText | Phaser.Text, delay?: number, time?:number): Phaser.Tween {
         sprite.alpha = 0;
         return game.add.tween(sprite).to({ alpha: 1 }, time || 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.Out, true, delay || 0, 0, false)
     }
