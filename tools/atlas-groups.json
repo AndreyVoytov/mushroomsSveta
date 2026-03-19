@@ -1,0 +1,105 @@
+{
+  "atlasGroups": [
+    {
+      "id": "load",
+      "sourceDir": "assets/load",
+      "outputPattern": "load",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "base",
+      "sourceDir": "assets/base",
+      "outputPattern": "base-{index}",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "basehq",
+      "sourceDir": "assets/basehq",
+      "outputPattern": "basehq",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "additional",
+      "sourceDir": "assets/additional",
+      "outputPattern": "additional{index}",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "chapter1",
+      "sourceDir": "assets/chapter1",
+      "outputPattern": "chapter1_{index}",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "event1",
+      "sourceDir": "assets/event1",
+      "outputPattern": "event1",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame1",
+      "sourceDir": "assets/minigame1",
+      "outputPattern": "minigame1",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame2",
+      "sourceDir": "assets/minigame2",
+      "outputPattern": "minigame2",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame3",
+      "sourceDir": "assets/minigame3",
+      "outputPattern": "minigame3",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame4",
+      "sourceDir": "assets/minigame4",
+      "outputPattern": "minigame4",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame5",
+      "sourceDir": "assets/minigame5",
+      "outputPattern": "minigame5",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame6",
+      "sourceDir": "assets/minigame6",
+      "outputPattern": "minigame6",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame7",
+      "sourceDir": "assets/minigame7",
+      "outputPattern": "minigame7",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame8",
+      "sourceDir": "assets/minigame8",
+      "outputPattern": "minigame8",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    }
+  ],
+  "screens": {
+    "sourceDir": "assets/screens"
+  }
+}

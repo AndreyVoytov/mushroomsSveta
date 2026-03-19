@@ -1,4 +1,4 @@
-﻿import ForestDao from '../../../core/dao/ForestDao';
+import ForestDao from '../../../core/dao/ForestDao';
 import ReplicaDao from '../../../core/dao/ReplicaDao';
 import AdminService from '../../../core/service/AdminService';
 import Settings from '../../../core/service/Settings';
@@ -7,6 +7,7 @@ import EventUtils from '../../../core/utils/EventUtils';
 import ForestUtils from '../../../core/utils/ForestUtils';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import Label from '../../component/panel/Label';
+import { getAtlasGroupNames } from '../../../generated/atlasManifest';
 import Game from '../../game/Game';
 import Preset from '../../game/Preset';
 import Utils from './../../../core/utils/Utils';
@@ -39,6 +40,19 @@ export default abstract class BaseScreen extends DebugScreen {
         }
     }
 
+    protected loadAtlasGroup(groupId: string): void {
+        getAtlasGroupNames(groupId).forEach(name => {
+            this.loadAtlas(name, 'assets/atlases/' + name);
+        });
+    }
+
+    protected unloadAtlasGroup(groupId: string): void {
+        getAtlasGroupNames(groupId).forEach(name => {
+            this.cache.removeImage(name)
+            Utils.delete(SpriteUtils.atlases, name)
+        });
+    }
+
     protected loadScreenSprite(name: string): void {
         if (Settings.isGraphicsFromAtlases()) {
             console.log("loadScreenSprite: " + name + "; " + (this.cache.getFrameData(name) ? true : false))
@@ -56,13 +70,8 @@ export default abstract class BaseScreen extends DebugScreen {
     }
 
     protected loadBaseAtlases(): void {
-        this.loadAtlas("base-0", "assets/atlases/base-0");
-        this.loadAtlas("base-1", "assets/atlases/base-1");
-        this.loadAtlas("base-2", "assets/atlases/base-2");
-        this.loadAtlas("base-3", "assets/atlases/base-3");
-        this.loadAtlas("base-4", "assets/atlases/base-4");
-
-        this.loadAtlas("basehq", "assets/atlases/basehq");
+        this.loadAtlasGroup("base");
+        this.loadAtlasGroup("basehq");
     }
 
     protected loadOptionalAtlases(): void {
@@ -70,12 +79,12 @@ export default abstract class BaseScreen extends DebugScreen {
         let user = UserService.getUser()
 
         if (!AdminService.isEditMode() &&  user.getCurrentForest() >= ReplicaDao.getEntity().getById("r41").context.level || AdminService.isEditMode()) {
-            this.loadAtlas("chapter1_0", "assets/atlases/chapter1_0");
-            this.loadAtlas("additional0", "assets/atlases/additional0");
+            this.loadAtlasGroup("chapter1");
+            this.loadAtlasGroup("additional");
         }
 
         if(!AdminService.isEditMode() && EventUtils.getActualEvents().filter(e => e.eventType == EventType.lukoshko).length > 0 || AdminService.isEditMode()){
-            this.loadAtlas("event1", "assets/atlases/event1");
+            this.loadAtlasGroup("event1");
         }
         
         let forest = ForestDao.getForestType(user.getCurrentForest());
@@ -108,10 +117,9 @@ export default abstract class BaseScreen extends DebugScreen {
 
         allMinigameScreens.forEach(s => {
             if (minigameScreensToLoad.indexOf(s) != -1 || AdminService.isEditMode()) {
-                this.loadAtlas(s, "assets/atlases/" + s)
+                this.loadAtlasGroup(s)
             } else if (s) {
-                this.cache.removeImage(s)
-                Utils.delete(SpriteUtils.atlases, s)
+                this.unloadAtlasGroup(s)
             }
         });
     }
@@ -126,10 +134,10 @@ export default abstract class BaseScreen extends DebugScreen {
         this.add.existing(this.transitionBlocker);
 
         if (AdminService.isEditMode()) {
-            // this.lockedMarker = new Label(this.game, 0, this.game.height/2, "вЂў" )
+            // this.lockedMarker = new Label(this.game, 0, this.game.height/2, "\u2022" )
             // this.lockedMarker.fixedToCamera  = true;
             // this.lockedMarker.scale.set(20);
-            this.lockedMarker = this.game.add.text(0, this.game.height - 120, "•", { font: "40px Arial", fill: "#ffffff" })
+            this.lockedMarker = this.game.add.text(0, this.game.height - 120, "\u2022", { font: "40px Arial", fill: "#ffffff" })
             this.lockedMarker.fixedToCamera = true;
             this.lockedMarker.scale.set(5);
             this.addSprite(this.lockedMarker);

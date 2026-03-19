@@ -10,13 +10,13 @@ export default class BootSettings extends BaseScreen {
         this.time.desiredFps = 60;
         this.game.time.advancedTiming = true;
 
-        // this.game.renderer.renderSession.roundPixels = true; // Округление пикселей для лучшего рендеринга
+        // this.game.renderer.renderSession.roundPixels = true; // Round pixels for crisper rendering
 
         (this.game as Game).overrideTweenMethod();
         this.loadScreenSprite("forestHouseBg")
 
         if (Settings.isGraphicsFromAtlases()) {
-            this.loadAtlas("load", "assets/atlases/load")
+            this.loadAtlasGroup("load")
         }
 
         this.loadImage('preloadBar', 'assets/load/loader.png');
