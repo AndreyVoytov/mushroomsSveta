@@ -95,9 +95,12 @@ export default class TreesTransitionPanel extends BasePanel {
             //тут непонятно, почему требуется и cameraOffset и х 
         }
 
+        let showLoadingLabel = from || time == 0;
         let loading = new Label(this.game, this.game.width/2, this.game.height*4/5, "Загрузка...", { "font": "bold 60px Arial", "fill": "#ffffff" });
         loading.addStrokeColor("#194c3f", 0)
         loading.strokeThickness = 6;
+        loading.visible = showLoadingLabel;
+        loading.alpha = showLoadingLabel ? 1 : 0;
 
         this.addChild(loading);
 
@@ -159,6 +162,7 @@ export default class TreesTransitionPanel extends BasePanel {
             tp0.alpha = 0.001;
             tweens.push(game.add.tween(tp0).to({ alpha:0.8}, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.Out, true, delay + delay2 + 250 , 0, false))
 
+            loading.visible = true;
             loading.alpha = 0;
             tweens.push(AnimationUtils.fadeIn(this.game, loading, delay + 250 + delay2  ))
             tweens.forEach(t => t.frameBased = true);
@@ -169,7 +173,8 @@ export default class TreesTransitionPanel extends BasePanel {
             
             // Stable start transition: quick start + deterministic movement/fade (no long idle full-screen flash).
             this.overlay.alpha = 1;
-            loading.alpha = 1;
+            loading.visible = false;
+            loading.alpha = 0;
 
             let startDelay = 60;
             let moveTime = time + 420;
@@ -233,7 +238,6 @@ export default class TreesTransitionPanel extends BasePanel {
             });
 
             tweens.push(game.add.tween(this.overlay).to({ alpha: 0}, 520, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, startDelay, 0, false))
-            tweens.push(AnimationUtils.fadeOut(this.game, loading, startDelay + moveTime - 220, 180))
             tweens.forEach(t => t.frameBased = true);
         }
 
