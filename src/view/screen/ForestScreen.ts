@@ -33,6 +33,7 @@ import InGameSettingsPanel from './../component/forest/InGameSettingsPanel';
 import EventUtils from '../../core/utils/EventUtils';
 import EventType from '../../core/model/event/EventType';
 import LocationUtils from '../../core/utils/LocationUtils';
+import GameText from '../../core/localization/GameText';
 export default class ForestScreen extends BaseForestScreen {
 
     private previousCellClicked: ForestCell;
@@ -967,7 +968,7 @@ export default class ForestScreen extends BaseForestScreen {
 
             if (adjucentInteractiveCount > 0) {
                 this.game.time.events.add(200, () => {
-                    let text = "Рядом есть " + adjucentInteractiveCount + Utils.chooseRussianWord(adjucentInteractiveCount, " полезная клеточка!", " полезные клеточки!", " полезных клеточек!");
+                    let text = GameText.nearbyUsefulCells(adjucentInteractiveCount);
                     this.add.existing(new InfoPanel(this.game, Game.getWidth() / 2 - 300, cellState.sprite.y - 100, [text], [], false, true));
                 }, this);
             }

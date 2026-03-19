@@ -9,6 +9,7 @@ import HouseScreen from '../../screen/HouseScreen';
 import LifeDetailsPanel from './LifeDetailsPanel';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import SoundUtils from '../../../core/utils/SoundUtils';
+import GameText from '../../../core/localization/GameText';
 
 export default class NoLifesPanel extends ClosablePanel {
 
@@ -82,7 +83,7 @@ export default class NoLifesPanel extends ClosablePanel {
         this.attachText("heartCount", "" + UserService.getUser().getLifes(), { font: "bold 70px Bookman Old Style", fill: "#ffffff" })
         
         this.attachSprite("heart", "heartSmall")
-        this.attachText("heartsLimit", "Текущий лимит: " + LifeUtils.getLifesMaximum(), { font: "36px Bookman Old Style", fill: "#572a24" })
+        this.attachText("heartsLimit", GameText.currentLimit(LifeUtils.getLifesMaximum()), { font: "36px Bookman Old Style", fill: "#572a24" })
         
         let titlePanel = this.attachButton("titlePnl", ()=>{
             let detailsPanel = new LifeDetailsPanel(this.game, screen, action);
@@ -96,7 +97,7 @@ export default class NoLifesPanel extends ClosablePanel {
         titlePanel.addChild(enlagreLabel);
         titlePanel.visible = UserService.getUser().getFriendsInGame() < LifeUtils.SECOND_PLUS_LIFE_AT_FRIENDS;
 
-        let continueLabel = new Label(this.game, 0, 0, "Восстановить за " + LifeUtils.getFullRestorationPrice() + "     ", { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
+        let continueLabel = new Label(this.game, 0, 0, GameText.restoreFor(LifeUtils.getFullRestorationPrice()), { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
         continueLabel.name = 'continueLabel';
         continueLabel.anchor = new Phaser.Point(0.5, 0.5);
         continueLabel.strokeThickness = 4;

@@ -5,6 +5,7 @@ import CustomizationType from '../model/enum/CustomizationType';
 import UserService from '../service/UserService';
 import Settings from '../service/Settings';
 import NeverError from './NeverError';
+import LocalizationService from '../localization/LocalizationService';
 export default class AnalyticUtils {
 
 
@@ -115,10 +116,10 @@ export default class AnalyticUtils {
         let cust = AnalyticUtils.getCustomization();
         switch(cust){
             case CustomizationType.odkl:
-                return "ок"
+                return LocalizationService.text("ок")
             case CustomizationType.android:
             case CustomizationType.webDev:
-                return "руб";
+                return LocalizationService.text("руб");
             default:
                 throw new NeverError(cust);
         }

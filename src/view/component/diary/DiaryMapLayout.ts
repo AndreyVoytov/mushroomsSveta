@@ -1,3 +1,4 @@
+import GameText from '../../../core/localization/GameText';
 ﻿import Utils from '../../../core/utils/Utils';
 import DiaryContentType from '../../../core/model/diary/DiaryContentType';
 import Label from '../../component/panel/Label';
@@ -153,10 +154,11 @@ export default class DiaryMapLayout extends BasePanel {
             let delta = 10;
             let w = 190 * compassMap.scaleX;
             let h = 180 * compassMap.scaleY;
-            let l1 = new Label(this.game, compassMap.x, compassMap.y + h/2 + delta, "Р®", Label.MAP_POINT_STYLE2)
-            let l2 = new Label(this.game, compassMap.x, compassMap.y -h/2 - delta, "РЎ", Label.MAP_POINT_STYLE2)
-            let l3 = new Label(this.game, compassMap.x-w/2 - delta, compassMap.y, "Р—", Label.MAP_POINT_STYLE2)
-            let l4 = new Label(this.game, compassMap.x+w/2 + delta, compassMap.y, "Р’", Label.MAP_POINT_STYLE2)
+            let compassLetters = GameText.compassLetters()
+            let l1 = new Label(this.game, compassMap.x, compassMap.y + h/2 + delta, compassLetters.south, Label.MAP_POINT_STYLE2)
+            let l2 = new Label(this.game, compassMap.x, compassMap.y -h/2 - delta, compassLetters.north, Label.MAP_POINT_STYLE2)
+            let l3 = new Label(this.game, compassMap.x-w/2 - delta, compassMap.y, compassLetters.west, Label.MAP_POINT_STYLE2)
+            let l4 = new Label(this.game, compassMap.x+w/2 + delta, compassMap.y, compassLetters.east, Label.MAP_POINT_STYLE2)
             l1.anchor.set(0.5, 0.35)
             l2.anchor.set(0.5, 0.35)
             l3.anchor.set(0.5, 0.35)

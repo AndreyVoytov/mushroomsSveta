@@ -2,6 +2,7 @@ import ClosablePanel from '../panel/ClosablePanel';
 import Label from '../panel/Label';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import UserService from '../../../core/service/UserService';
+import GameText from '../../../core/localization/GameText';
 
 export default class EverydayRubyPanel extends ClosablePanel {
 
@@ -14,7 +15,7 @@ export default class EverydayRubyPanel extends ClosablePanel {
 
         let header = "Ежедневный подарок";
         let actionName = "Ок";
-        let text = "Вы получаете \n ~" + EverydayRubyPanel.RUBIES_COUNT + " самоцветов~";
+        let text = GameText.dailyGiftText(EverydayRubyPanel.RUBIES_COUNT);
 
         this.visible = false;
         this.fixedToCamera = true;

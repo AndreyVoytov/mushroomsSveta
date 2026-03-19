@@ -410,7 +410,7 @@ export default class DiaryPanel extends ClosablePanel {
     private prepareRevealTargets(targets: PIXI.DisplayObject[]): { target: PIXI.DisplayObject, alpha: number }[] {
         let revealTargets: { target: PIXI.DisplayObject, alpha: number }[] = [];
         targets.forEach(target => {
-            if (!target || !(target instanceof Phaser.Sprite || target instanceof Phaser.Button || target instanceof Phaser.BitmapText || target instanceof Phaser.Group)) {
+            if (!target || !(target instanceof Phaser.Sprite || target instanceof Phaser.Button || target instanceof Phaser.BitmapText || target instanceof Phaser.Text || target instanceof Phaser.Group)) {
                 return;
             }
             let targetAlpha = typeof (<any>target).alpha === "number" ? (<any>target).alpha : 1;

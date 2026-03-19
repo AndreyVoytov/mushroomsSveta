@@ -1,5 +1,6 @@
 import Preset from "../../view/game/Preset";
 import BasePanel from "../../view/component/panel/BasePanel";
+import GameText from '../localization/GameText';
 
 export default class Utils {
 
@@ -144,7 +145,7 @@ export default class Utils {
            );
     }
 
-    public static applyPreset(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.Group | Phaser.BitmapText, preset: Preset): void {
+    public static applyPreset(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.Group | Phaser.BitmapText | Phaser.Text, preset: Preset): void {
         let fixedToTheCamera = sprite.fixedToCamera;
         sprite.fixedToCamera = false;
 
@@ -186,7 +187,7 @@ export default class Utils {
         });
     }
 
-    public static presetOf(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.BitmapText): Preset {
+    public static presetOf(sprite: Phaser.Sprite | Phaser.TileSprite | Phaser.Button | Phaser.BitmapText | Phaser.Text): Preset {
         let preset = new Preset();
         preset.spriteId = sprite.name;
         preset.x = sprite.x;
@@ -208,7 +209,7 @@ export default class Utils {
 
         let presets = [];
         panel.children.forEach(children => {
-            if ((children instanceof Phaser.Sprite || children instanceof Phaser.TileSprite || children instanceof Phaser.Button || children instanceof Phaser.BitmapText) && children.name) {
+            if ((children instanceof Phaser.Sprite || children instanceof Phaser.TileSprite || children instanceof Phaser.Button || children instanceof Phaser.BitmapText || children instanceof Phaser.Text) && children.name) {
                 presets.push(Utils.presetOf(<any>children));
             }
         })

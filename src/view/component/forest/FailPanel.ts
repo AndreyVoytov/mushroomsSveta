@@ -10,6 +10,7 @@ import { Easing } from 'phaser-ce';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import Settings from '../../../core/service/Settings';
+import GameText from '../../../core/localization/GameText';
 export default class FailPanel extends ClosablePanel {
 
     private forestType: ForestType;
@@ -60,7 +61,7 @@ export default class FailPanel extends ClosablePanel {
 
         let plusMoves = this.attachSprite('plusSteps');
 
-        let continueLabel = new Label(this.game, 0, 0, "ИГРАТЬ ЗА 100    ", { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
+        let continueLabel = new Label(this.game, -24, 0, "ИГРАТЬ ЗА 100", { font: "bolder 40px Gilroy", fill: "#f0f1ec" });
         continueLabel.name = 'continueLabel';
         continueLabel.anchor = new Phaser.Point(0.5, 0.5);
         continueLabel.strokeThickness = 4;
@@ -68,7 +69,7 @@ export default class FailPanel extends ClosablePanel {
         this.playButton.addChild(continueLabel);
 
         let itemsLeft = this.attachText("itemsLeft", "Осталось собрать:", { font: "bold 35px Arial", fill: "#a88f68", align:"center", wordWrap: true, wordWrapWidth: 400})
-        let info = this.attachText("info", "Получи +" + ForestUtils.ADDITIONAL_STEPS_COUNT + " ходов и играй дальше!", { font: "bold 45px Arial", fill: "#78512c", align:"center", wordWrap: true, wordWrapWidth: 400})
+        let info = this.attachText("info", GameText.extraMovesInfo(ForestUtils.ADDITIONAL_STEPS_COUNT), { font: "bold 45px Arial", fill: "#78512c", align:"center", wordWrap: true, wordWrapWidth: 400})
 
         let gems = SpriteUtils.createSprite(this.game, this.playButton.width / 2 - 20, 0, 'gems');
         gems.anchor = new Phaser.Point(1, 0.5);

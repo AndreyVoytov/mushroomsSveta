@@ -10,6 +10,7 @@ import Settings from '../../../core/service/Settings';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import { Easing } from 'phaser-ce';
 import UserService from '../../../core/service/UserService';
+import GameText from '../../../core/localization/GameText';
 export default class InGameSettingsPanel extends ClosablePanel {
 
     private settingsButton: Phaser.Button;
@@ -35,7 +36,7 @@ export default class InGameSettingsPanel extends ClosablePanel {
 
         let support = this.attachButton("support", ()=>{
             this.close();
-            let info = new ConfirmPanel(this.game, "Поддержка", "Ок", "Пожалуйста, сообщайте об \n ошибках в игре на почту \n ~" + Settings.SUPPORT_MAIL + "~");
+            let info = new ConfirmPanel(this.game, "Поддержка", "Ок", GameText.supportMessage(Settings.SUPPORT_MAIL));
             Game.getInstance().add.existing(info);
             info.show();
 

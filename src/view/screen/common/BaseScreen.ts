@@ -196,7 +196,7 @@ export default abstract class BaseScreen extends DebugScreen {
         presets.forEach(preset => {
             if (preset.spriteId != "") {
                 let children = this.world.getByName(preset.spriteId)
-                if (children && (children instanceof Phaser.Sprite || children instanceof Phaser.TileSprite || children instanceof Phaser.Button || children instanceof Phaser.BitmapText)) {
+                if (children && (children instanceof Phaser.Sprite || children instanceof Phaser.TileSprite || children instanceof Phaser.Button || children instanceof Phaser.BitmapText || children instanceof Phaser.Text)) {
                     Utils.applyPreset(<any>children, preset);
                 }
             }

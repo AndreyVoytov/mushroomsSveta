@@ -1,3 +1,4 @@
+import GameText from '../../../core/localization/GameText';
 
 import Game from './../../../view/game/Game';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
@@ -96,7 +97,7 @@ export default class TreesTransitionPanel extends BasePanel {
         }
 
         let showLoadingLabel = from || time == 0;
-        let loading = new Label(this.game, this.game.width/2, this.game.height*4/5, "Загрузка...", { "font": "bold 60px Arial", "fill": "#ffffff" });
+        let loading = new Label(this.game, this.game.width/2, this.game.height*4/5, GameText.loading(), { "font": "bold 60px Arial", "fill": "#ffffff" });
         loading.addStrokeColor("#194c3f", 0)
         loading.strokeThickness = 6;
         loading.visible = showLoadingLabel;

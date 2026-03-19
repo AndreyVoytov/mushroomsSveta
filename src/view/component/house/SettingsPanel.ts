@@ -9,6 +9,7 @@ import ClosablePanel from '../panel/ClosablePanel';
 import InfoPanel from '../panel/InfoPanel';
 import Label from '../panel/Label';
 import ConfirmPanel from './ConfirmPanel';
+import GameText from '../../../core/localization/GameText';
 
 export default class SettingsPanel extends ClosablePanel {
 
@@ -57,7 +58,7 @@ export default class SettingsPanel extends ClosablePanel {
         
         let supportButton = this.attachButton("statusPanel", ()=>{
             this.close();
-            let info = new ConfirmPanel(this.game, "Поддержка", "Ок", "Пожалуйста, сообщайте об \n ошибках в игре на почту \n ~" + Settings.SUPPORT_MAIL + "~");
+            let info = new ConfirmPanel(this.game, "Поддержка", "Ок", GameText.supportMessage(Settings.SUPPORT_MAIL));
             Game.getInstance().add.existing(info);
             info.show();
 
@@ -65,7 +66,7 @@ export default class SettingsPanel extends ClosablePanel {
             //TODO
         }, "supportButton")
         
-        let supportButtonLabel = new Label(this.game, 0,0, "Поддержка");
+        let supportButtonLabel = new Label(this.game, 0, -1, "Поддержка", { font: "bold 34px Arial", fill: "#ffffff" });
         supportButtonLabel.anchor.set(0.5)
         
         supportButton.addChild(supportButtonLabel)
@@ -74,7 +75,7 @@ export default class SettingsPanel extends ClosablePanel {
             window.open(Settings.OK_GROUP_URL, "_blank");
         }, "groupButton")
         
-        let groupButtonLabel = new Label(this.game, 0,0, "Группа");
+        let groupButtonLabel = new Label(this.game, 0, -1, "Группа", { font: "bold 34px Arial", fill: "#ffffff" });
         groupButtonLabel.anchor.set(0.5)
         
         groupButton.addChild(groupButtonLabel)
@@ -87,21 +88,21 @@ export default class SettingsPanel extends ClosablePanel {
             info.show();
         },"creditsButton")
         
-        let creditsButtonLabel = new Label(this.game, 0,0, "Об игре");
+        let creditsButtonLabel = new Label(this.game, 0, -1, "Об игре", { font: "bold 30px Arial", fill: "#ffffff" });
         creditsButtonLabel.anchor.set(0.5)
         
         creditsButton.addChild(creditsButtonLabel)
 
-        this.applyPreset([{"spriteId":"panel2","x":0,"y":-25,"scaleX":0.8999999999999999,"scaleY":1.2400000000000002,"anchorX":0.5,"anchorY":0.5,"rotation":1.57},
-        {"spriteId":"helperPanel","x":0,"y":-24,"scaleX":0.8199999999999998,"scaleY":1.7800000000000007,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"statusPanel","x":-52,"y":-339,"scaleX":1.4600000000000004,"scaleY":1.4000000000000004,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"title","x":-53,"y":-343,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":58},
-        {"spriteId":"closeButton","x":204,"y":-341,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"soundText","x":-81,"y":-187,"scaleX":1.3,"scaleY":1.3,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":40},
-        {"spriteId":"sound1","x":80,"y":-205,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"supportButton","x":0,"y":-92,"scaleX":1.4000000000000004,"scaleY":1.4200000000000004,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"groupButton","x":0,"y":20,"scaleX":1.400000000000003,"scaleY":1.4200000000000003,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"creditsButton","x":0,"y":132.0619834710743,"scaleX":1.400000000000003,"scaleY":1.4200000000000003,"anchorX":0.5,"anchorY":0.5,"rotation":0}])
+        this.applyPreset([{"spriteId":"panel2","x":0,"y":-28,"scaleX":1.0200000000000002,"scaleY":1.4200000000000004,"anchorX":0.5,"anchorY":0.5,"rotation":1.57},
+        {"spriteId":"helperPanel","x":0,"y":-26,"scaleX":0.9399999999999998,"scaleY":2.0600000000000005,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+        {"spriteId":"statusPanel","x":-58,"y":-381,"scaleX":1.5800000000000005,"scaleY":1.4600000000000004,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+        {"spriteId":"title","x":-60,"y":-385,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":58},
+        {"spriteId":"closeButton","x":236,"y":-381,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+        {"spriteId":"soundText","x":-72,"y":-214,"scaleX":1.12,"scaleY":1.12,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":38},
+        {"spriteId":"sound1","x":106,"y":-229,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+        {"spriteId":"supportButton","x":0,"y":-108,"scaleX":1.5800000000000005,"scaleY":1.3400000000000003,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+        {"spriteId":"groupButton","x":0,"y":24,"scaleX":1.5800000000000005,"scaleY":1.3400000000000003,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+        {"spriteId":"creditsButton","x":0,"y":156,"scaleX":1.5800000000000005,"scaleY":1.3400000000000003,"anchorX":0.5,"anchorY":0.5,"rotation":0}])
     }
 
     protected onClose() {

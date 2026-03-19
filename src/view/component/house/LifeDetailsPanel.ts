@@ -11,6 +11,7 @@ import User from '../../../core/model/user/User';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import OkHelper from '../../../core/service/integration/OkHelper';
+import GameText from '../../../core/localization/GameText';
 
 export default class LifeDetailsPanel extends ClosablePanel {
 
@@ -91,11 +92,11 @@ export default class LifeDetailsPanel extends ClosablePanel {
         
         this.attachSprite("heart", "heartSmall")
         // this.attachText("heartsLimit", "Текущий лимит: " + LifeUtils.getLifesMaximum(), { font: "36px Bookman Old Style", fill: "#572a24" })
-        this.attachText("heartsLimit", "Текущий лимит: " + LifeUtils.getLifesMaximum(), { font: "bold 36px Arial ", fill: "#7b4037" })
-        this.attachText("friendsCount", "Друзей в игре: " + UserService.getUser().getFriendsInGame(), { font: "bold 36px Arial", fill: "#00a854" })
+        this.attachText("heartsLimit", GameText.currentLimit(LifeUtils.getLifesMaximum()), { font: "bold 36px Arial ", fill: "#7b4037" })
+        this.attachText("friendsCount", GameText.friendsInGame(UserService.getUser().getFriendsInGame()), { font: "bold 36px Arial", fill: "#00a854" })
 
         let titlePanel = this.attachButton("titlePnl", ()=>{
-            OkHelper.showInvite("Привет! Прими участие в приключениях в новой игре!", "forLifes");
+            OkHelper.showInvite(GameText.shareInviteText(), "forLifes");
             this.close();
         });
 
@@ -107,7 +108,7 @@ export default class LifeDetailsPanel extends ClosablePanel {
         enlagreLabel.anchor.set(0.5);
         titlePanel.addChild(enlagreLabel);
 
-        let continueLabel = new Label(this.game, 0, 0, "Восстановить за " + LifeUtils.getFullRestorationPrice() + "     ", { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
+        let continueLabel = new Label(this.game, 0, 0, GameText.restoreFor(LifeUtils.getFullRestorationPrice()), { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
         continueLabel.name = 'continueLabel';
         continueLabel.anchor = new Phaser.Point(0.5, 0.5);
         continueLabel.strokeThickness = 4;
@@ -192,18 +193,14 @@ export default class LifeDetailsPanel extends ClosablePanel {
             // return "Пригласите в игру ~" + 
             //     LifeUtils.PLUS_LIFE_AT_FRIENDS + Utils.chooseRussianWord(LifeUtils.PLUS_LIFE_AT_FRIENDS, " друга", " друга", " друзей") 
             //     + "~ и лимит жизней возрастёт до ~" + (LifeUtils.LIFES_BASE + 1) + "~!";
-            return "Пригласите в игру " + 
-                LifeUtils.PLUS_LIFE_AT_FRIENDS + Utils.chooseRussianWord(LifeUtils.PLUS_LIFE_AT_FRIENDS, " друга", " друга", " друзей") 
-                + " и лимит жизней возрастёт до " + (LifeUtils.LIFES_BASE + 1) + "!";
+            return GameText.inviteFriendsInfo(LifeUtils.PLUS_LIFE_AT_FRIENDS, LifeUtils.LIFES_BASE + 1);
         } 
         
         if(user.getFriendsInGame() < LifeUtils.SECOND_PLUS_LIFE_AT_FRIENDS){
             // return "Пригласите в игру ~" + 
             //     LifeUtils.SECOND_PLUS_LIFE_AT_FRIENDS + Utils.chooseRussianWord(LifeUtils.SECOND_PLUS_LIFE_AT_FRIENDS, " друга", " друга", " друзей") 
             //     + "~ и лимит жизней возрастёт до ~" + (LifeUtils.LIFES_BASE + 2) + "~!";
-            return "Пригласите в игру " + 
-                LifeUtils.SECOND_PLUS_LIFE_AT_FRIENDS + Utils.chooseRussianWord(LifeUtils.SECOND_PLUS_LIFE_AT_FRIENDS, " друга", " друга", " друзей") 
-                + " и лимит жизней возрастёт до " + (LifeUtils.LIFES_BASE + 2) + "!";
+            return GameText.inviteFriendsInfo(LifeUtils.SECOND_PLUS_LIFE_AT_FRIENDS, LifeUtils.LIFES_BASE + 2);
         }
 
         return "";

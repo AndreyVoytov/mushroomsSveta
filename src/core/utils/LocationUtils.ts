@@ -136,10 +136,10 @@ export default class LocationUtils {
     }
 
     //MINIGAME 
-    public static getMiniGameLayout(game: Phaser.Game, cellProvider:CellsProvider,  forestType:ForestType): (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText)[] {
+    public static getMiniGameLayout(game: Phaser.Game, cellProvider:CellsProvider,  forestType:ForestType): (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text)[] {
         let environment = forestType.environment;
 
-        let res: (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText)[] = [];
+        let res: (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text)[] = [];
         switch (environment) {
             case Environment.lake:
                 let background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, "bgLake");
@@ -525,7 +525,7 @@ export default class LocationUtils {
         return res;
     }
 
-    private static addMaple(game:Phaser.Game, cellProvider:CellsProvider, forestType:ForestType, res:(Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText)[]):void{
+    private static addMaple(game:Phaser.Game, cellProvider:CellsProvider, forestType:ForestType, res:(Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text)[]):void{
         if (forestType.cellsToSpawn) {
             let visibleHeaderHeight = LocationUtils.getVisibleHeaderHeight(game, forestType);
             let mapleFace = SpriteUtils.createSprite(game, game.width / 2, visibleHeaderHeight - 50, "mapleFace");

@@ -20,6 +20,7 @@ import SpecialItemsConfiguration from '../../../core/configuration/SpecialItemsC
 import ForestUtils from '../../../core/utils/ForestUtils';
 import { Easing } from 'phaser-ce';
 import ComplexAnimationUtils from '../../../core/utils/ComplexAnimationUtils';
+import GameText from '../../../core/localization/GameText';
 export default class EducationPanel extends BasePanel {
 
     public shownWithOkButton: boolean;
@@ -68,8 +69,7 @@ export default class EducationPanel extends BasePanel {
                 let adjucentCells = this.cells.filter(cell => this.screen.cellsProvider.areAdjucent(cell, openedCell));
                 adjucentCells.push(openedCell);
                 let mushroomsCount = adjucentCells.filter(cell => cell.state.content == ContentType.mushroom && !cell.state.opened).length;
-                this.doShowEducation("Рядом с ~деревом~ " + mushroomsCount + Utils.chooseRussianWord(mushroomsCount, " гриб", " гриба", " грибов") +
-                    ". Соберите " + (mushroomsCount == 1 ? " его!" : "их все!"),
+                this.doShowEducation(GameText.nearbyTreeMessage(mushroomsCount),
                     "sveta1", adjucentCells, CoverMode.noneVisible, 100, openedCell);
 
                 this.arrow = SpriteUtils.createSprite(this.game, openedCell.state.sprite.x,
@@ -91,8 +91,7 @@ export default class EducationPanel extends BasePanel {
 
                     let leftCount = this.cells.filter(cell => !cell.state.opened && cell.state.content == ContentType.mushroom).length;
 
-                    this.doShowEducation("Отлично! осталось собрать " + leftCount +
-                        Utils.chooseRussianWord(leftCount, " гриб!", " гриба!", " грибов!"), "sveta1", this.cells, CoverMode.aimVisible, 500, null);
+                    this.doShowEducation(GameText.mushroomsLeftMessage(leftCount), "sveta1", this.cells, CoverMode.aimVisible, 500, null);
 
                     this.screen.setOnClickAnimation("hideEducation")
                     this.arrow = SpriteUtils.createSprite(this.game, this.game.width / 2,

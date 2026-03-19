@@ -15,7 +15,8 @@
     "predev": "npm run atlases",
     "dev": "webpack",
     "predeploy": "npm run atlases",
-    "deploy": "webpack --config webpack.production.config.js"
+    "deploy": "webpack --config webpack.production.config.js",
+    "bitmap-fonts": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/update-bitmap-fonts.ps1"
   },
   "license": "Private",
   "devDependencies": {

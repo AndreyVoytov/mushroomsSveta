@@ -51,7 +51,7 @@ export default class BasePanel extends Phaser.Sprite {
         //TODO use Utils method
         presets.forEach(preset => {
             this.children.forEach(child => {
-                if (preset.spriteId != "" && (child instanceof Phaser.Sprite || child instanceof Phaser.TileSprite || child instanceof Phaser.Button || child instanceof Phaser.Group || child instanceof Phaser.BitmapText)
+                if (preset.spriteId != "" && (child instanceof Phaser.Sprite || child instanceof Phaser.TileSprite || child instanceof Phaser.Button || child instanceof Phaser.Group || child instanceof Phaser.BitmapText || child instanceof Phaser.Text)
                 && child.name == preset.spriteId) {
                     Utils.applyPreset(<any>child, preset);
                 }

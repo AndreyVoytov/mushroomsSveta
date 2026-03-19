@@ -20,6 +20,7 @@ import SoundUtils from '../../../core/utils/SoundUtils';
 import ForestUtils from './../../../core/utils/ForestUtils';
 import EventUtils from './../../../core/utils/EventUtils';
 import EventType from '../../../core/model/event/EventType';
+import GameText from '../../../core/localization/GameText';
 
 export default class StartLevelPanel extends ClosablePanel {
     public static hardLevelAwardAddition = 25;
@@ -65,7 +66,7 @@ export default class StartLevelPanel extends ClosablePanel {
             this.attachButton('closeButton', () => this.close())
         }
 
-        let label = this.attachText("levelLabel", isHard? "Сложный уровень " + level : "Уровень " + level,
+        let label = this.attachText("levelLabel", GameText.level(level, isHard),
              isHard? { font: "bold 45px Gilroy", fill: "#fbb7f4" } :{ font: "bold 45px Gilroy", fill: "#e8c38f" })
         label.strokeThickness = 4;
         label.addStrokeColor(isHard? "#7b037c" : "#b6691b", 0);
@@ -136,7 +137,7 @@ export default class StartLevelPanel extends ClosablePanel {
         if (showBoosters) {
             this.addSprite(this.preboosterPanel = new PreboosterPanel(this.game, screen, -194, 184))
 
-            let chooseBostersLabel = this.attachText("chooseBostersLabel", "Выберите бустеры:", isHard? { font: "bold 45px Gilroy", fill: "#fbac7a" } : { font: "bold 45px Gilroy", fill: "#e8c38f" })
+            let chooseBostersLabel = this.attachText("chooseBostersLabel", GameText.chooseBoosters(), isHard? { font: "bold 45px Gilroy", fill: "#fbac7a" } : { font: "bold 45px Gilroy", fill: "#e8c38f" })
             // let chooseBostersLabel = this.attachText("chooseBostersLabel", "Выберите бустеры:", isHard? { font: "bold 45px Gilroy", fill: "#e39cf7" } : { font: "bold 45px Gilroy", fill: "#e8c38f" })
             chooseBostersLabel.strokeThickness = 4;
             chooseBostersLabel.addStrokeColor(isHard? "#7b037c" : "#b6691b", 0);

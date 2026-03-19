@@ -13,6 +13,7 @@ import SpriteUtils from '../../../core/utils/SpriteUtils';
 import BigBubblePanel from './BigBubblePanel';
 import { Easing } from 'phaser-ce';
 import Settings from '../../../core/service/Settings';
+import GameText from '../../../core/localization/GameText';
 export default class ReplicaPanel extends BasePanel {
     private static REVEAL_DELAY_MS = 40;
     private static TEXT_OFFSCREEN_X = -5000;
@@ -94,6 +95,38 @@ export default class ReplicaPanel extends BasePanel {
         if (this.parentCont && this.titlePnl) {
             this.parentCont.bringChildToTop(this.titlePnl);
         }
+    }
+
+    private createSkipButton(parentCont: DialogPanel): Phaser.Button {
+        const width = 148;
+        const height = 34;
+        const background = this.game.add.graphics(0, 0);
+
+        background.beginFill(0xf2f2f2, 0.96);
+        background.lineStyle(2, 0xb7b7b7, 1);
+        background.drawRoundedRect(0, 0, width, height, 10);
+        background.endFill();
+
+        const texture = background.generateTexture();
+        background.destroy(true);
+
+        const button = new Phaser.Button(this.game, this.dialogPnl.width - 22, this.dialogPnl.height - 8, <any>texture, () => {
+            parentCont.skip();
+        });
+        button.anchor.set(1);
+        button.alpha = 0.96;
+
+        const label = new Label(this.game, width / 2 - 8, height / 2 - 1, "Пропустить", { font: "bold 18px Arial", fill: "#9f9f9f" });
+        label.anchor.set(0.5);
+        button.addChild(label);
+
+        const arrow = this.game.add.graphics(width - 16, height / 2);
+        arrow.beginFill(0x9f9f9f, 1);
+        arrow.drawPolygon([0, -5, 7, 0, 0, 5]);
+        arrow.endFill();
+        button.addChild(arrow);
+
+        return button;
     }
 
     constructor(game: Phaser.Game, parentCont: DialogPanel, x: number, y: number, r: ReplicaType, 
@@ -226,11 +259,7 @@ export default class ReplicaPanel extends BasePanel {
         this.dialogPnl.inputEnabled = false;
 
         if (UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL) {
-            let skipButton = SpriteUtils.createButton(this.game, this.dialogPnl.width - 40, this.dialogPnl.height - 10, 'skipButton', () => {
-            // let skipButton = SpriteUtils.createButton(this.game, 270, this.dialogPnl.height - 20, 'skipButton', () => {
-                parentCont.skip();
-            })
-            skipButton.anchor.set(1)
+            let skipButton = this.createSkipButton(parentCont);
             this.dialogPnl.addChild(skipButton);
         }
 
@@ -341,7 +370,7 @@ export default class ReplicaPanel extends BasePanel {
             }, this)
         } else {
             console.log("CLICK TO SKIP INFO")
-            this.clickToSkipInfo = new Label(this.game, this.game.width / 2, gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 20, "нажмите для продолжения", Label.CLICK_TO_SKIP_YELLOW_STYLE)
+            this.clickToSkipInfo = new Label(this.game, this.game.width / 2, gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 20, GameText.tapToContinue(), Label.CLICK_TO_SKIP_YELLOW_STYLE)
             this.clickToSkipInfo.anchor.set(0.5)
             AnimationUtils.blinking(this.game, this.clickToSkipInfo, 2000);
             // this.addChild(this.clickToSkipInfo);

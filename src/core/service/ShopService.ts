@@ -1,3 +1,4 @@
+import GameText from '../localization/GameText';
 
 import Buy from '../model/shop/Buy';
 import ForestScreen from './../../view/screen/ForestScreen';
@@ -98,7 +99,7 @@ export default class ShopService {
             if (ShopService.callbackOnBuy) this.callbackOnBuy();
             this.onFinishPaymentProcessing();
 
-            let info = new BuyConfirmPanel(Game.getInstance(), "Покупка получена!", "Ok", "Вам достается\n ~" + Buy.getName(buy) + "~", buy.name != undefined)
+            let info = new BuyConfirmPanel(Game.getInstance(), "Покупка получена!", "Ok", GameText.purchaseReward(Buy.getName(buy)), buy.name != undefined)
             Game.getInstance().add.existing(info);
             info.show();
         }
