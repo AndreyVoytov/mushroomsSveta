@@ -4,7 +4,7 @@ import RecipeUtils from '../utils/RecipeUtils';
 import MapPresetConfiguration from './MapPresetConfiguration';
 export default class DiaryConfiguration {
 
-    //забирать с сервера реплики на -10 уровней, т.к. recipes привязаны к репликам
+    // Keep replicas loaded from slightly earlier levels because recipes are tied to replicas.
 
     public static getCurrentRecipe(currentLevel:number, alwaysNext?:boolean): DiaryContentType {
         let i = DiaryConfiguration.getCurrentRecipeIndex(currentLevel, alwaysNext);
@@ -80,16 +80,16 @@ export default class DiaryConfiguration {
 
          {
             id: "rec0",
-            title: "  Дом, милый дом!  ",
-            details: "Полон загадок и секретов. Получится ли у Вас разгадать их все?",
+            title: "diary.rec0.title",
+            details: "diary.rec0.details",
             resultImage: "",
             picture: "housePic",
             fromLevel: 1,
         },
         {
             id: "rec1",
-            title: "Непредсказуемое зелье",
-            details: "Зелье с неизвестными свойствами. Применять крайне осторожно!",
+            title: "diary.rec1.title",
+            details: "diary.rec1.details",
             resultImage: "pot1",
             fromLevel: 4,
             requiredItems: [
@@ -102,15 +102,15 @@ export default class DiaryConfiguration {
         
         {
             id: "map1",
-            title: "Грибные холмы",
+            title: "diary.map1.title",
             fromReplica: "r7",
             resultImage: "catAim",
             mapPreset: MapPresetConfiguration.MAP_1,
         },
         {
             id: "rec2",
-            title: "Грибной суп для Бориса",
-            details: "Секретный ингредиент - хрустящий мухомор. Объеденье!",
+            title: "diary.rec2.title",
+            details: "diary.rec2.details",
             fromReplica: "r10b",
             resultImage: "dish2",
             requiredItems: [
@@ -122,8 +122,8 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec3",
-            title: "Ягодный напиток для Бориса",
-            details: "Ведьмин гриб пробуждает скрытые способности.",
+            title: "diary.rec3.title",
+            details: "diary.rec3.details",
             fromReplica: "r16",
             resultImage: "dish1",
             requiredItems: [
@@ -135,8 +135,8 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec4",
-            title: "Восстановление памяти I",
-            details: "Этап первый. Восстановление базовых черт характера.",
+            title: "diary.rec4.title",
+            details: "diary.rec4.details",
             fromReplica: "r19",
             resultImage: "pot2",
             requiredItems: [
@@ -147,8 +147,8 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec5",
-            title: "Восстановление памяти II",
-            details: "Этап второй. Восстановление долговременной памяти.",
+            title: "diary.rec5.title",
+            details: "diary.rec5.details",
             fromReplica: "r27",
             resultImage: "pot3",
             requiredItems: [
@@ -159,8 +159,8 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec6",
-            title: "Восстановление памяти III",
-            details: "Этап третий. Полное восстановление памяти.",
+            title: "diary.rec6.title",
+            details: "diary.rec6.details",
             fromReplica: "r33",
             resultImage: "pot4",
             requiredItems: [
@@ -171,16 +171,16 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec7",
-            title: "  Тёмный лес  ",
-            details: "Мрачное и туманное место. По слухам, здесь обитают пугающие существа.",
+            title: "diary.rec7.title",
+            details: "diary.rec7.details",
             resultImage: "tree",
             picture: "dForestPic",
             fromReplica: "r39",
         },
         {
             id: "rec8",
-            title: "По следам Единорога ",
-            details: "Единорог - естественный обитатель Тёмного леса. Приносит удачу.",
+            title: "diary.rec8.title",
+            details: "diary.rec8.details",
             resultImage: "tree",
             picture: "dForestPic",
             characterOverPicture: {
@@ -195,8 +195,8 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec9",
-            title: "Походный обед",
-            details: "Грибочки, жареные на костре. А также свежая лесная ягода",
+            title: "diary.rec9.title",
+            details: "diary.rec9.details",
             fromReplica: "r47",
             resultImage: "campfire",
             requiredItems: [
@@ -208,22 +208,22 @@ export default class DiaryConfiguration {
         },
         {
             id: "map2",
-            title: " Междулесье ",
+            title: "diary.map2.title",
             fromReplica: "r50",
             resultImage: "actionHouse",
             mapPreset: MapPresetConfiguration.MAP_2,
         },
         {
             id: "map3",
-            title: "Совиная лощина",
+            title: "diary.map3.title",
             fromReplica: "r56",
             resultImage: "owl",
             mapPreset: MapPresetConfiguration.MAP_3,
         },
         {
             id: "rec10",
-            title: "Новые приметы ",
-            details: "Оказывается, совёнок довольно крупный и носит розовые очки.",
+            title: "diary.rec10.title",
+            details: "diary.rec10.details",
             resultImage: "owlPink",
             picture: "forestPic",
             characterOverPicture: {
@@ -238,16 +238,16 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec11",
-            title: "Старый чердак",
-            details: "Здесь сокрыто множество удивительных вещей, стоит только поискать!",
+            title: "diary.rec11.title",
+            details: "diary.rec11.details",
             resultImage: "actionSphere",
             picture: "atticPic",
             fromReplica: "r66",
         },
         {
             id: "rec12",
-            title: "Сапоги-скороходы",
-            details: "Именно они помогут добраться до Снежной горы, где ждёт помощи Хозяйка кота и совёнка.",
+            title: "diary.rec12.title",
+            details: "diary.rec12.details",
             resultImage: "actionBoots",
             picture: "atticPic",
             characterOverPicture: {
@@ -262,8 +262,8 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec13",
-            title: "Поход к лешему",
-            details: "Сапоги оказались разряжены. По словам совёнка, Леший знает, как зарядить сапоги.",
+            title: "diary.rec13.title",
+            details: "diary.rec13.details",
             resultImage: "tree",
             picture: "forestPic",
             characterOverPicture: {
@@ -278,8 +278,8 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec14",
-            title: "Зарядное зелье",
-            details: "Рецепт зелья для зарядки сапогов. Основной ингредиент - золотой корень.",
+            title: "diary.rec14.title",
+            details: "diary.rec14.details",
             fromReplica: "r83",
             resultImage: "boots",
             resultImageForProgress: "goldRoot",
@@ -292,16 +292,16 @@ export default class DiaryConfiguration {
         },
         {
             id: "map4",
-            title: "Большое приключение. Часть I",
-            titleForProgress: "Большое приключение",
+            title: "diary.map4.title",
+            titleForProgress: "diary.map4.titleForProgress",
             fromReplica: "r87",
             resultImage: "actionMap",
             mapPreset: MapPresetConfiguration.MAP_4,
         },
         {
             id: "rec15",
-            title: "Пшеничные поля",
-            details: "Будучи перемолотыми, колоски превращаются в белоснежную пшеничную муку.",
+            title: "diary.rec15.title",
+            details: "diary.rec15.details",
             fromReplica: "r97",
             resultImage: "flour",
             resultImageForProgress: "wheat",
@@ -315,14 +315,14 @@ export default class DiaryConfiguration {
         {
             id: "map4_2",
             copyOf:"map4",
-            titleForProgress: "Золотая долина",
+            titleForProgress: "diary.map4_2.titleForProgress",
             fromReplica: "r100",
             resultImage: "actionMap",
         },
         {
             id: "rec14_2",
             copyOf:"rec14",
-            title: "Зарядное зелье",
+            title: "diary.rec14_2.title",
             fromReplica: "r103",
             resultImage: "boots",
             resultImageForProgress: "goldRoot",
@@ -330,15 +330,15 @@ export default class DiaryConfiguration {
         {
             id: "map4_22",
             copyOf:"map4",
-            titleForProgress: "Золотая долина",
+            titleForProgress: "diary.map4_22.titleForProgress",
             fromReplica: "r104",
             resultImage: "actionMap",
         },
         {
             id: "rec16",
-            title: " Звенящая глушь ",
+            title: "diary.rec16.title",
             fromReplica: "r107",
-            details: "Циклоп пугающий на вид, но с тонкой творческой натурой, попросил отыскать инструмент.",
+            details: "diary.rec16.details",
             resultImage: "voltorna",
             picture: "dForestPic",
             characterOverPicture: {
@@ -359,9 +359,9 @@ export default class DiaryConfiguration {
         },
         {
             id: "rec17",
-            title: " Туманные дебри ",
+            title: "diary.rec17.title",
             fromReplica: "r114",
-            details: "После возвращения волторны циклоп вызвался проводить путников до края Тёмного леса.",
+            details: "diary.rec17.details",
             resultImage: "tree",
             picture: "dForestPic",
             characterOverPicture: {
@@ -376,24 +376,24 @@ export default class DiaryConfiguration {
         {
             id: "rec14_3",
             copyOf:"rec14",
-            title: "Зарядное зелье",
+            title: "diary.rec14_3.title",
             fromReplica: "r115",
             resultImage: "boots",
             resultImageForProgress: "goldRoot",
         },
         {
             id: "map5",
-            title: "Большое приключение. Часть II",
-            titleForProgress: "Цветущий край",
+            title: "diary.map5.title",
+            titleForProgress: "diary.map5.titleForProgress",
             fromReplica: "r118",
             resultImage: "actionMap",
             mapPreset: MapPresetConfiguration.MAP_5,
         },
         {
             id: "rec18",
-            title: " Соловьиные луга ",
+            title: "diary.rec18.title",
             fromReplica: "r123",
-            details: "Коварные гномики поймали нашего Совёнка и требуют взамен соловья!",
+            details: "diary.rec18.details",
             resultImage: "solovei",
             picture: "fieldsPic",
             characterOverPicture: {
@@ -407,14 +407,14 @@ export default class DiaryConfiguration {
         {
             id: "map5_2",
             copyOf:"map5",
-            titleForProgress:"Радужные поля",
+            titleForProgress:"diary.map5_2.titleForProgress",
             fromReplica: "r131",
             resultImage: "actionMap",
         },
         {
             id: "rec14_4",
             copyOf:"rec14",
-            title: "Зарядное зелье",
+            title: "diary.rec14_4.title",
             fromReplica: "r135",
             resultImage: "boots",
             resultImageForProgress: "goldRoot",
@@ -422,23 +422,13 @@ export default class DiaryConfiguration {
         {
             id: "map5_3",
             copyOf:"map5",
-            titleForProgress: "Сизое предгорье",
+            titleForProgress: "diary.map5_3.titleForProgress",
             fromReplica: "r139",
             resultImage: "actionMap",
         },
 
 
-        {
-            id: "last2",
-            title: "",
-            details: "",
-            fromLevel: 300,
-            requiredItems: [
-                { name: "mushroom", count: 10 },
-                { name: "mushroom3", count: 15 },
-                { name: "chamomileSmall", count: 2 }
-            ]
-        },
+
     ]
 
 

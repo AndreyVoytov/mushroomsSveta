@@ -6,6 +6,7 @@ import ForestUtils from './../../../core/utils/ForestUtils';
 import UserService from './../../../core/service/UserService';
 import EventUtils from './../../../core/utils/EventUtils';
 import EventType from '../../../core/model/event/EventType';
+import LocalizationService from '../../../core/localization/LocalizationService';
 export default class ConfirmDefeatPanel extends ClosablePanel {
 
     constructor(game: Phaser.Game, x: number, y: number, okCallback: () => void) {
@@ -22,9 +23,9 @@ export default class ConfirmDefeatPanel extends ClosablePanel {
         let user = UserService.getUser();
         
         if(eventInfo && user.getWinsInRow() > 0){
-            this.attachText("label", "Хотите сдаться? Бонусы ~Волшебного лукошка~ будут потеряны!", { /*font: "50px Arial", fill: "#572424"*/  font: "bold 41px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: 530, align: "center"})
+            this.attachText("label", LocalizationService.get('ui.confirmDefeat.withBonus'), { /*font: "50px Arial", fill: "#572424"*/  font: "bold 41px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: 530, align: "center"})
         } else {
-            this.attachText("label", "Вы действительно хотите сдаться?", { /*font: "50px Arial", fill: "#572424"*/  font: "bold 43px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: 500, align: "center"})
+            this.attachText("label", LocalizationService.get('ui.confirmDefeat.default'), { /*font: "50px Arial", fill: "#572424"*/  font: "bold 43px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: 500, align: "center"})
         }
 
         let clicked = false;
@@ -36,7 +37,7 @@ export default class ConfirmDefeatPanel extends ClosablePanel {
                 okCallback();
             }
         }, "okButton")
-        let okLabel = new Label(this.game, 0, 0, "СДАТЬСЯ", { font: "bolder 40px Gilroy", fill: "#f0f1ec" });
+        let okLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.surrender'), { font: "bolder 40px Gilroy", fill: "#f0f1ec" });
         okLabel.anchor.set(0.5)
         okLabel.scale.set(1.2, 1)
         okButton.addChild(okLabel)
@@ -48,7 +49,7 @@ export default class ConfirmDefeatPanel extends ClosablePanel {
             AnimationUtils.jelly(this.game, noButton);
             this.close();
         }, "noButton")
-        let noLabel = new Label(this.game, 0, 0, "НАЗАД", { font: "bolder 35px Gilroy", fill: "#f0f1ec" });
+        let noLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.backUpper'), { font: "bolder 35px Gilroy", fill: "#f0f1ec" });
         noLabel.scale.set(1.2 * 1.2, 1 * 1.2)
         noLabel.anchor.set(0.5)
         noButton.addChild(noLabel)

@@ -3,6 +3,7 @@ import BasePanel from '../../component/panel/BasePanel';
 import InfoPanel from './../../component/panel/InfoPanel';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import Settings from '../../../core/service/Settings';
+import LocalizationService from '../../../core/localization/LocalizationService';
 export default class HelperPanel extends BasePanel {
 
     private personImage: Phaser.Sprite;
@@ -50,7 +51,7 @@ export default class HelperPanel extends BasePanel {
             okButtin.scale = new Phaser.Point(0.7, 0.7);
             this.addChild(okButtin);
 
-            let okLabel = new Label(this.game, 0, 0, "хорошо", { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
+            let okLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.goodLower'), { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
             okLabel.anchor = new Phaser.Point(0.5, 0.5);
             okLabel.strokeThickness = 4;
             okLabel.addStrokeColor('#61b019', 0);

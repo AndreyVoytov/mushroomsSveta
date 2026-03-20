@@ -40,7 +40,7 @@ export default class ForestBottomPanel extends BasePanel {
         levelLabel.addStrokeColor("#924d1d", 0);
         levelLabel.anchor = new Phaser.Point(0.5, 1);
         this.addSprite(levelLabel);
-        let levelLabel2 = new Label(this.game, 80, this.game.height - 50, LocalizationService.get(LocalizationKey.ui('levelLower'), 'уровень'), { font: "bold 35px Arial", fill: "#fff0ab"});
+        let levelLabel2 = new Label(this.game, 80, this.game.height - 50, LocalizationService.get(LocalizationKey.ui('levelLower')), { font: "bold 35px Arial", fill: "#fff0ab"});
         levelLabel2.anchor = new Phaser.Point(0, 1);
         levelLabel2.strokeThickness = 4;
         levelLabel2.addStrokeColor("#924d1d", 0);

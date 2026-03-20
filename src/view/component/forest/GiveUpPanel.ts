@@ -10,6 +10,7 @@ import SpriteUtils from '../../../core/utils/SpriteUtils';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import Settings from '../../../core/service/Settings';
 import GameText from '../../../core/localization/GameText';
+import LocalizationService from '../../../core/localization/LocalizationService';
 export default class GiveUpPanel extends ClosablePanel {
 
     private helper: Phaser.Sprite;
@@ -65,7 +66,7 @@ export default class GiveUpPanel extends ClosablePanel {
             AnimationUtils.jelly(this.game, this.playButton, 0, true)
         }, "playButton");
 
-        let continueLabel = new Label(this.game, 0, 0, "ИГРАТЬ", { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
+        let continueLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.play'), { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
         continueLabel.name = 'continueLabel';
         continueLabel.anchor = new Phaser.Point(0.5, 0.5);
         continueLabel.strokeThickness = 4;

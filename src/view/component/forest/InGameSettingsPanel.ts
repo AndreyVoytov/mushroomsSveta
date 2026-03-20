@@ -23,8 +23,8 @@ export default class InGameSettingsPanel extends ClosablePanel {
         this.game = game;
         this.settingsButton = settingsButton;
         this.inputEnabled = true;
-        const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'), '\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430');
-        const okText = LocalizationService.get(LocalizationKey.ui('ok'), '\u041e\u043a');
+        const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'));
+        const okText = LocalizationService.get(LocalizationKey.ui('ok'));
         this.fixedToCamera = true;
 
         let closeButton = this.attachButton("settingsMain", ()=>{

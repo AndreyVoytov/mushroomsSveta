@@ -1,6 +1,7 @@
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import Label from '../../component/panel/Label';
 import ClosablePanel from '../../component/panel/ClosablePanel';
+import LocalizationService from '../../../core/localization/LocalizationService';
 export default class ConfirmPotionUsePanel extends ClosablePanel {
 
     constructor(game: Phaser.Game, x: number, y: number, okCallback: () => void) {
@@ -10,13 +11,13 @@ export default class ConfirmPotionUsePanel extends ClosablePanel {
         this.fixedToCamera = true;
 
         this.attachSprite("panel")
-        this.attachText("label", "Вы действительно хотите применить зелье '+2 хода'?", { font: "50px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500 })
+        this.attachText("label", LocalizationService.get('ui.confirmPotionUse'), { font: "50px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 500 })
 
         let okButton = this.attachButton("pnlButton", () => {
             AnimationUtils.jelly(this.game, okButton);
             okCallback();
         }, "okButton")
-        let okLabel = new Label(this.game, 0, 0, "применить");
+        let okLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.applyLower'));
         okLabel.anchor.set(0.5)
         okLabel.scale.set(1.2, 1)
         okButton.addChild(okLabel)
@@ -25,7 +26,7 @@ export default class ConfirmPotionUsePanel extends ClosablePanel {
             AnimationUtils.jelly(this.game, noButton);
             this.close();
         }, "noButton")
-        let noLabel = new Label(this.game, 0, 0, "назад");
+        let noLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.backLower'));
         noLabel.scale.set(1.2 * 1.2, 1 * 1.2)
         noLabel.anchor.set(0.5)
         noButton.addChild(noLabel)

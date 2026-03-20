@@ -3,6 +3,7 @@ import Label from '../panel/Label';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import UserService from '../../../core/service/UserService';
 import GameText from '../../../core/localization/GameText';
+import LocalizationService from '../../../core/localization/LocalizationService';
 
 export default class EverydayRubyPanel extends ClosablePanel {
 
@@ -13,8 +14,8 @@ export default class EverydayRubyPanel extends ClosablePanel {
     constructor(game: Phaser.Game) {
         super(game, game.width/2, game.height/2, true, "blank");
 
-        let header = "Ежедневный подарок";
-        let actionName = "Ок";
+        let header = LocalizationService.get('ui.dailyGiftTitle');
+        let actionName = LocalizationService.get('ui.ok');
         let text = GameText.dailyGiftText(EverydayRubyPanel.RUBIES_COUNT);
 
         this.visible = false;

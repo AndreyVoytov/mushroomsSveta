@@ -13,6 +13,7 @@ import CircleProgressPanel from '../../view/component/panel/CircleProgressPanel'
 import Game from '../../view/game/Game';
 import Settings from './Settings';
 import BuyConfirmPanel from '../../view/component/house/BuyConfirmPanel';
+import LocalizationService from '../localization/LocalizationService';
 export default class ShopService {
 
     public static paymentsLoaded = false;
@@ -99,7 +100,7 @@ export default class ShopService {
             if (ShopService.callbackOnBuy) this.callbackOnBuy();
             this.onFinishPaymentProcessing();
 
-            let info = new BuyConfirmPanel(Game.getInstance(), "Покупка получена!", "Ok", GameText.purchaseReward(Buy.getName(buy)), buy.name != undefined)
+            let info = new BuyConfirmPanel(Game.getInstance(), LocalizationService.get('ui.purchaseReceived'), LocalizationService.get('ui.ok'), GameText.purchaseReward(Buy.getName(buy)), buy.name != undefined)
             Game.getInstance().add.existing(info);
             info.show();
         }

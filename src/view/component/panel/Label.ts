@@ -1,6 +1,4 @@
-﻿import LocalizationService from '../../../core/localization/LocalizationService';
-
-export default class Label extends Phaser.BitmapText {
+﻿export default class Label extends Phaser.BitmapText {
     private static GREEN_ESCAPE_SYMBOL = '~';
     private static VIOLET_ESCAPE_SYMBOL = '@';
 
@@ -135,8 +133,7 @@ export default class Label extends Phaser.BitmapText {
         this.sourceTextValue = value || '';
 
         const parsed = Label.parseFont(this.styleDef.font ? this.styleDef.font.toString() : Label.DEFAULT_STYLE.font.toString());
-        const localized = LocalizationService.text(this.sourceTextValue);
-        const prepared = Label.prepareText(localized, this.styleDef, this.ignoreVioletHighlight, this.symbolsInRow, parsed.size);
+        const prepared = Label.prepareText(this.sourceTextValue, this.styleDef, this.ignoreVioletHighlight, this.symbolsInRow, parsed.size);
         const bitmapText: any = this as any;
 
         if (prepared !== bitmapText._text) {

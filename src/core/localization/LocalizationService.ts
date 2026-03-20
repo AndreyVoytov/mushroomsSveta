@@ -1,6 +1,4 @@
-﻿import localizationSourceIds from '../../generated/localizationSourceIds';
-
-export type SupportedLanguage = 'ru' | 'en' | 'es' | 'tr' | 'pt' | 'ar' | 'id' | 'fr' | 'ja' | 'it' | 'de' | 'hi';
+﻿export type SupportedLanguage = 'ru' | 'en' | 'es' | 'tr' | 'pt' | 'ar' | 'id' | 'fr' | 'ja' | 'it' | 'de' | 'hi';
 export type SupportedTextLanguage = 'ru' | 'en' | 'tr';
 export type TextDirection = 'ltr' | 'rtl';
 
@@ -28,7 +26,7 @@ export default class LocalizationService {
         if (typeof document !== 'undefined' && document.documentElement) {
             document.documentElement.lang = this.language;
             document.documentElement.dir = this.direction;
-            document.title = this.get('ui.gameTitle', 'Грибы!');
+            document.title = this.get('ui.gameTitle', 'Mushrooms!');
         }
     }
 
@@ -62,27 +60,10 @@ export default class LocalizationService {
         return this.getTextLanguage() === 'en';
     }
 
-    public static text(value: string): string {
-        if (!value) {
-            return value;
-        }
-
-        const sourceId = localizationSourceIds[this.normalizeKey(value)];
-        if (!sourceId) {
-            return value;
-        }
-
-        return this.get(sourceId, value);
-    }
-
     public static get(id: string, fallback?: string, params?: { [key: string]: string | number }): string {
         const entry = id ? this.entries[id] : null;
         const resolved = entry !== undefined && entry !== null ? entry : (fallback || id);
         return this.applyParams(resolved, params);
-    }
-
-    public static tr(value: string, params?: { [key: string]: string | number }): string {
-        return this.applyParams(this.text(value), params);
     }
 
     private static applyParams(value: string, params?: { [key: string]: string | number }): string {
@@ -171,14 +152,6 @@ export default class LocalizationService {
         };
     }
 
-    private static normalizeKey(value: string): string {
-        return value
-            .replace(/\r\n?/g, '\n')
-            .replace(/[ \t]*\n[ \t]*/g, '\n')
-            .replace(/[ \t]+$/gm, '')
-            .replace(/[ \t]{2,}/g, ' ')
-            .trim();
-    }
 
     private static loadBundle(language: SupportedLanguage): Promise<LocalizationBundle> {
         return new Promise((resolve, reject) => {

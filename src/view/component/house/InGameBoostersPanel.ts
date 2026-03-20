@@ -15,6 +15,7 @@ import { ContentType } from '../../../core/model/enum/ContentType';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import Game from '../../game/Game';
 import Settings from '../../../core/service/Settings';
+import LocalizationService from '../../../core/localization/LocalizationService';
 
 export default class InGameBoostersPanel extends BasePanel {
 
@@ -54,7 +55,7 @@ export default class InGameBoostersPanel extends BasePanel {
         if (user.getBoostersCount(type) > 0) {
 
             if(type == BoosterType.beans && this.screen.cellsProvider.getCells().filter(c => c.state.content == ContentType.empty).length == 0){
-                let label = new Label(this.game, this.game.width/2, this.game.height/5*4, "Некуда посадить бобы!", { font: "bold 50px Arial", fill:  "#ffffff"});
+                let label = new Label(this.game, this.game.width/2, this.game.height/5*4, LocalizationService.get('ui.noPlaceForBeans'), { font: "bold 50px Arial", fill:  "#ffffff"});
                 label.anchor.set(0.5)
                 label.strokeThickness = 4;
                 label.addStrokeColor("#5a3415", 0);

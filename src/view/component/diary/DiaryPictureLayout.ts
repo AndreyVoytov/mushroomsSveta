@@ -19,8 +19,8 @@ export default class DiaryPictureLayout extends BasePanel {
 
         this.inputEnabled = true;
 
-        const titleText = LocalizationService.get(LocalizationKey.diary(recipeContent, 'title'), recipeContent.title);
-        const detailsText = LocalizationService.get(LocalizationKey.diary(recipeContent, 'details'), recipeContent.details);
+        const titleText = LocalizationService.get(recipeContent.title);
+        const detailsText = LocalizationService.get(recipeContent.details);
 
         let title = new Label(game, 0, 0, titleText, Label.TASK_TITLE_STYLE);
         title.name = "title";

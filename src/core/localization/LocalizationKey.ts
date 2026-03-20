@@ -14,6 +14,14 @@ export default class LocalizationKey {
         return 'ui.' + id;
     }
 
+    public static text(id: string): string {
+        return 'text.' + id;
+    }
+
+    public static word(id: string): string {
+        return 'word.' + id;
+    }
+
     public static replica(replicaOrId: ReplicaType | string, field: ReplicaField): string {
         const id = typeof replicaOrId === 'string' ? replicaOrId : replicaOrId.id;
         return 'replica.' + id + '.' + field;

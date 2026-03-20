@@ -98,7 +98,7 @@ export default class EventUtils {
     public static getName(eventType: EventType): string {
         switch (eventType) {
             case EventType.lukoshko:
-                return LocalizationService.text('Волшебное лукошко');
+                return LocalizationService.get('ui.event.lukoshko.name');
             default:
                 throw new NeverError(eventType);
         }
@@ -107,7 +107,7 @@ export default class EventUtils {
     public static getDesc(eventType: EventType): string {
         switch (eventType) {
             case EventType.lukoshko:
-                return LocalizationService.text('Выигрывайте уровни и \n ~получайте усиления~ на \n старте следующих уровней!');
+                return LocalizationService.get('ui.event.lukoshko.desc');
             default:
                 throw new NeverError(eventType);
         }

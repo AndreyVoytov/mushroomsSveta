@@ -14,8 +14,8 @@ import BigBubblePanel from './BigBubblePanel';
 import { Easing } from 'phaser-ce';
 import Settings from '../../../core/service/Settings';
 import GameText from '../../../core/localization/GameText';
-import LocalizationService from '../../../core/localization/LocalizationService';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
+import LocalizationService from '../../../core/localization/LocalizationService';
 export default class ReplicaPanel extends BasePanel {
     private static REVEAL_DELAY_MS = 40;
     private static TEXT_OFFSCREEN_X = -5000;
@@ -118,7 +118,7 @@ export default class ReplicaPanel extends BasePanel {
         button.anchor.set(1);
         button.alpha = 0.96;
 
-        const label = new Label(this.game, width / 2 - 8, height / 2 - 1, LocalizationService.get(LocalizationKey.ui('skip'), '\u041f\u0440\u043e\u043f\u0443\u0441\u0442\u0438\u0442\u044c'), { font: "bold 18px Arial", fill: "#9f9f9f" });
+        const label = new Label(this.game, width / 2 - 8, height / 2 - 1, LocalizationService.get(LocalizationKey.ui('skip')), { font: "bold 18px Arial", fill: "#9f9f9f" });
         label.anchor.set(0.5);
         button.addChild(label);
 
@@ -139,9 +139,9 @@ export default class ReplicaPanel extends BasePanel {
         this.playAnimation = playAnimationCallback;
         this.parentCont = parentCont;
 
-        const replicaText = LocalizationService.get(LocalizationKey.replica(r, 'text'), r.text);
-        const replicaPersonName = LocalizationService.get(LocalizationKey.replica(r, 'personName'), r.personName);
-        const replicaButtonName = r.buttonName ? LocalizationService.get(LocalizationKey.replica(r, 'buttonName'), r.buttonName) : null;
+        const replicaText = LocalizationService.get(r.text);
+        const replicaPersonName = LocalizationService.get(r.personName);
+        const replicaButtonName = r.buttonName ? LocalizationService.get(r.buttonName) : null;
 
         this.fixedToCamera = true;
 

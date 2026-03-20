@@ -7,6 +7,7 @@ import DialogScreen from '../../../screen/common/DialogScreen';
 import HouseScreen from '../../../screen/HouseScreen';
 import SpriteUtils from '../../../../core/utils/SpriteUtils';
 import BigBubblePanel from '../../dialog/BigBubblePanel';
+import LocalizationService from '../../../../core/localization/LocalizationService';
 export default class BaseLayout extends BasePanel {
 
     protected bigBubblePanel:BigBubblePanel;
@@ -28,20 +29,22 @@ export default class BaseLayout extends BasePanel {
     public playAnimation(animationId: string, screen? : DialogScreen): boolean { 
 
         if(animationId.startsWith("stormTransition")){
-            let param = animationId.indexOf("(") != -1? animationId.split("(")[1].split(")")[0] : "";
+            let param = animationId.indexOf("(") != -1 ? animationId.split("(")[1].split(")")[0] : "";
+            let message = LocalizationService.get(param, param);
             let blackPanel = new BlackPanel(this.game);
             this.game.add.existing(blackPanel);
-            blackPanel.showMessage(param, 300, 3000, Label.VIOLET_STYLE)
+            blackPanel.showMessage(message, 300, 3000, Label.VIOLET_STYLE)
 
             if(screen && screen instanceof HouseScreen){
                 this.game.time.events.add(3800, () => screen.initialize(true));
             }
 
         } else if(animationId.startsWith("textTransition")){
-            let param = animationId.indexOf("(") != -1? animationId.split("(")[1].split(")")[0] : "";
+            let param = animationId.indexOf("(") != -1 ? animationId.split("(")[1].split(")")[0] : "";
+            let message = LocalizationService.get(param, param);
             let blackPanel = new BlackPanel(this.game);
             this.game.add.existing(blackPanel);
-            blackPanel.showMessage(param, 300, 3000)
+            blackPanel.showMessage(message, 300, 3000)
 
             if(screen && screen instanceof HouseScreen){
                 this.game.time.events.add(3800, () => screen.initialize(true));

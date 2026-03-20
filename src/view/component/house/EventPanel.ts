@@ -7,6 +7,7 @@ import EventUtils from '../../../core/utils/EventUtils';
 import EventInfo from '../../../core/model/event/EventInfo';
 import EventType from '../../../core/model/event/EventType';
 import HouseScreen from './../../screen/HouseScreen';
+import LocalizationService from '../../../core/localization/LocalizationService';
 
 export default class EventPanel extends ClosablePanel {
 
@@ -20,7 +21,7 @@ export default class EventPanel extends ClosablePanel {
         let eventType = eventInfo.eventType;
         let header = EventUtils.getName(eventType);
         let text = EventUtils.getDesc(eventType);
-        let actionName = "Хорошо";
+        let actionName = LocalizationService.get('ui.good');
 
         this.visible = false;
         this.fixedToCamera = true;

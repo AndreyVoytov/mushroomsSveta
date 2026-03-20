@@ -34,6 +34,7 @@ import EventUtils from '../../core/utils/EventUtils';
 import EventType from '../../core/model/event/EventType';
 import LocationUtils from '../../core/utils/LocationUtils';
 import GameText from '../../core/localization/GameText';
+import LocalizationService from '../../core/localization/LocalizationService';
 export default class ForestScreen extends BaseForestScreen {
 
     private previousCellClicked: ForestCell;
@@ -638,7 +639,7 @@ export default class ForestScreen extends BaseForestScreen {
             this.game.time.events.add(200, () => {
                 let x = cellState.sprite.x > Game.getWidth() / 2 ? cellState.sprite.x - 200 : cellState.sprite.x + 200;
 
-                let label = new Label(this.game, x, cellState.sprite.y - 50, "+2 хода", { font: "bold 50px Arial", fill: "#00ff00" });
+                let label = new Label(this.game, x, cellState.sprite.y - 50, LocalizationService.get('ui.plusTwoMoves'), { font: "bold 50px Arial", fill: "#00ff00" });
                 label.strokeThickness = 4;
                 label.addStrokeColor("#064426", 0);
                 // label.addStrokeColor("#028017", 0);
@@ -977,7 +978,7 @@ export default class ForestScreen extends BaseForestScreen {
             if (lockedTimes > 0) {
                 this.game.time.events.add(200, () => {
                     //TODO сделать сообщение от персонажа в стиле туториала. Только надо аккуратно.
-                    let text = "Вскройте соседние клетки, чтобы убрать заросли";
+                    let text = LocalizationService.get('ui.clearIvyHint');
                     this.add.existing(new InfoPanel(this.game, Game.getWidth() / 2 - 300, cellState.sprite.y - 100, [text], [], false, true));
                 }, this);
             }

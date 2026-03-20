@@ -8,6 +8,7 @@ import ShopSmallPanel from './ShopSmallPanel';
 import Settings from '../../../core/service/Settings';
 import Label from '../panel/Label';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
+import LocalizationService from '../../../core/localization/LocalizationService';
 
 export default class ShopPanel extends ClosablePanel {
     private screen: Phaser.State;
@@ -31,7 +32,7 @@ export default class ShopPanel extends ClosablePanel {
 
         
         this.shopLabel = this.attachSprite("statusPanel")
-        let shopTitle = new Label(game, 0, 0, "Магазин", { font: "58px Bookman Old Style", fill: "#f0f1ec" })
+        let shopTitle = new Label(game, 0, 0, LocalizationService.get('ui.shopTitle'), { font: "58px Bookman Old Style", fill: "#f0f1ec" })
         shopTitle.name = 'shopTitle';
         shopTitle.anchor = new Phaser.Point(0.5, 0.5);
         // shopTitle.strokeThickness = 4;

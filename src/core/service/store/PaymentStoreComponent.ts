@@ -10,6 +10,7 @@ import ForestScreen from "../../../view/screen/ForestScreen";
 import ConfirmPanel from "../../../view/component/house/ConfirmPanel";
 import BuyConfirmPanel from "../../../view/component/house/BuyConfirmPanel";
 import GameText from '../../localization/GameText';
+import LocalizationService from '../../localization/LocalizationService';
 
 export default class PaymentStoreComponent extends ServerStoreComponent {
 
@@ -60,7 +61,7 @@ export default class PaymentStoreComponent extends ServerStoreComponent {
             applyedBuys.forEach(b=>{
                 AnalyticUtils.logPurchase(b, Game.getInstance().state.getCurrentState() instanceof ForestScreen ? "forestScreen" : "houseScreen");  
 
-                let info = new BuyConfirmPanel(Game.getInstance(), "Покупка получена!", "Ok", GameText.purchaseReward(Buy.getName(b)), b.name != undefined)
+                let info = new BuyConfirmPanel(Game.getInstance(), LocalizationService.get('ui.purchaseReceived'), LocalizationService.get('ui.ok'), GameText.purchaseReward(Buy.getName(b)), b.name != undefined)
                 Game.getInstance().add.existing(info);
                 info.show();
             })
@@ -79,8 +80,14 @@ export default class PaymentStoreComponent extends ServerStoreComponent {
             })
 
             if(!silentMode && AnalyticUtils.canPlayWithoutInternet()){
-                let info = new ConfirmPanel(Game.getInstance(), "Сервер не доступен", "Ok",
-                     AnalyticUtils.haveLocalStorage() ? "Проверьте ваше \n интернет-соединение!" : "Платеж будет начислен \n в течение суток.")
+                let info = new ConfirmPanel(
+                    Game.getInstance(),
+                    LocalizationService.get('ui.serverUnavailable'),
+                    LocalizationService.get('ui.ok'),
+                    AnalyticUtils.haveLocalStorage()
+                        ? LocalizationService.get('ui.checkInternetConnection')
+                        : LocalizationService.get('ui.paymentWillBeCredited')
+                )
                 Game.getInstance().add.existing(info);
                 info.show();
             }

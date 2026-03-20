@@ -116,10 +116,10 @@ export default class AnalyticUtils {
         let cust = AnalyticUtils.getCustomization();
         switch(cust){
             case CustomizationType.odkl:
-                return LocalizationService.get(LocalizationKey.ui('currency.ok'), 'ок')
+                return LocalizationService.get(LocalizationKey.ui('currency.ok'))
             case CustomizationType.android:
             case CustomizationType.webDev:
-                return LocalizationService.get(LocalizationKey.ui('currency.rub'), 'руб');
+                return LocalizationService.get(LocalizationKey.ui('currency.rub'));
             default:
                 throw new NeverError(cust);
         }

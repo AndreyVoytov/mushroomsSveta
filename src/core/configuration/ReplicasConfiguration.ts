@@ -7,12 +7,12 @@ export default class ReplicasConfiguration {
             {
                 "id": "r1",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r1.personName",
                 "context": {
                     "level": 1
                 },
-                "text": "О! Похоже, здесь ещё одна ~грибная полянка~ поблизости.",
-                "buttonName": "За грибами!",
+                "text": "replica.r1.text",
+                "buttonName": "replica.r1.buttonName",
                 "location": 0,
                 "afterLevelLocation": null,
                 "showDiary": false
@@ -20,57 +20,57 @@ export default class ReplicasConfiguration {
             {
                 "id": "r2",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r2.personName",
                 "location": 1,
                 "context": {
                     "level": 2
                 },
-                "text": "Странно. Никогда здесь не была, а все кажется ~каким-то знакомым~. "
+                "text": "replica.r2.text"
             },
             {
                 "id": "r2b",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r2b.personName",
                 "context": {
                     "level": 2
                 },
-                "text": "Не удивлюсь, если в доме окажется тот ~старый сундук~, который мне вечно снится.",
-                "buttonName": "Зайти в дом",
+                "text": "replica.r2b.text",
+                "buttonName": "replica.r2b.buttonName",
                 "buttonImage": "actionDoor",
                 "afterAnimation": "transition"
             },
             {
                 "id": "r3",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r3.personName",
                 "delay": 500,
                 "location": 2,
                 "context": {
                     "level": 2
                 },
-                "text": "Это что? Какой-то ~розыгрыш~?"
+                "text": "replica.r3.text"
             },
             {
                 "id": "r4",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r4.personName",
                 "context": {
                     "level": 2
                 },
-                "text": "Интересно, как открывается этот ~сундук~?",
-                "buttonName": "Поискать ключ",
+                "text": "replica.r4.text",
+                "buttonName": "replica.r4.buttonName",
                 "buttonImage": "actionChest",
                 "personalAnimation": "questionBubble"
             },
             {
                 "id": "r5",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r5.personName",
                 "context": {
                     "level": 3
                 },
-                "text": "Ключ был под половичком! Хозяева ~серьезно~ подумали о безопасности.",
-                "buttonName": "Открыть сундук",
+                "text": "replica.r5.text",
+                "buttonName": "replica.r5.buttonName",
                 "buttonImage": "actionKey",
                 "afterAnimation": "openChest",
                 "decor": {
@@ -88,39 +88,39 @@ export default class ReplicasConfiguration {
             {
                 "id": "r6",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r6.personName",
                 "location": 3,
                 "afterLevelLocation": 4,
                 "context": {
                     "level": 3
                 },
-                "text": "Что же там внутри? Скорее посмотрим!",
-                "buttonName": "Обыскать сундук",
+                "text": "replica.r6.text",
+                "buttonName": "replica.r6.buttonName",
                 "buttonImage": "actionChest",
                 "showDiary": false
             },
             {
                 "id": "r7",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r7.personName",
                 "afterAnimation": "cooking",
                 "context": {
                     "level": 7
                 },
-                "text": "Кажется, мы собрали все грибы! Теперь попробуем ~приготовить~ зелье!",
-                "buttonName": "Готовить зелье",
+                "text": "replica.r7.text",
+                "buttonName": "replica.r7.buttonName",
                 "buttonImage": "actionBoiler",
                 "showDiary": false
             },
             {
                 "id": "r8",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r8.personName",
                 "afterAnimation": "boilerBurst",
                 "context": {
                     "level": 7
                 },
-                "text": "Закидываем ~ингридиенты~ в котел... И немного ~поварим~...",
+                "text": "replica.r8.text",
                 "decor": {
                     "image": "bookDecor",
                     "x": 250,
@@ -132,11 +132,11 @@ export default class ReplicasConfiguration {
             {
                 "id": "r9",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r9.personName",
                 "context": {
                     "level": 7
                 },
-                "text": "Ой-ой-ой! Что происходит?",
+                "text": "replica.r9.text",
                 "decor": {
                     "image": "bookDecor",
                     "x": 250,
@@ -149,14 +149,14 @@ export default class ReplicasConfiguration {
             {
                 "id": "r10",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r10.personName",
                 "afterLevelLocation": 9,
                 "context": {
                     "level": 7
                 },
-                "text": "Зелье проявило ~новую страницу~ в тетради! Это похоже на ~карту местности~!",
+                "text": "replica.r10.text",
                 "showDiary": true,
-                "buttonName": "В путь",
+                "buttonName": "replica.r10.buttonName",
                 "decor": {
                     "image": "bookDecor",
                     "x": 250,
@@ -169,58 +169,58 @@ export default class ReplicasConfiguration {
             {
                 "id": "r10b",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r10b.personName",
                 "location": 4,
                 "context": {
                     "level": 14
                 },
                 "rightSide": true,
-                "text": "Мяу!",
+                "text": "replica.r10b.text",
                 "personalAnimation": "eatBubble",
                 "decor": null
             },
             {
                 "id": "r11",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r11.personName",
                 "context": {
                     "level": 14
                 },
-                "text": "Надо тебя накормить. У нас тут как раз есть ~бутылочка молока~.",
-                "buttonName": "Кормить",
+                "text": "replica.r11.text",
+                "buttonName": "replica.r11.buttonName",
                 "buttonImage": "actionCream",
                 "afterAnimation": "nothing"
             },
             {
                 "id": "r12",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r12.personName",
                 "context": {
                     "level": 14
                 },
-                "text": "...",
+                "text": "replica.r12.text",
                 "rightSide": true,
                 "personalAnimation": "fooBubble"
             },
             {
                 "id": "r14",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r14.personName",
                 "context": {
                     "level": 14
                 },
-                "text": "Котёнок ~отказывается~ пить молоко, странно! Что ж, заглянем в тетрадь.."
+                "text": "replica.r14.text"
             },
             {
                 "id": "r15",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r15.personName",
                 "context": {
                     "level": 14
                 },
                 "showDiary": true,
-                "text": "Получается, наш котик и есть ~Борис~? Какие-то ~странные вкусы~ у него. Попробуем накормить!",
-                "buttonName": "За грибами",
+                "text": "replica.r15.text",
+                "buttonName": "replica.r15.buttonName",
                 "decor": {
                     "image": "bookDecor",
                     "x": 250,
@@ -232,12 +232,12 @@ export default class ReplicasConfiguration {
             {
                 "id": "r16",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r16.personName",
                 "context": {
                     "level": 17
                 },
-                "text": "А ~мухомор~ точно нужно класть? Он же ядовитый... Эх, была не была!",
-                "buttonName": "Варить по рецепту",
+                "text": "replica.r16.text",
+                "buttonName": "replica.r16.buttonName",
                 "buttonImage": "actionBoiler",
                 "afterAnimation": "cooking(amanita!|lilly|mushroom3&pink)",
                 "decor": {
@@ -251,11 +251,11 @@ export default class ReplicasConfiguration {
             {
                 "id": "r17",
                 "personImage": "cat4",
-                "personName": "Котёнок",
+                "personName": "replica.r17.personName",
                 "context": {
                     "level": 17
                 },
-                "text": "М-р-р-р-р!",
+                "text": "replica.r17.text",
                 "rightSide": true,
                 "decor": {
                     "image": "plate1",
@@ -274,25 +274,25 @@ export default class ReplicasConfiguration {
             {
                 "id": "r17b",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r17b.personName",
                 "context": {
                     "level": 17
                 },
                 "rightSide": true,
-                "text": "Мяу!",
+                "text": "replica.r17b.text",
                 "personalAnimation": "drinkBubble",
                 "decor": null
             },
             {
                 "id": "r18",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r18.personName",
                 "context": {
                     "level": 17
                 },
                 "showDiary": true,
-                "text": "Похоже, теперь котик хочет пить! А в тетрадке как раз есть рецепт, как ~напоить кота~!",
-                "buttonName": "В лес!",
+                "text": "replica.r18.text",
+                "buttonName": "replica.r18.buttonName",
                 "decor": {
                     "image": "bookDecor",
                     "x": 250,
@@ -304,12 +304,12 @@ export default class ReplicasConfiguration {
             {
                 "id": "r19",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r19.personName",
                 "context": {
                     "level": 20
                 },
-                "text": "Может мне тоже ~попробовать напиток~? Нет, пожалуй не рискну. ",
-                "buttonName": "Сварить напиток",
+                "text": "replica.r19.text",
+                "buttonName": "replica.r19.buttonName",
                 "buttonImage": "actionBoiler",
                 "afterAnimation": "cooking(blueberry|witchMushroom&blue)",
                 "decor": {
@@ -323,11 +323,11 @@ export default class ReplicasConfiguration {
             {
                 "id": "r20",
                 "personImage": "cat4",
-                "personName": "Котёнок",
+                "personName": "replica.r20.personName",
                 "context": {
                     "level": 20
                 },
-                "text": "...",
+                "text": "replica.r20.text",
                 "rightSide": true,
                 "decor": {
                     "image": "plate2",
@@ -346,9 +346,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r20b",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r20b.personName",
                 "rightSide": true,
-                "text": "@Здравствуй!@",
+                "text": "replica.r20b.text",
                 "context": {
                     "level": 20
                 },
@@ -363,60 +363,60 @@ export default class ReplicasConfiguration {
             {
                 "id": "r21",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r21.personName",
                 "context": {
                     "level": 20
                 },
-                "text": "Ммм. Привет. Ты умеешь разговаривать?"
+                "text": "replica.r21.text"
             },
             {
                 "id": "r22",
                 "personImage": "cat3",
-                "personName": "Котёнок",
+                "personName": "replica.r22.personName",
                 "context": {
                     "level": 20
                 },
-                "text": "Похоже на то! Ну и дела.. А ты кто такая?",
+                "text": "replica.r22.text",
                 "rightSide": true
             },
             {
                 "id": "r23",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r23.personName",
                 "context": {
                     "level": 20
                 },
-                "text": "Я ~Эмма~. А ты, наверное, ~Борис~?"
+                "text": "replica.r23.text"
             },
             {
                 "id": "r24",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r24.personName",
                 "context": {
                     "level": 20
                 },
-                "text": "Здравствуй, ~Эм-ма~.. К сожалению, я не помню, кто я такой, и как меня зовут.",
+                "text": "replica.r24.text",
                 "rightSide": true
             },
             {
                 "id": "r25",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r25.personName",
                 "context": {
                     "level": 20
                 },
-                "text": "У меня есть говорящий котик, который ~ничего не помнит~. Думаю, стоит снова заглянуть в тетрадку."
+                "text": "replica.r25.text"
             },
             {
                 "id": "r26",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r26.personName",
                 "context": {
                     "level": 20
                 },
                 "showDiary": true,
-                "text": "Вперёд, за новыми ~ингридиентами~!",
-                "buttonName": "За грибами",
+                "text": "replica.r26.text",
+                "buttonName": "replica.r26.buttonName",
                 "decor": {
                     "image": "bookDecor",
                     "x": 250,
@@ -428,12 +428,12 @@ export default class ReplicasConfiguration {
             {
                 "id": "r27",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r27.personName",
                 "context": {
                     "level": 24
                 },
                 "afterAnimation": null,
-                "text": "Я вспомнил свое имя; действительно ~Борис~. К вашим услугам! ",
+                "text": "replica.r27.text",
                 "rightSide": true,
                 "personalAnimation": "ideaBubble",
                 "beforeAnimation": "memoryRestoration1",
@@ -442,21 +442,21 @@ export default class ReplicasConfiguration {
             {
                 "id": "r28",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r28.personName",
                 "context": {
                     "level": 24
                 },
-                "text": "Кстати, у тебя нет ~зеркала~? Хочу посмотреть, как я выгляжу. Может вспомню что-нибудь ещё.",
+                "text": "replica.r28.text",
                 "rightSide": true
             },
             {
                 "id": "r29",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r29.personName",
                 "context": {
                     "level": 24
                 },
-                "text": "Вот ~зеркальце~, держи!",
+                "text": "replica.r29.text",
                 "decor": {
                     "image": "mirror2",
                     "x": 200,
@@ -472,11 +472,11 @@ export default class ReplicasConfiguration {
             {
                 "id": "r30",
                 "personImage": "cat3",
-                "personName": "Котёнок",
+                "personName": "replica.r30.personName",
                 "context": {
                     "level": 24
                 },
-                "text": "ААААААААА! АААА!                       @Я кот!@ Какой ужас!",
+                "text": "replica.r30.text",
                 "rightSide": true,
                 "decor": {
                     "image": "mirror2b",
@@ -493,69 +493,42 @@ export default class ReplicasConfiguration {
             {
                 "id": "r30b",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r30b.personName",
                 "context": {
                     "level": 24
                 },
-                "text": "Ты не знал?",
+                "text": "replica.r30b.text",
             },
-            // {
-            //     "id": "r30",
-            //     "personImage": "cat1",
-            //     "personName": "Котёнок",
-            //     "context": {
-            //         "level": 24
-            //     },
-            //     "text": "Благородный рыжий цвет, роскошные   усы... Да я ~чертовски хорош собой~! ",
-            //     "rightSide": true,
-            //     "decor": {
-            //         "image": "mirror2b",
-            //         "x": 300,
-            //         "y": 0,
-            //         "rightSide": true,
-            //         "overDialog": true
-            //     },
-            //     "glint": {
-            //         "x": 561,
-            //         "y": -57,
-            //     },
-            //     "decor2": {
-            //         "image": "cat1cheeks",
-            //         "x": 80,
-            //         "y": 269,
-            //         "rightSide": true,
-            //         "overDialog": true
-            //     }
-            // },
+
             {
                 "id": "r32",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r32.personName",
                 "context": {
                     "level": 24
                 },
-                "text": "Вообще-то, знал. Пошутил просто.. Полагаю, в дневнике моей хозяйки открылась ~новая страница~.",
+                "text": "replica.r32.text",
                 "rightSide": true
             },
             {
                 "id": "r32b",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r32b.personName",
                 "showDiary": true,
-                "buttonName": "За грибами",
+                "buttonName": "replica.r32b.buttonName",
                 "context": {
                     "level": 24
                 },
-                "text": "Продолжим восстановление памяти!"
+                "text": "replica.r32b.text"
             },
             {
                 "id": "r33",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r33.personName",
                 "context": {
                     "level": 28
                 },
-                "text": "Вспоминаю хозяйку. Хорошая, добрая женщина. Кажется, она просила меня ~что-то кому-то передать~.",
+                "text": "replica.r33.text",
                 "rightSide": true,
                 "personalAnimation": "ideaBubble",
                 "beforeAnimation": "memoryRestoration2",
@@ -564,41 +537,41 @@ export default class ReplicasConfiguration {
             {
                 "id": "r34",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r34.personName",
                 "context": {
                     "level": 28
                 },
-                "text": "Что же ты должен передать и кому?"
+                "text": "replica.r34.text"
             },
             {
                 "id": "r34b",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r34b.personName",
                 "context": {
                     "level": 28
                 },
-                "text": "Не могу вспомнить. Но, похоже, это ~очень важно~.",
+                "text": "replica.r34b.text",
                 "rightSide": true
             },
             {
                 "id": "r34bb",
                 "personImage": "sveta1",
-                "personName": "Эмма",
-                "buttonName": "В лес",
+                "personName": "replica.r34bb.personName",
+                "buttonName": "replica.r34bb.buttonName",
                 "showDiary": true,
                 "context": {
                     "level": 28
                 },
-                "text": "Последнее зелье ~полностью~ восстановит твою память!"
+                "text": "replica.r34bb.text"
             },
             {
                 "id": "r34c",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r34c.personName",
                 "context": {
                     "level": 32
                 },
-                "text": "Вспомнил. Хозяйка сказала: ~Если я не вернусь до осени, проси помощи у Эм-ма~",
+                "text": "replica.r34c.text",
                 "rightSide": true,
                 "personalAnimation": "ideaBubble",
                 "delay": 1000,
@@ -607,69 +580,69 @@ export default class ReplicasConfiguration {
             {
                 "id": "r35",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r35.personName",
                 "context": {
                     "level": 32
                 },
-                "text": "Эм-ма?"
+                "text": "replica.r35.text"
             },
             {
                 "id": "r36",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r36.personName",
                 "context": {
                     "level": 32
                 },
-                "text": "Я думаю, это ты и есть. Кто еще мог найти ~заповедную избушку~ и сварить столько ~зелий~? Поможешь хозяйке?",
+                "text": "replica.r36.text",
                 "rightSide": true
             },
             {
                 "id": "r37",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r37.personName",
                 "context": {
                     "level": 32
                 },
-                "text": "Я ведь даже не знаю в чем ей нужна помощь. Вдруг она детей ест?"
+                "text": "replica.r37.text"
             },
             {
                 "id": "r38",
                 "personImage": "cat1",
-                "personName": "Котёнок",
-                "afterAnimation": "stormTransition(Она не поможет!)",
+                "personName": "replica.r38.personName",
+                "afterAnimation": "stormTransition(ui.transition.sheWontHelp)",
                 "context": {
                     "level": 32
                 },
-                "text": "Наговаривают это на нее. Не ест она детей. Даже взрослых почти не ест. Так ты поможешь?",
+                "text": "replica.r38.text",
                 "rightSide": true
             },
             {
                 "id": "r39",
                 "delay": 3800,
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r39.personName",
                 "location": 5,
                 "context": {
                     "level": 32
                 },
-                "text": "Что за @странное место@? Как я здесь оказалась?                 "
+                "text": "replica.r39.text"
             },
             {
                 "id": "r40",
                 "personImage": "sveta2",
-                "personName": "Эмма",
-                "text": "Надо выбираться отсюда поскорее.",
+                "personName": "replica.r40.personName",
+                "text": "replica.r40.text",
                 "context": {
                     "level": 32
                 },
-                "buttonName": "Искать выход",
+                "buttonName": "replica.r40.buttonName",
                 "buttonImage": "tree"
             },
             {
                 "id": "r41",
                 "personImage": "sveta1",
-                "personName": "Эмма",
-                "text": "Пока выхода из леса не видно...",
+                "personName": "replica.r41.personName",
+                "text": "replica.r41.text",
                 "context": {
                     "level": 37
                 },
@@ -679,8 +652,8 @@ export default class ReplicasConfiguration {
             {
                 "id": "r41b",
                 "personImage": "sveta2",
-                "personName": "Эмма",
-                "text": "А что это за ~лошадка~ там?",
+                "personName": "replica.r41b.personName",
+                "text": "replica.r41b.text",
                 "context": {
                     "level": 37
                 },
@@ -689,9 +662,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r42",
                 "personImage": "unicorn2",
-                "personName": "Лошадка",
+                "personName": "replica.r42.personName",
                 "rightSide": true,
-                "text": "...",
+                "text": "replica.r42.text",
                 "context": {
                     "level": 37
                 },
@@ -700,9 +673,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r43",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r43.personName",
                 "rightSide": false,
-                "text": "Да это же настоящий ~единорог~!        Эй, погоди.. Куда же ты?\n",
+                "text": "replica.r43.text",
                 "context": {
                     "level": 37
                 },
@@ -712,25 +685,25 @@ export default class ReplicasConfiguration {
             {
                 "id": "r44",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r44.personName",
                 "rightSide": false,
-                "text": "Пойду следом за единорогом. Может он выведет меня из леса?",
+                "text": "replica.r44.text",
                 "context": {
                     "level": 37
                 },
                 "delay": 3000,
                 "decor": null,
                 "location": 5,
-                "buttonName": "За единорогом!",
+                "buttonName": "replica.r44.buttonName",
                 "buttonImage": "unicorn3",
                 "showDiary": false
             },
             {
                 "id": "r45",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r45.personName",
                 "rightSide": false,
-                "text": "Единорог скрылся из виду.               Но лес здесь становится реже.      ",
+                "text": "replica.r45.text",
                 "context": {
                     "level": 38
                 },
@@ -739,21 +712,21 @@ export default class ReplicasConfiguration {
             {
                 "id": "r46",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r46.personName",
                 "rightSide": false,
-                "text": "Похоже, я на ~правильном пути~!\n",
+                "text": "replica.r46.text",
                 "context": {
                     "level": 38
                 },
-                "buttonName": "Вперёд!",
+                "buttonName": "replica.r46.buttonName",
                 "buttonImage": "tree"
             },
             {
                 "id": "r47",
                 "personImage": "sveta5",
-                "personName": "Эмма",
+                "personName": "replica.r47.personName",
                 "rightSide": false,
-                "text": "Уф. Не знала, что буду так радоваться оказавшись в чаще ~нормального леса~!",
+                "text": "replica.r47.text",
                 "context": {
                     "level": 44
                 },
@@ -762,34 +735,34 @@ export default class ReplicasConfiguration {
             {
                 "id": "r48",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r48.personName",
                 "rightSide": false,
-                "text": "Надо поискать чего-нибудь поесть.\n",
+                "text": "replica.r48.text",
                 "context": {
                     "level": 44
                 },
-                "buttonName": "За грибами",
+                "buttonName": "replica.r48.buttonName",
                 "buttonImage": "actionMushroom",
                 "showDiary": true
             },
             {
                 "id": "r49",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r49.personName",
                 "rightSide": false,
-                "text": "Теперь нужны ~поленья~, чтобы развести огонь.\n",
+                "text": "replica.r49.text",
                 "context": {
                     "level": 46
                 },
-                "buttonName": "За поленьями",
+                "buttonName": "replica.r49.buttonName",
                 "buttonImage": "poleno"
             },
             {
                 "id": "r50",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r50.personName",
                 "rightSide": false,
-                "text": "Вот и отлично, наконец-то пообедаю! ",
+                "text": "replica.r50.text",
                 "context": {
                     "level": 47
                 },
@@ -805,9 +778,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r51",
                 "personImage": "leshii1",
-                "personName": "Леший",
+                "personName": "replica.r51.personName",
                 "rightSide": true,
-                "text": "Ты откуда здесь взялась?              Кто ~разрешил~ костёр жечь?",
+                "text": "replica.r51.text",
                 "context": {
                     "level": 47
                 }
@@ -815,9 +788,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r52",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r52.personName",
                 "rightSide": false,
-                "text": "Я заблудилась и проголодалась. Только что вышла из мрачного леса и …\n",
+                "text": "replica.r52.text",
                 "context": {
                     "level": 47
                 },
@@ -832,9 +805,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r53",
                 "personImage": "leshii3",
-                "personName": "Леший",
+                "personName": "replica.r53.personName",
                 "rightSide": true,
-                "text": "Вышла из Мрачного Леса?!                Нет оттуда выхода! ",
+                "text": "replica.r53.text",
                 "context": {
                     "level": 47
                 }
@@ -842,9 +815,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r54",
                 "personImage": "leshii2",
-                "personName": "Леший",
+                "personName": "replica.r54.personName",
                 "rightSide": true,
-                "text": "Если ты конечно не… Эм-ма? Та самая? Из ~легенды~? ",
+                "text": "replica.r54.text",
                 "context": {
                     "level": 47
                 }
@@ -852,9 +825,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r54b",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r54b.personName",
                 "rightSide": false,
-                "text": "Что? Нет, я самая обычная Эмма.",
+                "text": "replica.r54b.text",
                 "context": {
                     "level": 47
                 },
@@ -863,23 +836,23 @@ export default class ReplicasConfiguration {
             {
                 "id": "r55",
                 "personImage": "leshii1",
-                "personName": "Леший",
+                "personName": "replica.r55.personName",
                 "rightSide": true,
-                "text": "Ну тогда всё ясно… Тебе нужно идти на север. ",
+                "text": "replica.r55.text",
                 "context": {
                     "level": 47
                 },
                 "showDiary": true,
-                "buttonName": "В путь!",
+                "buttonName": "replica.r55.buttonName",
                 "buttonImage": "actionHouse",
                 "afterLevelLocation": 9
             },
             {
                 "id": "r56",
                 "personImage": "cat4",
-                "personName": "Котёнок",
+                "personName": "replica.r56.personName",
                 "rightSide": true,
-                "text": "Наконец-то. Я уже ~заждался~. Что так долго-то?",
+                "text": "replica.r56.text",
                 "context": {
                     "level": 54
                 },
@@ -889,9 +862,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r57",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r57.personName",
                 "rightSide": false,
-                "text": "Ну, я попала в мрачный лес и …\n",
+                "text": "replica.r57.text",
                 "context": {
                     "level": 54
                 }
@@ -899,9 +872,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r58",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r58.personName",
                 "rightSide": true,
-                "text": "Знаю-знаю. Все слышали  Легенду.       Но я думал, что ~Великая Эм-ма~ выйдет из мрачного леса побыстрее...",
+                "text": "replica.r58.text",
                 "context": {
                     "level": 54
                 }
@@ -909,9 +882,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r59",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r59.personName",
                 "rightSide": true,
-                "text": "У нас мало времени - нужно разыскать ~Совёнка~. Он - ключ ко всему!\n",
+                "text": "replica.r59.text",
                 "context": {
                     "level": 54
                 }
@@ -919,9 +892,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r60",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r60.personName",
                 "rightSide": false,
-                "text": "Совёнка?",
+                "text": "replica.r60.text",
                 "context": {
                     "level": 54
                 }
@@ -929,23 +902,23 @@ export default class ReplicasConfiguration {
             {
                 "id": "r61",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r61.personName",
                 "rightSide": true,
-                "text": "Ну да. У Хозяйки был Совёнок.         Когда все ~пошло кувырком~, он исчез. Теперь надо его разыскать! \n",
+                "text": "replica.r61.text",
                 "context": {
                     "level": 54
                 },
                 "showDiary": true,
-                "buttonName": "За совёнком!",
+                "buttonName": "replica.r61.buttonName",
                 "buttonImage": "owl",
                 "afterLevelLocation": 9
             },
             {
                 "id": "r62",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r62.personName",
                 "rightSide": true,
-                "text": "Кого это ты принесла? Совёнок, здорово.. Только это ~не наш~ совёнок.\n",
+                "text": "replica.r62.text",
                 "context": {
                     "level": 59
                 },
@@ -956,9 +929,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r63",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r63.personName",
                 "rightSide": false,
-                "text": "Серьезно? А как узнать нашего? ",
+                "text": "replica.r63.text",
                 "context": {
                     "level": 59
                 },
@@ -973,9 +946,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r64",
                 "personImage": "cat4",
-                "personName": "Котёнок",
+                "personName": "replica.r64.personName",
                 "rightSide": true,
-                "text": "Ну, во-первых у него ~серьезный вид~. Во-вторых, он ~побольше~. Ну и еще - он носит ~розовые очки~!",
+                "text": "replica.r64.text",
                 "context": {
                     "level": 59
                 },
@@ -984,14 +957,14 @@ export default class ReplicasConfiguration {
             {
                 "id": "r65",
                 "personImage": "sveta3",
-                "personName": "Эмма",
+                "personName": "replica.r65.personName",
                 "rightSide": false,
-                "text": "Неплохо. А ты не мог сказать об этом раньше?\n",
+                "text": "replica.r65.text",
                 "context": {
                     "level": 59
                 },
                 "personalAnimation": null,
-                "buttonName": "Снова в путь!",
+                "buttonName": "replica.r65.buttonName",
                 "buttonImage": "tree",
                 "decor": {
                     "image": "owl",
@@ -1005,9 +978,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r66",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r66.personName",
                 "rightSide": true,
-                "text": "Нашелся наконец, ~блудный совёнок~.    Где тебя носило вообще? ",
+                "text": "replica.r66.text",
                 "context": {
                     "level": 64
                 },
@@ -1018,9 +991,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r67",
                 "personImage": "sova2",
-                "personName": "Совёнок",
+                "personName": "replica.r67.personName",
                 "rightSide": false,
-                "text": "Славный котик, как я рад тебя снова видеть. Ты так ~похорошел~!",
+                "text": "replica.r67.text",
                 "context": {
                     "level": 64
                 },
@@ -1030,9 +1003,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r68",
                 "personImage": "cat4",
-                "personName": "Котёнок",
+                "personName": "replica.r68.personName",
                 "rightSide": true,
-                "text": "Опять за своё, льстивая птица… Ладно. Знаешь ~где искать~ Хозяйку?",
+                "text": "replica.r68.text",
                 "context": {
                     "level": 64
                 },
@@ -1041,9 +1014,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r69",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r69.personName",
                 "rightSide": false,
-                "text": "Друзья, я думаю, нам надо спросить    об этом у ~Хрустального Шара~.        Он хранится на чердаке.",
+                "text": "replica.r69.text",
                 "context": {
                     "level": 64
                 },
@@ -1052,23 +1025,23 @@ export default class ReplicasConfiguration {
             {
                 "id": "r70",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r70.personName",
                 "rightSide": false,
-                "text": "Милый чердачок! Ну что ж, на поиски.\n",
+                "text": "replica.r70.text",
                 "context": {
                     "level": 64
                 },
                 "location": 7,
                 "delay": 500,
-                "buttonName": "На поиски шара",
+                "buttonName": "replica.r70.buttonName",
                 "buttonImage": "loupe"
             },
             {
                 "id": "r71",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r71.personName",
                 "rightSide": false,
-                "text": "Простите меня, любимые друзья, сейчас  я буду читать тайные заклинания. Шар по-другому ~не понимает~.\n",
+                "text": "replica.r71.text",
                 "context": {
                     "level": 71
                 },
@@ -1084,9 +1057,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r71b",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r71b.personName",
                 "rightSide": false,
-                "text": "@Okey-Google! Find-our-Mistress!@",
+                "text": "replica.r71b.text",
                 "context": {
                     "level": 71
                 },
@@ -1103,9 +1076,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r72",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r72.personName",
                 "rightSide": false,
-                "text": "@...@",
+                "text": "replica.r72.text",
                 "context": {
                     "level": 71
                 },
@@ -1130,9 +1103,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r73",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r73.personName",
                 "rightSide": false,
-                "text": "@Zoom-In please!@",
+                "text": "replica.r73.text",
                 "context": {
                     "level": 71
                 },
@@ -1155,9 +1128,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r74",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r74.personName",
                 "rightSide": true,
-                "text": "~Хозяйка!~ Эк, куда ее занесло! ",
+                "text": "replica.r74.text",
                 "context": {
                     "level": 71
                 },
@@ -1166,9 +1139,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r75",
                 "personImage": "sova3",
-                "personName": "Совёнок",
+                "personName": "replica.r75.personName",
                 "rightSide": false,
-                "text": "Дааа… Далековато… Пешком туда не  дойти. Тут ~сапоги~ нужны! Где-то на чердаке была пара марки ~\"Скороходы\"~\n",
+                "text": "replica.r75.text",
                 "context": {
                     "level": 71
                 },
@@ -1180,7 +1153,7 @@ export default class ReplicasConfiguration {
                     "overDialog": false
                 },
                 "afterAnimation": "mountineVisionHide",
-                "buttonName": "На поиски!",
+                "buttonName": "replica.r75.buttonName",
                 "buttonImage": "actionBoots",
                 "showDiary": false,
                 "glint": null
@@ -1188,9 +1161,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r76",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r76.personName",
                 "rightSide": false,
-                "text": "Это точно ~нужные сапоги~?",
+                "text": "replica.r76.text",
                 "context": {
                     "level": 78
                 },
@@ -1214,9 +1187,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r77",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r77.personName",
                 "rightSide": true,
-                "text": "Да они же совсем ~разрядились~!\n",
+                "text": "replica.r77.text",
                 "context": {
                     "level": 78
                 },
@@ -1226,22 +1199,22 @@ export default class ReplicasConfiguration {
             {
                 "id": "r78",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r78.personName",
                 "rightSide": false,
-                "text": "Мне кажется, добрый Леший знал, ~как зарядить сапоги~. Давайте отправимся к нему!\n",
+                "text": "replica.r78.text",
                 "context": {
                     "level": 78
                 },
                 "afterLevelLocation": 9,
-                "buttonName": "К лешему!",
+                "buttonName": "replica.r78.buttonName",
                 "buttonImage": "tree"
             },
             {
                 "id": "r79",
                 "personImage": "belka1",
-                "personName": "Белка",
+                "personName": "replica.r79.personName",
                 "rightSide": true,
-                "text": "Здравствуй, легендарная Эм-ма! Куда это ты идешь?\n",
+                "text": "replica.r79.text",
                 "context": {
                     "level": 81
                 }
@@ -1249,9 +1222,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r80",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r80.personName",
                 "rightSide": false,
-                "text": "Здравствуй, Белка. Мы направляемся ~к Лешему~. А ты почему интересуешься?",
+                "text": "replica.r80.text",
                 "context": {
                     "level": 81
                 }
@@ -1259,9 +1232,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r81",
                 "personImage": "belka1",
-                "personName": "Белка",
+                "personName": "replica.r81.personName",
                 "rightSide": true,
-                "text": "Да так. Из вежливости. Удачи тебе!",
+                "text": "replica.r81.text",
                 "context": {
                     "level": 81
                 }
@@ -1269,9 +1242,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r82",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r82.personName",
                 "rightSide": false,
-                "text": "Странное дело - никогда раньше не встречал эту белку в нашем лесу.\n",
+                "text": "replica.r82.text",
                 "context": {
                     "level": 81
                 }
@@ -1279,9 +1252,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r83",
                 "personImage": "leshii2",
-                "personName": "Леший",
+                "personName": "replica.r83.personName",
                 "rightSide": true,
-                "text": "Говорите, у вас ~сапоги разрядились~? Сейчас посмотрю, был у меня один рецепт...",
+                "text": "replica.r83.text",
                 "context": {
                     "level": 85
                 }
@@ -1289,9 +1262,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r84",
                 "personImage": "leshii1",
-                "personName": "Леший",
+                "personName": "replica.r84.personName",
                 "rightSide": true,
-                "text": "..Ага, вот! Рецепт ~зарядного зелья~. Сам я такое сварить не могу. Тут особый дар нужен!\n",
+                "text": "replica.r84.text",
                 "context": {
                     "level": 85
                 },
@@ -1300,36 +1273,36 @@ export default class ReplicasConfiguration {
             {
                 "id": "r85",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r85.personName",
                 "rightSide": false,
-                "text": "Спасибо за рецепт, господин Леший!      А теперь поспешим, друзья.          Нужно скорее ~спасать Хозяйку~!",
+                "text": "replica.r85.text",
                 "context": {
                     "level": 85
                 },
                 "afterAnimation": "transition",
-                "buttonName": "Домой",
+                "buttonName": "replica.r85.buttonName",
                 "buttonImage": "actionHouse"
             },
             {
                 "id": "r86",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r86.personName",
                 "rightSide": false,
-                "text": "Предлагаю план: Совёнок, ты ~изучай маршрут~. Кот, ты ~готовь припасы~.    А я пока ~наберу корешков~ для зелья. ",
+                "text": "replica.r86.text",
                 "context": {
                     "level": 85
                 },
                 "location": 4,
                 "delay": 500,
-                "buttonName": "За корешками",
+                "buttonName": "replica.r86.buttonName",
                 "buttonImage": "goldRoot"
             },
             {
                 "id": "r87",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r87.personName",
                 "rightSide": false,
-                "text": "Все ~ингредиенты собраны~! Не будем терять времени - закидываем сапоги в котел!",
+                "text": "replica.r87.text",
                 "context": {
                     "level": 92
                 },
@@ -1341,15 +1314,15 @@ export default class ReplicasConfiguration {
                     "overDialog": true
                 },
                 "afterAnimation": "cooking(goldRoot|witchMushroom|bootsBroken!&green)",
-                "buttonName": "Закинуть в котёл",
+                "buttonName": "replica.r87.buttonName",
                 "buttonImage": "actionBoiler"
             },
             {
                 "id": "r88",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r88.personName",
                 "rightSide": false,
-                "text": "...",
+                "text": "replica.r88.text",
                 "context": {
                     "level": 92
                 },
@@ -1366,9 +1339,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r89",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r89.personName",
                 "rightSide": true,
-                "text": "Отлично! Заряда хватит ~вёрст на триста~… Потом надо будет снова заряжать.\n",
+                "text": "replica.r89.text",
                 "context": {
                     "level": 92
                 },
@@ -1391,9 +1364,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r90",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r90.personName",
                 "rightSide": true,
-                "text": "Возьмём с собой припасы: мешочек муки, баночку варенья и походный котелок. Остальное ~найдем в дороге~!\n",
+                "text": "replica.r90.text",
                 "context": {
                     "level": 92
                 },
@@ -1403,23 +1376,23 @@ export default class ReplicasConfiguration {
             {
                 "id": "r91",
                 "personImage": "sova2",
-                "personName": "Совёнок",
+                "personName": "replica.r91.personName",
                 "rightSide": false,
-                "text": "Я подготовил карту. Палаткой отмечены места стоянок. Нас ждёт ~большое приключение~!\n",
+                "text": "replica.r91.text",
                 "context": {
                     "level": 92
                 },
                 "showDiary": true,
-                "buttonName": "В путь!",
+                "buttonName": "replica.r91.buttonName",
                 "buttonImage": "actionMap",
                 "afterLevelLocation": 9
             },
             {
                 "id": "r92",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r92.personName",
                 "rightSide": true,
-                "text": "Что то я проголодался!\n",
+                "text": "replica.r92.text",
                 "context": {
                     "level": 97
                 }
@@ -1427,21 +1400,21 @@ export default class ReplicasConfiguration {
             {
                 "id": "r93",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r93.personName",
                 "rightSide": false,
-                "text": "Подожди до ~привала~. На привале поедим.",
+                "text": "replica.r93.text",
                 "context": {
                     "level": 97
                 },
-                "buttonName": "Продолжить путь",
+                "buttonName": "replica.r93.buttonName",
                 "buttonImage": "tree"
             },
             {
                 "id": "r94",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r94.personName",
                 "rightSide": true,
-                "text": "А скоро привал? Очень хочу есть..",
+                "text": "replica.r94.text",
                 "context": {
                     "level": 98
                 },
@@ -1450,22 +1423,22 @@ export default class ReplicasConfiguration {
             {
                 "id": "r95",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r95.personName",
                 "rightSide": false,
-                "text": "Уже почти пришли!",
+                "text": "replica.r95.text",
                 "context": {
                     "level": 98
                 },
-                "buttonName": "Вперёд!",
+                "buttonName": "replica.r95.buttonName",
                 "buttonImage": "tree",
                 "afterLevelLocation": 11
             },
             {
                 "id": "r96",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r96.personName",
                 "rightSide": false,
-                "text": "Борис, что с тобой??",
+                "text": "replica.r96.text",
                 "context": {
                     "level": 99
                 }
@@ -1473,9 +1446,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r97",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r97.personName",
                 "rightSide": true,
-                "text": "Простите, друзья.. Я ~случайно ~съел всю нашу муку. \n",
+                "text": "replica.r97.text",
                 "context": {
                     "level": 99
                 },
@@ -1491,9 +1464,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r98",
                 "personImage": "sova3",
-                "personName": "Совёнок",
+                "personName": "replica.r98.personName",
                 "rightSide": true,
-                "text": "Эх, Борис, Борис.. Он скоро ~придёт в себя~. Но как же мы теперь выручим хозяйку   без припасов?\n",
+                "text": "replica.r98.text",
                 "context": {
                     "level": 99
                 }
@@ -1501,35 +1474,35 @@ export default class ReplicasConfiguration {
             {
                 "id": "r99",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r99.personName",
                 "rightSide": false,
-                "text": "Есть идея! Наберём ~колосков~ в округе и ~перемелем~ их с помощью заброшенной водяной мельницы, что виднеется позади",
+                "text": "replica.r99.text",
                 "context": {
                     "level": 99
                 },
-                "buttonName": "За колосками!",
+                "buttonName": "replica.r99.buttonName",
                 "buttonImage": "wheat",
                 "showDiary": false
             },
             {
                 "id": "r100",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r100.personName",
                 "rightSide": false,
-                "text": "Колоски собраны, Время ~молоть~!",
+                "text": "replica.r100.text",
                 "context": {
                     "level": 104
                 },
-                "buttonName": "Молоть колосья",
+                "buttonName": "replica.r100.buttonName",
                 "buttonImage": "wheat",
-                "afterAnimation": "textTransition(30 минут спустя..)"
+                "afterAnimation": "textTransition(ui.transition.thirtyMinutesLater)"
             },
             {
                 "id": "r101",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r101.personName",
                 "rightSide": false,
-                "text": "Отлично, ~запасы пополнены~!         Пора отправляться в путь.",
+                "text": "replica.r101.text",
                 "context": {
                     "level": 104
                 },
@@ -1545,27 +1518,27 @@ export default class ReplicasConfiguration {
             {
                 "id": "r102",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r102.personName",
                 "rightSide": true,
-                "text": "Только теперь муку буду нести я.\n",
+                "text": "replica.r102.text",
                 "context": {
                     "level": 104
                 },
-                "buttonName": "В путь!",
+                "buttonName": "replica.r102.buttonName",
                 "buttonImage": "tree",
                 "afterLevelLocation": 9
             },
             {
                 "id": "r103",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r103.personName",
                 "rightSide": false,
-                "text": "Похоже, сапоги разрядились. Устроим ~привал~, чтобы набрать в округе корешков и зарядить сапоги.",
+                "text": "replica.r103.text",
                 "context": {
                     "level": 111
                 },
                 "location": 12,
-                "buttonName": "За корешками!",
+                "buttonName": "replica.r103.buttonName",
                 "buttonImage": "goldRoot",
                 "decor": {
                     "image": "bootsBroken",
@@ -1586,21 +1559,21 @@ export default class ReplicasConfiguration {
             {
                 "id": "r104",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r104.personName",
                 "rightSide": false,
-                "text": "Сейчас ~зарядим сапоги~ и продолжим   путь!",
+                "text": "replica.r104.text",
                 "context": {
                     "level": 114
                 },
                 "delay": null,
-                "afterAnimation": "textTransition(Час спустя..)"
+                "afterAnimation": "textTransition(ui.transition.hourLater)"
             },
             {
                 "id": "r105",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r105.personName",
                 "rightSide": false,
-                "text": "Отлично, ~сапоги заряжены~, палатка собрана. Пора отправляться!\n",
+                "text": "replica.r105.text",
                 "context": {
                     "level": 114
                 },
@@ -1622,15 +1595,15 @@ export default class ReplicasConfiguration {
                     "overDialog": true,
                     "animation": "fillBattery"
                 },
-                "buttonName": "В путь!",
+                "buttonName": "replica.r105.buttonName",
                 "buttonImage": "actionMap"
             },
             {
                 "id": "r106",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r106.personName",
                 "rightSide": false,
-                "text": "Внимание, друзья! Входим в ~Темный лес~. Будьте начеку.",
+                "text": "replica.r106.text",
                 "context": {
                     "level": 118
                 },
@@ -1639,9 +1612,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r107",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r107.personName",
                 "rightSide": false,
-                "text": "Что-то мне здесь не нравится..\n",
+                "text": "replica.r107.text",
                 "context": {
                     "level": 120
                 }
@@ -1649,9 +1622,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r108",
                 "personImage": "cyclop",
-                "personName": "Циклоп",
+                "personName": "replica.r108.personName",
                 "rightSide": true,
-                "text": "@Агрх-хр-хр-хрррр!@",
+                "text": "replica.r108.text",
                 "context": {
                     "level": 120
                 }
@@ -1659,9 +1632,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r109",
                 "personImage": "cat3",
-                "personName": "Котёнок",
+                "personName": "replica.r109.personName",
                 "rightSide": false,
-                "text": "ААААААА!",
+                "text": "replica.r109.text",
                 "context": {
                     "level": 120
                 }
@@ -1669,9 +1642,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r110",
                 "personImage": "cyclop",
-                "personName": "Циклоп",
+                "personName": "replica.r110.personName",
                 "rightSide": true,
-                "text": "Что? Здесь кто-то есть? Секундочку, достану свой ~монокль~.",
+                "text": "replica.r110.text",
                 "context": {
                     "level": 120
                 },
@@ -1680,9 +1653,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r111",
                 "personImage": "cyclop",
-                "personName": "Циклоп",
+                "personName": "replica.r111.personName",
                 "rightSide": true,
-                "text": "Не хотел вас напугать. Но у меня ~горе~ Я потерял свою любимую волторну!        C одним глазом никак её не отыскать.",
+                "text": "replica.r111.text",
                 "context": {
                     "level": 120
                 },
@@ -1698,21 +1671,21 @@ export default class ReplicasConfiguration {
             {
                 "id": "r112",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r112.personName",
                 "rightSide": false,
-                "text": "Давайте мы вам поможем!",
+                "text": "replica.r112.text",
                 "context": {
                     "level": 120
                 },
-                "buttonName": "На поиски",
+                "buttonName": "replica.r112.buttonName",
                 "buttonImage": "loupe"
             },
             {
                 "id": "r112b",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r112b.personName",
                 "rightSide": false,
-                "text": "Посмотрите! Это тот инструмент, который вам нужен?",
+                "text": "replica.r112b.text",
                 "context": {
                     "level": 121
                 },
@@ -1733,9 +1706,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r112bb",
                 "personImage": "cyclop",
-                "personName": "Циклоп",
+                "personName": "replica.r112bb.personName",
                 "rightSide": true,
-                "text": "Нет, это виолончель.                   А мой инструмент - ~духовой~!",
+                "text": "replica.r112bb.text",
                 "context": {
                     "level": 121
                 },
@@ -1746,15 +1719,15 @@ export default class ReplicasConfiguration {
                     "rightSide": true,
                     "overDialog": false
                 },
-                "buttonName": "На поиски",
+                "buttonName": "replica.r112bb.buttonName",
                 "buttonImage": "loupe"
             },
             {
-                "id": "r112с",
+                "id": "r112c",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r112c.personName",
                 "rightSide": false,
-                "text": "Что скажете насчет этого?",
+                "text": "replica.r112c.text",
                 "context": {
                     "level": 122
                 },
@@ -1773,11 +1746,11 @@ export default class ReplicasConfiguration {
                 "personalAnimation": "questionBubble"
             },
             {
-                "id": "r112сс",
+                "id": "r112cc",
                 "personImage": "cyclop",
-                "personName": "Циклоп",
+                "personName": "replica.r112cc.personName",
                 "rightSide": true,
-                "text": "Теплее! Но это всё же не валторна.      Это обыкновенная ~труба~.",
+                "text": "replica.r112cc.text",
                 "context": {
                     "level": 122
                 },
@@ -1788,15 +1761,15 @@ export default class ReplicasConfiguration {
                     "rightSide": true,
                     "overDialog": false
                 },
-                "buttonName": "На поиски",
+                "buttonName": "replica.r112cc.buttonName",
                 "buttonImage": "loupe"
             },
             {
                 "id": "r113",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r113.personName",
                 "rightSide": false,
-                "text": "Вот ваша ~валторна~, господин Циклоп!",
+                "text": "replica.r113.text",
                 "context": {
                     "level": 123
                 },
@@ -1816,9 +1789,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r114",
                 "personImage": "cyclop",
-                "personName": "Циклоп",
+                "personName": "replica.r114.personName",
                 "rightSide": true,
-                "text": "Большое спасибо! Я снова могу ~играть~! Давайте я провожу вас до края тёмного леса.\n",
+                "text": "replica.r114.text",
                 "context": {
                     "level": 123
                 },
@@ -1831,15 +1804,15 @@ export default class ReplicasConfiguration {
                 },
                 "decor2": null,
                 "showDiary": false,
-                "buttonName": "В путь",
+                "buttonName": "replica.r114.buttonName",
                 "buttonImage": "tree"
             },
             {
                 "id": "r115",
                 "personImage": "cyclop",
-                "personName": "Циклоп",
+                "personName": "replica.r115.personName",
                 "rightSide": true,
-                "text": "В знак благодарности за то, что помогли мне - вот вам ~ведро клубники~. Прощайте!\n",
+                "text": "replica.r115.text",
                 "context": {
                     "level": 130
                 },
@@ -1862,9 +1835,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r116",
                 "personImage": "cat4",
-                "personName": "Котёнок",
+                "personName": "replica.r116.personName",
                 "rightSide": false,
-                "text": "Ух-ты, здорово!\n",
+                "text": "replica.r116.text",
                 "context": {
                     "level": 130
                 },
@@ -1880,22 +1853,22 @@ export default class ReplicasConfiguration {
             {
                 "id": "r117",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r117.personName",
                 "rightSide": false,
-                "text": "Тем временем сапоги снова разрядились. Совсем не держат заряд!\n",
+                "text": "replica.r117.text",
                 "context": {
                     "level": 130
                 },
-                "buttonName": "За корешками",
+                "buttonName": "replica.r117.buttonName",
                 "buttonImage": "goldRoot",
                 "afterLevelLocation": 12
             },
             {
                 "id": "r118",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r118.personName",
                 "rightSide": false,
-                "text": "Половина пути позади!             Дальше наш путь пролегает  через ~Цветочную долину~.\n",
+                "text": "replica.r118.text",
                 "context": {
                     "level": 133
                 },
@@ -1904,9 +1877,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r119",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r119.personName",
                 "rightSide": true,
-                "text": "Ух ты! Я никогда не бывал в цветочной долине, но говорят, там - ~красиво~!",
+                "text": "replica.r119.text",
                 "context": {
                     "level": 133
                 }
@@ -1914,13 +1887,13 @@ export default class ReplicasConfiguration {
             {
                 "id": "r120",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r120.personName",
                 "rightSide": false,
-                "text": "В любом случае, будем сохранять бдительность, друзья!",
+                "text": "replica.r120.text",
                 "context": {
                     "level": 133
                 },
-                "buttonName": "В путь!",
+                "buttonName": "replica.r120.buttonName",
                 "buttonImage": "tree",
                 "afterLevelLocation": 0,
                 "showDiary": true
@@ -1928,9 +1901,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r121",
                 "personImage": "sova2",
-                "personName": "Совёнок",
+                "personName": "replica.r121.personName",
                 "rightSide": false,
-                "text": "Здесь действительно ~красиво~!\n",
+                "text": "replica.r121.text",
                 "context": {
                     "level": 134
                 },
@@ -1939,9 +1912,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r122",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r122.personName",
                 "rightSide": false,
-                "text": "Похоже, я зря беспокоился.             Полечу на ~разведку~. Посмотрю, что есть интересного впереди!",
+                "text": "replica.r122.text",
                 "context": {
                     "level": 134
                 }
@@ -1949,9 +1922,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r123",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r123.personName",
                 "rightSide": false,
-                "text": "Что-то совёнок ~долго~ не возвращается.",
+                "text": "replica.r123.text",
                 "context": {
                     "level": 140
                 },
@@ -1960,9 +1933,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r124",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r124.personName",
                 "rightSide": false,
-                "text": "Смотри, там какие-то ~чудики~. Спросим у них дорогу!",
+                "text": "replica.r124.text",
                 "context": {
                     "level": 140
                 }
@@ -1970,9 +1943,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r125",
                 "personImage": "dwarfs",
-                "personName": "Гномики",
+                "personName": "replica.r125.personName",
                 "rightSide": true,
-                "text": "Привет! Мы ~гномики~, мы знаем эти края очень хорошо. Мы подскажем вам путь.",
+                "text": "replica.r125.text",
                 "context": {
                     "level": 140
                 }
@@ -1980,9 +1953,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r126",
                 "personImage": "dwarfs",
-                "personName": "Гномики",
+                "personName": "replica.r126.personName",
                 "rightSide": true,
-                "text": "Но прежде посмотрите, какую ~шикарную птицу~ мы сегодня поймали! Она будет петь для нас!\n",
+                "text": "replica.r126.text",
                 "context": {
                     "level": 140
                 }
@@ -1990,9 +1963,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r127",
                 "personImage": "sova3",
-                "personName": "Совёнок",
+                "personName": "replica.r127.personName",
                 "rightSide": true,
-                "text": "Друзья, помогите!\n",
+                "text": "replica.r127.text",
                 "context": {
                     "level": 140
                 },
@@ -2007,9 +1980,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r128",
                 "personImage": "sveta4",
-                "personName": "Эмма",
+                "personName": "replica.r128.personName",
                 "rightSide": false,
-                "text": "Но ведь эта птица не умеет петь, это ~совёнок~. А вам нужен ~соловей~!",
+                "text": "replica.r128.text",
                 "context": {
                     "level": 140
                 }
@@ -2017,9 +1990,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r129",
                 "personImage": "dwarfs",
-                "personName": "Гномики",
+                "personName": "replica.r129.personName",
                 "rightSide": true,
-                "text": "Раз птица - значит ~должна петь~. Отдадим вашу птицу только в обмен      на соловья, и точка!\n",
+                "text": "replica.r129.text",
                 "context": {
                     "level": 140
                 }
@@ -2027,21 +2000,21 @@ export default class ReplicasConfiguration {
             {
                 "id": "r130",
                 "personImage": "cat2",
-                "personName": "Котёнок",
+                "personName": "replica.r130.personName",
                 "rightSide": false,
-                "text": "Как же мы теперь поймаем соловья?\n",
+                "text": "replica.r130.text",
                 "context": {
                     "level": 140
                 },
-                "buttonName": "На поиски",
+                "buttonName": "replica.r130.buttonName",
                 "buttonImage": "loupe"
             },
             {
                 "id": "r131",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r131.personName",
                 "rightSide": false,
-                "text": "Мы нашли вам замену для соловья.     Это ~Магнитофон~!",
+                "text": "replica.r131.text",
                 "context": {
                     "level": 143
                 },
@@ -2056,9 +2029,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r132",
                 "personImage": "dwarfs",
-                "personName": "Гномики",
+                "personName": "replica.r132.personName",
                 "rightSide": true,
-                "text": "~Странно~, он не похож на птицу...",
+                "text": "replica.r132.text",
                 "context": {
                     "level": 143
                 },
@@ -2074,9 +2047,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r133",
                 "personImage": "dwarfs",
-                "personName": "Гномики",
+                "personName": "replica.r133.personName",
                 "rightSide": true,
-                "text": "Это намного ~лучше птицы~! Ваша птица свободна. А путь ваш лежит к тем горам, что виднеются вдали.",
+                "text": "replica.r133.text",
                 "context": {
                     "level": 143
                 },
@@ -2092,21 +2065,21 @@ export default class ReplicasConfiguration {
             {
                 "id": "r134",
                 "personImage": "sova3",
-                "personName": "Совёнок",
+                "personName": "replica.r134.personName",
                 "rightSide": true,
-                "text": "Спасибо друзья, что выручили. Теперь я не буду далеко улетать от вас!\n",
+                "text": "replica.r134.text",
                 "context": {
                     "level": 143
                 },
-                "buttonName": "В путь!",
+                "buttonName": "replica.r134.buttonName",
                 "buttonImage": "actionMap"
             },
             {
                 "id": "r135",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r135.personName",
                 "rightSide": false,
-                "text": "И вновь продолжается путь!",
+                "text": "replica.r135.text",
                 "context": {
                     "level": 150
                 }
@@ -2114,9 +2087,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r136",
                 "personImage": "sova3",
-                "personName": "Совёнок",
+                "personName": "replica.r136.personName",
                 "rightSide": true,
-                "text": "И сердцу тревожно в груди!",
+                "text": "replica.r136.text",
                 "context": {
                     "level": 150
                 }
@@ -2124,9 +2097,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r137",
                 "personImage": "sveta2",
-                "personName": "Эмма",
+                "personName": "replica.r137.personName",
                 "rightSide": false,
-                "text": "И снова настала пора ~заряжать сапоги~...\n",
+                "text": "replica.r137.text",
                 "context": {
                     "level": 150
                 }
@@ -2134,21 +2107,21 @@ export default class ReplicasConfiguration {
             {
                 "id": "r138",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r138.personName",
                 "rightSide": false,
-                "text": "Надеюсь, на этот раз заряда хватит до самого конца!",
+                "text": "replica.r138.text",
                 "context": {
                     "level": 150
                 },
-                "buttonName": "За корешками!",
+                "buttonName": "replica.r138.buttonName",
                 "buttonImage": "goldRoot"
             },
             {
                 "id": "r139",
                 "personImage": "sova1",
-                "personName": "Совёнок",
+                "personName": "replica.r139.personName",
                 "rightSide": true,
-                "text": "Остался последний отрезок пути.         Мы ~почти у цели~.\n",
+                "text": "replica.r139.text",
                 "context": {
                     "level": 153
                 }
@@ -2156,9 +2129,9 @@ export default class ReplicasConfiguration {
             {
                 "id": "r140",
                 "personImage": "cat1",
-                "personName": "Котёнок",
+                "personName": "replica.r140.personName",
                 "rightSide": true,
-                "text": "Что же скажет нам ~хозяйка~, когда мы её встретим?\n",
+                "text": "replica.r140.text",
                 "context": {
                     "level": 153
                 }
@@ -2166,13 +2139,13 @@ export default class ReplicasConfiguration {
             {
                 "id": "r141",
                 "personImage": "sveta1",
-                "personName": "Эмма",
+                "personName": "replica.r141.personName",
                 "rightSide": false,
-                "text": "Скоро узнаем. Вперёд!",
+                "text": "replica.r141.text",
                 "context": {
                     "level": 153
                 },
-                "buttonName": "Вперёд!",
+                "buttonName": "replica.r141.buttonName",
                 "buttonImage": "actionMap"
             }
         ]}

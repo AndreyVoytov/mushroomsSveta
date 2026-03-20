@@ -44,7 +44,7 @@ export default class FailPanel extends ClosablePanel {
         // this.closeButton.tint = 0xaa99ff;
         this.closeButton.tint = 0xddeeff;
 
-        let label = this.attachText("levelLabel", LocalizationService.get(LocalizationKey.ui('noMovesLeft'), '\u0425\u043e\u0434\u043e\u0432 \u043d\u0435 \u043e\u0441\u0442\u0430\u043b\u043e\u0441\u044c'),{ font: "46px Bookman Old Style", fill: "#ffffff" })
+        let label = this.attachText("levelLabel", LocalizationService.get(LocalizationKey.ui('noMovesLeft')),{ font: "46px Bookman Old Style", fill: "#ffffff" })
         // let label = this.attachText("levelLabel", "Ходы закончились!",{ font: "46px Bookman Old Style", fill: "#ffffff" })
         //Ходов не осталось vs почти получилось!
 
@@ -63,14 +63,14 @@ export default class FailPanel extends ClosablePanel {
 
         let plusMoves = this.attachSprite('plusSteps');
 
-        let continueLabel = new Label(this.game, -24, 0, LocalizationService.get(LocalizationKey.ui('playFor100'), '\u0418\u0413\u0420\u0410\u0422\u042c \u0417\u0410 100'), { font: "bolder 40px Gilroy", fill: "#f0f1ec" });
+        let continueLabel = new Label(this.game, -24, 0, LocalizationService.get(LocalizationKey.ui('playFor100')), { font: "bolder 40px Gilroy", fill: "#f0f1ec" });
         continueLabel.name = 'continueLabel';
         continueLabel.anchor = new Phaser.Point(0.5, 0.5);
         continueLabel.strokeThickness = 4;
         continueLabel.addStrokeColor('#61b019', 0);
         this.playButton.addChild(continueLabel);
 
-        let itemsLeft = this.attachText("itemsLeft", LocalizationService.get(LocalizationKey.ui('itemsLeft'), '\u041e\u0441\u0442\u0430\u043b\u043e\u0441\u044c \u0441\u043e\u0431\u0440\u0430\u0442\u044c:'), { font: "bold 35px Arial", fill: "#a88f68", align:"center", wordWrap: true, wordWrapWidth: 400})
+        let itemsLeft = this.attachText("itemsLeft", LocalizationService.get(LocalizationKey.ui('itemsLeft')), { font: "bold 35px Arial", fill: "#a88f68", align:"center", wordWrap: true, wordWrapWidth: 400})
         let info = this.attachText("info", GameText.extraMovesInfo(ForestUtils.ADDITIONAL_STEPS_COUNT), { font: "bold 45px Arial", fill: "#78512c", align:"center", wordWrap: true, wordWrapWidth: 400})
 
         let gems = SpriteUtils.createSprite(this.game, this.playButton.width / 2 - 20, 0, 'gems');

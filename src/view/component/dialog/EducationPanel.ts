@@ -21,6 +21,7 @@ import ForestUtils from '../../../core/utils/ForestUtils';
 import { Easing } from 'phaser-ce';
 import ComplexAnimationUtils from '../../../core/utils/ComplexAnimationUtils';
 import GameText from '../../../core/localization/GameText';
+import LocalizationService from '../../../core/localization/LocalizationService';
 export default class EducationPanel extends BasePanel {
 
     public shownWithOkButton: boolean;
@@ -58,7 +59,7 @@ export default class EducationPanel extends BasePanel {
         console.log("TUTORIAL: level " + level + "; openedCells: " + openedCells)
         if (level == 1) {
             if (openedCells == 0) {
-                this.doShowEducation("~Открывайте клеточки~, чтобы собирать грибы", "sveta1", this.cells, CoverMode.aimVisible, 200, null);
+                this.doShowEducation(LocalizationService.get('tutorial.level1.openCells'), "sveta1", this.cells, CoverMode.aimVisible, 200, null);
             } else if (openedCells == 1) {
                 this.hideEducation(0);
                 this.forceOpenCell(cellState, ContentType.mushroom);
@@ -108,7 +109,7 @@ export default class EducationPanel extends BasePanel {
         } else if (level == 2) {
 
             if (openedCells == 0) {
-                this.doShowEducation("Встречи со ~зверями~ прибавляют ходы!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level2.animalsGiveMoves'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["rabbit", "butterfly", "bet"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
@@ -142,14 +143,14 @@ export default class EducationPanel extends BasePanel {
             })
         } else if (level == 5) {
             if (openedCells == 0) {
-                this.doShowEducation("Вскройте соседние клетки, чтобы освободить ячейку     от ~зарослей~!", "sveta1", this.cells, CoverMode.noneVisible, 200, null);
+                this.doShowEducation(LocalizationService.get('tutorial.level5.freeFromIvy'), "sveta1", this.cells, CoverMode.noneVisible, 200, null);
             } else if (openedCells == 1) {
                 this.hideEducation(0);
             }
         } else if (level == 7) {
             if (openedCells == 0) {
                 let compassCell = this.cells.filter(c => c.type == CellType.COMPASS_FREE)[0];
-                this.doShowEducation("Смотрите, ~улитка~! Активируйте её нажатием", "sveta1", [compassCell],
+                this.doShowEducation(LocalizationService.get('tutorial.level7.snail'), "sveta1", [compassCell],
                     CoverMode.noneVisible, 200, null);
 
                 this.arrow = SpriteUtils.createSprite(this.game, compassCell.state.sprite.x,
@@ -164,14 +165,14 @@ export default class EducationPanel extends BasePanel {
             }
         } else if (level == 9) {
             if (openedCells == 0) {
-                this.doShowEducation("Откройте ячейку, чтобы ~коровка~ спустилась", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level9.ladybug'), "sveta1",
                     this.cells.filter(c => { return c.Y == 0 && (c.X == 3 || c.X == 4) }), CoverMode.showMessageAtCenterPlus200, 200, null);
                 this.ladybugs[0].sprite.bringToTop();
             } else if (openedCells == 1) {
                 this.hideEducation();
 
                 this.game.time.events.add(300, () => {
-                    this.doShowEducation("Продолжайте, пока коровка не окажется в ~самом низу~!", "sveta1",
+                    this.doShowEducation(LocalizationService.get('tutorial.level9.ladybugContinue'), "sveta1",
                         this.cells, CoverMode.noneVisible, 500, null);
                     this.ladybugs[0].sprite.bringToTop();
                 })
@@ -193,35 +194,35 @@ export default class EducationPanel extends BasePanel {
         } else if (level == 15) {
 
             if (openedCells == 0) {
-                this.doShowEducation("Кувшинки встречаются только    в ~воде~. Отыщите их!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level15.lilies'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["lilly", "-hexWater|0.4666", "drop|0.7", "duck"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 18) {
 
             if (openedCells == 0) {
-                this.doShowEducation("Соберите все цели на экране, и он ~прокрутится вниз~.", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level18.scrollDown'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, [], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 19) {
 
             if (openedCells == 0) {
-                this.doShowEducation("Вскройте соседние с кустом клетки, чтобы собрать ~чернику~", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level19.blueberryBush'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["bushberry"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 22) {
 
             if (openedCells == 0) {
-                this.doShowEducation("Лаванду можно найти лишь в ~гористой местности~", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level22.lavender'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["lavanda", "-hexMountain|0.4666", "mount|0.7", "sheep"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 24) {
 
             if (openedCells == 0) {
-                this.doShowEducation("Освободите ячейки от зарослей, чтобы получить ~шиповник~", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level24.rosehip'), "sveta1",
                     this.cells, CoverMode.noneVisible, 200, null);
             } else if (openedCells >= 1 && this.educationCover && this.educationCover.alpha == 0.5) {
                 this.screen.setOnClickAnimation("hideEducation")
@@ -263,42 +264,38 @@ export default class EducationPanel extends BasePanel {
             })
         } else if (level == 35) {
             if (openedCells == 0) {
-                this.doShowEducation("Лопайте желе-грибы, вскрывая соседние клетки. Иначе они ~размножатся~!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level35.jelly'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, [], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 38) {
             if (openedCells == 0) {
-                this.doShowEducation("Лопните желудь,         и из него вырастет ~новая клетка~!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level38.acorn'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["acorn", "acorn2", "-hex|0.4666", "leaf4|0.7"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 41) {
             if (openedCells == 0) {
-                this.doShowEducation("Сигнальная ракета ~расчистит линию~, если нажать на неё.", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level41.rocket'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["rocket2", "rocket1", "rocket3"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 57) {
             if (openedCells == 0) {
-                this.doShowEducation("Трясите ульи,       пока не достанете       ~весь мёд~!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level57.honey'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["honey|1.3", "hive", "honey|1.3"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 61) {
             if (openedCells == 0) {
-                this.doShowEducation("Стрекоза будет ~ускользать~, пока рядом есть кусты. Загоните её в угол!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level61.dragonfly'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, [], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 83) {
             if (openedCells == 0) {
-                // this.doShowEducation("Нажмите на магический шар и ~узрите сокрытое~!", "sveta1",
-                //     [], CoverMode.showMessageAtCenter, 200, null, [], true);
-                // this.screen.setOnClickAnimation("hideEducation")
-
                 let compassCell = this.cells.filter(c => c.type == CellType.VISION)[0];
-                this.doShowEducation("Нажмите на магический шар и ~узрите сокрытое~!", "sveta1", [compassCell],
+                this.doShowEducation(LocalizationService.get('tutorial.level83.vision'), "sveta1", [compassCell],
                     CoverMode.noneVisible, 200, null);
 
                 this.arrow = SpriteUtils.createSprite(this.game, compassCell.state.sprite.x,
@@ -313,37 +310,37 @@ export default class EducationPanel extends BasePanel {
             }
         } else if (level == 85) {
             if (openedCells == 0) {
-                this.doShowEducation("~Заборчики~ мешают убрать заросли          с соседней клетки.      Но мы найдем путь!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level85.fences'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, [], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 93) {
             if (openedCells == 0) {
-                this.doShowEducation("~Раковину-жемчужницу~ можно найти в песке или в воде.", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level93.shell'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["-hexSand|0.4666", "sandPyramid|0.7", "-shell2", "pearl|0.7", "-hexWater|0.4666", "drop|0.7"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 97) {
             if (openedCells == 0) {
-                this.doShowEducation("Хотите поймать ~кораблик~?               Загоните его в угол!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level97.boats'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, [], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 116) {
             if (openedCells == 0) {
-                this.doShowEducation("Говорят, в этих песках часто попадается ~янтарь~!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level116.amber'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, [], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 134) {
             if (openedCells == 0) {
-                this.doShowEducation("Если вам нужны ягоды, поищите их на ~ягодной полянке~!", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level134.berryField'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["strawberry", "-hexFlower|0.4666", "pinkFlower|0.7", "blackberry"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 140) {
             if (openedCells == 0) {
-                this.doShowEducation("Споры ~радужного цветка~ вскрывают случайные клетки.", "sveta1",
+                this.doShowEducation(LocalizationService.get('tutorial.level140.rainbowFlower'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["moonflowerClosed1|0.7", "moonflower", "p8|1.5|20"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }

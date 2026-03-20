@@ -48,6 +48,7 @@ import EventUtils from './../../core/utils/EventUtils';
 import EventType from '../../core/model/event/EventType';
 import ComplexAnimationUtils from './../../core/utils/ComplexAnimationUtils';
 import { Easing } from 'phaser-ce';
+import LocalizationService from '../../core/localization/LocalizationService';
 
 export default abstract class BaseForestScreen extends DialogScreen {
 
@@ -528,14 +529,19 @@ export default abstract class BaseForestScreen extends DialogScreen {
         let user = UserService.getUser();
         
         if(eventInfo && user.getWinsInRow() > 0){
-            let confirmPanel = new ConfirmPanel(this.game, "Подтверждение", "Сдаться", 
-            "Хотите сдаться? \n Бонусы ~Волшебного лукошка~ \n будут потеряны!", () => {
-                this.failPanel.close()
-    
-                this.game.time.events.add(750, () => {
-                    this.giveUp();
-                }, this);
-            })
+            let confirmPanel = new ConfirmPanel(
+                this.game,
+                LocalizationService.get('ui.confirmation'),
+                LocalizationService.get('ui.surrender'),
+                LocalizationService.get('ui.confirmDefeat.withBonus'),
+                () => {
+                    this.failPanel.close();
+
+                    this.game.time.events.add(750, () => {
+                        this.giveUp();
+                    }, this);
+                }
+            )
             this.addPanel(confirmPanel);
             confirmPanel.show();
             

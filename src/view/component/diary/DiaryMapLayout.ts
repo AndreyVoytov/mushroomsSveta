@@ -15,7 +15,6 @@ import ReplicasConfiguration from '../../../core/configuration/ReplicasConfigura
 import Skewable from '../panel/Skewable';
 import AdminService from '../../../core/service/AdminService';
 import LocalizationService from '../../../core/localization/LocalizationService';
-import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class DiaryMapLayout extends BasePanel {
 
     private mapContent: DiaryContentType;
@@ -30,7 +29,7 @@ export default class DiaryMapLayout extends BasePanel {
         this.addSprite(bg);
 
         this.inputEnabled = true;
-        const titleText = LocalizationService.get(LocalizationKey.diary(mapContent, 'title'), mapContent.title);
+        const titleText = LocalizationService.get(mapContent.title);
 
         let title = new Label(game, 0, 0, titleText, { font: "bold 45px Bookman Old Style", fill: "#000000", fontStyle: "italic", align: "center", wordWrap: true, wordWrapWidth: 430 });
         title.name = "title";
@@ -86,7 +85,7 @@ export default class DiaryMapLayout extends BasePanel {
             })
 
             if (p.spriteId.indexOf("text") != -1 && notes.length > 0) {
-                const noteText = LocalizationService.get(LocalizationKey.diaryNote(mapContent, textIndex), notes[textIndex]);
+                const noteText = LocalizationService.get(notes[textIndex]);
                 let obj = new Label(this.game, 0, 0, noteText, { font: "bold 20px Bookman Old Style", fill: "#051e82", fontStyle: "italic", align: "center"/*, wordWrap: true, wordWrapWidth: 160*/ });
                 textIndex ++;
                 obj.lineSpacing = -10;
@@ -180,7 +179,7 @@ export default class DiaryMapLayout extends BasePanel {
             })
 
             let button  = SpriteUtils.createButton(this.game, 200, this.game.height/2 - 150, "renameButton", ()=> {
-                EditorService.showSimpleList("Р”РѕР±Р°РІРёС‚СЊ РєР°СЂС‚РёРЅРєСѓ", this.objectIds, (value:string) => {
+                EditorService.showSimpleList("Add image", this.objectIds, (value:string) => {
                     let sprite = SpriteUtils.createSprite(game, 0, 0, value)
                     sprite.name = value +"_"+ this.counter;
                     this.counter ++;

@@ -23,12 +23,12 @@ export default class SettingsPanel extends ClosablePanel {
         this.game = game;
         this.screen = screen;
 
-        const settingsTitle = LocalizationService.get(LocalizationKey.ui('settings.title'), '\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438');
-        const settingsSound = LocalizationService.get(LocalizationKey.ui('settings.sound'), '\u0417\u0432\u0443\u043a:');
-        const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'), '\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430');
-        const groupText = LocalizationService.get(LocalizationKey.ui('settings.group'), '\u0413\u0440\u0443\u043f\u043f\u0430');
-        const aboutText = LocalizationService.get(LocalizationKey.ui('settings.about'), '\u041e\u0431 \u0438\u0433\u0440\u0435');
-        const okText = LocalizationService.get(LocalizationKey.ui('ok'), '\u041e\u043a');
+        const settingsTitle = LocalizationService.get(LocalizationKey.ui('settings.title'));
+        const settingsSound = LocalizationService.get(LocalizationKey.ui('settings.sound'));
+        const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'));
+        const groupText = LocalizationService.get(LocalizationKey.ui('settings.group'));
+        const aboutText = LocalizationService.get(LocalizationKey.ui('settings.about'));
+        const okText = LocalizationService.get(LocalizationKey.ui('ok'));
 
         this.attachSprite("panel2")
         this.attachSprite("helperPanel")

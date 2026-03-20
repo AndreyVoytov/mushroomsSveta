@@ -10,6 +10,7 @@ import LifeDetailsPanel from './LifeDetailsPanel';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import GameText from '../../../core/localization/GameText';
+import LocalizationService from '../../../core/localization/LocalizationService';
 
 export default class NoLifesPanel extends ClosablePanel {
 
@@ -45,7 +46,7 @@ export default class NoLifesPanel extends ClosablePanel {
         // let closeButton = this.attachSprite('closeButtonViolet')
         let closeButton = this.attachButton('closeButtonViolet', () => { this.close()})
         closeButton.tint = 0xFF9999;
-        this.attachText("title", "Жизни закончились!", { font: "46px Bookman Old Style", fill: "#ffffff" })
+        this.attachText("title", LocalizationService.get('ui.noLifes.title'), { font: "46px Bookman Old Style", fill: "#ffffff" })
 
 
         // this.actionButton = this.attachSprite("pnlButton");
@@ -92,7 +93,7 @@ export default class NoLifesPanel extends ClosablePanel {
             this.game.add.existing(detailsPanel);
         });
         
-        let enlagreLabel = new Label(game, 0, 0, "Увеличить", { font: "bold 40px Arial", fill: "#ffffff"});
+        let enlagreLabel = new Label(game, 0, 0, LocalizationService.get('ui.increase'), { font: "bold 40px Arial", fill: "#ffffff"});
         enlagreLabel.anchor.set(0.5);
         titlePanel.addChild(enlagreLabel);
         titlePanel.visible = UserService.getUser().getFriendsInGame() < LifeUtils.SECOND_PLUS_LIFE_AT_FRIENDS;

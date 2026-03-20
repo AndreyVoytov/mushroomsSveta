@@ -6,6 +6,7 @@ import LifeUtils from '../../../core/utils/LifeUtils';
 import ShopPanel from './ShopPanel';
 import BaseScreen from '../../screen/common/BaseScreen';
 import HouseScreen from '../../screen/HouseScreen';
+import LocalizationService from '../../../core/localization/LocalizationService';
 
 export default class AllLevelsCompletePanel extends ClosablePanel {
 
@@ -35,7 +36,7 @@ export default class AllLevelsCompletePanel extends ClosablePanel {
         bg.anchor.set(0.5);
         this.addSprite(bg);
 
-        this.attachText("label", "Поздравляем! Вы прошли все доступные уровни. Вступите в ~группу игры~, чтобы не пропустить продолжение.",
+        this.attachText("label", LocalizationService.get('ui.allLevelsComplete.text'),
          { /*font: "50px Arial", fill: "#572424"*/  font: "bolder 38px Bookman Old Style", fill: "#804119", wordWrap: true, wordWrapWidth: 700, align: "center"})
 
         let ribbon = this.attachSprite('ribbon')
@@ -43,17 +44,14 @@ export default class AllLevelsCompletePanel extends ClosablePanel {
 
         let closeButton = this.attachButton('closeButtonViolet', () => this.close())
         closeButton.tint = 0xFF9999;
-        this.attachText("title", "Продолжение следует!", { font: "46px Bookman Old Style", fill: "#ffffff" })
+        this.attachText("title", LocalizationService.get('ui.allLevelsComplete.title'), { font: "46px Bookman Old Style", fill: "#ffffff" })
 
         // this.actionButton = this.attachSprite("titlePnl");
         this.actionButton = this.attachButton("titlePnl", () => {
             //TODO
             this.close();
         });
-
-        //TODO
-        // let enlagreLabel = new Label(game, 0, 0, "Вступить в группу", { font: "bold 40px Arial", fill: "#ffffff"});
-        let enlagreLabel = new Label(game, 0, 0, "Хорошо", { font: "30px Gilroy", fill: "#ffffff"});
+        let enlagreLabel = new Label(game, 0, 0, LocalizationService.get('ui.good'), { font: "30px Gilroy", fill: "#ffffff" });
         enlagreLabel.anchor.set(0.5);
         this.actionButton.addChild(enlagreLabel);
         

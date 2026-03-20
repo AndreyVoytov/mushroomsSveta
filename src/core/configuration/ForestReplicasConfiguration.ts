@@ -23,26 +23,26 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr1",
             personImage: "sveta2",
-            personName: "Эмма",
+            personName: "replica.fr1.personName",
             context: {
                 level: 1,
                 requiredMarker: "homeFound"
             },
-            text: "Смотрите-ка, ~дом посреди леса~! Давайте подойдем поближе..",
-            buttonName: "Подойти поближе",
+            text: "replica.fr1.text",
+            buttonName: "replica.fr1.buttonName",
             buttonImage: "actionHouse",
             afterAnimation: "exploreHouse"
         },
         {
             id: "fr2",
             personImage: "sveta2",
-            personName: "Эмма",
+            personName: "replica.fr2.personName",
             context: {
                 level: 3,
                 requiredMarker: "notebookFound"
             },
-            text: "Похоже на какой-то рецепт. Интересно, что будет если все это смешать?",
-            buttonName: "Домой",
+            text: "replica.fr2.text",
+            buttonName: "replica.fr2.buttonName",
             buttonImage: "actionHouse",
             showDiary: true,
             // personalAnimation:"questionBubble"
@@ -50,45 +50,45 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr3",
             personImage: "sveta3",
-            personName: "Эмма",
+            personName: "replica.fr3.personName",
             context: {
                 level: 13,
                 requiredMarker: "catFound"
             },
-            text: "Ой, какой ~хорошенький котик~! Кто же тебя здесь оставил?",
+            text: "replica.fr3.text",
         },
         {
             id: "fr4",
             personImage: "cat1",
-            personName: "Котёнок",
+            personName: "replica.fr4.personName",
             context: {
                 level: 13,
                 requiredMarker: "catFound"
             },
-            text: "Мяу!",
+            text: "replica.fr4.text",
             rightSide: true
         },
         {
             id: "fr5",
             personImage: "sveta1",
-            personName: "Эмма",
+            personName: "replica.fr5.personName",
             context: {
                 level: 13,
                 requiredMarker: "catFound"
             },
-            text: "Что ж.. Пойдем со мной, приятель!",
+            text: "replica.fr5.text",
             afterAnimation: "winLevel",
         },
 
         {
             id: "fr6",
             personImage: "sveta1",
-            personName: "Эмма",
+            personName: "replica.fr6.personName",
             context: {
                 level: 58,
                 requiredMarker: "owl1found"
             },
-            text: "А вот и совёнок!",
+            text: "replica.fr6.text",
             decor:  {
                 image: "owl",
                 x: 102,
@@ -100,14 +100,14 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr7",
             personImage: "sveta5",
-            personName: "Эмма",
+            personName: "replica.fr7.personName",
             context: {
                 level: 58,
                 requiredMarker: "owl1found"
             },
-            text: "Хорошо, можно возвращаться домой.",
+            text: "replica.fr7.text",
             afterAnimation: "winLevel",
-            "buttonName": "Домой",
+            "buttonName": "replica.fr7.buttonName",
             "buttonImage": "actionHouse",
             // buttonAnimation:"winLevel"
             decor:  {
@@ -121,25 +121,24 @@ export default class ForestReplicasConfiguration {
         {
             id: "fr8",
             personImage: "sveta1",
-            personName: "Эмма",
+            personName: "replica.fr8.personName",
             context: {
                 level: 63,
                 requiredMarker: "owl2found"
             },
-            text: "Здравствуйте! Я - ~Эмма~.",
+            text: "replica.fr8.text",
         },
         {
             id: "fr9",
             personImage: "sova1",
-            personName: "Совёнок",
+            personName: "replica.fr9.personName",
             rightSide:true,
             context: {
                 level: 63,
                 requiredMarker: "owl2found"
             },
-            text: "Очень приятно! ~Совёнок~.",
+            text: "replica.fr9.text",
             afterAnimation: "winLevel",
-            // "buttonName": "Домой",
             // "buttonImage": "actionHouse",
         },
     ]
