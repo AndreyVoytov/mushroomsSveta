@@ -28,6 +28,7 @@ export default class SettingsPanel extends ClosablePanel {
         const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'));
         const groupText = LocalizationService.get(LocalizationKey.ui('settings.group'));
         const aboutText = LocalizationService.get(LocalizationKey.ui('settings.about'));
+        const aboutDescription = LocalizationService.get(LocalizationKey.ui('settings.aboutText'));
         const okText = LocalizationService.get(LocalizationKey.ui('ok'));
 
         this.attachSprite("panel2")
@@ -92,7 +93,7 @@ export default class SettingsPanel extends ClosablePanel {
 
         let creditsButton =  this.attachButton("statusPanel", ()=>{
             this.close();
-            let info = new ConfirmPanel(this.game, aboutText, okText, Settings.MUSIC_CREDITS, ()=>{}, true);
+            let info = new ConfirmPanel(this.game, aboutText, okText, aboutDescription, ()=>{}, true);
             Game.getInstance().add.existing(info); 
             info.show();
         },"creditsButton")

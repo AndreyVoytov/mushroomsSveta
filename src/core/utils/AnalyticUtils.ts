@@ -10,6 +10,17 @@ export default class AnalyticUtils {
 
 
     public static getCustomization(): CustomizationType {
+        let href = window.location.href.toLowerCase();
+        let referrer = (document.referrer || '').toLowerCase();
+        let yandexPlatform = this.getUrlParameter("platform");
+
+        if (yandexPlatform == 'yandex-games' || yandexPlatform == 'yandex' || yandexPlatform == 'yg'
+            || href.indexOf("yandex.ru/games") != -1 || href.indexOf("yandex.com/games") != -1
+            || referrer.indexOf("yandex.ru/games") != -1 || referrer.indexOf("yandex.com/games") != -1
+            || referrer.indexOf("games.s3.yandex.net") != -1) {
+            return CustomizationType.yandexGames;
+        }
+
         if(window.location.href.indexOf("ok.") != -1){ 
             return CustomizationType.odkl;
         } else if (window.location.href.indexOf("localhost") != -1) {
@@ -26,7 +37,9 @@ export default class AnalyticUtils {
             case CustomizationType.odkl: 
             case CustomizationType.android:
                 return true;
+            case CustomizationType.yandexGames:
             case CustomizationType.webDev: 
+                return true;
                 return false;
             default:
                 throw new NeverError(c);
@@ -62,7 +75,7 @@ export default class AnalyticUtils {
     }
 
     public static init(): void {
-        if (AnalyticUtils.getCustomization() == CustomizationType.webDev) { return; }
+        if (!this.needLogging()) { return; }
         GameAnalytics.setEnabledInfoLog(true);
         GameAnalytics.setEnabledVerboseLog(true);
         GameAnalytics.configureBuild(Settings.ANALYTICS_BUILD_VERSION);
@@ -117,12 +130,21 @@ export default class AnalyticUtils {
         switch(cust){
             case CustomizationType.odkl:
                 return LocalizationService.get(LocalizationKey.ui('currency.ok'))
+            case CustomizationType.yandexGames:
+                return LocalizationService.get(LocalizationKey.ui('currency.yan'), 'YAN');
             case CustomizationType.android:
             case CustomizationType.webDev:
                 return LocalizationService.get(LocalizationKey.ui('currency.rub'));
             default:
                 throw new NeverError(cust);
         }
+    }
+
+    private static getUrlParameter(name:string) : string {
+        name = name.replace(/[\[]/,"\\[").replace(/[\]]/,"\\]");
+        let regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+        let results = regex.exec(window.location.href);
+        return results == null ? null : results[1];
     }
 
     

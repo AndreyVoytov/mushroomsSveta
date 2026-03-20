@@ -2,8 +2,8 @@
     "frames":  {
                    "base/characters/cat3.png":  {
                                                     "frame":  {
-                                                                  "x":  761,
-                                                                  "y":  613,
+                                                                  "x":  391,
+                                                                  "y":  1189,
                                                                   "w":  478,
                                                                   "h":  536
                                                               },
@@ -26,8 +26,8 @@
                                                 },
                    "base/characters/sveta1.png":  {
                                                       "frame":  {
-                                                                    "x":  1480,
-                                                                    "y":  1,
+                                                                    "x":  859,
+                                                                    "y":  613,
                                                                     "w":  442,
                                                                     "h":  553
                                                                 },
@@ -50,8 +50,8 @@
                                                   },
                    "base/characters/sveta2.png":  {
                                                       "frame":  {
-                                                                    "x":  371,
-                                                                    "y":  613,
+                                                                    "x":  1,
+                                                                    "y":  1189,
                                                                     "w":  388,
                                                                     "h":  537
                                                                 },
@@ -74,7 +74,7 @@
                                                   },
                    "base/characters/sveta3.png":  {
                                                       "frame":  {
-                                                                    "x":  1,
+                                                                    "x":  1303,
                                                                     "y":  613,
                                                                     "w":  368,
                                                                     "h":  546
@@ -98,8 +98,8 @@
                                                   },
                    "base/characters/sveta4.png":  {
                                                       "frame":  {
-                                                                    "x":  1027,
-                                                                    "y":  1,
+                                                                    "x":  406,
+                                                                    "y":  613,
                                                                     "w":  451,
                                                                     "h":  563
                                                                 },
@@ -122,8 +122,8 @@
                                                   },
                    "base/characters/sveta5.png":  {
                                                       "frame":  {
-                                                                    "x":  622,
-                                                                    "y":  1,
+                                                                    "x":  1,
+                                                                    "y":  613,
                                                                     "w":  403,
                                                                     "h":  574
                                                                 },
@@ -144,6 +144,30 @@
                                                                     "y":  0.5
                                                                 }
                                                   },
+                   "base/fonts/bitmap/bm_bookman.png":  {
+                                                            "frame":  {
+                                                                          "x":  622,
+                                                                          "y":  1,
+                                                                          "w":  1024,
+                                                                          "h":  584
+                                                                      },
+                                                            "rotated":  false,
+                                                            "trimmed":  false,
+                                                            "spriteSourceSize":  {
+                                                                                     "x":  0,
+                                                                                     "y":  0,
+                                                                                     "w":  1024,
+                                                                                     "h":  584
+                                                                                 },
+                                                            "sourceSize":  {
+                                                                               "w":  1024,
+                                                                               "h":  584
+                                                                           },
+                                                            "pivot":  {
+                                                                          "x":  0.5,
+                                                                          "y":  0.5
+                                                                      }
+                                                        },
                    "base/room/boiler/boiler.png":  {
                                                        "frame":  {
                                                                      "x":  1,
@@ -168,82 +192,10 @@
                                                                      "y":  0.5
                                                                  }
                                                    },
-                   "base/ui/diary/circleFlow.png":  {
-                                                        "frame":  {
-                                                                      "x":  963,
-                                                                      "y":  1161,
-                                                                      "w":  527,
-                                                                      "h":  527
-                                                                  },
-                                                        "rotated":  false,
-                                                        "trimmed":  false,
-                                                        "spriteSourceSize":  {
-                                                                                 "x":  0,
-                                                                                 "y":  0,
-                                                                                 "w":  527,
-                                                                                 "h":  527
-                                                                             },
-                                                        "sourceSize":  {
-                                                                           "w":  527,
-                                                                           "h":  527
-                                                                       },
-                                                        "pivot":  {
-                                                                      "x":  0.5,
-                                                                      "y":  0.5
-                                                                  }
-                                                    },
-                   "base/ui/forestHeader1.png":  {
-                                                     "frame":  {
-                                                                   "x":  1,
-                                                                   "y":  1161,
-                                                                   "w":  960,
-                                                                   "h":  529
-                                                               },
-                                                     "rotated":  false,
-                                                     "trimmed":  false,
-                                                     "spriteSourceSize":  {
-                                                                              "x":  0,
-                                                                              "y":  0,
-                                                                              "w":  960,
-                                                                              "h":  529
-                                                                          },
-                                                     "sourceSize":  {
-                                                                        "w":  960,
-                                                                        "h":  529
-                                                                    },
-                                                     "pivot":  {
-                                                                   "x":  0.5,
-                                                                   "y":  0.5
-                                                               }
-                                                 },
-                   "base/ui/glint.png":  {
-                                             "frame":  {
-                                                           "x":  1492,
-                                                           "y":  1161,
-                                                           "w":  432,
-                                                           "h":  527
-                                                       },
-                                             "rotated":  false,
-                                             "trimmed":  false,
-                                             "spriteSourceSize":  {
-                                                                      "x":  0,
-                                                                      "y":  0,
-                                                                      "w":  432,
-                                                                      "h":  527
-                                                                  },
-                                             "sourceSize":  {
-                                                                "w":  432,
-                                                                "h":  527
-                                                            },
-                                             "pivot":  {
-                                                           "x":  0.5,
-                                                           "y":  0.5
-                                                       }
-                                         },
                    "base/ui/panel2.png":  {
                                               "frame":  {
-                                                            "x":  1241,
-                                                            "y":  613,
+                                                            "x":  871,
+                                                            "y":  1189,
                                                             "w":  749,
                                                             "h":  532
                                                         },
@@ -271,8 +223,8 @@
                  "image":  "base-1.png",
                  "format":  "RGBA8888",
                  "size":  {
-                              "w":  1991,
-                              "h":  1691
+                              "w":  1672,
+                              "h":  1727
                           },
                  "scale":  1
              }

@@ -2,7 +2,6 @@
 import ShopService from './../../../core/service/ShopService';
 import BasePanel from '../../component/panel/BasePanel';
 import Buy from '../../../core/model/shop/Buy';
-import AnalyticUtils from '../../../core/utils/AnalyticUtils';
 export default class ShopSmallPanel extends BasePanel {
 
     constructor(game: Phaser.Game, name: string, x: number, y: number, buy: Buy, callbackOnBuy: () => void) {
@@ -40,7 +39,7 @@ export default class ShopSmallPanel extends BasePanel {
         let gems = this.attachSprite("gems", "gemsBig")
         gems.inputEnabled = false;
 
-        let price = this.attachText("price", buy.price + " " + AnalyticUtils.getValuteName(),  { font: "bold 40px Arial", fill: "#ffffff"} );
+        let price = this.attachText("price", ShopService.getPriceLabel(buy),  { font: "bold 40px Arial", fill: "#ffffff"} );
         price.inputEnabled = false;
 
         this.applyPreset([{"spriteId":"panel2","x":6,"y":-7,"scaleX":0.4199999999999995,"scaleY":0.5799999999999996,"anchorX":0.5,"anchorY":0.5,"rotation":0},

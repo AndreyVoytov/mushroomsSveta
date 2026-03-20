@@ -25,6 +25,7 @@ const manualKeys = [
     'ui.settings.support',
     'ui.settings.group',
     'ui.settings.about',
+    'ui.settings.aboutText',
     'ui.shopTitle',
     'ui.good',
     'ui.goodLower',

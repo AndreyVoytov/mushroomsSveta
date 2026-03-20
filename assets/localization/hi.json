@@ -549,6 +549,7 @@
         "ui.purchaseReceived": "",
         "ui.serverUnavailable": "",
         "ui.settings.about": "About the game",
+        "ui.settings.aboutText": "यह एक प्यारा साहसिक खेल है जो जादुई जंगल के रहस्यों, मशरूमों और एम्मा, एक बिलौटे और एक नन्हे उल्लू की यात्रा के बारे में है। इसकी गेमप्ले क्लासिक माइनस्वीपर की याद दिलाती है: खाने खोलें, काम की चीज़ें ढूँढें और जालों से बचें।",
         "ui.settings.group": "Group",
         "ui.settings.sound": "Sound:",
         "ui.settings.support": "Support",

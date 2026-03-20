@@ -21,13 +21,20 @@ export default class ConfirmPanel extends ClosablePanel {
 
         let closeButton = this.attachButton('closeButton', () => this.close())
 
-        let label = this.attachText("levelLabel", header, big? { font: "bold 40px Gilroy", fill: "#ffffff", align:"center" } : { font: "bold 50px Gilroy", fill: "#ffffff", align:"center" })
+        const headerStyle = big
+            ? { font: "bold 40px Gilroy", fill: "#ffffff", align:"center", wordWrap: true, wordWrapWidth: 640 }
+            : { font: "bold 50px Gilroy", fill: "#ffffff", align:"center", wordWrap: true, wordWrapWidth: 620 };
+        let label = this.attachText("levelLabel", header, headerStyle)
         label.strokeThickness = 4;
         label.addStrokeColor("#b6691b", 0);
 
 
-        let labelText = this.attachText("textLabel", text, big? { font: "bold 31px Arial", fill: "#804119", align:"center" } : { font: "bold 45px Arial", fill: "#804119", align:"center" }, true)
+        const textStyle = big
+            ? { font: "bold 31px Arial", fill: "#804119", align:"center", wordWrap: true, wordWrapWidth: 700 }
+            : { font: "bold 45px Arial", fill: "#804119", align:"center", wordWrap: true, wordWrapWidth: 560 };
+        let labelText = this.attachText("textLabel", text, textStyle, true)
         labelText.alpha = 0.8;
+        labelText.lineSpacing = 6;
 
         this.actionButton = this.attachButton("pnlButton", () => {
             if(actionCallback){

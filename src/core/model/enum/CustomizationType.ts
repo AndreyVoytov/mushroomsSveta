@@ -1,6 +1,6 @@
 enum CustomizationType {
 
-    webDev, android, odkl
+    webDev, android, odkl, yandexGames
 
 }
 export default CustomizationType;

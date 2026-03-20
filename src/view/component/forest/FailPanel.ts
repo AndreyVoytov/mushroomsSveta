@@ -18,10 +18,11 @@ export default class FailPanel extends ClosablePanel {
     private forestType: ForestType;
     private helper: Phaser.Sprite;
     private playButton: Phaser.Button;
+    private rewardedButton: Phaser.Button;
 
     private closeButton: Phaser.Button;
 
-    constructor(game: Phaser.Game, forestType: ForestType, x: number, y: number, aims: ForestAim[], callbackOnClose: ()=> void, callbackOnContinue: () => void) {
+    constructor(game: Phaser.Game, forestType: ForestType, x: number, y: number, aims: ForestAim[], callbackOnClose: ()=> void, callbackOnContinue: () => void, callbackOnRewarded?: () => void) {
         super(game, x, y, false, "blank");
         this.game = game;
         this.forestType = forestType;
@@ -78,6 +79,21 @@ export default class FailPanel extends ClosablePanel {
         gems.scale = new Phaser.Point(0.8 / 1.5, 0.8 / 1.5)
         this.playButton.addChild(gems);
 
+        if (callbackOnRewarded) {
+            this.rewardedButton = this.attachButton("pnlButton", () => {
+                callbackOnRewarded();
+                AnimationUtils.jelly(this.game, this.rewardedButton, 0, true)
+            }, "rewardButton");
+            this.rewardedButton.scale.set(0.82);
+
+            let rewardedLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('watchAd'), 'СМОТРЕТЬ РЕКЛАМУ'), { font: "bolder 30px Gilroy", fill: "#f0f1ec" });
+            rewardedLabel.name = 'rewardedLabel';
+            rewardedLabel.anchor = new Phaser.Point(0.5, 0.5);
+            rewardedLabel.strokeThickness = 4;
+            rewardedLabel.addStrokeColor('#61b019', 0);
+            this.rewardedButton.addChild(rewardedLabel);
+        }
+
         let step = 222;
         let startShift = aims.length == 1 ? 0 : (aims.length == 2 ? -108 : -220);
         console.log("aims count: " + aims.length)
@@ -122,19 +138,34 @@ export default class FailPanel extends ClosablePanel {
         // { "spriteId": "playButton", "x": 0, "y": 344, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
         // { "spriteId": "fastPlayButton", "x": 0, "y": 465, "scaleX": 0.7199999999999998, "scaleY": 0.8199999999999998, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
         // { "spriteId": "cat2", "x": 23, "y": -270, "scaleX": 1.0599999999999996 / 0.8, "scaleY": 1.0599999999999996 / 0.8, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }])
-        this.applyPreset([{"spriteId":"cat2","x":23,"y":-270,"scaleX":1.3249999999999995,"scaleY":1.3249999999999995,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"panel","x":0,"y":-21,"scaleX":1,"scaleY":0.9199999999999999,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"helperPanel","x":0,"y":-140,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"ribbon2","x":16.413793103448256,"y":-321.6064049586777,"scaleX":2.4000000000000012,"scaleY":2.100000000000001,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"closeButtonViolet","x":284,"y":-341,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"levelLabel","x":7,"y":-333,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":46},
-        {"spriteId":"lightFrame","x":-345.58620689655174,"y":-16.23966942148752,"scaleX":1.3800000000000003,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0},
-        {"spriteId":"playButton","x":0,"y":282,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"plusSteps","x":-226.75862068965512,"y":115.91942148760347,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"info","x":94.34482758620686-10,"y":117.57541322314057,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":45},
-        {"spriteId":"itemsLeft","x":0,"y":-240,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":35}
-
-        ])
+        if (this.rewardedButton) {
+            this.applyPreset([{"spriteId":"cat2","x":23,"y":-270,"scaleX":1.3249999999999995,"scaleY":1.3249999999999995,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"panel","x":0,"y":-12,"scaleX":1,"scaleY":1.0499999999999998,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"helperPanel","x":0,"y":-140,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"ribbon2","x":16.413793103448256,"y":-321.6064049586777,"scaleX":2.4000000000000012,"scaleY":2.100000000000001,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"closeButtonViolet","x":284,"y":-341,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"levelLabel","x":7,"y":-333,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":46},
+            {"spriteId":"lightFrame","x":-345.58620689655174,"y":-24.23966942148752,"scaleX":1.3800000000000003,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0},
+            {"spriteId":"playButton","x":0,"y":236,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"rewardButton","x":0,"y":336,"scaleX":0.82,"scaleY":0.82,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"plusSteps","x":-226.75862068965512,"y":94.91942148760347,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"info","x":84.34482758620686,"y":96.57541322314057,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":45},
+            {"spriteId":"itemsLeft","x":0,"y":-240,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":35}
+            ])
+        } else {
+            this.applyPreset([{"spriteId":"cat2","x":23,"y":-270,"scaleX":1.3249999999999995,"scaleY":1.3249999999999995,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"panel","x":0,"y":-21,"scaleX":1,"scaleY":0.9199999999999999,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"helperPanel","x":0,"y":-140,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"ribbon2","x":16.413793103448256,"y":-321.6064049586777,"scaleX":2.4000000000000012,"scaleY":2.100000000000001,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"closeButtonViolet","x":284,"y":-341,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"levelLabel","x":7,"y":-333,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":46},
+            {"spriteId":"lightFrame","x":-345.58620689655174,"y":-16.23966942148752,"scaleX":1.3800000000000003,"scaleY":1,"anchorX":0,"anchorY":0,"rotation":0},
+            {"spriteId":"playButton","x":0,"y":282,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"plusSteps","x":-226.75862068965512,"y":115.91942148760347,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
+            {"spriteId":"info","x":84.34482758620686,"y":117.57541322314057,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":45},
+            {"spriteId":"itemsLeft","x":0,"y":-240,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":35}
+            ])
+        }
     }
 
     public show(): void {

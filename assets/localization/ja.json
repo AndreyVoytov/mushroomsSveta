@@ -549,6 +549,7 @@
         "ui.purchaseReceived": "",
         "ui.serverUnavailable": "",
         "ui.settings.about": "About the game",
+        "ui.settings.aboutText": "これは魔法の森の秘密、キノコ、そしてエマと子猫と子フクロウの旅を描く心温まるアドベンチャーゲームです。ゲーム性は名作マインスイーパーを思わせます。マスを開き、役立つアイテムを見つけ、罠を避けましょう。",
         "ui.settings.group": "Group",
         "ui.settings.sound": "Sound:",
         "ui.settings.support": "Support",

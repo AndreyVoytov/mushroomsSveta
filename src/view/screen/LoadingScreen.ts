@@ -1,6 +1,7 @@
 ﻿
 import CustomizationType from '../../core/model/enum/CustomizationType';
 import AdminService from '../../core/service/AdminService';
+import YandexGamesHelper from '../../core/service/integration/YandexGamesHelper';
 import OkHelper from '../../core/service/integration/OkHelper';
 import Settings from '../../core/service/Settings';
 import ShopService from '../../core/service/ShopService';
@@ -90,6 +91,9 @@ export default class LoadingScreen extends BaseScreen {
                 case CustomizationType.webDev:
                     //do nothing
                     break;
+                case CustomizationType.yandexGames:
+                    YandexGamesHelper.init();
+                    break;
                 case CustomizationType.odkl:
                     OkHelper.init();
                     break;
@@ -158,6 +162,7 @@ export default class LoadingScreen extends BaseScreen {
                         this.startScreen(HouseScreen, true, false);
                     }
 
+                    YandexGamesHelper.markReady();
                     ShopService.checkAndApplyLastBuys(true);
 
                     loop.timer.remove(loop)

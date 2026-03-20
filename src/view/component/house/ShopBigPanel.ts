@@ -2,7 +2,6 @@ import ShopService from './../../../core/service/ShopService';
 import Buy from '../../../core/model/shop/Buy';
 import BasePanel from '../../component/panel/BasePanel';
 import AnalyticUtils from '../../../core/utils/AnalyticUtils';
-import CustomizationType from '../../../core/model/enum/CustomizationType';
 import BoosterType from '../../../core/model/enum/BoosterType';
 import { Easing } from 'phaser-ce';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
@@ -81,7 +80,7 @@ export default class ShopBigPanel extends BasePanel {
         //     btn.alpha = 0.5;
         // }
 
-        let price = this.attachText("price", buy.price  + " " + AnalyticUtils.getValuteName(),  { font: "bold 40px Arial", fill: "#ffffff"})
+        let price = this.attachText("price", ShopService.getPriceLabel(buy),  { font: "bold 40px Arial", fill: "#ffffff"})
         price.inputEnabled = false;
 
         let priceOld;

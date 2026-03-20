@@ -549,6 +549,7 @@
         "ui.purchaseReceived": "",
         "ui.serverUnavailable": "",
         "ui.settings.about": "About the game",
+        "ui.settings.aboutText": "Este é um jogo de aventura encantador sobre os segredos de uma floresta mágica, cogumelos e a jornada de Emma, um gatinho e uma corujinha. A mecânica lembra o clássico Campo Minado: abra células, encontre itens úteis e evite armadilhas.",
         "ui.settings.group": "Group",
         "ui.settings.sound": "Sound:",
         "ui.settings.support": "Support",

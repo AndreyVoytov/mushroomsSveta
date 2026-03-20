@@ -117,6 +117,7 @@
         return '#' + hex;
     }
 
+    //@ts-ignore
     public set text(value: string) {
         this.applyLocalizedText(value);
     }

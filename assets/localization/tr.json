@@ -549,6 +549,7 @@
         "ui.purchaseReceived": "Purchase received",
         "ui.serverUnavailable": "Server unavailable",
         "ui.settings.about": "Oyun hakkında",
+        "ui.settings.aboutText": "Bu, büyülü bir ormanın sırları, mantarlar ve Emma, bir yavru kedi ile bir baykuşun yolculuğu hakkında sıcak bir macera oyunudur. Oynanışı klasik Mayın Tarlası’nı andırır: hücreleri açın, faydalı eşyaları bulun ve tuzaklardan kaçının.",
         "ui.settings.group": "Grup",
         "ui.settings.sound": "Ses:",
         "ui.settings.support": "Destek",

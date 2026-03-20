@@ -549,6 +549,7 @@
         "ui.purchaseReceived": "",
         "ui.serverUnavailable": "",
         "ui.settings.about": "About the game",
+        "ui.settings.aboutText": "C’est un jeu d’aventure plein de charme sur les secrets d’une forêt magique, les champignons et le voyage d’Emma, d’un chaton et d’une petite chouette. Son gameplay rappelle le classique Démineur : ouvrez des cases, trouvez des objets utiles et évitez les pièges.",
         "ui.settings.group": "Group",
         "ui.settings.sound": "Sound:",
         "ui.settings.support": "Support",

@@ -549,6 +549,7 @@
         "ui.purchaseReceived": "",
         "ui.serverUnavailable": "",
         "ui.settings.about": "About the game",
+        "ui.settings.aboutText": "Dies ist ein liebevolles Abenteuerspiel über die Geheimnisse eines magischen Waldes, Pilze und die Reise von Emma, einem Kätzchen und einem kleinen Eulchen. Die Spielmechanik erinnert an den Klassiker Minesweeper: Öffne Felder, finde nützliche Gegenstände und meide Fallen.",
         "ui.settings.group": "Group",
         "ui.settings.sound": "Sound:",
         "ui.settings.support": "Support",

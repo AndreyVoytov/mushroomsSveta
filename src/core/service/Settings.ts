@@ -20,12 +20,12 @@ export default class Settings {
     }
 
     public static HOST = "https://blabla.com"
-    public static KEY = "jt543i089qo6nfffdd]p0-olcfs83uy__";
+    public static KEY = "jt543i089qo6nfffdd]p0-olcfs83uy__"; // TODO maybe replace this later
     public static PLAIN_MODE = false;
     
     public static ANALYTICS_BUILD_VERSION = "0.10";
-    public static ANALYTICS_GAME_KEY = "7d12588ce85c8bd9187e28dfd7e0ad81";
-    public static ANALYTICS_GAME_SECRET = "de90211eb8edc68ba6209819aab774907f3c563c";
+    public static ANALYTICS_GAME_KEY = "eebdb5bc62804816138a0cedead6729b";
+    public static ANALYTICS_GAME_SECRET = "e471ada30814fe1196d16f2583b17e36aa521057";
 
     public static SUPPORT_MAIL = "redhat.game.help@gmail.com";
     public static OK_GROUP_URL = "https://ok.ru/group/1";
@@ -38,21 +38,23 @@ export default class Settings {
         { id: "bunch1", name: "buy.bunch1.name", /*oldPrice:295,*/ price: 115, gems: 300, boosters: [{ type: BoosterType.compass, count: 3}, { type: BoosterType.rocket, count: 3}, { type: BoosterType.glove, count: 3} /* , potions: 2 */] },
         { id: "r5000", gems: 5000, price: 790/*1490*/ },
         // { id: "r10500", gems: 10500, price: 2990 },
-        { id: "bunch2", name: "buy.bunch2.name", price: 279 /*579*/, gems: 1100, boosters: 
+        { id: "bunch2", name: "buy.bunch2.name", price: 279 /*579*/, gems: 1100, boosters:
                         [{ type: BoosterType.beans, count: 3}, { type: BoosterType.rainbow, count: 3}, { type: BoosterType.vision, count: 3}   /* , potions: 4 */] },
     ]
 
-    public static MUSIC_CREDITS = 
+    /*
+    public static MUSIC_CREDITS =
     "Music: \n" +
     "Aquarium - Kevin MacLeod (incompetech.com)\n" +
     "Licensed under Creative Commons: By Attribution 3.0\n" +
     "License http://creativecommons.org/licenses/by/3.0/\n"+
-    "fragments used\n\n" + 
+    "fragments used\n\n" +
 
-    "win 02 - rhodesmas (freesound.org)\n" + 
+    "win 02 - rhodesmas (freesound.org)\n" +
     "Licensed under Creative Commons: By Attribution 3.0\n" +
     "License http://creativecommons.org/licenses/by/3.0/\n\n"+
     
-    "Оther sounds:\n"+
+    "Other sounds:\n"+
     "freesound.org, freesfx.co.uk\n"
+    */
 }

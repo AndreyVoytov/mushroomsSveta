@@ -549,6 +549,7 @@
         "ui.purchaseReceived": "",
         "ui.serverUnavailable": "",
         "ui.settings.about": "About the game",
+        "ui.settings.aboutText": "Questo è un affascinante gioco d’avventura sui segreti di una foresta magica, sui funghi e sul viaggio di Emma, di un gattino e di un gufetto. Le sue meccaniche ricordano il classico Campo Minato: apri le celle, trova oggetti utili ed evita le trappole.",
         "ui.settings.group": "Group",
         "ui.settings.sound": "Sound:",
         "ui.settings.support": "Support",
