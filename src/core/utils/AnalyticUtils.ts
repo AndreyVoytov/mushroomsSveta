@@ -1,4 +1,3 @@
-
 import { EGAProgressionStatus, GameAnalytics } from 'gameanalytics';
 import Buy from '../model/shop/Buy';
 import CustomizationType from '../model/enum/CustomizationType';
@@ -6,6 +5,7 @@ import UserService from '../service/UserService';
 import Settings from '../service/Settings';
 import NeverError from './NeverError';
 import LocalizationService from '../localization/LocalizationService';
+import LocalizationKey from '../localization/LocalizationKey';
 export default class AnalyticUtils {
 
 
@@ -116,10 +116,10 @@ export default class AnalyticUtils {
         let cust = AnalyticUtils.getCustomization();
         switch(cust){
             case CustomizationType.odkl:
-                return LocalizationService.text("ок")
+                return LocalizationService.get(LocalizationKey.ui('currency.ok'), 'ок')
             case CustomizationType.android:
             case CustomizationType.webDev:
-                return LocalizationService.text("руб");
+                return LocalizationService.get(LocalizationKey.ui('currency.rub'), 'руб');
             default:
                 throw new NeverError(cust);
         }

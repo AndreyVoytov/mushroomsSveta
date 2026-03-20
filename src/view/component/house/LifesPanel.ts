@@ -6,6 +6,8 @@ import Label from '../panel/Label';
 import ShopPanel from './ShopPanel';
 import LifeUtils from '../../../core/utils/LifeUtils';
 import LifeDetailsPanel from './LifeDetailsPanel';
+import LocalizationService from '../../../core/localization/LocalizationService';
+import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class LifesPanel extends BasePanel {
 
     private lifesLabel: Label;
@@ -25,7 +27,7 @@ export default class LifesPanel extends BasePanel {
         this.lifesLabel = this.attachText("lifesLabel", "" + UserService.getUser().getLifes(), { "font": "bold 48px Arial", "fill": "#ffffff" })
         this.lifesLabel.addStrokeColor("#a60107", 0)
         this.lifesLabel.strokeThickness = 4;
-        this.lifesStatus = this.attachText("lifesStatus", "Все", { "font": "bold 36px Arial ", "fill": "#d6b08b" })
+        this.lifesStatus = this.attachText("lifesStatus", LocalizationService.get(LocalizationKey.ui('full'), 'Все'), { "font": "bold 36px Arial ", "fill": "#d6b08b" })
         let plusButton = this.attachButton('plusButton', () => {
             if(!houseScreen.lifeDetailsShown){
                 let detailsPanel = new LifeDetailsPanel(this.game, houseScreen, ()=>{houseScreen.startLevelPanel.show()});
@@ -52,7 +54,7 @@ export default class LifesPanel extends BasePanel {
     private updateLabels(): void {
         let user = UserService.getUser();
         if (user.getLifes() >= LifeUtils.getLifesMaximum()) {
-            this.lifesStatus.text = "Все";
+            this.lifesStatus.text = LocalizationService.get(LocalizationKey.ui('full'), 'Все');
         } else {
             let remain = LifeUtils.MILLIS_FOR_LIFE - (Date.now() - user.getLastRegenerationAt());
             let secondsOfRemain = Math.floor(remain / 1000 % 60);

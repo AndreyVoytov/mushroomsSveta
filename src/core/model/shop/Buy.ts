@@ -3,6 +3,7 @@ import BoosterType from '../enum/BoosterType';
 import ForestUtils from '../../utils/ForestUtils';
 import GameText from '../../localization/GameText';
 import LocalizationService from '../../localization/LocalizationService';
+import LocalizationKey from '../../localization/LocalizationKey';
 
 export default class Buy {
     id: string;
@@ -37,6 +38,6 @@ export default class Buy {
     }
 
     public static getName(buy: Buy): string {
-        return buy.name ? LocalizationService.text(buy.name) : GameText.buyName(buy.gems);
+        return buy.name ? LocalizationService.get(LocalizationKey.buy(buy, 'name'), buy.name) : GameText.buyName(buy.gems);
     }
 }

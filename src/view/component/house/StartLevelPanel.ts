@@ -21,6 +21,9 @@ import ForestUtils from './../../../core/utils/ForestUtils';
 import EventUtils from './../../../core/utils/EventUtils';
 import EventType from '../../../core/model/event/EventType';
 import GameText from '../../../core/localization/GameText';
+import DiaryContentType from '../../../core/model/diary/DiaryContentType';
+import LocalizationService from '../../../core/localization/LocalizationService';
+import LocalizationKey from '../../../core/localization/LocalizationKey';
 
 export default class StartLevelPanel extends ClosablePanel {
     public static hardLevelAwardAddition = 25;
@@ -58,7 +61,7 @@ export default class StartLevelPanel extends ClosablePanel {
             let currentTask = DiaryConfiguration.getCurrentRecipe(UserService.getUser().getCurrentForest());
             this.header = this.attachSprite(currentTask.mapPreset ? 'forestHeader' : 'potionHeader', "header");
             this.attachSprite('ribbon')
-            this.headerText = new Label(this.game, 0, 0, currentTask.titleForProgress || currentTask.title, { font: "46px Bookman Old Style", fill: "#ffffff" })
+            this.headerText = new Label(this.game, 0, 0, this.getTaskTitle(currentTask), { font: "46px Bookman Old Style", fill: "#ffffff" })
             this.headerText.name = "taskText";
             this.addSprite(this.headerText);
             this.attachButton('closeButtonViolet', () => this.close())
@@ -76,7 +79,7 @@ export default class StartLevelPanel extends ClosablePanel {
 
         this.playButton = this.attachButton("pnlButton", () => this.startLevel(), "playButton");
 
-        let continueLabel = new Label(this.game, 0, 0, "ИГРАТЬ", { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
+        let continueLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('play'), '\u0418\u0413\u0420\u0410\u0422\u042c'), { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
         continueLabel.name = 'continueLabel';
         continueLabel.anchor = new Phaser.Point(0.5, 0.5);
         continueLabel.strokeThickness = 4;
@@ -87,7 +90,7 @@ export default class StartLevelPanel extends ClosablePanel {
         if (AdminService.isEditMode()) {
             fastPlayButton = this.attachButton("pnlButton", () => this.startLevelFast(), "fastPlayButton");
 
-            let fastPlayLabel = new Label(this.game, 0, 0, "Пройти быстро", Label.COMMON_MEDIUM_STYLE);
+            let fastPlayLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('fastPlay'), '\u041f\u0440\u043e\u0439\u0442\u0438 \u0431\u044b\u0441\u0442\u0440\u043e'), Label.COMMON_MEDIUM_STYLE);
             fastPlayLabel.name = 'fastPlayLabel'
             fastPlayLabel.anchor = new Phaser.Point(0.5, 0.5);
             fastPlayButton.addChild(fastPlayLabel);
@@ -262,6 +265,12 @@ export default class StartLevelPanel extends ClosablePanel {
             }
         };
     }
+    private getTaskTitle(currentTask: DiaryContentType): string {
+        return LocalizationService.get(
+            LocalizationKey.diary(currentTask, currentTask.titleForProgress ? 'titleForProgress' : 'title'),
+            currentTask.titleForProgress || currentTask.title
+        );
+    }
 
     private onShowAdditionalAnimation: ()=> void = null;
 
@@ -313,7 +322,7 @@ export default class StartLevelPanel extends ClosablePanel {
                 let texture = currentTask.mapPreset ? 'forestHeader' : 'potionHeader';
                 this.header.loadTexture(SpriteUtils.key(texture), SpriteUtils.frame(texture));
                 if (this.headerText) {
-                    this.headerText.text = currentTask.titleForProgress || currentTask.title;
+                    this.headerText.text = this.getTaskTitle(currentTask);
                 }
             }
         }

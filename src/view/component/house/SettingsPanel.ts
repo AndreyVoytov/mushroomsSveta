@@ -10,6 +10,8 @@ import InfoPanel from '../panel/InfoPanel';
 import Label from '../panel/Label';
 import ConfirmPanel from './ConfirmPanel';
 import GameText from '../../../core/localization/GameText';
+import LocalizationService from '../../../core/localization/LocalizationService';
+import LocalizationKey from '../../../core/localization/LocalizationKey';
 
 export default class SettingsPanel extends ClosablePanel {
 
@@ -21,11 +23,18 @@ export default class SettingsPanel extends ClosablePanel {
         this.game = game;
         this.screen = screen;
 
+        const settingsTitle = LocalizationService.get(LocalizationKey.ui('settings.title'), '\u041d\u0430\u0441\u0442\u0440\u043e\u0439\u043a\u0438');
+        const settingsSound = LocalizationService.get(LocalizationKey.ui('settings.sound'), '\u0417\u0432\u0443\u043a:');
+        const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'), '\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430');
+        const groupText = LocalizationService.get(LocalizationKey.ui('settings.group'), '\u0413\u0440\u0443\u043f\u043f\u0430');
+        const aboutText = LocalizationService.get(LocalizationKey.ui('settings.about'), '\u041e\u0431 \u0438\u0433\u0440\u0435');
+        const okText = LocalizationService.get(LocalizationKey.ui('ok'), '\u041e\u043a');
+
         this.attachSprite("panel2")
         this.attachSprite("helperPanel")
         let titleBg = this.attachSprite("statusPanel")
         titleBg.tint = 0xaa5577;
-        this.attachText("title", "Настройки",  { font: "58px Bookman Old Style", fill: "#f0f1ec" })
+        this.attachText("title", settingsTitle,  { font: "58px Bookman Old Style", fill: "#f0f1ec" })
 
         this.closeButton = this.attachButton("circleOrange", () => this.close())
         this.closeButton.name = "closeButton";
@@ -39,7 +48,7 @@ export default class SettingsPanel extends ClosablePanel {
         this.closeButton.addChild(cross);
         this.addButton(this.closeButton);
 
-        this.attachText("soundText", "Звук:", { font: "40px Arial bold", fill: "#6b2e06", wordWrap: true, wordWrapWidth: 800 })
+        this.attachText("soundText", settingsSound, { font: "40px Arial bold", fill: "#6b2e06", wordWrap: true, wordWrapWidth: 800 })
 
 
         let soundButton = this.attachSprite("sound1")
@@ -58,7 +67,7 @@ export default class SettingsPanel extends ClosablePanel {
         
         let supportButton = this.attachButton("statusPanel", ()=>{
             this.close();
-            let info = new ConfirmPanel(this.game, "Поддержка", "Ок", GameText.supportMessage(Settings.SUPPORT_MAIL));
+            let info = new ConfirmPanel(this.game, supportText, okText, GameText.supportMessage(Settings.SUPPORT_MAIL));
             Game.getInstance().add.existing(info);
             info.show();
 
@@ -66,7 +75,7 @@ export default class SettingsPanel extends ClosablePanel {
             //TODO
         }, "supportButton")
         
-        let supportButtonLabel = new Label(this.game, 0, -1, "Поддержка", { font: "bold 34px Arial", fill: "#ffffff" });
+        let supportButtonLabel = new Label(this.game, 0, -1, supportText, { font: "bold 34px Arial", fill: "#ffffff" });
         supportButtonLabel.anchor.set(0.5)
         
         supportButton.addChild(supportButtonLabel)
@@ -75,7 +84,7 @@ export default class SettingsPanel extends ClosablePanel {
             window.open(Settings.OK_GROUP_URL, "_blank");
         }, "groupButton")
         
-        let groupButtonLabel = new Label(this.game, 0, -1, "Группа", { font: "bold 34px Arial", fill: "#ffffff" });
+        let groupButtonLabel = new Label(this.game, 0, -1, groupText, { font: "bold 34px Arial", fill: "#ffffff" });
         groupButtonLabel.anchor.set(0.5)
         
         groupButton.addChild(groupButtonLabel)
@@ -83,12 +92,12 @@ export default class SettingsPanel extends ClosablePanel {
 
         let creditsButton =  this.attachButton("statusPanel", ()=>{
             this.close();
-            let info = new ConfirmPanel(this.game, "Об игре", "Ок", Settings.MUSIC_CREDITS, ()=>{}, true);
+            let info = new ConfirmPanel(this.game, aboutText, okText, Settings.MUSIC_CREDITS, ()=>{}, true);
             Game.getInstance().add.existing(info); 
             info.show();
         },"creditsButton")
         
-        let creditsButtonLabel = new Label(this.game, 0, -1, "Об игре", { font: "bold 30px Arial", fill: "#ffffff" });
+        let creditsButtonLabel = new Label(this.game, 0, -1, aboutText, { font: "bold 30px Arial", fill: "#ffffff" });
         creditsButtonLabel.anchor.set(0.5)
         
         creditsButton.addChild(creditsButtonLabel)

@@ -8,15 +8,16 @@
   "scripts": {
     "atlases": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/pack-atlases.ps1",
     "atlases:test": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/pack-atlases.ps1 -AtlasesDir .atlas-check\\atlases -ManifestPath .atlas-check\\atlasManifest.ts",
-    "prebuild": "npm run atlases",
+    "prebuild": "npm run localization:sync && npm run atlases",
     "build": "webpack --config webpack.production.config.js",
-    "prestart": "npm run atlases",
+    "prestart": "npm run localization:sync && npm run atlases",
     "start": "webpack",
-    "predev": "npm run atlases",
+    "predev": "npm run localization:sync && npm run atlases",
     "dev": "webpack",
-    "predeploy": "npm run atlases",
+    "predeploy": "npm run localization:sync && npm run atlases",
     "deploy": "webpack --config webpack.production.config.js",
-    "bitmap-fonts": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/update-bitmap-fonts.ps1"
+    "bitmap-fonts": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/update-bitmap-fonts.ps1",
+    "localization:sync": "node tools/sync-localization-entries.js"
   },
   "license": "Private",
   "devDependencies": {

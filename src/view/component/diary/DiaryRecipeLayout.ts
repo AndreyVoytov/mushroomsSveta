@@ -1,10 +1,12 @@
-﻿import AnimationUtils from '../../../core/utils/AnimationUtils';
+import AnimationUtils from '../../../core/utils/AnimationUtils';
 import Utils from '../../../core/utils/Utils';
 import DiaryContentType from '../../../core/model/diary/DiaryContentType';
 import Label from '../../component/panel/Label';
 import BasePanel from '../../component/panel/BasePanel';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import Settings from '../../../core/service/Settings';
+import LocalizationService from '../../../core/localization/LocalizationService';
+import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class DiaryRecipeLayout extends BasePanel {
 
     constructor(game: Phaser.Game, recipeContent: DiaryContentType, x: number, y: number, animationsDelay?: number) {
@@ -18,13 +20,16 @@ export default class DiaryRecipeLayout extends BasePanel {
 
         this.inputEnabled = true;
 
-        let title = new Label(game, 0, 0, recipeContent.title, Label.TASK_TITLE_STYLE);
+        const titleText = LocalizationService.get(LocalizationKey.diary(recipeContent, 'title'), recipeContent.title);
+        const detailsText = LocalizationService.get(LocalizationKey.diary(recipeContent, 'details'), recipeContent.details);
+
+        let title = new Label(game, 0, 0, titleText, Label.TASK_TITLE_STYLE);
         title.name = "title";
         title.lineSpacing = -15;
         Utils.applyPreset(title, { "spriteId": "title", "x": 510 - 480, "y": 130 - 512, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 53 })
         this.addSprite(title);
 
-        let details = new Label(game, 0, 100, recipeContent.details, Label.TASK_STYLE);
+        let details = new Label(game, 0, 100, detailsText, Label.TASK_STYLE);
         details.name = "details";
         Utils.applyPreset(details, { "spriteId": "details", "x": 516 - 480, "y": 228 - 512, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0, "rotation": 0, "fontSize": 40 })
         this.addSprite(details);

@@ -11,6 +11,8 @@ import SpriteUtils from '../../../core/utils/SpriteUtils';
 import { Easing } from 'phaser-ce';
 import UserService from '../../../core/service/UserService';
 import GameText from '../../../core/localization/GameText';
+import LocalizationService from '../../../core/localization/LocalizationService';
+import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class InGameSettingsPanel extends ClosablePanel {
 
     private settingsButton: Phaser.Button;
@@ -21,6 +23,8 @@ export default class InGameSettingsPanel extends ClosablePanel {
         this.game = game;
         this.settingsButton = settingsButton;
         this.inputEnabled = true;
+        const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'), '\u041f\u043e\u0434\u0434\u0435\u0440\u0436\u043a\u0430');
+        const okText = LocalizationService.get(LocalizationKey.ui('ok'), '\u041e\u043a');
         this.fixedToCamera = true;
 
         let closeButton = this.attachButton("settingsMain", ()=>{
@@ -36,7 +40,7 @@ export default class InGameSettingsPanel extends ClosablePanel {
 
         let support = this.attachButton("support", ()=>{
             this.close();
-            let info = new ConfirmPanel(this.game, "Поддержка", "Ок", GameText.supportMessage(Settings.SUPPORT_MAIL));
+            let info = new ConfirmPanel(this.game, supportText, okText, GameText.supportMessage(Settings.SUPPORT_MAIL));
             Game.getInstance().add.existing(info);
             info.show();
 

@@ -14,6 +14,8 @@ import InfoPanel from './InfoPanel';
 import BoosterType from '../../../core/model/enum/BoosterType';
 import ForestUtils from '../../../core/utils/ForestUtils';
 import Settings from '../../../core/service/Settings';
+import LocalizationService from '../../../core/localization/LocalizationService';
+import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class ProgressBar extends BasePanel {
     private screen: HouseScreen;
 
@@ -91,8 +93,8 @@ export default class ProgressBar extends BasePanel {
 
         this.attachSprite('circle')
         this.attachSprite('ribbon')
-
-        this.taskText = new Label(this.game, 0, 0, currentTask.titleForProgress || currentTask.title, { font: "40px Bookman Old Style", fill: "#ffffff" })
+        const taskTitle = LocalizationService.get(LocalizationKey.diary(currentTask, currentTask.titleForProgress ? 'titleForProgress' : 'title'), currentTask.titleForProgress || currentTask.title);
+        this.taskText = new Label(this.game, 0, 0, taskTitle, { font: "40px Bookman Old Style", fill: "#ffffff" })
         this.taskText.name = "taskText";
         this.addSprite(this.taskText);
 

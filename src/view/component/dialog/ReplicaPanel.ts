@@ -14,6 +14,8 @@ import BigBubblePanel from './BigBubblePanel';
 import { Easing } from 'phaser-ce';
 import Settings from '../../../core/service/Settings';
 import GameText from '../../../core/localization/GameText';
+import LocalizationService from '../../../core/localization/LocalizationService';
+import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class ReplicaPanel extends BasePanel {
     private static REVEAL_DELAY_MS = 40;
     private static TEXT_OFFSCREEN_X = -5000;
@@ -116,7 +118,7 @@ export default class ReplicaPanel extends BasePanel {
         button.anchor.set(1);
         button.alpha = 0.96;
 
-        const label = new Label(this.game, width / 2 - 8, height / 2 - 1, "Пропустить", { font: "bold 18px Arial", fill: "#9f9f9f" });
+        const label = new Label(this.game, width / 2 - 8, height / 2 - 1, LocalizationService.get(LocalizationKey.ui('skip'), '\u041f\u0440\u043e\u043f\u0443\u0441\u0442\u0438\u0442\u044c'), { font: "bold 18px Arial", fill: "#9f9f9f" });
         label.anchor.set(0.5);
         button.addChild(label);
 
@@ -136,6 +138,10 @@ export default class ReplicaPanel extends BasePanel {
         this.r = r;
         this.playAnimation = playAnimationCallback;
         this.parentCont = parentCont;
+
+        const replicaText = LocalizationService.get(LocalizationKey.replica(r, 'text'), r.text);
+        const replicaPersonName = LocalizationService.get(LocalizationKey.replica(r, 'personName'), r.personName);
+        const replicaButtonName = r.buttonName ? LocalizationService.get(LocalizationKey.replica(r, 'buttonName'), r.buttonName) : null;
 
         this.fixedToCamera = true;
 
@@ -273,7 +279,7 @@ export default class ReplicaPanel extends BasePanel {
         this.textHolder.renderable = false;
         this.textHolder.inputEnableChildren = false;
 
-        this.text = new Label(this.game, 0, 0, r.text, Label.DIALOG_STYLE, false, this.SYMBOLS_IN_ROW);
+        this.text = new Label(this.game, 0, 0, replicaText, Label.DIALOG_STYLE, false, this.SYMBOLS_IN_ROW);
         this.text.alpha = 1;
         this.text.visible = false;
         this.text.renderable = false;
@@ -293,7 +299,7 @@ export default class ReplicaPanel extends BasePanel {
             this.titlePnl.x += this.x; this.titlePnl.y += this.y + 500;
             parentCont.addChild(this.titlePnl); 
 
-            this.title = new Label(this.game, /*this.titlePnl.x*/ - this.titlePnl.width / 2, /*this.titlePnl.y*/0, r.personName, Label.DIALOG_TITLE_STYLE);
+            this.title = new Label(this.game, /*this.titlePnl.x*/ - this.titlePnl.width / 2, /*this.titlePnl.y*/0, replicaPersonName, Label.DIALOG_TITLE_STYLE);
             this.title.alpha = 0;
             this.title.anchor = new Phaser.Point(0.5, 0.5);
             this.title.inputEnabled = false;
@@ -310,7 +316,7 @@ export default class ReplicaPanel extends BasePanel {
             this.titlePnl.x += this.x; this.titlePnl.y += this.y + 500;
             parentCont.addChild(this.titlePnl); 
 
-            this.title = new Label(this.game, /*this.titlePnl.x*/ + this.titlePnl.width / 2, /*this.titlePnl.y*/0, r.personName, Label.DIALOG_TITLE_STYLE);
+            this.title = new Label(this.game, /*this.titlePnl.x*/ + this.titlePnl.width / 2, /*this.titlePnl.y*/0, replicaPersonName, Label.DIALOG_TITLE_STYLE);
             this.title.alpha = 0;
             this.title.anchor = new Phaser.Point(0.5, 0.5);
             this.title.inputEnabled = false;
@@ -350,7 +356,7 @@ export default class ReplicaPanel extends BasePanel {
             actionCircle.anchor.set(0.5);
             this.actionButton.addChild(actionCircle);
 
-            let label = new Label(this.game, -13, 0, r.buttonName, { font: "bold 40px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 800 });
+            let label = new Label(this.game, -13, 0, replicaButtonName, { font: "bold 40px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 800 });
             label.anchor.set(0.5)
             this.actionButton.addChild(label)
 

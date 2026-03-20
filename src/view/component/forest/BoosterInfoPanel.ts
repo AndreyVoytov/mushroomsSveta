@@ -16,6 +16,8 @@ import ForestScreen from '../../screen/ForestScreen';
 import { ContentType } from '../../../core/model/enum/ContentType';
 import Settings from '../../../core/service/Settings';
 import ServerStoreComponent from '../../../core/service/store/ServerStoreComponent';
+import LocalizationService from '../../../core/localization/LocalizationService';
+import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class BoosterInfoPanel extends BasePanel {
 
     public boosterType: BoosterType;
@@ -151,7 +153,7 @@ export default class BoosterInfoPanel extends BasePanel {
             AnimationUtils.jelly(this.game, backButton, 0, true);
             this.close();
         }, "backButton")
-        let backLabel = new Label(this.game, 0, 0, "Назад", { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
+        let backLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('booster.back'), 'Назад'), { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
         backLabel.anchor.set(0.5)
         backLabel.scale.set(1.2, 1)
         backButton.addChild(backLabel)
@@ -171,7 +173,7 @@ export default class BoosterInfoPanel extends BasePanel {
                     this.getActionCallback(boosterType)();
                 }
             }, "useButton")
-            let useLabel = new Label(this.game, 0, 0, "Применить", { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
+            let useLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('booster.use'), 'Применить'), { font: "bolder 45px Gilroy", fill: "#f0f1ec" });
             useLabel.scale.set(1.2 * 1.2, 1 * 1.2)
             useLabel.anchor.set(0.5)
             useButton.addChild(useLabel)
@@ -209,11 +211,11 @@ export default class BoosterInfoPanel extends BasePanel {
     private getBoosterName(boosterType:BoosterType):string{
         switch(boosterType){
             case BoosterType.beans:
-                return "Волшебные бобы";
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'name'), 'Волшебные бобы');
             case BoosterType.rainbow:
-                return "Флакон радуги";
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'name'), 'Флакон радуги');
             case BoosterType.glove:
-                return "Волшебная перчатка";
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'name'), 'Волшебная перчатка');
             case BoosterType.compass:
             case BoosterType.rocket:
             case BoosterType.vision:
@@ -225,11 +227,11 @@ export default class BoosterInfoPanel extends BasePanel {
     private getBoosterDesc(boosterType:BoosterType):string{
         switch(boosterType){
             case BoosterType.beans:
-                return "Заполняют пустые клетки \n ростками с цифрой."
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'desc'), '\u0417\u0430\u043f\u043e\u043b\u043d\u044f\u044e\u0442 \u043f\u0443\u0441\u0442\u044b\u0435 \u043a\u043b\u0435\u0442\u043a\u0438\n\u0440\u043e\u0441\u0442\u043a\u0430\u043c\u0438 \u0441 \u0446\u0438\u0444\u0440\u043e\u0439.')
             case BoosterType.rainbow:
-                return "Вскрывает пять случайных клеток \n на поле."
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'desc'), '\u0412\u0441\u043a\u0440\u044b\u0432\u0430\u0435\u0442 \u043f\u044f\u0442\u044c \u0441\u043b\u0443\u0447\u0430\u0439\u043d\u044b\u0445 \u043a\u043b\u0435\u0442\u043e\u043a\n\u043d\u0430 \u043f\u043e\u043b\u0435.')
             case BoosterType.glove:
-                return "Позволяет вскрыть любую клетку \n без траты хода."
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'desc'), '\u041f\u043e\u0437\u0432\u043e\u043b\u044f\u0435\u0442 \u0432\u0441\u043a\u0440\u044b\u0442\u044c \u043b\u044e\u0431\u0443\u044e \u043a\u043b\u0435\u0442\u043a\u0443\n\u0431\u0435\u0437 \u0442\u0440\u0430\u0442\u044b \u0445\u043e\u0434\u0430.')
             case BoosterType.compass:
             case BoosterType.rocket:
             case BoosterType.vision:
@@ -241,11 +243,11 @@ export default class BoosterInfoPanel extends BasePanel {
     private getBoosterQuestion(boosterType:BoosterType):string{
         switch(boosterType){
             case BoosterType.beans:
-                return "Вы точно хотите применить бобы?"
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'question'), '\u0412\u044b \u0442\u043e\u0447\u043d\u043e \u0445\u043e\u0442\u0438\u0442\u0435 \u043f\u0440\u0438\u043c\u0435\u043d\u0438\u0442\u044c \u0431\u043e\u0431\u044b?')
             case BoosterType.rainbow:
-                return "Вы точно хотите открыть флакон?"
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'question'), '\u0412\u044b \u0442\u043e\u0447\u043d\u043e \u0445\u043e\u0442\u0438\u0442\u0435 \u043e\u0442\u043a\u0440\u044b\u0442\u044c \u0444\u043b\u0430\u043a\u043e\u043d?')
             case BoosterType.glove:
-                return "Нажмите на клетку для вскрытия"
+                return LocalizationService.get(LocalizationKey.booster(boosterType, 'question'), '\u041d\u0430\u0436\u043c\u0438\u0442\u0435 \u043d\u0430 \u043a\u043b\u0435\u0442\u043a\u0443 \u0434\u043b\u044f \u0432\u0441\u043a\u0440\u044b\u0442\u0438\u044f')
             case BoosterType.compass:
             case BoosterType.rocket:
             case BoosterType.vision:

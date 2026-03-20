@@ -41,7 +41,7 @@ export default class ShopBigPanel extends BasePanel {
         
         let boosterCounts:Label[] = [];
 
-        this.attachText("shopSetName", buy.name,  {font: "35px Bookman Old Style", fill: "#ffffff"}).inputEnabled = false;
+        this.attachText("shopSetName", Buy.getName(buy),  {font: "35px Bookman Old Style", fill: "#ffffff"}).inputEnabled = false;
         let gemsCount =  this.attachText("gemsCount", "" + buy.gems, {font: "bold 35px Gilroy", fill: "#804119"});
         gemsCount.inputEnabled = false;
         boosterCounts.push(gemsCount);

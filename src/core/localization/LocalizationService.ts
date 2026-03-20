@@ -1,3 +1,5 @@
+﻿import localizationSourceIds from '../../generated/localizationSourceIds';
+
 export type SupportedLanguage = 'ru' | 'en' | 'es' | 'tr' | 'pt' | 'ar' | 'id' | 'fr' | 'ja' | 'it' | 'de' | 'hi';
 export type SupportedTextLanguage = 'ru' | 'en' | 'tr';
 export type TextDirection = 'ltr' | 'rtl';
@@ -5,7 +7,7 @@ export type TextDirection = 'ltr' | 'rtl';
 interface LocalizationBundle {
     language: SupportedLanguage;
     direction?: TextDirection;
-    translations: { [source: string]: string };
+    entries?: { [id: string]: string };
 }
 
 export default class LocalizationService {
@@ -15,20 +17,18 @@ export default class LocalizationService {
 
     private static language: SupportedLanguage = 'ru';
     private static direction: TextDirection = 'ltr';
-    private static translations: { [source: string]: string } = {};
-    private static normalizedTranslations: { [source: string]: string } = {};
+    private static entries: { [id: string]: string } = {};
 
     public static async bootstrap(): Promise<void> {
         this.language = this.detectLanguage();
         const bundle = await this.loadBundleWithFallback(this.language);
-        this.translations = bundle.translations || {};
-        this.normalizedTranslations = this.buildNormalizedTranslations(this.translations);
+        this.entries = bundle.entries || {};
         this.direction = bundle.direction || 'ltr';
 
         if (typeof document !== 'undefined' && document.documentElement) {
             document.documentElement.lang = this.language;
             document.documentElement.dir = this.direction;
-            document.title = this.text('Грибы!');
+            document.title = this.get('ui.gameTitle', 'Грибы!');
         }
     }
 
@@ -66,16 +66,31 @@ export default class LocalizationService {
         if (!value) {
             return value;
         }
-        return this.translations[value] || this.normalizedTranslations[this.normalizeKey(value)] || value;
+
+        const sourceId = localizationSourceIds[this.normalizeKey(value)];
+        if (!sourceId) {
+            return value;
+        }
+
+        return this.get(sourceId, value);
+    }
+
+    public static get(id: string, fallback?: string, params?: { [key: string]: string | number }): string {
+        const entry = id ? this.entries[id] : null;
+        const resolved = entry !== undefined && entry !== null ? entry : (fallback || id);
+        return this.applyParams(resolved, params);
     }
 
     public static tr(value: string, params?: { [key: string]: string | number }): string {
-        const translated = this.text(value);
+        return this.applyParams(this.text(value), params);
+    }
+
+    private static applyParams(value: string, params?: { [key: string]: string | number }): string {
         if (!params) {
-            return translated;
+            return value;
         }
 
-        let result = translated;
+        let result = value;
         Object.keys(params).forEach(key => {
             const safeValue = params[key] === null || params[key] === undefined ? '' : String(params[key]);
             result = result.split('{' + key + '}').join(safeValue);
@@ -152,16 +167,8 @@ export default class LocalizationService {
         return {
             language: language,
             direction: 'ltr',
-            translations: {}
+            entries: {}
         };
-    }
-
-    private static buildNormalizedTranslations(translations: { [source: string]: string }): { [source: string]: string } {
-        const normalized: { [source: string]: string } = {};
-        Object.keys(translations || {}).forEach(key => {
-            normalized[this.normalizeKey(key)] = translations[key];
-        });
-        return normalized;
     }
 
     private static normalizeKey(value: string): string {
@@ -172,6 +179,7 @@ export default class LocalizationService {
             .replace(/[ \t]{2,}/g, ' ')
             .trim();
     }
+
     private static loadBundle(language: SupportedLanguage): Promise<LocalizationBundle> {
         return new Promise((resolve, reject) => {
             const request = new XMLHttpRequest();
@@ -187,7 +195,7 @@ export default class LocalizationService {
                         resolve({
                             language: parsed.language || language,
                             direction: parsed.direction || 'ltr',
-                            translations: parsed.translations || {}
+                            entries: parsed.entries || {}
                         });
                     } catch (error) {
                         reject(error);
