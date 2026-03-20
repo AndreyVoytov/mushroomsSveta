@@ -418,6 +418,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('sveta3', 'assets/base/characters/sveta3.png');
         this.loadImage('sveta4', 'assets/base/characters/sveta4.png');
         this.loadImage('sveta5', 'assets/base/characters/sveta5.png');
+        this.loadImage('sveta6', 'assets/base/characters/sveta6.png');
         this.loadImage('sova1', 'assets/additional/characters/sova1.png');
         this.loadImage('sova2', 'assets/additional/characters/sova2.png');
         this.loadImage('sova3', 'assets/additional/characters/sova3.png');

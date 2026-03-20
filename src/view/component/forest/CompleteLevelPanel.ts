@@ -12,6 +12,7 @@ import BasePanel from '../panel/BasePanel';
 import StartLevelPanel from '../house/StartLevelPanel';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import Settings from '../../../core/service/Settings';
+import Utils from '../../../core/utils/Utils';
 export default class LevelCompletePanel extends BasePanel {
 
     private screen: BaseForestScreen;
@@ -32,8 +33,9 @@ export default class LevelCompletePanel extends BasePanel {
         this.addChild(background);
 
         let catHelper : boolean = level >= LocationUtils.CAT_FROM_LEVEL;
+        let helperImage = catHelper ? 'cat4' : (Utils.randomBoolean() ? 'sveta5' : 'sveta6');
 
-        let helper = SpriteUtils.createSprite(this.game, 10, background.height / 2 - 69 + (catHelper? 30:0), catHelper ? 'cat4' : 'sveta5');
+        let helper = SpriteUtils.createSprite(this.game, 10, background.height / 2 - 69 + (catHelper? 30:0), helperImage);
         helper.anchor = new Phaser.Point(0, 1);
         // helper.scale.set(0.8)
         this.addChild(helper);

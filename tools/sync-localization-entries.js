@@ -15,6 +15,7 @@ const manualKeys = [
     'ui.levelLower',
     'ui.play',
     'ui.playFor100',
+    'ui.watchAd',
     'ui.fastPlay',
     'ui.noMovesLeft',
     'ui.itemsLeft',

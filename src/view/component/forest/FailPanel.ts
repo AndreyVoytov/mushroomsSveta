@@ -86,7 +86,7 @@ export default class FailPanel extends ClosablePanel {
             }, "rewardButton");
             this.rewardedButton.scale.set(0.82);
 
-            let rewardedLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('watchAd'), 'СМОТРЕТЬ РЕКЛАМУ'), { font: "bolder 30px Gilroy", fill: "#f0f1ec" });
+            let rewardedLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('watchAd'), 'WATCH AD'), { font: "bolder 30px Gilroy", fill: "#f0f1ec" });
             rewardedLabel.name = 'rewardedLabel';
             rewardedLabel.anchor = new Phaser.Point(0.5, 0.5);
             rewardedLabel.strokeThickness = 4;
