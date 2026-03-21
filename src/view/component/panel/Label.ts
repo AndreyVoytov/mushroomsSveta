@@ -130,6 +130,16 @@
         return this.sourceTextValue;
     }
 
+    public setPreparedText(value: string): void {
+        const prepared = value || '';
+        const bitmapText: any = this as any;
+
+        if (prepared !== bitmapText._text) {
+            bitmapText._text = prepared;
+            bitmapText.updateText();
+        }
+    }
+
     private applyLocalizedText(value: string): void {
         this.sourceTextValue = value || '';
 
@@ -231,4 +241,3 @@
         return words.join('');
     }
 }
-

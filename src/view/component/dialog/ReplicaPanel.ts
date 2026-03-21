@@ -20,6 +20,7 @@ export default class ReplicaPanel extends BasePanel {
     private static REVEAL_DELAY_MS = 40;
     private static TEXT_OFFSCREEN_X = -5000;
     private static TEXT_OFFSCREEN_Y = -5000;
+    private static DIALOG_LINE_SPACING = -14;
 
     private personImage: Phaser.Sprite;
     private secondPersonImage: Phaser.Sprite;
@@ -280,13 +281,14 @@ export default class ReplicaPanel extends BasePanel {
         this.textHolder.inputEnableChildren = false;
 
         this.text = new Label(this.game, 0, 0, replicaText, Label.DIALOG_STYLE, false, this.SYMBOLS_IN_ROW);
+        this.text.lineSpacing = ReplicaPanel.DIALOG_LINE_SPACING;
         this.text.alpha = 1;
         this.text.visible = false;
         this.text.renderable = false;
         this.text.anchor = new Phaser.Point(0, 0);
         this.text.inputEnabled = false;
         this.textToPrint = this.text.text;
-        this.text.text = "";
+        this.text.setPreparedText("");
         this.textHolder.add(this.text);
 
         if (r.rightSide) {
@@ -771,7 +773,7 @@ export default class ReplicaPanel extends BasePanel {
         if (!this.textToPrint || this.textToPrint.length == 0) {
             this.textToPrint = this.text.text;
         }
-        this.text.text = "";
+        this.text.setPreparedText("");
         this.text.alpha = 1;
         this.text.visible = false;
         this.text.renderable = false;
@@ -831,7 +833,7 @@ export default class ReplicaPanel extends BasePanel {
                 this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
                 this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
 
-                this.text.text = this.textToPrint.substring(0, Math.min(this.textToPrint.length, i + portion));
+                this.text.setPreparedText(this.textToPrint.substring(0, Math.min(this.textToPrint.length, i + portion)));
                 let holderAny: any = this.textHolder as any;
                 let textAny: any = this.text as any;
                 if (textAny && typeof textAny.updateText === "function") {
@@ -1021,7 +1023,7 @@ export default class ReplicaPanel extends BasePanel {
             this.text.visible = true;
             this.text.alpha = 1;
             this.text.renderable = true;
-            this.text.text = this.textToPrint;
+            this.text.setPreparedText(this.textToPrint);
             this.printing = false;
         }
     }
