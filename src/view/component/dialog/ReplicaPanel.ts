@@ -101,31 +101,45 @@ export default class ReplicaPanel extends BasePanel {
     }
 
     private createSkipButton(parentCont: DialogPanel): Phaser.Button {
-        const width = 148;
-        const height = 34;
+        const skipText = LocalizationService.get(LocalizationKey.ui('skip'));
+        const height = 50;
+        const leftPadding = 18;
+        const labelArrowGap = 18;
+        const rightPadding = 16;
+        const arrowScale = 1.8;
+        const arrowWidth = Math.round(7 * arrowScale);
+        const arrowHalfHeight = Math.round(5 * arrowScale);
+
+        const label = new Label(this.game, 0, height / 2 - 2, skipText, {
+            font: "bold 30px Arial",
+            fill: "#8d8d8d"
+        });
+        label.anchor.set(0.5);
+        label.inputEnabled = false;
+
+        const width = Math.ceil(leftPadding + label.width + labelArrowGap + arrowWidth + rightPadding);
         const background = this.game.add.graphics(0, 0);
 
         background.beginFill(0xf2f2f2, 0.96);
         background.lineStyle(2, 0xb7b7b7, 1);
-        background.drawRoundedRect(0, 0, width, height, 10);
+        background.drawRoundedRect(0, 0, width, height, 14);
         background.endFill();
 
         const texture = background.generateTexture();
         background.destroy(true);
 
-        const button = new Phaser.Button(this.game, this.dialogPnl.width - 22, this.dialogPnl.height - 8, <any>texture, () => {
+        const button = new Phaser.Button(this.game, this.dialogPnl.width - width - 44, this.dialogPnl.height - height - 24, <any>texture, () => {
             parentCont.skip();
         });
-        button.anchor.set(1);
+        button.anchor.set(0);
         button.alpha = 0.96;
 
-        const label = new Label(this.game, width / 2 - 8, height / 2 - 1, LocalizationService.get(LocalizationKey.ui('skip')), { font: "bold 18px Arial", fill: "#9f9f9f" });
-        label.anchor.set(0.5);
+        label.x = leftPadding + label.width / 2;
         button.addChild(label);
 
-        const arrow = this.game.add.graphics(width - 16, height / 2);
-        arrow.beginFill(0x9f9f9f, 1);
-        arrow.drawPolygon([0, -5, 7, 0, 0, 5]);
+        const arrow = this.game.add.graphics(width - rightPadding - arrowWidth, height / 2);
+        arrow.beginFill(0x8d8d8d, 1);
+        arrow.drawPolygon([0, -arrowHalfHeight, arrowWidth, 0, 0, arrowHalfHeight]);
         arrow.endFill();
         button.addChild(arrow);
 
