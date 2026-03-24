@@ -343,6 +343,11 @@ export default class ForestTopPanel extends BasePanel {
         let aim = this.aims.filter(aim => aim.type == aimType).shift();
 
         if (aim) {
+            const spriteAny = sprite as any;
+            if (typeof spriteAny.updateTransform === 'function') {
+                spriteAny.updateTransform();
+            }
+
             aim.countLeft--;
 
             this.updateAimCounters(700);

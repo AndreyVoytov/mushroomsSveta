@@ -233,6 +233,10 @@ export default class ForestCellCover extends Phaser.Group {
         if(this.frame) {
             this.frame.alpha = alpha;
         } else { 
+            if (alpha <= 0) {
+                return;
+            }
+
             let frameImage = "hexFrame";
             switch(ForestUtils.getBiom(this.cellType)){
                 case BiomType.SAND:
@@ -250,14 +254,13 @@ export default class ForestCellCover extends Phaser.Group {
             }
             this.frame = SpriteUtils.createSprite(this.game, 0, 0, frameImage);
             this.frame.anchor = new Phaser.Point(0.5, 0.5);
-            this.frame.alpha = alpha;
+            this.frame.alpha = 0;
             this.frame.width = this.w;
             this.frame.height = this.h;
             this.frame.inputEnabled = false;
+            this.frame.visible = false;
             this.addChild(this.frame);
-            // if(!AdminService.cacheComplexImages()){
-            //     AnimationUtils.fadeIn(this.game, this.frame)
-            // }
+            AnimationUtils.fadeInStable(this.game, this.frame, 1, 20, alpha);
         }
     }
 

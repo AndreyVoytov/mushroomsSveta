@@ -8,6 +8,46 @@ type TintedTarget = PIXI.Sprite | Phaser.BitmapText | Phaser.Text;
 
 export default class AnimationUtils {
 
+    private static primeForStableShow(target: FadeTarget): void {
+        if (!target) {
+            return;
+        }
+
+        const targetAny = target as any;
+        const wasVisible = target.visible;
+        target.visible = true;
+
+        if (typeof targetAny.updateTransform === 'function') {
+            targetAny.updateTransform();
+        }
+
+        target.visible = wasVisible;
+    }
+
+    public static fadeInStable(game: Phaser.Game, sprite: FadeTarget, delay?: number, time?: number, finalAlpha?: number): void {
+        if (!sprite) {
+            return;
+        }
+
+        const spriteAny = sprite as any;
+        const showDelay = delay == null ? 1 : delay;
+        const targetAlpha = finalAlpha == null ? 1 : finalAlpha;
+
+        this.primeForStableShow(sprite);
+        sprite.visible = false;
+        sprite.alpha = 0;
+
+        game.time.events.add(showDelay, () => {
+            if (spriteAny.pendingDestroy || spriteAny.exists === false) {
+                return;
+            }
+
+            sprite.visible = true;
+            sprite.alpha = 0;
+            game.add.tween(sprite).to({ alpha: targetAlpha }, time || 20, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Linear.None, true, 0, 0, false);
+        });
+    }
+
     public static tint(game: Phaser.Game, sprite: TintedTarget, startColor: number, endColor: number, time: number, delay: number) {
         var colorBlend = { step: 0 };
         var colorTween = game.add.tween(colorBlend).to({ step: 100 }, time);
@@ -315,9 +355,28 @@ export default class AnimationUtils {
         splash.alpha = 0;
         splash.scale.set(0.5);
         splash.anchor.set(0.5)
+        splash.visible = false;
         game.add.existing(splash);
-        game.add.tween(splash).to({ alpha: [0.7, 0] }, duration || 400, Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false);
-        game.add.tween(splash.scale).to({ x: [1.2 * (scaleMultiplier || 1)], y: [1.2 * (scaleMultiplier || 1)] }, duration || 400, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false);
+        this.primeForStableShow(splash);
+
+        const startDelay = delay || 0;
+        const totalDuration = duration || 400;
+        const fadeInTime = Math.min(20, totalDuration);
+        const fadeOutTime = Math.max(0, totalDuration - fadeInTime);
+
+        game.time.events.add(startDelay, () => {
+            if ((splash as any).pendingDestroy || splash.exists === false) {
+                return;
+            }
+
+            splash.visible = true;
+            splash.alpha = 0;
+            game.add.tween(splash).to({ alpha: 0.7 }, fadeInTime, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Linear.None, true, 0, 0, false);
+            if (fadeOutTime > 0) {
+                game.add.tween(splash).to({ alpha: 0 }, fadeOutTime, Phaser.Easing.Sinusoidal.In, true, fadeInTime, 0, false);
+            }
+            game.add.tween(splash.scale).to({ x: [1.2 * (scaleMultiplier || 1)], y: [1.2 * (scaleMultiplier || 1)] }, totalDuration, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, 0, 0, false);
+        });
     }
 
     public static highlightCompass(game: Phaser.Game, x: number, y: number, image: string, delay?: number, scaleMultiplier?: number, fadeOutTime?: number) {
@@ -326,12 +385,22 @@ export default class AnimationUtils {
         splash.alpha = 0;
         splash.scale.set(0.5);
         splash.anchor.set(0.5)
+        splash.visible = false;
         game.add.existing(splash);
-        game.add.tween(splash).to({ alpha: [1] }, 200, Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false);
-        splash.alpha = 1;
-        game.add.tween(splash).to({ alpha: 0 }, fadeOutTime || 0, Phaser.Easing.Sinusoidal.Out, true, (delay || 0) + 200, 0, false);
-        splash.alpha = 0;
-        game.add.tween(splash.scale).to({ x: [1.2 * (scaleMultiplier || 1)], y: [1.2 * (scaleMultiplier || 1)] }, 400, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay || 0, 0, false);
+        this.primeForStableShow(splash);
+
+        const startDelay = delay || 0;
+        game.time.events.add(startDelay, () => {
+            if ((splash as any).pendingDestroy || splash.exists === false) {
+                return;
+            }
+
+            splash.visible = true;
+            splash.alpha = 0;
+            game.add.tween(splash).to({ alpha: 1 }, 20, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Linear.None, true, 0, 0, false);
+            game.add.tween(splash).to({ alpha: 0 }, fadeOutTime || 0, Phaser.Easing.Sinusoidal.Out, true, 200, 0, false);
+            game.add.tween(splash.scale).to({ x: [1.2 * (scaleMultiplier || 1)], y: [1.2 * (scaleMultiplier || 1)] }, 400, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, 0, 0, false);
+        });
     }
 
 

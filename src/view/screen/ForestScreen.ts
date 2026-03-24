@@ -481,20 +481,10 @@ export default class ForestScreen extends BaseForestScreen {
 
         let firstRowY = this.cellsProvider.getCells()[0].Y;
         let maxY = firstRowY + this.linesScrolled + CellsProvider.MAX_HEIGHT_WITH_NO_SCROLL - 1;
+        let contentType = cellState.content;
 
         this.justOpenedCells = this.cellsProvider.getCells().filter(cell => cell.state == cellState);
 
-
-        if(this.justOpenedCells[0]){
-            this.justOpenedCells[0].bg.visible = true;
-   
-           if (this.justOpenedCells[0].state.sprite) {
-               this.justOpenedCells[0].state.sprite.visible = true;
-           }
-           if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != "") {
-               this.justOpenedCells[0].state.label.visible = true;
-           }
-        }
 
         //commented
         // this.justOpenedCells[0].bg.visible = true;
@@ -522,6 +512,23 @@ export default class ForestScreen extends BaseForestScreen {
 
         if (!this.topPanel.tryOpenCell(openingType)) {
             return;
+        }
+
+        if(this.justOpenedCells[0]){
+            this.justOpenedCells[0].bg.visible = true;
+            this.justOpenedCells[0].bg.alpha = 1;
+   
+           if (this.justOpenedCells[0].state.sprite) {
+               if (contentType in AnimalsContents || contentType in ItemContents || contentType in InteractiveContents) {
+                   this.justOpenedCells[0].state.sprite.visible = true;
+                   this.justOpenedCells[0].state.sprite.alpha = 1;
+               } else {
+                   AnimationUtils.fadeInStable(this.game, this.justOpenedCells[0].state.sprite);
+               }
+            }
+           if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != "") {
+               AnimationUtils.fadeInStable(this.game, this.justOpenedCells[0].state.label);
+            }
         }
 
         let stepSpend = true;
@@ -618,8 +625,6 @@ export default class ForestScreen extends BaseForestScreen {
         if (this.justOpenedCells[0]) {
             console.log("opened cell (" + this.justOpenedCells[0].X + ", " + this.justOpenedCells[0].Y + ")");
         }
-
-        let contentType = cellState.content;
 
         if (contentType in AnimalsContents) {
             SoundUtils.animalFound();
@@ -1004,22 +1009,32 @@ export default class ForestScreen extends BaseForestScreen {
 
         let adjucentCount = this.cellsProvider.getAdjucentInteractiveCount(this.cellsProvider.getCells(), cell);
         let adjucentClosedCount = this.cellsProvider.getAdjucentClosedCount(this.cellsProvider.getCells(), cell);
+        let shouldShowLabel = false;
         if (adjucentCount == 0) {
             cell.state.label.text = "";
-            cell.state.label.visible = false;
         } else {
             cell.state.label.text = "" + adjucentCount;
             if(cell.state.opened){
-                cell.state.label.visible = true;
+                shouldShowLabel = true;
             }
             cell.state.adjucentValueProbability = adjucentClosedCount > 0? adjucentCount/adjucentClosedCount : 0;
         }
 
         if (ForestUtils.getBoosterContentType(cell.type)) {
-            cell.state.label.visible = false;
+            shouldShowLabel = false;
         }
 
         if (ForestUtils.isCoverFreeNotBoosterItem(cell.type)) {
+            shouldShowLabel = false;
+        }
+
+        if (shouldShowLabel) {
+            if (!cell.state.label.visible) {
+                AnimationUtils.fadeInStable(this.game, cell.state.label);
+            } else {
+                cell.state.label.visible = true;
+            }
+        } else {
             cell.state.label.visible = false;
         }
     }

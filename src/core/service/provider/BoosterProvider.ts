@@ -71,8 +71,8 @@ export default class BoostersProvider {
                 firstWave.forEach(c => {
                     // AnimationUtils.tint(this.game, c.state.cover.cover, 0xffffff, 0xffaaff, 300, 0);
                     // this.game.add.tween(c.state.cover.cover).to({ tint: 0xaaaaaa }, 300, Phaser.Easing.Linear.None, true, 0, 0, false)
-                    c.bg.visible = true;
-                    c.state.sprite.visible = true;
+                    AnimationUtils.fadeInStable(this.game, c.bg, delay);
+                    AnimationUtils.fadeInStable(this.game, c.state.sprite, delay);
                     this.game.add.tween(c.state.cover).to({ alpha: [0, 0.15, 0, 0.15, 0, 0.15, 0, 0.15, 0, 0.15, 0, 0.5, 1] }, firstDuration + secondDuration, Phaser.Easing.Linear.None, true, delay, 0, false)
                     if (c.state.label.alpha > 0 && c.state.label.visible) {
                         this.game.time.events.add(delay, () => { c.state.label.alpha = 0 })
@@ -86,8 +86,8 @@ export default class BoostersProvider {
 
                 let secondDelay = -200;
                 secondWave.forEach(c => {
-                    c.bg.visible = true;
-                    c.state.sprite.visible = true;
+                    AnimationUtils.fadeInStable(this.game, c.bg, firstDuration + delay + secondDelay);
+                    AnimationUtils.fadeInStable(this.game, c.state.sprite, firstDuration + delay + secondDelay);
                     // AnimationUtils.tint(this.game, c.state.cover.cover, 0xffffff, 0xffaaff, 300, 0);
                     // this.game.add.tween(c.state.cover.cover).to({ tint: 0xaaaaaa }, 300, Phaser.Easing.Linear.None, true, 0, 0, false)
                     this.game.add.tween(c.state.cover).to({ alpha: [0, 0.15, 0, 0.15, 0, 0.5, 1] }, secondDuration, Phaser.Easing.Linear.None, true, firstDuration + delay + secondDelay, 0, false)
