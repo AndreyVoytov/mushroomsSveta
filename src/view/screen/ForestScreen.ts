@@ -515,13 +515,11 @@ export default class ForestScreen extends BaseForestScreen {
         }
 
         if(this.justOpenedCells[0]){
-            this.justOpenedCells[0].bg.visible = true;
-            this.justOpenedCells[0].bg.alpha = 1;
+            AnimationUtils.showStable(this.justOpenedCells[0].bg);
    
            if (this.justOpenedCells[0].state.sprite) {
                if (contentType in AnimalsContents || contentType in ItemContents || contentType in InteractiveContents) {
-                   this.justOpenedCells[0].state.sprite.visible = true;
-                   this.justOpenedCells[0].state.sprite.alpha = 1;
+                   AnimationUtils.showStable(this.justOpenedCells[0].state.sprite);
                } else {
                    AnimationUtils.fadeInStable(this.game, this.justOpenedCells[0].state.sprite);
                }
@@ -534,6 +532,7 @@ export default class ForestScreen extends BaseForestScreen {
         let stepSpend = true;
 
         cellState.opened = true;
+        cellState.cover.resetOpeningLeafAnimation();
         cellState.cover.visible = false;
         cellState.cover.openableCover.kill();
         cellState.cover.darkCover.kill();
@@ -680,14 +679,11 @@ export default class ForestScreen extends BaseForestScreen {
             if (contentType == ContentType.lilly) {
                 let cell = this.justOpenedCells[0];
                 cell.state.content = ContentType.wlilly1;
-
-                this.game.time.events.add(2, () => {
-                    cell.state.sprite = cell.state.underSprite;
-                })
+                cell.state.sprite = cell.state.underSprite;
 
                 this.refreshLabelForCell(cell);
 
-                AnimationUtils.appear(this.game, cell.state.underSprite, 500)
+                AnimationUtils.fadeInStable(this.game, cell.state.underSprite, 0, 20)
                 AnimationUtils.appear(this.game, cell.state.label, 500)
             } else {
                 cellState.content = ContentType.empty;

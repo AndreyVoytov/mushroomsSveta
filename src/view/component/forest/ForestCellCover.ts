@@ -346,6 +346,21 @@ export default class ForestCellCover extends Phaser.Group {
 
     }
 
+    public resetOpeningLeafAnimation(): void {
+        if (!this.leaf) {
+            return;
+        }
+
+        switch (this.cellType) {
+            case CellType.WATER:
+            case CellType.BOAT:
+                this.game.tweens.removeFrom(this.leaf);
+                this.leaf.scale.set(1.5, 1.5);
+                this.leaf.angle = 0;
+                break;
+        }
+    }
+
     public makeDark(): void {
         this.darkCover.alpha = 0.001;
         

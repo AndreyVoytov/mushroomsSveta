@@ -48,6 +48,16 @@ export default class AnimationUtils {
         });
     }
 
+    public static showStable(target: FadeTarget, finalAlpha?: number): void {
+        if (!target) {
+            return;
+        }
+
+        this.primeForStableShow(target);
+        target.visible = true;
+        target.alpha = finalAlpha == null ? 1 : finalAlpha;
+    }
+
     public static tint(game: Phaser.Game, sprite: TintedTarget, startColor: number, endColor: number, time: number, delay: number) {
         var colorBlend = { step: 0 };
         var colorTween = game.add.tween(colorBlend).to({ step: 100 }, time);

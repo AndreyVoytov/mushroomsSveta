@@ -26,8 +26,8 @@ export default class CellsPainter extends CellsProvider {
             underSprite.width = BaseCellsProvider.CELL_WIDTH;
             underSprite.height = BaseCellsProvider.CELL_HEIGHT;
             screen.add.existing(underSprite);
-            // underSprite.width = 0;
-            // underSprite.height = 0;
+            underSprite.visible = false;
+            underSprite.alpha = 0;
             cell.state.underSprite = underSprite;
         }
 
