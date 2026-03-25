@@ -684,7 +684,7 @@ export default class ForestScreen extends BaseForestScreen {
                 this.refreshLabelForCell(cell);
 
                 AnimationUtils.fadeInStable(this.game, cell.state.underSprite, 0, 20)
-                AnimationUtils.appear(this.game, cell.state.label, 500)
+                AnimationUtils.fadeInStable(this.game, cell.state.label, 500, 20)
             } else {
                 cellState.content = ContentType.empty;
             }
@@ -1649,7 +1649,7 @@ export default class ForestScreen extends BaseForestScreen {
 
                 this.refreshLabelForCell(c);
                 AnimationUtils.appear(this.game, c.state.sprite, delay)
-                AnimationUtils.appear(this.game, c.state.label, delay)
+                AnimationUtils.fadeInStable(this.game, c.state.label, delay, 20)
                 delay += 100;
             }
         })
