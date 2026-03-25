@@ -215,7 +215,7 @@ export default class ForestCellCover extends Phaser.Group {
             this.decoration.inputEnabled = false;
             this.addChild(this.decoration);
             if(!AdminService.cacheComplexImages()){
-                AnimationUtils.fadeIn(this.game, this.decoration)
+                AnimationUtils.fadeInStable(this.game, this.decoration, 0, 300)
             }
             this.locked = true;
         }
