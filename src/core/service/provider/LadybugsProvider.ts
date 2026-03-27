@@ -160,6 +160,8 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
     }
 
     public touchAcorn(a: Movable) {
+        a.sprite.bringToTop();
+
         if (a.touchedTimes == 1) {
             //желудь прорастает
             AnimationUtils.disappear(this.game, a.sprite);
@@ -167,12 +169,13 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
             this.screen.topPanel.decreaseCounter(AimType.acorn);
 
             let isHouse = this.screen.getForestType().environment == Environment.house;
-            let newCell = (<ForestScreen>this.screen).spawnNewCellAt(a.X, a.Y, isHouse? "hexChest": "leaf4" );
+            let newCell = (<ForestScreen>this.screen).spawnNewCellAt(a.X, a.Y, isHouse? "hexChest": "leaf4", true);
             // let newCell = (<ForestScreen>this.screen).spawnNewCellAt(a.X, a.Y, "leaf4");
             AnimationUtils.petalsBurst(this.game, newCell.state.sprite.x, newCell.state.sprite.y, ["petalBrown"]);
             AnimationUtils.highlight(this.game, newCell.state.sprite.x, newCell.state.sprite.y, "splashY")
             // AnimationUtils.appear(this.game, newCell.state.label)
 
+            a.sprite.bringToTop();
             this.screen.bringUiToTop();
 
             a.touchedTimes = 2;
@@ -181,6 +184,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
 
         } else if (a.touchedTimes == 0) {
             a.sprite.loadTexture(SpriteUtils.key("acorn2"), SpriteUtils.frame("acorn2"));
+            a.sprite.bringToTop();
             a.touchedTimes = 1;
 
             SoundUtils.touchAcorn2();

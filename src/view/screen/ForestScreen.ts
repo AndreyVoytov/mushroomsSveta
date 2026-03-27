@@ -1145,7 +1145,7 @@ export default class ForestScreen extends BaseForestScreen {
         });
     }
 
-    public spawnNewCellAt(X: number, Y: number, leaf: string): ForestCell {
+    public spawnNewCellAt(X: number, Y: number, leaf: string, keepBgDuringSpawn?: boolean): ForestCell {
         let cell = this.cellsProvider.getCells().filter(c => c.X == X && c.Y == Y).shift();
         Utils.delete(this.cellsProvider.getCells(), cell);
 
@@ -1170,6 +1170,15 @@ export default class ForestScreen extends BaseForestScreen {
 
         this.cellsProvider.getCells().push(newCell);
         this.drawCell(newCell)
+        if (keepBgDuringSpawn) {
+            AnimationUtils.showStable(newCell.bg);
+            this.game.time.events.add(350, () => {
+                if (!ForestUtils.isCoverFreeNotBoosterItem(newCell.type) && !ForestUtils.isBoosterType(newCell.type)
+                    && !AdminService.isTransparentMode()) {
+                    newCell.bg.visible = false;
+                }
+            })
+        }
         AnimationUtils.appear(this.game, newCell.state.sprite, 300)
         AnimationUtils.appear(this.game, newCell.state.cover, 300)
 
