@@ -872,6 +872,7 @@ export default class ForestUtils {
                 case ItemContents.lilly:  
                     return [BiomType.WATER];
                 case ItemContents.goldRoot:
+                    return [BiomType.FOREST];
                 case ItemContents.lavanda:  
                     return [BiomType.MOUNTAIN];
                 case ItemContents.emerald:  
