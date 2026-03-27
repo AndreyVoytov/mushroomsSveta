@@ -81,7 +81,7 @@ export default class AimsStartPanel extends BasePanel {
         let time = 500;
         let showFor = 1300;
         this.game.add.tween(this).to({ y: [this.game.height / 2 + 50, this.game.height / 2] }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, delay, 0, false);
-        SoundUtils.fastPanelWhooshIn(delay + time - 200);
+        SoundUtils.fastPanelWhooshIn(delay);
         this.game.time.events.add(time + delay + (showFor), () => {
             if (!this.aimsPanelShowed) {
                 this.aimsPanelShowed = true;
