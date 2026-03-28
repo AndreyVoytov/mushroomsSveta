@@ -13,13 +13,16 @@ import OpeningType from '../../../core/model/enum/OpeningType';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import { ContentType, ItemContents } from '../../../core/model/enum/ContentType';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
-import ForestScreen from '../../screen/ForestScreen';
 import BaseForestScreen from '../../screen/BaseForestScreen';
 import Settings from '../../../core/service/Settings';
 import AdminService from './../../../core/service/AdminService';
+import UserService from '../../../core/service/UserService';
 export default class ForestTopPanel extends BasePanel {
 
     private energyCount: number;
+    private levelEnergySpent: number;
+    private levelEnergyRefunded: number;
+    private levelStepsTarget: number;
     private energyLabel: Label;
     private forestType: ForestType;
     private screen: BaseForestScreen;
@@ -34,7 +37,10 @@ export default class ForestTopPanel extends BasePanel {
         this.forestType = forestType;
 
         this.aims = ForestUtils.getAims(forestType);
-        this.energyCount = forestType.steps;
+        this.levelStepsTarget = forestType.steps;
+        this.levelEnergySpent = 0;
+        this.levelEnergyRefunded = 0;
+        this.energyCount = UserService.getUser().getEnergy();
 
         let topPanel = SpriteUtils.createSprite(this.game, this.game.width / 2, 0, 'topPanel');
         topPanel.anchor = new Phaser.Point(0.5, 0);
@@ -44,25 +50,41 @@ export default class ForestTopPanel extends BasePanel {
         topPanelFrame.anchor = new Phaser.Point(0.5, 0);
         this.addSprite(topPanelFrame);
 
-        this.steps = SpriteUtils.createSprite(this.game, 100, 55, 'steps');
+        this.steps = SpriteUtils.createSprite(this.game, 96, 55, 'lightning');
         this.steps.anchor = new Phaser.Point(0.5, 0.5);
+        this.steps.scale.set(0.54);
         this.steps.alpha = 0.8;
+        this.steps.inputEnabled = true;
+        this.steps.events.onInputDown.add(() => this.screen.showEnergyPanel(), this);
         this.addSprite(this.steps);
 
         this.addSprite(this.energyLabel = new Label(this.game, 193, 62, "" + this.energyCount, Label.COMMON_BIG_STYLE));
         this.energyLabel.anchor = new Phaser.Point(0.5, 0.5);
         this.energyLabel.addStrokeColor("#924d1d", 0);
         this.energyLabel.strokeThickness = 4;
+        this.energyLabel.inputEnabled = true;
+        this.energyLabel.events.onInputDown.add(() => this.screen.showEnergyPanel(), this);
         let step = this.aims.length == 3 ? 165 : 222;
 
         let shiftX = this.aims.length == 1 ? 108 : (this.aims.length == 2 ? 0 : -55);
         this.aims.forEach((aim, i) => {
             this.addAimWithLabel(aim, shiftX + i * step);
-        })
+        });
+
+        this.game.time.events.loop(1000, () => this.refreshEnergyLabel());
+        this.refreshEnergyLabel();
     }
 
     public getStepsLeft(): number {
-        return this.energyCount;
+        return Math.max(0, this.levelStepsTarget - this.getNetLevelEnergySpent());
+    }
+
+    public getSpentEnergy(): number {
+        return Math.max(0, this.getNetLevelEnergySpent());
+    }
+
+    public getTargetSteps(): number {
+        return this.levelStepsTarget;
     }
 
     public getAims(): ForestAim[] {
@@ -163,24 +185,43 @@ export default class ForestTopPanel extends BasePanel {
                     throw new NeverError(openingType);
             }
         }
-        this.energyCount += addition;
-        this.energyLabel.text = "" + this.energyCount;
+        if (addition <= 0) {
+            return;
+        }
+
+        const user = UserService.getUser();
+        const previousEnergy = user.getEnergy();
+        user.addEnergy(addition, false);
+        const restoredEnergy = Math.max(0, user.getEnergy() - previousEnergy);
+        this.levelEnergyRefunded += restoredEnergy;
+        this.refreshEnergyLabel();
     }
 
     public isNoStepsLeft(): boolean {
-        return this.energyCount <= 0;
+        return UserService.getUser().getEnergy() <= 0;
     }
 
     public tryOpenCell(openingType: OpeningType): boolean {
         if (openingType == OpeningType.usual) {
-            if (this.energyCount == 0) {
+            if (!UserService.getUser().spendEnergy()) {
+                this.refreshEnergyLabel();
+                this.screen.showEnergyPanel();
                 return false;
             }
-            this.energyCount--;
+            this.levelEnergySpent++;
         }
 
-        this.energyLabel.text = "" + this.energyCount;
+        this.refreshEnergyLabel();
         return true;
+    }
+
+    public refreshEnergyLabel(): void {
+        this.energyCount = UserService.getUser().getEnergy();
+        this.energyLabel.text = "" + this.energyCount;
+    }
+
+    private getNetLevelEnergySpent(): number {
+        return this.levelEnergySpent - this.levelEnergyRefunded;
     }
 
     public decreaseCounter(type: AimType) {

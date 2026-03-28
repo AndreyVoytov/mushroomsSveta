@@ -292,6 +292,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('helperPanel2', 'assets/base/ui/helperPanel2.png');
         this.loadImage('steps', 'assets/base/ui/steps.png');
         this.loadImage('heart', 'assets/base/ui/heart.png');
+        this.loadImage('lightning', 'assets/base/ui/lightnin_draft.png');
         this.loadImage('gems', 'assets/base/ui/gems.png');
         this.loadImage('gemsCloud', 'assets/base/ui/gemsCloud.png');
         this.loadImage('keyUI', 'assets/base/ui/key.png');

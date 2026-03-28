@@ -24,7 +24,6 @@ import ForestDao from '../../core/dao/ForestDao';
 import RecipeUtils from '../../core/utils/RecipeUtils';
 import ServerStoreComponent from '../../core/service/store/ServerStoreComponent';
 import SpriteUtils from '../../core/utils/SpriteUtils';
-import NoLifesPanel from '../component/house/NoLifesPanel';
 import AllLevelsCompletePanel from '../component/house/AllLevelsCompletePanel';
 import Skewable from '../component/panel/Skewable';
 import Utils from '../../core/utils/Utils';
@@ -182,10 +181,6 @@ export default class HouseScreen extends DialogScreen {
                 let infoPanel = new AllLevelsCompletePanel(this.game, this)
                 this.addPanel(infoPanel);
                 infoPanel.show();
-            } else if (user.getLifes() == 0) {
-                let noLifesPanel = new NoLifesPanel(this.game, this, ()=>{this.startLevelPanel.show()})
-                this.addPanel(noLifesPanel);
-                noLifesPanel.show();
             } else{
                 this.startLevelPanel.show();
             }
@@ -660,7 +655,6 @@ export default class HouseScreen extends DialogScreen {
         trees.fixedToCamera = true;
         this.add.existing(trees);
         this.game.time.events.add(time*2, () => {
-            UserService.getUser().spendLife();
             this.startScreen(ForestScreen, true, false);
         })
     }

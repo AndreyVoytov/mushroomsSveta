@@ -7,6 +7,7 @@ import EverydayRubyPanel from '../../../view/component/house/EverydayRubyPanel';
 import SoundUtils from '../../utils/SoundUtils';
 import EventInfo from './../event/EventInfo';
 import Utils from './../../utils/Utils';
+import EnergyUtils from '../../utils/EnergyUtils';
 export default class User {
 
     public createdAt: string = new Date().toISOString();
@@ -20,6 +21,7 @@ export default class User {
     private supermoney: number = 300;
     private keys: number = 0;
     private lifes: number = 5;
+    private energy: number = EnergyUtils.START_ENERGY;
     private currentForest: number = 0;
     private currentReplica: number = 0;
     private friendsInGame:number = 0;
@@ -32,6 +34,9 @@ export default class User {
     private justCompletedLevel: boolean = false;
 
     private lastRegenerationAt: number = Date.now();
+    private lastEnergyRegenerationAt: number = Date.now();
+    private energyPurchaseDayId: string = EnergyUtils.getMoscowDayId();
+    private energyPurchasesToday: number = 0;
 
     private markers: string[] = [];
     private completedReplicas: string[] = [];
@@ -62,7 +67,11 @@ export default class User {
             // this.compasses = user.compasses;
             this.keys = user.keys;
             this.lifes = user.lifes;
+            this.energy = user.energy == null ? EnergyUtils.START_ENERGY : user.energy;
             this.lastRegenerationAt = user.lastRegenerationAt;
+            this.lastEnergyRegenerationAt = user.lastEnergyRegenerationAt || Date.now();
+            this.energyPurchaseDayId = user.energyPurchaseDayId || EnergyUtils.getMoscowDayId();
+            this.energyPurchasesToday = user.energyPurchasesToday || 0;
             this.currentReplica = user.currentReplica;
             this.markers = user.markers;
             this.completedReplicas = user.completedReplicas;
@@ -277,6 +286,108 @@ export default class User {
     //     }
     //     UserManager.saveUser(this);
     // }
+
+    //energy
+    public getEnergy(): number {
+        this.updateEnergy();
+        return this.energy;
+    }
+
+    public getLastEnergyRegenerationAt(): number {
+        this.updateEnergy();
+        return this.lastEnergyRegenerationAt;
+    }
+
+    public getEnergyPurchasesToday(): number {
+        this.resetDailyEnergyPurchasesIfNeeded();
+        return this.energyPurchasesToday;
+    }
+
+    public getCurrentEnergyPurchasePrice(): number {
+        return EnergyUtils.getEnergyPurchasePrice(this.getEnergyPurchasesToday());
+    }
+
+    public addEnergy(amount: number, allowOverflow?: boolean): void {
+        this.updateEnergy();
+
+        const nextEnergy = Math.max(0, this.energy + amount);
+        this.energy = allowOverflow === false ? Math.min(EnergyUtils.MAX_ENERGY, nextEnergy) : nextEnergy;
+
+        if (this.energy >= EnergyUtils.MAX_ENERGY) {
+            this.lastEnergyRegenerationAt = Date.now();
+        }
+
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public spendEnergy(amount?: number): boolean {
+        this.updateEnergy();
+
+        const energyToSpend = amount == null ? 1 : Math.max(0, amount);
+        if (energyToSpend == 0) {
+            return true;
+        }
+
+        if (this.energy < energyToSpend) {
+            return false;
+        }
+
+        const nextEnergy = this.energy - energyToSpend;
+        if (this.energy >= EnergyUtils.MAX_ENERGY && nextEnergy < EnergyUtils.MAX_ENERGY) {
+            this.lastEnergyRegenerationAt = Date.now();
+        }
+
+        this.energy = nextEnergy;
+        ServerStoreComponent.saveLocalUser(this);
+        return true;
+    }
+
+    public buyEnergyPack(): boolean {
+        this.resetDailyEnergyPurchasesIfNeeded();
+
+        const price = this.getCurrentEnergyPurchasePrice();
+        if (this.supermoney < price) {
+            return false;
+        }
+
+        this.supermoney -= price;
+        this.energy += EnergyUtils.ENERGY_PER_PURCHASE;
+        this.energyPurchasesToday++;
+        this.lastEnergyRegenerationAt = Date.now();
+
+        ServerStoreComponent.saveLocalUser(this);
+        return true;
+    }
+
+    private updateEnergy(): void {
+        this.resetDailyEnergyPurchasesIfNeeded();
+
+        if (this.energy >= EnergyUtils.MAX_ENERGY) {
+            return;
+        }
+
+        let energyToRegenerate = Math.floor((Date.now() - this.lastEnergyRegenerationAt) / EnergyUtils.MILLIS_FOR_ENERGY);
+        if (energyToRegenerate <= 0) {
+            return;
+        }
+
+        energyToRegenerate = Math.min(EnergyUtils.MAX_ENERGY - this.energy, energyToRegenerate);
+        this.energy += energyToRegenerate;
+        this.lastEnergyRegenerationAt += EnergyUtils.MILLIS_FOR_ENERGY * energyToRegenerate;
+
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
+    private resetDailyEnergyPurchasesIfNeeded(): void {
+        const currentDayId = EnergyUtils.getMoscowDayId();
+        if (this.energyPurchaseDayId == currentDayId) {
+            return;
+        }
+
+        this.energyPurchaseDayId = currentDayId;
+        this.energyPurchasesToday = 0;
+        ServerStoreComponent.saveLocalUser(this);
+    }
 
     //lifes
     public getLifes(): number {

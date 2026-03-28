@@ -279,8 +279,6 @@ export default class StartLevelPanel extends ClosablePanel {
         trees.fixedToCamera = true;
         this.screen.add.existing(trees);
         this.game.time.events.add(time * 2, () => {
-            let user = UserService.getUser();
-            user.spendLife();
             AnalyticUtils.logLevelStart()
             this.screen.startScreen(ForestScreen, true, false);
         }, this)
@@ -292,7 +290,6 @@ export default class StartLevelPanel extends ClosablePanel {
         this.screen.add.existing(trees);
         ForestScreen.skipNextTime = true;
         this.game.time.events.add(time*2, function () {
-            UserService.getUser().spendLife();
             this.screen.startScreen(ForestScreen, true, false);
         }, this)
     }

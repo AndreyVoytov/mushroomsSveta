@@ -3,7 +3,7 @@
                    "base/action/actionBoots.png":  {
                                                        "frame":  {
                                                                      "x":  994,
-                                                                     "y":  766,
+                                                                     "y":  891,
                                                                      "w":  100,
                                                                      "h":  100
                                                                  },
@@ -26,8 +26,8 @@
                                                    },
                    "base/action/cat.png":  {
                                                "frame":  {
-                                                             "x":  1141,
-                                                             "y":  517,
+                                                             "x":  775,
+                                                             "y":  646,
                                                              "w":  124,
                                                              "h":  124
                                                          },
@@ -51,7 +51,7 @@
                    "base/fonts/bitmap/bm_diary_digits.png":  {
                                                                  "frame":  {
                                                                                "x":  1,
-                                                                               "y":  1120,
+                                                                               "y":  1245,
                                                                                "w":  1024,
                                                                                "h":  57
                                                                            },
@@ -75,7 +75,7 @@
                    "base/hex/hexChest.png":  {
                                                  "frame":  {
                                                                "x":  718,
-                                                               "y":  874,
+                                                               "y":  999,
                                                                "w":  90,
                                                                "h":  84
                                                            },
@@ -99,7 +99,7 @@
                    "base/hex/hexChestG.png":  {
                                                   "frame":  {
                                                                 "x":  460,
-                                                                "y":  971,
+                                                                "y":  1096,
                                                                 "w":  94,
                                                                 "h":  77
                                                             },
@@ -123,7 +123,7 @@
                    "base/items/boosters/halfrocket.png":  {
                                                               "frame":  {
                                                                             "x":  1274,
-                                                                            "y":  1051,
+                                                                            "y":  1176,
                                                                             "w":  53,
                                                                             "h":  59
                                                                         },
@@ -144,9 +144,249 @@
                                                                             "y":  0.5
                                                                         }
                                                           },
+                   "base/items/boosters/rainbow.png":  {
+                                                           "frame":  {
+                                                                         "x":  1,
+                                                                         "y":  1,
+                                                                         "w":  120,
+                                                                         "h":  127
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  120,
+                                                                                    "h":  127
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  120,
+                                                                              "h":  127
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "base/items/boosters/rocket1.png":  {
+                                                           "frame":  {
+                                                                         "x":  123,
+                                                                         "y":  1,
+                                                                         "w":  120,
+                                                                         "h":  127
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  120,
+                                                                                    "h":  127
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  120,
+                                                                              "h":  127
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "base/items/boosters/rocket2.png":  {
+                                                           "frame":  {
+                                                                         "x":  245,
+                                                                         "y":  1,
+                                                                         "w":  120,
+                                                                         "h":  127
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  120,
+                                                                                    "h":  127
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  120,
+                                                                              "h":  127
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "base/items/boosters/rocket3.png":  {
+                                                           "frame":  {
+                                                                         "x":  367,
+                                                                         "y":  1,
+                                                                         "w":  120,
+                                                                         "h":  127
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  120,
+                                                                                    "h":  127
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  120,
+                                                                              "h":  127
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "base/items/boosters/vision.png":  {
+                                                          "frame":  {
+                                                                        "x":  489,
+                                                                        "y":  1,
+                                                                        "w":  120,
+                                                                        "h":  127
+                                                                    },
+                                                          "rotated":  false,
+                                                          "trimmed":  false,
+                                                          "spriteSourceSize":  {
+                                                                                   "x":  0,
+                                                                                   "y":  0,
+                                                                                   "w":  120,
+                                                                                   "h":  127
+                                                                               },
+                                                          "sourceSize":  {
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                          "pivot":  {
+                                                                        "x":  0.5,
+                                                                        "y":  0.5
+                                                                    }
+                                                      },
+                   "base/items/bug1.png":  {
+                                               "frame":  {
+                                                             "x":  611,
+                                                             "y":  1,
+                                                             "w":  120,
+                                                             "h":  127
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  120,
+                                                                        "h":  127
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "base/items/bug2.png":  {
+                                               "frame":  {
+                                                             "x":  733,
+                                                             "y":  1,
+                                                             "w":  120,
+                                                             "h":  127
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  120,
+                                                                        "h":  127
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "base/items/bug3.png":  {
+                                               "frame":  {
+                                                             "x":  855,
+                                                             "y":  1,
+                                                             "w":  120,
+                                                             "h":  127
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  120,
+                                                                        "h":  127
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "base/items/bush.png":  {
+                                               "frame":  {
+                                                             "x":  977,
+                                                             "y":  1,
+                                                             "w":  120,
+                                                             "h":  127
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  120,
+                                                                        "h":  127
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "base/items/bush2.png":  {
+                                                "frame":  {
+                                                              "x":  1099,
+                                                              "y":  1,
+                                                              "w":  120,
+                                                              "h":  127
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  120,
+                                                                         "h":  127
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  120,
+                                                                   "h":  127
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
                    "base/items/bushberry.png":  {
                                                     "frame":  {
-                                                                  "x":  1,
+                                                                  "x":  1221,
                                                                   "y":  1,
                                                                   "w":  120,
                                                                   "h":  127
@@ -170,7 +410,7 @@
                                                 },
                    "base/items/butterfly.png":  {
                                                     "frame":  {
-                                                                  "x":  123,
+                                                                  "x":  1343,
                                                                   "y":  1,
                                                                   "w":  120,
                                                                   "h":  127
@@ -194,7 +434,7 @@
                                                 },
                    "base/items/butterfly2.png":  {
                                                      "frame":  {
-                                                                   "x":  245,
+                                                                   "x":  1465,
                                                                    "y":  1,
                                                                    "w":  120,
                                                                    "h":  127
@@ -218,7 +458,7 @@
                                                  },
                    "base/items/cactus.png":  {
                                                  "frame":  {
-                                                               "x":  367,
+                                                               "x":  1587,
                                                                "y":  1,
                                                                "w":  120,
                                                                "h":  127
@@ -242,7 +482,7 @@
                                              },
                    "base/items/candy.png":  {
                                                 "frame":  {
-                                                              "x":  489,
+                                                              "x":  1709,
                                                               "y":  1,
                                                               "w":  120,
                                                               "h":  127
@@ -266,7 +506,7 @@
                                             },
                    "base/items/cankerberry.png":  {
                                                       "frame":  {
-                                                                    "x":  611,
+                                                                    "x":  1831,
                                                                     "y":  1,
                                                                     "w":  120,
                                                                     "h":  127
@@ -290,8 +530,8 @@
                                                   },
                    "base/items/catHex.png":  {
                                                  "frame":  {
-                                                               "x":  733,
-                                                               "y":  1,
+                                                               "x":  1,
+                                                               "y":  130,
                                                                "w":  120,
                                                                "h":  127
                                                            },
@@ -314,8 +554,8 @@
                                              },
                    "base/items/chamomileSmall.png":  {
                                                          "frame":  {
-                                                                       "x":  855,
-                                                                       "y":  1,
+                                                                       "x":  123,
+                                                                       "y":  130,
                                                                        "w":  120,
                                                                        "h":  127
                                                                    },
@@ -338,8 +578,8 @@
                                                      },
                    "base/items/chamomileSmall_.png":  {
                                                           "frame":  {
-                                                                        "x":  977,
-                                                                        "y":  1,
+                                                                        "x":  245,
+                                                                        "y":  130,
                                                                         "w":  120,
                                                                         "h":  127
                                                                     },
@@ -362,8 +602,8 @@
                                                       },
                    "base/items/clover.png":  {
                                                  "frame":  {
-                                                               "x":  1099,
-                                                               "y":  1,
+                                                               "x":  367,
+                                                               "y":  130,
                                                                "w":  120,
                                                                "h":  127
                                                            },
@@ -386,8 +626,8 @@
                                              },
                    "base/items/crab.png":  {
                                                "frame":  {
-                                                             "x":  1221,
-                                                             "y":  1,
+                                                             "x":  489,
+                                                             "y":  130,
                                                              "w":  120,
                                                              "h":  127
                                                          },
@@ -410,8 +650,8 @@
                                            },
                    "base/items/dragonfly.png":  {
                                                     "frame":  {
-                                                                  "x":  1343,
-                                                                  "y":  1,
+                                                                  "x":  611,
+                                                                  "y":  130,
                                                                   "w":  120,
                                                                   "h":  127
                                                               },
@@ -434,8 +674,8 @@
                                                 },
                    "base/items/duck.png":  {
                                                "frame":  {
-                                                             "x":  1465,
-                                                             "y":  1,
+                                                             "x":  733,
+                                                             "y":  130,
                                                              "w":  120,
                                                              "h":  127
                                                          },
@@ -458,8 +698,8 @@
                                            },
                    "base/items/emerald.png":  {
                                                   "frame":  {
-                                                                "x":  1587,
-                                                                "y":  1,
+                                                                "x":  855,
+                                                                "y":  130,
                                                                 "w":  120,
                                                                 "h":  127
                                                             },
@@ -482,8 +722,8 @@
                                               },
                    "base/items/feather.png":  {
                                                   "frame":  {
-                                                                "x":  1709,
-                                                                "y":  1,
+                                                                "x":  977,
+                                                                "y":  130,
                                                                 "w":  120,
                                                                 "h":  127
                                                             },
@@ -506,8 +746,8 @@
                                               },
                    "base/items/fish.png":  {
                                                "frame":  {
-                                                             "x":  1831,
-                                                             "y":  1,
+                                                             "x":  1099,
+                                                             "y":  130,
                                                              "w":  120,
                                                              "h":  127
                                                          },
@@ -530,7 +770,7 @@
                                            },
                    "base/items/goldRoot.png":  {
                                                    "frame":  {
-                                                                 "x":  1,
+                                                                 "x":  1221,
                                                                  "y":  130,
                                                                  "w":  120,
                                                                  "h":  127
@@ -554,7 +794,7 @@
                                                },
                    "base/items/greenApple.png":  {
                                                      "frame":  {
-                                                                   "x":  123,
+                                                                   "x":  1343,
                                                                    "y":  130,
                                                                    "w":  120,
                                                                    "h":  127
@@ -578,7 +818,7 @@
                                                  },
                    "base/items/hat.png":  {
                                               "frame":  {
-                                                            "x":  245,
+                                                            "x":  1465,
                                                             "y":  130,
                                                             "w":  120,
                                                             "h":  127
@@ -602,7 +842,7 @@
                                           },
                    "base/items/hedgehog.png":  {
                                                    "frame":  {
-                                                                 "x":  367,
+                                                                 "x":  1587,
                                                                  "y":  130,
                                                                  "w":  120,
                                                                  "h":  127
@@ -626,7 +866,7 @@
                                                },
                    "base/items/hexDiary.png":  {
                                                    "frame":  {
-                                                                 "x":  489,
+                                                                 "x":  1709,
                                                                  "y":  130,
                                                                  "w":  120,
                                                                  "h":  127
@@ -650,7 +890,7 @@
                                                },
                    "base/items/hive.png":  {
                                                "frame":  {
-                                                             "x":  611,
+                                                             "x":  1831,
                                                              "y":  130,
                                                              "w":  120,
                                                              "h":  127
@@ -674,8 +914,8 @@
                                            },
                    "base/items/homeHex.png":  {
                                                   "frame":  {
-                                                                "x":  733,
-                                                                "y":  130,
+                                                                "x":  1,
+                                                                "y":  259,
                                                                 "w":  120,
                                                                 "h":  127
                                                             },
@@ -698,8 +938,8 @@
                                               },
                    "base/items/honey.png":  {
                                                 "frame":  {
-                                                              "x":  855,
-                                                              "y":  130,
+                                                              "x":  123,
+                                                              "y":  259,
                                                               "w":  120,
                                                               "h":  127
                                                           },
@@ -722,8 +962,8 @@
                                             },
                    "base/items/honey2.png":  {
                                                  "frame":  {
-                                                               "x":  977,
-                                                               "y":  130,
+                                                               "x":  245,
+                                                               "y":  259,
                                                                "w":  120,
                                                                "h":  127
                                                            },
@@ -746,8 +986,8 @@
                                              },
                    "base/items/key.png":  {
                                               "frame":  {
-                                                            "x":  1099,
-                                                            "y":  130,
+                                                            "x":  367,
+                                                            "y":  259,
                                                             "w":  120,
                                                             "h":  127
                                                         },
@@ -770,8 +1010,8 @@
                                           },
                    "base/items/ladybug.png":  {
                                                   "frame":  {
-                                                                "x":  1221,
-                                                                "y":  130,
+                                                                "x":  489,
+                                                                "y":  259,
                                                                 "w":  120,
                                                                 "h":  127
                                                             },
@@ -794,8 +1034,8 @@
                                               },
                    "base/items/ladybug_.png":  {
                                                    "frame":  {
-                                                                 "x":  1343,
-                                                                 "y":  130,
+                                                                 "x":  611,
+                                                                 "y":  259,
                                                                  "w":  120,
                                                                  "h":  127
                                                              },
@@ -818,8 +1058,8 @@
                                                },
                    "base/items/lavanda.png":  {
                                                   "frame":  {
-                                                                "x":  1465,
-                                                                "y":  130,
+                                                                "x":  733,
+                                                                "y":  259,
                                                                 "w":  120,
                                                                 "h":  127
                                                             },
@@ -842,8 +1082,8 @@
                                               },
                    "base/items/lilly.png":  {
                                                 "frame":  {
-                                                              "x":  1587,
-                                                              "y":  130,
+                                                              "x":  855,
+                                                              "y":  259,
                                                               "w":  120,
                                                               "h":  127
                                                           },
@@ -866,8 +1106,8 @@
                                             },
                    "base/items/lockpick.png":  {
                                                    "frame":  {
-                                                                 "x":  1709,
-                                                                 "y":  130,
+                                                                 "x":  977,
+                                                                 "y":  259,
                                                                  "w":  120,
                                                                  "h":  127
                                                              },
@@ -890,8 +1130,8 @@
                                                },
                    "base/items/milk.png":  {
                                                "frame":  {
-                                                             "x":  1831,
-                                                             "y":  130,
+                                                             "x":  1099,
+                                                             "y":  259,
                                                              "w":  120,
                                                              "h":  127
                                                          },
@@ -914,7 +1154,7 @@
                                            },
                    "base/items/moonflower.png":  {
                                                      "frame":  {
-                                                                   "x":  1,
+                                                                   "x":  1221,
                                                                    "y":  259,
                                                                    "w":  120,
                                                                    "h":  127
@@ -938,7 +1178,7 @@
                                                  },
                    "base/items/moonflower1.png":  {
                                                       "frame":  {
-                                                                    "x":  123,
+                                                                    "x":  1343,
                                                                     "y":  259,
                                                                     "w":  120,
                                                                     "h":  127
@@ -962,7 +1202,7 @@
                                                   },
                    "base/items/moonflower2.png":  {
                                                       "frame":  {
-                                                                    "x":  245,
+                                                                    "x":  1465,
                                                                     "y":  259,
                                                                     "w":  120,
                                                                     "h":  127
@@ -986,7 +1226,7 @@
                                                   },
                    "base/items/moonflower3.png":  {
                                                       "frame":  {
-                                                                    "x":  367,
+                                                                    "x":  1587,
                                                                     "y":  259,
                                                                     "w":  120,
                                                                     "h":  127
@@ -1010,7 +1250,7 @@
                                                   },
                    "base/items/moonflowerClosed1.png":  {
                                                             "frame":  {
-                                                                          "x":  489,
+                                                                          "x":  1709,
                                                                           "y":  259,
                                                                           "w":  120,
                                                                           "h":  127
@@ -1034,7 +1274,7 @@
                                                         },
                    "base/items/moonflowerClosed2.png":  {
                                                             "frame":  {
-                                                                          "x":  611,
+                                                                          "x":  1831,
                                                                           "y":  259,
                                                                           "w":  120,
                                                                           "h":  127
@@ -1058,8 +1298,8 @@
                                                         },
                    "base/items/moonflowerClosed3.png":  {
                                                             "frame":  {
-                                                                          "x":  733,
-                                                                          "y":  259,
+                                                                          "x":  1,
+                                                                          "y":  388,
                                                                           "w":  120,
                                                                           "h":  127
                                                                       },
@@ -1082,8 +1322,8 @@
                                                         },
                    "base/items/mushroom.png":  {
                                                    "frame":  {
-                                                                 "x":  855,
-                                                                 "y":  259,
+                                                                 "x":  123,
+                                                                 "y":  388,
                                                                  "w":  120,
                                                                  "h":  127
                                                              },
@@ -1106,8 +1346,8 @@
                                                },
                    "base/items/mushroom_.png":  {
                                                     "frame":  {
-                                                                  "x":  977,
-                                                                  "y":  259,
+                                                                  "x":  245,
+                                                                  "y":  388,
                                                                   "w":  120,
                                                                   "h":  127
                                                               },
@@ -1130,8 +1370,8 @@
                                                 },
                    "base/items/mushroom__.png":  {
                                                      "frame":  {
-                                                                   "x":  1099,
-                                                                   "y":  259,
+                                                                   "x":  367,
+                                                                   "y":  388,
                                                                    "w":  120,
                                                                    "h":  127
                                                                },
@@ -1154,8 +1394,8 @@
                                                  },
                    "base/items/mushroom___.png":  {
                                                       "frame":  {
-                                                                    "x":  1221,
-                                                                    "y":  259,
+                                                                    "x":  489,
+                                                                    "y":  388,
                                                                     "w":  120,
                                                                     "h":  127
                                                                 },
@@ -1178,8 +1418,8 @@
                                                   },
                    "base/items/mushroom____.png":  {
                                                        "frame":  {
-                                                                     "x":  1343,
-                                                                     "y":  259,
+                                                                     "x":  611,
+                                                                     "y":  388,
                                                                      "w":  120,
                                                                      "h":  127
                                                                  },
@@ -1202,8 +1442,8 @@
                                                    },
                    "base/items/mushroom3.png":  {
                                                     "frame":  {
-                                                                  "x":  1465,
-                                                                  "y":  259,
+                                                                  "x":  733,
+                                                                  "y":  388,
                                                                   "w":  120,
                                                                   "h":  127
                                                               },
@@ -1226,8 +1466,8 @@
                                                 },
                    "base/items/mushroom4.png":  {
                                                     "frame":  {
-                                                                  "x":  1587,
-                                                                  "y":  259,
+                                                                  "x":  855,
+                                                                  "y":  388,
                                                                   "w":  120,
                                                                   "h":  127
                                                               },
@@ -1250,8 +1490,8 @@
                                                 },
                    "base/items/mushroom5.png":  {
                                                     "frame":  {
-                                                                  "x":  1709,
-                                                                  "y":  259,
+                                                                  "x":  977,
+                                                                  "y":  388,
                                                                   "w":  120,
                                                                   "h":  127
                                                               },
@@ -1274,8 +1514,8 @@
                                                 },
                    "base/items/owl.png":  {
                                               "frame":  {
-                                                            "x":  1831,
-                                                            "y":  259,
+                                                            "x":  1099,
+                                                            "y":  388,
                                                             "w":  120,
                                                             "h":  127
                                                         },
@@ -1298,7 +1538,7 @@
                                           },
                    "base/items/owlFlying.png":  {
                                                     "frame":  {
-                                                                  "x":  1,
+                                                                  "x":  1221,
                                                                   "y":  388,
                                                                   "w":  120,
                                                                   "h":  127
@@ -1322,7 +1562,7 @@
                                                 },
                    "base/items/owlPink.png":  {
                                                   "frame":  {
-                                                                "x":  123,
+                                                                "x":  1343,
                                                                 "y":  388,
                                                                 "w":  120,
                                                                 "h":  127
@@ -1346,7 +1586,7 @@
                                               },
                    "base/items/pearl.png":  {
                                                 "frame":  {
-                                                              "x":  245,
+                                                              "x":  1465,
                                                               "y":  388,
                                                               "w":  120,
                                                               "h":  127
@@ -1370,7 +1610,7 @@
                                             },
                    "base/items/plank1.png":  {
                                                  "frame":  {
-                                                               "x":  367,
+                                                               "x":  1587,
                                                                "y":  388,
                                                                "w":  120,
                                                                "h":  127
@@ -1394,7 +1634,7 @@
                                              },
                    "base/items/plank2.png":  {
                                                  "frame":  {
-                                                               "x":  489,
+                                                               "x":  1709,
                                                                "y":  388,
                                                                "w":  120,
                                                                "h":  127
@@ -1418,7 +1658,7 @@
                                              },
                    "base/items/plank3.png":  {
                                                  "frame":  {
-                                                               "x":  611,
+                                                               "x":  1831,
                                                                "y":  388,
                                                                "w":  120,
                                                                "h":  127
@@ -1442,8 +1682,8 @@
                                              },
                    "base/items/poleno.png":  {
                                                  "frame":  {
-                                                               "x":  733,
-                                                               "y":  388,
+                                                               "x":  1,
+                                                               "y":  517,
                                                                "w":  120,
                                                                "h":  127
                                                            },
@@ -1466,8 +1706,8 @@
                                              },
                    "base/items/rabbit.png":  {
                                                  "frame":  {
-                                                               "x":  855,
-                                                               "y":  388,
+                                                               "x":  123,
+                                                               "y":  517,
                                                                "w":  120,
                                                                "h":  127
                                                            },
@@ -1490,8 +1730,8 @@
                                              },
                    "base/items/redApple.png":  {
                                                    "frame":  {
-                                                                 "x":  977,
-                                                                 "y":  388,
+                                                                 "x":  245,
+                                                                 "y":  517,
                                                                  "w":  120,
                                                                  "h":  127
                                                              },
@@ -1514,8 +1754,8 @@
                                                },
                    "base/items/shell.png":  {
                                                 "frame":  {
-                                                              "x":  1099,
-                                                              "y":  388,
+                                                              "x":  367,
+                                                              "y":  517,
                                                               "w":  120,
                                                               "h":  127
                                                           },
@@ -1538,8 +1778,8 @@
                                             },
                    "base/items/shell2.png":  {
                                                  "frame":  {
-                                                               "x":  1221,
-                                                               "y":  388,
+                                                               "x":  489,
+                                                               "y":  517,
                                                                "w":  120,
                                                                "h":  127
                                                            },
@@ -1562,8 +1802,8 @@
                                              },
                    "base/items/ship.png":  {
                                                "frame":  {
-                                                             "x":  1343,
-                                                             "y":  388,
+                                                             "x":  611,
+                                                             "y":  517,
                                                              "w":  120,
                                                              "h":  127
                                                          },
@@ -1586,8 +1826,8 @@
                                            },
                    "base/items/skull.png":  {
                                                 "frame":  {
-                                                              "x":  1465,
-                                                              "y":  388,
+                                                              "x":  733,
+                                                              "y":  517,
                                                               "w":  120,
                                                               "h":  127
                                                           },
@@ -1610,8 +1850,8 @@
                                             },
                    "base/items/smth.png":  {
                                                "frame":  {
-                                                             "x":  1587,
-                                                             "y":  388,
+                                                             "x":  855,
+                                                             "y":  517,
                                                              "w":  120,
                                                              "h":  127
                                                          },
@@ -1634,8 +1874,8 @@
                                            },
                    "base/items/strawberry.png":  {
                                                      "frame":  {
-                                                                   "x":  1709,
-                                                                   "y":  388,
+                                                                   "x":  977,
+                                                                   "y":  517,
                                                                    "w":  120,
                                                                    "h":  127
                                                                },
@@ -1658,8 +1898,8 @@
                                                  },
                    "base/items/voodoo.png":  {
                                                  "frame":  {
-                                                               "x":  1831,
-                                                               "y":  388,
+                                                               "x":  1099,
+                                                               "y":  517,
                                                                "w":  120,
                                                                "h":  127
                                                            },
@@ -1682,7 +1922,7 @@
                                              },
                    "base/items/wheat.png":  {
                                                 "frame":  {
-                                                              "x":  1,
+                                                              "x":  1221,
                                                               "y":  517,
                                                               "w":  120,
                                                               "h":  127
@@ -1706,7 +1946,7 @@
                                             },
                    "base/items/witchMushroom.png":  {
                                                         "frame":  {
-                                                                      "x":  123,
+                                                                      "x":  1343,
                                                                       "y":  517,
                                                                       "w":  120,
                                                                       "h":  127
@@ -1731,7 +1971,7 @@
                    "base/particles/dust.png":  {
                                                    "frame":  {
                                                                  "x":  514,
-                                                                 "y":  1179,
+                                                                 "y":  1304,
                                                                  "w":  33,
                                                                  "h":  32
                                                              },
@@ -1755,7 +1995,7 @@
                    "base/particles/dustBlue.png":  {
                                                        "frame":  {
                                                                      "x":  549,
-                                                                     "y":  1179,
+                                                                     "y":  1304,
                                                                      "w":  33,
                                                                      "h":  32
                                                                  },
@@ -1779,7 +2019,7 @@
                    "base/particles/dustGreen.png":  {
                                                         "frame":  {
                                                                       "x":  406,
-                                                                      "y":  1179,
+                                                                      "y":  1304,
                                                                       "w":  34,
                                                                       "h":  33
                                                                   },
@@ -1803,7 +2043,7 @@
                    "base/particles/dustRed.png":  {
                                                       "frame":  {
                                                                     "x":  584,
-                                                                    "y":  1179,
+                                                                    "y":  1304,
                                                                     "w":  33,
                                                                     "h":  32
                                                                 },
@@ -1827,7 +2067,7 @@
                    "base/particles/dustViolet.png":  {
                                                          "frame":  {
                                                                        "x":  619,
-                                                                       "y":  1179,
+                                                                       "y":  1304,
                                                                        "w":  33,
                                                                        "h":  32
                                                                    },
@@ -1851,7 +2091,7 @@
                    "base/particles/dustYellow.png":  {
                                                          "frame":  {
                                                                        "x":  442,
-                                                                       "y":  1179,
+                                                                       "y":  1304,
                                                                        "w":  34,
                                                                        "h":  33
                                                                    },
@@ -1875,7 +2115,7 @@
                    "base/particles/dustYellow2.png":  {
                                                           "frame":  {
                                                                         "x":  478,
-                                                                        "y":  1179,
+                                                                        "y":  1304,
                                                                         "w":  34,
                                                                         "h":  33
                                                                     },
@@ -1899,7 +2139,7 @@
                    "base/particles/p1.png":  {
                                                  "frame":  {
                                                                "x":  104,
-                                                               "y":  1051,
+                                                               "y":  1176,
                                                                "w":  70,
                                                                "h":  67
                                                            },
@@ -1923,7 +2163,7 @@
                    "base/particles/p2.png":  {
                                                  "frame":  {
                                                                "x":  176,
-                                                               "y":  1051,
+                                                               "y":  1176,
                                                                "w":  70,
                                                                "h":  67
                                                            },
@@ -1947,7 +2187,7 @@
                    "base/particles/p5.png":  {
                                                  "frame":  {
                                                                "x":  248,
-                                                               "y":  1051,
+                                                               "y":  1176,
                                                                "w":  70,
                                                                "h":  67
                                                            },
@@ -1971,7 +2211,7 @@
                    "base/particles/p6.png":  {
                                                  "frame":  {
                                                                "x":  320,
-                                                               "y":  1051,
+                                                               "y":  1176,
                                                                "w":  70,
                                                                "h":  67
                                                            },
@@ -1995,7 +2235,7 @@
                    "base/particles/p7.png":  {
                                                  "frame":  {
                                                                "x":  392,
-                                                               "y":  1051,
+                                                               "y":  1176,
                                                                "w":  70,
                                                                "h":  67
                                                            },
@@ -2019,7 +2259,7 @@
                    "base/particles/p8.png":  {
                                                  "frame":  {
                                                                "x":  464,
-                                                               "y":  1051,
+                                                               "y":  1176,
                                                                "w":  70,
                                                                "h":  67
                                                            },
@@ -2043,7 +2283,7 @@
                    "base/particles/p9.png":  {
                                                  "frame":  {
                                                                "x":  536,
-                                                               "y":  1051,
+                                                               "y":  1176,
                                                                "w":  70,
                                                                "h":  67
                                                            },
@@ -2067,7 +2307,7 @@
                    "base/particles/petalBlue.png":  {
                                                         "frame":  {
                                                                       "x":  1802,
-                                                                      "y":  1120,
+                                                                      "y":  1245,
                                                                       "w":  50,
                                                                       "h":  38
                                                                   },
@@ -2091,7 +2331,7 @@
                    "base/particles/petalBrown.png":  {
                                                          "frame":  {
                                                                        "x":  1854,
-                                                                       "y":  1120,
+                                                                       "y":  1245,
                                                                        "w":  50,
                                                                        "h":  38
                                                                    },
@@ -2115,7 +2355,7 @@
                    "base/particles/petalGreen.png":  {
                                                          "frame":  {
                                                                        "x":  1906,
-                                                                       "y":  1120,
+                                                                       "y":  1245,
                                                                        "w":  50,
                                                                        "h":  38
                                                                    },
@@ -2139,7 +2379,7 @@
                    "base/particles/petalOrange.png":  {
                                                           "frame":  {
                                                                         "x":  1958,
-                                                                        "y":  1120,
+                                                                        "y":  1245,
                                                                         "w":  50,
                                                                         "h":  38
                                                                     },
@@ -2163,7 +2403,7 @@
                    "base/particles/petalPink.png":  {
                                                         "frame":  {
                                                                       "x":  1,
-                                                                      "y":  1179,
+                                                                      "y":  1304,
                                                                       "w":  50,
                                                                       "h":  38
                                                                   },
@@ -2187,7 +2427,7 @@
                    "base/particles/petalRed.png":  {
                                                        "frame":  {
                                                                      "x":  53,
-                                                                     "y":  1179,
+                                                                     "y":  1304,
                                                                      "w":  50,
                                                                      "h":  38
                                                                  },
@@ -2211,7 +2451,7 @@
                    "base/particles/petalSky.png":  {
                                                        "frame":  {
                                                                      "x":  105,
-                                                                     "y":  1179,
+                                                                     "y":  1304,
                                                                      "w":  50,
                                                                      "h":  38
                                                                  },
@@ -2235,7 +2475,7 @@
                    "base/particles/petalWhite.png":  {
                                                          "frame":  {
                                                                        "x":  157,
-                                                                       "y":  1179,
+                                                                       "y":  1304,
                                                                        "w":  50,
                                                                        "h":  38
                                                                    },
@@ -2259,7 +2499,7 @@
                    "base/particles/snowflake1.png":  {
                                                          "frame":  {
                                                                        "x":  1676,
-                                                                       "y":  1120,
+                                                                       "y":  1245,
                                                                        "w":  40,
                                                                        "h":  40
                                                                    },
@@ -2283,7 +2523,7 @@
                    "base/particles/snowflake2.png":  {
                                                          "frame":  {
                                                                        "x":  1718,
-                                                                       "y":  1120,
+                                                                       "y":  1245,
                                                                        "w":  40,
                                                                        "h":  40
                                                                    },
@@ -2307,7 +2547,7 @@
                    "base/particles/snowflake3.png":  {
                                                          "frame":  {
                                                                        "x":  1760,
-                                                                       "y":  1120,
+                                                                       "y":  1245,
                                                                        "w":  40,
                                                                        "h":  40
                                                                    },
@@ -2330,8 +2570,8 @@
                                                      },
                    "base/replicaDecor/cat1cheeks.png":  {
                                                             "frame":  {
-                                                                          "x":  1137,
-                                                                          "y":  646,
+                                                                          "x":  715,
+                                                                          "y":  773,
                                                                           "w":  238,
                                                                           "h":  111
                                                                       },
@@ -2355,7 +2595,7 @@
                    "base/replicaDecor/heart.png":  {
                                                        "frame":  {
                                                                      "x":  406,
-                                                                     "y":  874,
+                                                                     "y":  999,
                                                                      "w":  100,
                                                                      "h":  93
                                                                  },
@@ -2378,7 +2618,7 @@
                                                    },
                    "base/replicaDecor/plate1.png":  {
                                                         "frame":  {
-                                                                      "x":  241,
+                                                                      "x":  1833,
                                                                       "y":  646,
                                                                       "w":  180,
                                                                       "h":  116
@@ -2402,8 +2642,8 @@
                                                     },
                    "base/replicaDecor/plate2.png":  {
                                                         "frame":  {
-                                                                      "x":  423,
-                                                                      "y":  646,
+                                                                      "x":  1,
+                                                                      "y":  773,
                                                                       "w":  180,
                                                                       "h":  116
                                                                   },
@@ -2427,7 +2667,7 @@
                    "base/room/boiler/liquid.png":  {
                                                        "frame":  {
                                                                      "x":  1300,
-                                                                     "y":  766,
+                                                                     "y":  891,
                                                                      "w":  354,
                                                                      "h":  99
                                                                  },
@@ -2451,7 +2691,7 @@
                    "base/room/flame1.png":  {
                                                 "frame":  {
                                                               "x":  331,
-                                                              "y":  1179,
+                                                              "y":  1304,
                                                               "w":  23,
                                                               "h":  34
                                                           },
@@ -2475,7 +2715,7 @@
                    "base/room/flame2.png":  {
                                                 "frame":  {
                                                               "x":  356,
-                                                              "y":  1179,
+                                                              "y":  1304,
                                                               "w":  23,
                                                               "h":  34
                                                           },
@@ -2499,7 +2739,7 @@
                    "base/room/flame3.png":  {
                                                 "frame":  {
                                                               "x":  381,
-                                                              "y":  1179,
+                                                              "y":  1304,
                                                               "w":  23,
                                                               "h":  34
                                                           },
@@ -2523,7 +2763,7 @@
                    "base/room/vaxDrop.png":  {
                                                  "frame":  {
                                                                "x":  811,
-                                                               "y":  1179,
+                                                               "y":  1304,
                                                                "w":  12,
                                                                "h":  28
                                                            },
@@ -2547,7 +2787,7 @@
                    "base/scenario/room/chest/chest_shadow100.png":  {
                                                                         "frame":  {
                                                                                       "x":  654,
-                                                                                      "y":  1179,
+                                                                                      "y":  1304,
                                                                                       "w":  100,
                                                                                       "h":  31
                                                                                   },
@@ -2571,7 +2811,7 @@
                    "base/scenario/room/chest/key.png":  {
                                                             "frame":  {
                                                                           "x":  265,
-                                                                          "y":  874,
+                                                                          "y":  999,
                                                                           "w":  139,
                                                                           "h":  93
                                                                       },
@@ -2595,7 +2835,7 @@
                    "base/scenario/room/chest/keyRotated.png":  {
                                                                    "frame":  {
                                                                                  "x":  103,
-                                                                                 "y":  874,
+                                                                                 "y":  999,
                                                                                  "w":  160,
                                                                                  "h":  93
                                                                              },
@@ -2619,7 +2859,7 @@
                    "base/scenario/room/chest/lock.png":  {
                                                              "frame":  {
                                                                            "x":  1268,
-                                                                           "y":  971,
+                                                                           "y":  1096,
                                                                            "w":  55,
                                                                            "h":  74
                                                                        },
@@ -2642,8 +2882,8 @@
                                                          },
                    "base/ui/arrow.png":  {
                                              "frame":  {
-                                                           "x":  1942,
-                                                           "y":  646,
+                                                           "x":  1520,
+                                                           "y":  773,
                                                            "w":  71,
                                                            "h":  107
                                                        },
@@ -2667,7 +2907,7 @@
                    "base/ui/arrowSmall.png":  {
                                                   "frame":  {
                                                                 "x":  710,
-                                                                "y":  1051,
+                                                                "y":  1176,
                                                                 "w":  355,
                                                                 "h":  62
                                                             },
@@ -2690,7 +2930,7 @@
                                               },
                    "base/ui/bg.jpg":  {
                                           "frame":  {
-                                                        "x":  1,
+                                                        "x":  1593,
                                                         "y":  646,
                                                         "w":  118,
                                                         "h":  118
@@ -2715,7 +2955,7 @@
                    "base/ui/blank.png":  {
                                              "frame":  {
                                                            "x":  1069,
-                                                           "y":  1179,
+                                                           "y":  1304,
                                                            "w":  1,
                                                            "h":  1
                                                        },
@@ -2739,7 +2979,7 @@
                    "base/ui/bushDark2.png":  {
                                                  "frame":  {
                                                                "x":  899,
-                                                               "y":  874,
+                                                               "y":  999,
                                                                "w":  90,
                                                                "h":  83
                                                            },
@@ -2763,7 +3003,7 @@
                    "base/ui/bushes2.png":  {
                                                "frame":  {
                                                              "x":  610,
-                                                             "y":  874,
+                                                             "y":  999,
                                                              "w":  106,
                                                              "h":  90
                                                          },
@@ -2787,7 +3027,7 @@
                    "base/ui/check.png":  {
                                              "frame":  {
                                                            "x":  508,
-                                                           "y":  874,
+                                                           "y":  999,
                                                            "w":  100,
                                                            "h":  92
                                                        },
@@ -2810,8 +3050,8 @@
                                          },
                    "base/ui/circle.png":  {
                                               "frame":  {
-                                                            "x":  1494,
-                                                            "y":  646,
+                                                            "x":  1072,
+                                                            "y":  773,
                                                             "w":  110,
                                                             "h":  110
                                                         },
@@ -2834,8 +3074,8 @@
                                           },
                    "base/ui/circleB.png":  {
                                                "frame":  {
-                                                             "x":  1606,
-                                                             "y":  646,
+                                                             "x":  1184,
+                                                             "y":  773,
                                                              "w":  110,
                                                              "h":  110
                                                          },
@@ -2858,8 +3098,8 @@
                                            },
                    "base/ui/circleGray.png":  {
                                                   "frame":  {
-                                                                "x":  1718,
-                                                                "y":  646,
+                                                                "x":  1296,
+                                                                "y":  773,
                                                                 "w":  110,
                                                                 "h":  110
                                                             },
@@ -2882,8 +3122,8 @@
                                               },
                    "base/ui/circleOrange.png":  {
                                                     "frame":  {
-                                                                  "x":  1830,
-                                                                  "y":  646,
+                                                                  "x":  1408,
+                                                                  "y":  773,
                                                                   "w":  110,
                                                                   "h":  110
                                                               },
@@ -2907,7 +3147,7 @@
                    "base/ui/closeButton.png":  {
                                                    "frame":  {
                                                                  "x":  1400,
-                                                                 "y":  971,
+                                                                 "y":  1096,
                                                                  "w":  70,
                                                                  "h":  70
                                                              },
@@ -2931,7 +3171,7 @@
                    "base/ui/closeButtonViolet.png":  {
                                                          "frame":  {
                                                                        "x":  1472,
-                                                                       "y":  971,
+                                                                       "y":  1096,
                                                                        "w":  70,
                                                                        "h":  70
                                                                    },
@@ -2955,7 +3195,7 @@
                    "base/ui/cross.png":  {
                                              "frame":  {
                                                            "x":  1247,
-                                                           "y":  1120,
+                                                           "y":  1245,
                                                            "w":  50,
                                                            "h":  50
                                                        },
@@ -2979,7 +3219,7 @@
                    "base/ui/decor.png":  {
                                              "frame":  {
                                                            "x":  1774,
-                                                           "y":  874,
+                                                           "y":  999,
                                                            "w":  30,
                                                            "h":  80
                                                        },
@@ -3002,8 +3242,8 @@
                                          },
                    "base/ui/diary/closeBook.png":  {
                                                        "frame":  {
-                                                                     "x":  1862,
-                                                                     "y":  517,
+                                                                     "x":  1496,
+                                                                     "y":  646,
                                                                      "w":  95,
                                                                      "h":  120
                                                                  },
@@ -3027,7 +3267,7 @@
                    "base/ui/diary/diaryArrowLeft.png":  {
                                                             "frame":  {
                                                                           "x":  1823,
-                                                                          "y":  971,
+                                                                          "y":  1096,
                                                                           "w":  91,
                                                                           "h":  68
                                                                       },
@@ -3051,7 +3291,7 @@
                    "base/ui/diary/diaryArrowRight.png":  {
                                                              "frame":  {
                                                                            "x":  1916,
-                                                                           "y":  971,
+                                                                           "y":  1096,
                                                                            "w":  91,
                                                                            "h":  68
                                                                        },
@@ -3075,7 +3315,7 @@
                    "base/ui/diary/diaryArrowsBg.png":  {
                                                            "frame":  {
                                                                          "x":  1544,
-                                                                         "y":  971,
+                                                                         "y":  1096,
                                                                          "w":  225,
                                                                          "h":  69
                                                                      },
@@ -3098,7 +3338,7 @@
                                                        },
                    "base/ui/fadeStrip.png":  {
                                                  "frame":  {
-                                                               "x":  121,
+                                                               "x":  1713,
                                                                "y":  646,
                                                                "w":  118,
                                                                "h":  118
@@ -3123,7 +3363,7 @@
                    "base/ui/flowersBg.png":  {
                                                  "frame":  {
                                                                "x":  1,
-                                                               "y":  1051,
+                                                               "y":  1176,
                                                                "w":  101,
                                                                "h":  67
                                                            },
@@ -3146,8 +3386,8 @@
                                              },
                    "base/ui/key.png":  {
                                            "frame":  {
-                                                         "x":  1377,
-                                                         "y":  646,
+                                                         "x":  955,
+                                                         "y":  773,
                                                          "w":  115,
                                                          "h":  111
                                                      },
@@ -3171,7 +3411,7 @@
                    "base/ui/lakeHeaderDecor.png":  {
                                                        "frame":  {
                                                                      "x":  1403,
-                                                                     "y":  1120,
+                                                                     "y":  1245,
                                                                      "w":  50,
                                                                      "h":  47
                                                                  },
@@ -3195,7 +3435,7 @@
                    "base/ui/map/aim.png":  {
                                                "frame":  {
                                                              "x":  1,
-                                                             "y":  874,
+                                                             "y":  999,
                                                              "w":  100,
                                                              "h":  95
                                                          },
@@ -3219,7 +3459,7 @@
                    "base/ui/map/aimFourth.png":  {
                                                      "frame":  {
                                                                    "x":  634,
-                                                                   "y":  766,
+                                                                   "y":  891,
                                                                    "w":  118,
                                                                    "h":  104
                                                                },
@@ -3243,7 +3483,7 @@
                    "base/ui/map/aimSecond.png":  {
                                                      "frame":  {
                                                                    "x":  754,
-                                                                   "y":  766,
+                                                                   "y":  891,
                                                                    "w":  118,
                                                                    "h":  104
                                                                },
@@ -3267,7 +3507,7 @@
                    "base/ui/map/aimThird.png":  {
                                                     "frame":  {
                                                                   "x":  874,
-                                                                  "y":  766,
+                                                                  "y":  891,
                                                                   "w":  118,
                                                                   "h":  104
                                                               },
@@ -3291,7 +3531,7 @@
                    "base/ui/map/campfireSmall.png":  {
                                                          "frame":  {
                                                                        "x":  1771,
-                                                                       "y":  971,
+                                                                       "y":  1096,
                                                                        "w":  50,
                                                                        "h":  69
                                                                    },
@@ -3314,8 +3554,8 @@
                                                      },
                    "base/ui/map/cat.png":  {
                                                "frame":  {
-                                                             "x":  1267,
-                                                             "y":  517,
+                                                             "x":  901,
+                                                             "y":  646,
                                                              "w":  124,
                                                              "h":  124
                                                          },
@@ -3338,8 +3578,8 @@
                                            },
                    "base/ui/map/darkGrass.png":  {
                                                      "frame":  {
-                                                                   "x":  605,
-                                                                   "y":  646,
+                                                                   "x":  183,
+                                                                   "y":  773,
                                                                    "w":  264,
                                                                    "h":  112
                                                                },
@@ -3363,7 +3603,7 @@
                    "base/ui/map/dot.png":  {
                                                "frame":  {
                                                              "x":  756,
-                                                             "y":  1179,
+                                                             "y":  1304,
                                                              "w":  33,
                                                              "h":  31
                                                          },
@@ -3387,7 +3627,7 @@
                    "base/ui/map/flowers.png":  {
                                                    "frame":  {
                                                                  "x":  303,
-                                                                 "y":  971,
+                                                                 "y":  1096,
                                                                  "w":  82,
                                                                  "h":  78
                                                              },
@@ -3411,7 +3651,7 @@
                    "base/ui/map/flowersSecond.png":  {
                                                          "frame":  {
                                                                        "x":  485,
-                                                                       "y":  766,
+                                                                       "y":  891,
                                                                        "w":  75,
                                                                        "h":  106
                                                                    },
@@ -3435,7 +3675,7 @@
                    "base/ui/map/flowersThird.png":  {
                                                         "frame":  {
                                                                       "x":  1806,
-                                                                      "y":  874,
+                                                                      "y":  999,
                                                                       "w":  135,
                                                                       "h":  79
                                                                   },
@@ -3459,7 +3699,7 @@
                    "base/ui/map/fog.png":  {
                                                "frame":  {
                                                              "x":  209,
-                                                             "y":  1179,
+                                                             "y":  1304,
                                                              "w":  120,
                                                              "h":  34
                                                          },
@@ -3483,7 +3723,7 @@
                    "base/ui/map/jellyMushroomSmall.png":  {
                                                               "frame":  {
                                                                             "x":  1299,
-                                                                            "y":  1120,
+                                                                            "y":  1245,
                                                                             "w":  50,
                                                                             "h":  50
                                                                         },
@@ -3507,7 +3747,7 @@
                    "base/ui/map/mapMushroom.png":  {
                                                        "frame":  {
                                                                      "x":  1067,
-                                                                     "y":  1051,
+                                                                     "y":  1176,
                                                                      "w":  58,
                                                                      "h":  60
                                                                  },
@@ -3531,7 +3771,7 @@
                    "base/ui/map/mapPointer.png":  {
                                                       "frame":  {
                                                                     "x":  825,
-                                                                    "y":  1179,
+                                                                    "y":  1304,
                                                                     "w":  120,
                                                                     "h":  23
                                                                 },
@@ -3555,7 +3795,7 @@
                    "base/ui/map/mapPointer2.png":  {
                                                        "frame":  {
                                                                      "x":  947,
-                                                                     "y":  1179,
+                                                                     "y":  1304,
                                                                      "w":  120,
                                                                      "h":  23
                                                                  },
@@ -3579,7 +3819,7 @@
                    "base/ui/map/mountainGlow.png":  {
                                                         "frame":  {
                                                                       "x":  608,
-                                                                      "y":  1051,
+                                                                      "y":  1176,
                                                                       "w":  100,
                                                                       "h":  65
                                                                   },
@@ -3602,8 +3842,8 @@
                                                     },
                    "base/ui/map/snowMap.png":  {
                                                    "frame":  {
-                                                                 "x":  871,
-                                                                 "y":  646,
+                                                                 "x":  449,
+                                                                 "y":  773,
                                                                  "w":  264,
                                                                  "h":  112
                                                              },
@@ -3627,7 +3867,7 @@
                    "base/ui/map/tent.png":  {
                                                 "frame":  {
                                                               "x":  1127,
-                                                              "y":  1051,
+                                                              "y":  1176,
                                                               "w":  84,
                                                               "h":  59
                                                           },
@@ -3651,7 +3891,7 @@
                    "base/ui/map/water.png":  {
                                                  "frame":  {
                                                                "x":  1060,
-                                                               "y":  971,
+                                                               "y":  1096,
                                                                "w":  206,
                                                                "h":  74
                                                            },
@@ -3675,7 +3915,7 @@
                    "base/ui/newMark.png":  {
                                                "frame":  {
                                                              "x":  1213,
-                                                             "y":  1051,
+                                                             "y":  1176,
                                                              "w":  59,
                                                              "h":  59
                                                          },
@@ -3699,7 +3939,7 @@
                    "base/ui/panelBody.png":  {
                                                  "frame":  {
                                                                "x":  1024,
-                                                               "y":  971,
+                                                               "y":  1096,
                                                                "w":  34,
                                                                "h":  75
                                                            },
@@ -3723,7 +3963,7 @@
                    "base/ui/panelCorner.png":  {
                                                    "frame":  {
                                                                  "x":  936,
-                                                                 "y":  971,
+                                                                 "y":  1096,
                                                                  "w":  86,
                                                                  "h":  75
                                                              },
@@ -3747,7 +3987,7 @@
                    "base/ui/plusButton.png":  {
                                                   "frame":  {
                                                                 "x":  1325,
-                                                                "y":  971,
+                                                                "y":  1096,
                                                                 "w":  73,
                                                                 "h":  73
                                                             },
@@ -3770,8 +4010,8 @@
                                               },
                    "base/ui/pnlButton.png":  {
                                                  "frame":  {
-                                                               "x":  1393,
-                                                               "y":  517,
+                                                               "x":  1027,
+                                                               "y":  646,
                                                                "w":  467,
                                                                "h":  120
                                                            },
@@ -3795,7 +4035,7 @@
                    "base/ui/point.png":  {
                                              "frame":  {
                                                            "x":  1351,
-                                                           "y":  1120,
+                                                           "y":  1245,
                                                            "w":  50,
                                                            "h":  48
                                                        },
@@ -3819,7 +4059,7 @@
                    "base/ui/progressbar/body.jpg":  {
                                                         "frame":  {
                                                                       "x":  1627,
-                                                                      "y":  1120,
+                                                                      "y":  1245,
                                                                       "w":  47,
                                                                       "h":  41
                                                                   },
@@ -3843,7 +4083,7 @@
                    "base/ui/progressbar/character.png":  {
                                                              "frame":  {
                                                                            "x":  1943,
-                                                                           "y":  766,
+                                                                           "y":  891,
                                                                            "w":  43,
                                                                            "h":  98
                                                                        },
@@ -3867,7 +4107,7 @@
                    "base/ui/progressbar/circleSmall.png":  {
                                                                "frame":  {
                                                                              "x":  1096,
-                                                                             "y":  766,
+                                                                             "y":  891,
                                                                              "w":  100,
                                                                              "h":  100
                                                                          },
@@ -3891,7 +4131,7 @@
                    "base/ui/progressbar/gift.png":  {
                                                         "frame":  {
                                                                       "x":  556,
-                                                                      "y":  971,
+                                                                      "y":  1096,
                                                                       "w":  90,
                                                                       "h":  77
                                                                   },
@@ -3915,7 +4155,7 @@
                    "base/ui/progressbar/gift2.png":  {
                                                          "frame":  {
                                                                        "x":  810,
-                                                                       "y":  874,
+                                                                       "y":  999,
                                                                        "w":  87,
                                                                        "h":  84
                                                                    },
@@ -3939,7 +4179,7 @@
                    "base/ui/progressbar/progressCheck.png":  {
                                                                  "frame":  {
                                                                                "x":  1455,
-                                                                               "y":  1120,
+                                                                               "y":  1245,
                                                                                "w":  49,
                                                                                "h":  47
                                                                            },
@@ -3963,7 +4203,7 @@
                    "base/ui/progressbar/progressLineBg.png":  {
                                                                   "frame":  {
                                                                                 "x":  1076,
-                                                                                "y":  874,
+                                                                                "y":  999,
                                                                                 "w":  696,
                                                                                 "h":  82
                                                                             },
@@ -3986,8 +4226,8 @@
                                                               },
                    "base/ui/progressbar/ribbon.png":  {
                                                           "frame":  {
-                                                                        "x":  367,
-                                                                        "y":  517,
+                                                                        "x":  1,
+                                                                        "y":  646,
                                                                         "w":  772,
                                                                         "h":  125
                                                                     },
@@ -4011,7 +4251,7 @@
                    "base/ui/progressbar/ribbon2.png":  {
                                                            "frame":  {
                                                                          "x":  1,
-                                                                         "y":  971,
+                                                                         "y":  1096,
                                                                          "w":  300,
                                                                          "h":  78
                                                                      },
@@ -4035,7 +4275,7 @@
                    "base/ui/progressbar/scale.png":  {
                                                          "frame":  {
                                                                        "x":  1506,
-                                                                       "y":  1120,
+                                                                       "y":  1245,
                                                                        "w":  14,
                                                                        "h":  45
                                                                    },
@@ -4059,7 +4299,7 @@
                    "base/ui/progressbar/tail.png":  {
                                                         "frame":  {
                                                                       "x":  791,
-                                                                      "y":  1179,
+                                                                      "y":  1304,
                                                                       "w":  18,
                                                                       "h":  31
                                                                   },
@@ -4083,7 +4323,7 @@
                    "base/ui/separator.png":  {
                                                  "frame":  {
                                                                "x":  562,
-                                                               "y":  766,
+                                                               "y":  891,
                                                                "w":  34,
                                                                "h":  106
                                                            },
@@ -4107,7 +4347,7 @@
                    "base/ui/separator2.png":  {
                                                   "frame":  {
                                                                 "x":  598,
-                                                                "y":  766,
+                                                                "y":  891,
                                                                 "w":  34,
                                                                 "h":  106
                                                             },
@@ -4131,7 +4371,7 @@
                    "base/ui/settingsButton.png":  {
                                                       "frame":  {
                                                                     "x":  991,
-                                                                    "y":  874,
+                                                                    "y":  999,
                                                                     "w":  83,
                                                                     "h":  83
                                                                 },
@@ -4154,7 +4394,7 @@
                                                   },
                    "base/ui/shop/chest4.png":  {
                                                    "frame":  {
-                                                                 "x":  245,
+                                                                 "x":  1465,
                                                                  "y":  517,
                                                                  "w":  120,
                                                                  "h":  127
@@ -4179,7 +4419,7 @@
                    "base/ui/shop/chest4cap.png":  {
                                                       "frame":  {
                                                                     "x":  1522,
-                                                                    "y":  1120,
+                                                                    "y":  1245,
                                                                     "w":  103,
                                                                     "h":  44
                                                                 },
@@ -4203,7 +4443,7 @@
                    "base/ui/skipButton.png":  {
                                                   "frame":  {
                                                                 "x":  1027,
-                                                                "y":  1120,
+                                                                "y":  1245,
                                                                 "w":  218,
                                                                 "h":  55
                                                             },
@@ -4227,7 +4467,7 @@
                    "base/ui/sparkle.png":  {
                                                "frame":  {
                                                              "x":  1198,
-                                                             "y":  766,
+                                                             "y":  891,
                                                              "w":  100,
                                                              "h":  100
                                                          },
@@ -4251,7 +4491,7 @@
                    "base/ui/statusPanel.png":  {
                                                    "frame":  {
                                                                  "x":  1656,
-                                                                 "y":  766,
+                                                                 "y":  891,
                                                                  "w":  285,
                                                                  "h":  98
                                                              },
@@ -4275,7 +4515,7 @@
                    "base/ui/steps.png":  {
                                              "frame":  {
                                                            "x":  387,
-                                                           "y":  971,
+                                                           "y":  1096,
                                                            "w":  71,
                                                            "h":  78
                                                        },
@@ -4299,7 +4539,7 @@
                    "base/ui/titlePnl.png":  {
                                                 "frame":  {
                                                               "x":  648,
-                                                              "y":  971,
+                                                              "y":  1096,
                                                               "w":  286,
                                                               "h":  75
                                                           },
@@ -4323,7 +4563,7 @@
                    "base/ui/topPanelFrame.png":  {
                                                      "frame":  {
                                                                    "x":  1,
-                                                                   "y":  766,
+                                                                   "y":  891,
                                                                    "w":  482,
                                                                    "h":  106
                                                                },
@@ -4352,7 +4592,7 @@
                  "format":  "RGBA8888",
                  "size":  {
                               "w":  2014,
-                              "h":  1218
+                              "h":  1343
                           },
                  "scale":  1
              }
