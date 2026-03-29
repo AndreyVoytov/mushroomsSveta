@@ -1,4 +1,5 @@
 import LocalizationService from '../../../core/localization/LocalizationService';
+import AimType from '../../../core/model/enum/AimType';
 import ForestAim from '../../../core/model/forest/ForestAim';
 import ForestType from '../../../core/model/forest/ForestType';
 import UserService from '../../../core/service/UserService';
@@ -13,20 +14,31 @@ import StartLevelPanel from '../house/StartLevelPanel';
 import Label from './../panel/Label';
 import BasePanel from '../panel/BasePanel';
 
+type LevelCompletePanelPreviewData = {
+    aims: ForestAim[];
+    spentEnergy: number;
+    targetSteps: number;
+    gemsCount?: number;
+};
+
 export default class LevelCompletePanel extends BasePanel {
 
-    private screen: BaseForestScreen;
+    public static TEST = false;
+
     private gemsCloud: Phaser.Sprite;
     private continueButton: Phaser.Button;
     private callbackOnContinue: () => void;
 
-    constructor(game: Phaser.Game, screen: BaseForestScreen, x: number, y: number, aims: ForestAim[], forestType: ForestType, callbackOnContinue: () => void) {
+    constructor(game: Phaser.Game, screen: BaseForestScreen | null, x: number, y: number, aims: ForestAim[], forestType: ForestType | null, callbackOnContinue: () => void, previewData?: LevelCompletePanelPreviewData) {
         super(game, x, y);
         this.game = game;
-        this.screen = screen;
         this.callbackOnContinue = callbackOnContinue;
         this.alpha = 0;
         this.fixedToCamera = true;
+
+        const resolvedAims = previewData ? previewData.aims : aims;
+        const spentEnergy = previewData ? previewData.spentEnergy : screen.topPanel.getSpentEnergy();
+        const targetSteps = previewData ? previewData.targetSteps : screen.topPanel.getTargetSteps();
 
         const inputBlocker = new Phaser.Graphics(this.game, 0, 0);
         inputBlocker.beginFill(0x000000, 0.001);
@@ -35,20 +47,19 @@ export default class LevelCompletePanel extends BasePanel {
         inputBlocker.inputEnabled = true;
         this.addChild(inputBlocker);
 
-        const spentEnergy = this.screen.topPanel.getSpentEnergy();
-        const supportPercent = EnergyUtils.getSupportPercent(this.screen.topPanel.getTargetSteps(), spentEnergy);
+        const supportPercent = EnergyUtils.getSupportPercent(targetSteps, spentEnergy);
         const panel = this.attachSprite('panel2', 'panel');
-        panel.scale.set(1.02, 0.94);
+        panel.scale.set(1.06, 1.02);
         panel.inputEnabled = true;
 
         this.attachSprite('helperPanel');
         this.attachSprite('statusPanel', 'titleBg');
 
         const cat = this.attachSprite('cat4', 'cat');
-        cat.scale.set(0.88);
+        cat.scale.set(0.68);
 
         this.attachText('title', LocalizationService.get('ui.energy.winTitle', 'Уровень пройден'), {
-            font: 'bold 44px Arial',
+            font: 'bold 40px Arial',
             fill: '#ffffff'
         });
 
@@ -62,7 +73,7 @@ export default class LevelCompletePanel extends BasePanel {
         spentLabel.anchor.set(0.5);
 
         const spentValue = this.attachText('spentValue', '' + spentEnergy, {
-            font: 'bold 74px Gilroy',
+            font: 'bold 52px Gilroy',
             fill: '#ffffff'
         });
         spentValue.addStrokeColor('#924d1d', 0);
@@ -72,20 +83,20 @@ export default class LevelCompletePanel extends BasePanel {
             'betterLabel',
             LocalizationService.get('ui.energy.better', 'Лучше, чем {percent}% игроков').replace('{percent}', '' + supportPercent),
             {
-                font: 'bold 34px Arial',
+                font: 'bold 30px Arial',
                 fill: '#7b4037',
                 align: 'center',
                 wordWrap: true,
-                wordWrapWidth: 480
+                wordWrapWidth: 360
             }
         );
 
-        const aimsLabel = this.attachText('aimsLabel', ForestAim.getCompleteInfo(aims), {
-            font: 'bold 26px Arial',
+        const aimsLabel = this.attachText('aimsLabel', ForestAim.getCompleteInfo(resolvedAims), {
+            font: 'bold 30px Arial',
             fill: '#f7edd5',
             align: 'center',
             wordWrap: true,
-            wordWrapWidth: 520
+            wordWrapWidth: 380
         });
 
         this.continueButton = this.attachButton('pnlButton', () => this.onContinue(), 'continueButton');
@@ -102,28 +113,32 @@ export default class LevelCompletePanel extends BasePanel {
         this.continueButton.addChild(continueLabel);
 
         this.applyPreset([
-            { "spriteId": "panel", "x": 0, "y": 0, "scaleX": 1.02, "scaleY": 0.94, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-            { "spriteId": "helperPanel", "x": 0, "y": -24, "scaleX": 0.96, "scaleY": 0.68, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-            { "spriteId": "titleBg", "x": 0, "y": -250, "scaleX": 1.28, "scaleY": 1.1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-            { "spriteId": "title", "x": 0, "y": -254, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 44 },
-            { "spriteId": "cat", "x": -210, "y": 114, "scaleX": 0.88, "scaleY": 0.88, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-            { "spriteId": "lightning", "x": 84, "y": -45, "scaleX": 0.62, "scaleY": 0.62, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-            { "spriteId": "spentLabel", "x": 90, "y": -108, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 28 },
-            { "spriteId": "spentValue", "x": 90, "y": -28, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 74 },
-            { "spriteId": "betterLabel", "x": 60, "y": 62, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 34 },
-            { "spriteId": "aimsLabel", "x": 0, "y": 170, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 26 },
-            { "spriteId": "continueButton", "x": 0, "y": 292, "scaleX": 1.04, "scaleY": 0.96, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+            { "spriteId": "panel", "x": 0, "y": 12, "scaleX": 1.06, "scaleY": 1.02, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "helperPanel", "x": 95, "y": -36, "scaleX": 0.7, "scaleY": 0.82, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "titleBg", "x": 0, "y": -222, "scaleX": 1.58, "scaleY": 1.22, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "title", "x": 0, "y": -226, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 44 },
+            { "spriteId": "cat", "x": -254, "y": 66, "scaleX": 0.75, "scaleY": 0.75, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "lightning", "x": 95, "y": -19, "scaleX": 0.7, "scaleY": 0.7, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "spentLabel", "x": 95, "y": -106, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 28 },
+            { "spriteId": "spentValue", "x": 135, "y":0, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 68 },
+            { "spriteId": "betterLabel", "x": 95, "y": 106, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 30 },
+            { "spriteId": "aimsLabel", "x": 95, "y": 166, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 24 },
+            { "spriteId": "continueButton", "x": 0, "y": 286, "scaleX": 1.04, "scaleY": 0.96, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
         ]);
 
-        if (UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL) {
-            const hardLevelAddition = forestType.hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
-            const gemsCount = ForestUtils.getPrizeGemsCount(this.screen.topPanel.getStepsLeft()) + hardLevelAddition;
-            this.gemsCloud = SpriteUtils.createSprite(this.game, 172, -138, 'gemsCloud');
+        const previewGemsCount = previewData && previewData.gemsCount != null ? previewData.gemsCount : null;
+        if (previewGemsCount != null || (screen && forestType && UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL)) {
+            const hardLevelAddition = forestType && forestType.hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
+            const gemsCount = previewGemsCount != null
+                ? previewGemsCount
+                : ForestUtils.getPrizeGemsCount(screen.topPanel.getStepsLeft()) + hardLevelAddition;
+            this.gemsCloud = SpriteUtils.createSprite(this.game, -334, -210, 'gemsCloud');
             this.gemsCloud.anchor.set(0.5);
+            this.gemsCloud.scale.set(0.85);
             this.addChild(this.gemsCloud);
 
-            const gemsLabel = new Label(this.game, 8, -7, '+' + gemsCount, {
-                font: 'bold 40px Arial',
+            const gemsLabel = new Label(this.game, -4, 40, '+' + gemsCount, {
+                font: 'bold 50px Arial',
                 fill: '#8c2d84'
             });
             gemsLabel.anchor.set(0.5);
@@ -133,14 +148,15 @@ export default class LevelCompletePanel extends BasePanel {
     }
 
     public show(delay: number, animationTime: number) {
+        const finalY = this.game.height / 2 + 24;
         this.x = this.game.width / 2;
-        this.y = this.game.height / 2 + 36;
+        this.y = finalY + 36;
         this.scale.set(0.92);
 
         SoundUtils.fastPanelWhooshIn(delay);
 
         this.bringToTop();
-        this.game.add.tween(this).to({ alpha: 1, y: this.game.height / 2 }, animationTime, Phaser.Easing.Quadratic.Out, true, delay, 0, false);
+        this.game.add.tween(this).to({ alpha: 1, y: finalY }, animationTime, Phaser.Easing.Quadratic.Out, true, delay, 0, false);
         this.game.add.tween(this.scale).to({ x: 1, y: 1 }, animationTime, Phaser.Easing.Quadratic.Out, true, delay, 0, false);
         this.game.time.events.add(delay + animationTime, () => {
             this.continueButton.inputEnabled = true;
@@ -160,8 +176,31 @@ export default class LevelCompletePanel extends BasePanel {
         this.continueButton.inputEnabled = false;
         AnimationUtils.jelly(this.game, this.continueButton, 0, true);
         SoundUtils.fastPanelWhooshOut(0);
-        this.game.add.tween(this).to({ alpha: 0, y: this.game.height / 2 - 28 }, 220, Phaser.Easing.Quadratic.In, true, 0, 0, false);
+        this.game.add.tween(this).to({ alpha: 0, y: this.game.height / 2 - 4 }, 220, Phaser.Easing.Quadratic.In, true, 0, 0, false);
         this.game.add.tween(this.scale).to({ x: 0.95, y: 0.95 }, 220, Phaser.Easing.Quadratic.In, true, 0, 0, false);
         this.game.time.events.add(240, () => this.callbackOnContinue(), this);
+    }
+
+    public static createTestPanel(game: Phaser.Game, callbackOnContinue: () => void): LevelCompletePanel {
+        const previewAims = [
+            new ForestAim(AimType.book, 'book3', 0),
+            new ForestAim(AimType.pearl, 'pearl', 0)
+        ];
+
+        return new LevelCompletePanel(
+            game,
+            null,
+            game.width / 2,
+            game.height / 2,
+            previewAims,
+            null,
+            callbackOnContinue,
+            {
+                aims: previewAims,
+                spentEnergy: 17,
+                targetSteps: 20,
+                gemsCount: 16
+            }
+        );
     }
 }

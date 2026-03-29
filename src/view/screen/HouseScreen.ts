@@ -40,6 +40,7 @@ import StoryLocation from '../../core/model/enum/StoryLocation';
 import SettingsPanel from '../component/house/SettingsPanel';
 import Game from '../game/Game';
 import EventPanel from '../component/house/EventPanel';
+import LevelCompletePanel from '../component/forest/CompleteLevelPanel';
 import Label from '../component/panel/Label';
 import EventUtils from './../../core/utils/EventUtils';
 import EventInfo from './../../core/model/event/EventInfo';
@@ -402,6 +403,17 @@ export default class HouseScreen extends DialogScreen {
 
         if(LocationUtils.isHouseStoryLocation(user)){
             this.addPanel(new HouseFrameLayout(this.game, ""));
+        }
+
+        if (LevelCompletePanel.TEST) {
+            this.game.time.events.add(transitionTime + transitionDelay + 200, () => {
+                let previewPanel: LevelCompletePanel;
+                previewPanel = LevelCompletePanel.createTestPanel(this.game, () => {
+                    previewPanel.destroy(true);
+                });
+                this.addPanel(previewPanel);
+                previewPanel.show(0, 250);
+            });
         }
 
         // let p = new EventPanel(this.game, new EventInfo(EventType.lukoshko, Date.now(), Date.now() +  1000 * 60*60*24));
