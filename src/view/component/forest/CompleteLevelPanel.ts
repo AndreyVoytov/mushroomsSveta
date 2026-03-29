@@ -59,7 +59,7 @@ export default class LevelCompletePanel extends BasePanel {
         titleBg.scale.set(1.6, 1.22);
 
         const cat = this.attachSprite('cat4', 'cat');
-        cat.scale.set(0.66);
+        cat.scale.set(0.75);
 
         const title = this.attachText('title', LocalizationService.get('ui.energy.winTitle', 'Уровень пройден'), {
             font: 'bold 40px Arial',
@@ -116,11 +116,10 @@ export default class LevelCompletePanel extends BasePanel {
         continueLabel.addStrokeColor('#61b019', 0);
         this.continueButton.addChild(continueLabel);
 
-        this.applyPreset([
-            { "spriteId": "panel", "x": 0, "y": 24, "scaleX": 1.08, "scaleY": 1.03, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
-        ]);
+        panel.x = 0;
+        panel.y = 24;
 
-        this.applyHtmlPreset([
+        const htmlPresets = [
             { "spriteId": "titleBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": -40 },
             { "spriteId": "title", "parentId": "titleBg", "horizontalAlign": "center", "verticalAlign": "center", "width": "88%", "offsetY": -4, "fontSize": 44 },
             { "spriteId": "helperPanel", "parentId": "panel", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": -120, "offsetY": 98 },
@@ -129,10 +128,12 @@ export default class LevelCompletePanel extends BasePanel {
             { "spriteId": "spentValue", "parentId": "helperPanel", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": 42, "offsetY": 24, "fontSize": 64 },
             { "spriteId": "betterLabel", "parentId": "helperPanel", "horizontalAlign": "center", "verticalAlign": "top", "width": "96%", "offsetY": 238, "fontSize": 30 },
             { "spriteId": "aimsLabel", "parentId": "helperPanel", "horizontalAlign": "center", "verticalAlign": "top", "width": "100%", "offsetY": 308, "fontSize": 28 },
-            { "spriteId": "cat", "parentId": "panel", "horizontalAlign": "left", "verticalAlign": "bottom", "offsetX": 36, "offsetY": -52 },
+            { "spriteId": "cat", "parentId": "panel", "horizontalAlign": "left", "verticalAlign": "bottom", "offsetX": -16, "offsetY": -32 },
+            { "spriteId": "gemsCloud", "parentId": "panel", "horizontalAlign": "left", "verticalAlign": "top", "offsetX": -34, "offsetY": -85 },
             { "spriteId": "continueButton", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 40 },
-            { "spriteId": "continueLabel", "parentId": "continueButton", "horizontalAlign": "center", "verticalAlign": "center", "width": "88%", "offsetY": 2, "fontSize": 40 }
-        ]);
+            { "spriteId": "continueLabel", "parentId": "continueButton", "horizontalAlign": "center", "verticalAlign": "center", "width": "88%", "offsetY": 2, "fontSize": 40 },
+            { "spriteId": "gemsLabel", "parentId": "gemsCloud", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": -4, "offsetY": 42, "fontSize": 50 }
+        ];
 
         const previewGemsCount = previewData && previewData.gemsCount != null ? previewData.gemsCount : null;
         if (previewGemsCount != null || (screen && forestType && UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL)) {
@@ -154,15 +155,9 @@ export default class LevelCompletePanel extends BasePanel {
             gemsLabel.anchor.set(0.5);
             this.gemsCloud.addChild(gemsLabel);
             this.gemsCloud.alpha = 0;
-
-            this.applyPreset([
-                { "spriteId": "gemsCloud", "x": -274, "y": -232, "scaleX": 0.82, "scaleY": 0.82, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
-            ]);
-
-            this.applyHtmlPreset([
-                { "spriteId": "gemsLabel", "parentId": "gemsCloud", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": -4, "offsetY": 42, "fontSize": 50 }
-            ]);
         }
+
+        this.applyHtmlPreset(<any>htmlPresets);
     }
 
     public show(delay: number, animationTime: number) {
