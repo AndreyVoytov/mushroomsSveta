@@ -31,10 +31,18 @@ export default class EnergyDetailsPanel extends ClosablePanel {
 
         const panel = this.attachSprite('panel2', 'panel');
         panel.inputEnabled = true;
+        panel.x = 0;
+        panel.y = -20;
+        panel.scale.set(1.02, 0.95);
 
-        this.attachSprite("helperPanel");
-        this.attachSprite("statusPanel", "titleBg");
-        this.attachButton('closeButtonViolet', () => this.close());
+        const helperPanel = this.attachSprite("helperPanel", "helperPanel");
+        helperPanel.scale.set(0.98, 0.72);
+
+        const titleBg = this.attachSprite("statusPanel", "titleBg");
+        titleBg.scale.set(1.34, 1.18);
+
+        const closeButton = this.attachButton('closeButtonViolet', () => this.close());
+        closeButton.scale.set(1);
 
         this.attachText("title", LocalizationService.get('ui.energy.title', 'Энергия'), {
             font: "46px Bookman Old Style",
@@ -43,6 +51,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
 
         const lightning = this.attachSprite("lightning");
         lightning.name = "lightning";
+        lightning.scale.set(0.66);
 
         this.energyLabel = this.attachText("energyCount", "" + UserService.getUser().getEnergy(), {
             font: "bold 72px Gilroy",
@@ -50,20 +59,29 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         });
 
         this.statusLabel = this.attachText("energyStatus", "", {
-            font: "bold 34px Arial",
-            fill: "#e6d2a8"
+            font: "bold 32px Arial",
+            fill: "#8f6130",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 500
         });
 
         this.resetLabel = this.attachText("energyReset", "", {
             font: "bold 28px Arial",
-            fill: "#8f6130",
+            fill: "#9b6536",
             align: "center",
             wordWrap: true,
             wordWrapWidth: 520
         });
 
         const actionButton = this.attachButton("pnlButton", () => this.tryBuyEnergy(), "buyButton");
-        this.attachSprite("gems", "gemsIcon");
+        actionButton.scale.set(1.12, 1);
+
+        const gemsIcon = SpriteUtils.createSprite(this.game, 0, 0, "gems");
+        gemsIcon.name = "gemsIcon";
+        gemsIcon.anchor.set(0.5);
+        gemsIcon.scale.set(0.57);
+        actionButton.addChild(gemsIcon);
 
         this.actionLabel = new Label(this.game, 0, 0, "", {
             font: "bolder 42px Gilroy",
@@ -75,27 +93,27 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         this.actionLabel.addStrokeColor('#61b019', 0);
         actionButton.addChild(this.actionLabel);
 
-        const hint = this.attachText("energyHint", LocalizationService.get('ui.energy.hint', '100 энергии за самоцветы. Цена растёт с каждой покупкой за день.'), {
-            font: "bold 32px Arial",
+        this.attachText("energyHint", LocalizationService.get('ui.energy.hint', '100 энергии за самоцветы. Цена растёт с каждой покупкой за день.'), {
+            font: "bold 30px Arial",
             fill: "#7b4037",
             align: "center",
             wordWrap: true,
-            wordWrapWidth: 560
+            wordWrapWidth: 660
         });
 
-        this.applyPreset([
-            {"spriteId":"panel","x":0,"y":-20,"scaleX":1.02,"scaleY":0.95,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-            {"spriteId":"helperPanel","x":0,"y":-55,"scaleX":0.98,"scaleY":0.62,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-            {"spriteId":"titleBg","x":0,"y":-280,"scaleX":1.34,"scaleY":1.18,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-            {"spriteId":"closeButtonViolet","x":322,"y":-285,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-            {"spriteId":"title","x":0,"y":-286,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":46},
-            {"spriteId":"lightning","x":-108,"y":-56,"scaleX":0.66,"scaleY":0.66,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-            {"spriteId":"energyCount","x":36,"y":-63,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":72},
-            {"spriteId":"energyStatus","x":0,"y":39,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":34},
-            {"spriteId":"energyHint","x":0,"y":145,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":32},
-            {"spriteId":"buyButton","x":0,"y":265,"scaleX":1.12,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-            {"spriteId":"gemsIcon","x":170,"y":265,"scaleX":0.64,"scaleY":0.64,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-            {"spriteId":"energyReset","x":0,"y":362,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":28}
+        this.applyHtmlPreset([
+            { "spriteId": "titleBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": -54 },
+            { "spriteId": "closeButtonViolet", "parentId": "panel", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 18, "offsetY": -44 },
+            { "spriteId": "title", "parentId": "titleBg", "horizontalAlign": "center", "verticalAlign": "center", "width": "86%", "offsetY": -4, "fontSize": 46 },
+            { "spriteId": "helperPanel", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 86 },
+            { "spriteId": "lightning", "parentId": "helperPanel", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": -88, "offsetY": -12 },
+            { "spriteId": "energyCount", "parentId": "helperPanel", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": 38, "offsetY": -12, "fontSize": 72 },
+            { "spriteId": "energyStatus", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "88%", "offsetY": 248, "fontSize": 32 },
+            { "spriteId": "buyButton", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 74 },
+            { "spriteId": "energyHint", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "88%", "offsetY": 302, "fontSize": 30 },
+            { "spriteId": "energyReset", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "72%", "offsetY": 432, "fontSize": 24 },
+            { "spriteId": "buyLabel", "parentId": "buyButton", "horizontalAlign": "center", "verticalAlign": "center", "width": "68%", "offsetX": -34, "offsetY": 2, "fontSize": 42 },
+            { "spriteId": "gemsIcon", "parentId": "buyButton", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -26, "offsetY": 2 }
         ]);
 
         this.actionLabel.scale.set(1 / actionButton.scale.x, 1 / actionButton.scale.y);
@@ -130,8 +148,6 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         const maxEnergy = EnergyUtils.MAX_ENERGY;
         const currentPrice = user.getCurrentEnergyPurchasePrice();
         const millisToMidnight = EnergyUtils.getMillisToNextMoscowMidnight();
-        const hoursToReset = Math.floor(millisToMidnight / 1000 / 60 / 60);
-        const minutesToReset = Math.floor(millisToMidnight / 1000 / 60) % 60;
 
         this.energyLabel.text = "" + energy;
 
@@ -154,10 +170,21 @@ export default class EnergyDetailsPanel extends ClosablePanel {
 
         this.resetLabel.text = LocalizationService.get(
             'ui.energy.reset',
-            'Сброс цены: {hours}ч {minutes}м до 00:00 МСК'
+            'Сброс цены через {time}'
         )
-            .replace('{hours}', "" + hoursToReset)
-            .replace('{minutes}', minutesToReset >= 10 ? "" + minutesToReset : "0" + minutesToReset);
+            .replace('{time}', this.formatResetTime(millisToMidnight));
+    }
+
+    private formatResetTime(millisToReset: number): string {
+        const hours = Math.floor(millisToReset / 1000 / 60 / 60);
+        const minutes = Math.floor(millisToReset / 1000 / 60) % 60;
+        const minutesText = minutes >= 10 ? "" + minutes : "0" + minutes;
+
+        if (hours > 0) {
+            return hours + "ч " + minutesText + "м";
+        }
+
+        return Math.max(1, minutes) + "м";
     }
 
     protected onClose(): void {

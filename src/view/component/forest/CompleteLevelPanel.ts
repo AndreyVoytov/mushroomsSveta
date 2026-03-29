@@ -23,7 +23,7 @@ type LevelCompletePanelPreviewData = {
 
 export default class LevelCompletePanel extends BasePanel {
 
-    public static TEST = true;
+    public static TEST = false;
 
     private gemsCloud: Phaser.Sprite;
     private continueButton: Phaser.Button;
