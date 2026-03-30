@@ -202,6 +202,7 @@ class TaskCardPanel extends BasePanel {
         this.rewardPanel.tint = 0xf5beb0;
         this.titleLabel.fill = "#6f4337";
         this.progressLabel.fill = "#6f4337";
+        this.alpha = isClaimed ? 0.58 : 1;
 
         if (isClaimed) {
             // this.rewardPanel.alpha = 0.7;
@@ -724,12 +725,27 @@ export default class TasksPanel extends ClosablePanel {
         let tasks = this.selectedTab == "daily"
             ? TaskService.getDailyTaskViews()
             : TaskService.getCampaignTaskViews(this.selectedChapterIndex);
+        let sortedTasks = this.sortTasksForDisplay(tasks);
 
         this.taskCards.forEach((card, index) => {
-            card.setData(tasks[index], LocalizationService.get("ui.tasks.claim", "Забрать"));
+            card.setData(sortedTasks[index], LocalizationService.get("ui.tasks.claim", "Забрать"));
         });
         this.taskCardsStack.relayout();
         this.updateTaskScrollMetrics();
+    }
+
+    private sortTasksForDisplay(tasks: TaskProgressView[]): TaskProgressView[] {
+        return (tasks || [])
+            .map((task, index) => ({ task: task, index: index }))
+            .sort((left, right) => {
+                let leftDone = left.task && left.task.isClaimed ? 1 : 0;
+                let rightDone = right.task && right.task.isClaimed ? 1 : 0;
+                if (leftDone != rightDone) {
+                    return leftDone - rightDone;
+                }
+                return left.index - right.index;
+            })
+            .map(item => item.task);
     }
 
     private configureTaskViewport(): void {
