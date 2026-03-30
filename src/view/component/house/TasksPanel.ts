@@ -268,9 +268,7 @@ export default class TasksPanel extends ClosablePanel {
     private progressBarEndCircle: Phaser.Sprite;
     private progressBarEndReward: Phaser.Sprite;
     private progressBarEndCheck: Phaser.Sprite;
-    private progressStateLabel: Label;
     private resetLabel: Label;
-    private progressMetaStack: StackContainer;
     private subtitleLabel: Label;
     private rewardIcons: Phaser.Sprite[] = [];
     private rewardChecks: Phaser.Sprite[] = [];
@@ -378,14 +376,6 @@ export default class TasksPanel extends ClosablePanel {
         this.progressBarEndCheck = this.attachSprite("check", "progressBarEndCheck");
         this.progressBarEndCheck.scale.set(0.32);
 
-        this.progressStateLabel = this.attachText("progressState", "", {
-            font: "bold 22px Arial",
-            fill: "#8f6130",
-            align: "center",
-            wordWrap: true,
-            wordWrapWidth: 460
-        });
-
         this.resetLabel = this.attachText("resetLabel", "", {
             font: "bold 20px Arial",
             fill: "#9b6536",
@@ -393,17 +383,6 @@ export default class TasksPanel extends ClosablePanel {
             wordWrap: true,
             wordWrapWidth: 460
         });
-
-        this.progressMetaStack = new StackContainer(this.game, 0, 0, "progressMetaStack", {
-            gap: 6,
-            align: "center",
-            layoutWidth: 620
-        });
-        this.addChild(this.progressMetaStack);
-        this.removeChild(this.progressStateLabel);
-        this.removeChild(this.resetLabel);
-        this.progressMetaStack.addStackChild(this.progressStateLabel);
-        this.progressMetaStack.addStackChild(this.resetLabel);
 
         for (let i = 0; i < 2; i++) {
             let rewardIcon = this.attachSprite(i == 0 ? "gems" : "actionChest", "rewardIcon" + i);
@@ -491,7 +470,7 @@ export default class TasksPanel extends ClosablePanel {
             { "spriteId": "subtitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "86%", "offsetY": 150, "fontSize": 24 },
             { "spriteId": "progressTitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 192, "fontSize": 28 },
             { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 248 },
-            { "spriteId": "progressMetaStack", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 18 },
+            { "spriteId": "resetLabel", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 38, "width": "86%", "fontSize": 20 },
             { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 382 },
             { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
             { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
@@ -632,7 +611,7 @@ export default class TasksPanel extends ClosablePanel {
             { "spriteId": "subtitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "86%", "offsetY": subtitleY, "fontSize": 24 },
             { "spriteId": "progressTitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": progressTitleY, "fontSize": 28 },
             { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": progressLineY },
-            { "spriteId": "progressMetaStack", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 18 },
+            { "spriteId": "resetLabel", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 38, "width": "86%", "fontSize": 20 },
             { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": viewportY },
             { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
             { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
@@ -649,7 +628,6 @@ export default class TasksPanel extends ClosablePanel {
             });
         });
 
-        this.progressMetaStack.relayout();
         this.applyHtmlPreset(headerPresets);
         this.configureTaskViewport();
     }
@@ -700,12 +678,11 @@ export default class TasksPanel extends ClosablePanel {
 
             this.subtitleLabel.text = LocalizationService.get("ui.tasks.dailyHint", "5 случайных заданий до конца дня");
             this.progressTitle.text = LocalizationService.get("ui.tasks.dailyProgress", "Прогресс дня");
-            this.progressStateLabel.text = claimedTasks + " / " + totalTasks + " заданий завершено";
             this.resetLabel.visible = true;
             this.resetLabel.text = LocalizationService.get("ui.tasks.refreshIn", "Обновление через {time}")
                 .replace("{time}", this.formatDuration(EnergyUtils.getMillisToNextMoscowMidnight()));
 
-            this.progressMetaStack.relayout();
+            this.refreshProgressMetaLayout();
             this.updateProgressBar(claimedTasks / totalTasks, dailyRewards);
             return;
         }
@@ -716,12 +693,16 @@ export default class TasksPanel extends ClosablePanel {
 
         this.subtitleLabel.text = LocalizationService.get("ui.tasks.chapterHint", "Все задания текущей главы доступны сразу");
         this.progressTitle.text = chapterView.chapter.title;
-        this.progressStateLabel.text = chapterView.claimedTasks + " / " + chapterView.totalTasks + " заданий завершено";
-        this.progressStateLabel.visible = false;
         this.resetLabel.visible = false;
 
-        this.progressMetaStack.relayout();
+        this.refreshProgressMetaLayout();
         this.updateProgressBar(chapterView.claimedTasks / Math.max(1, chapterView.totalTasks), [rewardView]);
+    }
+
+    private refreshProgressMetaLayout(): void {
+        this.applyHtmlPreset([
+            { "spriteId": "resetLabel", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 38, "width": "86%", "fontSize": 20 }
+        ]);
     }
 
     private refreshCards(): void {
@@ -906,7 +887,7 @@ export default class TasksPanel extends ClosablePanel {
         this.setChildIndex(this.progressBarBody, this.children.length - 1);
         this.bringChildToTop(this.progressBarTail);
         this.bringChildToTop(this.progressBarEndCircle);
-        this.setChildIndex(this.progressMetaStack, this.children.length - 1);
+        this.bringChildToTop(this.resetLabel);
         this.rewardIcons.forEach(icon => this.bringChildToTop(icon));
         this.rewardChecks.forEach(check => this.bringChildToTop(check));
         this.bringChildToTop(this.progressBarEndReward);
