@@ -247,6 +247,8 @@ class TaskCardPanel extends BasePanel {
 }
 
 export default class TasksPanel extends ClosablePanel {
+    private tasksViewportWidth: number = 760;
+    private tasksViewportHeight: number = 472;
     private screen: HouseScreen;
     private hooks: TasksPanelHooks;
     private panel: Phaser.Sprite;
@@ -268,7 +270,19 @@ export default class TasksPanel extends ClosablePanel {
     private rewardIcons: Phaser.Sprite[] = [];
     private rewardChecks: Phaser.Sprite[] = [];
     private taskCards: TaskCardPanel[] = [];
+    private taskCardsViewport: Phaser.Group;
     private taskCardsStack: StackContainer;
+    private taskCardsMask: Phaser.Graphics;
+    private taskCardsDragArea: Phaser.Sprite;
+    private taskScrollTrack: Phaser.Sprite;
+    private taskScrollThumb: Phaser.Sprite;
+    private taskScrollOffset: number = 0;
+    private taskMaxScrollOffset: number = 0;
+    private dragStartPointerY: number = 0;
+    private dragStartScrollOffset: number = 0;
+    private draggingTaskList: boolean = false;
+    private draggingTaskThumb: boolean = false;
+    private wheelListener: (e: WheelEvent) => void;
 
     private selectedTab: TasksTab = "daily";
     private selectedChapterIndex: number = 0;
@@ -277,11 +291,12 @@ export default class TasksPanel extends ClosablePanel {
         super(game, game.width / 2, game.height / 2 - 8, true, "blank", 1.02);
         this.screen = screen;
         this.hooks = hooks || {};
+        this.wheelListener = e => this.onMouseWheel(e);
         this.visible = false;
         this.fixedToCamera = true;
 
         this.panel = this.attachSprite("panel2", "panel");
-        this.panel.scale.set(1.2, 1.58);
+        this.panel.scale.set(1.2, 1.74);
         this.panel.y = 18;
         this.panel.inputEnabled = true;
 
@@ -375,11 +390,48 @@ export default class TasksPanel extends ClosablePanel {
             this.rewardChecks.push(rewardCheck);
         }
 
+        this.taskCardsViewport = new Phaser.Group(this.game, null, "taskCardsViewport");
+        (<any>this.taskCardsViewport).layoutBox = { x: 0, y: 0, width: this.tasksViewportWidth, height: this.tasksViewportHeight };
+        this.addChild(this.taskCardsViewport);
+
+        this.taskCardsDragArea = SpriteUtils.createSprite(this.game, 0, 0, "blank");
+        this.taskCardsDragArea.name = "taskCardsDragArea";
+        this.taskCardsDragArea.anchor.set(0);
+        this.taskCardsDragArea.alpha = 0.001;
+        this.taskCardsDragArea.inputEnabled = true;
+        this.taskCardsDragArea.events.onInputDown.add(this.onTaskListPointerDown, this);
+        this.taskCardsViewport.add(this.taskCardsDragArea);
+
         this.taskCardsStack = new StackContainer(this.game, 0, 0, "taskCardsStack", {
             gap: 20,
-            align: "center"
+            align: "center",
+            layoutWidth: this.tasksViewportWidth
         });
-        this.addChild(this.taskCardsStack);
+        this.taskCardsViewport.add(this.taskCardsStack);
+
+        this.taskCardsMask = new Phaser.Graphics(this.game, 0, 0);
+        this.taskCardsMask.alpha = 0;
+        this.addChild(this.taskCardsMask);
+        (<any>this.taskCardsViewport).mask = this.taskCardsMask;
+
+        this.taskScrollTrack = this.attachSprite("blank", "taskScrollTrack");
+        this.taskScrollTrack.anchor.set(0, 0);
+        this.taskScrollTrack.width = 10;
+        this.taskScrollTrack.height = this.tasksViewportHeight;
+        this.taskScrollTrack.tint = 0x7b4037;
+        this.taskScrollTrack.alpha = 0.24;
+
+        this.taskScrollThumb = this.attachSprite("blank", "taskScrollThumb");
+        this.taskScrollThumb.anchor.set(0, 0);
+        this.taskScrollThumb.width = 10;
+        this.taskScrollThumb.height = 90;
+        this.taskScrollThumb.tint = 0xf2d4a5;
+        this.taskScrollThumb.alpha = 0.95;
+        this.taskScrollThumb.inputEnabled = true;
+        this.taskScrollThumb.events.onInputDown.add(this.onTaskThumbPointerDown, this);
+
+        this.game.input.addMoveCallback(this.onGlobalPointerMove, this);
+        this.game.input.onUp.add(this.onGlobalPointerUp, this);
 
         TaskService.getCampaignChapterViews().forEach((chapterView, index) => {
             let button = this.attachButton("pnlButton", () => this.selectChapter(index), "chapterTab" + index);
@@ -416,7 +468,9 @@ export default class TasksPanel extends ClosablePanel {
             { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 224 },
             { "spriteId": "progressState", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 258, "fontSize": 22 },
             { "spriteId": "resetLabel", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 294, "fontSize": 20 },
-            { "spriteId": "taskCardsStack", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 408 }
+            { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 404 },
+            { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
+            { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
         ];
 
         this.chapterButtons.forEach((_button, index) => {
@@ -459,6 +513,7 @@ export default class TasksPanel extends ClosablePanel {
         });
 
         this.applyHtmlPreset(htmlPresets);
+        this.configureTaskViewport();
 
         this.selectedTab = this.getPreferredTab();
         this.selectedChapterIndex = TaskService.getCurrentCampaignChapterIndex();
@@ -468,10 +523,15 @@ export default class TasksPanel extends ClosablePanel {
     protected onShow(): void {
         this.selectedChapterIndex = TaskService.getCurrentCampaignChapterIndex();
         this.selectTab(this.getPreferredTab(), true);
+        document.body.removeEventListener("wheel", this.wheelListener);
+        document.body.addEventListener("wheel", this.wheelListener, false);
         this.screen.hideUI(0, true);
     }
 
     protected onClose(): void {
+        document.body.removeEventListener("wheel", this.wheelListener);
+        this.draggingTaskList = false;
+        this.draggingTaskThumb = false;
         this.screen.showUI(true);
     }
 
@@ -610,6 +670,113 @@ export default class TasksPanel extends ClosablePanel {
             card.setData(tasks[index], LocalizationService.get("ui.tasks.claim", "Забрать"));
         });
         this.taskCardsStack.relayout();
+        this.updateTaskScrollMetrics();
+    }
+
+    private configureTaskViewport(): void {
+        (<any>this.taskCardsViewport).layoutBox = {
+            x: 0,
+            y: 0,
+            width: this.tasksViewportWidth,
+            height: this.tasksViewportHeight
+        };
+
+        this.taskCardsDragArea.width = this.tasksViewportWidth;
+        this.taskCardsDragArea.height = this.tasksViewportHeight;
+        this.taskScrollTrack.height = this.tasksViewportHeight;
+
+        this.redrawTaskViewportMask();
+        this.updateTaskScrollMetrics();
+    }
+
+    private redrawTaskViewportMask(): void {
+        this.taskCardsMask.clear();
+        this.taskCardsMask.beginFill(0xffffff, 1);
+        this.taskCardsMask.drawRect(this.taskCardsViewport.x, this.taskCardsViewport.y, this.tasksViewportWidth, this.tasksViewportHeight);
+        this.taskCardsMask.endFill();
+    }
+
+    private updateTaskScrollMetrics(): void {
+        let contentBox = (<any>this.taskCardsStack).layoutBox || { height: 0 };
+        let contentHeight = contentBox.height || 0;
+        this.taskMaxScrollOffset = Math.max(0, contentHeight - this.tasksViewportHeight);
+
+        this.taskScrollTrack.visible = this.taskMaxScrollOffset > 0;
+        this.taskScrollThumb.visible = this.taskMaxScrollOffset > 0;
+
+        if (this.taskMaxScrollOffset <= 0) {
+            this.setTaskScrollOffset(0);
+            return;
+        }
+
+        let thumbHeight = Math.max(64, this.tasksViewportHeight * this.tasksViewportHeight / Math.max(this.tasksViewportHeight, contentHeight));
+        this.taskScrollThumb.height = Math.min(this.tasksViewportHeight, thumbHeight);
+        this.setTaskScrollOffset(this.taskScrollOffset);
+    }
+
+    private setTaskScrollOffset(value: number): void {
+        let clamped = Math.max(0, Math.min(this.taskMaxScrollOffset, value || 0));
+        this.taskScrollOffset = clamped;
+        this.taskCardsStack.y = -clamped;
+
+        if (!this.taskScrollThumb.visible) {
+            return;
+        }
+
+        let travel = Math.max(0, this.taskScrollTrack.height - this.taskScrollThumb.height);
+        let ratio = this.taskMaxScrollOffset > 0 ? clamped / this.taskMaxScrollOffset : 0;
+        this.taskScrollThumb.y = this.taskScrollTrack.y + travel * ratio;
+    }
+
+    private onTaskListPointerDown(_sprite: Phaser.Sprite, pointer: Phaser.Pointer): void {
+        if (this.taskMaxScrollOffset <= 0) {
+            return;
+        }
+
+        this.draggingTaskList = true;
+        this.dragStartPointerY = pointer.y;
+        this.dragStartScrollOffset = this.taskScrollOffset;
+    }
+
+    private onTaskThumbPointerDown(_sprite: Phaser.Sprite, pointer: Phaser.Pointer): void {
+        if (this.taskMaxScrollOffset <= 0) {
+            return;
+        }
+
+        this.draggingTaskThumb = true;
+        this.dragStartPointerY = pointer.y;
+        this.dragStartScrollOffset = this.taskScrollOffset;
+    }
+
+    private onGlobalPointerMove(pointer: Phaser.Pointer, _x: number, y: number): void {
+        if (!this.visible || !this.opened) {
+            return;
+        }
+
+        if (this.draggingTaskList) {
+            this.setTaskScrollOffset(this.dragStartScrollOffset - (y - this.dragStartPointerY));
+            return;
+        }
+
+        if (this.draggingTaskThumb) {
+            let travel = Math.max(1, this.taskScrollTrack.height - this.taskScrollThumb.height);
+            let ratio = (y - this.dragStartPointerY) / travel;
+            this.setTaskScrollOffset(this.dragStartScrollOffset + this.taskMaxScrollOffset * ratio);
+        }
+    }
+
+    private onGlobalPointerUp(): void {
+        this.draggingTaskList = false;
+        this.draggingTaskThumb = false;
+    }
+
+    private onMouseWheel(e: WheelEvent): void {
+        if (!this.opened || !this.visible || this.taskMaxScrollOffset <= 0) {
+            return;
+        }
+
+        e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+        this.setTaskScrollOffset(this.taskScrollOffset + (e.deltaY || 0) * 0.7);
     }
 
     private updateProgressBar(progressRatio: number, rewards: TaskRewardView[]): void {
