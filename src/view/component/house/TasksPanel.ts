@@ -249,7 +249,7 @@ class TaskCardPanel extends BasePanel {
 
 export default class TasksPanel extends ClosablePanel {
     private tasksViewportWidth: number = 760;
-    private tasksViewportHeight: number = 472;
+    private tasksViewportHeight: number = 572;
     private taskCardsBackgroundWidthInset: number = 44;
     private taskCardsBackgroundHeightExtra: number = 28;
     private screen: HouseScreen;
@@ -302,8 +302,8 @@ export default class TasksPanel extends ClosablePanel {
         this.fixedToCamera = true;
 
         this.panel = this.attachSprite("panel2", "panel");
-        this.panel.scale.set(1.2, 1.74);
-        this.panel.y = 18;
+        this.panel.scale.set(1.2, 1.93);
+        this.panel.y = 68;
         this.panel.inputEnabled = true;
 
         const titleBg = this.attachSprite("ribbon", "titleBg");
