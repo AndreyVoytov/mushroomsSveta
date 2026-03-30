@@ -252,6 +252,9 @@ export default class TasksPanel extends ClosablePanel {
     private tasksViewportHeight: number = 572;
     private taskCardsBackgroundWidthInset: number = 44;
     private taskCardsBackgroundHeightExtra: number = 28;
+    private taskScrollWidth: number = 8;
+    private taskScrollRightInset: number = 34;
+    private taskScrollVerticalInset: number = 12;
     private screen: HouseScreen;
     private hooks: TasksPanelHooks;
     private panel: Phaser.Sprite;
@@ -428,20 +431,20 @@ export default class TasksPanel extends ClosablePanel {
         this.addChild(this.taskCardsMask);
         (<any>this.taskCardsViewport).mask = this.taskCardsMask;
 
-        this.taskScrollTrack = this.attachSprite("blank", "taskScrollTrack");
+        this.taskScrollTrack = this.createTaskScrollSprite("taskScrollTrack", 0x6b412d, 0.22, 0x3f2417, 0.18);
         this.taskScrollTrack.anchor.set(0, 0);
-        this.taskScrollTrack.width = 10;
+        this.taskScrollTrack.width = this.taskScrollWidth;
         this.taskScrollTrack.height = this.tasksViewportHeight;
-        this.taskScrollTrack.tint = 0x7b4037;
-        this.taskScrollTrack.alpha = 0.24;
+        this.taskScrollTrack.inputEnabled = true;
+        this.taskScrollTrack.input.useHandCursor = true;
+        this.taskScrollTrack.events.onInputDown.add(this.onTaskTrackPointerDown, this);
 
-        this.taskScrollThumb = this.attachSprite("blank", "taskScrollThumb");
+        this.taskScrollThumb = this.createTaskScrollSprite("taskScrollThumb", 0xf4e5ca, 0.36, 0xffffff, 0.34);
         this.taskScrollThumb.anchor.set(0, 0);
-        this.taskScrollThumb.width = 10;
+        this.taskScrollThumb.width = this.taskScrollWidth;
         this.taskScrollThumb.height = 90;
-        this.taskScrollThumb.tint = 0xf2d4a5;
-        this.taskScrollThumb.alpha = 0.95;
         this.taskScrollThumb.inputEnabled = true;
+        this.taskScrollThumb.input.useHandCursor = true;
         this.taskScrollThumb.events.onInputDown.add(this.onTaskThumbPointerDown, this);
 
         this.game.input.addMoveCallback(this.onGlobalPointerMove, this);
@@ -483,8 +486,8 @@ export default class TasksPanel extends ClosablePanel {
             { "spriteId": "resetLabel", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 38, "width": "86%", "fontSize": 20 },
             { "spriteId": "taskCardsBackground", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 382 },
             { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 382 },
-            { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
-            { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
+            { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": -this.taskScrollRightInset, "offsetY": this.taskScrollVerticalInset },
+            { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": -this.taskScrollRightInset, "offsetY": this.taskScrollVerticalInset }
         ];
 
         this.chapterButtons.forEach((_button, index) => {
@@ -625,8 +628,8 @@ export default class TasksPanel extends ClosablePanel {
             { "spriteId": "resetLabel", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 38, "width": "86%", "fontSize": 20 },
             { "spriteId": "taskCardsBackground", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": viewportY },
             { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": viewportY },
-            { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
-            { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
+            { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": -this.taskScrollRightInset, "offsetY": this.taskScrollVerticalInset },
+            { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": -this.taskScrollRightInset, "offsetY": this.taskScrollVerticalInset }
         ];
 
         this.chapterButtons.forEach((_button, index) => {
@@ -741,7 +744,9 @@ export default class TasksPanel extends ClosablePanel {
         this.taskCardsBackground.height = this.tasksViewportHeight + this.taskCardsBackgroundHeightExtra;
         this.taskCardsDragArea.width = this.tasksViewportWidth;
         this.taskCardsDragArea.height = this.tasksViewportHeight;
-        this.taskScrollTrack.height = this.tasksViewportHeight;
+        this.taskScrollTrack.width = this.taskScrollWidth;
+        this.taskScrollTrack.height = this.tasksViewportHeight - this.taskScrollVerticalInset * 2;
+        this.taskScrollThumb.width = this.taskScrollWidth;
 
         this.redrawTaskViewportMask();
         this.updateTaskScrollMetrics();
@@ -768,7 +773,9 @@ export default class TasksPanel extends ClosablePanel {
         }
 
         let thumbHeight = Math.max(64, this.tasksViewportHeight * this.tasksViewportHeight / Math.max(this.tasksViewportHeight, contentHeight));
-        this.taskScrollThumb.height = Math.min(this.tasksViewportHeight, thumbHeight);
+        this.taskScrollThumb.height = Math.min(this.taskScrollTrack.height, thumbHeight);
+        (<any>this.taskScrollTrack).hitArea = new Phaser.Rectangle(-10, 0, this.taskScrollWidth + 24, this.taskScrollTrack.height);
+        (<any>this.taskScrollThumb).hitArea = new Phaser.Rectangle(-10, 0, this.taskScrollWidth + 24, this.taskScrollThumb.height);
         this.setTaskScrollOffset(this.taskScrollOffset);
     }
 
@@ -801,6 +808,20 @@ export default class TasksPanel extends ClosablePanel {
             return;
         }
 
+        this.draggingTaskThumb = true;
+        this.dragStartPointerY = pointer.y;
+        this.dragStartScrollOffset = this.taskScrollOffset;
+    }
+
+    private onTaskTrackPointerDown(_sprite: Phaser.Sprite, pointer: Phaser.Pointer): void {
+        if (this.taskMaxScrollOffset <= 0) {
+            return;
+        }
+
+        let travel = Math.max(1, this.taskScrollTrack.height - this.taskScrollThumb.height);
+        let target = pointer.y - (this.y + this.taskScrollTrack.y) - this.taskScrollThumb.height / 2;
+        let ratio = Math.max(0, Math.min(1, target / travel));
+        this.setTaskScrollOffset(this.taskMaxScrollOffset * ratio);
         this.draggingTaskThumb = true;
         this.dragStartPointerY = pointer.y;
         this.dragStartScrollOffset = this.taskScrollOffset;
@@ -980,5 +1001,19 @@ export default class TasksPanel extends ClosablePanel {
             default:
                 return 0.66;
         }
+    }
+
+    private createTaskScrollSprite(name: string, fillColor: number, fillAlpha: number, strokeColor: number, strokeAlpha: number): Phaser.Sprite {
+        let graphics = this.game.make.graphics(0, 0);
+        graphics.lineStyle(1, strokeColor, strokeAlpha);
+        graphics.beginFill(fillColor, fillAlpha);
+        graphics.drawRoundedRect(0, 0, 12, 120, 12);
+        graphics.endFill();
+
+        let sprite = new Phaser.Sprite(this.game, 0, 0, graphics.generateTexture());
+        graphics.destroy(true);
+        sprite.name = name;
+        this.addSprite(sprite);
+        return sprite;
     }
 }
