@@ -250,6 +250,8 @@ class TaskCardPanel extends BasePanel {
 export default class TasksPanel extends ClosablePanel {
     private tasksViewportWidth: number = 760;
     private tasksViewportHeight: number = 472;
+    private taskCardsBackgroundWidthInset: number = 44;
+    private taskCardsBackgroundHeightExtra: number = 28;
     private screen: HouseScreen;
     private hooks: TasksPanelHooks;
     private panel: Phaser.Sprite;
@@ -273,6 +275,7 @@ export default class TasksPanel extends ClosablePanel {
     private rewardIcons: Phaser.Sprite[] = [];
     private rewardChecks: Phaser.Sprite[] = [];
     private taskCards: TaskCardPanel[] = [];
+    private taskCardsBackground: Phaser.Sprite;
     private taskCardsViewport: Phaser.Group;
     private taskCardsStack: StackContainer;
     private taskCardsMask: Phaser.Graphics;
@@ -394,6 +397,13 @@ export default class TasksPanel extends ClosablePanel {
             this.rewardChecks.push(rewardCheck);
         }
 
+        this.taskCardsBackground = this.attachSprite("helperPanel", "taskCardsBackground");
+        this.taskCardsBackground.width = this.tasksViewportWidth - this.taskCardsBackgroundWidthInset;
+        this.taskCardsBackground.height = this.tasksViewportHeight + this.taskCardsBackgroundHeightExtra;
+        this.taskCardsBackground.tint = 0x8c5b36;
+        this.taskCardsBackground.alpha = 0.38;
+        this.taskCardsBackground.inputEnabled = false;
+
         this.taskCardsViewport = new Phaser.Group(this.game, null, "taskCardsViewport");
         (<any>this.taskCardsViewport).layoutBox = { x: 0, y: 0, width: this.tasksViewportWidth, height: this.tasksViewportHeight };
         this.addChild(this.taskCardsViewport);
@@ -471,6 +481,7 @@ export default class TasksPanel extends ClosablePanel {
             { "spriteId": "progressTitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 192, "fontSize": 28 },
             { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 248 },
             { "spriteId": "resetLabel", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 38, "width": "86%", "fontSize": 20 },
+            { "spriteId": "taskCardsBackground", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 382 },
             { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 382 },
             { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
             { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
@@ -612,6 +623,7 @@ export default class TasksPanel extends ClosablePanel {
             { "spriteId": "progressTitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": progressTitleY, "fontSize": 28 },
             { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": progressLineY },
             { "spriteId": "resetLabel", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 38, "width": "86%", "fontSize": 20 },
+            { "spriteId": "taskCardsBackground", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": viewportY },
             { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": viewportY },
             { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
             { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
@@ -725,6 +737,8 @@ export default class TasksPanel extends ClosablePanel {
             height: this.tasksViewportHeight
         };
 
+        this.taskCardsBackground.width = this.tasksViewportWidth - this.taskCardsBackgroundWidthInset;
+        this.taskCardsBackground.height = this.tasksViewportHeight + this.taskCardsBackgroundHeightExtra;
         this.taskCardsDragArea.width = this.tasksViewportWidth;
         this.taskCardsDragArea.height = this.tasksViewportHeight;
         this.taskScrollTrack.height = this.tasksViewportHeight;
