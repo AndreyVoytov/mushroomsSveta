@@ -52,7 +52,7 @@ class TaskCardPanel extends BasePanel {
 
         this.rewardPanel = this.attachSprite("helperPanel", "rewardPanel");
         this.rewardPanel.scale.set(0.23, 0.44);
-        this.rewardPanel.alpha = 0.38;
+        // this.rewardPanel.alpha = 0.38;
 
         this.icon = this.attachSprite("mushroom", "taskIcon");
         this.icon.scale.set(0.78);
@@ -119,7 +119,7 @@ class TaskCardPanel extends BasePanel {
 
         this.applyHtmlPreset([
             { "spriteId": "contentPanel", "parentId": "cardBg", "horizontalAlign": "left", "verticalAlign": "center", "offsetX": 46, "offsetY": 0 },
-            { "spriteId": "rewardPanel", "parentId": "cardBg", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -46, "offsetY": 0 },
+            { "spriteId": "rewardPanel", "parentId": "cardBg", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -60, "offsetY": 0 },
             { "spriteId": "taskTitle", "parentId": "contentPanel", "horizontalAlign": "left", "verticalAlign": "center", "width": "54%", "offsetX": 24, "offsetY": -2, "fontSize": 22 },
             { "spriteId": "taskIcon", "parentId": "contentPanel", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -34, "offsetY": 0 },
             { "spriteId": "taskProgress", "parentId": "contentPanel", "horizontalAlign": "right", "verticalAlign": "center", "width": 88, "offsetX": -116, "offsetY": -2, "fontSize": 24 },
@@ -198,16 +198,17 @@ class TaskCardPanel extends BasePanel {
 
         this.background.tint = 0xffffff;
         this.contentPanel.tint = 0xffffff;
-        this.rewardPanel.tint = 0xffffff;
+        this.background.alpha = 0;// = 0xffffff;
+        this.rewardPanel.tint = 0xf5beb0;
         this.titleLabel.fill = "#6f4337";
         this.progressLabel.fill = "#6f4337";
 
         if (isClaimed) {
-            this.rewardPanel.alpha = 0.38;
+            // this.rewardPanel.alpha = 0.7;
             this.rewardTitleLabel.fill = "#7b4037";
             this.rewardLabel.fill = "#7b4037";
         } else {
-            this.rewardPanel.alpha = 0.38;
+            // this.rewardPanel.alpha = 0.7;
             this.rewardTitleLabel.fill = "#7b4037";
             this.rewardLabel.fill = "#7b4037";
         }
@@ -266,6 +267,7 @@ export default class TasksPanel extends ClosablePanel {
     private progressBarTail: Phaser.Sprite;
     private progressStateLabel: Label;
     private resetLabel: Label;
+    private progressMetaStack: StackContainer;
     private subtitleLabel: Label;
     private rewardIcons: Phaser.Sprite[] = [];
     private rewardChecks: Phaser.Sprite[] = [];
@@ -300,18 +302,18 @@ export default class TasksPanel extends ClosablePanel {
         this.panel.y = 18;
         this.panel.inputEnabled = true;
 
-        const titleBg = this.attachSprite("statusPanel", "titleBg");
-        titleBg.scale.set(1.52, 1.18);
+        const titleBg = this.attachSprite("ribbon", "titleBg");
+        titleBg.scale.set(0.7, 1);
 
         const closeButton = this.attachButton("closeButtonViolet", () => this.close(), "closeButton");
 
         this.titleLabel = this.attachText("title", LocalizationService.get("ui.tasks.title", "Задания"), {
-            font: "48px Bookman Old Style",
+            font: "35px Bookman Old Style",
             fill: "#ffffff"
         });
 
-        this.dailyTabButton = this.attachButton("pnlButton", () => this.selectTab("daily"), "dailyTab");
-        this.dailyTabButton.scale.set(0.74, 0.74);
+        this.dailyTabButton = this.attachButton("wooden_tab", () => this.selectTab("daily"), "dailyTab");
+        this.dailyTabButton.scale.set(1.18);
         this.dailyTabLabel = new Label(this.game, 0, 0, LocalizationService.get("ui.tasks.daily", "Ежедневные"), {
             font: "bold 28px Gilroy",
             fill: "#f0f1ec"
@@ -322,8 +324,8 @@ export default class TasksPanel extends ClosablePanel {
         this.dailyTabLabel.addStrokeColor("#61b019", 0);
         this.dailyTabButton.addChild(this.dailyTabLabel);
 
-        this.campaignTabButton = this.attachButton("pnlButton", () => this.selectTab("campaign"), "campaignTab");
-        this.campaignTabButton.scale.set(0.74, 0.74);
+        this.campaignTabButton = this.attachButton("wooden_tab", () => this.selectTab("campaign"), "campaignTab");
+        this.campaignTabButton.scale.set(1.18);
         this.campaignTabLabel = new Label(this.game, 0, 0, LocalizationService.get("ui.tasks.campaign", "Кампания"), {
             font: "bold 28px Gilroy",
             fill: "#f0f1ec"
@@ -380,6 +382,17 @@ export default class TasksPanel extends ClosablePanel {
             wordWrapWidth: 460
         });
 
+        this.progressMetaStack = new StackContainer(this.game, 0, 0, "progressMetaStack", {
+            gap: 6,
+            align: "center",
+            layoutWidth: 620
+        });
+        this.addChild(this.progressMetaStack);
+        this.removeChild(this.progressStateLabel);
+        this.removeChild(this.resetLabel);
+        this.progressMetaStack.addStackChild(this.progressStateLabel);
+        this.progressMetaStack.addStackChild(this.resetLabel);
+
         for (let i = 0; i < 2; i++) {
             let rewardIcon = this.attachSprite(i == 0 ? "gems" : "actionChest", "rewardIcon" + i);
             rewardIcon.scale.set(i == 0 ? 0.42 : 0.52);
@@ -403,7 +416,7 @@ export default class TasksPanel extends ClosablePanel {
         this.taskCardsViewport.add(this.taskCardsDragArea);
 
         this.taskCardsStack = new StackContainer(this.game, 0, 0, "taskCardsStack", {
-            gap: 20,
+            gap: -45,
             align: "center",
             layoutWidth: this.tasksViewportWidth
         });
@@ -457,18 +470,17 @@ export default class TasksPanel extends ClosablePanel {
 
         let htmlPresets: any[] = [
             { "spriteId": "titleBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": -54 },
-            { "spriteId": "title", "parentId": "titleBg", "horizontalAlign": "center", "verticalAlign": "center", "width": "88%", "offsetY": -4, "fontSize": 48 },
-            { "spriteId": "closeButton", "parentId": "panel", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 20, "offsetY": -46 },
-            { "spriteId": "dailyTab", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetX": -150, "offsetY": 40 },
+            { "spriteId": "title", "parentId": "titleBg", "horizontalAlign": "center", "verticalAlign": "center", "width": "88%", "offsetY": -24, "fontSize": 48 },
+            { "spriteId": "closeButton", "parentId": "titleBg", "horizontalAlign": "right", "verticalAlign": "middle", "offsetX": -35, "offsetY": 0 },
+            { "spriteId": "dailyTab", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetX": -188, "offsetY": 52 },
             { "spriteId": "dailyTabLabel", "parentId": "dailyTab", "horizontalAlign": "center", "verticalAlign": "center", "width": "86%", "offsetY": 2, "fontSize": 28 },
-            { "spriteId": "campaignTab", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetX": 150, "offsetY": 40 },
+            { "spriteId": "campaignTab", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetX": 188, "offsetY": 52 },
             { "spriteId": "campaignTabLabel", "parentId": "campaignTab", "horizontalAlign": "center", "verticalAlign": "center", "width": "86%", "offsetY": 2, "fontSize": 28 },
-            { "spriteId": "subtitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "86%", "offsetY": 132, "fontSize": 24 },
-            { "spriteId": "progressTitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 174, "fontSize": 28 },
-            { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 224 },
-            { "spriteId": "progressState", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 258, "fontSize": 22 },
-            { "spriteId": "resetLabel", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 294, "fontSize": 20 },
-            { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 404 },
+            { "spriteId": "subtitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "86%", "offsetY": 150, "fontSize": 24 },
+            { "spriteId": "progressTitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 192, "fontSize": 28 },
+            { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 248 },
+            { "spriteId": "progressMetaStack", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 18 },
+            { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 382 },
             { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
             { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
         ];
@@ -590,8 +602,44 @@ export default class TasksPanel extends ClosablePanel {
     private refreshView(): void {
         this.refreshTabButtons();
         this.refreshChapterButtons();
+        this.updateHeaderLayout();
         this.refreshProgressBlock();
         this.refreshCards();
+    }
+
+    private updateHeaderLayout(): void {
+        let showChapters = this.selectedTab == "campaign";
+        let subtitleY = showChapters ? 186 : 150;
+        let progressTitleY = showChapters ? 224 : 192;
+        let progressLineY = showChapters ? 280 : 248;
+        let viewportY = showChapters ? 420 : 382;
+
+        let headerPresets: any[] = [
+            { "spriteId": "dailyTab", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetX": -208, "offsetY": 47 },
+            { "spriteId": "campaignTab", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetX": 208, "offsetY": 47 },
+            { "spriteId": "subtitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "86%", "offsetY": subtitleY, "fontSize": 24 },
+            { "spriteId": "progressTitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": progressTitleY, "fontSize": 28 },
+            { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": progressLineY },
+            { "spriteId": "progressMetaStack", "parentId": "progressLineBg", "horizontalAlign": "center", "verticalAlign": "bottom", "offsetY": 18 },
+            { "spriteId": "taskCardsViewport", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": viewportY },
+            { "spriteId": "taskScrollTrack", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 },
+            { "spriteId": "taskScrollThumb", "parentId": "taskCardsViewport", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 16 }
+        ];
+
+        this.chapterButtons.forEach((_button, index) => {
+            headerPresets.push({
+                "spriteId": "chapterTab" + index,
+                "parentId": "panel",
+                "horizontalAlign": "center",
+                "verticalAlign": "top",
+                "offsetX": -150 + index * 150,
+                "offsetY": 116
+            });
+        });
+
+        this.progressMetaStack.relayout();
+        this.applyHtmlPreset(headerPresets);
+        this.configureTaskViewport();
     }
 
     private refreshTabButtons(): void {
@@ -602,7 +650,7 @@ export default class TasksPanel extends ClosablePanel {
 
     private refreshChapterButtons(): void {
         let chapters = TaskService.getCampaignChapterViews();
-        let showChapters = this.selectedTab == "campaign";
+        let showChapters = false;//this.selectedTab == "campaign";
 
         this.chapterButtons.forEach((button, index) => {
             let chapter = chapters[index];
@@ -645,6 +693,7 @@ export default class TasksPanel extends ClosablePanel {
             this.resetLabel.text = LocalizationService.get("ui.tasks.refreshIn", "Обновление через {time}")
                 .replace("{time}", this.formatDuration(EnergyUtils.getMillisToNextMoscowMidnight()));
 
+            this.progressMetaStack.relayout();
             this.updateProgressBar(claimedTasks / totalTasks, dailyRewards);
             return;
         }
@@ -656,8 +705,10 @@ export default class TasksPanel extends ClosablePanel {
         this.subtitleLabel.text = LocalizationService.get("ui.tasks.chapterHint", "Все задания текущей главы доступны сразу");
         this.progressTitle.text = chapterView.chapter.title;
         this.progressStateLabel.text = chapterView.claimedTasks + " / " + chapterView.totalTasks + " заданий завершено";
+        this.progressStateLabel.visible = false;
         this.resetLabel.visible = false;
 
+        this.progressMetaStack.relayout();
         this.updateProgressBar(chapterView.claimedTasks / Math.max(1, chapterView.totalTasks), [rewardView]);
     }
 
@@ -783,9 +834,12 @@ export default class TasksPanel extends ClosablePanel {
         let clampedRatio = Math.max(0, Math.min(1, progressRatio || 0));
         let lineWidth = this.progressLineBg.width;
         let bodyWidth = Math.max(16, lineWidth * clampedRatio);
+        let lineLeft = this.progressLineBg.x - this.progressLineBg.width / 2;
+        let rewardLeft = lineLeft + 34;
+        let rewardRight = lineLeft + this.progressLineBg.width - 34;
 
         this.progressBarBody.scale = this.progressBarStart.scale;
-        this.progressBarBody.x = this.progressLineBg.x - this.progressLineBg.width / 2 + 6;
+        this.progressBarBody.x = lineLeft + 6;
         this.progressBarBody.y = this.progressLineBg.y;
         this.progressBarBody.width = bodyWidth;
 
@@ -807,13 +861,22 @@ export default class TasksPanel extends ClosablePanel {
             icon.scale.set(this.getRewardScale(reward.icon));
 
             let rewardRatio = reward.progressTarget / Math.max(1, rewards[rewards.length - 1].progressTarget);
-            icon.x = this.progressLineBg.x - this.progressLineBg.width / 2 + this.progressLineBg.width * rewardRatio;
-            this.rewardChecks[index].x = icon.x + 18;
+            icon.x = rewardLeft + (rewardRight - rewardLeft) * rewardRatio;
+            icon.y = this.progressLineBg.y - 2;
+            this.rewardChecks[index].x = icon.x + 16;
+            this.rewardChecks[index].y = icon.y - 16;
         });
+
+        this.bringChildToTop(this.progressBarStart);
+        this.setChildIndex(this.progressBarBody, this.children.length - 1);
+        this.bringChildToTop(this.progressBarTail);
+        this.setChildIndex(this.progressMetaStack, this.children.length - 1);
+        this.rewardIcons.forEach(icon => this.bringChildToTop(icon));
+        this.rewardChecks.forEach(check => this.bringChildToTop(check));
     }
 
     private setTabState(button: Phaser.Button, label: Label, selected: boolean): void {
-        button.tint = selected ? 0x86dc28 : 0xbf8540;
+        button.tint = selected ? 0xffffff : 0xbf8540;
         button.alpha = 1;
         label.fill = "#f0f1ec";
     }

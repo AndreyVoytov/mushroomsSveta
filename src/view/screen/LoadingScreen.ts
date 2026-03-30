@@ -321,6 +321,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('closeButton', 'assets/base/ui/closeButton.png');
         this.loadImage('closeButtonViolet', 'assets/base/ui/closeButtonViolet.png');
         this.loadImage('pnlButton', 'assets/base/ui/pnlButton.png');
+        this.loadImage('wooden_tab', 'assets/base/ui/wooden_tab.png');
         this.loadImage('banner1', 'assets/base/ui/banner1.png');
         this.loadImage('banner2', 'assets/minigame2/banner2.png');
         // this.loadImage('banner3', 'assets/minigame3/banner3.png');

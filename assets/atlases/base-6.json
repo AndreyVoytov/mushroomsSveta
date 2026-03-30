@@ -122,7 +122,7 @@
                                               },
                    "base/items/boosters/halfrocket.png":  {
                                                               "frame":  {
-                                                                            "x":  1274,
+                                                                            "x":  1632,
                                                                             "y":  1176,
                                                                             "w":  53,
                                                                             "h":  59
@@ -3746,7 +3746,7 @@
                                                           },
                    "base/ui/map/mapMushroom.png":  {
                                                        "frame":  {
-                                                                     "x":  1067,
+                                                                     "x":  1425,
                                                                      "y":  1176,
                                                                      "w":  58,
                                                                      "h":  60
@@ -3866,7 +3866,7 @@
                                                },
                    "base/ui/map/tent.png":  {
                                                 "frame":  {
-                                                              "x":  1127,
+                                                              "x":  1485,
                                                               "y":  1176,
                                                               "w":  84,
                                                               "h":  59
@@ -3914,7 +3914,7 @@
                                              },
                    "base/ui/newMark.png":  {
                                                "frame":  {
-                                                             "x":  1213,
+                                                             "x":  1571,
                                                              "y":  1176,
                                                              "w":  59,
                                                              "h":  59
@@ -4583,7 +4583,31 @@
                                                                    "x":  0.5,
                                                                    "y":  0.5
                                                                }
-                                                 }
+                                                 },
+                   "base/ui/wooden_tab.png":  {
+                                                  "frame":  {
+                                                                "x":  1067,
+                                                                "y":  1176,
+                                                                "w":  356,
+                                                                "h":  60
+                                                            },
+                                                  "rotated":  false,
+                                                  "trimmed":  false,
+                                                  "spriteSourceSize":  {
+                                                                           "x":  0,
+                                                                           "y":  0,
+                                                                           "w":  356,
+                                                                           "h":  60
+                                                                       },
+                                                  "sourceSize":  {
+                                                                     "w":  356,
+                                                                     "h":  60
+                                                                 },
+                                                  "pivot":  {
+                                                                "x":  0.5,
+                                                                "y":  0.5
+                                                            }
+                                              }
                },
     "meta":  {
                  "app":  "codex-atlas-packer",
