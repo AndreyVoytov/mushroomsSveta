@@ -163,12 +163,22 @@ export default class BasePanel extends Phaser.Sprite {
 
     private getDisplayBoxInParentSpace(displayObject: PIXI.DisplayObject, targetParent: PIXI.DisplayObjectContainer): { x: number, y: number, width: number, height: number } {
         let current = <any>displayObject;
+        let customBox = current.layoutBox;
         let width = current.width || 0;
         let height = current.height || 0;
         let anchorX = current instanceof Phaser.Group ? 0 : (current.anchor ? current.anchor.x : 0);
         let anchorY = current instanceof Phaser.Group ? 0 : (current.anchor ? current.anchor.y : 0);
 
         if (displayObject == <any>targetParent) {
+            if (customBox && isFinite(customBox.width) && isFinite(customBox.height)) {
+                return {
+                    x: customBox.x || 0,
+                    y: customBox.y || 0,
+                    width: customBox.width,
+                    height: customBox.height
+                };
+            }
+
             return {
                 x: -width * anchorX,
                 y: -height * anchorY,
@@ -178,6 +188,15 @@ export default class BasePanel extends Phaser.Sprite {
         }
 
         if (current.parent == targetParent) {
+            if (customBox && isFinite(customBox.width) && isFinite(customBox.height)) {
+                return {
+                    x: current.x + (customBox.x || 0),
+                    y: current.y + (customBox.y || 0),
+                    width: customBox.width,
+                    height: customBox.height
+                };
+            }
+
             return {
                 x: current.x - width * anchorX,
                 y: current.y - height * anchorY,

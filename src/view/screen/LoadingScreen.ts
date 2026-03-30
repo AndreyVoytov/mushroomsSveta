@@ -295,6 +295,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('lightning', 'assets/base/ui/lightnin_draft.png');
         this.loadImage('gems', 'assets/base/ui/gems.png');
         this.loadImage('gemsCloud', 'assets/base/ui/gemsCloud.png');
+        this.loadImage('tasks', 'assets/base/ui/tasks.png');
         this.loadImage('keyUI', 'assets/base/ui/key.png');
 
         this.loadImage('point', 'assets/base/ui/point.png');

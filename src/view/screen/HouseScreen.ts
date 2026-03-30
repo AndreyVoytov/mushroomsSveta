@@ -47,6 +47,8 @@ import EventInfo from './../../core/model/event/EventInfo';
 import EventType from './../../core/model/event/EventType';
 import HouseFrameLayout from '../component/house/layout/HouseFrameLayout';
 import HouseLayout from '../component/house/layout/HouseLayout';
+import TasksPanel from '../component/house/TasksPanel';
+import TaskService from '../../core/service/TaskService';
 export default class HouseScreen extends DialogScreen {
 
     private layout: BaseLayout;
@@ -68,9 +70,12 @@ export default class HouseScreen extends DialogScreen {
     private playButton: Phaser.Button;
 
     private notebookButton: Phaser.Button;
+    private tasksButton: Phaser.Button;
+    private tasksBadge: Phaser.Graphics;
 
     public startLevelPanel: StartLevelPanel;
     public settingsPanel: SettingsPanel;
+    public tasksPanel: TasksPanel;
     private diaryPanel: DiaryPanel;
 
     private tasks: DiaryContentType;
@@ -248,6 +253,38 @@ export default class HouseScreen extends DialogScreen {
         this.addPanel(this.settingsPanel);
         this.settingsPanel.visible = false;
         this.settingsPanel.fixedToCamera = true;     
+
+        this.tasksPanel = new TasksPanel(this.game, this, {
+            onUpdated: () => this.refreshTasksButton()
+        });
+        this.addPanel(this.tasksPanel);
+        this.tasksPanel.visible = false;
+        this.tasksPanel.fixedToCamera = true;
+
+        this.tasksButton = SpriteUtils.createButton(this.game, this.game.width - 100, 220, 'actionCircle', () => {
+            if (!this.isLocked()) {
+                this.tasksPanel.show();
+            }
+        });
+        this.tasksButton.anchor.set(0.5);
+        this.tasksButton.scale.set(1);
+        this.rightButtons.push(this.tasksButton);
+
+        let tasksIcon = SpriteUtils.createSprite(this.game, 0, 0, 'tasks');
+        tasksIcon.anchor.set(0.5);
+        tasksIcon.scale.set(0.86);
+        this.tasksButton.addChild(tasksIcon);
+
+        this.tasksBadge = new Phaser.Graphics(this.game, 34, -36);
+        this.tasksBadge.beginFill(0xe43b32, 1);
+        this.tasksBadge.drawCircle(0, 0, 28);
+        this.tasksBadge.endFill();
+        this.tasksBadge.visible = false;
+        this.tasksButton.addChild(this.tasksBadge);
+
+        this.addButton(this.tasksButton);
+        this.refreshTasksButton();
+        this.game.time.events.loop(1000, () => this.refreshTasksButton());
         
         // let everydayRubiesButton = SpriteUtils.createButton(this.game, this.game.width -100, 400, 'circle', ()=>{
         let everydayRubiesButton = SpriteUtils.createButton(this.game, this.game.width -100, 400, 'actionCircle', ()=>{
@@ -676,5 +713,13 @@ export default class HouseScreen extends DialogScreen {
         if (user.getCurrentForest() == 4 && user.isJustCompletedLevel()) {
             this.playAnimation("afterNotebookFoundAnimation");
         }
+    }
+
+    public refreshTasksButton(): void {
+        if (!this.tasksBadge) {
+            return;
+        }
+
+        this.tasksBadge.visible = TaskService.hasClaimableTasks();
     }
 }

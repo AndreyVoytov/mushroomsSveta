@@ -120,30 +120,6 @@
                                                                             "y":  0.5
                                                                         }
                                                           },
-                   "base/replicaDecor/hand.png":  {
-                                                      "frame":  {
-                                                                    "x":  1623,
-                                                                    "y":  1691,
-                                                                    "w":  199,
-                                                                    "h":  229
-                                                                },
-                                                      "rotated":  false,
-                                                      "trimmed":  false,
-                                                      "spriteSourceSize":  {
-                                                                               "x":  0,
-                                                                               "y":  0,
-                                                                               "w":  199,
-                                                                               "h":  229
-                                                                           },
-                                                      "sourceSize":  {
-                                                                         "w":  199,
-                                                                         "h":  229
-                                                                     },
-                                                      "pivot":  {
-                                                                    "x":  0.5,
-                                                                    "y":  0.5
-                                                                }
-                                                  },
                    "base/scenario/room/chest/chestBox.png":  {
                                                                  "frame":  {
                                                                                "x":  842,
@@ -602,7 +578,7 @@
                                                              },
                    "base/ui/progressbar/shadow.png":  {
                                                           "frame":  {
-                                                                        "x":  1521,
+                                                                        "x":  1748,
                                                                         "y":  1691,
                                                                         "w":  100,
                                                                         "h":  232
@@ -623,7 +599,31 @@
                                                                         "x":  0.5,
                                                                         "y":  0.5
                                                                     }
-                                                      }
+                                                      },
+                   "base/ui/tasks.png":  {
+                                             "frame":  {
+                                                           "x":  1521,
+                                                           "y":  1691,
+                                                           "w":  225,
+                                                           "h":  237
+                                                       },
+                                             "rotated":  false,
+                                             "trimmed":  false,
+                                             "spriteSourceSize":  {
+                                                                      "x":  0,
+                                                                      "y":  0,
+                                                                      "w":  225,
+                                                                      "h":  237
+                                                                  },
+                                             "sourceSize":  {
+                                                                "w":  225,
+                                                                "h":  237
+                                                            },
+                                             "pivot":  {
+                                                           "x":  0.5,
+                                                           "y":  0.5
+                                                       }
+                                         }
                },
     "meta":  {
                  "app":  "codex-atlas-packer",

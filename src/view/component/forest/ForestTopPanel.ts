@@ -17,6 +17,7 @@ import BaseForestScreen from '../../screen/BaseForestScreen';
 import Settings from '../../../core/service/Settings';
 import AdminService from './../../../core/service/AdminService';
 import UserService from '../../../core/service/UserService';
+import TaskService from '../../../core/service/TaskService';
 export default class ForestTopPanel extends BasePanel {
 
     private energyCount: number;
@@ -243,6 +244,7 @@ export default class ForestTopPanel extends BasePanel {
 
     public collectItem(cellState: CellState) {
         let self = this;
+        TaskService.recordCollection(ContentType[cellState.content]);
         this.aims.forEach(aim => {
 
             //TODO refactor panel
@@ -304,6 +306,7 @@ export default class ForestTopPanel extends BasePanel {
         if (aim && dragonfly && !cover.isLocked()) {
             cover.dragonfly = null;
             aim.countLeft--;
+            TaskService.recordCollection(aim.image);
 
             this.updateAimCounters(700);
 
@@ -390,6 +393,7 @@ export default class ForestTopPanel extends BasePanel {
             }
 
             aim.countLeft--;
+            TaskService.recordCollection(aim.image);
 
             this.updateAimCounters(700);
 
@@ -422,6 +426,7 @@ export default class ForestTopPanel extends BasePanel {
         if (aim && cankerberry) {
             
             aim.countLeft--;
+            TaskService.recordCollection(aim.image);
 
             this.updateAimCounters(700);
 
@@ -466,6 +471,7 @@ export default class ForestTopPanel extends BasePanel {
 
         if (aim && berries) {
             aim.countLeft -= berries.length;
+            TaskService.recordCollection(aim.image, berries.length);
 
             this.updateAimCounters(700);
 

@@ -8,6 +8,7 @@ import SoundUtils from '../../utils/SoundUtils';
 import EventInfo from './../event/EventInfo';
 import Utils from './../../utils/Utils';
 import EnergyUtils from '../../utils/EnergyUtils';
+import { createEmptyUserTasksState, UserTasksState } from '../task/TaskModels';
 export default class User {
 
     public createdAt: string = new Date().toISOString();
@@ -41,6 +42,7 @@ export default class User {
     private markers: string[] = [];
     private completedReplicas: string[] = [];
     private completedTasks: string[] = ["rec0"];
+    private tasksState: UserTasksState = createEmptyUserTasksState();
 
     private location:StoryLocation;
     private afterLevelLocation:StoryLocation;
@@ -76,6 +78,7 @@ export default class User {
             this.markers = user.markers;
             this.completedReplicas = user.completedReplicas;
             this.completedTasks = user.completedTasks;
+            this.tasksState = user.tasksState || createEmptyUserTasksState();
             // this.items = user.items;
             this.justCompletedLevel = user.justCompletedLevel;
 
@@ -263,6 +266,25 @@ export default class User {
     public addCompletedTask(id: string): void {
         console.log("COMPLETED TASK: " + id)
         this.completedTasks.push(id);
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public getTasksState(): UserTasksState {
+        if (!this.tasksState) {
+            this.tasksState = createEmptyUserTasksState();
+        }
+        return this.tasksState;
+    }
+
+    public setTasksState(state: UserTasksState): void {
+        this.tasksState = state || createEmptyUserTasksState();
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public saveTasksState(): void {
+        if (!this.tasksState) {
+            this.tasksState = createEmptyUserTasksState();
+        }
         ServerStoreComponent.saveLocalUser(this);
     }
 

@@ -52,6 +52,7 @@ import EventType from '../../core/model/event/EventType';
 import ComplexAnimationUtils from './../../core/utils/ComplexAnimationUtils';
 import { Easing } from 'phaser-ce';
 import LocalizationService from '../../core/localization/LocalizationService';
+import TaskService from '../../core/service/TaskService';
 
 export default abstract class BaseForestScreen extends DialogScreen {
 
@@ -448,6 +449,8 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
     public instantlyWin() {
         let user = UserService.getUser();
+        TaskService.recordSpentEnergy(this.topPanel.getSpentEnergy());
+        TaskService.recordCompletedLevel(1);
 
         if (user.getCurrentForest() == ForestDao.indexOf(this.getForestType())) {
             let hardLevelAddition = this.getForestType().hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
@@ -477,6 +480,8 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
                 this.levelStopped = true;
                 YandexGamesHelper.stopGameplay();
+                TaskService.recordSpentEnergy(this.topPanel.getSpentEnergy());
+                TaskService.recordCompletedLevel(1);
 
                 let user = UserService.getUser();
                 let completedLevelNumber = ForestDao.indexOf(this.getForestType()) + 1;

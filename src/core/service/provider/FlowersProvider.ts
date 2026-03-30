@@ -9,6 +9,7 @@ import SpriteUtils from "../../utils/SpriteUtils";
 import { Easing } from "phaser-ce";
 import ForestUtils from "../../utils/ForestUtils";
 import Settings from "../Settings";
+import TaskService from "../TaskService";
 
 export default class FlowersProvider {
     private game: Phaser.Game;
@@ -34,6 +35,7 @@ export default class FlowersProvider {
                 if (openedFlowerCells.length == flower.type.cellsCount) {
                     this.flowersCollected++;
                     flower.collected = true;
+                    TaskService.recordCollection("chamomileSmall");
                     openedFlowerCells.forEach(c => c.occupiedByFlower = false)
                     this.game.add.tween(flower.sprite).to({ alpha: 1 }, 300, Phaser.Easing.Linear.None, true, 0, 0, false);
                     this.game.time.events.add(300, () => {

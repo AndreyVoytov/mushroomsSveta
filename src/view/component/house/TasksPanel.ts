@@ -1,0 +1,710 @@
+import LocalizationService from "../../../core/localization/LocalizationService";
+import TaskService from "../../../core/service/TaskService";
+import SpriteUtils from "../../../core/utils/SpriteUtils";
+import EnergyUtils from "../../../core/utils/EnergyUtils";
+import HouseScreen from "../../screen/HouseScreen";
+import ClosablePanel from "../panel/ClosablePanel";
+import BasePanel from "../panel/BasePanel";
+import Label from "../panel/Label";
+import InfoPanel from "../panel/InfoPanel";
+import StackContainer from "../panel/StackContainer";
+import {
+    CampaignChapterView,
+    TaskProgressView,
+    TaskRewardGrant,
+    TaskRewardView
+} from "../../../core/model/task/TaskModels";
+
+type TasksTab = "daily" | "campaign";
+
+type TasksPanelHooks = {
+    onUpdated?: () => void;
+};
+
+class TaskCardPanel extends BasePanel {
+    private background: Phaser.Sprite;
+    private contentPanel: Phaser.Sprite;
+    private rewardPanel: Phaser.Sprite;
+    private icon: Phaser.Sprite;
+    private titleLabel: Label;
+    private progressLabel: Label;
+    private rewardTitleLabel: Label;
+    private rewardIcon: Phaser.Sprite;
+    private rewardLabel: Label;
+    private claimButton: Phaser.Button;
+    private claimTitleLabel: Label;
+    private claimRewardIcon: Phaser.Sprite;
+    private claimRewardLabel: Label;
+    private checkIcon: Phaser.Sprite;
+    private currentTaskId: string;
+    private onClaim: (taskId: string) => void;
+
+    constructor(game: Phaser.Game, name: string, onClaim: (taskId: string) => void) {
+        super(game, 0, 0, name, "blank");
+        this.onClaim = onClaim;
+
+        this.background = this.attachSprite("panel2", "cardBg");
+        this.background.scale.set(0.98, 0.35);
+
+        this.contentPanel = this.attachSprite("helperPanel", "contentPanel");
+        this.contentPanel.scale.set(0.73, 0.44);
+        this.contentPanel.alpha = 0.96;
+
+        this.rewardPanel = this.attachSprite("helperPanel", "rewardPanel");
+        this.rewardPanel.scale.set(0.23, 0.44);
+        this.rewardPanel.alpha = 0.38;
+
+        this.icon = this.attachSprite("mushroom", "taskIcon");
+        this.icon.scale.set(0.78);
+
+        this.titleLabel = this.attachText("taskTitle", "", {
+            font: "bold 22px Arial",
+            fill: "#6f4337",
+            align: "left",
+            wordWrap: true,
+            wordWrapWidth: 300
+        });
+        this.titleLabel.anchor.set(0, 0.5);
+
+        this.progressLabel = this.attachText("taskProgress", "", {
+            font: "bold 24px Gilroy",
+            fill: "#6f4337",
+            align: "right",
+            wordWrap: true,
+            wordWrapWidth: 88
+        });
+        this.progressLabel.anchor.set(1, 0.5);
+
+        this.rewardTitleLabel = this.attachText("rewardTitle", LocalizationService.get("ui.tasks.reward", "Награда"), {
+            font: "bold 21px Arial",
+            fill: "#7b4037",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 140
+        });
+        this.rewardTitleLabel.anchor.set(0.5);
+
+        this.rewardIcon = this.attachSprite("gems", "rewardIcon");
+        this.rewardIcon.scale.set(0.42);
+
+        this.rewardLabel = this.attachText("rewardLabel", "2", {
+            font: "bold 30px Gilroy",
+            fill: "#7b4037"
+        });
+        this.rewardLabel.anchor.set(0.5);
+
+        this.claimButton = this.attachButton("pnlButton", () => this.tryClaim(), "claimButton");
+        this.claimButton.scale.set(0.38, 0.86);
+
+        this.claimTitleLabel = this.attachText("claimTitle", LocalizationService.get("ui.tasks.claim", "Забрать"), {
+            font: "bold 24px Gilroy",
+            fill: "#4d5b18",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 160
+        });
+        this.claimTitleLabel.anchor.set(0.5);
+
+        this.claimRewardIcon = this.attachSprite("gems", "claimRewardIcon");
+        this.claimRewardIcon.scale.set(0.36);
+
+        this.claimRewardLabel = this.attachText("claimRewardLabel", "2", {
+            font: "bold 30px Gilroy",
+            fill: "#7b4037"
+        });
+        this.claimRewardLabel.anchor.set(0.5);
+
+        this.checkIcon = this.attachSprite("check", "checkIcon");
+        this.checkIcon.scale.set(0.32);
+
+        this.applyHtmlPreset([
+            { "spriteId": "contentPanel", "parentId": "cardBg", "horizontalAlign": "left", "verticalAlign": "center", "offsetX": 46, "offsetY": 0 },
+            { "spriteId": "rewardPanel", "parentId": "cardBg", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -46, "offsetY": 0 },
+            { "spriteId": "taskTitle", "parentId": "contentPanel", "horizontalAlign": "left", "verticalAlign": "center", "width": "54%", "offsetX": 24, "offsetY": -2, "fontSize": 22 },
+            { "spriteId": "taskIcon", "parentId": "contentPanel", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -34, "offsetY": 0 },
+            { "spriteId": "taskProgress", "parentId": "contentPanel", "horizontalAlign": "right", "verticalAlign": "center", "width": 88, "offsetX": -116, "offsetY": -2, "fontSize": 24 },
+            { "spriteId": "checkIcon", "parentId": "contentPanel", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -128, "offsetY": 0 },
+            { "spriteId": "rewardTitle", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 22, "fontSize": 20 },
+            { "spriteId": "rewardLabel", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": -18, "offsetY": 24, "fontSize": 30 },
+            { "spriteId": "rewardIcon", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": 28, "offsetY": 24 },
+            { "spriteId": "claimButton", "parentId": "cardBg", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -42, "offsetY": 0 },
+            { "spriteId": "claimTitle", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 22, "fontSize": 24 },
+            { "spriteId": "claimRewardLabel", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": -18, "offsetY": 30, "fontSize": 30 },
+            { "spriteId": "claimRewardIcon", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": 28, "offsetY": 30 }
+        ]);
+
+        (<any>this).layoutBox = {
+            x: this.background.x - this.background.width * this.background.anchor.x,
+            y: this.background.y - this.background.height * this.background.anchor.y,
+            width: this.background.width,
+            height: this.background.height
+        };
+    }
+
+    public setData(taskView: TaskProgressView, claimLabel: string): void {
+        if (!taskView) {
+            this.visible = false;
+            return;
+        }
+
+        this.visible = true;
+        this.currentTaskId = taskView.task.id;
+
+        SpriteUtils.loadTexture(this.icon, taskView.task.icon);
+        this.icon.scale.set(this.getScaleForIcon(taskView.task.icon));
+
+        let rewardIcon = taskView.task.reward && taskView.task.reward.boosters && taskView.task.reward.boosters.length > 0
+            ? taskView.task.reward.boosters[0].type
+            : "gems";
+        let rewardCount = taskView.task.reward && taskView.task.reward.boosters && taskView.task.reward.boosters.length > 0
+            ? taskView.task.reward.boosters[0].count
+            : ((taskView.task.reward && taskView.task.reward.gems) || 2);
+
+        SpriteUtils.loadTexture(this.rewardIcon, rewardIcon);
+        this.rewardIcon.scale.set(this.getRewardScale(rewardIcon, false));
+        SpriteUtils.loadTexture(this.claimRewardIcon, rewardIcon);
+        this.claimRewardIcon.scale.set(this.getRewardScale(rewardIcon, true));
+        this.rewardLabel.text = "" + rewardCount;
+        this.claimRewardLabel.text = "" + rewardCount;
+        this.titleLabel.text = taskView.task.title;
+        this.progressLabel.text = taskView.progress + "/" + taskView.task.target;
+        this.claimTitleLabel.text = claimLabel;
+
+        let isClaimable = taskView.isClaimable && !taskView.isClaimed;
+        let isClaimed = taskView.isClaimed;
+
+        this.progressLabel.visible = !isClaimable && !isClaimed;
+        this.checkIcon.visible = isClaimable || isClaimed;
+
+        this.rewardPanel.visible = !isClaimable;
+        this.rewardTitleLabel.visible = !isClaimable;
+        this.rewardIcon.visible = !isClaimable && !isClaimed;
+        this.rewardLabel.visible = !isClaimable && !isClaimed;
+        this.rewardTitleLabel.text = isClaimed
+            ? LocalizationService.get("ui.tasks.rewardReceived", "Награда получена")
+            : LocalizationService.get("ui.tasks.reward", "Награда");
+
+        this.applyHtmlPreset([
+            isClaimed
+                ? { "spriteId": "rewardTitle", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "center", "width": "84%", "offsetY": 8, "fontSize": 20 }
+                : { "spriteId": "rewardTitle", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 22, "fontSize": 20 }
+        ]);
+
+        this.claimButton.visible = isClaimable;
+        this.claimButton.inputEnabled = isClaimable;
+        this.claimTitleLabel.visible = isClaimable;
+        this.claimRewardIcon.visible = isClaimable;
+        this.claimRewardLabel.visible = isClaimable;
+
+        this.background.tint = 0xffffff;
+        this.contentPanel.tint = 0xffffff;
+        this.rewardPanel.tint = 0xffffff;
+        this.titleLabel.fill = "#6f4337";
+        this.progressLabel.fill = "#6f4337";
+
+        if (isClaimed) {
+            this.rewardPanel.alpha = 0.38;
+            this.rewardTitleLabel.fill = "#7b4037";
+            this.rewardLabel.fill = "#7b4037";
+        } else {
+            this.rewardPanel.alpha = 0.38;
+            this.rewardTitleLabel.fill = "#7b4037";
+            this.rewardLabel.fill = "#7b4037";
+        }
+    }
+
+    private tryClaim(): void {
+        if (!this.currentTaskId || !this.claimButton.inputEnabled) {
+            return;
+        }
+
+        this.onClaim(this.currentTaskId);
+    }
+
+    private getScaleForIcon(icon: string): number {
+        switch (icon) {
+            case "lightning":
+                return 0.44;
+            case "playButton":
+                return 0.34;
+            case "acorn":
+                return 0.62;
+            default:
+                return 0.7;
+        }
+    }
+
+    private getRewardScale(icon: string, insideButton: boolean): number {
+        switch (icon) {
+            case "gems":
+                return insideButton ? 0.36 : 0.42;
+            case "actionChest":
+                return insideButton ? 0.44 : 0.5;
+            default:
+                return insideButton ? 0.52 : 0.6;
+        }
+    }
+}
+
+export default class TasksPanel extends ClosablePanel {
+    private screen: HouseScreen;
+    private hooks: TasksPanelHooks;
+    private panel: Phaser.Sprite;
+    private titleLabel: Label;
+    private dailyTabButton: Phaser.Button;
+    private campaignTabButton: Phaser.Button;
+    private dailyTabLabel: Label;
+    private campaignTabLabel: Label;
+    private chapterButtons: Phaser.Button[] = [];
+    private chapterLabels: Label[] = [];
+    private progressTitle: Label;
+    private progressLineBg: Phaser.Sprite;
+    private progressBarStart: Phaser.Sprite;
+    private progressBarBody: Phaser.TileSprite;
+    private progressBarTail: Phaser.Sprite;
+    private progressStateLabel: Label;
+    private resetLabel: Label;
+    private subtitleLabel: Label;
+    private rewardIcons: Phaser.Sprite[] = [];
+    private rewardChecks: Phaser.Sprite[] = [];
+    private taskCards: TaskCardPanel[] = [];
+    private taskCardsStack: StackContainer;
+
+    private selectedTab: TasksTab = "daily";
+    private selectedChapterIndex: number = 0;
+
+    constructor(game: Phaser.Game, screen: HouseScreen, hooks?: TasksPanelHooks) {
+        super(game, game.width / 2, game.height / 2 - 8, true, "blank", 1.02);
+        this.screen = screen;
+        this.hooks = hooks || {};
+        this.visible = false;
+        this.fixedToCamera = true;
+
+        this.panel = this.attachSprite("panel2", "panel");
+        this.panel.scale.set(1.2, 1.58);
+        this.panel.y = 18;
+        this.panel.inputEnabled = true;
+
+        const titleBg = this.attachSprite("statusPanel", "titleBg");
+        titleBg.scale.set(1.52, 1.18);
+
+        const closeButton = this.attachButton("closeButtonViolet", () => this.close(), "closeButton");
+
+        this.titleLabel = this.attachText("title", LocalizationService.get("ui.tasks.title", "Задания"), {
+            font: "48px Bookman Old Style",
+            fill: "#ffffff"
+        });
+
+        this.dailyTabButton = this.attachButton("pnlButton", () => this.selectTab("daily"), "dailyTab");
+        this.dailyTabButton.scale.set(0.74, 0.74);
+        this.dailyTabLabel = new Label(this.game, 0, 0, LocalizationService.get("ui.tasks.daily", "Ежедневные"), {
+            font: "bold 28px Gilroy",
+            fill: "#f0f1ec"
+        });
+        this.dailyTabLabel.name = "dailyTabLabel";
+        this.dailyTabLabel.anchor.set(0.5);
+        this.dailyTabLabel.strokeThickness = 4;
+        this.dailyTabLabel.addStrokeColor("#61b019", 0);
+        this.dailyTabButton.addChild(this.dailyTabLabel);
+
+        this.campaignTabButton = this.attachButton("pnlButton", () => this.selectTab("campaign"), "campaignTab");
+        this.campaignTabButton.scale.set(0.74, 0.74);
+        this.campaignTabLabel = new Label(this.game, 0, 0, LocalizationService.get("ui.tasks.campaign", "Кампания"), {
+            font: "bold 28px Gilroy",
+            fill: "#f0f1ec"
+        });
+        this.campaignTabLabel.name = "campaignTabLabel";
+        this.campaignTabLabel.anchor.set(0.5);
+        this.campaignTabLabel.strokeThickness = 4;
+        this.campaignTabLabel.addStrokeColor("#61b019", 0);
+        this.campaignTabButton.addChild(this.campaignTabLabel);
+
+        this.subtitleLabel = this.attachText("subtitle", "", {
+            font: "bold 24px Arial",
+            fill: "#7b4037",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 560
+        });
+
+        this.progressTitle = this.attachText("progressTitle", "", {
+            font: "bold 28px Arial",
+            fill: "#7b4037",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 520
+        });
+
+        this.progressLineBg = this.attachSprite("progressLineBg", "progressLineBg");
+        this.progressLineBg.scale.set(1.08, 0.72);
+
+        this.progressBarBody = SpriteUtils.createTileSprite(this.game, 0, 0, 50, 31, "progressBody");
+        this.progressBarBody.name = "progressBarBody";
+        this.progressBarBody.anchor.set(0, 0.5);
+        this.addSprite(this.progressBarBody);
+
+        this.progressBarStart = this.attachSprite("progressTail", "progressBarStart");
+        this.progressBarStart.scale.set(-1.02, 1.24);
+
+        this.progressBarTail = this.attachSprite("progressTail", "progressBarTail");
+        this.progressBarTail.scale.set(1.02, 1.24);
+
+        this.progressStateLabel = this.attachText("progressState", "", {
+            font: "bold 22px Arial",
+            fill: "#8f6130",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 460
+        });
+
+        this.resetLabel = this.attachText("resetLabel", "", {
+            font: "bold 20px Arial",
+            fill: "#9b6536",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 460
+        });
+
+        for (let i = 0; i < 2; i++) {
+            let rewardIcon = this.attachSprite(i == 0 ? "gems" : "actionChest", "rewardIcon" + i);
+            rewardIcon.scale.set(i == 0 ? 0.42 : 0.52);
+            this.rewardIcons.push(rewardIcon);
+
+            let rewardCheck = this.attachSprite("check", "rewardCheck" + i);
+            rewardCheck.scale.set(0.34);
+            this.rewardChecks.push(rewardCheck);
+        }
+
+        this.taskCardsStack = new StackContainer(this.game, 0, 0, "taskCardsStack", {
+            gap: 20,
+            align: "center"
+        });
+        this.addChild(this.taskCardsStack);
+
+        TaskService.getCampaignChapterViews().forEach((chapterView, index) => {
+            let button = this.attachButton("pnlButton", () => this.selectChapter(index), "chapterTab" + index);
+            button.scale.set(0.48, 0.58);
+            let label = new Label(this.game, 0, 0, chapterView.chapter.title, {
+                font: "bold 20px Gilroy",
+                fill: "#f0f1ec"
+            });
+            label.name = "chapterTabLabel" + index;
+            label.anchor.set(0.5);
+            label.strokeThickness = 4;
+            label.addStrokeColor("#61b019", 0);
+            button.addChild(label);
+            this.chapterButtons.push(button);
+            this.chapterLabels.push(label);
+        });
+
+        for (let i = 0; i < 5; i++) {
+            let card = new TaskCardPanel(this.game, "taskCard" + i, taskId => this.onClaimTask(taskId));
+            this.taskCardsStack.addStackChild(card);
+            this.taskCards.push(card);
+        }
+
+        let htmlPresets: any[] = [
+            { "spriteId": "titleBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": -54 },
+            { "spriteId": "title", "parentId": "titleBg", "horizontalAlign": "center", "verticalAlign": "center", "width": "88%", "offsetY": -4, "fontSize": 48 },
+            { "spriteId": "closeButton", "parentId": "panel", "horizontalAlign": "right", "verticalAlign": "top", "offsetX": 20, "offsetY": -46 },
+            { "spriteId": "dailyTab", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetX": -150, "offsetY": 40 },
+            { "spriteId": "dailyTabLabel", "parentId": "dailyTab", "horizontalAlign": "center", "verticalAlign": "center", "width": "86%", "offsetY": 2, "fontSize": 28 },
+            { "spriteId": "campaignTab", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetX": 150, "offsetY": 40 },
+            { "spriteId": "campaignTabLabel", "parentId": "campaignTab", "horizontalAlign": "center", "verticalAlign": "center", "width": "86%", "offsetY": 2, "fontSize": 28 },
+            { "spriteId": "subtitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "86%", "offsetY": 132, "fontSize": 24 },
+            { "spriteId": "progressTitle", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 174, "fontSize": 28 },
+            { "spriteId": "progressLineBg", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 224 },
+            { "spriteId": "progressState", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 258, "fontSize": 22 },
+            { "spriteId": "resetLabel", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 294, "fontSize": 20 },
+            { "spriteId": "taskCardsStack", "parentId": "panel", "horizontalAlign": "center", "verticalAlign": "top", "offsetY": 408 }
+        ];
+
+        this.chapterButtons.forEach((_button, index) => {
+            htmlPresets.push({
+                "spriteId": "chapterTab" + index,
+                "parentId": "panel",
+                "horizontalAlign": "center",
+                "verticalAlign": "top",
+                "offsetX": -170 + index * 170,
+                "offsetY": 92
+            });
+            htmlPresets.push({
+                "spriteId": "chapterTabLabel" + index,
+                "parentId": "chapterTab" + index,
+                "horizontalAlign": "center",
+                "verticalAlign": "center",
+                "width": "86%",
+                "offsetY": 1,
+                "fontSize": 20
+            });
+        });
+
+        this.rewardIcons.forEach((_icon, index) => {
+            htmlPresets.push({
+                "spriteId": "rewardIcon" + index,
+                "parentId": "panel",
+                "horizontalAlign": "left",
+                "verticalAlign": "top",
+                "offsetX": 120 + index * 328,
+                "offsetY": 204
+            });
+            htmlPresets.push({
+                "spriteId": "rewardCheck" + index,
+                "parentId": "panel",
+                "horizontalAlign": "left",
+                "verticalAlign": "top",
+                "offsetX": 138 + index * 328,
+                "offsetY": 188
+            });
+        });
+
+        this.applyHtmlPreset(htmlPresets);
+
+        this.selectedTab = this.getPreferredTab();
+        this.selectedChapterIndex = TaskService.getCurrentCampaignChapterIndex();
+        this.refreshView();
+    }
+
+    protected onShow(): void {
+        this.selectedChapterIndex = TaskService.getCurrentCampaignChapterIndex();
+        this.selectTab(this.getPreferredTab(), true);
+        this.screen.hideUI(0, true);
+    }
+
+    protected onClose(): void {
+        this.screen.showUI(true);
+    }
+
+    private selectTab(tab: TasksTab, claimSectionRewards?: boolean): void {
+        this.selectedTab = tab;
+        if (tab == "campaign") {
+            this.selectedChapterIndex = Math.min(this.selectedChapterIndex, TaskService.getCurrentCampaignChapterIndex());
+        }
+
+        if (claimSectionRewards !== false) {
+            this.tryClaimSectionRewards();
+        } else {
+            this.refreshView();
+            this.notifyUpdated();
+        }
+    }
+
+    private selectChapter(chapterIndex: number): void {
+        let chapter = TaskService.getCampaignChapterViews().filter(item => item.index == chapterIndex).shift();
+        if (!chapter || !chapter.isUnlocked) {
+            return;
+        }
+
+        this.selectedTab = "campaign";
+        this.selectedChapterIndex = chapterIndex;
+        this.tryClaimSectionRewards();
+    }
+
+    private onClaimTask(taskId: string): void {
+        let reward = this.selectedTab == "daily"
+            ? TaskService.claimDailyTask(taskId)
+            : TaskService.claimCampaignTask(taskId);
+
+        if (!reward) {
+            return;
+        }
+
+        this.showRewardGrants([reward]);
+        this.tryClaimSectionRewards();
+    }
+
+    private tryClaimSectionRewards(): void {
+        let rewards = this.selectedTab == "daily"
+            ? TaskService.claimAvailableDailyRewards()
+            : TaskService.claimAvailableCampaignRewards();
+
+        this.selectedChapterIndex = TaskService.getCurrentCampaignChapterIndex();
+        this.refreshView();
+        this.notifyUpdated();
+
+        if (rewards.length > 0) {
+            this.showRewardGrants(rewards);
+        }
+    }
+
+    private refreshView(): void {
+        this.refreshTabButtons();
+        this.refreshChapterButtons();
+        this.refreshProgressBlock();
+        this.refreshCards();
+    }
+
+    private refreshTabButtons(): void {
+        let isDaily = this.selectedTab == "daily";
+        this.setTabState(this.dailyTabButton, this.dailyTabLabel, isDaily);
+        this.setTabState(this.campaignTabButton, this.campaignTabLabel, !isDaily);
+    }
+
+    private refreshChapterButtons(): void {
+        let chapters = TaskService.getCampaignChapterViews();
+        let showChapters = this.selectedTab == "campaign";
+
+        this.chapterButtons.forEach((button, index) => {
+            let chapter = chapters[index];
+            let label = this.chapterLabels[index];
+            button.visible = showChapters;
+            label.visible = showChapters;
+            button.inputEnabled = showChapters && chapter.isUnlocked;
+
+            if (!showChapters) {
+                return;
+            }
+
+            if (!chapter.isUnlocked) {
+                button.tint = 0x7a7a7a;
+                button.alpha = 0.75;
+            } else if (index == this.selectedChapterIndex) {
+                button.tint = 0x86dc28;
+                button.alpha = 1;
+            } else if (chapter.isCompleted) {
+                button.tint = 0xd6a955;
+                button.alpha = 1;
+            } else {
+                button.tint = 0xbf8540;
+                button.alpha = 1;
+            }
+        });
+    }
+
+    private refreshProgressBlock(): void {
+        if (this.selectedTab == "daily") {
+            let dailyTasks = TaskService.getDailyTaskViews();
+            let dailyRewards = TaskService.getDailyRewardViews();
+            let claimedTasks = dailyTasks.filter(task => task.isClaimed).length;
+            let totalTasks = dailyTasks.length || 1;
+
+            this.subtitleLabel.text = LocalizationService.get("ui.tasks.dailyHint", "5 случайных заданий до конца дня");
+            this.progressTitle.text = LocalizationService.get("ui.tasks.dailyProgress", "Прогресс дня");
+            this.progressStateLabel.text = claimedTasks + " / " + totalTasks + " заданий завершено";
+            this.resetLabel.visible = true;
+            this.resetLabel.text = LocalizationService.get("ui.tasks.refreshIn", "Обновление через {time}")
+                .replace("{time}", this.formatDuration(EnergyUtils.getMillisToNextMoscowMidnight()));
+
+            this.updateProgressBar(claimedTasks / totalTasks, dailyRewards);
+            return;
+        }
+
+        let campaignViews = TaskService.getCampaignChapterViews();
+        let chapterView = campaignViews.filter(item => item.index == this.selectedChapterIndex).shift() || campaignViews[0];
+        let rewardView = TaskService.getCampaignRewardView(this.selectedChapterIndex);
+
+        this.subtitleLabel.text = LocalizationService.get("ui.tasks.chapterHint", "Все задания текущей главы доступны сразу");
+        this.progressTitle.text = chapterView.chapter.title;
+        this.progressStateLabel.text = chapterView.claimedTasks + " / " + chapterView.totalTasks + " заданий завершено";
+        this.resetLabel.visible = false;
+
+        this.updateProgressBar(chapterView.claimedTasks / Math.max(1, chapterView.totalTasks), [rewardView]);
+    }
+
+    private refreshCards(): void {
+        let tasks = this.selectedTab == "daily"
+            ? TaskService.getDailyTaskViews()
+            : TaskService.getCampaignTaskViews(this.selectedChapterIndex);
+
+        this.taskCards.forEach((card, index) => {
+            card.setData(tasks[index], LocalizationService.get("ui.tasks.claim", "Забрать"));
+        });
+        this.taskCardsStack.relayout();
+    }
+
+    private updateProgressBar(progressRatio: number, rewards: TaskRewardView[]): void {
+        let clampedRatio = Math.max(0, Math.min(1, progressRatio || 0));
+        let lineWidth = this.progressLineBg.width;
+        let bodyWidth = Math.max(16, lineWidth * clampedRatio);
+
+        this.progressBarBody.scale = this.progressBarStart.scale;
+        this.progressBarBody.x = this.progressLineBg.x - this.progressLineBg.width / 2 + 6;
+        this.progressBarBody.y = this.progressLineBg.y;
+        this.progressBarBody.width = bodyWidth;
+
+        this.progressBarStart.x = this.progressBarBody.x - 6;
+        this.progressBarStart.y = this.progressLineBg.y;
+
+        this.progressBarTail.x = this.progressBarBody.x + bodyWidth - 6;
+        this.progressBarTail.y = this.progressLineBg.y;
+
+        this.rewardIcons.forEach((icon, index) => {
+            let reward = rewards[index];
+            icon.visible = !!reward;
+            this.rewardChecks[index].visible = !!reward && reward.isClaimed;
+            if (!reward) {
+                return;
+            }
+
+            SpriteUtils.loadTexture(icon, reward.icon);
+            icon.scale.set(this.getRewardScale(reward.icon));
+
+            let rewardRatio = reward.progressTarget / Math.max(1, rewards[rewards.length - 1].progressTarget);
+            icon.x = this.progressLineBg.x - this.progressLineBg.width / 2 + this.progressLineBg.width * rewardRatio;
+            this.rewardChecks[index].x = icon.x + 18;
+        });
+    }
+
+    private setTabState(button: Phaser.Button, label: Label, selected: boolean): void {
+        button.tint = selected ? 0x86dc28 : 0xbf8540;
+        button.alpha = 1;
+        label.fill = "#f0f1ec";
+    }
+
+    private showRewardGrants(grants: TaskRewardGrant[]): void {
+        grants.forEach((grant, index) => {
+            this.game.time.events.add(index * 220, () => {
+                let info = new InfoPanel(this.game, -120, -430, grant.texts, grant.icons, false, true);
+                this.addChild(info);
+            }, this);
+        });
+    }
+
+    private notifyUpdated(): void {
+        if (this.hooks.onUpdated) {
+            this.hooks.onUpdated();
+        }
+    }
+
+    private getPreferredTab(): TasksTab {
+        if (TaskService.getDailyTaskViews().some(task => task.isClaimable) || TaskService.getDailyRewardViews().some(reward => reward.isReached && !reward.isClaimed)) {
+            return "daily";
+        }
+
+        let campaignRewardReady = TaskService.getCampaignChapterViews().some(chapter =>
+            chapter.isUnlocked &&
+            TaskService.getCampaignRewardView(chapter.index).isReached &&
+            !TaskService.getCampaignRewardView(chapter.index).isClaimed
+        );
+        let campaignTaskReady = TaskService.getCampaignChapterViews().some(chapter =>
+            chapter.isUnlocked &&
+            TaskService.getCampaignTaskViews(chapter.index).some(task => task.isClaimable)
+        );
+
+        return campaignTaskReady || campaignRewardReady ? "campaign" : "daily";
+    }
+
+    private formatDuration(millis: number): string {
+        let totalMinutes = Math.max(1, Math.floor(millis / 1000 / 60));
+        let hours = Math.floor(totalMinutes / 60);
+        let minutes = totalMinutes % 60;
+        let minutesText = minutes >= 10 ? "" + minutes : "0" + minutes;
+
+        if (hours > 0) {
+            return hours + "ч " + minutesText + "м";
+        }
+
+        return minutes + "м";
+    }
+
+    private getRewardScale(icon: string): number {
+        switch (icon) {
+            case "gems":
+                return 0.42;
+            case "actionChest":
+                return 0.52;
+            default:
+                return 0.62;
+        }
+    }
+}

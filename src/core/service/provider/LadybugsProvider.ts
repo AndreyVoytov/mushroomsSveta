@@ -16,6 +16,7 @@ import BoosterType from '../../model/enum/BoosterType';
 import Environment from '../../model/enum/Environment';
 import SoundUtils from '../../utils/SoundUtils';
 import Settings from '../Settings';
+import TaskService from '../TaskService';
 export default class LadybugsProvider extends BaseLadybugsProvider {
     private screen: BaseForestScreen;
 
@@ -167,6 +168,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
             AnimationUtils.disappear(this.game, a.sprite);
             Utils.delete(this.getLadybugs(), a);
             this.screen.topPanel.decreaseCounter(AimType.acorn);
+            TaskService.recordCollection("acorn");
 
             let isHouse = this.screen.getForestType().environment == Environment.house;
             let newCell = (<ForestScreen>this.screen).spawnNewCellAt(a.X, a.Y, isHouse? "hexChest": "leaf4", true);

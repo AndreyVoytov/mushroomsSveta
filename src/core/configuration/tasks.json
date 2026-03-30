@@ -1,0 +1,259 @@
+{
+  "dailySelectionCount": 5,
+  "dailyPool": [
+    {
+      "id": "daily_spend_20",
+      "kind": "spend_energy",
+      "target": 20,
+      "title": "Потрать 20 энергии",
+      "icon": "lightning",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_spend_35",
+      "kind": "spend_energy",
+      "target": 35,
+      "title": "Потрать 35 энергии",
+      "icon": "lightning",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_mushroom_10",
+      "kind": "collect",
+      "target": 10,
+      "targetId": "mushroom",
+      "title": "Собери 10 белых грибов",
+      "icon": "mushroom",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_chanterelle_8",
+      "kind": "collect",
+      "target": 8,
+      "targetId": "mushroom3",
+      "title": "Собери 8 лисичек",
+      "icon": "mushroom3",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_red_6",
+      "kind": "collect",
+      "target": 6,
+      "targetId": "mushroom4",
+      "title": "Собери 6 красных грибов",
+      "icon": "mushroom4",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_dark_6",
+      "kind": "collect",
+      "target": 6,
+      "targetId": "mushroom5",
+      "title": "Собери 6 редких грибов",
+      "icon": "mushroom5",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_daisies_8",
+      "kind": "collect",
+      "target": 8,
+      "targetId": "chamomileSmall",
+      "title": "Собери 8 ромашек",
+      "icon": "chamomileSmall",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_acorns_5",
+      "kind": "collect",
+      "target": 5,
+      "targetId": "acorn",
+      "title": "Собери 5 желудей",
+      "icon": "acorn",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_levels_2",
+      "kind": "complete_level",
+      "target": 2,
+      "title": "Пройди 2 уровня",
+      "icon": "playButton",
+      "reward": { "gems": 2 }
+    },
+    {
+      "id": "daily_levels_3",
+      "kind": "complete_level",
+      "target": 3,
+      "title": "Пройди 3 уровня",
+      "icon": "playButton",
+      "reward": { "gems": 2 }
+    }
+  ],
+  "dailyMilestoneRewards": [
+    {
+      "id": "daily_progress_4",
+      "claimedAt": 4,
+      "title": "Награда за 4 задания",
+      "icon": "gems",
+      "reward": { "gems": 10 }
+    },
+    {
+      "id": "daily_progress_5",
+      "claimedAt": 5,
+      "title": "Сундук за все задания",
+      "icon": "actionChest",
+      "reward": {
+        "gems": 12,
+        "boosters": [
+          { "type": "rocket3", "count": 1 }
+        ]
+      }
+    }
+  ],
+  "campaignChapters": [
+    {
+      "id": "chapter_1",
+      "title": "Глава I",
+      "rewardIcon": "actionChest",
+      "rewardTitle": "Сундук главы I",
+      "reward": {
+        "gems": 12,
+        "boosters": [
+          { "type": "rocket3", "count": 1 }
+        ]
+      },
+      "tasks": [
+        {
+          "id": "camp_1_spend_20",
+          "kind": "spend_energy",
+          "target": 20,
+          "title": "Потрать 20 энергии",
+          "icon": "lightning",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_1_mushroom_10",
+          "kind": "collect",
+          "target": 10,
+          "targetId": "mushroom",
+          "title": "Собери 10 белых грибов",
+          "icon": "mushroom",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_1_levels_2",
+          "kind": "complete_level",
+          "target": 2,
+          "title": "Пройди 2 уровня",
+          "icon": "playButton",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_1_chanterelle_8",
+          "kind": "collect",
+          "target": 8,
+          "targetId": "mushroom3",
+          "title": "Собери 8 лисичек",
+          "icon": "mushroom3",
+          "reward": { "gems": 2 }
+        }
+      ]
+    },
+    {
+      "id": "chapter_2",
+      "title": "Глава II",
+      "rewardIcon": "actionChest",
+      "rewardTitle": "Сундук главы II",
+      "reward": {
+        "gems": 14,
+        "boosters": [
+          { "type": "compass", "count": 1 }
+        ]
+      },
+      "tasks": [
+        {
+          "id": "camp_2_spend_35",
+          "kind": "spend_energy",
+          "target": 35,
+          "title": "Потрать 35 энергии",
+          "icon": "lightning",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_2_daisies_10",
+          "kind": "collect",
+          "target": 10,
+          "targetId": "chamomileSmall",
+          "title": "Собери 10 ромашек",
+          "icon": "chamomileSmall",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_2_levels_3",
+          "kind": "complete_level",
+          "target": 3,
+          "title": "Пройди 3 уровня",
+          "icon": "playButton",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_2_acorns_6",
+          "kind": "collect",
+          "target": 6,
+          "targetId": "acorn",
+          "title": "Собери 6 желудей",
+          "icon": "acorn",
+          "reward": { "gems": 2 }
+        }
+      ]
+    },
+    {
+      "id": "chapter_3",
+      "title": "Глава III",
+      "rewardIcon": "actionChest",
+      "rewardTitle": "Сундук главы III",
+      "reward": {
+        "gems": 18,
+        "boosters": [
+          { "type": "rocket3", "count": 1 },
+          { "type": "compass", "count": 1 }
+        ]
+      },
+      "tasks": [
+        {
+          "id": "camp_3_spend_50",
+          "kind": "spend_energy",
+          "target": 50,
+          "title": "Потрать 50 энергии",
+          "icon": "lightning",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_3_red_8",
+          "kind": "collect",
+          "target": 8,
+          "targetId": "mushroom4",
+          "title": "Собери 8 красных грибов",
+          "icon": "mushroom4",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_3_levels_4",
+          "kind": "complete_level",
+          "target": 4,
+          "title": "Пройди 4 уровня",
+          "icon": "playButton",
+          "reward": { "gems": 2 }
+        },
+        {
+          "id": "camp_3_dark_8",
+          "kind": "collect",
+          "target": 8,
+          "targetId": "mushroom5",
+          "title": "Собери 8 редких грибов",
+          "icon": "mushroom5",
+          "reward": { "gems": 2 }
+        }
+      ]
+    }
+  ]
+}
