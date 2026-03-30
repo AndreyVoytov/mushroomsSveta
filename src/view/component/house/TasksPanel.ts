@@ -94,7 +94,7 @@ class TaskCardPanel extends BasePanel {
         this.rewardLabel.anchor.set(0.5);
 
         this.claimButton = this.attachButton("pnlButton", () => this.tryClaim(), "claimButton");
-        this.claimButton.scale.set(0.38, 0.86);
+        this.claimButton.scale.set(0.35, 1.18);
 
         this.claimTitleLabel = this.attachText("claimTitle", LocalizationService.get("ui.tasks.claim", "Забрать"), {
             font: "bold 24px Gilroy",
@@ -126,11 +126,11 @@ class TaskCardPanel extends BasePanel {
             { "spriteId": "checkIcon", "parentId": "contentPanel", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -128, "offsetY": 0 },
             { "spriteId": "rewardTitle", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 22, "fontSize": 20 },
             { "spriteId": "rewardLabel", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": -18, "offsetY": 24, "fontSize": 30 },
-            { "spriteId": "rewardIcon", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": 28, "offsetY": 24 },
-            { "spriteId": "claimButton", "parentId": "cardBg", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -42, "offsetY": 0 },
-            { "spriteId": "claimTitle", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 22, "fontSize": 24 },
-            { "spriteId": "claimRewardLabel", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": -18, "offsetY": 30, "fontSize": 30 },
-            { "spriteId": "claimRewardIcon", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": 28, "offsetY": 30 }
+            { "spriteId": "rewardIcon", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": 20, "offsetY": 24 },
+            { "spriteId": "claimButton", "parentId": "cardBg", "horizontalAlign": "right", "verticalAlign": "center", "offsetX": -52, "offsetY": 0 },
+            { "spriteId": "claimTitle", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 32, "fontSize": 24 },
+            { "spriteId": "claimRewardLabel", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": -18, "offsetY": 20, "fontSize": 30 },
+            { "spriteId": "claimRewardIcon", "parentId": "claimButton", "horizontalAlign": "center", "verticalAlign": "center", "offsetX": 20, "offsetY": 20 }
         ]);
 
         (<any>this).layoutBox = {
@@ -186,7 +186,7 @@ class TaskCardPanel extends BasePanel {
 
         this.applyHtmlPreset([
             isClaimed
-                ? { "spriteId": "rewardTitle", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "center", "width": "84%", "offsetY": 8, "fontSize": 20 }
+                ? { "spriteId": "rewardTitle", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "center", "width": "84%", "offsetY": 0, "fontSize": 20 }
                 : { "spriteId": "rewardTitle", "parentId": "rewardPanel", "horizontalAlign": "center", "verticalAlign": "top", "width": "84%", "offsetY": 22, "fontSize": 20 }
         ]);
 
@@ -238,7 +238,7 @@ class TaskCardPanel extends BasePanel {
     private getRewardScale(icon: string, insideButton: boolean): number {
         switch (icon) {
             case "gems":
-                return insideButton ? 0.36 : 0.42;
+                return insideButton ? 0.36 : 0.32;
             case "actionChest":
                 return insideButton ? 0.44 : 0.5;
             default:
@@ -265,6 +265,9 @@ export default class TasksPanel extends ClosablePanel {
     private progressBarStart: Phaser.Sprite;
     private progressBarBody: Phaser.TileSprite;
     private progressBarTail: Phaser.Sprite;
+    private progressBarEndCircle: Phaser.Sprite;
+    private progressBarEndReward: Phaser.Sprite;
+    private progressBarEndCheck: Phaser.Sprite;
     private progressStateLabel: Label;
     private resetLabel: Label;
     private progressMetaStack: StackContainer;
@@ -353,7 +356,7 @@ export default class TasksPanel extends ClosablePanel {
         });
 
         this.progressLineBg = this.attachSprite("progressLineBg", "progressLineBg");
-        this.progressLineBg.scale.set(1.08, 0.72);
+        this.progressLineBg.scale.set(1.0, 0.72);
 
         this.progressBarBody = SpriteUtils.createTileSprite(this.game, 0, 0, 50, 31, "progressBody");
         this.progressBarBody.name = "progressBarBody";
@@ -365,6 +368,15 @@ export default class TasksPanel extends ClosablePanel {
 
         this.progressBarTail = this.attachSprite("progressTail", "progressBarTail");
         this.progressBarTail.scale.set(1.02, 1.24);
+
+        this.progressBarEndCircle = this.attachSprite("circle", "progressBarEndCircle");
+        this.progressBarEndCircle.scale.set(0.74);
+
+        this.progressBarEndReward = this.attachSprite("actionChest", "progressBarEndReward");
+        this.progressBarEndReward.scale.set(0.58);
+
+        this.progressBarEndCheck = this.attachSprite("check", "progressBarEndCheck");
+        this.progressBarEndCheck.scale.set(0.32);
 
         this.progressStateLabel = this.attachText("progressState", "", {
             font: "bold 22px Arial",
@@ -608,7 +620,7 @@ export default class TasksPanel extends ClosablePanel {
     }
 
     private updateHeaderLayout(): void {
-        let showChapters = this.selectedTab == "campaign";
+        let showChapters = this.chapterButtons.some(button => button.visible);
         let subtitleY = showChapters ? 186 : 150;
         let progressTitleY = showChapters ? 224 : 192;
         let progressLineY = showChapters ? 280 : 248;
@@ -832,25 +844,48 @@ export default class TasksPanel extends ClosablePanel {
 
     private updateProgressBar(progressRatio: number, rewards: TaskRewardView[]): void {
         let clampedRatio = Math.max(0, Math.min(1, progressRatio || 0));
-        let lineWidth = this.progressLineBg.width;
-        let bodyWidth = Math.max(16, lineWidth * clampedRatio);
         let lineLeft = this.progressLineBg.x - this.progressLineBg.width / 2;
-        let rewardLeft = lineLeft + 34;
-        let rewardRight = lineLeft + this.progressLineBg.width - 34;
+        let lineRight = lineLeft + this.progressLineBg.width;
+        let fillStartX = lineLeft + 18;
+        let endCircleX = lineRight - 34;
+        let fillEndX = endCircleX - this.progressBarEndCircle.width / 2 + 8;
+        let fillWidth = Math.max(0, fillEndX - fillStartX);
+        let bodyWidth = clampedRatio <= 0 ? 0 : Math.max(16, fillWidth * clampedRatio);
+        let finalReward = rewards && rewards.length > 0 ? rewards[rewards.length - 1] : null;
+        let progressTarget = finalReward ? Math.max(1, finalReward.progressTarget) : 1;
 
-        this.progressBarBody.scale = this.progressBarStart.scale;
-        this.progressBarBody.x = lineLeft + 6;
+        this.progressBarBody.visible = bodyWidth > 0;
+        this.progressBarStart.visible = bodyWidth > 0;
+        this.progressBarTail.visible = bodyWidth > 0;
+
+        this.progressBarBody.x = fillStartX + 6;
         this.progressBarBody.y = this.progressLineBg.y;
         this.progressBarBody.width = bodyWidth;
+        this.progressBarBody.height = this.progressBarTail.height;
 
-        this.progressBarStart.x = this.progressBarBody.x - 6;
+        this.progressBarStart.x = fillStartX + 3;
         this.progressBarStart.y = this.progressLineBg.y;
 
-        this.progressBarTail.x = this.progressBarBody.x + bodyWidth - 6;
+        this.progressBarTail.x = fillStartX + bodyWidth +8;
         this.progressBarTail.y = this.progressLineBg.y;
 
+        this.progressBarEndCircle.visible = !!finalReward;
+        this.progressBarEndReward.visible = !!finalReward;
+        this.progressBarEndCheck.visible = !!finalReward && finalReward.isClaimed;
+        if (finalReward) {
+            this.progressBarEndCircle.x = endCircleX;
+            this.progressBarEndCircle.y = this.progressLineBg.y;
+
+            SpriteUtils.loadTexture(this.progressBarEndReward, finalReward.icon);
+            this.progressBarEndReward.scale.set(this.getProgressEndRewardScale(finalReward.icon));
+            this.progressBarEndReward.x = this.progressBarEndCircle.x;
+            this.progressBarEndReward.y = this.progressBarEndCircle.y;
+            this.progressBarEndCheck.x = this.progressBarEndCircle.x + 24;
+            this.progressBarEndCheck.y = this.progressBarEndCircle.y - 18;
+        }
+
         this.rewardIcons.forEach((icon, index) => {
-            let reward = rewards[index];
+            let reward = index < rewards.length - 1 ? rewards[index] : null;
             icon.visible = !!reward;
             this.rewardChecks[index].visible = !!reward && reward.isClaimed;
             if (!reward) {
@@ -860,8 +895,8 @@ export default class TasksPanel extends ClosablePanel {
             SpriteUtils.loadTexture(icon, reward.icon);
             icon.scale.set(this.getRewardScale(reward.icon));
 
-            let rewardRatio = reward.progressTarget / Math.max(1, rewards[rewards.length - 1].progressTarget);
-            icon.x = rewardLeft + (rewardRight - rewardLeft) * rewardRatio;
+            let rewardRatio = reward.progressTarget / progressTarget;
+            icon.x = fillStartX + fillWidth * rewardRatio;
             icon.y = this.progressLineBg.y - 2;
             this.rewardChecks[index].x = icon.x + 16;
             this.rewardChecks[index].y = icon.y - 16;
@@ -870,9 +905,12 @@ export default class TasksPanel extends ClosablePanel {
         this.bringChildToTop(this.progressBarStart);
         this.setChildIndex(this.progressBarBody, this.children.length - 1);
         this.bringChildToTop(this.progressBarTail);
+        this.bringChildToTop(this.progressBarEndCircle);
         this.setChildIndex(this.progressMetaStack, this.children.length - 1);
         this.rewardIcons.forEach(icon => this.bringChildToTop(icon));
         this.rewardChecks.forEach(check => this.bringChildToTop(check));
+        this.bringChildToTop(this.progressBarEndReward);
+        this.bringChildToTop(this.progressBarEndCheck);
     }
 
     private setTabState(button: Phaser.Button, label: Label, selected: boolean): void {
@@ -935,6 +973,17 @@ export default class TasksPanel extends ClosablePanel {
                 return 0.52;
             default:
                 return 0.62;
+        }
+    }
+
+    private getProgressEndRewardScale(icon: string): number {
+        switch (icon) {
+            case "gems":
+                return 0.5;
+            case "actionChest":
+                return 0.58;
+            default:
+                return 0.66;
         }
     }
 }
