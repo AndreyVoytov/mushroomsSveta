@@ -28,11 +28,6 @@ export default abstract class BaseScreen extends DebugScreen {
         SpriteUtils.images.push({ key: key, path: path });
     }
 
-    public loadStandaloneImage(key: string, path: string): void {
-        this.load.image(key, path);
-        SpriteUtils.images.push({ key: key, path: path });
-    }
-
     public loadAtlas(key: string, path: string): void {
         if (Settings.isGraphicsFromAtlases()) {
             console.log("loadAtlas: " + key + "; " + (this.cache.getFrameData(key) ? true : false))

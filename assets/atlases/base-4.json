@@ -1,33 +1,9 @@
 {
     "frames":  {
-                   "base/action/pot1.png":  {
-                                                "frame":  {
-                                                              "x":  757,
-                                                              "y":  1691,
-                                                              "w":  250,
-                                                              "h":  247
-                                                          },
-                                                "rotated":  false,
-                                                "trimmed":  false,
-                                                "spriteSourceSize":  {
-                                                                         "x":  0,
-                                                                         "y":  0,
-                                                                         "w":  250,
-                                                                         "h":  247
-                                                                     },
-                                                "sourceSize":  {
-                                                                   "w":  250,
-                                                                   "h":  247
-                                                               },
-                                                "pivot":  {
-                                                              "x":  0.5,
-                                                              "y":  0.5
-                                                          }
-                                            },
                    "base/action/pot2.png":  {
                                                 "frame":  {
-                                                              "x":  1,
-                                                              "y":  1691,
+                                                              "x":  1205,
+                                                              "y":  1699,
                                                               "w":  250,
                                                               "h":  250
                                                           },
@@ -50,8 +26,8 @@
                                             },
                    "base/action/pot3.png":  {
                                                 "frame":  {
-                                                              "x":  253,
-                                                              "y":  1691,
+                                                              "x":  1457,
+                                                              "y":  1699,
                                                               "w":  250,
                                                               "h":  250
                                                           },
@@ -74,8 +50,8 @@
                                             },
                    "base/action/pot4.png":  {
                                                 "frame":  {
-                                                              "x":  505,
-                                                              "y":  1691,
+                                                              "x":  1709,
+                                                              "y":  1699,
                                                               "w":  250,
                                                               "h":  250
                                                           },
@@ -122,8 +98,8 @@
                                                           },
                    "base/scenario/room/chest/chestBox.png":  {
                                                                  "frame":  {
-                                                                               "x":  842,
-                                                                               "y":  1132,
+                                                                               "x":  1,
+                                                                               "y":  1421,
                                                                                "w":  528,
                                                                                "h":  276
                                                                            },
@@ -192,34 +168,34 @@
                                                                             "y":  0.5
                                                                         }
                                                           },
-                   "base/ui/cloud.png":  {
-                                             "frame":  {
-                                                           "x":  1009,
-                                                           "y":  1691,
-                                                           "w":  283,
-                                                           "h":  246
-                                                       },
-                                             "rotated":  false,
-                                             "trimmed":  false,
-                                             "spriteSourceSize":  {
-                                                                      "x":  0,
-                                                                      "y":  0,
-                                                                      "w":  283,
-                                                                      "h":  246
-                                                                  },
-                                             "sourceSize":  {
-                                                                "w":  283,
-                                                                "h":  246
-                                                            },
-                                             "pivot":  {
-                                                           "x":  0.5,
-                                                           "y":  0.5
-                                                       }
-                                         },
+                   "base/task/header_ribbon.png":  {
+                                                       "frame":  {
+                                                                     "x":  696,
+                                                                     "y":  816,
+                                                                     "w":  981,
+                                                                     "h":  297
+                                                                 },
+                                                       "rotated":  false,
+                                                       "trimmed":  false,
+                                                       "spriteSourceSize":  {
+                                                                                "x":  0,
+                                                                                "y":  0,
+                                                                                "w":  981,
+                                                                                "h":  297
+                                                                            },
+                                                       "sourceSize":  {
+                                                                          "w":  981,
+                                                                          "h":  297
+                                                                      },
+                                                       "pivot":  {
+                                                                     "x":  0.5,
+                                                                     "y":  0.5
+                                                                 }
+                                                   },
                    "base/ui/dialogPnl.png":  {
                                                  "frame":  {
-                                                               "x":  659,
-                                                               "y":  1421,
+                                                               "x":  1,
+                                                               "y":  1699,
                                                                "w":  960,
                                                                "h":  259
                                                            },
@@ -240,30 +216,6 @@
                                                                "y":  0.5
                                                            }
                                              },
-                   "base/ui/diary.png":  {
-                                             "frame":  {
-                                                           "x":  1294,
-                                                           "y":  1691,
-                                                           "w":  225,
-                                                           "h":  237
-                                                       },
-                                             "rotated":  false,
-                                             "trimmed":  false,
-                                             "spriteSourceSize":  {
-                                                                      "x":  0,
-                                                                      "y":  0,
-                                                                      "w":  225,
-                                                                      "h":  237
-                                                                  },
-                                             "sourceSize":  {
-                                                                "w":  225,
-                                                                "h":  237
-                                                            },
-                                             "pivot":  {
-                                                           "x":  0.5,
-                                                           "y":  0.5
-                                                       }
-                                         },
                    "base/ui/diary/bookPage.png":  {
                                                       "frame":  {
                                                                     "x":  1015,
@@ -362,7 +314,7 @@
                                                   },
                    "base/ui/frameLight.png":  {
                                                   "frame":  {
-                                                                "x":  696,
+                                                                "x":  1679,
                                                                 "y":  816,
                                                                 "w":  36,
                                                                 "h":  295
@@ -410,8 +362,8 @@
                                              },
                    "base/ui/helperPanel.png":  {
                                                    "frame":  {
-                                                                 "x":  1372,
-                                                                 "y":  1132,
+                                                                 "x":  531,
+                                                                 "y":  1421,
                                                                  "w":  656,
                                                                  "h":  268
                                                              },
@@ -434,7 +386,7 @@
                                                },
                    "base/ui/helperPanel2.png":  {
                                                     "frame":  {
-                                                                  "x":  1,
+                                                                  "x":  1189,
                                                                   "y":  1421,
                                                                   "w":  656,
                                                                   "h":  268
@@ -458,8 +410,8 @@
                                                 },
                    "base/ui/horn.png":  {
                                             "frame":  {
-                                                          "x":  1621,
-                                                          "y":  1421,
+                                                          "x":  963,
+                                                          "y":  1699,
                                                           "w":  240,
                                                           "h":  254
                                                       },
@@ -530,8 +482,8 @@
                                                    },
                    "base/ui/progressbar/forestHeader.png":  {
                                                                 "frame":  {
-                                                                              "x":  734,
-                                                                              "y":  816,
+                                                                              "x":  1,
+                                                                              "y":  1132,
                                                                               "w":  839,
                                                                               "h":  287
                                                                           },
@@ -554,7 +506,7 @@
                                                             },
                    "base/ui/progressbar/potionsHeader.png":  {
                                                                  "frame":  {
-                                                                               "x":  1,
+                                                                               "x":  842,
                                                                                "y":  1132,
                                                                                "w":  839,
                                                                                "h":  287
@@ -575,55 +527,7 @@
                                                                                "x":  0.5,
                                                                                "y":  0.5
                                                                            }
-                                                             },
-                   "base/ui/progressbar/shadow.png":  {
-                                                          "frame":  {
-                                                                        "x":  1748,
-                                                                        "y":  1691,
-                                                                        "w":  100,
-                                                                        "h":  232
-                                                                    },
-                                                          "rotated":  false,
-                                                          "trimmed":  false,
-                                                          "spriteSourceSize":  {
-                                                                                   "x":  0,
-                                                                                   "y":  0,
-                                                                                   "w":  100,
-                                                                                   "h":  232
-                                                                               },
-                                                          "sourceSize":  {
-                                                                             "w":  100,
-                                                                             "h":  232
-                                                                         },
-                                                          "pivot":  {
-                                                                        "x":  0.5,
-                                                                        "y":  0.5
-                                                                    }
-                                                      },
-                   "base/ui/tasks.png":  {
-                                             "frame":  {
-                                                           "x":  1521,
-                                                           "y":  1691,
-                                                           "w":  225,
-                                                           "h":  237
-                                                       },
-                                             "rotated":  false,
-                                             "trimmed":  false,
-                                             "spriteSourceSize":  {
-                                                                      "x":  0,
-                                                                      "y":  0,
-                                                                      "w":  225,
-                                                                      "h":  237
-                                                                  },
-                                             "sourceSize":  {
-                                                                "w":  225,
-                                                                "h":  237
-                                                            },
-                                             "pivot":  {
-                                                           "x":  0.5,
-                                                           "y":  0.5
-                                                       }
-                                         }
+                                                             }
                },
     "meta":  {
                  "app":  "codex-atlas-packer",
@@ -631,8 +535,8 @@
                  "image":  "base-4.png",
                  "format":  "RGBA8888",
                  "size":  {
-                              "w":  2029,
-                              "h":  1942
+                              "w":  1960,
+                              "h":  1959
                           },
                  "scale":  1
              }

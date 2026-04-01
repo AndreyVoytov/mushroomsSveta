@@ -23,6 +23,7 @@ type TasksPanelHooks = {
 class TaskCardPanel extends BasePanel {
     public static WIDTH: number = 727;
     public static HEIGHT: number = 147;
+    private static CLAIMED_ALPHA: number = 0.5;
     private static ITEM_LEFT: number = 24;
     private static ITEM_TOP: number = 23;
     private static ITEM_WIDTH: number = 117;
@@ -35,7 +36,7 @@ class TaskCardPanel extends BasePanel {
     private static PROGRESS_EMPTY_TOP: number = 80;
     private static PROGRESS_FULL_TOP: number = 79;
     private static TITLE_CENTER_X: number = 344;
-    private static TITLE_TOP: number = 16;
+    private static TITLE_TOP: number = 33;
 
     private background: Phaser.Sprite;
     private itemBackground: Phaser.Sprite;
@@ -110,7 +111,7 @@ class TaskCardPanel extends BasePanel {
         this.progressLabel.x = TaskCardPanel.PROGRESS_LEFT + this.progressEmpty.width / 2;
         this.progressLabel.y = TaskCardPanel.PROGRESS_FULL_TOP + this.progressFull.height / 2 + 1;
 
-        this.rewardTitleLabel = this.attachText("rewardTitle", LocalizationService.get("ui.tasks.reward", "РќР°РіСЂР°РґР°"), {
+        this.rewardTitleLabel = this.attachText("rewardTitle", LocalizationService.get("ui.tasks.reward", "Награда"), {
             font: "bold 20px Arial",
             fill: "#9a6842",
             align: "center",
@@ -121,7 +122,7 @@ class TaskCardPanel extends BasePanel {
         this.rewardTitleLabel.x = TaskCardPanel.REWARD_LEFT + TaskCardPanel.REWARD_WIDTH / 2;
         this.rewardTitleLabel.y = TaskCardPanel.REWARD_TOP + 16;
 
-        this.claimTitleLabel = this.attachText("claimTitle", LocalizationService.get("ui.tasks.claim", "Р—Р°Р±СЂР°С‚СЊ"), {
+        this.claimTitleLabel = this.attachText("claimTitle", LocalizationService.get("ui.tasks.claim", "Забрать"), {
             font: "bold 22px Gilroy",
             fill: "#6d9a1f",
             align: "center",
@@ -150,9 +151,9 @@ class TaskCardPanel extends BasePanel {
 
         this.claimedCheckIcon = this.attachSprite("check", "claimedCheckIcon");
         this.claimedCheckIcon.anchor.set(0.5);
-        this.claimedCheckIcon.scale.set(0.28);
+        this.claimedCheckIcon.scale.set(0.392);
         this.claimedCheckIcon.x = TaskCardPanel.REWARD_LEFT + TaskCardPanel.REWARD_WIDTH / 2;
-        this.claimedCheckIcon.y = TaskCardPanel.REWARD_TOP + TaskCardPanel.REWARD_HEIGHT / 2 + 2;
+        this.claimedCheckIcon.y = TaskCardPanel.REWARD_TOP + TaskCardPanel.REWARD_HEIGHT / 2 + 20;
 
         this.claimHitArea = this.attachSprite("blank", "claimHitArea");
         this.claimHitArea.anchor.set(0);
@@ -200,8 +201,8 @@ class TaskCardPanel extends BasePanel {
         this.updateProgressBar(progressRatio);
 
         this.rewardTitleLabel.text = isClaimed
-            ? LocalizationService.get("ui.tasks.rewardReceived", "РќР°РіСЂР°РґР° РїРѕР»СѓС‡РµРЅР°")
-            : LocalizationService.get("ui.tasks.reward", "РќР°РіСЂР°РґР°");
+            ? LocalizationService.get("ui.tasks.rewardReceived", "Награда получена")
+            : LocalizationService.get("ui.tasks.reward", "Награда");
         this.rewardTitleLabel.visible = !isClaimable;
         this.claimTitleLabel.visible = isClaimable;
         this.rewardIcon.visible = !isClaimed;
@@ -215,7 +216,7 @@ class TaskCardPanel extends BasePanel {
         this.rewardTitleLabel.fill = isClaimed ? "#8d816c" : "#9a6842";
         this.claimTitleLabel.fill = "#6c9518";
         this.titleLabel.fill = isClaimed ? "#9e927e" : "#855539";
-        this.alpha = isClaimed ? 0.72 : 1;
+        this.alpha = isClaimed ? TaskCardPanel.CLAIMED_ALPHA : 1;
     }
 
     private updateProgressBar(progressRatio: number): void {
@@ -260,16 +261,32 @@ class TaskCardPanel extends BasePanel {
 export default class TasksPanel extends ClosablePanel {
     private static PSD_WIDTH: number = 1024;
     private static PSD_HEIGHT: number = 1536;
+    private static PANEL_SHORTEN_BY: number = 159;
+    private static PANEL_VERTICAL_SHIFT: number = 159;
+    private static TASK_CARD_GAP: number = 12;
+    private static VISIBLE_TASK_CARDS: number = 3.85;
+    private static SCROLL_CONTENT_TOP_PADDING: number = 5;
+    private static TAB_FONT_SIZE: number = 22;
+    private static TAB_SELECTED_TEXT_OFFSET_Y: number = -2;
+    private static TAB_INACTIVE_TEXT_OFFSET_Y: number = 0;
     private static PANEL_LEFT: number = 64;
     private static PANEL_TOP: number = 176;
     private static PANEL_WIDTH: number = 897;
-    private static PANEL_HEIGHT: number = 1203;
-    private static PANEL_CENTER_HEIGHT: number = 984;
-    private static LIST_CENTER_HEIGHT: number = 860;
+    private static PANEL_HEIGHT: number = 1203 - TasksPanel.PANEL_SHORTEN_BY;
+    private static PANEL_CENTER_HEIGHT: number = 984 - TasksPanel.PANEL_SHORTEN_BY;
+    private static PANEL_BOTTOM_TOP: number = 1241 - TasksPanel.PANEL_SHORTEN_BY;
+    private static LIST_CENTER_HEIGHT: number = 860 - TasksPanel.PANEL_SHORTEN_BY;
+    private static LIST_BOTTOM_TOP: number = 1238 - TasksPanel.PANEL_SHORTEN_BY;
     private static VIEWPORT_LEFT: number = 151;
     private static VIEWPORT_TOP: number = 545;
     private static VIEWPORT_WIDTH: number = 727;
-    private static VIEWPORT_HEIGHT: number = 786;
+    private static VIEWPORT_HEIGHT: number =
+        TaskCardPanel.HEIGHT * TasksPanel.VISIBLE_TASK_CARDS +
+        TasksPanel.TASK_CARD_GAP * Math.max(0, Math.ceil(TasksPanel.VISIBLE_TASK_CARDS) - 1);
+    private static SCROLLBAR_LEFT: number = 888;
+    private static SCROLLBAR_WIDTH: number = 14;
+    private static SCROLLBAR_HIT_WIDTH: number = 28;
+    private static SCROLLBAR_MIN_HEIGHT: number = 72;
     private static MAIN_PROGRESS_LEFT: number = 133;
     private static MAIN_PROGRESS_WIDTH: number = 766;
     private static MAIN_PROGRESS_TRACK_LEFT: number = 182;
@@ -298,17 +315,23 @@ export default class TasksPanel extends ClosablePanel {
     private taskCardsStack: StackContainer;
     private taskCardsMask: Phaser.Graphics;
     private taskCardsDragArea: Phaser.Sprite;
+    private scrollBarTrack: Phaser.Graphics;
+    private scrollBarThumb: Phaser.Graphics;
+    private scrollBarHitArea: Phaser.Sprite;
+    private taskContentHeight: number = 0;
     private taskScrollOffset: number = 0;
     private taskMaxScrollOffset: number = 0;
     private dragStartPointerY: number = 0;
     private dragStartScrollOffset: number = 0;
     private draggingTaskList: boolean = false;
+    private draggingScrollBar: boolean = false;
+    private scrollBarDragOffsetY: number = 0;
     private wheelListener: (e: WheelEvent) => void;
     private selectedTab: TasksTab = "daily";
     private selectedChapterIndex: number = 0;
 
     constructor(game: Phaser.Game, screen: HouseScreen, hooks?: TasksPanelHooks) {
-        super(game, game.width / 2, game.height / 2 - 8, true, "blank", 1.02);
+        super(game, game.width / 2, game.height / 2 - 8 + TasksPanel.PANEL_VERTICAL_SHIFT, true, "blank", 1.02);
         this.screen = screen;
         this.hooks = hooks || {};
         this.wheelListener = e => this.onMouseWheel(e);
@@ -326,11 +349,11 @@ export default class TasksPanel extends ClosablePanel {
 
         this.createFixedSprite("tasksPanelBgTop", "backgroundTop", 64, 176);
         this.createFixedStretchYSprite("tasksPanelBgCenter", "backgroundCenter", 94, 263, TasksPanel.PANEL_CENTER_HEIGHT);
-        this.createFixedSprite("tasksPanelBgBottom", "backgroundBottom", 95, 1241);
+        this.createFixedSprite("tasksPanelBgBottom", "backgroundBottom", 95, TasksPanel.PANEL_BOTTOM_TOP);
         this.createFixedSprite("tasksPanelHeaderRibbon", "headerRibbon", 84, 91);
         this.createFixedSprite("tasksPanelListTop", "listTop", 109, 309);
         this.createFixedStretchYSprite("tasksPanelListCenter", "listCenter", 109, 385, TasksPanel.LIST_CENTER_HEIGHT);
-        this.createFixedSprite("tasksPanelListBottom", "listBottom", 109, 1238);
+        this.createFixedSprite("tasksPanelListBottom", "listBottom", 109, TasksPanel.LIST_BOTTOM_TOP);
         this.createFixedSprite("tasksPanelProgressEmpty", "progressBarEmpty", 133, 354);
         this.progressBarFull = this.createFixedSprite("tasksPanelProgressFull", "progressBarFull", 133, 354);
         this.progressBarChest = this.createFixedSprite("tasksPanelChest", "progressBarChest", 716, 365);
@@ -342,7 +365,7 @@ export default class TasksPanel extends ClosablePanel {
         this.closeButton.y = this.psdY(194);
         this.closeButton.scale.set(0.95);
 
-        this.titleLabel = this.attachText("title", LocalizationService.get("ui.tasks.title", "Р—Р°РґР°РЅРёСЏ"), {
+        this.titleLabel = this.attachText("title", LocalizationService.get("ui.tasks.title", "Задания"), {
             font: "46px Bookman Old Style",
             fill: "#fdf6ff",
             align: "center",
@@ -351,32 +374,32 @@ export default class TasksPanel extends ClosablePanel {
         });
         this.titleLabel.anchor.set(0.5);
         this.titleLabel.x = 0;
-        this.titleLabel.y = this.psdY(182);
+        this.titleLabel.y = this.psdY(182 - 15);
 
         this.dailyTabButton = this.attachButton("tasksPanelTabActive", () => this.selectTab("daily"), "dailyTab");
         this.dailyTabButton.anchor.set(0);
-        this.dailyTabLabel = this.attachText("dailyTabLabel", LocalizationService.get("ui.tasks.daily", "Р•Р¶РµРґРЅРµРІРЅС‹Рµ"), {
-            font: "bold 24px Gilroy",
+        this.dailyTabLabel = this.attachText("dailyTabLabel", LocalizationService.get("ui.tasks.daily", "Ежедневные"), {
+            font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
             fill: "#82533a",
             align: "center",
             wordWrap: true,
-            wordWrapWidth: 300
+            wordWrapWidth: 280
         });
         this.dailyTabLabel.anchor.set(0.5);
 
         this.campaignTabButton = this.attachButton("tasksPanelTabInactive", () => this.selectTab("campaign"), "campaignTab");
         this.campaignTabButton.anchor.set(0);
-        this.campaignTabLabel = this.attachText("campaignTabLabel", LocalizationService.get("ui.tasks.campaign", "РљР°РјРїР°РЅРёСЏ"), {
-            font: "bold 24px Gilroy",
+        this.campaignTabLabel = this.attachText("campaignTabLabel", LocalizationService.get("ui.tasks.campaign", "Кампания"), {
+            font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
             fill: "#f5ebdb",
             align: "center",
             wordWrap: true,
-            wordWrapWidth: 300
+            wordWrapWidth: 280
         });
         this.campaignTabLabel.anchor.set(0.5);
 
         this.progressTitle = this.attachText("progressTitle", "", {
-            font: "bold 26px Arial",
+            font: "bold 24px Arial",
             fill: "#895d3f",
             align: "center",
             wordWrap: true,
@@ -435,11 +458,28 @@ export default class TasksPanel extends ClosablePanel {
         this.taskCardsViewport.add(this.taskCardsDragArea);
 
         this.taskCardsStack = new StackContainer(this.game, 0, 0, "taskCardsStack", {
-            gap: 12,
+            gap: TasksPanel.TASK_CARD_GAP,
             align: "center",
+            paddingTop: TasksPanel.SCROLL_CONTENT_TOP_PADDING,
             layoutWidth: TasksPanel.VIEWPORT_WIDTH
         });
         this.taskCardsViewport.add(this.taskCardsStack);
+
+        this.scrollBarTrack = new Phaser.Graphics(this.game, this.psdX(TasksPanel.SCROLLBAR_LEFT), this.psdY(TasksPanel.VIEWPORT_TOP));
+        this.addChild(this.scrollBarTrack);
+
+        this.scrollBarHitArea = SpriteUtils.createSprite(this.game, this.psdX(TasksPanel.SCROLLBAR_LEFT - (TasksPanel.SCROLLBAR_HIT_WIDTH - TasksPanel.SCROLLBAR_WIDTH) / 2), this.psdY(TasksPanel.VIEWPORT_TOP), "blank");
+        this.scrollBarHitArea.anchor.set(0);
+        this.scrollBarHitArea.width = TasksPanel.SCROLLBAR_HIT_WIDTH;
+        this.scrollBarHitArea.height = TasksPanel.VIEWPORT_HEIGHT;
+        this.scrollBarHitArea.alpha = 0.001;
+        this.scrollBarHitArea.inputEnabled = true;
+        this.scrollBarHitArea.input.useHandCursor = true;
+        this.scrollBarHitArea.events.onInputDown.add(this.onScrollBarPointerDown, this);
+        this.addChild(this.scrollBarHitArea);
+
+        this.scrollBarThumb = new Phaser.Graphics(this.game, this.psdX(TasksPanel.SCROLLBAR_LEFT), this.psdY(TasksPanel.VIEWPORT_TOP));
+        this.addChild(this.scrollBarThumb);
 
         this.taskCardsMask = new Phaser.Graphics(this.game, 0, 0);
         this.taskCardsMask.alpha = 0;
@@ -472,6 +512,7 @@ export default class TasksPanel extends ClosablePanel {
     protected onClose(): void {
         document.body.removeEventListener("wheel", this.wheelListener);
         this.draggingTaskList = false;
+        this.draggingScrollBar = false;
         this.screen.showUI(true);
     }
 
@@ -551,15 +592,15 @@ export default class TasksPanel extends ClosablePanel {
         button.y = this.psdY(237);
 
         label.setStyle({
-            font: "bold 24px Gilroy",
+            font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
             fill: selected ? "#81543a" : "#f7ead5",
             align: "center",
             wordWrap: true,
-            wordWrapWidth: button.width - 42
+            wordWrapWidth: button.width - 54
         });
         label.anchor.set(0.5);
         label.x = button.x + button.width / 2;
-        label.y = button.y + button.height / 2 + (selected ? 4 : 0);
+        label.y = button.y + button.height / 2 + (selected ? TasksPanel.TAB_SELECTED_TEXT_OFFSET_Y : TasksPanel.TAB_INACTIVE_TEXT_OFFSET_Y);
     }
 
     private refreshProgressBlock(): void {
@@ -569,9 +610,17 @@ export default class TasksPanel extends ClosablePanel {
             const claimedTasks = dailyTasks.filter(task => task.isClaimed).length;
             const totalTasks = dailyTasks.length || 1;
 
-            this.progressTitle.text = LocalizationService.get("ui.tasks.dailyProgress", "РџСЂРѕРіСЂРµСЃСЃ РґРЅСЏ");
+            this.progressTitle.setStyle({
+                font: "bold 24px Arial",
+                fill: "#895d3f",
+                align: "center",
+                wordWrap: true,
+                wordWrapWidth: 620
+            });
+            this.progressTitle.y = this.psdY(338 + 17);
+            this.progressTitle.text = LocalizationService.get("ui.tasks.dailyProgress", "Прогресс дня");
             this.resetLabel.visible = true;
-            this.resetLabel.text = LocalizationService.get("ui.tasks.refreshIn", "РћР±РЅРѕРІР»РµРЅРёРµ С‡РµСЂРµР· {time}")
+            this.resetLabel.text = LocalizationService.get("ui.tasks.refreshIn", "Обновление через {time}")
                 .replace("{time}", this.formatDuration(EnergyUtils.getMillisToNextMoscowMidnight()));
             this.updateProgressBar(claimedTasks / totalTasks, dailyRewards);
             return;
@@ -581,6 +630,14 @@ export default class TasksPanel extends ClosablePanel {
         const chapterView = campaignViews.filter(item => item.index == this.selectedChapterIndex).shift() || campaignViews[0];
         const rewardView = TaskService.getCampaignRewardView(this.selectedChapterIndex);
 
+        this.progressTitle.setStyle({
+            font: "bold 22px Arial",
+            fill: "#895d3f",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 620
+        });
+        this.progressTitle.y = this.psdY(338 + 17);
         this.progressTitle.text = chapterView.chapter.title;
         this.resetLabel.visible = false;
         this.updateProgressBar(chapterView.claimedTasks / Math.max(1, chapterView.totalTasks), [rewardView]);
@@ -593,7 +650,7 @@ export default class TasksPanel extends ClosablePanel {
         const sortedTasks = this.sortTasksForDisplay(tasks);
 
         this.taskCards.forEach((card, index) => {
-            card.setData(sortedTasks[index], LocalizationService.get("ui.tasks.claim", "Р—Р°Р±СЂР°С‚СЊ"));
+            card.setData(sortedTasks[index], LocalizationService.get("ui.tasks.claim", "Забрать"));
         });
 
         this.taskCardsStack.relayout();
@@ -623,7 +680,8 @@ export default class TasksPanel extends ClosablePanel {
 
     private updateTaskScrollMetrics(): void {
         const contentBox = (<any>this.taskCardsStack).layoutBox || { height: 0 };
-        this.taskMaxScrollOffset = Math.max(0, (contentBox.height || 0) - TasksPanel.VIEWPORT_HEIGHT);
+        this.taskContentHeight = contentBox.height || 0;
+        this.taskMaxScrollOffset = Math.max(0, this.taskContentHeight - TasksPanel.VIEWPORT_HEIGHT);
         this.setTaskScrollOffset(this.taskScrollOffset);
     }
 
@@ -631,6 +689,67 @@ export default class TasksPanel extends ClosablePanel {
         const clamped = Math.max(0, Math.min(this.taskMaxScrollOffset, value || 0));
         this.taskScrollOffset = clamped;
         this.taskCardsStack.y = -clamped;
+        this.updateTaskScrollBar();
+    }
+
+    private updateTaskScrollBar(): void {
+        const visible = this.taskMaxScrollOffset > 0 && this.taskContentHeight > TasksPanel.VIEWPORT_HEIGHT;
+        this.scrollBarTrack.visible = visible;
+        this.scrollBarThumb.visible = visible;
+        this.scrollBarHitArea.visible = visible;
+        this.scrollBarHitArea.inputEnabled = visible;
+
+        if (!visible) {
+            return;
+        }
+
+        const trackHeight = TasksPanel.VIEWPORT_HEIGHT;
+        const thumbHeight = this.getScrollBarThumbHeight(trackHeight);
+        const thumbTop = this.getScrollBarThumbTop(trackHeight, thumbHeight);
+
+        this.scrollBarTrack.clear();
+        this.scrollBarTrack.beginFill(0xd7b996, 0.7);
+        this.scrollBarTrack.drawRoundedRect(0, 0, TasksPanel.SCROLLBAR_WIDTH, trackHeight, TasksPanel.SCROLLBAR_WIDTH / 2);
+        this.scrollBarTrack.endFill();
+
+        this.scrollBarThumb.clear();
+        this.scrollBarThumb.beginFill(0x9f6643, 0.95);
+        this.scrollBarThumb.drawRoundedRect(0, thumbTop, TasksPanel.SCROLLBAR_WIDTH, thumbHeight, TasksPanel.SCROLLBAR_WIDTH / 2);
+        this.scrollBarThumb.endFill();
+    }
+
+    private getScrollBarThumbHeight(trackHeight: number): number {
+        if (this.taskContentHeight <= 0) {
+            return trackHeight;
+        }
+
+        return Math.max(
+            TasksPanel.SCROLLBAR_MIN_HEIGHT,
+            Math.round(trackHeight * (TasksPanel.VIEWPORT_HEIGHT / this.taskContentHeight))
+        );
+    }
+
+    private getScrollBarThumbTop(trackHeight: number, thumbHeight: number): number {
+        const maxThumbTop = Math.max(0, trackHeight - thumbHeight);
+        if (maxThumbTop <= 0 || this.taskMaxScrollOffset <= 0) {
+            return 0;
+        }
+
+        return Math.round(maxThumbTop * (this.taskScrollOffset / this.taskMaxScrollOffset));
+    }
+
+    private setTaskScrollFromThumbTop(thumbTop: number): void {
+        const trackHeight = TasksPanel.VIEWPORT_HEIGHT;
+        const thumbHeight = this.getScrollBarThumbHeight(trackHeight);
+        const maxThumbTop = Math.max(0, trackHeight - thumbHeight);
+        const clampedThumbTop = Math.max(0, Math.min(maxThumbTop, thumbTop));
+        const ratio = maxThumbTop > 0 ? clampedThumbTop / maxThumbTop : 0;
+        this.setTaskScrollOffset(this.taskMaxScrollOffset * ratio);
+    }
+
+    private getScrollBarLocalY(pointerY: number): number {
+        const scaleY = this.scale && this.scale.y ? this.scale.y : 1;
+        return (pointerY - (this.y + this.scrollBarTrack.y * scaleY)) / scaleY;
     }
 
     private onTaskListPointerDown(_sprite: Phaser.Sprite, pointer: Phaser.Pointer): void {
@@ -643,16 +762,46 @@ export default class TasksPanel extends ClosablePanel {
         this.dragStartScrollOffset = this.taskScrollOffset;
     }
 
-    private onGlobalPointerMove(_pointer: Phaser.Pointer, _x: number, y: number): void {
-        if (!this.visible || !this.opened || !this.draggingTaskList) {
+    private onScrollBarPointerDown(_sprite: Phaser.Sprite, pointer: Phaser.Pointer): void {
+        if (this.taskMaxScrollOffset <= 0) {
             return;
         }
 
-        this.setTaskScrollOffset(this.dragStartScrollOffset - (y - this.dragStartPointerY));
+        const localY = this.getScrollBarLocalY(pointer.y);
+        const trackHeight = TasksPanel.VIEWPORT_HEIGHT;
+        const thumbHeight = this.getScrollBarThumbHeight(trackHeight);
+        const thumbTop = this.getScrollBarThumbTop(trackHeight, thumbHeight);
+
+        if (localY < thumbTop || localY > thumbTop + thumbHeight) {
+            this.setTaskScrollFromThumbTop(localY - thumbHeight / 2);
+        }
+
+        this.draggingScrollBar = true;
+        this.scrollBarDragOffsetY = localY - this.getScrollBarThumbTop(trackHeight, thumbHeight);
+    }
+
+    private onGlobalPointerMove(_pointer: Phaser.Pointer, _x: number, y: number): void {
+        if (!this.visible || !this.opened) {
+            return;
+        }
+
+        const scaleY = this.scale && this.scale.y ? this.scale.y : 1;
+
+        if (this.draggingScrollBar) {
+            this.setTaskScrollFromThumbTop(this.getScrollBarLocalY(y) - this.scrollBarDragOffsetY);
+            return;
+        }
+
+        if (!this.draggingTaskList) {
+            return;
+        }
+
+        this.setTaskScrollOffset(this.dragStartScrollOffset - (y - this.dragStartPointerY) / scaleY);
     }
 
     private onGlobalPointerUp(): void {
         this.draggingTaskList = false;
+        this.draggingScrollBar = false;
     }
 
     private onMouseWheel(e: WheelEvent): void {
@@ -749,10 +898,10 @@ export default class TasksPanel extends ClosablePanel {
         const minutesText = minutes >= 10 ? "" + minutes : "0" + minutes;
 
         if (hours > 0) {
-            return hours + "С‡ " + minutesText + "Рј";
+            return hours + "ч " + minutesText + "м";
         }
 
-        return minutes + "Рј";
+        return minutes + "м";
     }
 
     private getRewardScale(icon: string): number {
