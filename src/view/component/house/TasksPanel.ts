@@ -296,6 +296,7 @@ export default class TasksPanel extends ClosablePanel {
     private static SCROLLBAR_MIN_HEIGHT: number = 72;
     private static MAIN_PROGRESS_FAST_SEGMENT_MULTIPLIER: number = 2.5;
     private static MAIN_PROGRESS_FAST_SEGMENT_START: number = 0.75;
+    private static CAMPAIGN_CHEST_SCALE: number = 1 / 2.95;
     private static MAIN_PROGRESS_LEFT: number = 133;
     private static MAIN_PROGRESS_WIDTH: number = 766;
     private static MAIN_PROGRESS_TRACK_LEFT: number = 182;
@@ -370,7 +371,7 @@ export default class TasksPanel extends ClosablePanel {
         this.createFixedSprite("tasksPanelListBottom", "listBottom", 109, TasksPanel.LIST_BOTTOM_TOP);
         this.createFixedSprite("tasksPanelProgressEmpty", "progressBarEmpty", 133, 354);
         this.progressBarFull = this.createFixedSprite("tasksPanelProgressFull", "progressBarFull", 133, 354);
-        this.progressBarChest = this.createFixedSprite("tasksPanelChest", "progressBarChest", 716, 365);
+        this.progressBarChest = this.createFixedSprite("tasksPanelChest", "progressBarChest", 710, 348);
         this.progressBarFullBaseWidth = this.progressBarFull.width;
         this.progressBarCropRect = new Phaser.Rectangle(0, 0, this.progressBarFullBaseWidth, this.progressBarFull.height);
 
@@ -875,6 +876,11 @@ export default class TasksPanel extends ClosablePanel {
         this.progressBarEndReward.visible = !!finalReward && finalReward.icon != "actionChest";
         this.progressBarEndCheck.visible = !!finalReward && finalReward.isClaimed;
 
+        if (this.progressBarChest.visible) {
+            SpriteUtils.loadTexture(this.progressBarChest, this.getProgressChestTexture());
+            this.progressBarChest.scale.set(this.getProgressChestScale());
+        }
+
         if (finalReward && this.progressBarEndReward.visible) {
             SpriteUtils.loadTexture(this.progressBarEndReward, finalReward.icon);
             this.progressBarEndReward.scale.set(this.getProgressEndRewardScale(finalReward.icon));
@@ -916,6 +922,23 @@ export default class TasksPanel extends ClosablePanel {
 
         const fastSegmentProgress = (clampedRatio - slowSegmentProgressSize) / Math.max(0.0001, 1 - slowSegmentProgressSize);
         return slowSegmentVisualSize + fastSegmentVisualSize * fastSegmentProgress;
+    }
+
+    private getProgressChestTexture(): string {
+        if (this.selectedTab != "campaign") {
+            return "tasksPanelChest";
+        }
+
+        const chapterChestIndex = Math.max(2, Math.min(7, this.selectedChapterIndex + 2));
+        return "tasksPanelChest" + chapterChestIndex;
+    }
+
+    private getProgressChestScale(): number {
+        return TasksPanel.CAMPAIGN_CHEST_SCALE;
+        // this.selectedTab == "campaign"
+            // ?
+            // TasksPanel.CAMPAIGN_CHEST_SCALE
+            // : 1;
     }
 
     private showRewardGrants(grants: TaskRewardGrant[]): void {
