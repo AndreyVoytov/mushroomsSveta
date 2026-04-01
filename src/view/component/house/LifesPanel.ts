@@ -28,6 +28,10 @@ export default class LifesPanel extends BasePanel {
         this.lifesStatus = this.attachText("lifesStatus", LocalizationService.get('ui.energy.full', 'FULL'), { "font": "bold 28px Arial ", "fill": "#d6b08b" });
 
         const plusButton = this.attachButton('plusButton', () => {
+            if (houseScreen.isTasksPanelBlockingUI()) {
+                return;
+            }
+
             if (!houseScreen.lifeDetailsShown) {
                 const detailsPanel = new EnergyDetailsPanel(this.game, houseScreen, {
                     onShow: () => {

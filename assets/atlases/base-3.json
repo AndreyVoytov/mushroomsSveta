@@ -26,7 +26,7 @@
                                                 },
                    "base/characters/cat2.png":  {
                                                     "frame":  {
-                                                                  "x":  1,
+                                                                  "x":  963,
                                                                   "y":  1552,
                                                                   "w":  420,
                                                                   "h":  461
@@ -96,30 +96,6 @@
                                                                         "y":  0.5
                                                                     }
                                                       },
-                   "base/fonts/bitmap/bm_balsamiq.png":  {
-                                                             "frame":  {
-                                                                           "x":  423,
-                                                                           "y":  1552,
-                                                                           "w":  1024,
-                                                                           "h":  455
-                                                                       },
-                                                             "rotated":  false,
-                                                             "trimmed":  false,
-                                                             "spriteSourceSize":  {
-                                                                                      "x":  0,
-                                                                                      "y":  0,
-                                                                                      "w":  1024,
-                                                                                      "h":  455
-                                                                                  },
-                                                             "sourceSize":  {
-                                                                                "w":  1024,
-                                                                                "h":  455
-                                                                            },
-                                                             "pivot":  {
-                                                                           "x":  0.5,
-                                                                           "y":  0.5
-                                                                       }
-                                                         },
                    "base/fonts/bitmap/bm_times.png":  {
                                                           "frame":  {
                                                                         "x":  1,
@@ -144,10 +120,58 @@
                                                                         "y":  0.5
                                                                     }
                                                       },
+                   "base/task/chest.png":  {
+                                               "frame":  {
+                                                             "x":  1521,
+                                                             "y":  529,
+                                                             "w":  500,
+                                                             "h":  500
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  500,
+                                                                        "h":  500
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  500,
+                                                                  "h":  500
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "base/task/chest2.png":  {
+                                                "frame":  {
+                                                              "x":  1,
+                                                              "y":  1050,
+                                                              "w":  500,
+                                                              "h":  500
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  500,
+                                                                   "h":  500
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
                    "base/ui/banner1.png":  {
                                                "frame":  {
-                                                             "x":  1031,
-                                                             "y":  1050,
+                                                             "x":  1,
+                                                             "y":  1552,
                                                              "w":  960,
                                                              "h":  488
                                                          },
@@ -168,33 +192,9 @@
                                                              "y":  0.5
                                                          }
                                            },
-                   "base/ui/diary/atticPic.png":  {
-                                                      "frame":  {
-                                                                    "x":  1449,
-                                                                    "y":  1552,
-                                                                    "w":  505,
-                                                                    "h":  430
-                                                                },
-                                                      "rotated":  false,
-                                                      "trimmed":  false,
-                                                      "spriteSourceSize":  {
-                                                                               "x":  0,
-                                                                               "y":  0,
-                                                                               "w":  505,
-                                                                               "h":  430
-                                                                           },
-                                                      "sourceSize":  {
-                                                                         "w":  505,
-                                                                         "h":  430
-                                                                     },
-                                                      "pivot":  {
-                                                                    "x":  0.5,
-                                                                    "y":  0.5
-                                                                }
-                                                  },
                    "base/ui/diary/dForestPic.png":  {
                                                         "frame":  {
-                                                                      "x":  503,
+                                                                      "x":  1507,
                                                                       "y":  1050,
                                                                       "w":  526,
                                                                       "h":  492
@@ -242,8 +242,8 @@
                                                    },
                    "base/ui/maple.png":  {
                                              "frame":  {
-                                                           "x":  1521,
-                                                           "y":  529,
+                                                           "x":  503,
+                                                           "y":  1050,
                                                            "w":  500,
                                                            "h":  500
                                                        },
@@ -266,7 +266,7 @@
                                          },
                    "base/ui/mapleFace.png":  {
                                                  "frame":  {
-                                                               "x":  1,
+                                                               "x":  1005,
                                                                "y":  1050,
                                                                "w":  500,
                                                                "h":  500
@@ -296,7 +296,7 @@
                  "format":  "RGBA8888",
                  "size":  {
                               "w":  2036,
-                              "h":  2014
+                              "h":  2041
                           },
                  "scale":  1
              }

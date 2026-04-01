@@ -722,4 +722,30 @@ export default class HouseScreen extends DialogScreen {
 
         this.tasksBadge.visible = TaskService.hasClaimableTasks();
     }
+
+    public setTasksPanelBlockedButtonsEnabled(enabled: boolean): void {
+        this.setPanelButtonsEnabled(this.lifesPanel, enabled);
+        this.setPanelButtonsEnabled(this.gemsPanel, enabled);
+    }
+
+    public isTasksPanelBlockingUI(): boolean {
+        return !!this.tasksPanel && this.tasksPanel.opened;
+    }
+
+    private setPanelButtonsEnabled(panel: { buttons: Phaser.Button[] }, enabled: boolean): void {
+        if (!panel || !panel.buttons) {
+            return;
+        }
+
+        panel.buttons.forEach(button => {
+            if (!button) {
+                return;
+            }
+
+            button.inputEnabled = enabled;
+            if (button.input) {
+                button.input.useHandCursor = enabled;
+            }
+        });
+    }
 }

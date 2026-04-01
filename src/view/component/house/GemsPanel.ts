@@ -19,6 +19,10 @@ export default class GemsPanel extends BasePanel {
         this.attachSprite('statusPanel')
         this.attachSprite('gems')
         let plusButton = this.attachButton('plusButton', () => {
+            if (houseScreen.isTasksPanelBlockingUI()) {
+                return;
+            }
+
             if (!houseScreen.shopShown) {
                 let shopPanel = new ShopPanel(this.game, houseScreen);
                 shopPanel.show();

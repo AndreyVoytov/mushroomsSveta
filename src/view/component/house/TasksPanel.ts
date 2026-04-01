@@ -294,10 +294,14 @@ export default class TasksPanel extends ClosablePanel {
     private static SCROLLBAR_WIDTH: number = 14;
     private static SCROLLBAR_HIT_WIDTH: number = 28;
     private static SCROLLBAR_MIN_HEIGHT: number = 72;
+    private static MAIN_PROGRESS_FAST_SEGMENT_MULTIPLIER: number = 2.5;
+    private static MAIN_PROGRESS_FAST_SEGMENT_START: number = 0.75;
     private static MAIN_PROGRESS_LEFT: number = 133;
     private static MAIN_PROGRESS_WIDTH: number = 766;
     private static MAIN_PROGRESS_TRACK_LEFT: number = 182;
     private static MAIN_PROGRESS_TRACK_RIGHT: number = 720;
+    private static ORNAMENT_TARGET_WIDTH: number = 780;
+    private static ORNAMENT_CENTER_Y: number = 530;
 
     private screen: HouseScreen;
     private hooks: TasksPanelHooks;
@@ -438,7 +442,7 @@ export default class TasksPanel extends ClosablePanel {
         });
         this.resetLabel.anchor.set(0.5);
         this.resetLabel.x = this.psdCenterX(TasksPanel.MAIN_PROGRESS_LEFT, TasksPanel.MAIN_PROGRESS_WIDTH);
-        this.resetLabel.y = this.psdY(507);
+        this.resetLabel.y = this.psdY(487);
 
         this.progressBarEndReward = this.attachSprite("gems", "progressBarEndReward");
         this.progressBarEndReward.anchor.set(0.5);
@@ -450,6 +454,12 @@ export default class TasksPanel extends ClosablePanel {
         this.progressBarEndCheck.scale.set(0.34);
         this.progressBarEndCheck.x = this.psdCenterX(716, 169) + 42;
         this.progressBarEndCheck.y = this.psdCenterY(365, 143) - 28;
+
+        const ornament = this.attachSprite("tasksPanelOrnament", "ornament");
+        ornament.anchor.set(0.5);
+        ornament.x = this.psdCenterX(TasksPanel.PANEL_LEFT, TasksPanel.PANEL_WIDTH);
+        ornament.y = this.psdY(TasksPanel.ORNAMENT_CENTER_Y);
+        ornament.scale.set(TasksPanel.ORNAMENT_TARGET_WIDTH / ornament.width);
 
         for (let i = 0; i < 2; i++) {
             const rewardIcon = this.attachSprite(i == 0 ? "gems" : "actionChest", "rewardIcon" + i);
@@ -524,6 +534,7 @@ export default class TasksPanel extends ClosablePanel {
     protected onShow(): void {
         this.selectedChapterIndex = TaskService.getCurrentCampaignChapterIndex();
         this.selectTab(this.getPreferredTab(), true);
+        this.screen.setTasksPanelBlockedButtonsEnabled(false);
         document.body.removeEventListener("wheel", this.wheelListener);
         document.body.addEventListener("wheel", this.wheelListener, false);
         this.screen.hideUI(0, true);
@@ -533,6 +544,7 @@ export default class TasksPanel extends ClosablePanel {
         document.body.removeEventListener("wheel", this.wheelListener);
         this.draggingTaskList = false;
         this.draggingScrollBar = false;
+        this.game.time.events.add(350, () => this.screen.setTasksPanelBlockedButtonsEnabled(true));
         this.screen.showUI(true);
     }
 
@@ -845,7 +857,8 @@ export default class TasksPanel extends ClosablePanel {
 
     private updateProgressBar(progressRatio: number, rewards: TaskRewardView[]): void {
         const clampedRatio = Math.max(0, Math.min(1, progressRatio || 0));
-        const cropWidth = Math.round(this.progressBarFullBaseWidth * clampedRatio);
+        const visualRatio = this.getVisualMainProgressRatio(clampedRatio);
+        const cropWidth = Math.round(this.progressBarFullBaseWidth * visualRatio);
         const finalReward = rewards && rewards.length > 0 ? rewards[rewards.length - 1] : null;
         const progressTarget = finalReward ? Math.max(1, finalReward.progressTarget) : 1;
 
@@ -881,11 +894,28 @@ export default class TasksPanel extends ClosablePanel {
             icon.scale.set(this.getRewardScale(reward.icon));
             const rewardRatio = reward.progressTarget / progressTarget;
             icon.x = this.psdX(TasksPanel.MAIN_PROGRESS_TRACK_LEFT) +
-                (TasksPanel.MAIN_PROGRESS_TRACK_RIGHT - TasksPanel.MAIN_PROGRESS_TRACK_LEFT) * rewardRatio;
+                (TasksPanel.MAIN_PROGRESS_TRACK_RIGHT - TasksPanel.MAIN_PROGRESS_TRACK_LEFT) * this.getVisualMainProgressRatio(rewardRatio);
             icon.y = this.psdY(441);
             check.x = icon.x + 16;
             check.y = icon.y - 18;
         });
+    }
+
+    private getVisualMainProgressRatio(progressRatio: number): number {
+        const clampedRatio = Math.max(0, Math.min(1, progressRatio || 0));
+        const fastStart = TasksPanel.MAIN_PROGRESS_FAST_SEGMENT_START;
+        const fastMultiplier = TasksPanel.MAIN_PROGRESS_FAST_SEGMENT_MULTIPLIER;
+        const slowSegmentVisualSize = fastStart;
+        const fastSegmentVisualSize = 1 - fastStart;
+        const slowSegmentProgressSize = (fastMultiplier * slowSegmentVisualSize) /
+            (fastSegmentVisualSize + fastMultiplier * slowSegmentVisualSize);
+
+        if (clampedRatio <= slowSegmentProgressSize) {
+            return slowSegmentVisualSize * (clampedRatio / slowSegmentProgressSize);
+        }
+
+        const fastSegmentProgress = (clampedRatio - slowSegmentProgressSize) / Math.max(0.0001, 1 - slowSegmentProgressSize);
+        return slowSegmentVisualSize + fastSegmentVisualSize * fastSegmentProgress;
     }
 
     private showRewardGrants(grants: TaskRewardGrant[]): void {
