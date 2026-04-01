@@ -16,6 +16,10 @@ import UserService from "./UserService";
 
 export default class TaskService {
 
+    // Collection-based task progress is buffered for the current forest run
+    // and committed only after a successful level completion.
+    private static pendingLevelCollections: { [targetId: string]: number } = {};
+
     public static getDailyTasks(user?: User): TaskDefinition[] {
         let safeUser = user || UserService.getUser();
         this.ensureDailyState(safeUser);
@@ -157,17 +161,7 @@ export default class TaskService {
             return;
         }
 
-        let user = UserService.getUser();
-        this.ensureDailyState(user);
-        let state = this.getState(user);
-        let changed = false;
-
-        changed = this.recordTaskDelta(this.getDailyTasks(user), state.dailyProgress, state.claimedDailyTaskIds, "collect", targetId, delta) || changed;
-        changed = this.recordTaskDelta(this.getCurrentCampaignChapter(user).tasks, state.campaignProgress, state.claimedCampaignTaskIds, "collect", targetId, delta) || changed;
-
-        if (changed) {
-            user.saveTasksState();
-        }
+        this.pendingLevelCollections[targetId] = (this.pendingLevelCollections[targetId] || 0) + delta;
     }
 
     public static recordCompletedLevel(amount?: number): void {
@@ -181,12 +175,17 @@ export default class TaskService {
         let state = this.getState(user);
         let changed = false;
 
+        changed = this.commitPendingLevelCollections(user) || changed;
         changed = this.recordTaskDelta(this.getDailyTasks(user), state.dailyProgress, state.claimedDailyTaskIds, "complete_level", null, delta) || changed;
         changed = this.recordTaskDelta(this.getCurrentCampaignChapter(user).tasks, state.campaignProgress, state.claimedCampaignTaskIds, "complete_level", null, delta) || changed;
 
         if (changed) {
             user.saveTasksState();
         }
+    }
+
+    public static resetPendingLevelCollections(): void {
+        this.pendingLevelCollections = {};
     }
 
     public static claimDailyTask(taskId: string, user?: User): TaskRewardGrant {
@@ -302,6 +301,29 @@ export default class TaskService {
     private static getClaimedDailyTaskCount(user: User): number {
         let state = this.getState(user);
         return this.getDailyTasks(user).filter(task => state.claimedDailyTaskIds.indexOf(task.id) >= 0).length;
+    }
+
+    private static commitPendingLevelCollections(user: User): boolean {
+        let targetIds = Object.keys(this.pendingLevelCollections);
+        if (targetIds.length == 0) {
+            return false;
+        }
+
+        let state = this.getState(user);
+        let changed = false;
+
+        targetIds.forEach(targetId => {
+            let delta = this.pendingLevelCollections[targetId] || 0;
+            if (delta <= 0) {
+                return;
+            }
+
+            changed = this.recordTaskDelta(this.getDailyTasks(user), state.dailyProgress, state.claimedDailyTaskIds, "collect", targetId, delta) || changed;
+            changed = this.recordTaskDelta(this.getCurrentCampaignChapter(user).tasks, state.campaignProgress, state.claimedCampaignTaskIds, "collect", targetId, delta) || changed;
+        });
+
+        this.pendingLevelCollections = {};
+        return changed;
     }
 
     private static recordTaskDelta(

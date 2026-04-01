@@ -110,6 +110,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     initialize() {
 
         SoundUtils.startLevel();
+        TaskService.resetPendingLevelCollections();
 
         this.scrollToY = 0;
 
@@ -563,6 +564,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     }
 
     private goToHouse() {
+        TaskService.resetPendingLevelCollections();
         YandexGamesHelper.stopGameplay();
         let treesTime = 500;
         this.addSprite(new TreesTransitionPanel(this.game, true, treesTime, 0));
@@ -575,6 +577,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         if (this.giveUpPanel.alpha != 1) {
             return;
         }
+        TaskService.resetPendingLevelCollections();
         YandexGamesHelper.stopGameplay();
         AnalyticUtils.logLevelStart();
         console.log("REPEAT LEVEL!")
@@ -631,6 +634,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         let user =  UserService.getUser();
         user.setInterruptWinsRow(false);
         user.setWinsInRow(0);
+        TaskService.resetPendingLevelCollections();
         
         this.levelStopped = true;
         YandexGamesHelper.stopGameplay();

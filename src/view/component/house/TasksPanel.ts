@@ -53,6 +53,7 @@ class TaskCardPanel extends BasePanel {
     private claimedCheckIcon: Phaser.Sprite;
     private claimHitArea: Phaser.Sprite;
     private progressCropRect: Phaser.Rectangle;
+    private progressFullBaseWidth: number;
     private currentTaskId: string;
     private onClaim: (taskId: string) => void;
 
@@ -82,7 +83,8 @@ class TaskCardPanel extends BasePanel {
         this.progressFull.anchor.set(0);
         this.progressFull.x = TaskCardPanel.PROGRESS_LEFT;
         this.progressFull.y = TaskCardPanel.PROGRESS_FULL_TOP;
-        this.progressCropRect = new Phaser.Rectangle(0, 0, this.progressFull.width, this.progressFull.height);
+        this.progressFullBaseWidth = this.progressFull.width;
+        this.progressCropRect = new Phaser.Rectangle(0, 0, this.progressFullBaseWidth, this.progressFull.height);
 
         this.icon = this.attachSprite("mushroom", "taskIcon");
         this.icon.anchor.set(0.5);
@@ -221,7 +223,7 @@ class TaskCardPanel extends BasePanel {
 
     private updateProgressBar(progressRatio: number): void {
         const clampedRatio = Math.max(0, Math.min(1, progressRatio || 0));
-        const cropWidth = Math.round(this.progressFull.width * clampedRatio);
+        const cropWidth = Math.round(this.progressFullBaseWidth * clampedRatio);
         this.progressFull.visible = cropWidth > 0;
         if (!this.progressFull.visible) {
             return;
@@ -545,6 +547,7 @@ export default class TasksPanel extends ClosablePanel {
         document.body.removeEventListener("wheel", this.wheelListener);
         this.draggingTaskList = false;
         this.draggingScrollBar = false;
+        this.resetTaskScroll();
         this.game.time.events.add(350, () => this.screen.setTasksPanelBlockedButtonsEnabled(true));
         this.screen.showUI(true);
     }
@@ -564,9 +567,14 @@ export default class TasksPanel extends ClosablePanel {
     }
 
     private selectTab(tab: TasksTab, skipSectionRewards?: boolean): void {
+        const tabChanged = this.selectedTab != tab;
         this.selectedTab = tab;
         if (tab == "campaign") {
             this.selectedChapterIndex = Math.min(this.selectedChapterIndex, TaskService.getCurrentCampaignChapterIndex());
+        }
+
+        if (tabChanged) {
+            this.resetTaskScroll();
         }
 
         if (skipSectionRewards) {
@@ -576,6 +584,15 @@ export default class TasksPanel extends ClosablePanel {
         }
 
         this.tryClaimSectionRewards();
+    }
+
+    private resetTaskScroll(): void {
+        this.draggingTaskList = false;
+        this.draggingScrollBar = false;
+        this.dragStartPointerY = 0;
+        this.dragStartScrollOffset = 0;
+        this.scrollBarDragOffsetY = 0;
+        this.setTaskScrollOffset(0);
     }
 
     private onClaimTask(taskId: string): void {
