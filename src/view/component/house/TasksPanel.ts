@@ -266,9 +266,16 @@ export default class TasksPanel extends ClosablePanel {
     private static TASK_CARD_GAP: number = 12;
     private static VISIBLE_TASK_CARDS: number = 3.85;
     private static SCROLL_CONTENT_TOP_PADDING: number = 5;
-    private static TAB_FONT_SIZE: number = 22;
-    private static TAB_SELECTED_TEXT_OFFSET_Y: number = -2;
-    private static TAB_INACTIVE_TEXT_OFFSET_Y: number = 0;
+    private static TAB_FONT_SIZE: number = 33;
+    private static TAB_TEXT_OFFSET_Y: number = 4;
+    private static TAB_TOP: number = 237;
+    private static TAB_HIT_HEIGHT: number = 87;
+    private static TAB_SLOT_WIDTH: number = 383;
+    private static TAB_ACTIVE_WIDTH: number = 364;
+    private static TAB_LEFT_LEFT: number = 149;
+    private static TAB_RIGHT_LEFT: number = 510;
+    private static TAB_RIGHT_ACTIVE_LEFT: number = TasksPanel.TAB_RIGHT_LEFT + TasksPanel.TAB_SLOT_WIDTH - TasksPanel.TAB_ACTIVE_WIDTH;
+    private static TAB_LABEL_WRAP_WIDTH: number = 320;
     private static PANEL_LEFT: number = 64;
     private static PANEL_TOP: number = 176;
     private static PANEL_WIDTH: number = 897;
@@ -297,6 +304,8 @@ export default class TasksPanel extends ClosablePanel {
     private panel: Phaser.Sprite;
     private titleLabel: Label;
     private closeButton: Phaser.Button;
+    private dailyTabSprite: Phaser.Sprite;
+    private campaignTabSprite: Phaser.Sprite;
     private dailyTabButton: Phaser.Button;
     private campaignTabButton: Phaser.Button;
     private dailyTabLabel: Label;
@@ -376,19 +385,29 @@ export default class TasksPanel extends ClosablePanel {
         this.titleLabel.x = 0;
         this.titleLabel.y = this.psdY(182 - 15);
 
-        this.dailyTabButton = this.attachButton("tasksPanelTabActive", () => this.selectTab("daily"), "dailyTab");
+        this.dailyTabSprite = this.attachSprite("tasksPanelTabActive", "dailyTabSprite");
+        this.dailyTabSprite.anchor.set(0);
+        this.dailyTabButton = this.attachButton("blank", () => this.selectTab("daily"), "dailyTab");
         this.dailyTabButton.anchor.set(0);
+        this.dailyTabButton.alpha = 0.001;
+        this.dailyTabButton.width = TasksPanel.TAB_SLOT_WIDTH;
+        this.dailyTabButton.height = TasksPanel.TAB_HIT_HEIGHT;
         this.dailyTabLabel = this.attachText("dailyTabLabel", LocalizationService.get("ui.tasks.daily", "Ежедневные"), {
             font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
             fill: "#82533a",
             align: "center",
             wordWrap: true,
-            wordWrapWidth: 280
+            wordWrapWidth: TasksPanel.TAB_LABEL_WRAP_WIDTH
         });
         this.dailyTabLabel.anchor.set(0.5);
 
-        this.campaignTabButton = this.attachButton("tasksPanelTabInactive", () => this.selectTab("campaign"), "campaignTab");
+        this.campaignTabSprite = this.attachSprite("tasksPanelTabInactive", "campaignTabSprite");
+        this.campaignTabSprite.anchor.set(0);
+        this.campaignTabButton = this.attachButton("blank", () => this.selectTab("campaign"), "campaignTab");
         this.campaignTabButton.anchor.set(0);
+        this.campaignTabButton.alpha = 0.001;
+        this.campaignTabButton.width = TasksPanel.TAB_SLOT_WIDTH;
+        this.campaignTabButton.height = TasksPanel.TAB_HIT_HEIGHT;
         this.campaignTabLabel = this.attachText("campaignTabLabel", LocalizationService.get("ui.tasks.campaign", "Кампания"), {
             font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
             fill: "#f5ebdb",
@@ -579,28 +598,40 @@ export default class TasksPanel extends ClosablePanel {
     }
 
     private refreshTabButtons(): void {
-        this.layoutTab(this.dailyTabButton, this.dailyTabLabel, "left", this.selectedTab == "daily");
-        this.layoutTab(this.campaignTabButton, this.campaignTabLabel, "right", this.selectedTab == "campaign");
+        this.layoutTab(this.dailyTabSprite, this.dailyTabButton, this.dailyTabLabel, "left", this.selectedTab == "daily");
+        this.layoutTab(this.campaignTabSprite, this.campaignTabButton, this.campaignTabLabel, "right", this.selectedTab == "campaign");
     }
 
-    private layoutTab(button: Phaser.Button, label: Label, side: "left" | "right", selected: boolean): void {
+    private layoutTab(tabSprite: Phaser.Sprite, button: Phaser.Button, label: Label, side: "left" | "right", selected: boolean): void {
         const key = selected ? "tasksPanelTabActive" : "tasksPanelTabInactive";
-        const left = side == "left" ? (selected ? 149 : 131) : (selected ? 511 : 510);
-        SpriteUtils.loadTextureForButton(button, key);
+        const spriteLeft = side == "left"
+            ? TasksPanel.TAB_LEFT_LEFT
+            : (selected ? TasksPanel.TAB_RIGHT_ACTIVE_LEFT : TasksPanel.TAB_RIGHT_LEFT);
+        const buttonLeft = side == "left" ? TasksPanel.TAB_LEFT_LEFT : TasksPanel.TAB_RIGHT_LEFT;
+
+        this.loadTabTexture(tabSprite, key);
+        tabSprite.anchor.set(0);
+        tabSprite.x = this.psdX(spriteLeft);
+        tabSprite.y = this.psdY(TasksPanel.TAB_TOP);
+
         button.anchor.set(0);
-        button.x = this.psdX(left);
-        button.y = this.psdY(237);
+        button.x = this.psdX(buttonLeft);
+        button.y = this.psdY(TasksPanel.TAB_TOP);
 
         label.setStyle({
             font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
             fill: selected ? "#81543a" : "#f7ead5",
             align: "center",
             wordWrap: true,
-            wordWrapWidth: button.width - 54
+            wordWrapWidth: TasksPanel.TAB_LABEL_WRAP_WIDTH
         });
         label.anchor.set(0.5);
-        label.x = button.x + button.width / 2;
-        label.y = button.y + button.height / 2 + (selected ? TasksPanel.TAB_SELECTED_TEXT_OFFSET_Y : TasksPanel.TAB_INACTIVE_TEXT_OFFSET_Y);
+        label.x = this.psdX(buttonLeft + TasksPanel.TAB_SLOT_WIDTH / 2);
+        label.y = this.psdY(TasksPanel.TAB_TOP + TasksPanel.TAB_HIT_HEIGHT / 2 + TasksPanel.TAB_TEXT_OFFSET_Y);
+    }
+
+    private loadTabTexture(sprite: Phaser.Sprite, texture: string): void {
+        SpriteUtils.loadTexture(sprite, texture);
     }
 
     private refreshProgressBlock(): void {
