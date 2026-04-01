@@ -271,10 +271,10 @@ export default class TasksPanel extends ClosablePanel {
     private static TAB_TOP: number = 237;
     private static TAB_HIT_HEIGHT: number = 87;
     private static TAB_SLOT_WIDTH: number = 383;
-    private static TAB_ACTIVE_WIDTH: number = 364;
-    private static TAB_LEFT_LEFT: number = 149;
-    private static TAB_RIGHT_LEFT: number = 510;
-    private static TAB_RIGHT_ACTIVE_LEFT: number = TasksPanel.TAB_RIGHT_LEFT + TasksPanel.TAB_SLOT_WIDTH - TasksPanel.TAB_ACTIVE_WIDTH;
+    private static TAB_WIDTH: number = 346;
+    private static TAB_INNER_SHIFT: number = 10;
+    private static TAB_LEFT_SLOT_LEFT: number = 131 + TasksPanel.TAB_INNER_SHIFT;
+    private static TAB_RIGHT_SLOT_LEFT: number = 510 - TasksPanel.TAB_INNER_SHIFT;
     private static TAB_LABEL_WRAP_WIDTH: number = 320;
     private static PANEL_LEFT: number = 64;
     private static PANEL_TOP: number = 176;
@@ -317,6 +317,7 @@ export default class TasksPanel extends ClosablePanel {
     private progressBarEndReward: Phaser.Sprite;
     private progressBarEndCheck: Phaser.Sprite;
     private progressBarCropRect: Phaser.Rectangle;
+    private progressBarFullBaseWidth: number;
     private rewardIcons: Phaser.Sprite[] = [];
     private rewardChecks: Phaser.Sprite[] = [];
     private taskCards: TaskCardPanel[] = [];
@@ -366,13 +367,13 @@ export default class TasksPanel extends ClosablePanel {
         this.createFixedSprite("tasksPanelProgressEmpty", "progressBarEmpty", 133, 354);
         this.progressBarFull = this.createFixedSprite("tasksPanelProgressFull", "progressBarFull", 133, 354);
         this.progressBarChest = this.createFixedSprite("tasksPanelChest", "progressBarChest", 716, 365);
-        this.progressBarCropRect = new Phaser.Rectangle(0, 0, this.progressBarFull.width, this.progressBarFull.height);
+        this.progressBarFullBaseWidth = this.progressBarFull.width;
+        this.progressBarCropRect = new Phaser.Rectangle(0, 0, this.progressBarFullBaseWidth, this.progressBarFull.height);
 
-        this.closeButton = this.attachButton("closeButtonViolet", () => this.close(), "closeButton");
-        this.closeButton.anchor.set(0);
-        this.closeButton.x = this.psdX(874);
-        this.closeButton.y = this.psdY(194);
-        this.closeButton.scale.set(0.95);
+        this.closeButton = this.attachButton("tasksPanelClose", () => this.close(), "closeButton");
+        this.closeButton.anchor.set(0.5);
+        this.closeButton.x = this.psdX(898);
+        this.closeButton.y = this.psdY(208);
 
         this.titleLabel = this.attachText("title", LocalizationService.get("ui.tasks.title", "Задания"), {
             font: "46px Bookman Old Style",
@@ -604,10 +605,8 @@ export default class TasksPanel extends ClosablePanel {
 
     private layoutTab(tabSprite: Phaser.Sprite, button: Phaser.Button, label: Label, side: "left" | "right", selected: boolean): void {
         const key = selected ? "tasksPanelTabActive" : "tasksPanelTabInactive";
-        const spriteLeft = side == "left"
-            ? TasksPanel.TAB_LEFT_LEFT
-            : (selected ? TasksPanel.TAB_RIGHT_ACTIVE_LEFT : TasksPanel.TAB_RIGHT_LEFT);
-        const buttonLeft = side == "left" ? TasksPanel.TAB_LEFT_LEFT : TasksPanel.TAB_RIGHT_LEFT;
+        const buttonLeft = side == "left" ? TasksPanel.TAB_LEFT_SLOT_LEFT : TasksPanel.TAB_RIGHT_SLOT_LEFT;
+        const spriteLeft = buttonLeft + Math.round((TasksPanel.TAB_SLOT_WIDTH - TasksPanel.TAB_WIDTH) / 2);
 
         this.loadTabTexture(tabSprite, key);
         tabSprite.anchor.set(0);
@@ -846,7 +845,7 @@ export default class TasksPanel extends ClosablePanel {
 
     private updateProgressBar(progressRatio: number, rewards: TaskRewardView[]): void {
         const clampedRatio = Math.max(0, Math.min(1, progressRatio || 0));
-        const cropWidth = Math.round(this.progressBarFull.width * clampedRatio);
+        const cropWidth = Math.round(this.progressBarFullBaseWidth * clampedRatio);
         const finalReward = rewards && rewards.length > 0 ? rewards[rewards.length - 1] : null;
         const progressTarget = finalReward ? Math.max(1, finalReward.progressTarget) : 1;
 
