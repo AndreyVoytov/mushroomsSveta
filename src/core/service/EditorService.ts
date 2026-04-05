@@ -10,14 +10,17 @@ import ReplicaType from '../model/replica/ReplicaType';
 export default class EditorService {
 
     private static LS_EDITOR_LEVEL_ID = "editorLevelName";
+    private static LS_EDITOR_LEVEL_BRANCH_ID = "editorLevelBranch";
     private static LS_EDITOR_REPLICA_ID = "editorreplicaName";
 
     //*************** Editor dialogs **********************
 
     public static showLevelEditorDialog(game: Phaser.Game) {
-        let levelName = localStorage.getItem(EditorService.LS_EDITOR_LEVEL_ID);
+        let currentLevel = EditorService.getCurrentLevel();
+        let levelName = currentLevel ? currentLevel.id : localStorage.getItem(EditorService.LS_EDITOR_LEVEL_ID);
+        let currentForestDao = EditorService.getCurrentForestDao();
 
-        let forestIds = ForestDao.getEntity().getAll().filter(f => f?true: false).map(f => f.id);
+        let forestIds = currentForestDao.getAll().filter(f => f?true: false).map(f => f.id);
         this.showDialog(game, "Создать/открыть", "Введите id уровня", "Создать/открыть", "уровень", "уровни", forestIds, levelName || "", true,  () => {
             let value = (<HTMLInputElement>document.getElementById("input")).value;
             if (value) {
@@ -29,7 +32,7 @@ export default class EditorService {
         }, (game:Phaser.Game, id:string)=>{
             EditorService.switchToLevel(game, id);
         },  (id:string)=>{
-            ForestDao.getEntity().delete(id);
+            currentForestDao.delete(id);
             EditorService.hideDialog();
             EditorService.showLevelEditorDialog(game);
         },  (id:string)=>{
@@ -43,9 +46,9 @@ export default class EditorService {
                 }
             } )
         }, ()=>{
-            ForestDao.getEntity().reset();
+            currentForestDao.reset();
         }, (file:string)=>{
-            ForestDao.getEntity().import(file);
+            currentForestDao.import(file);
         }, (game:Phaser.Game) => {
             EditorService.showLevelEditorDialog(game);
         });
@@ -228,7 +231,7 @@ export default class EditorService {
     //******************* Editor actions ************************
 
     public static saveLevel(forestType: ForestType) {
-        ForestDao.getEntity().update(forestType);
+        EditorService.getCurrentForestDao().update(forestType);
     }
 
     public static saveReplica(replica: ReplicaType) {
@@ -236,18 +239,19 @@ export default class EditorService {
     }
 
     public static renameLevel(game: Phaser.Game, oldName: string, newName: string, loadLevelOnFinish?: boolean) {
-        let existingForest = ForestDao.getEntity().getById(newName);
+        let currentForestDao = EditorService.getCurrentForestDao();
+        let existingForest = currentForestDao.getById(newName);
 
         if (existingForest) {
             alert("Уровень с id='" + newName + "' уже существует!");
             return;
         }
 
-        let forestToRename = ForestDao.getEntity().getById(oldName);
+        let forestToRename = currentForestDao.getById(oldName);
         forestToRename.id = newName;
 
-        ForestDao.getEntity().delete(oldName);
-        ForestDao.getEntity().update(forestToRename);
+        currentForestDao.delete(oldName);
+        currentForestDao.update(forestToRename);
 
         localStorage.setItem(EditorService.LS_EDITOR_LEVEL_ID, newName);
 
@@ -281,17 +285,40 @@ export default class EditorService {
         }
     }
 
-    public static switchToLevel(game: Phaser.Game, levelName: string): void {
+    public static switchToLevel(game: Phaser.Game, levelName: string, branchId?: string): void {
         document.getElementById("dialog").style.display = "none";
+        localStorage.setItem(EditorService.LS_EDITOR_LEVEL_BRANCH_ID, branchId || EditorService.getCurrentLevelBranchId());
         localStorage.setItem(EditorService.LS_EDITOR_LEVEL_ID, levelName);
 
-        let level = ForestDao.getEntity().getById(levelName);
+        let currentForestDao = EditorService.getCurrentForestDao();
+        let level = currentForestDao.getById(levelName);
         if (!level) {
             level = JSON.parse(JSON.stringify(this.editorLevel));
             level.id = levelName;
-            ForestDao.getEntity().update(level);
+            currentForestDao.update(level);
         }
         (<Game>game).startScene(EditorScreen, true, false);
+    }
+
+    public static switchToLevelBranch(game: Phaser.Game, branchId: string, preferredLevelId?: string): void {
+        if (!ForestDao.hasBranch(branchId)) {
+            return;
+        }
+
+        localStorage.setItem(EditorService.LS_EDITOR_LEVEL_BRANCH_ID, branchId);
+        let currentForestDao = EditorService.getCurrentForestDao();
+        let nextLevelId = preferredLevelId;
+
+        if (!nextLevelId || !currentForestDao.getById(nextLevelId)) {
+            nextLevelId = localStorage.getItem(EditorService.LS_EDITOR_LEVEL_ID);
+        }
+
+        if (!nextLevelId || !currentForestDao.getById(nextLevelId)) {
+            let firstLevel = currentForestDao.getAll().filter(f => f ? true : false).shift();
+            nextLevelId = firstLevel ? firstLevel.id : EditorService.editorLevel.id;
+        }
+
+        EditorService.switchToLevel(game, nextLevelId, branchId);
     }
 
     public static switchToReplica(game: Phaser.Game, replicaName: string): void {
@@ -310,8 +337,8 @@ export default class EditorService {
     //не использовать символы #, & 
     public static downloadLevels(): void {
         var element = document.createElement('a');
-        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + JSON.stringify(ForestDao.getEntity().getAll(), null, "\t"));
-        element.setAttribute('download', "levels");
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + JSON.stringify(EditorService.getCurrentLevels(), null, "\t"));
+        element.setAttribute('download', "levels_" + EditorService.getCurrentLevelBranchId());
         element.style.display = 'none';
         document.body.appendChild(element);
         element.click();
@@ -331,12 +358,41 @@ export default class EditorService {
 
     public static getCurrentLevel(): ForestType {
         let levelName = localStorage.getItem(EditorService.LS_EDITOR_LEVEL_ID);
+        let currentForestDao = EditorService.getCurrentForestDao();
 
         if (levelName) {
-            return ForestDao.getEntity().getById(levelName);
+            let level = currentForestDao.getById(levelName);
+            if (level) {
+                return level;
+            }
         }
 
-        return null;
+        let firstLevel = currentForestDao.getAll().filter(f => f ? true : false).shift();
+        if (firstLevel) {
+            localStorage.setItem(EditorService.LS_EDITOR_LEVEL_ID, firstLevel.id);
+            return firstLevel;
+        }
+
+        return JSON.parse(JSON.stringify(EditorService.editorLevel));
+    }
+
+    public static getCurrentLevels(): ForestType[] {
+        return EditorService.getCurrentForestDao().getAll();
+    }
+
+    public static getCurrentLevelBranchId(): string {
+        let branchId = localStorage.getItem(EditorService.LS_EDITOR_LEVEL_BRANCH_ID);
+        if (ForestDao.hasBranch(branchId)) {
+            return branchId;
+        }
+
+        let defaultBranchId = ForestDao.getDefaultBranchId();
+        localStorage.setItem(EditorService.LS_EDITOR_LEVEL_BRANCH_ID, defaultBranchId);
+        return defaultBranchId;
+    }
+
+    public static getLevelBranchIds(): string[] {
+        return ForestDao.getBranchIds();
     }
 
     public static getCurrentReplica(): ReplicaType {
@@ -374,6 +430,10 @@ export default class EditorService {
         "bonuses": 3,
         "steps": 10,
         "waterCenter": null
+    }
+
+    private static getCurrentForestDao(): ForestDao {
+        return ForestDao.getEntity(EditorService.getCurrentLevelBranchId());
     }
 }
 

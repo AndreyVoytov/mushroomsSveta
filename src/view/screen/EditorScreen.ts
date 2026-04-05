@@ -94,6 +94,7 @@ export default class EditorScreen extends BaseScreen {
 
     private topPanel;
     private bottomPanel : Phaser.Sprite;
+    private branchPanel: EditorValuePanel;
     private namePanel: EditorValuePanel;
     private iconPanel: EditorValuePanel;
     private iconPanelSprite: Phaser.Sprite;
@@ -151,10 +152,22 @@ export default class EditorScreen extends BaseScreen {
         levelName.fixedToCamera = true;
         this.addSprite(levelName)
 
+        this.branchPanel = new EditorValuePanel(this.game, "branch", () => EditorService.getCurrentLevelBranchId(), () => {
+            EditorService.showSimpleList("Choose level branch", EditorService.getLevelBranchIds(), (branchId:string) => {
+                EditorService.switchToLevelBranch(this.game, branchId, this.forestType.id);
+            });
+        });
+        this.branchPanel.x = 255;
+        this.branchPanel.y = 130;
+        this.branchPanel.scale.set(0.58);
+        this.branchPanel.fixedToCamera = true;
+        this.addPanel(this.branchPanel);
+
         let previousLevelButton = SpriteUtils.createButton(this.game,  40, 65, "arrowEditor", () => {
-            let currentIndex = ForestDao.getAllForests().map((f,i) => f.id == this.forestType.id? i : -1).filter(i => i>=0).shift();
+            let forests = EditorService.getCurrentLevels();
+            let currentIndex = forests.map((f,i) => f.id == this.forestType.id? i : -1).filter(i => i>=0).shift();
             if(currentIndex - 1 >= 0){
-                EditorService.switchToLevel(this.game, ForestDao.getAllForests()[currentIndex - 1].id);
+                EditorService.switchToLevel(this.game, forests[currentIndex - 1].id);
             }
         });
         previousLevelButton.scale.set(-0.6, 0.6);
@@ -162,9 +175,10 @@ export default class EditorScreen extends BaseScreen {
         this.addButton(previousLevelButton);
 
         let nextLevelButton = SpriteUtils.createButton(this.game, 10 + 130, 65, "arrowEditor", () => {
-            let currentIndex = ForestDao.getAllForests().map((f,i) => f.id == this.forestType.id? i : -1).filter(i => i>=0).shift();
-            if(ForestDao.getAllForests().length > currentIndex + 1){
-                EditorService.switchToLevel(this.game, ForestDao.getAllForests()[currentIndex + 1].id);
+            let forests = EditorService.getCurrentLevels();
+            let currentIndex = forests.map((f,i) => f.id == this.forestType.id? i : -1).filter(i => i>=0).shift();
+            if(forests.length > currentIndex + 1){
+                EditorService.switchToLevel(this.game, forests[currentIndex + 1].id);
             }
         });
         nextLevelButton.fixedToCamera = true;
@@ -780,7 +794,7 @@ export default class EditorScreen extends BaseScreen {
         // }
         EditorScreen.SAVE_RESULTS = true;
         EditorScreen.TEST_WITH_100_STEPS = false;
-        EditorScreen.LEVELS_TO_TEST = ForestDao.getAllForests().length;
+        EditorScreen.LEVELS_TO_TEST = EditorService.getCurrentLevels().length;
 
         this.startScreen(ForestScreen, true, false)
     }
@@ -793,8 +807,10 @@ export default class EditorScreen extends BaseScreen {
     }
     public static updateTestStatisticsRecord(record: TestLevelRecord):void{
         let statistics = this.getStatistics();
-        let toReplace = statistics.find(r => r.id == record.id);
+        record.branchId = record.branchId || EditorService.getCurrentLevelBranchId();
+        let toReplace = statistics.find(r => r.id == record.id && (r.branchId || ForestDao.getDefaultBranchId()) == record.branchId);
         if(toReplace){
+            toReplace.branchId = record.branchId;
             toReplace.wins = record.wins;
             toReplace.looses = record.looses;
             toReplace.stepsLeft = record.stepsLeft;
@@ -815,19 +831,20 @@ export default class EditorScreen extends BaseScreen {
         this.resetTestParams();
         EditorScreen.resetTestStatistics();
         // localStorage.setItem("testedLevelLast", "");
-        EditorScreen.test_levelId = ForestDao.getAllForests()[0].id;
+        let forests = EditorService.getCurrentLevels();
+        EditorScreen.test_levelId = forests[0].id;
         EditorScreen.TEST_WITH_100_STEPS = false;
         EditorScreen.SAVE_RESULTS = true;
-        EditorScreen.LEVELS_TO_TEST = ForestDao.getAllForests().length;
+        EditorScreen.LEVELS_TO_TEST = forests.length;
 
-        ForestUtils.forestTypeToPLay = ForestDao.getAllForests()[0];
+        ForestUtils.forestTypeToPLay = forests[0];
         this.startScreen(ForestScreen, true, false)
     }
 
     private static printTestedLevels():void{
         let data = "";
         this.getStatistics().forEach(r => {
-            data += r.id + "|" + r.wins + "|" + r.looses + "|" + r.stepsLeft + "|" + r.aimsLeft + "|" + r.hash + "\n";
+            data += (r.branchId || ForestDao.getDefaultBranchId()) + "|" + r.id + "|" + r.wins + "|" + r.looses + "|" + r.stepsLeft + "|" + r.aimsLeft + "|" + r.hash + "\n";
         })
         console.log(data);
         var element = document.createElement('a');
@@ -842,11 +859,12 @@ export default class EditorScreen extends BaseScreen {
 
     private testForBugs(fromStart?:boolean):void{
         this.resetTestParams();
-        EditorScreen.test_levelId =  fromStart? ForestDao.getAllForests()[0].id : this.forestType.id;
+        let forests = EditorService.getCurrentLevels();
+        EditorScreen.test_levelId =  fromStart? forests[0].id : this.forestType.id;
         EditorScreen.TEST_WITH_100_STEPS = true;
-        EditorScreen.LEVELS_TO_TEST = ForestDao.getAllForests().length;
+        EditorScreen.LEVELS_TO_TEST = forests.length;
 
-        ForestUtils.forestTypeToPLay = fromStart? ForestDao.getAllForests()[0] : this.forestType;
+        ForestUtils.forestTypeToPLay = fromStart? forests[0] : this.forestType;
         this.startScreen(ForestScreen, true, false)
     }
 
@@ -866,13 +884,15 @@ export default class EditorScreen extends BaseScreen {
         EditorScreen.test_aimsOnLoose =0;
         EditorScreen.test_stepsOnWin =0;
         EditorScreen.test_withMaxSteps = false;
+        let forests = EditorService.getCurrentLevels();
+        let currentBranchId = EditorService.getCurrentLevelBranchId();
 
         if(EditorScreen.TEST_WITH_100_STEPS){
-            let index = ForestDao.getAllForests().findIndex(f => f.id == EditorScreen.test_levelId);
+            let index = forests.findIndex(f => f.id == EditorScreen.test_levelId);
         // console.log("LEVEL ID 1: " + EditorScreen.test_levelId)
-            if(ForestDao.getAllForests().length > index+1){
-                EditorScreen.test_levelId = ForestDao.getAllForests()[index+1].id;
-                ForestUtils.forestTypeToPLay = ForestDao.getAllForests()[index+1];
+            if(forests.length > index+1){
+                EditorScreen.test_levelId = forests[index+1].id;
+                ForestUtils.forestTypeToPLay = forests[index+1];
                 EditorScreen.LEVELS_TO_TEST--;
                 // console.log("LEVEL ID 2: " + EditorScreen.test_levelId)
             } else {
@@ -887,8 +907,8 @@ export default class EditorScreen extends BaseScreen {
             console.log("RESET1")
             let statistics = EditorScreen.getStatistics();
             let noLevels = true;
-            for(let f of ForestDao.getAllForests()){
-                if(!statistics.find(s => s.id == f.id && s.hash == Utils.hashCode(JSON.stringify(f)))){ //пересчитываем только обновленные уровни
+            for(let f of forests){
+                if(!statistics.find(s => s.id == f.id && (s.branchId || ForestDao.getDefaultBranchId()) == currentBranchId && s.hash == Utils.hashCode(JSON.stringify(f)))){ //пересчитываем только обновленные уровни
                     // console.log("RESET f.id: " + f.id)
                     // console.log("RESET " + JSON.stringify(statistics))
                     EditorScreen.test_levelId = f.id;
@@ -898,7 +918,7 @@ export default class EditorScreen extends BaseScreen {
                     break;
                 }
 
-                if(f.maxSteps && f.steps != f.maxSteps && !statistics.find(s => s.id == f.id+"_h" && s.hash == Utils.hashCode(JSON.stringify(f)))){
+                if(f.maxSteps && f.steps != f.maxSteps && !statistics.find(s => s.id == f.id+"_h" && (s.branchId || ForestDao.getDefaultBranchId()) == currentBranchId && s.hash == Utils.hashCode(JSON.stringify(f)))){
                     // console.log("RESET f.id h: " + f.id)
                     EditorScreen.test_levelId = f.id;
                     ForestUtils.forestTypeToPLay = f;
