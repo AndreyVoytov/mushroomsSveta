@@ -3,6 +3,7 @@ import BoosterType from "../enum/BoosterType";
 export type TaskKind = "spend_energy" | "collect" | "complete_level";
 
 export type TaskRewardConfig = {
+    energy?: number;
     gems?: number;
     boosters?: { type: BoosterType; count: number }[];
 };

@@ -272,7 +272,7 @@ export default class HouseScreen extends DialogScreen {
 
         let tasksIcon = SpriteUtils.createSprite(this.game, 0, 0, 'tasks');
         tasksIcon.anchor.set(0.5);
-        tasksIcon.scale.set(0.86);
+        tasksIcon.scale.set(0.86 * 0.95);
         this.tasksButton.addChild(tasksIcon);
 
         this.tasksBadge = new Phaser.Graphics(this.game, 34, -36);

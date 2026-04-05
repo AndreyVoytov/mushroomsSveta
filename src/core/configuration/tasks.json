@@ -92,9 +92,9 @@
     {
       "id": "daily_progress_4",
       "claimedAt": 4,
-      "title": "Награда за 4 задания",
-      "icon": "gems",
-      "reward": { "gems": 10 }
+      "title": "Сундучок энергии",
+      "icon": "energy_chest",
+      "reward": { "energy": 50 }
     },
     {
       "id": "daily_progress_5",

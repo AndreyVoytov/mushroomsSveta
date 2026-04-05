@@ -307,6 +307,8 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('tasksPanelListBottom', 'assets/base/task/taks_list_bg_bottom.png');
         this.loadImage('tasksPanelProgressEmpty', 'assets/base/task/progress_empty.png');
         this.loadImage('tasksPanelProgressFull', 'assets/base/task/progress_full.png');
+        this.loadImage('energy_chest', 'assets/base/task/energy_chest.png');
+        this.load.image('energy_chest', 'assets/base/task/energy_chest.png');
         this.loadImage('tasksPanelChest', 'assets/base/task/chest.png');
         this.loadImage('tasksPanelChest2', 'assets/base/task/chest2.png');
         this.loadImage('tasksPanelChest3', 'assets/base/task/chest3.png');

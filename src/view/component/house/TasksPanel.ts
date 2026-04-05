@@ -465,7 +465,7 @@ export default class TasksPanel extends ClosablePanel {
         ornament.scale.set(TasksPanel.ORNAMENT_TARGET_WIDTH / ornament.width);
 
         for (let i = 0; i < 2; i++) {
-            const rewardIcon = this.attachSprite(i == 0 ? "gems" : "actionChest", "rewardIcon" + i);
+            const rewardIcon = this.attachSprite(i == 0 ? "energy_chest" : "actionChest", "rewardIcon" + i);
             rewardIcon.anchor.set(0.5);
             this.rewardIcons.push(rewardIcon);
 
@@ -915,13 +915,23 @@ export default class TasksPanel extends ClosablePanel {
 
             SpriteUtils.loadTexture(icon, reward.icon);
             icon.scale.set(this.getRewardScale(reward.icon));
-            const rewardRatio = reward.progressTarget / progressTarget;
-            icon.x = this.psdX(TasksPanel.MAIN_PROGRESS_TRACK_LEFT) +
-                (TasksPanel.MAIN_PROGRESS_TRACK_RIGHT - TasksPanel.MAIN_PROGRESS_TRACK_LEFT) * this.getVisualMainProgressRatio(rewardRatio);
+            icon.x = this.getProgressRewardMarkerX(reward, index, progressTarget);
             icon.y = this.psdY(441);
             check.x = icon.x + 16;
             check.y = icon.y - 18;
         });
+    }
+
+    private getProgressRewardMarkerX(reward: TaskRewardView, index: number, progressTarget: number): number {
+        if (this.selectedTab == "daily" && index == 0 && reward.icon == "energy_chest") {
+            const trackStartX = this.psdX(TasksPanel.MAIN_PROGRESS_TRACK_LEFT);
+            const finalChestCenterX = this.progressBarChest.x + this.progressBarChest.width / 2;
+            return trackStartX + (finalChestCenterX - trackStartX) * 0.5;
+        }
+
+        const rewardRatio = reward.progressTarget / progressTarget;
+        return this.psdX(TasksPanel.MAIN_PROGRESS_TRACK_LEFT) +
+            (TasksPanel.MAIN_PROGRESS_TRACK_RIGHT - TasksPanel.MAIN_PROGRESS_TRACK_LEFT) * this.getVisualMainProgressRatio(rewardRatio);
     }
 
     private getVisualMainProgressRatio(progressRatio: number): number {
@@ -1008,6 +1018,7 @@ export default class TasksPanel extends ClosablePanel {
         switch (icon) {
             case "gems": return 0.38;
             case "actionChest": return 0.44;
+            case "energy_chest": return 0.13;
             default: return 0.52;
         }
     }

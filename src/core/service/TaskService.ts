@@ -389,6 +389,10 @@ export default class TaskService {
             return;
         }
 
+        if (reward.energy) {
+            user.addEnergy(reward.energy);
+        }
+
         if (reward.gems) {
             user.setSupermoney(user.getSupermoney() + reward.gems);
         }
@@ -403,6 +407,11 @@ export default class TaskService {
     private static toRewardGrant(title: string, reward: TaskRewardConfig, includeTaskGemsPrefix: boolean): TaskRewardGrant {
         let texts: string[] = [];
         let icons: string[] = [];
+
+        if (reward && reward.energy) {
+            texts.push("+" + reward.energy);
+            icons.push("lightning|0.55");
+        }
 
         if (reward && reward.gems) {
             texts.push("+" + reward.gems);
