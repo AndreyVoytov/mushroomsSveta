@@ -48,6 +48,7 @@ const manualKeys = [
     'ui.allLevelsComplete.title',
     'ui.noPlaceForBeans',
     'ui.plusTwoMoves',
+    'ui.minusOneEnergy',
     'ui.clearIvyHint',
     'ui.event.lukoshko.name',
     'ui.event.lukoshko.desc',

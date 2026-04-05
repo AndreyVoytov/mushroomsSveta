@@ -784,7 +784,7 @@ export default class ForestScreen extends BaseForestScreen {
     }
 
     private getBeeY(cell: ForestCell): number {
-        return cell.state.sprite.y - 8;
+        return cell.state.sprite.y + 2;
     }
 
     private prepareBeeSprite(cell: ForestCell): void {
@@ -794,10 +794,12 @@ export default class ForestScreen extends BaseForestScreen {
 
         const bee = cell.state.cover.bee;
         if (bee.x == 0) {
-            bee.x += cell.state.sprite.x;
-            bee.y += cell.state.sprite.y;
+            bee.x = cell.state.sprite.x;
+            bee.y = this.getBeeY(cell);
             this.game.tweens.removeFrom(bee);
             this.addSprite(bee);
+            bee.width = cell.state.cover.openableCover.width * 0.95;
+            bee.height = cell.state.cover.openableCover.height * 0.95;
             if(AdminService.cacheComplexImages()) cell.state.cover.cacheAsBitmap = false;
             if(AdminService.cacheComplexImages()) {
                 cell.state.cover.cacheAsBitmap = true;
@@ -815,6 +817,38 @@ export default class ForestScreen extends BaseForestScreen {
         this.cellsProvider.getCells().filter(c => c.state.cover.bee).forEach(c => this.prepareBeeSprite(c));
     }
 
+    private getBeeCellsToGo(fromCell: ForestCell): ForestCell[] {
+        if (!fromCell) {
+            return [];
+        }
+
+        return this.cellsProvider.getCells().filter(cc => this.cellsProvider.areAdjucentAndNoSeparators(fromCell, cc) &&
+            (ForestUtils.getBiom(cc.type) == BiomType.FOREST || ForestUtils.getBiom(cc.type) == BiomType.MOUNTAIN) &&
+            !cc.state.cover.isLocked() && !cc.state.cover.isDark() && !cc.state.opened && !this.hasMobileOccupant(cc));
+    }
+
+    private showBeeStingEnergyLoss(x: number, y: number): void {
+        const holder = new Phaser.Group(this.game);
+        holder.x = x;
+        holder.y = y - 18;
+        holder.alpha = 0;
+
+        const label = new Label(this.game, 0, 0, LocalizationService.get('ui.minusOneEnergy'), { font: "bold 44px Arial", fill: "#ff4d4d" });
+        label.anchor.set(0.5);
+        label.strokeThickness = 4;
+        label.addStrokeColor("#7a0d12", 0);
+        holder.add(label);
+
+        this.add.existing(holder);
+        this.game.world.bringToTop(holder);
+
+        this.game.add.tween(holder).to({ alpha: [1, 1, 0] }, 900,
+            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true);
+        this.game.add.tween(holder).to({ y: holder.y - 110 }, 900,
+            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Sinusoidal.Out, true);
+        this.game.time.events.add(920, () => holder.destroy(true));
+    }
+
     private triggerAdjacentBeeStings(openedCell: ForestCell): number {
         if (!openedCell) {
             return 0;
@@ -823,13 +857,16 @@ export default class ForestScreen extends BaseForestScreen {
         this.prepareBees();
 
         const adjacentBees = this.cellsProvider.getCells().filter(cell => cell.state.cover.bee &&
-            this.cellsProvider.areAdjucentAndNoSeparators(openedCell, cell));
+            this.cellsProvider.areAdjucentAndNoSeparators(openedCell, cell) &&
+            this.getBeeCellsToGo(cell).length > 0);
 
         adjacentBees.forEach(beeCell => {
             const direction = openedCell.state.sprite.x < beeCell.state.cover.bee.x ? -1 : 1;
             SoundUtils.beeSting();
             AnimationUtils.beeSting(this.game, beeCell.state.cover.bee, direction);
-            this.topPanel.spendAdditionalEnergy(1);
+            if (this.topPanel.spendAdditionalEnergy(1)) {
+                this.showBeeStingEnergyLoss(beeCell.state.cover.bee.x, beeCell.state.cover.bee.y);
+            }
         });
 
         return adjacentBees.length;
@@ -839,11 +876,21 @@ export default class ForestScreen extends BaseForestScreen {
         this.cellsProvider.getCells().filter(c => c.state.cover.bee).forEach(c => {
             this.prepareBeeSprite(c);
 
-            const cellsToGo = this.cellsProvider.getCells().filter(cc => this.cellsProvider.areAdjucentAndNoSeparators(c, cc) &&
-                (ForestUtils.getBiom(cc.type) == BiomType.FOREST || ForestUtils.getBiom(cc.type) == BiomType.MOUNTAIN) &&
-                !cc.state.cover.isLocked() && !cc.state.cover.isDark() && !cc.state.opened && !this.hasMobileOccupant(cc));
+            const cellsToGo = this.getBeeCellsToGo(c);
 
-            if (cellsToGo.length > 0 && !canNotMove) {
+            if (cellsToGo.length == 0) {
+                const bee = c.state.cover.bee;
+                this.game.tweens.removeFrom(bee);
+                this.game.add.tween(bee).to({ alpha: 0, y: bee.y - 16 }, 220,
+                    Easing.Quadratic.Out, true);
+                this.game.time.events.add(240, () => {
+                    bee.kill();
+                });
+
+                c.state.cover.bee = null;
+                c.state.cover.openableCover.inputEnabled = true;
+                AnimationUtils.fadeIn(this.game, c.state.cover.leaf);
+            } else if (!canNotMove) {
                 const cellToGo = Utils.getRandomElement(cellsToGo);
                 const bee = c.state.cover.bee;
 

@@ -179,7 +179,7 @@ export default class SoundUtils {
     }
     public static beeSting(){
         if(!SoundUtils.haveRecent("beeSting")){
-            SoundUtils.addSound("beeSting", 0.03 * this.volumeRatio);
+            SoundUtils.addSound("beeSting", 0.12 * this.volumeRatio);
         }
     }
     public static mushroomFound(){

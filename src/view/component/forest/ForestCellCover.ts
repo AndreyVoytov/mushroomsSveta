@@ -696,10 +696,10 @@ export default class ForestCellCover extends Phaser.Group {
                 break;
             case CellType.BEE:
             case CellType.BEE_M:
-                this.bee = SpriteUtils.createSprite(this.game, 0, -8, "bee");
+                this.bee = SpriteUtils.createSprite(this.game, 0, 2, "bee");
                 this.bee.anchor.set(0.5, 0.6);
-                this.bee.width = this.w * 0.95;
-                this.bee.height = this.h * 0.95;
+                this.bee.width = (this.openableCover.width * 0.95) / Math.max(Math.abs(this.openableCover.scale.x), 0.001);
+                this.bee.height = (this.openableCover.height * 0.95) / Math.max(Math.abs(this.openableCover.scale.y), 0.001);
                 this.bee.inputEnabled = false;
                 this.openableCover.addChild(this.bee);
                 this.leaf.alpha = 0;

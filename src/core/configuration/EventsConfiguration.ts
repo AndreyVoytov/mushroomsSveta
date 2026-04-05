@@ -14,7 +14,7 @@ export default class EventsConfiguration {
             name: "Лесной рейд",
             description: "15 особых лесных и горных уровней с медом и пчелами.",
             duration: 1000 * 60 * 60 * 24 * 3,
-            startsatLevel: 20
+            startsatLevel: 3
         }
     ];
 

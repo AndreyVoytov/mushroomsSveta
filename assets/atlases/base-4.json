@@ -2,8 +2,8 @@
     "frames":  {
                    "base/characters/cat2.png":  {
                                                     "frame":  {
-                                                                  "x":  1491,
-                                                                  "y":  503,
+                                                                  "x":  1,
+                                                                  "y":  1005,
                                                                   "w":  420,
                                                                   "h":  461
                                                               },
@@ -26,8 +26,8 @@
                                                 },
                    "base/fonts/bitmap/bm_balsamiq.png":  {
                                                              "frame":  {
-                                                                           "x":  1,
-                                                                           "y":  997,
+                                                                           "x":  423,
+                                                                           "y":  1005,
                                                                            "w":  1024,
                                                                            "h":  455
                                                                        },
@@ -48,30 +48,6 @@
                                                                            "y":  0.5
                                                                        }
                                                          },
-                   "base/items/boosters/rainbowBig.png":  {
-                                                              "frame":  {
-                                                                            "x":  1218,
-                                                                            "y":  1454,
-                                                                            "w":  360,
-                                                                            "h":  381
-                                                                        },
-                                                              "rotated":  false,
-                                                              "trimmed":  false,
-                                                              "spriteSourceSize":  {
-                                                                                       "x":  0,
-                                                                                       "y":  0,
-                                                                                       "w":  360,
-                                                                                       "h":  381
-                                                                                   },
-                                                              "sourceSize":  {
-                                                                                 "w":  360,
-                                                                                 "h":  381
-                                                                             },
-                                                              "pivot":  {
-                                                                            "x":  0.5,
-                                                                            "y":  0.5
-                                                                        }
-                                                          },
                    "base/task/chest6.png":  {
                                                 "frame":  {
                                                               "x":  1,
@@ -120,9 +96,33 @@
                                                               "y":  0.5
                                                           }
                                             },
+                   "base/task/energy_chest.png":  {
+                                                      "frame":  {
+                                                                    "x":  1005,
+                                                                    "y":  1,
+                                                                    "w":  500,
+                                                                    "h":  500
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  500,
+                                                                               "h":  500
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  },
                    "base/ui/banner1.png":  {
                                                "frame":  {
-                                                             "x":  529,
+                                                             "x":  1031,
                                                              "y":  503,
                                                              "w":  960,
                                                              "h":  488
@@ -146,8 +146,8 @@
                                            },
                    "base/ui/diary/atticPic.png":  {
                                                       "frame":  {
-                                                                    "x":  1027,
-                                                                    "y":  997,
+                                                                    "x":  1449,
+                                                                    "y":  1005,
                                                                     "w":  505,
                                                                     "h":  430
                                                                 },
@@ -170,8 +170,8 @@
                                                   },
                    "base/ui/diary/bookPage.png":  {
                                                       "frame":  {
-                                                                    "x":  508,
-                                                                    "y":  1454,
+                                                                    "x":  1015,
+                                                                    "y":  1468,
                                                                     "w":  333,
                                                                     "h":  407
                                                                 },
@@ -194,8 +194,8 @@
                                                   },
                    "base/ui/diary/circleSign.png":  {
                                                         "frame":  {
-                                                                      "x":  843,
-                                                                      "y":  1454,
+                                                                      "x":  1350,
+                                                                      "y":  1468,
                                                                       "w":  373,
                                                                       "h":  394
                                                                   },
@@ -218,7 +218,7 @@
                                                     },
                    "base/ui/diary/dForestPic.png":  {
                                                         "frame":  {
-                                                                      "x":  1,
+                                                                      "x":  503,
                                                                       "y":  503,
                                                                       "w":  526,
                                                                       "h":  492
@@ -242,8 +242,8 @@
                                                     },
                    "base/ui/diary/forestPic.png":  {
                                                        "frame":  {
-                                                                     "x":  1534,
-                                                                     "y":  997,
+                                                                     "x":  1,
+                                                                     "y":  1468,
                                                                      "w":  505,
                                                                      "h":  430
                                                                  },
@@ -266,8 +266,8 @@
                                                    },
                    "base/ui/diary/housePic.png":  {
                                                       "frame":  {
-                                                                    "x":  1,
-                                                                    "y":  1454,
+                                                                    "x":  508,
+                                                                    "y":  1468,
                                                                     "w":  505,
                                                                     "h":  430
                                                                 },
@@ -290,7 +290,7 @@
                                                   },
                    "base/ui/maple.png":  {
                                              "frame":  {
-                                                           "x":  1005,
+                                                           "x":  1507,
                                                            "y":  1,
                                                            "w":  500,
                                                            "h":  500
@@ -314,8 +314,8 @@
                                          },
                    "base/ui/mapleFace.png":  {
                                                  "frame":  {
-                                                               "x":  1507,
-                                                               "y":  1,
+                                                               "x":  1,
+                                                               "y":  503,
                                                                "w":  500,
                                                                "h":  500
                                                            },
@@ -343,8 +343,8 @@
                  "image":  "base-4.png",
                  "format":  "RGBA8888",
                  "size":  {
-                              "w":  2040,
-                              "h":  1885
+                              "w":  2008,
+                              "h":  1899
                           },
                  "scale":  1
              }

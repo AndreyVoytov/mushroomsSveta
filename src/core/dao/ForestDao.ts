@@ -169,6 +169,7 @@ export default class ForestDao extends BaseDao<ForestType>{
             localStorage.setItem("forestsEvent1", legacyEvent1Levels);
         }
     }
+
 }
 
 
