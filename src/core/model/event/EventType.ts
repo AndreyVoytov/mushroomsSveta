@@ -1,6 +1,7 @@
 
 enum EventType {
-    lukoshko
+    lukoshko,
+    configured
 }
 export default EventType;
 

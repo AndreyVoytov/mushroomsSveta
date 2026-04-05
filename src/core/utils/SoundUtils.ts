@@ -177,6 +177,11 @@ export default class SoundUtils {
     public static honey(){
         let sound = Game.getInstance().sound.play("mushroomTaking", 0.015 * this.volumeRatio);
     }
+    public static beeSting(){
+        if(!SoundUtils.haveRecent("beeSting")){
+            SoundUtils.addSound("beeSting", 0.03 * this.volumeRatio);
+        }
+    }
     public static mushroomFound(){
         // if(Utils.randomBoolean()){
             let sound = Game.getInstance().sound.play("mushroomTaking", 0.0045 * this.volumeRatio);

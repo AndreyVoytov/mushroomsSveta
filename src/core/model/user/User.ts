@@ -6,6 +6,7 @@ import LifeUtils from '../../utils/LifeUtils';
 import EverydayRubyPanel from '../../../view/component/house/EverydayRubyPanel';
 import SoundUtils from '../../utils/SoundUtils';
 import EventInfo from './../event/EventInfo';
+import UserEventState from './../event/UserEventState';
 import Utils from './../../utils/Utils';
 import EnergyUtils from '../../utils/EnergyUtils';
 import { createEmptyUserTasksState, UserTasksState } from '../task/TaskModels';
@@ -16,6 +17,7 @@ export default class User {
     
     public supermoneyTakenAt: number = Date.now();
     public events: EventInfo[] = [];
+    public eventStates: UserEventState[] = [];
 
     private spendOnLevel: number = 0;
 
@@ -56,6 +58,7 @@ export default class User {
         if (user) {
             this.spendOnLevel = user.spendOnLevel || 0;
             this.events = user.events || [];
+            this.eventStates = (user.eventStates || []).map(state => new UserEventState(state));
             this.createdAt = user.createdAt || "2020-10-01T22:49:12.681Z";
             this.lastLoginAt = user.lastLoginAt || new Date().toISOString();
             this.interruptWinsRow = user.interruptWinsRow || false;
@@ -75,16 +78,16 @@ export default class User {
             this.energyPurchaseDayId = user.energyPurchaseDayId || EnergyUtils.getMoscowDayId();
             this.energyPurchasesToday = user.energyPurchasesToday || 0;
             this.currentReplica = user.currentReplica;
-            this.markers = user.markers;
-            this.completedReplicas = user.completedReplicas;
-            this.completedTasks = user.completedTasks;
+            this.markers = user.markers || [];
+            this.completedReplicas = user.completedReplicas || [];
+            this.completedTasks = user.completedTasks || ["rec0"];
             this.tasksState = user.tasksState || createEmptyUserTasksState();
             // this.items = user.items;
             this.justCompletedLevel = user.justCompletedLevel;
 
             this.afterLevelLocation = user.afterLevelLocation;
             this.location = user.location;
-            this.boosters = user.boosters;
+            this.boosters = user.boosters || [];
         } else {
             this.location = StoryLocation.forest;
         }
@@ -99,6 +102,31 @@ export default class User {
     }
     public deleteEvent(eventInfo: EventInfo):void{
         Utils.delete(this.events, eventInfo);
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public getEventStates(): UserEventState[] {
+        if (!this.eventStates) {
+            this.eventStates = [];
+        }
+        return this.eventStates;
+    }
+
+    public getEventState(eventId: string): UserEventState {
+        return this.getEventStates().filter(state => state.eventId == eventId).shift();
+    }
+
+    public getOrCreateEventState(eventId: string): UserEventState {
+        let eventState = this.getEventState(eventId);
+        if (!eventState) {
+            eventState = new UserEventState();
+            eventState.eventId = eventId;
+            this.getEventStates().push(eventState);
+        }
+        return eventState;
+    }
+
+    public saveEventStates(): void {
         ServerStoreComponent.saveLocalUser(this);
     }
 
@@ -256,6 +284,11 @@ export default class User {
     public addCompletedReplica(id: string): void {
         console.log("COMPLETED REPLICA: " + id)
         this.completedReplicas.push(id);
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public deleteCompletedReplicasByPrefix(prefix: string): void {
+        this.completedReplicas = (this.completedReplicas || []).filter(id => id.indexOf(prefix) != 0);
         ServerStoreComponent.saveLocalUser(this);
     }
 

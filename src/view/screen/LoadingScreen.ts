@@ -114,12 +114,13 @@ export default class LoadingScreen extends BaseScreen {
         user.setLastLoginAt(new Date());
         EventUtils.updateEvents();
 
-        this.loadAssets();
-
         AdminService.setLifes();
         AdminService.setEverydayGems();
         AdminService.setDebugMode();
+        AdminService.applyEventCommands();
         AdminService.addExtraGemsToTester();
+
+        this.loadAssets();
 
         this.updatePlatformAndSource();
     }
@@ -619,6 +620,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('book3', 'assets/base/items/book3.png');
         this.loadImage('lockpick', 'assets/base/items/lockpick.png');
         this.loadImage('boat', 'assets/base/items/boat.png');
+        this.loadImage('bee', 'assets/base/items/bee.png');
         this.loadImage('moonflower', 'assets/base/items/moonflower.png');
         this.loadImage('moonflower1', 'assets/base/items/moonflower1.png');
         this.loadImage('moonflowerClosed1', 'assets/base/items/moonflowerClosed1.png');
@@ -933,6 +935,7 @@ export default class LoadingScreen extends BaseScreen {
         //audio
         this.game.load.audio("bushHit2", "assets/other/audio/bushHit2.mp3");
         this.game.load.audio("bushMoving", "assets/other/audio/bushMoving.mp3");
+        this.game.load.audio("beeSting", "assets/other/audio/bee_sound.mp3");
         this.game.load.audio("click", "assets/other/audio/click.mp3");
         this.game.load.audio("collect3", "assets/other/audio/collect3.mp3");
         this.game.load.audio("compass", "assets/other/audio/compass.mp3");

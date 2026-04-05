@@ -1,10 +1,12 @@
 import UserService from '../../../core/service/UserService';
 import ForestReplicasConfiguration from '../../../core/configuration/ForestReplicasConfiguration';
+import EventReplicasConfiguration from '../../../core/configuration/EventReplicasConfiguration';
 import BlackPanel from './../../component/panel/BlackPanel';
 import DialogPanel from './../../component/dialog/DialogPanel';
 import ForestScreen from './../ForestScreen';
 import BaseScreen from "./BaseScreen";
 import ReplicaDao from '../../../core/dao/ReplicaDao';
+import EventUtils from '../../../core/utils/EventUtils';
 
 export default abstract class DialogScreen extends BaseScreen {
 
@@ -15,10 +17,18 @@ export default abstract class DialogScreen extends BaseScreen {
     public create(): void {
         if (this instanceof ForestScreen) {
             this.dialogPanel = new DialogPanel(this.game, this, (animation:string) => this.playAnimation(animation),
-             () => { return ForestReplicasConfiguration.getReplica(UserService.getUser()) });
+             () => {
+                 if (EventUtils.hasActiveLevelSession()) {
+                     return EventReplicasConfiguration.getForestReplica(UserService.getUser());
+                 }
+                 return ForestReplicasConfiguration.getReplica(UserService.getUser());
+             });
         } else {
             this.dialogPanel = new DialogPanel(this.game, this, (animation:string) => this.playAnimation(animation),
-             () => { return ReplicaDao.getEntity().getReplica(UserService.getUser()) });
+             () => {
+                 return EventReplicasConfiguration.getHouseReplica(UserService.getUser())
+                     || ReplicaDao.getEntity().getReplica(UserService.getUser());
+             });
         }
 
         this.dialogPanel.fixedToCamera = true;

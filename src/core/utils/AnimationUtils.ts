@@ -309,6 +309,31 @@ export default class AnimationUtils {
         game.add.tween(boat).to({ y:[boat.y-7, boat.y]}, 4500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Quartic.InOut, true, delay, -1);
     }
 
+    public static beeFloating(game: Phaser.Game, bee: Phaser.Sprite, delay?: number): void {
+        game.add.tween(bee).to({ angle: [6, -4, 2, 0], y: [bee.y - 5, bee.y] }, 2400,
+            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Sinusoidal.InOut, true, delay || 0, -1);
+    }
+
+    public static beeSting(game: Phaser.Game, bee: Phaser.Sprite, direction?: number, delay?: number): Phaser.Tween {
+        game.tweens.removeFrom(bee);
+
+        const swingDirection = direction && direction < 0 ? -1 : 1;
+        const baseY = bee.y;
+
+        const tween = game.add.tween(bee).to({
+            angle: [30 * swingDirection, -30 * swingDirection, 30 * swingDirection, -30 * swingDirection, 30 * swingDirection, -30 * swingDirection, 0],
+            y: [baseY - 2, baseY + 2, baseY - 2, baseY + 2, baseY - 2, baseY + 2, baseY]
+        }, 650, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.InOut, true, delay || 0, 0, false);
+
+        tween.onComplete.add(() => {
+            bee.angle = 0;
+            bee.y = baseY;
+            AnimationUtils.beeFloating(game, bee);
+        });
+
+        return tween;
+    }
+
     public static coinsBurst(game: Phaser.Game, x: number, y: number, delay) {
         let deltas = [new Phaser.Point(0, 0), new Phaser.Point(-30, -20), new Phaser.Point(-10, -30), new Phaser.Point(-23, -6),
         new Phaser.Point(27, 22), new Phaser.Point(0, 11), new Phaser.Point(-12, 17), new Phaser.Point(-35, 19),]

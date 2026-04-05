@@ -216,6 +216,16 @@ export default class ForestTopPanel extends BasePanel {
         return true;
     }
 
+    public spendAdditionalEnergy(amount: number): boolean {
+        const user = UserService.getUser();
+        const energyBefore = user.getEnergy();
+        const spent = user.spendEnergy(amount);
+
+        this.levelEnergySpent += Math.max(0, energyBefore - user.getEnergy());
+        this.refreshEnergyLabel();
+        return spent;
+    }
+
     public refreshEnergyLabel(): void {
         this.energyCount = UserService.getUser().getEnergy();
         this.energyLabel.text = "" + this.energyCount;

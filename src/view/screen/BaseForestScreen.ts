@@ -84,6 +84,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     protected maple: Phaser.Sprite;
     protected mapleFace: Phaser.Sprite;
     public energyDetailsShown: boolean = false;
+    private onDialogEndCallback: () => void;
 
     protected abstract createCells(): void;
     protected abstract onCellOpen(cellState: CellState, openingType: OpeningType): void;
@@ -251,7 +252,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         this.game.world.bringToTop(this.uiHolder);
 
         this.addPanel(this.giveUpPanel = new GiveUpPanel(this.game, this, this.game.width / 2, this.game.height / 2, this.topPanel.getAims(),
-            ForestDao.indexOf(this.getForestType()) + 1, () => this.goToHouseFromGiveUp(), () => this.repeatLevel()));
+            this.getCurrentLevelNumber(), () => this.goToHouseFromGiveUp(), () => this.repeatLevel()));
         this.giveUpPanel.fixedToCamera = true;
 
         this.addPanel(this.educationPanel = new EducationPanel(this.game, this, this.cellsProvider.getCells(), this.ladybugsProvider.getLadybugs(),
@@ -325,6 +326,8 @@ export default abstract class BaseForestScreen extends DialogScreen {
                     }
                 });
             });
+
+            this.scheduleEventLevelStartReplica(havePreboosters ? 1800 : 400);
         })
         this.addSprite(this.aimsPanel);
 
@@ -450,10 +453,13 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
     public instantlyWin() {
         let user = UserService.getUser();
+        let isEventLevel = EventUtils.hasActiveLevelSession();
         TaskService.recordSpentEnergy(this.topPanel.getSpentEnergy());
         TaskService.recordCompletedLevel(1);
 
-        if (user.getCurrentForest() == ForestDao.indexOf(this.getForestType())) {
+        if (isEventLevel) {
+            EventUtils.completeActiveEventLevel();
+        } else if (user.getCurrentForest() == this.getCurrentLevelIndex()) {
             let hardLevelAddition = this.getForestType().hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
             user.setSupermoney(user.getSupermoney() + ForestUtils.getPrizeGemsCount(this.topPanel.getStepsLeft()) + hardLevelAddition)
             user.incrementCurrentForest();
@@ -475,49 +481,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.tryToScroll();
             let closedCells = this.cellsProvider.getCells().filter(c => !c.state.opened && !c.state.cover.isDark() && !c.state.cover.isLocked()).length;
             if (this.topPanel.getAims().filter(aim => aim.countLeft > 0).length == 0 || closedCells == 0) {
-                console.log("WIN!")
-
-                SoundUtils.winLevel();
-
-                this.levelStopped = true;
-                YandexGamesHelper.stopGameplay();
-                TaskService.recordSpentEnergy(this.topPanel.getSpentEnergy());
-                TaskService.recordCompletedLevel(1);
-
-                let user = UserService.getUser();
-                let completedLevelNumber = ForestDao.indexOf(this.getForestType()) + 1;
-                let shouldShowInterstitial = user.getCurrentForest() == ForestDao.indexOf(this.getForestType()) && completedLevelNumber % 3 == 0;
-                let completePanel = new LevelCompletePanel(
-                    this.game,
-                    this,
-                    this.game.width / 2,
-                    this.game.height / 2,
-                    this.topPanel.getAims(),
-                    this.getForestType(),
-                    () => {
-                        user.setJustCompletedLevel(true);
-                        if (shouldShowInterstitial) {
-                            YandexGamesHelper.showFullscreenAdv(() => this.playAnimation("goHome"));
-                        } else {
-                            this.playAnimation("goHome");
-                        }
-                    }
-                );
-                this.addSprite(completePanel);
-
-                let delay = 1000;
-                let animationTime = 500;
-
-                this.lockScreenFor(delay + animationTime);
-                completePanel.show(delay, animationTime);
-
-                AnalyticUtils.logLevelComplete(this.topPanel.getStepsLeft());
-
-                if (user.getCurrentForest() == ForestDao.indexOf(this.getForestType())) {
-                    let hardLevelAddition = this.getForestType().hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
-                    user.setSupermoney(user.getSupermoney() + ForestUtils.getPrizeGemsCount(this.topPanel.getStepsLeft()) + hardLevelAddition)
-                    user.incrementCurrentForest();
+                if (this.tryShowEventLevelEndReplica()) {
+                    return;
                 }
+
+                this.showWinPanel();
             }
         }
     }
@@ -566,6 +534,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     private goToHouse() {
         TaskService.resetPendingLevelCollections();
         YandexGamesHelper.stopGameplay();
+        EventUtils.clearActiveLevelSession();
         let treesTime = 500;
         this.addSprite(new TreesTransitionPanel(this.game, true, treesTime, 0));
         this.game.time.events.add(treesTime * 2, function () {
@@ -619,7 +588,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         this.levelStopped = true;
         YandexGamesHelper.stopGameplay();
 
-        let deltaY = ForestDao.indexOf(this.getForestType()) > LocationUtils.CAT_FROM_LEVEL ? 100 : 0;
+        let deltaY = this.getCurrentLevelIndex() > LocationUtils.CAT_FROM_LEVEL ? 100 : 0;
         this.failPanel = new FailPanel(this.game, this.getForestType(), this.game.width / 2, this.game.height / 2 + deltaY,
             this.topPanel.getAims(), () => this.onCloseFailPanel(), () => this.onContinueFailPanel(), this.canContinueWithRewardedVideo() ? () => this.onContinueFailPanelByRewardedAd() : null);
         this.addPanel(this.failPanel);
@@ -648,7 +617,33 @@ export default abstract class BaseForestScreen extends DialogScreen {
     public getForestType(): ForestType {
         if(ForestUtils.forestTypeToPLay) return ForestUtils.forestTypeToPLay;
 
+        if (EventUtils.hasActiveLevelSession()) {
+            let eventForestType = EventUtils.getActiveEventForestType();
+            if (eventForestType) {
+                return eventForestType;
+            }
+        }
+
         return ForestDao.getForestType(UserService.getUser().getCurrentForest());
+    }
+
+    protected getCurrentLevelIndex(): number {
+        if (EventUtils.hasActiveLevelSession()) {
+            return EventUtils.getActiveLevelIndex();
+        }
+        return ForestDao.indexOf(this.getForestType());
+    }
+
+    protected getCurrentLevelNumber(): number {
+        return this.getCurrentLevelIndex() + 1;
+    }
+
+    public onDialogEnd(): void {
+        if (this.onDialogEndCallback) {
+            let callback = this.onDialogEndCallback;
+            this.onDialogEndCallback = null;
+            callback();
+        }
     }
 
     onMouseUp(event: MouseEvent): void {
@@ -739,6 +734,95 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
     private canContinueWithRewardedVideo(): boolean {
         return AnalyticUtils.getCustomization() == CustomizationType.yandexGames && YandexGamesHelper.canShowRewardedVideo();
+    }
+
+    private scheduleEventLevelStartReplica(delay: number): void {
+        this.game.time.events.add(delay, () => {
+            if (!EventUtils.hasActiveLevelSession() || !this.dialogPanel || this.dialogPanel.replicaPanel) {
+                return;
+            }
+            if (this.educationPanel && this.educationPanel.shown) {
+                return;
+            }
+            if (this.dialogPanel.getNextReplica()) {
+                this.dialogPanel.updateReplica(true);
+            }
+        });
+    }
+
+    private tryShowEventLevelEndReplica(): boolean {
+        if (!EventUtils.hasActiveLevelSession() || !EventUtils.activateLevelEndReplica()) {
+            return false;
+        }
+
+        if (!this.dialogPanel.getNextReplica()) {
+            EventUtils.clearActiveLevelReplicaStage();
+            return false;
+        }
+
+        this.levelStopped = true;
+        YandexGamesHelper.stopGameplay();
+        this.onDialogEndCallback = () => this.showWinPanel();
+        this.game.time.events.add(50, () => {
+            this.dialogPanel.updateReplica(true);
+        });
+        return true;
+    }
+
+    private showWinPanel(): void {
+        console.log("WIN!")
+
+        SoundUtils.winLevel();
+
+        this.levelStopped = true;
+        YandexGamesHelper.stopGameplay();
+        TaskService.recordSpentEnergy(this.topPanel.getSpentEnergy());
+        TaskService.recordCompletedLevel(1);
+
+        let user = UserService.getUser();
+        let isEventLevel = EventUtils.hasActiveLevelSession();
+        let completedLevelNumber = this.getCurrentLevelNumber();
+        let shouldShowInterstitial = !isEventLevel && user.getCurrentForest() == this.getCurrentLevelIndex() && completedLevelNumber % 3 == 0;
+        let forestType = this.getForestType();
+        let completePanel = new LevelCompletePanel(
+            this.game,
+            this,
+            this.game.width / 2,
+            this.game.height / 2,
+            this.topPanel.getAims(),
+            forestType,
+            () => {
+                user.setJustCompletedLevel(true);
+                if (shouldShowInterstitial) {
+                    YandexGamesHelper.showFullscreenAdv(() => this.playAnimation("goHome"));
+                } else {
+                    this.playAnimation("goHome");
+                }
+            },
+            isEventLevel ? {
+                aims: this.topPanel.getAims(),
+                spentEnergy: this.topPanel.getSpentEnergy(),
+                targetSteps: this.topPanel.getTargetSteps(),
+                gemsCount: 0
+            } : null
+        );
+        this.addSprite(completePanel);
+
+        let delay = 1000;
+        let animationTime = 500;
+
+        this.lockScreenFor(delay + animationTime);
+        completePanel.show(delay, animationTime);
+
+        AnalyticUtils.logLevelComplete(this.topPanel.getStepsLeft());
+
+        if (isEventLevel) {
+            EventUtils.completeActiveEventLevel();
+        } else if (user.getCurrentForest() == this.getCurrentLevelIndex()) {
+            let hardLevelAddition = forestType.hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
+            user.setSupermoney(user.getSupermoney() + ForestUtils.getPrizeGemsCount(this.topPanel.getStepsLeft()) + hardLevelAddition)
+            user.incrementCurrentForest();
+        }
     }
 
     private onContinueFailPanelByRewardedAd() {

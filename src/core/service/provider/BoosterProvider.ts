@@ -427,6 +427,8 @@ export default class BoostersProvider {
             case CellType.PLANK2_M:
             case CellType.PLANK3_M:
             case CellType.BOAT:
+            case CellType.BEE:
+            case CellType.BEE_M:
             case CellType.JELLY:
             case CellType.SAND:
             case CellType.BERRY_FIELD:

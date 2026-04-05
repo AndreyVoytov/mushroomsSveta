@@ -136,7 +136,10 @@ export default class LevelCompletePanel extends BasePanel {
         ];
 
         const previewGemsCount = previewData && previewData.gemsCount != null ? previewData.gemsCount : null;
-        if (previewGemsCount != null || (screen && forestType && UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL)) {
+        const shouldShowGems = previewGemsCount != null
+            ? previewGemsCount > 0
+            : (screen && forestType && UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL);
+        if (shouldShowGems) {
             const hardLevelAddition = forestType && forestType.hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;
             const gemsCount = previewGemsCount != null
                 ? previewGemsCount

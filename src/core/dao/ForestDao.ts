@@ -38,8 +38,9 @@ export default class ForestDao extends BaseDao<ForestType>{
         return ForestDao.getEntity().getForestType(index);
     }
 
-    public static getEvent1ForestType(index:number){
-        return ForestDao.getEntity("forestsEvent1").getForestType(index);
+    public static getEventForestByIdAndIndex(eventId: string, index:number){
+        let branchId = ForestDao.getEventBranchId(eventId);
+        return branchId ? ForestDao.getEntity(branchId).getForestType(index) : null;
     }
 
     public static getForestById(id:string, branchId: string = ForestDao.MAIN_BRANCH_ID){
@@ -54,6 +55,11 @@ export default class ForestDao extends BaseDao<ForestType>{
         return ForestDao.getEntity(branchId).getAll();
     }
 
+    public static getAllEventForestsById(eventId: string): ForestType[] {
+        let branchId = ForestDao.getEventBranchId(eventId);
+        return branchId ? ForestDao.getAllForests(branchId) : [];
+    }
+
     public static getBranchIds(): string[] {
         return ForestDao.branchEntries.map(branch => branch.id);
     }
@@ -64,6 +70,16 @@ export default class ForestDao extends BaseDao<ForestType>{
 
     public static getDefaultBranchId(): string {
         return ForestDao.MAIN_BRANCH_ID;
+    }
+
+    public static getEventBranchId(eventId: string): string {
+        let match = eventId ? eventId.match(/^event(\d+)$/i) : null;
+        if (!match) {
+            return null;
+        }
+
+        let branchId = ForestDao.EVENT_BRANCH_PREFIX + match[1];
+        return ForestDao.hasBranch(branchId) ? branchId : null;
     }
 
     /****************************************/

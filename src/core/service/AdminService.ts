@@ -5,6 +5,7 @@ import ReplicaDao from '../dao/ReplicaDao';
 import CustomizationType from '../model/enum/CustomizationType';
 import ForestType from '../model/forest/ForestType';
 import AnalyticUtils from '../utils/AnalyticUtils';
+import EventUtils from '../utils/EventUtils';
 import LifeUtils from '../utils/LifeUtils';
 import Utils from '../utils/Utils';
 import UserService from './UserService';
@@ -25,6 +26,8 @@ export default class AdminService {
     //skip                  skip each level
     //clearUser             clear user data
     //diary                 show diary
+    //start_event_1         restart event1 from scratch
+    //finish_event_1        finish event1 immediately
 
     private static isAdminToolsEnabled(): boolean {
         return AnalyticUtils.getCustomization() != CustomizationType.odkl || AdminService.isAdminUser();
@@ -125,6 +128,20 @@ export default class AdminService {
         }
     }
 
+    public static applyEventCommands(): void {
+        if (!AdminService.isAdminToolsEnabled()) {
+            return;
+        }
+
+        AdminService.getEventCommandIds('finish').forEach(eventId => {
+            EventUtils.finishConfiguredEventForAdmin(eventId);
+        });
+
+        AdminService.getEventCommandIds('start').forEach(eventId => {
+            EventUtils.restartConfiguredEventForAdmin(eventId);
+        });
+    }
+
     public static needClearUser(): boolean {
         if (!AdminService.isAdminToolsEnabled()) {
             return false;
@@ -193,6 +210,21 @@ export default class AdminService {
         }
 
         return null;
+    }
+
+    private static getEventCommandIds(action: 'start' | 'finish'): string[] {
+        if (typeof window == "undefined" || !window.location) {
+            return [];
+        }
+
+        let result: string[] = [];
+        let regex = new RegExp("[?&]" + action + "_event_(\\d+)(?:[&#]|$)", "g");
+        let match: RegExpExecArray;
+        while ((match = regex.exec(window.location.href)) != null) {
+            result.push('event' + match[1]);
+        }
+
+        return result;
     }
 
 }

@@ -34,6 +34,7 @@ export default class ForestCellCover extends Phaser.Group {
     public leaf: Phaser.Sprite;
     public openableCover: Phaser.Button;
     public boat: Phaser.Sprite;
+    public bee: Phaser.Sprite;
 
     public cellState: CellState;
     public cellType: CellType;
@@ -542,8 +543,11 @@ export default class ForestCellCover extends Phaser.Group {
             case CellType.PLANK1_M:
             case CellType.PLANK2_M:
             case CellType.PLANK3_M:
+            case CellType.BEE_M:
             case CellType.MOUNTAIN:
                 return "hexMountain";
+            case CellType.BEE:
+                return this.getCoverBg(this.environment);
             case CellType.BOAT:
             case CellType.WATER:
             case CellType.COLD:
@@ -567,6 +571,7 @@ export default class ForestCellCover extends Phaser.Group {
             case CellType.PLANK1_M:
             case CellType.PLANK2_M:
             case CellType.PLANK3_M:
+            case CellType.BEE_M:
                 return "mount";
             case CellType.WATER:
             case CellType.BOAT:
@@ -602,6 +607,7 @@ export default class ForestCellCover extends Phaser.Group {
             case CellType.CANKERBERRY2:
             case CellType.ACORN:
             case CellType.DRAGONFLY:
+            case CellType.BEE:
 
                 return null;
             default:
@@ -688,6 +694,18 @@ export default class ForestCellCover extends Phaser.Group {
                 this.openableCover.inputEnabled = false;
                 if (anim) AnimationUtils.boatFloating(this.game, this.boat);
                 break;
+            case CellType.BEE:
+            case CellType.BEE_M:
+                this.bee = SpriteUtils.createSprite(this.game, 0, -8, "bee");
+                this.bee.anchor.set(0.5, 0.6);
+                this.bee.width = this.w * 0.95;
+                this.bee.height = this.h * 0.95;
+                this.bee.inputEnabled = false;
+                this.openableCover.addChild(this.bee);
+                this.leaf.alpha = 0;
+                this.openableCover.inputEnabled = false;
+                if (anim) AnimationUtils.beeFloating(this.game, this.bee);
+                break;
             default:
                 throw new NeverError(this.cellType);
         }
@@ -758,6 +776,8 @@ export default class ForestCellCover extends Phaser.Group {
             case CellType.FOREST:
             case CellType.WATER:
             case CellType.BOAT:
+            case CellType.BEE:
+            case CellType.BEE_M:
             case CellType.MOUNTAIN:
             case CellType.ACORN:
             case CellType.HIVE:

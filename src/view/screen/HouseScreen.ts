@@ -94,7 +94,7 @@ export default class HouseScreen extends DialogScreen {
 
     private fakeTrees: Phaser.Sprite;
 
-    private eventsToShow: EventType[] = [];
+    private eventsToShow: string[] = [];
 
     public create(): void {
         super.create();
@@ -135,6 +135,7 @@ export default class HouseScreen extends DialogScreen {
         this.shopShown = false;
         this.uiHidden = false;
         this.canNotTouchUI = false;
+        EventUtils.clearActiveLevelSession();
         let user = UserService.getUser();
         console.log("HOUSE SCREEN USER LOCATION: " + user.getLocation())
 
@@ -268,7 +269,7 @@ export default class HouseScreen extends DialogScreen {
         });
         this.tasksButton.anchor.set(0.5);
         this.tasksButton.scale.set(1);
-        this.rightButtons.push(this.tasksButton);
+        this.registerSideButton(this.tasksButton);
 
         let tasksIcon = SpriteUtils.createSprite(this.game, 0, 0, 'tasks');
         tasksIcon.anchor.set(0.5);
@@ -302,7 +303,7 @@ export default class HouseScreen extends DialogScreen {
         everydayRubiesButton.scale.set(1);
         AnimationUtils.wiggle4(this.game, everydayRubiesButton);
 
-        this.rightButtons.push(everydayRubiesButton);
+        this.registerSideButton(everydayRubiesButton);
             
         let gems = SpriteUtils.createSprite(this.game, -4,0, 'gems');
         gems.angle = 90;
@@ -313,9 +314,13 @@ export default class HouseScreen extends DialogScreen {
 
 
         let events = EventUtils.getActualEvents();
-        let eventDeltaY = 0;
+        let leftEventDeltaY = 0;
+        let rightEventDeltaY = 0;
         events.forEach(eventInfo => {
-            let eventButton = SpriteUtils.createButton(this.game, this.game.width -100, 400 + 190 + eventDeltaY, EventUtils.getIcon(eventInfo.eventType),
+            let isConfiguredEvent = eventInfo.eventType == EventType.configured;
+            let eventX = isConfiguredEvent ? 100 : this.game.width - 100;
+            let eventY = isConfiguredEvent ? 360 + leftEventDeltaY : 400 + 190 + rightEventDeltaY;
+            let eventButton = SpriteUtils.createButton(this.game, eventX, eventY, isConfiguredEvent ? 'actionCircle' : EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId),
                 ()=>{
                     let p = new EventPanel(this.game, eventInfo);
                     this.addPanel(p);
@@ -324,13 +329,20 @@ export default class HouseScreen extends DialogScreen {
 
             eventButton.visible = true;
             eventButton.anchor.set(0.5);
-            this.rightButtons.push(eventButton);
+            this.registerSideButton(eventButton);
+
+            if (isConfiguredEvent) {
+                let eventIcon = SpriteUtils.createSprite(this.game, 0, 0, EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId));
+                eventIcon.anchor.set(0.5);
+                eventIcon.scale.set(0.86 * 0.95);
+                eventButton.addChild(eventIcon);
+            }
             
             let flash = SpriteUtils.createSprite(this.game, eventButton.x, eventButton.y,"flash");
             flash.anchor.set(0.5);
             flash.scale.set(1.5);
             this.addSprite(flash);
-            this.rightButtons.push(flash);
+            this.registerSideButton(flash);
             
             this.addButton(eventButton);
 
@@ -338,20 +350,35 @@ export default class HouseScreen extends DialogScreen {
             banner.anchor.set(0.5);
             banner.scale.set(0.2, 0.6);
             this.addSprite(banner);
-            this.rightButtons.push(banner);
+            this.registerSideButton(banner);
 
             
             let eventDuration = new Label(this.game, banner.x, banner.y-10, EventUtils.getRemainTimeShort(eventInfo.eventEndAt), { font: "bold 33px Bookman Old Style ", fill: "#ffffff" });
             eventDuration.anchor.set(0.5);
             // eventDuration.scale.set(0.2, 0.6);
             this.addSprite(eventDuration);
-            this.rightButtons.push(eventDuration);
+            this.registerSideButton(eventDuration);
+            let expiryHandled = false;
             this.game.time.events.loop(1000, ()=>{
                 if(eventInfo.eventEndAt <= Date.now()) {
+                    if (!expiryHandled) {
+                        expiryHandled = true;
+                        if (eventInfo.eventType == EventType.configured) {
+                            EventUtils.expireConfiguredEvent(eventInfo);
+                            if (!this.dialogPanel.replicaPanel && !this.isLocked() && this.dialogPanel.getNextReplica()) {
+                                this.game.time.events.add(100, () => {
+                                    if (!this.isLocked()) {
+                                        this.dialogPanel.updateReplica();
+                                    }
+                                });
+                            }
+                        }
+                    }
                     eventButton.visible = false;
                     flash.visible = false;
                     eventDuration.visible = false;
                     banner.visible = false;
+                    return;
                 }
                 eventDuration.text = EventUtils.getRemainTimeShort(eventInfo.eventEndAt);
             })
@@ -360,9 +387,13 @@ export default class HouseScreen extends DialogScreen {
             this.game.add.tween(flash).to({alpha: 0.8}, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Quadratic.InOut, true, 500);
             this.game.add.tween(flash).to({angle:360}, 60000, Easing.Linear.None, true, 500, -1);
 
-            eventDeltaY += 200;
+            if (isConfiguredEvent) {
+                leftEventDeltaY += 200;
+            } else {
+                rightEventDeltaY += 200;
+            }
 
-            if(this.eventsToShow.indexOf(eventInfo.eventType) != -1){
+            if(this.eventsToShow.indexOf(EventUtils.getEventKey(eventInfo)) != -1){
                 this.lockScreenFor(2000);
                 this.game.time.events.add(2000, ()=>{
                     let p = new EventPanel(this.game, eventInfo);
@@ -597,6 +628,20 @@ export default class HouseScreen extends DialogScreen {
 
     private notebookButtonStartX = 90;
 
+    private registerSideButton(button: PIXI.DisplayObject) {
+        (<any>button).startX = (<any>button).x;
+        this.rightButtons.push(button);
+    }
+
+    private getSideButtonStartX(button: PIXI.DisplayObject): number {
+        return (<any>button).startX != null ? (<any>button).startX : (<any>button).x;
+    }
+
+    private getSideButtonHiddenX(button: PIXI.DisplayObject): number {
+        let startX = this.getSideButtonStartX(button);
+        return startX < this.game.width / 2 ? startX - 200 : startX + 200;
+    }
+
     private doHideUI(forShop?: boolean, instantly?:boolean, fromShop?:boolean) {
         if (this.canNotTouchUI || (this.uiHidden && !fromShop)) {
             return;
@@ -642,7 +687,7 @@ export default class HouseScreen extends DialogScreen {
 
         if(!fromShop){
             this.rightButtons.forEach(b => {
-                this.game.add.tween(b).to({ x: this.rightButtonsX + 200 }, duration, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, true, 0, 0, false)
+                this.game.add.tween(b).to({ x: this.getSideButtonHiddenX(b) }, duration, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, true, 0, 0, false)
                 this.game.add.tween(b).to({ alpha: 0 }, duration, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, true, 0, 0, false)
             })
             this.game.add.tween(this.playButton).to({ x: this.getPlayButtonStartX() + 200 }, duration, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, true, 0, 0, false)
@@ -682,7 +727,7 @@ export default class HouseScreen extends DialogScreen {
         }
 
         this.rightButtons.forEach(b => {
-            this.game.add.tween(b).to({ x: this.rightButtonsX  }, 300,Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false)
+            this.game.add.tween(b).to({ x: this.getSideButtonStartX(b)  }, 300,Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false)
             this.game.add.tween(b).to({ alpha: 1 }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 0, 0, false)
         });
 

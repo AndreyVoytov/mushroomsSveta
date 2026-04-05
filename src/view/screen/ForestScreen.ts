@@ -324,13 +324,13 @@ export default class ForestScreen extends BaseForestScreen {
 
         let availableCells = this.cellsProvider.getCells().filter(cell => {
             return (cell.Y <= BaseCellsProvider.MAX_HEIGHT_WITH_NO_SCROLL - 2 &&
-                cell.state.content in AnimalsContents && !ForestUtils.containIvyOrIce(cell.type) && !cell.state.cover.boat);
+                cell.state.content in AnimalsContents && !ForestUtils.containIvyOrIce(cell.type) && !this.hasMobileOccupant(cell));
         })
 
         if(availableCells.length == 0){
             availableCells = this.cellsProvider.getCells().filter(cell => {
                 return (cell.Y <= BaseCellsProvider.MAX_HEIGHT_WITH_NO_SCROLL - 2 &&
-                    cell.state.content in DecorationsContents && !ForestUtils.containIvyOrIce(cell.type) && !cell.state.cover.boat);
+                    cell.state.content in DecorationsContents && !ForestUtils.containIvyOrIce(cell.type) && !this.hasMobileOccupant(cell));
             })
         }
         let cell = Utils.getRandomElement(availableCells);
@@ -442,7 +442,7 @@ export default class ForestScreen extends BaseForestScreen {
             let cell = this.cellsProvider.getCells().filter(c => c.X == coordinates.x && c.Y == coordinates.y).shift();
             if(cell && cell.state.cover && !cell.state.opened && !cell.state.cover.isLocked() && !cell.state.cover.isDark() &&
                 !this.educationPanel.shownWithOkButton && !this.levelStopped && !InGameSettingsPanel.shown 
-                && !this.isUnderFadeStrip(cell) && !cell.state.cover.boat) { 
+                && !this.isUnderFadeStrip(cell) && !this.hasMobileOccupant(cell)) { 
 
                 if (ForestUtils.isBoosterType(cell.type)) {
                     this.boostersProvider.activateBooster(cell);//, cacheComplexImages && AdminService.isEditMode());
@@ -715,11 +715,22 @@ export default class ForestScreen extends BaseForestScreen {
 
         this.refreshBushesAndShells(this.justOpenedCells[0]);
         this.refreshIvyAndIce(cellState, openingType);
+        const beeMoveDelay = this.triggerAdjacentBeeStings(this.justOpenedCells[0]) > 0 ? 650 : 0;
         this.refreshBoats();
+        if (beeMoveDelay > 0) {
+            this.game.time.events.add(beeMoveDelay, () => {
+                this.refreshBees();
+            });
+        } else {
+            this.refreshBees();
+        }
         // this.markValuableCells(this.justOpenedCells[0]);
         
         this.game.time.events.add(710, () => {
             this.refreshBoats(true);
+        });
+        this.game.time.events.add(710 + beeMoveDelay, () => {
+            this.refreshBees(true);
         });
 
         this.ladybugsProvider.refreshLadybugsAndAcorns();
@@ -768,10 +779,103 @@ export default class ForestScreen extends BaseForestScreen {
         this.tryToScroll();
     }
 
+    private hasMobileOccupant(cell: ForestCell): boolean {
+        return !!(cell && cell.state && cell.state.cover && (cell.state.cover.boat || cell.state.cover.bee));
+    }
+
+    private getBeeY(cell: ForestCell): number {
+        return cell.state.sprite.y - 8;
+    }
+
+    private prepareBeeSprite(cell: ForestCell): void {
+        if (!cell || !cell.state || !cell.state.cover || !cell.state.cover.bee) {
+            return;
+        }
+
+        const bee = cell.state.cover.bee;
+        if (bee.x == 0) {
+            bee.x += cell.state.sprite.x;
+            bee.y += cell.state.sprite.y;
+            this.game.tweens.removeFrom(bee);
+            this.addSprite(bee);
+            if(AdminService.cacheComplexImages()) cell.state.cover.cacheAsBitmap = false;
+            if(AdminService.cacheComplexImages()) {
+                cell.state.cover.cacheAsBitmap = true;
+                cell.state.cover.onDestroy.add(() => {
+                    cell.state.cover.cacheAsBitmap = false;
+                })
+            }
+            bee.inputEnabled = false;
+            AnimationUtils.beeFloating(this.game, bee);
+            this.bringUiToTop();
+        }
+    }
+
+    private prepareBees(): void {
+        this.cellsProvider.getCells().filter(c => c.state.cover.bee).forEach(c => this.prepareBeeSprite(c));
+    }
+
+    private triggerAdjacentBeeStings(openedCell: ForestCell): number {
+        if (!openedCell) {
+            return 0;
+        }
+
+        this.prepareBees();
+
+        const adjacentBees = this.cellsProvider.getCells().filter(cell => cell.state.cover.bee &&
+            this.cellsProvider.areAdjucentAndNoSeparators(openedCell, cell));
+
+        adjacentBees.forEach(beeCell => {
+            const direction = openedCell.state.sprite.x < beeCell.state.cover.bee.x ? -1 : 1;
+            SoundUtils.beeSting();
+            AnimationUtils.beeSting(this.game, beeCell.state.cover.bee, direction);
+            this.topPanel.spendAdditionalEnergy(1);
+        });
+
+        return adjacentBees.length;
+    }
+
+    private refreshBees(canNotMove?: boolean) {
+        this.cellsProvider.getCells().filter(c => c.state.cover.bee).forEach(c => {
+            this.prepareBeeSprite(c);
+
+            const cellsToGo = this.cellsProvider.getCells().filter(cc => this.cellsProvider.areAdjucentAndNoSeparators(c, cc) &&
+                (ForestUtils.getBiom(cc.type) == BiomType.FOREST || ForestUtils.getBiom(cc.type) == BiomType.MOUNTAIN) &&
+                !cc.state.cover.isLocked() && !cc.state.cover.isDark() && !cc.state.opened && !this.hasMobileOccupant(cc));
+
+            if (cellsToGo.length > 0 && !canNotMove) {
+                const cellToGo = Utils.getRandomElement(cellsToGo);
+                const bee = c.state.cover.bee;
+
+                this.game.tweens.removeFrom(bee);
+                this.game.add.tween(bee).to({ x: cellToGo.state.sprite.x, y: this.getBeeY(cellToGo), angle: 0 }, 500,
+                    Easing.Quadratic.InOut, true);
+
+                const beeAngle = bee.angle;
+                const beePosition = new Phaser.Point(bee.x, bee.y);
+                bee.x = cellToGo.state.sprite.x;
+                bee.y = this.getBeeY(cellToGo);
+                bee.angle = 0;
+                AnimationUtils.beeFloating(this.game, bee, 500);
+                bee.position.set(beePosition.x, beePosition.y);
+                bee.angle = beeAngle;
+
+                cellToGo.state.cover.bee = c.state.cover.bee;
+                c.state.cover.bee = null;
+
+                c.state.cover.openableCover.inputEnabled = true;
+                AnimationUtils.fadeIn(this.game, c.state.cover.leaf)
+
+                cellToGo.state.cover.openableCover.inputEnabled = false;
+                AnimationUtils.fadeOut(this.game, cellToGo.state.cover.leaf)
+            }
+        })
+    }
+
     private refreshBoats(canNotMove?: boolean) {
         this.cellsProvider.getCells().filter(c => c.state.cover.boat).forEach(c => {
             let cellsToGo = this.cellsProvider.getCells().filter(cc => this.cellsProvider.areAdjucentAndNoSeparators(c, cc) && ForestUtils.getBiom(cc.type) == BiomType.WATER
-                && !cc.state.cover.isLocked() && !cc.state.cover.isDark() && !cc.state.opened && !cc.state.cover.boat);
+                && !cc.state.cover.isLocked() && !cc.state.cover.isDark() && !cc.state.opened && !this.hasMobileOccupant(cc));
 
             console.log("REFRESH BOATS: " + new Date().getTime() + "; steps: " + this.cellsProvider.getCells().filter(c => c.state.opened).length)
 
@@ -1043,7 +1147,7 @@ export default class ForestScreen extends BaseForestScreen {
 
             let canMakeDark = true;
 
-            if (cell.state.cover.boat || (cell.type == CellType.JELLY && cell.state.cover.isLocked()) || ForestUtils.isBoosterType(cell.type)) {
+            if (this.hasMobileOccupant(cell) || (cell.type == CellType.JELLY && cell.state.cover.isLocked()) || ForestUtils.isBoosterType(cell.type)) {
                 canMakeDark = false;
             }
 

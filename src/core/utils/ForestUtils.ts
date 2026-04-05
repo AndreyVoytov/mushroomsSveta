@@ -194,6 +194,8 @@ export default class ForestUtils {
             case CellType.PLANK2_M:
             case CellType.PLANK3_M:
             case CellType.BOAT:
+            case CellType.BEE:
+            case CellType.BEE_M:
                 return null;
 
             default:
@@ -274,6 +276,8 @@ export default class ForestUtils {
             case CellType.PLANK2: return "P";
             case CellType.PLANK3: return "z";
             case CellType.BOAT: return "b";
+            case CellType.BEE: return "e";
+            case CellType.BEE_M: return "n";
 
             case CellType.IVY_SMALL_M: return "A";
             case CellType.IVY_M: return "B";
@@ -362,6 +366,8 @@ export default class ForestUtils {
             case CellType.PLANK2:
             case CellType.PLANK3:
             case CellType.BOAT:
+            case CellType.BEE:
+            case CellType.BEE_M:
             case CellType.IVY_SMALL_M:
             case CellType.IVY_M:
             case CellType.IVY_STRONG_M:
@@ -414,6 +420,8 @@ export default class ForestUtils {
             case CellType.MOUNTAIN:
             case CellType.ACORN:
             case CellType.BOAT:
+            case CellType.BEE:
+            case CellType.BEE_M:
             case CellType.BERRY_FIELD:
             case CellType.SAND:
                 return false;
@@ -451,6 +459,8 @@ export default class ForestUtils {
             case CellType.PLANK2:
             case CellType.PLANK3:
             case CellType.BOAT:
+            case CellType.BEE:
+            case CellType.BEE_M:
             case CellType.IVY_SMALL_M:
             case CellType.IVY_M:
             case CellType.IVY_STRONG_M:
@@ -496,12 +506,14 @@ export default class ForestUtils {
             case CellType.CANKERBERRY2:
             case CellType.ACORN:
             case CellType.DRAGONFLY:
+            case CellType.BEE:
             case CellType.JELLY:
                 return BiomType.FOREST;
             case CellType.COLD:
             case CellType.WATER:
             case CellType.BOAT:
                 return BiomType.WATER;
+            case CellType.BEE_M:
             case CellType.MOUNTAIN:
             case CellType.IVY_SMALL_M:
             case CellType.IVY_M:
