@@ -276,7 +276,6 @@ export default class StartLevelPanel extends ClosablePanel {
         AnimationUtils.jelly(this.game, this.playButton, 0, true);
         let time = 500;
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
-        trees.fixedToCamera = true;
         this.screen.addTopOverlay(trees);
         this.game.time.events.add(time * 2, () => {
             AnalyticUtils.logLevelStart()
@@ -286,7 +285,6 @@ export default class StartLevelPanel extends ClosablePanel {
     public startLevelFast() {
         let time = 500;
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
-        trees.fixedToCamera = true;
         this.screen.addTopOverlay(trees);
         ForestScreen.skipNextTime = true;
         this.game.time.events.add(time*2, function () {

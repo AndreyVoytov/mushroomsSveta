@@ -50,12 +50,12 @@ export default class EventUtils {
         }
 
         EventsConfiguration.allEvents.forEach(eventConfig => {
-            const levels = ForestDao.getAllEventForestsById(eventConfig.eventId);
+            const levelsCount = this.getEventLevelsCount(eventConfig.eventId);
             const eventState = user.getEventState(eventConfig.eventId);
             const isFinished = eventState && (eventState.completedAt || eventState.expiredAt);
             const existingEvent = this.getEventById(eventConfig.eventId);
 
-            if (levels.length == 0 || isFinished || existingEvent) {
+            if (levelsCount == 0 || isFinished || existingEvent) {
                 return;
             }
 
@@ -181,7 +181,13 @@ export default class EventUtils {
     }
 
     public static getEventLevelsCount(eventId: string): number {
-        return ForestDao.getAllEventForestsById(eventId).length;
+        const allLevelsCount = ForestDao.getAllEventForestsById(eventId).length;
+        const eventConfig = EventsConfiguration.getById(eventId);
+        if (!eventConfig || eventConfig.levelsCount == null || eventConfig.levelsCount == -1) {
+            return allLevelsCount;
+        }
+
+        return Math.max(0, Math.min(allLevelsCount, eventConfig.levelsCount));
     }
 
     public static startEventLevel(eventId: string): boolean {

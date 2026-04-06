@@ -758,7 +758,6 @@ export default class HouseScreen extends DialogScreen {
     public startLevel(): void {
         let time = 500;
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
-        trees.fixedToCamera = true;
         this.addTopOverlay(trees);
         this.game.time.events.add(time*2, () => {
             this.startScreen(ForestScreen, true, false);

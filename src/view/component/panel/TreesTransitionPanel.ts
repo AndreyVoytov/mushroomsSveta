@@ -28,7 +28,7 @@ export default class TreesTransitionPanel extends BasePanel {
         this.overlay.endFill();
         this.overlay.alpha = 0;
         this.overlay.inputEnabled = false;
-        this.overlay.fixedToCamera = true;
+        this.overlay.fixedToCamera = false;
         this.addChild(this.overlay);
 
         // if(!TreesPart.texture){
@@ -86,7 +86,7 @@ export default class TreesTransitionPanel extends BasePanel {
             })
         })
 
-        this.fixedToCamera = true;
+        this.fixedToCamera = false;
 
         if(this.game.height > 1600){
             let scale = this.game.height / 1600;

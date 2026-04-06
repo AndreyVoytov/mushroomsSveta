@@ -4,6 +4,7 @@ export type EventConfiguration = {
     description: string;
     duration: number;
     startsatLevel: number;
+    levelsCount?: number;
 };
 
 export default class EventsConfiguration {
@@ -14,7 +15,8 @@ export default class EventsConfiguration {
             name: "Лесной рейд",
             description: "15 особых лесных и горных уровней с медом и пчелами.",
             duration: 1000 * 60 * 60 * 24 * 3,
-            startsatLevel: 3
+            startsatLevel: 3,
+            levelsCount: -1
         }
     ];
 
