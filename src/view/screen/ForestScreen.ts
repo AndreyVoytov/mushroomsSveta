@@ -787,6 +787,24 @@ export default class ForestScreen extends BaseForestScreen {
         return cell.state.sprite.y + 2;
     }
 
+    private bringMobileOccupantsToTop(): void {
+        if (!this.cellsProvider) {
+            return;
+        }
+
+        this.cellsProvider.getCells().forEach(cell => {
+            const occupant = cell && cell.state && cell.state.cover ? (cell.state.cover.bee || cell.state.cover.boat) : null;
+            if (occupant && occupant.parent) {
+                this.game.world.bringToTop(occupant);
+            }
+        });
+    }
+
+    public bringUiToTop(): void {
+        this.bringMobileOccupantsToTop();
+        super.bringUiToTop();
+    }
+
     private prepareBeeSprite(cell: ForestCell): void {
         if (!cell || !cell.state || !cell.state.cover || !cell.state.cover.bee) {
             return;
@@ -824,7 +842,8 @@ export default class ForestScreen extends BaseForestScreen {
 
         return this.cellsProvider.getCells().filter(cc => this.cellsProvider.areAdjucentAndNoSeparators(fromCell, cc) &&
             (ForestUtils.getBiom(cc.type) == BiomType.FOREST || ForestUtils.getBiom(cc.type) == BiomType.MOUNTAIN) &&
-            !cc.state.cover.isLocked() && !cc.state.cover.isDark() && !cc.state.opened && !this.hasMobileOccupant(cc));
+            !cc.state.cover.isLocked() && !cc.state.cover.isDark() && !cc.state.opened &&
+            !ForestUtils.isBoosterType(cc.type) && !this.hasMobileOccupant(cc));
     }
 
     private showBeeStingEnergyLoss(x: number, y: number): void {
@@ -917,6 +936,8 @@ export default class ForestScreen extends BaseForestScreen {
                 AnimationUtils.fadeOut(this.game, cellToGo.state.cover.leaf)
             }
         })
+
+        this.bringUiToTop();
     }
 
     private refreshBoats(canNotMove?: boolean) {
@@ -978,6 +999,8 @@ export default class ForestScreen extends BaseForestScreen {
                 AnimationUtils.fadeOut(this.game, cellToGo.state.cover.leaf)
             }
         })
+
+        this.bringUiToTop();
     }
 
     private tryUnlockBooks(cell: ForestCell) {
