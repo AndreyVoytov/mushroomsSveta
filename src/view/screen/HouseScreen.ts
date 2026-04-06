@@ -95,6 +95,9 @@ export default class HouseScreen extends DialogScreen {
     private fakeTrees: Phaser.Sprite;
 
     private eventsToShow: string[] = [];
+    private renderedEventKeys: string[] = [];
+    private configuredEventOffsetY = 0;
+    private sideEventOffsetY = 0;
 
     public create(): void {
         super.create();
@@ -131,6 +134,9 @@ export default class HouseScreen extends DialogScreen {
 
         this.rightButtons = [];
         this.rightButtonsX = this.game.width -100
+        this.renderedEventKeys = [];
+        this.configuredEventOffsetY = 0;
+        this.sideEventOffsetY = 0;
         this.lifeDetailsShown = false;
         this.shopShown = false;
         this.uiHidden = false;
@@ -314,89 +320,8 @@ export default class HouseScreen extends DialogScreen {
 
 
         let events = EventUtils.getActualEvents();
-        let leftEventDeltaY = 0;
-        let rightEventDeltaY = 0;
         events.forEach(eventInfo => {
-            let isConfiguredEvent = eventInfo.eventType == EventType.configured;
-            let eventX = isConfiguredEvent ? 100 : this.game.width - 100;
-            let eventY = isConfiguredEvent ? 360 + leftEventDeltaY : 400 + 190 + rightEventDeltaY;
-            let eventButton = SpriteUtils.createButton(this.game, eventX, eventY, isConfiguredEvent ? 'actionCircle' : EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId),
-                ()=>{
-                    this.showEventPanel(eventInfo);
-                });
-
-            eventButton.visible = true;
-            eventButton.anchor.set(0.5);
-            this.registerSideButton(eventButton);
-
-            if (isConfiguredEvent) {
-                let eventIcon = SpriteUtils.createSprite(this.game, 0, 0, EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId));
-                eventIcon.anchor.set(0.5);
-                eventIcon.scale.set(0.86 * 0.95);
-                eventButton.addChild(eventIcon);
-            }
-            
-            let flash = SpriteUtils.createSprite(this.game, eventButton.x, eventButton.y,"flash");
-            flash.anchor.set(0.5);
-            flash.scale.set(1.5);
-            this.addSprite(flash);
-            this.registerSideButton(flash);
-            
-            this.addButton(eventButton);
-
-            let banner = SpriteUtils.createSprite(this.game, eventButton.x, eventButton.y + 70,"ribbon");
-            banner.anchor.set(0.5);
-            banner.scale.set(0.2, 0.6);
-            this.addSprite(banner);
-            this.registerSideButton(banner);
-
-            
-            let eventDuration = new Label(this.game, banner.x, banner.y-10, EventUtils.getRemainTimeShort(eventInfo.eventEndAt), { font: "bold 33px Bookman Old Style ", fill: "#ffffff" });
-            eventDuration.anchor.set(0.5);
-            // eventDuration.scale.set(0.2, 0.6);
-            this.addSprite(eventDuration);
-            this.registerSideButton(eventDuration);
-            let expiryHandled = false;
-            this.game.time.events.loop(1000, ()=>{
-                if(eventInfo.eventEndAt <= Date.now()) {
-                    if (!expiryHandled) {
-                        expiryHandled = true;
-                        if (eventInfo.eventType == EventType.configured) {
-                            EventUtils.expireConfiguredEvent(eventInfo);
-                            if (!this.dialogPanel.replicaPanel && !this.isLocked() && this.dialogPanel.getNextReplica()) {
-                                this.game.time.events.add(100, () => {
-                                    if (!this.isLocked()) {
-                                        this.dialogPanel.updateReplica();
-                                    }
-                                });
-                            }
-                        }
-                    }
-                    eventButton.visible = false;
-                    flash.visible = false;
-                    eventDuration.visible = false;
-                    banner.visible = false;
-                    return;
-                }
-                eventDuration.text = EventUtils.getRemainTimeShort(eventInfo.eventEndAt);
-            })
-
-
-            this.game.add.tween(flash).to({alpha: 0.8}, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Quadratic.InOut, true, 500);
-            this.game.add.tween(flash).to({angle:360}, 60000, Easing.Linear.None, true, 500, -1);
-
-            if (isConfiguredEvent) {
-                leftEventDeltaY += 200;
-            } else {
-                rightEventDeltaY += 200;
-            }
-
-            if(this.eventsToShow.indexOf(EventUtils.getEventKey(eventInfo)) != -1){
-                this.lockScreenFor(2000);
-                this.game.time.events.add(2000, ()=>{
-                    this.showEventPanel(eventInfo);
-                })
-            }
+            this.ensureEventUi(eventInfo);
         });
 
         this.diaryPanel = new DiaryPanel(this.game, this, this.game.width / 2 -20, this.game.height / 2);
@@ -544,6 +469,8 @@ export default class HouseScreen extends DialogScreen {
         if (currentDiaryContent && RecipeUtils.getRequiredLevel(currentDiaryContent) == user.getCurrentForest()) {
             this.showProgress(currentDiaryContent, this.uiHidden);
         }
+
+        this.tryStartConfiguredEventsAfterReplicas();
     }
 
     private showPendingEventPanel(): void {
@@ -560,6 +487,110 @@ export default class HouseScreen extends DialogScreen {
         this.activeEventPanel = p;
         this.addPanel(p);
         p.show(instantly);
+    }
+
+    private tryStartConfiguredEventsAfterReplicas(): void {
+        const newEventKeys = EventUtils.updateEvents();
+        if (newEventKeys.length == 0) {
+            return;
+        }
+
+        EventUtils.getActualEvents().forEach(eventInfo => {
+            const eventKey = EventUtils.getEventKey(eventInfo);
+            if (newEventKeys.indexOf(eventKey) == -1) {
+                return;
+            }
+
+            this.eventsToShow.push(eventKey);
+            this.ensureEventUi(eventInfo);
+        });
+    }
+
+    private ensureEventUi(eventInfo: EventInfo): void {
+        const eventKey = EventUtils.getEventKey(eventInfo);
+        if (this.renderedEventKeys.indexOf(eventKey) != -1) {
+            return;
+        }
+
+        this.renderedEventKeys.push(eventKey);
+
+        let isConfiguredEvent = eventInfo.eventType == EventType.configured;
+        let eventX = isConfiguredEvent ? 100 : this.game.width - 100;
+        let eventY = isConfiguredEvent ? 360 + this.configuredEventOffsetY : 400 + 190 + this.sideEventOffsetY;
+        let eventButton = SpriteUtils.createButton(this.game, eventX, eventY, isConfiguredEvent ? 'actionCircle' : EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId),
+            ()=>{
+                this.showEventPanel(eventInfo);
+            });
+
+        eventButton.visible = true;
+        eventButton.anchor.set(0.5);
+        this.registerSideButton(eventButton);
+
+        if (isConfiguredEvent) {
+            let eventIcon = SpriteUtils.createSprite(this.game, 0, 0, EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId));
+            eventIcon.anchor.set(0.5);
+            eventIcon.scale.set(0.86 * 0.95);
+            eventButton.addChild(eventIcon);
+        }
+        
+        let flash = SpriteUtils.createSprite(this.game, eventButton.x, eventButton.y,"flash");
+        flash.anchor.set(0.5);
+        flash.scale.set(1.5);
+        this.addSprite(flash);
+        this.registerSideButton(flash);
+        
+        this.addButton(eventButton);
+
+        let banner = SpriteUtils.createSprite(this.game, eventButton.x, eventButton.y + 70,"ribbon");
+        banner.anchor.set(0.5);
+        banner.scale.set(0.2, 0.6);
+        this.addSprite(banner);
+        this.registerSideButton(banner);
+
+        let eventDuration = new Label(this.game, banner.x, banner.y-10, EventUtils.getRemainTimeShort(eventInfo.eventEndAt), { font: "bold 33px Bookman Old Style ", fill: "#ffffff" });
+        eventDuration.anchor.set(0.5);
+        this.addSprite(eventDuration);
+        this.registerSideButton(eventDuration);
+        let expiryHandled = false;
+        this.game.time.events.loop(1000, ()=>{
+            if(eventInfo.eventEndAt <= Date.now()) {
+                if (!expiryHandled) {
+                    expiryHandled = true;
+                    if (eventInfo.eventType == EventType.configured) {
+                        EventUtils.expireConfiguredEvent(eventInfo);
+                        if (!this.dialogPanel.replicaPanel && !this.isLocked() && this.dialogPanel.getNextReplica()) {
+                            this.game.time.events.add(100, () => {
+                                if (!this.isLocked()) {
+                                    this.dialogPanel.updateReplica();
+                                }
+                            });
+                        }
+                    }
+                }
+                eventButton.visible = false;
+                flash.visible = false;
+                eventDuration.visible = false;
+                banner.visible = false;
+                return;
+            }
+            eventDuration.text = EventUtils.getRemainTimeShort(eventInfo.eventEndAt);
+        })
+
+        this.game.add.tween(flash).to({alpha: 0.8}, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Quadratic.InOut, true, 500);
+        this.game.add.tween(flash).to({angle:360}, 60000, Easing.Linear.None, true, 500, -1);
+
+        if (isConfiguredEvent) {
+            this.configuredEventOffsetY += 200;
+        } else {
+            this.sideEventOffsetY += 200;
+        }
+
+        if(this.eventsToShow.indexOf(eventKey) != -1){
+            this.lockScreenFor(2000);
+            this.game.time.events.add(2000, ()=>{
+                this.showEventPanel(eventInfo);
+            })
+        }
     }
 
     public showProgress(diaryContent: DiaryContentType, hidden?: boolean) : boolean {

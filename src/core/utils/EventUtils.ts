@@ -55,7 +55,7 @@ export default class EventUtils {
             const isFinished = eventState && (eventState.completedAt || eventState.expiredAt);
             const existingEvent = this.getEventById(eventConfig.eventId);
 
-            if (levelsCount == 0 || isFinished || existingEvent) {
+            if (levelsCount == 0 || isFinished || existingEvent || this.hasPendingStoryReplica(user)) {
                 return;
             }
 
@@ -511,5 +511,9 @@ export default class EventUtils {
         const alreadyParticipated = user.getMarkers().indexOf('firstLukoshko') !== -1;
 
         return !havePrizes && !haveReplicas && !alreadyParticipated && user.getCurrentForest() > this.levelForLukoshkoEvent;
+    }
+
+    private static hasPendingStoryReplica(user: User): boolean {
+        return !!ReplicaDao.getEntity().getReplica(user);
     }
 }
