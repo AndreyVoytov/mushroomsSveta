@@ -274,7 +274,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.uiHolder.addChild(new ColorTransitionPanel(this.game, 0x000000, treesTime, 0, false));
             Game.WHITE_TRANSITION = false;
         } else {
-            this.addSprite(new TreesTransitionPanel(this.game, false, treesTime, treesTime));
+            this.addTopOverlay(new TreesTransitionPanel(this.game, false, treesTime, treesTime));
         }
 
         this.aimsPanel = new AimsStartPanel(this.game, 0, -220, this.topPanel.getAims(), false, this.getForestType(), () => {
@@ -541,7 +541,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         YandexGamesHelper.stopGameplay();
         EventUtils.clearActiveLevelSession();
         let treesTime = 500;
-        this.addSprite(new TreesTransitionPanel(this.game, true, treesTime, 0));
+        this.addTopOverlay(new TreesTransitionPanel(this.game, true, treesTime, 0));
         this.game.time.events.add(treesTime * 2, function () {
             this.startScreen(HouseScreen, true, false);
         }, this)
@@ -558,7 +558,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         ServerStoreComponent.syncronizeUserWithServer();
 
         let treesTime = 500;
-        this.addSprite(new TreesTransitionPanel(this.game, true, treesTime, 0));
+        this.addTopOverlay(new TreesTransitionPanel(this.game, true, treesTime, 0));
         this.game.time.events.add(treesTime * 2, () => {
             this.startScreen(ForestScreen, true, false);
         }, this)
@@ -727,7 +727,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
             let treesTime = 500;
             user.setCurrentForest(2);
             YandexGamesHelper.stopGameplay();
-            this.addSprite(new TreesTransitionPanel(this.game, true, treesTime, 0));
+            this.addTopOverlay(new TreesTransitionPanel(this.game, true, treesTime, 0));
             this.game.time.events.add(treesTime * 2, function () {
                 this.startScreen(HouseScreen, true, false);
             }, this)

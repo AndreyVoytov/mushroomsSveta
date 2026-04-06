@@ -50,7 +50,6 @@ import HouseLayout from '../component/house/layout/HouseLayout';
 import TasksPanel from '../component/house/TasksPanel';
 import TaskService from '../../core/service/TaskService';
 export default class HouseScreen extends DialogScreen {
-
     private layout: BaseLayout;
 
     private keysPanel: KeysPanel;
@@ -409,17 +408,6 @@ export default class HouseScreen extends DialogScreen {
             this.diaryPanel.show()
         } 
 
-        this.playStartAnimations();
-        this.showPendingEventPanel();
-
-
-        if(!this.progressAnimation && !blackFadeOut && this.dialogPanel.getNextReplica()){
-            this.lockScreenFor(1450);
-            this.game.time.events.add(1500, () => {
-                this.dialogPanel.updateReplica();
-            });
-        }
-
         let transitionTime = 2000;
         let transitionDelay = 500;
 
@@ -433,11 +421,21 @@ export default class HouseScreen extends DialogScreen {
             this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
             Game.WHITE_TRANSITION = false;
         } else {
-            this.add.existing(new TreesTransitionPanel(this.game, false, transitionTime, transitionDelay));
+            this.addTopOverlay(new TreesTransitionPanel(this.game, false, transitionTime, transitionDelay));
             // let start = Date.now();
             // while (Date.now() - start < 500) {
             //     // Пустой цикл, ожидаем истечения времени
             // }
+        }
+
+        this.playStartAnimations();
+        this.showPendingEventPanel();
+
+        if(!this.progressAnimation && !blackFadeOut && this.dialogPanel.getNextReplica()){
+            this.lockScreenFor(1450);
+            this.game.time.events.add(1500, () => {
+                this.dialogPanel.updateReplica();
+            });
         }
 
 
@@ -761,7 +759,7 @@ export default class HouseScreen extends DialogScreen {
         let time = 500;
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
         trees.fixedToCamera = true;
-        this.add.existing(trees);
+        this.addTopOverlay(trees);
         this.game.time.events.add(time*2, () => {
             this.startScreen(ForestScreen, true, false);
         })

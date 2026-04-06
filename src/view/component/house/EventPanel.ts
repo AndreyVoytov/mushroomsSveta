@@ -167,7 +167,7 @@ export default class EventPanel extends ClosablePanel {
         let time = 500;
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
         trees.fixedToCamera = true;
-        houseScreen.add.existing(trees);
+        houseScreen.addTopOverlay(trees);
 
         this.game.time.events.add(time * 2, () => {
             AnalyticUtils.logLevelStart();

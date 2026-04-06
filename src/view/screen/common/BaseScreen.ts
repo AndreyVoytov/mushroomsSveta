@@ -16,6 +16,7 @@ import EventType from './../../../core/model/event/EventType';
 export default abstract class BaseScreen extends DebugScreen {
     private lockedMarker: Label | Phaser.Text;
     private transitionBlocker: Phaser.Graphics;
+    private topOverlayGroup: Phaser.Group;
 
     private lastLockedAt: number;
     private lastLockedFor: number;
@@ -126,6 +127,7 @@ export default abstract class BaseScreen extends DebugScreen {
 
     public init() {
         super.init();
+        this.ensureTopOverlayGroup();
         this.transitionBlocker = new Phaser.Graphics(this.game, 0, 0);
         this.transitionBlocker.beginFill(0xb7a8a8, 0);
         this.transitionBlocker.drawRect(0, 0, this.game.width, this.game.height);
@@ -162,6 +164,13 @@ export default abstract class BaseScreen extends DebugScreen {
         (<Game>(this.game)).startScene(scene, clearWorld, clearCache);
     }
 
+    public shutdown(): void {
+        if (this.topOverlayGroup) {
+            this.topOverlayGroup.destroy(true);
+            this.topOverlayGroup = null;
+        }
+    }
+
     public lockScreenFor(millis: number) {
         let now = new Date().getTime();
         console.log("try lock: " + this.lastLockedAt + " " + this.lastLockedFor)
@@ -192,6 +201,21 @@ export default abstract class BaseScreen extends DebugScreen {
         return this.transitionBlocker.inputEnabled;
     }
 
+    public addTopOverlay<T extends PIXI.DisplayObject>(displayObject: T): T {
+        let topOverlayGroup = this.ensureTopOverlayGroup();
+        topOverlayGroup.add(<any>displayObject);
+        this.bringTopOverlayToFront();
+        return displayObject;
+    }
+
+    public bringTopOverlayToFront(): void {
+        if (!this.topOverlayGroup || !this.topOverlayGroup.parent) {
+            return;
+        }
+
+        this.topOverlayGroup.parent.setChildIndex(this.topOverlayGroup, this.topOverlayGroup.parent.children.length - 1);
+    }
+
     protected applyPreset(presets: Preset[]) {
         presets.forEach(preset => {
             if (preset.spriteId != "") {
@@ -201,6 +225,14 @@ export default abstract class BaseScreen extends DebugScreen {
                 }
             }
         });
+    }
+
+    private ensureTopOverlayGroup(): Phaser.Group {
+        if (!this.topOverlayGroup || !this.topOverlayGroup.parent) {
+            this.topOverlayGroup = new Phaser.Group(this.game, this.game.stage, '__topOverlayGroup');
+        }
+
+        return this.topOverlayGroup;
     }
 
     protected attachText(name: string, text: string, style?: Phaser.PhaserTextStyle): Label {
