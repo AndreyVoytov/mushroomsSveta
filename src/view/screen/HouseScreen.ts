@@ -77,6 +77,7 @@ export default class HouseScreen extends DialogScreen {
     public settingsPanel: SettingsPanel;
     public tasksPanel: TasksPanel;
     private diaryPanel: DiaryPanel;
+    private activeEventPanel: EventPanel;
 
     private tasks: DiaryContentType;
     private progressBar: ProgressBar;
@@ -322,9 +323,7 @@ export default class HouseScreen extends DialogScreen {
             let eventY = isConfiguredEvent ? 360 + leftEventDeltaY : 400 + 190 + rightEventDeltaY;
             let eventButton = SpriteUtils.createButton(this.game, eventX, eventY, isConfiguredEvent ? 'actionCircle' : EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId),
                 ()=>{
-                    let p = new EventPanel(this.game, eventInfo);
-                    this.addPanel(p);
-                    p.show();
+                    this.showEventPanel(eventInfo);
                 });
 
             eventButton.visible = true;
@@ -396,9 +395,7 @@ export default class HouseScreen extends DialogScreen {
             if(this.eventsToShow.indexOf(EventUtils.getEventKey(eventInfo)) != -1){
                 this.lockScreenFor(2000);
                 this.game.time.events.add(2000, ()=>{
-                    let p = new EventPanel(this.game, eventInfo);
-                    this.addPanel(p);
-                    p.show();
+                    this.showEventPanel(eventInfo);
                 })
             }
         });
@@ -413,6 +410,7 @@ export default class HouseScreen extends DialogScreen {
         } 
 
         this.playStartAnimations();
+        this.showPendingEventPanel();
 
 
         if(!this.progressAnimation && !blackFadeOut && this.dialogPanel.getNextReplica()){
@@ -548,6 +546,22 @@ export default class HouseScreen extends DialogScreen {
         if (currentDiaryContent && RecipeUtils.getRequiredLevel(currentDiaryContent) == user.getCurrentForest()) {
             this.showProgress(currentDiaryContent, this.uiHidden);
         }
+    }
+
+    private showPendingEventPanel(): void {
+        const pendingEvent = EventUtils.consumePendingHousePanelEvent();
+        if (!pendingEvent) {
+            return;
+        }
+
+        this.showEventPanel(pendingEvent, true);
+    }
+
+    private showEventPanel(eventInfo: EventInfo, instantly?: boolean): void {
+        let p = new EventPanel(this.game, eventInfo);
+        this.activeEventPanel = p;
+        this.addPanel(p);
+        p.show(instantly);
     }
 
     public showProgress(diaryContent: DiaryContentType, hidden?: boolean) : boolean {
@@ -701,7 +715,7 @@ export default class HouseScreen extends DialogScreen {
     }
 
     public showUI(forShop?: boolean) {
-        if (this.canNotTouchUI || !this.uiHidden) {
+        if (this.canNotTouchUI || !this.uiHidden || this.isEventPanelBlockingUI()) {
             return;
         }
         this.uiHidden = false;
@@ -775,6 +789,10 @@ export default class HouseScreen extends DialogScreen {
 
     public isTasksPanelBlockingUI(): boolean {
         return !!this.tasksPanel && this.tasksPanel.opened;
+    }
+
+    public isEventPanelBlockingUI(): boolean {
+        return !!this.activeEventPanel && this.activeEventPanel.opened;
     }
 
     private setPanelButtonsEnabled(panel: { buttons: Phaser.Button[] }, enabled: boolean): void {

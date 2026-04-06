@@ -16,11 +16,12 @@ export default class EventPanel extends ClosablePanel {
     private eventInfo: EventInfo;
 
     constructor(game: Phaser.Game, eventInfo: EventInfo) {
-        super(game, game.width / 2, game.height / 2, true, "blank");
+        super(game, game.width / 2, game.height / 2, false, "blank");
 
         this.eventInfo = eventInfo;
         this.visible = false;
         this.fixedToCamera = true;
+        this.blackTransparent.events.onInputDown.add(() => this.onBackdropTap(), this);
 
         let isConfiguredEvent = eventInfo.eventType == EventType.configured;
         let totalLevels = isConfiguredEvent ? EventUtils.getEventLevelsCount(eventInfo.eventId) : 0;
@@ -47,7 +48,7 @@ export default class EventPanel extends ClosablePanel {
         icon.y = -200;
         icon.scale.set(isConfiguredEvent ? 1.18 : 1.45);
 
-        let closeButton = this.attachButton('closeButtonViolet', () => this.close());
+        let closeButton = this.attachButton('closeButtonViolet', () => this.onCloseButtonClick());
         closeButton.x = 330;
         closeButton.y = -360;
 
@@ -113,6 +114,27 @@ export default class EventPanel extends ClosablePanel {
         }
     }
 
+    private onBackdropTap(): void {
+        if (this.isDialogBlockingPanel()) {
+            return;
+        }
+
+        this.close();
+    }
+
+    private onCloseButtonClick(): void {
+        if (this.isDialogBlockingPanel()) {
+            return;
+        }
+
+        this.close();
+    }
+
+    private isDialogBlockingPanel(): boolean {
+        const screen = <HouseScreen>this.game.state.getCurrentState();
+        return !!screen && !!screen.dialogPanel && screen.dialogPanel.isDialogActive();
+    }
+
     protected onClose() {
         (<HouseScreen>(this.game.state.getCurrentState())).showUI();
     }
@@ -122,6 +144,10 @@ export default class EventPanel extends ClosablePanel {
     }
 
     private onActionButtonClick() {
+        if (this.isDialogBlockingPanel()) {
+            return;
+        }
+
         if (this.eventInfo.eventType != EventType.configured) {
             this.close();
             return;

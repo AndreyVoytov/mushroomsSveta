@@ -42,6 +42,10 @@ export default class DialogPanel extends BasePanel {
         this.inputEnabled = false;
     }
 
+    public isDialogActive(): boolean {
+        return !!this.replicaPanel || this.stripsPanel.isActive();
+    }
+
     public skip() {
         let user = UserService.getUser();
         this.screen.setOnClickAnimations([]); //не сработало

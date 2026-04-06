@@ -99,6 +99,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
     private grassStrip: Phaser.TileSprite;
     private fadeBlockers: Phaser.Sprite[] = [];
 
+    preload() {
+        this.loadBaseAtlases();
+        this.loadOptionalAtlases();
+    }
+
     create() {
         super.create();
         console.log("Game size: " + this.game.width + " " + this.game.height);

@@ -4,6 +4,8 @@ export default class UserEventState {
     completedAt?: number;
     expiredAt?: number;
     pendingMainScreenLevelId?: string;
+    pendingOpenPanel?: boolean;
+    pendingPanelEventEndAt?: number;
 
     constructor(state?: UserEventState) {
         this.eventId = state && state.eventId ? state.eventId : "";
@@ -11,5 +13,7 @@ export default class UserEventState {
         this.completedAt = state && state.completedAt;
         this.expiredAt = state && state.expiredAt;
         this.pendingMainScreenLevelId = state && state.pendingMainScreenLevelId;
+        this.pendingOpenPanel = state && state.pendingOpenPanel;
+        this.pendingPanelEventEndAt = state && state.pendingPanelEventEndAt;
     }
 }

@@ -267,6 +267,7 @@ export default class EventUtils {
         const totalLevels = this.getEventLevelsCount(eventId);
         const eventState = user.getOrCreateEventState(eventId);
         const completedLevelId = this.getActiveLevelOrder();
+        const activeEvent = this.getEventById(eventId);
 
         eventState.progress = Math.max(eventState.progress || 0, this.activeLevelSession.levelIndex + 1);
         if (totalLevels > 0 && eventState.progress > totalLevels) {
@@ -275,10 +276,11 @@ export default class EventUtils {
         if (completedLevelId) {
             eventState.pendingMainScreenLevelId = completedLevelId;
         }
+        eventState.pendingOpenPanel = true;
+        eventState.pendingPanelEventEndAt = activeEvent ? activeEvent.eventEndAt : eventState.pendingPanelEventEndAt;
 
         if (totalLevels > 0 && eventState.progress >= totalLevels) {
             eventState.completedAt = Date.now();
-            const activeEvent = this.getEventById(eventId);
             if (activeEvent) {
                 user.deleteEvent(activeEvent);
             }
@@ -290,6 +292,25 @@ export default class EventUtils {
 
     public static clearActiveLevelSession(): void {
         this.activeLevelSession = null;
+    }
+
+    public static consumePendingHousePanelEvent(): EventInfo {
+        const user = UserService.getUser();
+
+        for (let i = 0; i < EventsConfiguration.allEvents.length; i++) {
+            const eventConfig = EventsConfiguration.allEvents[i];
+            const eventState = user.getEventState(eventConfig.eventId);
+            if (!eventState || !eventState.pendingOpenPanel) {
+                continue;
+            }
+
+            const eventInfo = this.createHousePanelEvent(eventConfig.eventId, eventState.pendingPanelEventEndAt);
+            this.clearPendingHousePanelState(eventState);
+            user.saveEventStates();
+            return eventInfo;
+        }
+
+        return null;
     }
 
     public static expireConfiguredEvent(eventOrId: EventInfo | string): void {
@@ -305,6 +326,7 @@ export default class EventUtils {
             eventState.expiredAt = Date.now();
         }
         eventState.pendingMainScreenLevelId = null;
+        this.clearPendingHousePanelState(eventState);
 
         user.saveEventStates();
 
@@ -331,6 +353,7 @@ export default class EventUtils {
         eventState.completedAt = null;
         eventState.expiredAt = null;
         eventState.pendingMainScreenLevelId = null;
+        this.clearPendingHousePanelState(eventState);
 
         user.deleteCompletedReplicasByPrefix(eventId + "_");
         user.saveEventStates();
@@ -364,6 +387,7 @@ export default class EventUtils {
         eventState.completedAt = Date.now();
         eventState.expiredAt = null;
         eventState.pendingMainScreenLevelId = null;
+        this.clearPendingHousePanelState(eventState);
         user.saveEventStates();
 
         if (this.activeLevelSession && this.activeLevelSession.eventId == eventId) {
@@ -435,6 +459,7 @@ export default class EventUtils {
             eventState.completedAt = Date.now();
         }
         eventState.pendingMainScreenLevelId = null;
+        this.clearPendingHousePanelState(eventState);
 
         user.saveEventStates();
 
@@ -454,6 +479,24 @@ export default class EventUtils {
             return eventId || "";
         }
         return eventConfig[key];
+    }
+
+    private static createHousePanelEvent(eventId: string, fallbackEventEndAt?: number): EventInfo {
+        const activeEvent = this.getEventById(eventId);
+        if (activeEvent) {
+            return activeEvent;
+        }
+
+        const eventConfig = EventsConfiguration.getById(eventId);
+        const eventEndAt = fallbackEventEndAt || Date.now();
+        const eventStartAt = eventConfig ? eventEndAt - eventConfig.duration : eventEndAt - 1;
+
+        return new EventInfo(EventType.configured, eventStartAt, eventEndAt, null, eventId);
+    }
+
+    private static clearPendingHousePanelState(eventState): void {
+        eventState.pendingOpenPanel = false;
+        eventState.pendingPanelEventEndAt = null;
     }
 
     private static canStartFirstLukoshkoEvent(user: User): boolean {

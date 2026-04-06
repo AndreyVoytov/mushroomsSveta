@@ -87,7 +87,7 @@ export default abstract class BaseScreen extends DebugScreen {
             this.loadAtlasGroup("event1");
         }
         
-        let forest = ForestDao.getForestType(user.getCurrentForest());
+        let forest = EventUtils.getActiveEventForestType() || ForestDao.getForestType(user.getCurrentForest());
 
         //load only one screen, remove others
         let allScreens = ForestUtils.getAllScreenImages();
