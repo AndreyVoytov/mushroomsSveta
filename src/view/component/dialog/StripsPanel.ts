@@ -51,8 +51,7 @@ export default class StripsPanel extends BasePanel {
         if (this.screen instanceof HouseScreen) {
             this.screen.hideUI();
         }
-        this.game.world.bringToTop(this.stripTop);
-        this.game.world.bringToTop(this.stripBottom);
+        this.screen.bringDialogOverlayToFront();
         console.log("STRIPS TO TOP")
         // this.game.kineticScrolling.stop();
         if (this.stripTop.y == 0) {

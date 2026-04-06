@@ -28,7 +28,7 @@ export default class DialogPanel extends BasePanel {
     constructor(game: Phaser.Game, screen: DialogScreen, playAnimationCallback: (animation: string)=> void, nextReplicaCallback: ()=>ReplicaType) {
         super(game, 0, 0);
 
-        this.fixedToCamera = true;
+        this.fixedToCamera = false;
 
         this.screen = screen;
         this.addChild(this.stripsPanel = new StripsPanel(this.game, screen));
@@ -103,6 +103,7 @@ export default class DialogPanel extends BasePanel {
 
         console.log("REPLICA UPDATE!!");
 
+        this.screen.bringDialogOverlayToFront();
         this.bringToTop();
 
         let previousReplicaPanel = this.replicaPanel;
@@ -207,7 +208,7 @@ export default class DialogPanel extends BasePanel {
             this.replicaPanel = new ReplicaPanel(this.game, this, 0, this.game.height - 280 - DialogPanel.BOTTOM_PADDING, nextReplica,
                 this.playAnimation, this.diaryPreset);
 
-            this.replicaPanel.fixedToCamera = true;
+            this.replicaPanel.fixedToCamera = false;
             this.addChild(this.replicaPanel);
 
             if (nextReplica.afterAnimation && !noAnimation) {

@@ -158,7 +158,7 @@ export default class ReplicaPanel extends BasePanel {
         const replicaPersonName = LocalizationService.get(r.personName);
         const replicaButtonName = r.buttonName ? LocalizationService.get(r.buttonName) : null;
 
-        this.fixedToCamera = true;
+        this.fixedToCamera = false;
 
         //TODO переделать панель, чтобы (0,0) совпадало с глобальными (0,0)
         let gameBottomY = 280 + DialogPanel.BOTTOM_PADDING;

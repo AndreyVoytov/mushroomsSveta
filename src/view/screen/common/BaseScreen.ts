@@ -6,6 +6,7 @@ import UserService from '../../../core/service/UserService';
 import EventUtils from '../../../core/utils/EventUtils';
 import ForestUtils from '../../../core/utils/ForestUtils';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
+import BasePanel from '../../component/panel/BasePanel';
 import Label from '../../component/panel/Label';
 import { getAtlasGroupNames } from '../../../generated/atlasManifest';
 import Game from '../../game/Game';
@@ -16,6 +17,7 @@ import EventType from './../../../core/model/event/EventType';
 export default abstract class BaseScreen extends DebugScreen {
     private lockedMarker: Label | Phaser.Text;
     private transitionBlocker: Phaser.Graphics;
+    private dialogOverlayGroup: Phaser.Group;
     private topOverlayGroup: Phaser.Group;
 
     private lastLockedAt: number;
@@ -127,6 +129,7 @@ export default abstract class BaseScreen extends DebugScreen {
 
     public init() {
         super.init();
+        this.ensureDialogOverlayGroup();
         this.ensureTopOverlayGroup();
         this.transitionBlocker = new Phaser.Graphics(this.game, 0, 0);
         this.transitionBlocker.beginFill(0xb7a8a8, 0);
@@ -165,6 +168,10 @@ export default abstract class BaseScreen extends DebugScreen {
     }
 
     public shutdown(): void {
+        if (this.dialogOverlayGroup) {
+            this.dialogOverlayGroup.destroy(true);
+            this.dialogOverlayGroup = null;
+        }
         if (this.topOverlayGroup) {
             this.topOverlayGroup.destroy(true);
             this.topOverlayGroup = null;
@@ -201,19 +208,26 @@ export default abstract class BaseScreen extends DebugScreen {
         return this.transitionBlocker.inputEnabled;
     }
 
+    public addDialogOverlayPanel<T extends BasePanel>(panel: T): T {
+        this.attachForDebug(panel);
+        this.ensureDialogOverlayGroup().add(panel);
+        this.refreshOverlayOrder();
+        return panel;
+    }
+
     public addTopOverlay<T extends PIXI.DisplayObject>(displayObject: T): T {
         let topOverlayGroup = this.ensureTopOverlayGroup();
         topOverlayGroup.add(<any>displayObject);
-        this.bringTopOverlayToFront();
+        this.refreshOverlayOrder();
         return displayObject;
     }
 
-    public bringTopOverlayToFront(): void {
-        if (!this.topOverlayGroup || !this.topOverlayGroup.parent) {
-            return;
-        }
+    public bringDialogOverlayToFront(): void {
+        this.refreshOverlayOrder();
+    }
 
-        this.topOverlayGroup.parent.setChildIndex(this.topOverlayGroup, this.topOverlayGroup.parent.children.length - 1);
+    public bringTopOverlayToFront(): void {
+        this.refreshOverlayOrder();
     }
 
     protected applyPreset(presets: Preset[]) {
@@ -227,12 +241,38 @@ export default abstract class BaseScreen extends DebugScreen {
         });
     }
 
+    private ensureDialogOverlayGroup(): Phaser.Group {
+        if (!this.dialogOverlayGroup || !this.dialogOverlayGroup.parent) {
+            this.dialogOverlayGroup = new Phaser.Group(this.game, this.game.stage, '__dialogOverlayGroup');
+            this.refreshOverlayOrder();
+        }
+
+        return this.dialogOverlayGroup;
+    }
+
     private ensureTopOverlayGroup(): Phaser.Group {
         if (!this.topOverlayGroup || !this.topOverlayGroup.parent) {
             this.topOverlayGroup = new Phaser.Group(this.game, this.game.stage, '__topOverlayGroup');
+            this.refreshOverlayOrder();
         }
 
         return this.topOverlayGroup;
+    }
+
+    private refreshOverlayOrder(): void {
+        let stage = this.game && this.game.stage;
+        if (!stage) {
+            return;
+        }
+
+        if (this.dialogOverlayGroup && this.dialogOverlayGroup.parent) {
+            let dialogIndex = stage.children.length - (this.topOverlayGroup && this.topOverlayGroup.parent ? 2 : 1);
+            stage.setChildIndex(this.dialogOverlayGroup, Math.max(0, dialogIndex));
+        }
+
+        if (this.topOverlayGroup && this.topOverlayGroup.parent) {
+            stage.setChildIndex(this.topOverlayGroup, stage.children.length - 1);
+        }
     }
 
     protected attachText(name: string, text: string, style?: Phaser.PhaserTextStyle): Label {

@@ -31,8 +31,8 @@ export default abstract class DialogScreen extends BaseScreen {
              });
         }
 
-        this.dialogPanel.fixedToCamera = true;
-        this.addSprite(this.dialogPanel)
+        this.dialogPanel.fixedToCamera = false;
+        this.addDialogOverlayPanel(this.dialogPanel);
         this.blackPanel = new BlackPanel(this.game);
     }
 

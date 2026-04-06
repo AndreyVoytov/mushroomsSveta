@@ -87,7 +87,7 @@ export default class ReplicaDiaryPanel extends BasePanel {
             this.blackTransparent.endFill();
             this.blackTransparent.alpha = 0;
             this.blackTransparent.inputEnabled = false;
-            this.blackTransparent.fixedToCamera = true;
+            this.blackTransparent.fixedToCamera = false;
             this.addChild(this.blackTransparent);
         }
 

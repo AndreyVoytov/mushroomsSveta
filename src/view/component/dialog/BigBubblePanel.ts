@@ -28,7 +28,7 @@ export default class BigBubblePanel extends BasePanel {
         this.blackTransparent.endFill();
         this.blackTransparent.alpha = 0;
         this.blackTransparent.inputEnabled = false;
-        this.blackTransparent.fixedToCamera = true;
+        this.blackTransparent.fixedToCamera = false;
         this.addChild(this.blackTransparent);
 
         this.cloud1 = this.attachSprite("cloud", "cloud1")
