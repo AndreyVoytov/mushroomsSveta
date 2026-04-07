@@ -10,6 +10,8 @@ import DiaryPictureLayout from '../diary/DiaryPictureLayout';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import Settings from '../../../core/service/Settings';
 export default class ReplicaDiaryPanel extends BasePanel {
+    private static INITIAL_REVEAL_DELAY_MS = 10;
+    private static INITIAL_REVEAL_FADE_MS = 500;
 
     private blackTransparent: Phaser.Graphics;
     private diaryLayout: BasePanel;
@@ -19,6 +21,8 @@ export default class ReplicaDiaryPanel extends BasePanel {
 
     private finalScale = 0.9;
     private emitter: Phaser.Particles.Arcade.Emitter;
+    private layoutAlphaTween: Phaser.Tween;
+    private emitterAlphaTween: Phaser.Tween;
 
     private static RIGHT_SIDE_DX = -70;
 
@@ -72,6 +76,7 @@ export default class ReplicaDiaryPanel extends BasePanel {
             this.emitter.start(false, 5000, 200);
             this.emitter.setAlpha(0.7, 0, 5000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, false);
             this.emitter.setScale(0, 0.7, 0, 0.7, 1450, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, false)
+            this.emitter.alpha = diaryPrest ? 0 : 1;
             // emitter.x = 0;
             // emitter.y = 0;
             // this.addChild(emitter)
@@ -109,6 +114,7 @@ export default class ReplicaDiaryPanel extends BasePanel {
 
         this.diaryLayout.anchor.set(0.5, 0.5)
         this.diaryLayout.scale.set(0);
+        this.diaryLayout.alpha = 0;
 
         if(highlight){
             let diaryShine = SpriteUtils.createSprite(this.game, 0, 0, "diaryShine")
@@ -134,17 +140,35 @@ export default class ReplicaDiaryPanel extends BasePanel {
         if (diaryPrest) {
             Utils.applyPreset(this.diaryLayout, diaryPrest);
             this.diaryLayout.y -= this.game.height - 280 - DialogPanel.BOTTOM_PADDING;
-        } else {
-            this.diaryLayout.alpha = 0;
         }
     }
 
     public show() {
         let time = this.diaryPreset ? 1000 : 300;
+        this.stopRevealTweens();
+
+        let alphaDelay = this.diaryPreset ? ReplicaDiaryPanel.INITIAL_REVEAL_DELAY_MS : 500;
+        let alphaTime = this.diaryPreset ? ReplicaDiaryPanel.INITIAL_REVEAL_FADE_MS : time;
+        let alphaEasing = Settings.isOnlyLinearAnimations()
+            ? Phaser.Easing.Linear.None
+            : (this.diaryPreset ? Phaser.Easing.Quadratic.Out : Phaser.Easing.Quadratic.In);
+
+        this.diaryLayout.alpha = 0;
+        this.layoutAlphaTween = this.game.add.tween(this.diaryLayout).to({ alpha: 1 }, alphaTime, alphaEasing, true, alphaDelay, 0, false);
+        this.layoutAlphaTween.onComplete.addOnce(() => {
+            this.layoutAlphaTween = null;
+        });
+
+        if (this.diaryPreset && this.emitter) {
+            this.emitter.alpha = 0;
+            this.emitterAlphaTween = this.game.add.tween(this.emitter).to({ alpha: 1 }, alphaTime, alphaEasing, true, alphaDelay, 0, false);
+            this.emitterAlphaTween.onComplete.addOnce(() => {
+                this.emitterAlphaTween = null;
+            });
+        }
         if (this.blackTransparent) {
             this.game.add.tween(this.blackTransparent).to({ alpha: 0.5 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
         }
-        this.game.add.tween(this.diaryLayout).to({ alpha: 1 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
         this.game.add.tween(this.diaryLayout.scale).to({ x: this.finalScale, y: this.finalScale }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
         this.game.add.tween(this.diaryLayout).to({ x: this.game.width / 2 + 30, y: this.gameCenterY - 100 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
 
@@ -167,6 +191,7 @@ export default class ReplicaDiaryPanel extends BasePanel {
     }
 
     public hide() {
+        this.stopRevealTweens();
         if (this.blackTransparent) {
             this.game.add.tween(this.blackTransparent).to({ alpha: 0 }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 200, 0, false);
             this.game.time.events.add(300 + 1, () => this.blackTransparent.kill());
@@ -181,5 +206,16 @@ export default class ReplicaDiaryPanel extends BasePanel {
             this.diaryLayout.alpha = 0;
             this.diaryLayout.kill();
         });
+    }
+
+    private stopRevealTweens(): void {
+        if (this.layoutAlphaTween) {
+            this.layoutAlphaTween.stop(false);
+            this.layoutAlphaTween = null;
+        }
+        if (this.emitterAlphaTween) {
+            this.emitterAlphaTween.stop(false);
+            this.emitterAlphaTween = null;
+        }
     }
 }
