@@ -12,6 +12,8 @@ import Settings from '../../../core/service/Settings';
 export default class ReplicaDiaryPanel extends BasePanel {
     private static INITIAL_REVEAL_DELAY_MS = 10;
     private static INITIAL_REVEAL_FADE_MS = 500;
+    private static DIARY_EFFECT_LOCAL_X = 129;
+    private static DIARY_EFFECT_LOCAL_Y = 38 - 56 / 1.18 + 13;
 
     private blackTransparent: Phaser.Graphics;
     private diaryLayout: BasePanel;
@@ -21,8 +23,9 @@ export default class ReplicaDiaryPanel extends BasePanel {
 
     private finalScale = 0.9;
     private emitter: Phaser.Particles.Arcade.Emitter;
+    private emitterStartEvent: Phaser.TimerEvent;
     private layoutAlphaTween: Phaser.Tween;
-    private emitterAlphaTween: Phaser.Tween;
+    private diaryHighlightColor: string;
 
     private static RIGHT_SIDE_DX = -70;
 
@@ -39,47 +42,11 @@ export default class ReplicaDiaryPanel extends BasePanel {
         //diaryPreset - показ дневника во время мини-игры
         let diaryContent = diaryPrest && r.context.level != 3 ? DiaryConfiguration.getNextrecipe(r.context.level) : DiaryConfiguration.getCurrentRecipe(r.context.level, true);
 
-        if (highlight) {
-            // let emitter = game.add.emitter(0, 0, /*game.world.centerX, game.world.centerY,*/ 200);
-            this.emitter = game.add.emitter(game.world.centerX, game.world.centerY - 200, 10);
+        this.diaryHighlightColor = diaryContent && diaryContent.highlightColor ? diaryContent.highlightColor : null;
 
-            if(diaryContent.highlightColor && diaryContent.highlightColor == "pink"){
-                // this.emitter.makeParticles(["p6", "p7"]);
-                this.emitter.makeParticles(
-                    //warning! p6 and p7 have to be on the same atlas!
-                    SpriteUtils.getAtlasKeyAndFrame(this.game, "p6").atlasKey,
-                    [SpriteUtils.getAtlasKeyAndFrame(this.game, "p6").frameName, SpriteUtils.getAtlasKeyAndFrame(this.game, "p7").frameName]
-                );
-            } else if(diaryContent.highlightColor && diaryContent.highlightColor == "blue"){
-                // this.emitter.makeParticles(["p8", "p9"]);
-                this.emitter.makeParticles(
-                    //warning! p8 and p9 have to be on the same atlas!
-                    SpriteUtils.getAtlasKeyAndFrame(this.game, "p8").atlasKey,
-                    [SpriteUtils.getAtlasKeyAndFrame(this.game, "p8").frameName, SpriteUtils.getAtlasKeyAndFrame(this.game, "p9").frameName]
-                );
-            } else { //green
-                // this.emitter.makeParticles(["p5", "p2"]);
-                this.emitter.makeParticles(
-                    //warning! p2 and p5 have to be on the same atlas!
-                    SpriteUtils.getAtlasKeyAndFrame(this.game, "p2").atlasKey,
-                    [SpriteUtils.getAtlasKeyAndFrame(this.game, "p2").frameName, SpriteUtils.getAtlasKeyAndFrame(this.game, "p5").frameName]
-                );
-            }
-
-            this.emitter.gravity = new Phaser.Point(0, 0);
-            this.emitter.minSpeed = 100;
-            this.emitter.maxSpeed = 300;
-            // emitter.maxParticleScale = 0.7;
-            this.emitter.width = 400;
-            this.emitter.height = 600;
-            // emitter.alpha = 0.7;
-            this.emitter.start(false, 5000, 200);
-            this.emitter.setAlpha(0.7, 0, 5000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, false);
-            this.emitter.setScale(0, 0.7, 0, 0.7, 1450, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, false)
-            this.emitter.alpha = diaryPrest ? 0 : 1;
-            // emitter.x = 0;
-            // emitter.y = 0;
-            // this.addChild(emitter)
+        if (highlight && !diaryPrest) {
+            this.emitter = this.createDiaryEmitter(new Phaser.Point(game.world.centerX, game.world.centerY - 200));
+            this.startDiaryEmitter();
         }
 
        
@@ -96,8 +63,6 @@ export default class ReplicaDiaryPanel extends BasePanel {
             this.addChild(this.blackTransparent);
         }
 
-        
-
         if (!diaryContent) {
             return;
         }
@@ -109,7 +74,7 @@ export default class ReplicaDiaryPanel extends BasePanel {
         } else if (diaryContent.picture) {
             this.diaryLayout = new DiaryPictureLayout(this.game, diaryContent, this.game.width / 2 + 30, this.gameCenterY - 100);
         } else {
-            this.diaryLayout = new DiaryRecipeLayout(this.game, diaryContent, this.game.width / 2 + 30, this.gameCenterY - 100, animationsDelay);
+            this.diaryLayout = new DiaryRecipeLayout(this.game, diaryContent, this.game.width / 2 + 30, this.gameCenterY - 100, animationsDelay, !diaryPrest);
         }
 
         this.diaryLayout.anchor.set(0.5, 0.5)
@@ -146,6 +111,8 @@ export default class ReplicaDiaryPanel extends BasePanel {
     public show() {
         let time = this.diaryPreset ? 1000 : 300;
         this.stopRevealTweens();
+        this.stopEmitterStartEvent();
+        this.bringEmitterToStageTop();
 
         let alphaDelay = this.diaryPreset ? ReplicaDiaryPanel.INITIAL_REVEAL_DELAY_MS : 500;
         let alphaTime = this.diaryPreset ? ReplicaDiaryPanel.INITIAL_REVEAL_FADE_MS : time;
@@ -158,14 +125,6 @@ export default class ReplicaDiaryPanel extends BasePanel {
         this.layoutAlphaTween.onComplete.addOnce(() => {
             this.layoutAlphaTween = null;
         });
-
-        if (this.diaryPreset && this.emitter) {
-            this.emitter.alpha = 0;
-            this.emitterAlphaTween = this.game.add.tween(this.emitter).to({ alpha: 1 }, alphaTime, alphaEasing, true, alphaDelay, 0, false);
-            this.emitterAlphaTween.onComplete.addOnce(() => {
-                this.emitterAlphaTween = null;
-            });
-        }
         if (this.blackTransparent) {
             this.game.add.tween(this.blackTransparent).to({ alpha: 0.5 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
         }
@@ -174,6 +133,10 @@ export default class ReplicaDiaryPanel extends BasePanel {
 
         if (this.diaryPreset) {
             this.game.add.tween(this.diaryLayout).to({ angle: 365 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
+            this.emitterStartEvent = this.game.time.events.add(500 + time, () => {
+                this.emitterStartEvent = null;
+                this.recreateDiaryEmitterAtCurrentPosition();
+            });
         }
 
         // if (highlight) {
@@ -192,6 +155,7 @@ export default class ReplicaDiaryPanel extends BasePanel {
 
     public hide() {
         this.stopRevealTweens();
+        this.stopEmitterStartEvent();
         if (this.blackTransparent) {
             this.game.add.tween(this.blackTransparent).to({ alpha: 0 }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 200, 0, false);
             this.game.time.events.add(300 + 1, () => this.blackTransparent.kill());
@@ -203,9 +167,16 @@ export default class ReplicaDiaryPanel extends BasePanel {
                 this.emitter.killAll();
                 this.emitter.kill();
             }
+            this.diaryLayout.onKill();
             this.diaryLayout.alpha = 0;
             this.diaryLayout.kill();
         });
+    }
+
+    public update(): void {
+        if (this.diaryPreset && this.emitter) {
+            this.syncEmitterToDiary();
+        }
     }
 
     private stopRevealTweens(): void {
@@ -213,9 +184,106 @@ export default class ReplicaDiaryPanel extends BasePanel {
             this.layoutAlphaTween.stop(false);
             this.layoutAlphaTween = null;
         }
-        if (this.emitterAlphaTween) {
-            this.emitterAlphaTween.stop(false);
-            this.emitterAlphaTween = null;
+    }
+
+    private stopEmitterStartEvent(): void {
+        if (!this.emitterStartEvent) {
+            return;
         }
+
+        this.game.time.events.remove(this.emitterStartEvent);
+        this.emitterStartEvent = null;
+    }
+
+    private recreateDiaryEmitterAtCurrentPosition(): void {
+        if (this.emitter) {
+            this.emitter.killAll();
+            this.emitter.kill();
+            this.emitter.destroy(true);
+            this.emitter = null;
+        }
+
+        this.emitter = this.createDiaryEmitter(this.getDiaryEmitterGlobalPoint());
+        this.startDiaryEmitter();
+        this.syncEmitterToDiary();
+    }
+
+    private createDiaryEmitter(globalPoint: Phaser.Point): Phaser.Particles.Arcade.Emitter {
+        let emitter = this.game.add.emitter(globalPoint.x, globalPoint.y, 10);
+
+        if (this.diaryHighlightColor == "pink") {
+            emitter.makeParticles(
+                SpriteUtils.getAtlasKeyAndFrame(this.game, "p6").atlasKey,
+                [SpriteUtils.getAtlasKeyAndFrame(this.game, "p6").frameName, SpriteUtils.getAtlasKeyAndFrame(this.game, "p7").frameName]
+            );
+        } else if (this.diaryHighlightColor == "blue") {
+            emitter.makeParticles(
+                SpriteUtils.getAtlasKeyAndFrame(this.game, "p8").atlasKey,
+                [SpriteUtils.getAtlasKeyAndFrame(this.game, "p8").frameName, SpriteUtils.getAtlasKeyAndFrame(this.game, "p9").frameName]
+            );
+        } else {
+            emitter.makeParticles(
+                SpriteUtils.getAtlasKeyAndFrame(this.game, "p2").atlasKey,
+                [SpriteUtils.getAtlasKeyAndFrame(this.game, "p2").frameName, SpriteUtils.getAtlasKeyAndFrame(this.game, "p5").frameName]
+            );
+        }
+
+        emitter.gravity = new Phaser.Point(0, 0);
+        emitter.minSpeed = 100;
+        emitter.maxSpeed = 300;
+        emitter.width = 400;
+        emitter.height = 600;
+
+        return emitter;
+    }
+
+    private startDiaryEmitter(): void {
+        if (!this.emitter) {
+            return;
+        }
+
+        this.emitter.start(false, 5000, 200);
+        this.emitter.setAlpha(0.7, 0, 5000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, false);
+        this.emitter.setScale(0, 0.7, 0, 0.7, 1450, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, false)
+    }
+
+    private getDiaryEmitterGlobalPoint(): Phaser.Point {
+        if (!this.diaryLayout || !(<any>this.diaryLayout).toGlobal) {
+            return new Phaser.Point(this.game.world.centerX, this.game.world.centerY - 200);
+        }
+
+        return (<any>this.diaryLayout).toGlobal(new Phaser.Point(
+            ReplicaDiaryPanel.DIARY_EFFECT_LOCAL_X,
+            ReplicaDiaryPanel.DIARY_EFFECT_LOCAL_Y
+        ));
+    }
+
+    private syncEmitterToDiary(): void {
+        if (!this.emitter) {
+            return;
+        }
+
+        let globalPoint = this.getDiaryEmitterGlobalPoint();
+        this.emitter.x = globalPoint.x;
+        this.emitter.y = globalPoint.y;
+        this.bringEmitterToStageTop();
+    }
+
+    private bringEmitterToStageTop(): void {
+        if (!this.emitter) {
+            return;
+        }
+
+        let globalPoint = this.emitter.parent && (<any>this.emitter.parent).toGlobal
+            ? (<any>this.emitter.parent).toGlobal(new Phaser.Point(this.emitter.x, this.emitter.y))
+            : new Phaser.Point(this.emitter.x, this.emitter.y);
+
+        if (this.emitter.parent != this.game.stage) {
+            this.game.stage.addChild(this.emitter);
+        }
+
+        this.emitter.x = globalPoint.x;
+        this.emitter.y = globalPoint.y;
+        this.game.stage.setChildIndex(this.emitter, this.game.stage.children.length - 1);
     }
 }

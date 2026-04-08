@@ -8,8 +8,9 @@ import Settings from '../../../core/service/Settings';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class DiaryRecipeLayout extends BasePanel {
+    private particlesEvent: Phaser.TimerEvent;
 
-    constructor(game: Phaser.Game, recipeContent: DiaryContentType, x: number, y: number, animationsDelay?: number) {
+    constructor(game: Phaser.Game, recipeContent: DiaryContentType, x: number, y: number, animationsDelay?: number, showParticles: boolean = true) {
         super(game, x, y, "diaryLayout", "blank");
 
         let bg = SpriteUtils.createSprite(this.game, 0, 0, "bookBg");
@@ -68,11 +69,14 @@ export default class DiaryRecipeLayout extends BasePanel {
             AnimationUtils.heartBeat(this.game, result);
         }
 
-        this.game.time.events.add(animationsDelay || 0, () => {
-            positions.forEach(p => {
-                this.createParticles(p.x, p.y);
-            })
-        })
+        if (showParticles) {
+            this.particlesEvent = this.game.time.events.add(animationsDelay || 0, () => {
+                this.particlesEvent = null;
+                positions.forEach(p => {
+                    this.createParticles(p.x, p.y);
+                });
+            });
+        }
 
         positions.forEach((p, i) => {
             let ingredientBg = SpriteUtils.createSprite(this.game, p.x, p.y, "ingredientBg");
@@ -128,6 +132,15 @@ export default class DiaryRecipeLayout extends BasePanel {
         emitter.height = 170;
 
         emitter.start(false, 2000, 100)
+    }
+
+    public onKill(): void {
+        if (!this.particlesEvent) {
+            return;
+        }
+
+        this.game.time.events.remove(this.particlesEvent);
+        this.particlesEvent = null;
     }
 
 }
