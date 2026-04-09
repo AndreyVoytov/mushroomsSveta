@@ -127,6 +127,21 @@ export default abstract class BaseScreen extends DebugScreen {
         });
     }
 
+    protected loadOptionalConfiguredEventResources(includeAwaitingActivation?: boolean): void {
+        EventUtils.getConfiguredEventIdsWithOptionalAssets(includeAwaitingActivation).forEach(eventId => {
+            EventUtils.getConfiguredEventAssets(eventId).forEach(asset => {
+                if (!asset || !asset.key || !asset.path || this.isImageCached(asset.key)) {
+                    return;
+                }
+
+                this.loadImage(asset.key, asset.path);
+                if (Settings.isGraphicsFromAtlases()) {
+                    this.load.image(asset.key, asset.path + "?" + Settings.ATLASES_VERSION);
+                }
+            });
+        });
+    }
+
     public init() {
         super.init();
         this.ensureDialogOverlayGroup();
@@ -272,6 +287,23 @@ export default abstract class BaseScreen extends DebugScreen {
 
         if (this.topOverlayGroup && this.topOverlayGroup.parent) {
             stage.setChildIndex(this.topOverlayGroup, stage.children.length - 1);
+        }
+    }
+
+    private isImageCached(key: string): boolean {
+        const cache: any = this.game && this.game.cache;
+        if (!cache || !key) {
+            return false;
+        }
+
+        if (cache.checkImageKey) {
+            return cache.checkImageKey(key);
+        }
+
+        try {
+            return !!cache.getImage(key, true);
+        } catch (e) {
+            return false;
         }
     }
 

@@ -181,6 +181,7 @@ export default class LoadingScreen extends BaseScreen {
             this.loadBaseAtlases();
             this.loadOptionalAtlases();
         }
+        this.loadOptionalConfiguredEventResources();
 
         //TODO СЂР°СЃРїСЂРµРґРµР»РёС‚СЊ РєР°СЂС‚РёРЅРєРё РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ Р°С‚Р»Р°СЃР°РјРё
 
@@ -931,7 +932,6 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('leshiiSign', 'assets/event1/leshiiSign.png');
         this.loadImage('circleViolet', 'assets/event1/circleViolet.png');
         this.loadImage('clock', 'assets/event1/clock.png');
-
         //audio
         this.game.load.audio("bushHit2", "assets/other/audio/bushHit2.mp3");
         this.game.load.audio("bushMoving", "assets/other/audio/bushMoving.mp3");

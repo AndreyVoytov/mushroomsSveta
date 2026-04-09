@@ -1,117 +1,111 @@
 import LocalizationService from '../../../core/localization/LocalizationService';
-import AnalyticUtils from '../../../core/utils/AnalyticUtils';
 import EventInfo from '../../../core/model/event/EventInfo';
-import EventStage from '../../../core/model/event/EventStage';
-import EventType from '../../../core/model/event/EventType';
 import EventUtils from '../../../core/utils/EventUtils';
-import ForestScreen from '../../screen/ForestScreen';
 import HouseScreen from './../../screen/HouseScreen';
 import ClosablePanel from '../panel/ClosablePanel';
 import Label from '../panel/Label';
-import TreesTransitionPanel from '../panel/TreesTransitionPanel';
 
 export default class EventPanel extends ClosablePanel {
 
     private actionButton: Phaser.Button;
-    private eventInfo: EventInfo;
 
     constructor(game: Phaser.Game, eventInfo: EventInfo) {
         super(game, game.width / 2, game.height / 2, false, "blank");
 
-        this.eventInfo = eventInfo;
         this.visible = false;
         this.fixedToCamera = true;
         this.blackTransparent.events.onInputDown.add(() => this.onBackdropTap(), this);
 
-        let isConfiguredEvent = eventInfo.eventType == EventType.configured;
-        let totalLevels = isConfiguredEvent ? EventUtils.getEventLevelsCount(eventInfo.eventId) : 0;
-        let progress = isConfiguredEvent ? EventUtils.getEventProgress(eventInfo.eventId) : 0;
-        let nextLevelNumber = Math.min(progress + 1, totalLevels);
-        let canPlay = isConfiguredEvent && EventUtils.getStage(eventInfo) == EventStage.active && nextLevelNumber > 0 && progress < totalLevels;
+        let header = EventUtils.getName(eventInfo.eventType, eventInfo.eventId);
+        let text = EventUtils.getDesc(eventInfo.eventType, eventInfo.eventId);
+        let actionName = LocalizationService.get('ui.ok');
 
-        let panel = this.attachSprite('panel2', 'panel');
-        panel.anchor.set(0.5);
-        panel.scale.set(1.08, 1.04);
+        let panel = this.attachSprite('panel', 'panel');
+        this.attachSprite('panel', 'panel2');
         panel.inputEnabled = true;
 
-        let helperPanel = this.attachSprite('helperPanel');
-        helperPanel.anchor.set(0.5);
-        helperPanel.scale.set(0.88, 0.86);
+        this.attachSprite('helperPanel');
 
-        let titleBg = this.attachSprite('statusPanel', 'titleBg');
-        titleBg.anchor.set(0.5);
-        titleBg.scale.set(1.62, 1.14);
-        titleBg.y = -360;
+        this.attachSprite(EventUtils.getMainImage(eventInfo.eventType, eventInfo.eventId), 'headerImage');
+        this.attachSprite('leshiiSign');
 
-        let icon = this.attachSprite(EventUtils.getMainImage(eventInfo.eventType, eventInfo.eventId), 'eventIcon');
-        icon.anchor.set(0.5);
-        icon.y = -200;
-        icon.scale.set(isConfiguredEvent ? 1.18 : 1.45);
+        this.attachSprite('leaf1');
+        this.attachSprite('leaf2');
+        this.attachSprite('leaf3');
+        this.attachSprite('leaf4');
 
-        let closeButton = this.attachButton('closeButtonViolet', () => this.onCloseButtonClick());
-        closeButton.x = 330;
-        closeButton.y = -360;
+        this.attachSprite('leaf1', 'leaf1_2');
+        this.attachSprite('leaf2', 'leaf2_2');
+        this.attachSprite('leaf3', 'leaf3_2');
+        this.attachSprite('leaf4', 'leaf4_2');
 
-        let title = this.attachText('titleLabel', EventUtils.getName(eventInfo.eventType, eventInfo.eventId), {
+        this.attachSprite('titlePnl');
+        this.attachSprite('statusPanel');
+        this.attachSprite('clock');
+
+        let timeLabel = this.attachText('timeLabel', EventUtils.getRemainTime(eventInfo.eventEndAt), {
+            font: 'bold 42px Arial',
+            fill: '#e7c593',
+            align: 'center'
+        });
+        this.game.time.events.loop(1000, () => {
+            timeLabel.text = EventUtils.getRemainTime(eventInfo.eventEndAt);
+        });
+
+        this.attachSprite('ribbon');
+
+        this.attachButton('closeButtonViolet', () => this.onCloseButtonClick());
+
+        this.attachText('levelLabel', header, {
             font: '46px Bookman Old Style',
-            fill: '#ffffff',
+            fill: '#ffffff'
+        });
+
+        let textLabel = this.attachText('textLabel', text, {
+            font: 'bold 45px Arial',
+            fill: '#804119',
             align: 'center',
             wordWrap: true,
             wordWrapWidth: 620
         });
-        title.y = -366;
-
-        let remainLabel = this.attachText('remainLabel', EventUtils.getRemainTime(eventInfo.eventEndAt), {
-            font: 'bold 34px Arial',
-            fill: '#8f6130',
-            align: 'center'
-        });
-        remainLabel.y = -84;
-        this.game.time.events.loop(1000, () => {
-            remainLabel.text = EventUtils.getRemainTime(eventInfo.eventEndAt);
-        });
-
-        if (isConfiguredEvent) {
-            let progressLabel = this.attachText('progressLabel', progress + '/' + totalLevels, {
-                font: 'bold 54px Gilroy',
-                fill: '#7b4037',
-                align: 'center'
-            });
-            progressLabel.y = -20;
-            progressLabel.addStrokeColor('#f8ebd4', 0);
-            progressLabel.strokeThickness = 4;
-        }
-
-        let textLabel = this.attachText('textLabel', EventUtils.getDesc(eventInfo.eventType, eventInfo.eventId), {
-            font: 'bold 34px Arial',
-            fill: '#804119',
-            align: 'center',
-            wordWrap: true,
-            wordWrapWidth: 640
-        });
-        textLabel.alpha = 0.92;
-        textLabel.y = 104;
+        textLabel.alpha = 0.8;
 
         this.actionButton = this.attachButton('pnlButton', () => this.onActionButtonClick(), 'actionButton');
-        this.actionButton.y = 334;
 
-        let actionLabelText = LocalizationService.get('ui.ok');
-        if (isConfiguredEvent) {
-            actionLabelText = canPlay ? LocalizationService.get('ui.play') + ' ' + nextLevelNumber : LocalizationService.get('ui.ok');
-        }
-
-        let actionLabel = new Label(this.game, 0, 0, actionLabelText, {
-            font: 'bolder 52px Gilroy',
+        let continueLabel = new Label(this.game, 0, 0, actionName, {
+            font: 'bolder 60px Gilroy',
             fill: '#f0f1ec'
         });
-        actionLabel.anchor.set(0.5);
-        actionLabel.strokeThickness = 4;
-        actionLabel.addStrokeColor('#61b019', 0);
-        this.actionButton.addChild(actionLabel);
+        continueLabel.name = 'continueLabel';
+        continueLabel.anchor = new Phaser.Point(0.5, 0.5);
+        continueLabel.strokeThickness = 4;
+        continueLabel.addStrokeColor('#61b019', 0);
+        this.actionButton.addChild(continueLabel);
 
-        if (isConfiguredEvent && !canPlay) {
-            this.actionButton.alpha = 0.82;
-        }
+        this.applyPreset([
+            { "spriteId": "panel", "x": 0, "y": -5.5, "scaleX": 1.04, "scaleY": 0.5999999999999999, "anchorX": 0.5, "anchorY": 0, "rotation": 0 },
+            { "spriteId": "panel2", "x": 2, "y": -165, "scaleX": 0.94, "scaleY": 0.98, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "helperPanel", "x": 0, "y": 260, "scaleX": 1.0139999999999998, "scaleY": 1.08, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "headerImage", "x": 0, "y": -196, "scaleX": 1.5200000000000005, "scaleY": 1.5600000000000005, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "leaf1", "x": -320, "y": -416, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": -1.4300000000000006 },
+            { "spriteId": "leaf2", "x": -248, "y": 20, "scaleX": 1.5000000000000004, "scaleY": 1.5400000000000005, "anchorX": 0.5, "anchorY": 0.5, "rotation": 1.0800000000000007 },
+            { "spriteId": "leaf3", "x": -323, "y": -42, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0.2700000000000001 },
+            { "spriteId": "leaf4", "x": -316, "y": 32, "scaleX": -1.6800000000000017, "scaleY": 1.5600000000000005, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "leaf1_2", "x": 231, "y": -508, "scaleX": 0.94, "scaleY": 0.8799999999999999, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0.05999999999999998 },
+            { "spriteId": "leaf2_2", "x": 259, "y": -1, "scaleX": 1.4600000000000004, "scaleY": 1.5800000000000005, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0.4300000000000002 },
+            { "spriteId": "leaf3_2", "x": 219, "y": 46, "scaleX": 1.0400000000000005, "scaleY": 0.9199999999999999, "anchorX": 0.5, "anchorY": 0.5, "rotation": 6.349999999999973 },
+            { "spriteId": "leaf4_2", "x": 323, "y": 23, "scaleX": 1.4200000000000004, "scaleY": 1.5600000000000005, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0.03999999999999997 },
+            { "spriteId": "titlePnl", "x": -2, "y": -501, "scaleX": 1.06, "scaleY": 1.7400000000000007, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "statusPanel", "x": 2, "y": -507, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "clock", "x": -88, "y": -506, "scaleX": 1.5600000000000005, "scaleY": 1.4400000000000004, "anchorX": 0.5, "anchorY": 0.5, "rotation": -0.2700000000000001 },
+            { "spriteId": "timeLabel", "x": 29, "y": -503, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 45 },
+            { "spriteId": "ribbon", "x": 1, "y": 125, "scaleX": 1.02, "scaleY": 1.2600000000000002, "anchorX": 0.5, "anchorY": 0.5, "rotation": -3.469446951953614e-18 },
+            { "spriteId": "closeButtonViolet", "x": 309, "y": 91, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "levelLabel", "x": 0, "y": 98, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 46 },
+            { "spriteId": "textLabel", "x": 2, "y": 250, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 45 },
+            { "spriteId": "actionButton", "x": 0, "y": 414, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "leshiiSign", "x": -276, "y": -493, "scaleX": 1.2800000000000002, "scaleY": 1.2400000000000002, "anchorX": 0.5, "anchorY": 0.5, "rotation": -0.7600000000000005 }
+        ]);
     }
 
     private onBackdropTap(): void {
@@ -148,29 +142,6 @@ export default class EventPanel extends ClosablePanel {
             return;
         }
 
-        if (this.eventInfo.eventType != EventType.configured) {
-            this.close();
-            return;
-        }
-
-        if (!EventUtils.startEventLevel(this.eventInfo.eventId)) {
-            if (EventUtils.getStage(this.eventInfo) === EventStage.expired) {
-                EventUtils.expireConfiguredEvent(this.eventInfo);
-            }
-            this.close();
-            return;
-        }
-
-        this.actionButton.inputEnabled = false;
-
-        let houseScreen = <HouseScreen>this.game.state.getCurrentState();
-        let time = 500;
-        let trees = new TreesTransitionPanel(this.game, true, time, 0);
-        houseScreen.addTopOverlay(trees);
-
-        this.game.time.events.add(time * 2, () => {
-            AnalyticUtils.logLevelStart();
-            houseScreen.startScreen(ForestScreen, true, false);
-        }, this);
+        this.close();
     }
 }

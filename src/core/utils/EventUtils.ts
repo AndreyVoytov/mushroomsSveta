@@ -1,4 +1,4 @@
-import EventsConfiguration from '../configuration/EventsConfiguration';
+import EventsConfiguration, { EventAssetConfiguration } from '../configuration/EventsConfiguration';
 import PrizesConfiguration from '../configuration/PrizesConfiguration';
 import ForestDao from '../dao/ForestDao';
 import ReplicaDao from '../dao/ReplicaDao';
@@ -126,7 +126,7 @@ export default class EventUtils {
             case EventType.lukoshko:
                 return 'lukoshkoIcon2';
             case EventType.configured:
-                return 'tasks';
+                return this.getEventConfigStringValue(eventId, "icon", "tasks");
             default:
                 throw new NeverError(eventType);
         }
@@ -137,10 +137,70 @@ export default class EventUtils {
             case EventType.lukoshko:
                 return 'lukoshkoHeader';
             case EventType.configured:
-                return 'tasks';
+                return this.getEventConfigStringValue(eventId, "mainImage", "tasks");
             default:
                 throw new NeverError(eventType);
         }
+    }
+
+    public static getConfiguredEventIconScale(eventId?: string): number {
+        return this.getEventConfigNumberValue(eventId, "iconScale", 0.86 * 0.95);
+    }
+
+    public static getMainImageScale(eventType: EventType, eventId?: string): number {
+        switch (eventType) {
+            case EventType.lukoshko:
+                return 1.45;
+            case EventType.configured:
+                return this.getEventConfigNumberValue(eventId, "mainImageScale", 1.18);
+            default:
+                throw new NeverError(eventType);
+        }
+    }
+
+    public static getConfiguredEventAssets(eventId: string): EventAssetConfiguration[] {
+        return EventsConfiguration.getAssetsById(eventId);
+    }
+
+    public static getConfiguredEventIdsWithOptionalAssets(includeAwaitingActivation?: boolean): string[] {
+        const result: string[] = [];
+        const user = UserService.getUser();
+
+        const pushEventId = (eventId: string) => {
+            if (!eventId || result.indexOf(eventId) != -1 || this.getConfiguredEventAssets(eventId).length == 0) {
+                return;
+            }
+
+            result.push(eventId);
+        };
+
+        this.getActualEvents().forEach(event => {
+            if (event.eventType == EventType.configured) {
+                pushEventId(event.eventId);
+            }
+        });
+
+        EventsConfiguration.allEvents.forEach(eventConfig => {
+            const eventState = user.getEventState(eventConfig.eventId);
+            if (eventState && eventState.pendingOpenPanel) {
+                pushEventId(eventConfig.eventId);
+            }
+
+            if (includeAwaitingActivation && this.shouldPreloadConfiguredEventAssetsBeforeActivation(user, eventConfig.eventId)) {
+                pushEventId(eventConfig.eventId);
+            }
+        });
+
+        return result;
+    }
+
+    public static hasMissingConfiguredEventAssets(game: Phaser.Game, eventId: string): boolean {
+        const assets = this.getConfiguredEventAssets(eventId);
+        if (assets.length == 0) {
+            return false;
+        }
+
+        return assets.some(asset => !this.isImageCached(game, asset.key));
     }
 
     public static getName(eventType: EventType, eventId?: string): string {
@@ -487,6 +547,33 @@ export default class EventUtils {
         return eventConfig[key];
     }
 
+    private static getEventConfigStringValue(eventId: string, key: "icon" | "mainImage", fallback: string): string {
+        const eventConfig = EventsConfiguration.getById(eventId);
+        return eventConfig && eventConfig[key] ? eventConfig[key] : fallback;
+    }
+
+    private static getEventConfigNumberValue(eventId: string, key: "iconScale" | "mainImageScale", fallback: number): number {
+        const eventConfig = EventsConfiguration.getById(eventId);
+        return eventConfig && eventConfig[key] != null ? Number(eventConfig[key]) : fallback;
+    }
+
+    private static isImageCached(game: Phaser.Game, key: string): boolean {
+        const cache: any = game && game.cache;
+        if (!cache || !key) {
+            return false;
+        }
+
+        if (cache.checkImageKey) {
+            return cache.checkImageKey(key);
+        }
+
+        try {
+            return !!cache.getImage(key, true);
+        } catch (e) {
+            return false;
+        }
+    }
+
     private static createHousePanelEvent(eventId: string, fallbackEventEndAt?: number): EventInfo {
         const activeEvent = this.getEventById(eventId);
         if (activeEvent) {
@@ -503,6 +590,24 @@ export default class EventUtils {
     private static clearPendingHousePanelState(eventState): void {
         eventState.pendingOpenPanel = false;
         eventState.pendingPanelEventEndAt = null;
+    }
+
+    private static shouldPreloadConfiguredEventAssetsBeforeActivation(user: User, eventId: string): boolean {
+        const eventConfig = EventsConfiguration.getById(eventId);
+        if (!eventConfig) {
+            return false;
+        }
+
+        const levelsCount = this.getEventLevelsCount(eventId);
+        const eventState = user.getEventState(eventId);
+        const isFinished = eventState && (eventState.completedAt || eventState.expiredAt);
+        const existingEvent = this.getEventById(eventId);
+
+        if (levelsCount == 0 || isFinished || existingEvent) {
+            return false;
+        }
+
+        return user.getCurrentForest() >= eventConfig.startsatLevel;
     }
 
     private static canStartFirstLukoshkoEvent(user: User): boolean {

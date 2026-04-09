@@ -18,7 +18,6 @@ import StartLevelPanel from './../component/house/StartLevelPanel';
 import BaseLayout from '../component/house/layout/BaseLayout';
 import DialogScreen from './common/DialogScreen';
 import ForestScreen from './ForestScreen';
-import LoadingScreen from './LoadingScreen';
 import EditorService from '../../core/service/EditorService';
 import ForestDao from '../../core/dao/ForestDao';
 import RecipeUtils from '../../core/utils/RecipeUtils';
@@ -39,7 +38,9 @@ import ForestLayout from '../component/house/layout/ForestLayout';
 import StoryLocation from '../../core/model/enum/StoryLocation';
 import SettingsPanel from '../component/house/SettingsPanel';
 import Game from '../game/Game';
+import ClosablePanel from '../component/panel/ClosablePanel';
 import EventPanel from '../component/house/EventPanel';
+import SideEventPanel from '../component/house/SideEventPanel';
 import LevelCompletePanel from '../component/forest/CompleteLevelPanel';
 import Label from '../component/panel/Label';
 import EventUtils from './../../core/utils/EventUtils';
@@ -76,7 +77,7 @@ export default class HouseScreen extends DialogScreen {
     public settingsPanel: SettingsPanel;
     public tasksPanel: TasksPanel;
     private diaryPanel: DiaryPanel;
-    private activeEventPanel: EventPanel;
+    private activeEventPanel: ClosablePanel;
 
     private tasks: DiaryContentType;
     private progressBar: ProgressBar;
@@ -94,7 +95,6 @@ export default class HouseScreen extends DialogScreen {
 
     private fakeTrees: Phaser.Sprite;
 
-    private eventsToShow: string[] = [];
     private renderedEventKeys: string[] = [];
     private configuredEventOffsetY = 0;
     private sideEventOffsetY = 0;
@@ -118,8 +118,9 @@ export default class HouseScreen extends DialogScreen {
             }
         }
 
-        this.eventsToShow = EventUtils.updateEvents();
+        EventUtils.updateEvents();
         this.loadOptionalAtlases()
+        this.loadOptionalConfiguredEventResources(true);
 
         // let start = Date.now();
         // while (Date.now() - start < 1500) {
@@ -483,7 +484,14 @@ export default class HouseScreen extends DialogScreen {
     }
 
     private showEventPanel(eventInfo: EventInfo, instantly?: boolean): void {
-        let p = new EventPanel(this.game, eventInfo);
+        if (eventInfo.eventType == EventType.configured && EventUtils.hasMissingConfiguredEventAssets(this.game, eventInfo.eventId)) {
+            console.warn("Configured event assets are not loaded:", eventInfo.eventId);
+            return;
+        }
+
+        let p = eventInfo.eventType == EventType.configured
+            ? <ClosablePanel>new SideEventPanel(this.game, eventInfo)
+            : <ClosablePanel>new EventPanel(this.game, eventInfo);
         this.activeEventPanel = p;
         this.addPanel(p);
         p.show(instantly);
@@ -501,7 +509,11 @@ export default class HouseScreen extends DialogScreen {
                 return;
             }
 
-            this.eventsToShow.push(eventKey);
+            if (eventInfo.eventType == EventType.configured && EventUtils.hasMissingConfiguredEventAssets(this.game, eventInfo.eventId)) {
+                console.warn("Configured event assets are not loaded:", eventInfo.eventId);
+                return;
+            }
+
             this.ensureEventUi(eventInfo);
         });
     }
@@ -529,7 +541,7 @@ export default class HouseScreen extends DialogScreen {
         if (isConfiguredEvent) {
             let eventIcon = SpriteUtils.createSprite(this.game, 0, 0, EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId));
             eventIcon.anchor.set(0.5);
-            eventIcon.scale.set(0.86 * 0.95);
+            eventIcon.scale.set(EventUtils.getConfiguredEventIconScale(eventInfo.eventId));
             eventButton.addChild(eventIcon);
         }
         
@@ -583,13 +595,6 @@ export default class HouseScreen extends DialogScreen {
             this.configuredEventOffsetY += 200;
         } else {
             this.sideEventOffsetY += 200;
-        }
-
-        if(this.eventsToShow.indexOf(eventKey) != -1){
-            this.lockScreenFor(2000);
-            this.game.time.events.add(2000, ()=>{
-                this.showEventPanel(eventInfo);
-            })
         }
     }
 
