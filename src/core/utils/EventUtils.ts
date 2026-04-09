@@ -346,6 +346,7 @@ export default class EventUtils {
         }
         eventState.pendingOpenPanel = true;
         eventState.pendingPanelEventEndAt = activeEvent ? activeEvent.eventEndAt : eventState.pendingPanelEventEndAt;
+        eventState.pendingCharacterTravel = true;
 
         if (totalLevels > 0 && eventState.progress >= totalLevels) {
             eventState.completedAt = Date.now();
@@ -394,6 +395,7 @@ export default class EventUtils {
             eventState.expiredAt = Date.now();
         }
         eventState.pendingMainScreenLevelId = null;
+        eventState.pendingCharacterTravel = false;
         this.clearPendingHousePanelState(eventState);
 
         user.saveEventStates();
@@ -421,6 +423,7 @@ export default class EventUtils {
         eventState.completedAt = null;
         eventState.expiredAt = null;
         eventState.pendingMainScreenLevelId = null;
+        eventState.pendingCharacterTravel = false;
         this.clearPendingHousePanelState(eventState);
 
         user.deleteCompletedReplicasByPrefix(eventId + "_");
@@ -455,6 +458,7 @@ export default class EventUtils {
         eventState.completedAt = Date.now();
         eventState.expiredAt = null;
         eventState.pendingMainScreenLevelId = null;
+        eventState.pendingCharacterTravel = false;
         this.clearPendingHousePanelState(eventState);
         user.saveEventStates();
 
@@ -467,6 +471,22 @@ export default class EventUtils {
 
     public static getRemainTimeShort(time: number): string {
         return GameText.remainShort(time);
+    }
+
+    public static consumePendingCharacterTravel(eventId: string): boolean {
+        if (!eventId) {
+            return false;
+        }
+
+        const user = UserService.getUser();
+        const eventState = user.getEventState(eventId);
+        if (!eventState || !eventState.pendingCharacterTravel) {
+            return false;
+        }
+
+        eventState.pendingCharacterTravel = false;
+        user.saveEventStates();
+        return true;
     }
 
     public static getRemainTime(time: number): string {
@@ -527,6 +547,7 @@ export default class EventUtils {
             eventState.completedAt = Date.now();
         }
         eventState.pendingMainScreenLevelId = null;
+        eventState.pendingCharacterTravel = false;
         this.clearPendingHousePanelState(eventState);
 
         user.saveEventStates();

@@ -6,6 +6,7 @@ export default class UserEventState {
     pendingMainScreenLevelId?: string;
     pendingOpenPanel?: boolean;
     pendingPanelEventEndAt?: number;
+    pendingCharacterTravel?: boolean;
 
     constructor(state?: UserEventState) {
         this.eventId = state && state.eventId ? state.eventId : "";
@@ -15,5 +16,6 @@ export default class UserEventState {
         this.pendingMainScreenLevelId = state && state.pendingMainScreenLevelId;
         this.pendingOpenPanel = state && state.pendingOpenPanel;
         this.pendingPanelEventEndAt = state && state.pendingPanelEventEndAt;
+        this.pendingCharacterTravel = state && state.pendingCharacterTravel;
     }
 }

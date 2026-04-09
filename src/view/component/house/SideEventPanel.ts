@@ -20,6 +20,10 @@ type SideEventState = {
 
 export default class SideEventPanel extends ClosablePanel {
 
+    private static readonly EVENT1_CHARACTER_OFFSET_Y = -35;
+    private static readonly EVENT1_CHARACTER_MOVE_DELAY = 1200;
+    private static readonly EVENT1_CHARACTER_MOVE_DURATION = 540;
+
     private static readonly EVENT1_POINT_POSITIONS: Phaser.Point[] = [
         new Phaser.Point(-17.5, -32.5),
         new Phaser.Point(-16.5, 107.5),
@@ -40,6 +44,9 @@ export default class SideEventPanel extends ClosablePanel {
     private actionButton: Phaser.Button;
     private eventInfo: EventInfo;
     private eventPointPositions: Phaser.Point[] = [];
+    private characterSprite: Phaser.Sprite;
+    private characterMoveTimer: Phaser.TimerEvent;
+    private characterMoveTween: Phaser.Tween;
 
     constructor(game: Phaser.Game, eventInfo: EventInfo) {
         super(game, game.width / 2, game.height / 2, false, "blank");
@@ -82,6 +89,7 @@ export default class SideEventPanel extends ClosablePanel {
         this.attachPsdSprite('sideEvent1Map3', 'map3', 5, 157);
         this.attachPsdSprite('sideEvent1Map2', 'map2', -105.5, 290);
         this.attachPsdSprite('sideEvent1Map1', 'map1', -139.5, 36);
+        this.createEvent1Character();
 
         this.attachPsdSprite('sideEvent1PanelRibbon', 'panelRibbon', -6.5, -491);
         this.attachPsdSprite('sideEvent1Timer', 'timerBg', -6, -464);
@@ -147,6 +155,13 @@ export default class SideEventPanel extends ClosablePanel {
             levelLabel.visible = false;
             this.actionButton.alpha = 0.82;
         }
+    }
+
+    private createEvent1Character(): void {
+        this.characterSprite = this.attachSprite('character', 'eventCharacter');
+        this.characterSprite.scale.set(1.44, 1.4);
+        this.characterSprite.anchor.set(0.5);
+        this.characterSprite.visible = false;
     }
 
     private buildDefaultLayout(eventState: SideEventState): void {
@@ -295,11 +310,13 @@ export default class SideEventPanel extends ClosablePanel {
     }
 
     protected onClose() {
+        this.stopCharacterMovement();
         (<HouseScreen>(this.game.state.getCurrentState())).showUI();
     }
 
     protected onShow() {
         (<HouseScreen>(this.game.state.getCurrentState())).hideUI();
+        this.scheduleCharacterMovement();
     }
 
     private onActionButtonClick() {
@@ -331,5 +348,84 @@ export default class SideEventPanel extends ClosablePanel {
             AnalyticUtils.logLevelStart();
             houseScreen.startScreen(ForestScreen, true, false);
         }, this);
+    }
+
+    private scheduleCharacterMovement(): void {
+        if (!this.characterSprite || this.eventPointPositions.length == 0) {
+            return;
+        }
+
+        this.stopCharacterMovement();
+
+        const targetPointIndex = this.getLastAvailablePointIndex();
+        const targetPoint = this.getCharacterPointPosition(targetPointIndex);
+        this.characterSprite.visible = true;
+        this.characterSprite.alpha = 1;
+
+        const animateLastSection = EventUtils.consumePendingCharacterTravel(this.eventInfo.eventId) && targetPointIndex > 0;
+        if (!animateLastSection) {
+            this.characterSprite.position.set(targetPoint.x, targetPoint.y);
+            return;
+        }
+
+        const startPoint = this.getCharacterPointPosition(targetPointIndex - 1);
+        this.characterSprite.position.set(startPoint.x, startPoint.y);
+
+        this.characterMoveTimer = this.game.time.events.add(SideEventPanel.EVENT1_CHARACTER_MOVE_DELAY, () => {
+            this.moveCharacterToPoint(targetPointIndex, targetPointIndex);
+        });
+    }
+
+    private moveCharacterToPoint(pointIndex: number, targetPointIndex: number): void {
+        if (!this.characterSprite || pointIndex > targetPointIndex) {
+            return;
+        }
+
+        const targetPoint = this.getCharacterPointPosition(pointIndex);
+        const duration = SideEventPanel.EVENT1_CHARACTER_MOVE_DURATION;
+
+        this.characterMoveTween = this.game.add.tween(this.characterSprite).to(
+            { x: targetPoint.x, y: targetPoint.y },
+            duration,
+            Phaser.Easing.Sinusoidal.InOut,
+            true,
+            0,
+            0,
+            false
+        );
+
+        this.characterMoveTween.onComplete.addOnce(() => {
+            this.moveCharacterToPoint(pointIndex + 1, targetPointIndex);
+        });
+    }
+
+    private getLastAvailablePointIndex(): number {
+        const eventState = this.getEventState();
+        const availablePointsCount = eventState.canPlay
+            ? eventState.progress + 1
+            : Math.max(1, eventState.progress);
+
+        return Math.max(0, Math.min(this.eventPointPositions.length, availablePointsCount) - 1);
+    }
+
+    private getCharacterPointPosition(pointIndex: number): Phaser.Point {
+        const point = this.eventPointPositions[Math.max(0, Math.min(this.eventPointPositions.length - 1, pointIndex))];
+        return new Phaser.Point(point.x, point.y + SideEventPanel.EVENT1_CHARACTER_OFFSET_Y);
+    }
+
+    private stopCharacterMovement(): void {
+        if (this.characterMoveTimer) {
+            this.game.time.events.remove(this.characterMoveTimer);
+            this.characterMoveTimer = null;
+        }
+
+        if (this.characterMoveTween) {
+            this.game.tweens.remove(this.characterMoveTween);
+            this.characterMoveTween = null;
+        }
+
+        if (this.characterSprite) {
+            this.game.tweens.removeFrom(this.characterSprite);
+        }
     }
 }
