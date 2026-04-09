@@ -99,13 +99,15 @@ export default class EventUtils {
     }
 
     public static getStage(event: EventInfo): EventStage {
-        if (event.prizeTakingEndAt && event.eventEndAt < Date.now() && event.prizeTakingEndAt > Date.now()) {
+        const now = Date.now();
+
+        if (event.prizeTakingEndAt && event.eventEndAt <= now && event.prizeTakingEndAt > now) {
             return EventStage.prizeTaking;
         }
-        if (event.eventStartAt < Date.now() && event.eventEndAt > Date.now()) {
+        if (event.eventStartAt <= now && event.eventEndAt > now) {
             return EventStage.active;
         }
-        if (event.eventStartAt > Date.now()) {
+        if (event.eventStartAt > now) {
             return EventStage.inactive;
         }
         return EventStage.expired;

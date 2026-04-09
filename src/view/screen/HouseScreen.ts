@@ -480,7 +480,7 @@ export default class HouseScreen extends DialogScreen {
             return;
         }
 
-        this.showEventPanel(pendingEvent, true);
+        this.showEventPanel(pendingEvent);
     }
 
     private showEventPanel(eventInfo: EventInfo, instantly?: boolean): void {
@@ -503,6 +503,8 @@ export default class HouseScreen extends DialogScreen {
             return;
         }
 
+        let autoOpenEvent: EventInfo = null;
+
         EventUtils.getActualEvents().forEach(eventInfo => {
             const eventKey = EventUtils.getEventKey(eventInfo);
             if (newEventKeys.indexOf(eventKey) == -1) {
@@ -515,7 +517,21 @@ export default class HouseScreen extends DialogScreen {
             }
 
             this.ensureEventUi(eventInfo);
+
+            if (!autoOpenEvent && eventInfo.eventType == EventType.configured) {
+                autoOpenEvent = eventInfo;
+            }
         });
+
+        if (autoOpenEvent) {
+            this.game.time.events.add(150, () => {
+                if (this.isEventPanelBlockingUI() || (this.dialogPanel && this.dialogPanel.replicaPanel)) {
+                    return;
+                }
+
+                this.showEventPanel(autoOpenEvent);
+            });
+        }
     }
 
     private ensureEventUi(eventInfo: EventInfo): void {
@@ -529,21 +545,17 @@ export default class HouseScreen extends DialogScreen {
         let isConfiguredEvent = eventInfo.eventType == EventType.configured;
         let eventX = isConfiguredEvent ? 100 : this.game.width - 100;
         let eventY = isConfiguredEvent ? 360 + this.configuredEventOffsetY : 400 + 190 + this.sideEventOffsetY;
-        let eventButton = SpriteUtils.createButton(this.game, eventX, eventY, isConfiguredEvent ? 'actionCircle' : EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId),
+        let eventButton = SpriteUtils.createButton(this.game, eventX, eventY, EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId),
             ()=>{
                 this.showEventPanel(eventInfo);
             });
 
         eventButton.visible = true;
         eventButton.anchor.set(0.5);
-        this.registerSideButton(eventButton);
-
         if (isConfiguredEvent) {
-            let eventIcon = SpriteUtils.createSprite(this.game, 0, 0, EventUtils.getIcon(eventInfo.eventType, eventInfo.eventId));
-            eventIcon.anchor.set(0.5);
-            eventIcon.scale.set(EventUtils.getConfiguredEventIconScale(eventInfo.eventId));
-            eventButton.addChild(eventIcon);
+            eventButton.scale.set(EventUtils.getConfiguredEventIconScale(eventInfo.eventId));
         }
+        this.registerSideButton(eventButton);
         
         let flash = SpriteUtils.createSprite(this.game, eventButton.x, eventButton.y,"flash");
         flash.anchor.set(0.5);

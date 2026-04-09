@@ -28,7 +28,7 @@ export default class EventsConfiguration {
             startsatLevel: 3,
             levelsCount: -1,
             icon: "tasks",
-            iconScale: 0.28,
+            iconScale: 0.817,
             mainImage: "sideEvent1tBg",
             mainImageScale: 0.62,
             assets: [
