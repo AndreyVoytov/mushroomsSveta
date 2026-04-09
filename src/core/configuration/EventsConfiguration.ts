@@ -29,10 +29,25 @@ export default class EventsConfiguration {
             levelsCount: -1,
             icon: "tasks",
             iconScale: 0.817,
-            mainImage: "sideEvent1tBg",
-            mainImageScale: 0.62,
+            mainImage: "sideEvent1EventImage",
+            mainImageScale: 1,
             assets: [
-                { key: "sideEvent1tBg", path: "assets/sideEvent1/sideEvent1tBg.png" }
+                { key: "sideEvent1EventButton", path: "assets/sideEvent1/event_button.png" },
+                { key: "sideEvent1FadeBottom", path: "assets/sideEvent1/event_fade_bottom.png" },
+                { key: "sideEvent1FadeMiddle", path: "assets/sideEvent1/event_fade_middle(source).png" },
+                { key: "sideEvent1FadeTop", path: "assets/sideEvent1/event_fade_top.png" },
+                { key: "sideEvent1FrameBottom", path: "assets/sideEvent1/event_frame_bottom.png" },
+                { key: "sideEvent1FrameMiddle", path: "assets/sideEvent1/event_frame_middle (source).png" },
+                { key: "sideEvent1FrameTop", path: "assets/sideEvent1/event_frame_top.png" },
+                { key: "sideEvent1EventImage", path: "assets/sideEvent1/event_image.png" },
+                { key: "sideEvent1PanelBottom", path: "assets/sideEvent1/event_panel_bottom.png" },
+                { key: "sideEvent1PanelClose", path: "assets/sideEvent1/event_panel_close.png" },
+                { key: "sideEvent1PanelRibbon", path: "assets/sideEvent1/event_panel_ribbon.png" },
+                { key: "sideEvent1Timer", path: "assets/sideEvent1/event_timer.png" },
+                { key: "sideEvent1MapBg", path: "assets/sideEvent1/map_bg.png" },
+                { key: "sideEvent1Map1", path: "assets/sideEvent1/map1.png" },
+                { key: "sideEvent1Map2", path: "assets/sideEvent1/map2.png" },
+                { key: "sideEvent1Map3", path: "assets/sideEvent1/map3.png" }
             ]
         }
     ];

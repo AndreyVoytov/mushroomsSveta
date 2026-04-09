@@ -1,3 +1,4 @@
+import GameText from '../../../core/localization/GameText';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import AnalyticUtils from '../../../core/utils/AnalyticUtils';
 import EventInfo from '../../../core/model/event/EventInfo';
@@ -10,10 +11,35 @@ import ClosablePanel from '../panel/ClosablePanel';
 import Label from '../panel/Label';
 import TreesTransitionPanel from '../panel/TreesTransitionPanel';
 
+type SideEventState = {
+    canPlay: boolean;
+    nextLevelNumber: number;
+    progress: number;
+    totalLevels: number;
+};
+
 export default class SideEventPanel extends ClosablePanel {
+
+    private static readonly EVENT1_POINT_POSITIONS: Phaser.Point[] = [
+        new Phaser.Point(-17.5, -32.5),
+        new Phaser.Point(-16.5, 107.5),
+        new Phaser.Point(-125.5, 117.5),
+        new Phaser.Point(-230.5, 85.5),
+        new Phaser.Point(-250.5, 180.5),
+        new Phaser.Point(-243.5, 275.5),
+        new Phaser.Point(-141.5, 315.5),
+        new Phaser.Point(-37.5, 345.5),
+        new Phaser.Point(78.5, 322.5),
+        new Phaser.Point(198.5, 312.5),
+        new Phaser.Point(91.5, 226.5),
+        new Phaser.Point(237.5, 168.5),
+        new Phaser.Point(218.5, 81.5),
+        new Phaser.Point(134.5, 12.5)
+    ];
 
     private actionButton: Phaser.Button;
     private eventInfo: EventInfo;
+    private eventPointPositions: Phaser.Point[] = [];
 
     constructor(game: Phaser.Game, eventInfo: EventInfo) {
         super(game, game.width / 2, game.height / 2, false, "blank");
@@ -23,12 +49,107 @@ export default class SideEventPanel extends ClosablePanel {
         this.fixedToCamera = true;
         this.blackTransparent.events.onInputDown.add(() => this.onBackdropTap(), this);
 
-        let isConfiguredEvent = eventInfo.eventType == EventType.configured;
-        let totalLevels = isConfiguredEvent ? EventUtils.getEventLevelsCount(eventInfo.eventId) : 0;
-        let progress = isConfiguredEvent ? EventUtils.getEventProgress(eventInfo.eventId) : 0;
-        let nextLevelNumber = Math.min(progress + 1, totalLevels);
-        let canPlay = isConfiguredEvent && EventUtils.getStage(eventInfo) == EventStage.active && nextLevelNumber > 0 && progress < totalLevels;
+        const eventState = this.getEventState();
+        if (eventInfo.eventType == EventType.configured && eventInfo.eventId == "event1") {
+            this.buildEvent1Layout(eventState);
+        } else {
+            this.buildDefaultLayout(eventState);
+        }
+    }
 
+    private buildEvent1Layout(eventState: SideEventState): void {
+        this.eventPointPositions = SideEventPanel.EVENT1_POINT_POSITIONS.slice();
+
+        const hitArea = this.attachSprite('blank', 'hitArea');
+        hitArea.width = 760;
+        hitArea.height = 1180;
+        hitArea.alpha = 0.001;
+        hitArea.inputEnabled = true;
+
+        this.attachPsdSprite('sideEvent1PanelBottom', 'panelBottom', -3, 458.5);
+        this.attachPsdSprite('sideEvent1FadeTop', 'fadeTop', -18.5, -485.5);
+        this.attachStretchedPsdSprite('sideEvent1FadeMiddle', 'fadeMiddle', -6.5, -85, 709, 644);
+        this.attachPsdSprite('sideEvent1FadeBottom', 'fadeBottom', -18.5, 343);
+
+        const eventImage = this.attachPsdSprite('sideEvent1EventImage', 'eventImage', -0.5, -66.5);
+        eventImage.inputEnabled = true;
+
+        this.attachPsdSprite('sideEvent1FrameTop', 'frameTop', -4, -476.5);
+        this.attachStretchedPsdSprite('sideEvent1FrameMiddle', 'frameMiddle', -4, -65.5, 696, 693);
+        this.attachPsdSprite('sideEvent1FrameBottom', 'frameBottom', -4, 345.5);
+
+        this.attachPsdSprite('sideEvent1MapBg', 'mapBg', 2, 148.5);
+        this.attachPsdSprite('sideEvent1Map3', 'map3', 5, 157);
+        this.attachPsdSprite('sideEvent1Map2', 'map2', -105.5, 290);
+        this.attachPsdSprite('sideEvent1Map1', 'map1', -139.5, 36);
+
+        this.attachPsdSprite('sideEvent1PanelRibbon', 'panelRibbon', -6.5, -491);
+        this.attachPsdSprite('sideEvent1Timer', 'timerBg', -6, -464);
+
+        const closeButton = this.attachPsdButton('sideEvent1PanelClose', () => this.onCloseButtonClick(), 'closeButton', 311, -576);
+        closeButton.bringToTop();
+
+        const title = this.attachText('titleLabel', EventUtils.getName(this.eventInfo.eventType, this.eventInfo.eventId), {
+            font: 'bold 48px Gilroy',
+            fill: '#ffffff',
+            align: 'center',
+            wordWrap: true,
+            wordWrapWidth: 430
+        });
+        title.x = -12;
+        title.y = -530.5;
+        title.lineSpacing = -8;
+        title.anchor.set(0.5, 1);
+
+        const remainLabel = this.attachText('remainLabel', EventUtils.getRemainTimeShort(this.eventInfo.eventEndAt), {
+            font: 'bold 34px Gilroy',
+            fill: '#ffffff',
+            align: 'center'
+        });
+        remainLabel.x = 24;
+        remainLabel.y = -469;
+        this.game.time.events.loop(1000, () => {
+            remainLabel.text = EventUtils.getRemainTimeShort(this.eventInfo.eventEndAt);
+        });
+
+        const descriptionLabel = this.attachText('descriptionLabel', EventUtils.getDesc(this.eventInfo.eventType, this.eventInfo.eventId), {
+            font: 'bold 31px Gilroy',
+            fill: '#ffffff',
+            align: 'center',
+            wordWrap: true,
+            wordWrapWidth: 470
+        });
+        descriptionLabel.x = -4;
+        descriptionLabel.y = 473;
+        descriptionLabel.lineSpacing = -6;
+
+        this.actionButton = this.attachPsdButton('sideEvent1EventButton', () => this.onActionButtonClick(), 'actionButton', -0.5, 572);
+
+        const playLabel = new Label(this.game, -0.5, -17, LocalizationService.get('ui.play'), {
+            font: 'bold 42px Gilroy',
+            fill: '#ffffff',
+            align: 'center'
+        });
+        playLabel.anchor.set(0.5);
+        this.actionButton.addChild(playLabel);
+
+        const levelLabel = new Label(this.game, 0.5, 24, GameText.level(eventState.nextLevelNumber), {
+            font: 'bold 28px Gilroy',
+            fill: '#ffffff',
+            align: 'center'
+        });
+        levelLabel.anchor.set(0.5);
+        this.actionButton.addChild(levelLabel);
+
+        if (!eventState.canPlay) {
+            playLabel.text = LocalizationService.get('ui.ok');
+            playLabel.y = 0;
+            levelLabel.visible = false;
+            this.actionButton.alpha = 0.82;
+        }
+    }
+
+    private buildDefaultLayout(eventState: SideEventState): void {
         let panel = this.attachSprite('panel2', 'panel');
         panel.anchor.set(0.5);
         panel.scale.set(1.08, 1.04);
@@ -43,16 +164,16 @@ export default class SideEventPanel extends ClosablePanel {
         titleBg.scale.set(1.62, 1.14);
         titleBg.y = -360;
 
-        let icon = this.attachSprite(EventUtils.getMainImage(eventInfo.eventType, eventInfo.eventId), 'eventIcon');
+        let icon = this.attachSprite(EventUtils.getMainImage(this.eventInfo.eventType, this.eventInfo.eventId), 'eventIcon');
         icon.anchor.set(0.5);
         icon.y = -200;
-        icon.scale.set(EventUtils.getMainImageScale(eventInfo.eventType, eventInfo.eventId));
+        icon.scale.set(EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId));
 
         let closeButton = this.attachButton('closeButtonViolet', () => this.onCloseButtonClick());
         closeButton.x = 330;
         closeButton.y = -360;
 
-        let title = this.attachText('titleLabel', EventUtils.getName(eventInfo.eventType, eventInfo.eventId), {
+        let title = this.attachText('titleLabel', EventUtils.getName(this.eventInfo.eventType, this.eventInfo.eventId), {
             font: '46px Bookman Old Style',
             fill: '#ffffff',
             align: 'center',
@@ -61,18 +182,18 @@ export default class SideEventPanel extends ClosablePanel {
         });
         title.y = -366;
 
-        let remainLabel = this.attachText('remainLabel', EventUtils.getRemainTime(eventInfo.eventEndAt), {
+        let remainLabel = this.attachText('remainLabel', EventUtils.getRemainTime(this.eventInfo.eventEndAt), {
             font: 'bold 34px Arial',
             fill: '#8f6130',
             align: 'center'
         });
         remainLabel.y = -84;
         this.game.time.events.loop(1000, () => {
-            remainLabel.text = EventUtils.getRemainTime(eventInfo.eventEndAt);
+            remainLabel.text = EventUtils.getRemainTime(this.eventInfo.eventEndAt);
         });
 
-        if (isConfiguredEvent) {
-            let progressLabel = this.attachText('progressLabel', progress + '/' + totalLevels, {
+        if (this.eventInfo.eventType == EventType.configured) {
+            let progressLabel = this.attachText('progressLabel', eventState.progress + '/' + eventState.totalLevels, {
                 font: 'bold 54px Gilroy',
                 fill: '#7b4037',
                 align: 'center'
@@ -82,7 +203,7 @@ export default class SideEventPanel extends ClosablePanel {
             progressLabel.strokeThickness = 4;
         }
 
-        let textLabel = this.attachText('textLabel', EventUtils.getDesc(eventInfo.eventType, eventInfo.eventId), {
+        let textLabel = this.attachText('textLabel', EventUtils.getDesc(this.eventInfo.eventType, this.eventInfo.eventId), {
             font: 'bold 34px Arial',
             fill: '#804119',
             align: 'center',
@@ -95,10 +216,9 @@ export default class SideEventPanel extends ClosablePanel {
         this.actionButton = this.attachButton('pnlButton', () => this.onActionButtonClick(), 'actionButton');
         this.actionButton.y = 334;
 
-        let actionLabelText = LocalizationService.get('ui.ok');
-        if (isConfiguredEvent) {
-            actionLabelText = canPlay ? LocalizationService.get('ui.play') + ' ' + nextLevelNumber : LocalizationService.get('ui.ok');
-        }
+        let actionLabelText = eventState.canPlay
+            ? LocalizationService.get('ui.play') + ' ' + eventState.nextLevelNumber
+            : LocalizationService.get('ui.ok');
 
         let actionLabel = new Label(this.game, 0, 0, actionLabelText, {
             font: 'bolder 52px Gilroy',
@@ -109,9 +229,48 @@ export default class SideEventPanel extends ClosablePanel {
         actionLabel.addStrokeColor('#61b019', 0);
         this.actionButton.addChild(actionLabel);
 
-        if (isConfiguredEvent && !canPlay) {
+        if (!eventState.canPlay) {
             this.actionButton.alpha = 0.82;
         }
+    }
+
+    private getEventState(): SideEventState {
+        const isConfiguredEvent = this.eventInfo.eventType == EventType.configured;
+        const totalLevels = isConfiguredEvent ? EventUtils.getEventLevelsCount(this.eventInfo.eventId) : 0;
+        const progress = isConfiguredEvent ? EventUtils.getEventProgress(this.eventInfo.eventId) : 0;
+        const nextLevelNumber = Math.min(progress + 1, totalLevels);
+        const canPlay = isConfiguredEvent
+            && EventUtils.getStage(this.eventInfo) == EventStage.active
+            && nextLevelNumber > 0
+            && progress < totalLevels;
+
+        return {
+            canPlay: canPlay,
+            nextLevelNumber: nextLevelNumber,
+            progress: progress,
+            totalLevels: totalLevels
+        };
+    }
+
+    private attachPsdSprite(spriteId: string, name: string, x: number, y: number): Phaser.Sprite {
+        const sprite = this.attachSprite(spriteId, name);
+        sprite.x = x;
+        sprite.y = y;
+        return sprite;
+    }
+
+    private attachStretchedPsdSprite(spriteId: string, name: string, x: number, y: number, targetWidth: number, targetHeight: number): Phaser.Sprite {
+        const sprite = this.attachPsdSprite(spriteId, name, x, y);
+        sprite.width = targetWidth;
+        sprite.height = targetHeight;
+        return sprite;
+    }
+
+    private attachPsdButton(spriteId: string, callback: () => void, name: string, x: number, y: number): Phaser.Button {
+        const button = this.attachButton(spriteId, callback, name);
+        button.x = x;
+        button.y = y;
+        return button;
     }
 
     private onBackdropTap(): void {
