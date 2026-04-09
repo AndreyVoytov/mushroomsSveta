@@ -92,7 +92,8 @@ export default class SideEventPanel extends ClosablePanel {
         this.createEvent1Character();
 
         this.attachPsdSprite('sideEvent1PanelRibbon', 'panelRibbon', -6.5, -491);
-        this.attachPsdSprite('sideEvent1Timer', 'timerBg', -6, -464);
+        let timer = this.attachPsdSprite('sideEvent1Timer', 'timerBg', -19, -464);
+        timer.scale.set(1.2);
 
         const closeButton = this.attachPsdButton('sideEvent1PanelClose', () => this.onCloseButtonClick(), 'closeButton', 311, -576);
         closeButton.bringToTop();
@@ -109,15 +110,15 @@ export default class SideEventPanel extends ClosablePanel {
         title.lineSpacing = -8;
         title.anchor.set(0.5, 1);
 
-        const remainLabel = this.attachText('remainLabel', EventUtils.getRemainTimeShort(this.eventInfo.eventEndAt), {
-            font: 'bold 34px Gilroy',
+        const remainLabel = this.attachText('remainLabel', EventUtils.getRemainTime(this.eventInfo.eventEndAt), {
+            font: 'bold 28px Gilroy',
             fill: '#ffffff',
             align: 'center'
         });
         remainLabel.x = 24;
         remainLabel.y = -469;
         this.game.time.events.loop(1000, () => {
-            remainLabel.text = EventUtils.getRemainTimeShort(this.eventInfo.eventEndAt);
+            remainLabel.text = EventUtils.getRemainTime(this.eventInfo.eventEndAt);
         });
 
         const descriptionLabel = this.attachText('descriptionLabel', EventUtils.getDesc(this.eventInfo.eventType, this.eventInfo.eventId), {
