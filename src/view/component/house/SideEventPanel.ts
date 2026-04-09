@@ -20,6 +20,7 @@ type SideEventState = {
 
 export default class SideEventPanel extends ClosablePanel {
 
+    private static readonly PANEL_SCALE = 1.1;
     private static readonly EVENT1_CHARACTER_OFFSET_Y = -35;
     private static readonly EVENT1_CHARACTER_MOVE_DELAY = 1200;
     private static readonly EVENT1_CHARACTER_MOVE_DURATION = 540;
@@ -49,7 +50,7 @@ export default class SideEventPanel extends ClosablePanel {
     private characterMoveTween: Phaser.Tween;
 
     constructor(game: Phaser.Game, eventInfo: EventInfo) {
-        super(game, game.width / 2, game.height / 2, false, "blank");
+        super(game, game.width / 2, game.height / 2, false, "blank", SideEventPanel.PANEL_SCALE);
 
         this.eventInfo = eventInfo;
         this.visible = false;
@@ -74,12 +75,12 @@ export default class SideEventPanel extends ClosablePanel {
         hitArea.inputEnabled = true;
 
         this.attachPsdSprite('sideEvent1PanelBottom', 'panelBottom', -3, 458.5);
+        const eventImage = this.attachPsdSprite('sideEvent1EventImage', 'eventImage', -0.5, -66.5);
+        eventImage.inputEnabled = true;
         this.attachPsdSprite('sideEvent1FadeTop', 'fadeTop', -18.5, -485.5);
         this.attachStretchedPsdSprite('sideEvent1FadeMiddle', 'fadeMiddle', -6.5, -85, 709, 644);
         this.attachPsdSprite('sideEvent1FadeBottom', 'fadeBottom', -18.5, 343);
 
-        const eventImage = this.attachPsdSprite('sideEvent1EventImage', 'eventImage', -0.5, -66.5);
-        eventImage.inputEnabled = true;
 
         this.attachPsdSprite('sideEvent1FrameTop', 'frameTop', -4, -476.5);
         this.attachStretchedPsdSprite('sideEvent1FrameMiddle', 'frameMiddle', -4, -65.5, 696, 693);
