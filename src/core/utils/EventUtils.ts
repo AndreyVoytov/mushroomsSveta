@@ -1,4 +1,4 @@
-import EventsConfiguration, { EventAssetConfiguration } from '../configuration/EventsConfiguration';
+import EventsConfiguration, { EventAssetConfiguration, EventMainImageOverrideConfiguration } from '../configuration/EventsConfiguration';
 import PrizesConfiguration from '../configuration/PrizesConfiguration';
 import ForestDao from '../dao/ForestDao';
 import ReplicaDao from '../dao/ReplicaDao';
@@ -134,12 +134,12 @@ export default class EventUtils {
         }
     }
 
-    public static getMainImage(eventType: EventType, eventId?: string): string {
+    public static getMainImage(eventType: EventType, eventId?: string, levelNumber?: number): string {
         switch (eventType) {
             case EventType.lukoshko:
                 return 'lukoshkoHeader';
             case EventType.configured:
-                return this.getEventConfigStringValue(eventId, "mainImage", "tasks");
+                return this.getConfiguredEventMainImage(eventId, levelNumber);
             default:
                 throw new NeverError(eventType);
         }
@@ -149,12 +149,12 @@ export default class EventUtils {
         return this.getEventConfigNumberValue(eventId, "iconScale", 0.86 * 0.95);
     }
 
-    public static getMainImageScale(eventType: EventType, eventId?: string): number {
+    public static getMainImageScale(eventType: EventType, eventId?: string, levelNumber?: number): number {
         switch (eventType) {
             case EventType.lukoshko:
                 return 1.45;
             case EventType.configured:
-                return this.getEventConfigNumberValue(eventId, "mainImageScale", 1.18);
+                return this.getConfiguredEventMainImageScale(eventId, levelNumber);
             default:
                 throw new NeverError(eventType);
         }
@@ -568,6 +568,48 @@ export default class EventUtils {
             return eventId || "";
         }
         return eventConfig[key];
+    }
+
+    private static getConfiguredEventMainImage(eventId: string, levelNumber?: number): string {
+        const eventConfig = EventsConfiguration.getById(eventId);
+        const override = this.getConfiguredEventMainImageOverride(eventId, levelNumber);
+        if (override && override.mainImage) {
+            return override.mainImage;
+        }
+        return eventConfig && eventConfig.mainImage ? eventConfig.mainImage : "tasks";
+    }
+
+    private static getConfiguredEventMainImageScale(eventId: string, levelNumber?: number): number {
+        const eventConfig = EventsConfiguration.getById(eventId);
+        const override = this.getConfiguredEventMainImageOverride(eventId, levelNumber);
+        if (override && override.mainImageScale != null) {
+            return Number(override.mainImageScale);
+        }
+        return eventConfig && eventConfig.mainImageScale != null ? Number(eventConfig.mainImageScale) : 1.18;
+    }
+
+    private static getConfiguredEventMainImageOverride(eventId: string, levelNumber?: number): EventMainImageOverrideConfiguration {
+        const eventConfig = EventsConfiguration.getById(eventId);
+        if (!eventConfig || !eventConfig.mainImageOverrides || eventConfig.mainImageOverrides.length == 0) {
+            return null;
+        }
+
+        const resolvedLevelNumber = levelNumber || this.getConfiguredEventDisplayLevelNumber(eventId);
+        return eventConfig.mainImageOverrides.filter(override => override && override.levels && override.levels.indexOf(resolvedLevelNumber) != -1).shift();
+    }
+
+    private static getConfiguredEventDisplayLevelNumber(eventId: string): number {
+        if (this.activeLevelSession && this.activeLevelSession.eventId == eventId) {
+            return this.activeLevelSession.levelIndex + 1;
+        }
+
+        const totalLevels = this.getEventLevelsCount(eventId);
+        const progress = this.getEventProgress(eventId);
+        if (totalLevels > 0) {
+            return Math.max(1, Math.min(progress + 1, totalLevels));
+        }
+
+        return Math.max(1, progress + 1);
     }
 
     private static getEventConfigStringValue(eventId: string, key: "icon" | "mainImage", fallback: string): string {

@@ -3,6 +3,12 @@ export type EventAssetConfiguration = {
     path: string;
 };
 
+export type EventMainImageOverrideConfiguration = {
+    levels: number[];
+    mainImage: string;
+    mainImageScale?: number;
+};
+
 export type EventConfiguration = {
     eventId: string;
     name: string;
@@ -14,6 +20,7 @@ export type EventConfiguration = {
     iconScale?: number;
     mainImage?: string;
     mainImageScale?: number;
+    mainImageOverrides?: EventMainImageOverrideConfiguration[];
     assets?: EventAssetConfiguration[];
 };
 
@@ -31,6 +38,12 @@ export default class EventsConfiguration {
             iconScale: 0.817,
             mainImage: "sideEvent1EventImage",
             mainImageScale: 1,
+            mainImageOverrides: [
+                {
+                    levels: [2, 4],
+                    mainImage: "sideEvent1EventImage2"
+                }
+            ],
             assets: [
                 { key: "sideEvent1EventButton", path: "assets/sideEvent1/event_button.png" },
                 { key: "sideEvent1FadeBottom", path: "assets/sideEvent1/event_fade_bottom.png" },
@@ -40,6 +53,7 @@ export default class EventsConfiguration {
                 { key: "sideEvent1FrameMiddle", path: "assets/sideEvent1/event_frame_middle (source).png" },
                 { key: "sideEvent1FrameTop", path: "assets/sideEvent1/event_frame_top.png" },
                 { key: "sideEvent1EventImage", path: "assets/sideEvent1/event_image.png" },
+                { key: "sideEvent1EventImage2", path: "assets/sideEvent1/event_image2.png" },
                 { key: "sideEvent1PanelBottom", path: "assets/sideEvent1/event_panel_bottom.png" },
                 { key: "sideEvent1PanelClose", path: "assets/sideEvent1/event_panel_close.png" },
                 { key: "sideEvent1PanelRibbon", path: "assets/sideEvent1/event_panel_ribbon.png" },

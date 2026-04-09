@@ -130,7 +130,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
         if (AdminService.isSkipMode() || ForestScreen.skipNextTime) {
             ForestScreen.skipNextTime = false;
-            user.incrementCurrentForest();
+            if (EventUtils.hasActiveLevelSession()) {
+                EventUtils.completeActiveEventLevel();
+            } else {
+                user.incrementCurrentForest();
+            }
             user.setJustCompletedLevel(true);
             this.startScreen(HouseScreen, true, false)
             return;

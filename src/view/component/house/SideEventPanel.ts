@@ -21,7 +21,9 @@ type SideEventState = {
 export default class SideEventPanel extends ClosablePanel {
 
     private static readonly PANEL_SCALE = 1.1;
-    private static readonly EVENT1_CHARACTER_OFFSET_Y = -35;
+    private static readonly EVENT1_MAP2_UNLOCK_PROGRESS = 3;
+    private static readonly EVENT1_MAP3_UNLOCK_PROGRESS = 7;
+    private static readonly EVENT1_CHARACTER_OFFSET_Y = -45;
     private static readonly EVENT1_CHARACTER_MOVE_DELAY = 1200;
     private static readonly EVENT1_CHARACTER_MOVE_DURATION = 540;
 
@@ -75,8 +77,14 @@ export default class SideEventPanel extends ClosablePanel {
         hitArea.inputEnabled = true;
 
         this.attachPsdSprite('sideEvent1PanelBottom', 'panelBottom', -3, 458.5);
-        const eventImage = this.attachPsdSprite('sideEvent1EventImage', 'eventImage', -0.5, -66.5);
+        const eventImage = this.attachPsdSprite(
+            EventUtils.getMainImage(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber),
+            'eventImage',
+            -0.5,
+            -66.5
+        );
         eventImage.inputEnabled = true;
+        eventImage.scale.set(EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber));
         this.attachPsdSprite('sideEvent1FadeTop', 'fadeTop', -18.5, -485.5);
         this.attachStretchedPsdSprite('sideEvent1FadeMiddle', 'fadeMiddle', -6.5, -85, 709, 644);
         this.attachPsdSprite('sideEvent1FadeBottom', 'fadeBottom', -18.5, 343);
@@ -87,8 +95,10 @@ export default class SideEventPanel extends ClosablePanel {
         this.attachPsdSprite('sideEvent1FrameBottom', 'frameBottom', -4, 345.5);
 
         this.attachPsdSprite('sideEvent1MapBg', 'mapBg', 2, 148.5);
-        this.attachPsdSprite('sideEvent1Map3', 'map3', 5, 157);
-        this.attachPsdSprite('sideEvent1Map2', 'map2', -105.5, 290);
+        const map3 = this.attachPsdSprite('sideEvent1Map3', 'map3', 5, 157);
+        map3.visible = eventState.progress >= SideEventPanel.EVENT1_MAP3_UNLOCK_PROGRESS;
+        const map2 = this.attachPsdSprite('sideEvent1Map2', 'map2', -105.5, 290);
+        map2.visible = eventState.progress >= SideEventPanel.EVENT1_MAP2_UNLOCK_PROGRESS;
         this.attachPsdSprite('sideEvent1Map1', 'map1', -139.5, 36);
         this.createEvent1Character();
 
@@ -181,10 +191,10 @@ export default class SideEventPanel extends ClosablePanel {
         titleBg.scale.set(1.62, 1.14);
         titleBg.y = -360;
 
-        let icon = this.attachSprite(EventUtils.getMainImage(this.eventInfo.eventType, this.eventInfo.eventId), 'eventIcon');
+        let icon = this.attachSprite(EventUtils.getMainImage(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber), 'eventIcon');
         icon.anchor.set(0.5);
         icon.y = -200;
-        icon.scale.set(EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId));
+        icon.scale.set(EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber));
 
         let closeButton = this.attachButton('closeButtonViolet', () => this.onCloseButtonClick());
         closeButton.x = 330;
