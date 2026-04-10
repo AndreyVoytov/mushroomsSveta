@@ -85,6 +85,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     protected mapleFace: Phaser.Sprite;
     public energyDetailsShown: boolean = false;
     private onDialogEndCallback: () => void;
+    private fakeTrees: Phaser.Sprite;
 
     protected abstract createCells(): void;
     protected abstract onCellOpen(cellState: CellState, openingType: OpeningType): void;
@@ -100,6 +101,10 @@ export default abstract class BaseForestScreen extends DialogScreen {
     private fadeBlockers: Phaser.Sprite[] = [];
 
     preload() {
+        if (!Game.WHITE_TRANSITION) {
+            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0));
+        }
+
         this.loadBaseAtlases();
         this.loadOptionalAtlases();
     }
@@ -279,6 +284,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
             Game.WHITE_TRANSITION = false;
         } else {
             this.addTopOverlay(new TreesTransitionPanel(this.game, false, treesTime, treesTime));
+        }
+
+        if (this.fakeTrees) {
+            this.fakeTrees.alpha = 0;
+            this.fakeTrees.kill();
         }
 
         this.aimsPanel = new AimsStartPanel(this.game, 0, -220, this.topPanel.getAims(), false, this.getForestType(), () => {
