@@ -376,7 +376,7 @@ export default class SideEventPanel extends ClosablePanel {
     }
 
     protected onShow() {
-        (<HouseScreen>(this.game.state.getCurrentState())).hideUI();
+        (<HouseScreen>(this.game.state.getCurrentState())).hideUI(0, false, this.openingWithoutAnimation);
         this.scheduleCharacterMovement();
     }
 

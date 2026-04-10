@@ -10,6 +10,7 @@ export default class ClosablePanel extends BasePanel {
     public processing: boolean = false;
     public opened:boolean = false;
     public fadeTransition:boolean = false;
+    protected openingWithoutAnimation:boolean = false;
 
     private maxScale:number;
 
@@ -33,18 +34,20 @@ export default class ClosablePanel extends BasePanel {
         })
     }
 
-    public show(instantly?: boolean) {
+    public show(instantly?: boolean, withoutAnimation?: boolean) {
         if (this.processing) {
             return;
         }
 
         this.opened = true;
-
         this.processing = true;
-        this.game.time.events.add(500, () => this.processing = false)
+        if (!withoutAnimation) {
+            this.game.time.events.add(500, () => this.processing = false)
+        }
 
         this.game.world.bringToTop(this.blackTransparent);
 
+        this.openingWithoutAnimation = !!withoutAnimation;
         this.onShow();
 
         this.blackTransparent.inputEnabled = true;
@@ -64,6 +67,20 @@ export default class ClosablePanel extends BasePanel {
 
         this.visible = true;
 
+        if (withoutAnimation) {
+            this.game.tweens.removeFrom(this.blackTransparent);
+            this.game.tweens.removeFrom(this);
+            this.game.tweens.removeFrom(this.scale);
+
+            this.blackTransparent.alpha = 0.5;
+            this.alpha = 1;
+            this.scale.set(this.maxScale);
+            this.bringToTop();
+            this.processing = false;
+            this.openingWithoutAnimation = false;
+            SoundUtils.panelOpen();
+            return;
+        }
 
         if (instantly) {
             this.alpha = 0;
@@ -83,6 +100,7 @@ export default class ClosablePanel extends BasePanel {
             }
         }
 
+        this.openingWithoutAnimation = false;
         SoundUtils.panelOpen();
       
 

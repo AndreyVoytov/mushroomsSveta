@@ -492,14 +492,14 @@ export default class HouseScreen extends DialogScreen {
             return;
         }
 
-        const panel = this.showEventPanel(pendingEvent);
+        const panel = this.showEventPanel(pendingEvent, true, true);
         if (panel instanceof SideEventPanel && this.dialogPanel && this.dialogPanel.getNextReplica()) {
             this.preDialogSideEventPanel = panel;
             panel.focusBeforeDialog();
         }
     }
 
-    private showEventPanel(eventInfo: EventInfo, instantly?: boolean): ClosablePanel {
+    private showEventPanel(eventInfo: EventInfo, instantly?: boolean, withoutAnimation?: boolean): ClosablePanel {
         if (eventInfo.eventType == EventType.configured && EventUtils.hasMissingConfiguredEventAssets(this.game, eventInfo.eventId)) {
             console.warn("Configured event assets are not loaded:", eventInfo.eventId);
             return null;
@@ -510,7 +510,7 @@ export default class HouseScreen extends DialogScreen {
             : <ClosablePanel>new EventPanel(this.game, eventInfo);
         this.activeEventPanel = p;
         this.addPanel(p);
-        p.show(instantly);
+        p.show(instantly, withoutAnimation);
         return p;
     }
 
