@@ -111,8 +111,20 @@ export default class HouseScreen extends DialogScreen {
         this.initialize();
     }
 
+    public init(): void {
+        super.init();
+
+        if (Game.WHITE_TRANSITION || this.fakeTrees) {
+            return;
+        }
+
+        if (!LocationUtils.isHouseStoryLocation(UserService.getUser())) {
+            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0));
+        }
+    }
+
     public preload(){
-        if (!Game.WHITE_TRANSITION) {
+        if (!Game.WHITE_TRANSITION && !this.fakeTrees) {
             if(LocationUtils.isHouseStoryLocation(UserService.getUser())){
                 this.fakeTrees = this.add.existing(new BaseLayout(this.game, "NearHouseLayout", "forestHouseBg"));
             } else {
