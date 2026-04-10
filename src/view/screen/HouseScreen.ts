@@ -51,6 +51,7 @@ import HouseLayout from '../component/house/layout/HouseLayout';
 import TasksPanel from '../component/house/TasksPanel';
 import TaskService from '../../core/service/TaskService';
 export default class HouseScreen extends DialogScreen {
+    private static readonly FAKE_TREES_RELEASE_DELAY = 120;
     private layout: BaseLayout;
 
     private keysPanel: KeysPanel;
@@ -366,10 +367,7 @@ export default class HouseScreen extends DialogScreen {
         }
 
 
-        if(this.fakeTrees){
-            this.fakeTrees.alpha = 0;
-            this.fakeTrees.kill();
-        }
+        this.releaseFakeTrees((blackFadeOut || Game.WHITE_TRANSITION) ? 0 : HouseScreen.FAKE_TREES_RELEASE_DELAY);
 
         if (UserService.getUser().getCurrentForest() <= RecipeUtils.getRequiredLevel(DiaryConfiguration.allRecipes[0])) {
             this.game.time.events.add(20000, () => {
@@ -773,6 +771,22 @@ export default class HouseScreen extends DialogScreen {
             this.game.add.tween(this.notebookButton).to({ alpha: 0 }, duration, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, true, 0, 0, false)
             this.game.add.tween(this.progressBar).to({ alpha: 0 }, duration, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, true, 0, 0, false)
         }
+    }
+
+    private releaseFakeTrees(delay: number): void {
+        if (!this.fakeTrees) {
+            return;
+        }
+
+        this.game.time.events.add(delay || 0, () => {
+            if (!this.fakeTrees) {
+                return;
+            }
+
+            this.fakeTrees.alpha = 0;
+            this.fakeTrees.kill();
+            this.fakeTrees = null;
+        });
     }
 
     public showUI(forShop?: boolean) {

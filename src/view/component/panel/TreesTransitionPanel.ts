@@ -10,6 +10,8 @@ import Label from './Label';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import Settings from '../../../core/service/Settings';
 export default class TreesTransitionPanel extends BasePanel {
+    private static readonly OVERLAY_COLOR = 0x23520d;
+    private static readonly OUTGOING_OVERLAY_TARGET_ALPHA = 0.35;
     private tree1: Phaser.Sprite;
     private tree2: Phaser.Sprite;
     private tree3: Phaser.Sprite;
@@ -23,7 +25,7 @@ export default class TreesTransitionPanel extends BasePanel {
         if(time != 0) time = 960;
 
         this.overlay = new Phaser.Graphics(this.game, 0, 0);
-        this.overlay.beginFill(0x23520d, 1);
+        this.overlay.beginFill(TreesTransitionPanel.OVERLAY_COLOR, 1);
         this.overlay.drawRect(0, 0, this.game.width, this.game.height);
         this.overlay.endFill();
         this.overlay.alpha = 0;
@@ -159,7 +161,15 @@ export default class TreesTransitionPanel extends BasePanel {
             tweens.push(AnimationUtils.fadeIn(this.game, tp41, delay + delay2 + 200 , 300*k ))
             tweens.push(AnimationUtils.fadeIn(this.game, tp21, delay + delay2  , 300*k ))
 
-            tweens.push(game.add.tween(this.overlay).to({ alpha: 1}, 800, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, delay +  200 , 0, false))
+            tweens.push(game.add.tween(this.overlay).to(
+                { alpha: TreesTransitionPanel.OUTGOING_OVERLAY_TARGET_ALPHA },
+                800,
+                Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In,
+                true,
+                delay +  200,
+                0,
+                false
+            ))
             tp0.alpha = 0.001;
             tweens.push(game.add.tween(tp0).to({ alpha:0.8}, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.Out, true, delay + delay2 + 250 , 0, false))
 
@@ -173,7 +183,9 @@ export default class TreesTransitionPanel extends BasePanel {
             SoundUtils.bushMovingOut()
             
             // Stable start transition: quick start + deterministic movement/fade (no long idle full-screen flash).
-            this.overlay.alpha = 1;
+            // The incoming transition now relies on a pre-created static trees cover below it.
+            // Forcing this fullscreen overlay to alpha=1 caused a one-frame flash on some devices.
+            this.overlay.alpha = 0;
             loading.visible = false;
             loading.alpha = 0;
 
@@ -238,7 +250,6 @@ export default class TreesTransitionPanel extends BasePanel {
                 tweens.push(AnimationUtils.fadeOut(this.game, branch, fadeStart, fadeTime));
             });
 
-            tweens.push(game.add.tween(this.overlay).to({ alpha: 0}, 520, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In, true, startDelay, 0, false))
             tweens.forEach(t => t.frameBased = true);
         }
 

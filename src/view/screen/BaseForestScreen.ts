@@ -55,6 +55,7 @@ import LocalizationService from '../../core/localization/LocalizationService';
 import TaskService from '../../core/service/TaskService';
 
 export default abstract class BaseForestScreen extends DialogScreen {
+    private static readonly FAKE_TREES_RELEASE_DELAY = 120;
 
     public cellsProvider: CellsPainter;
     public flowersProvider: FlowersProvider;
@@ -100,11 +101,15 @@ export default abstract class BaseForestScreen extends DialogScreen {
     private grassStrip: Phaser.TileSprite;
     private fadeBlockers: Phaser.Sprite[] = [];
 
-    preload() {
+    init() {
+        super.init();
+
         if (!Game.WHITE_TRANSITION) {
             this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0));
         }
+    }
 
+    preload() {
         this.loadBaseAtlases();
         this.loadOptionalAtlases();
     }
@@ -286,10 +291,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.addTopOverlay(new TreesTransitionPanel(this.game, false, treesTime, treesTime));
         }
 
-        if (this.fakeTrees) {
-            this.fakeTrees.alpha = 0;
-            this.fakeTrees.kill();
-        }
+        this.releaseFakeTrees(Game.WHITE_TRANSITION ? 0 : BaseForestScreen.FAKE_TREES_RELEASE_DELAY);
 
         this.aimsPanel = new AimsStartPanel(this.game, 0, -220, this.topPanel.getAims(), false, this.getForestType(), () => {
             this.unlockScreen();
@@ -919,6 +921,22 @@ export default abstract class BaseForestScreen extends DialogScreen {
         });
         this.addPanel(panel);
         panel.show();
+    }
+
+    private releaseFakeTrees(delay: number): void {
+        if (!this.fakeTrees) {
+            return;
+        }
+
+        this.game.time.events.add(delay || 0, () => {
+            if (!this.fakeTrees) {
+                return;
+            }
+
+            this.fakeTrees.alpha = 0;
+            this.fakeTrees.kill();
+            this.fakeTrees = null;
+        });
     }
 
 }

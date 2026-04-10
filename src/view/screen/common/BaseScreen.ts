@@ -16,7 +16,7 @@ import DebugScreen from './DebugScreen';
 import EventType from './../../../core/model/event/EventType';
 export default abstract class BaseScreen extends DebugScreen {
     private lockedMarker: Label | Phaser.Text;
-    private transitionBlocker: Phaser.Graphics;
+    private transitionBlocker: Phaser.Sprite;
     private dialogOverlayGroup: Phaser.Group;
     private topOverlayGroup: Phaser.Group;
 
@@ -146,10 +146,16 @@ export default abstract class BaseScreen extends DebugScreen {
         super.init();
         this.ensureDialogOverlayGroup();
         this.ensureTopOverlayGroup();
-        this.transitionBlocker = new Phaser.Graphics(this.game, 0, 0);
-        this.transitionBlocker.beginFill(0xb7a8a8, 0);
-        this.transitionBlocker.drawRect(0, 0, this.game.width, this.game.height);
-        this.transitionBlocker.endFill();
+        let blockerTexture = this.game.make.bitmapData(1, 1);
+        blockerTexture.ctx.fillStyle = '#ffffff';
+        blockerTexture.ctx.fillRect(0, 0, 1, 1);
+        blockerTexture.dirty = true;
+
+        this.transitionBlocker = new Phaser.Sprite(this.game, 0, 0, blockerTexture);
+        this.transitionBlocker.name = '__transitionBlocker';
+        this.transitionBlocker.width = this.game.width;
+        this.transitionBlocker.height = this.game.height;
+        this.transitionBlocker.alpha = 0.001;
         this.transitionBlocker.inputEnabled = false;
         this.add.existing(this.transitionBlocker);
 
