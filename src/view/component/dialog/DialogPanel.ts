@@ -72,6 +72,7 @@ export default class DialogPanel extends BasePanel {
             //     this.taskNewPanel.hide(200);
             // }
             let delay = ReplicaPanel.HIDE_DIALOG_DURATION + ReplicaPanel.LAST_HIDE_PERSON_DURATION - 100;
+            this.screen.onDialogClosing(delay);
             this.stripsPanel.hideStrips(delay);
             this.game.time.events.add(delay + 300, () => this.screen.onDialogEnd())
             previousReplicaPanel.lastHide();
@@ -198,6 +199,7 @@ export default class DialogPanel extends BasePanel {
                 //     this.taskNewPanel.hide(200);
                 // }
                 let delay = ReplicaPanel.HIDE_DIALOG_DURATION + ReplicaPanel.LAST_HIDE_PERSON_DURATION - 100;
+                this.screen.onDialogClosing(delay);
                 this.stripsPanel.hideStrips(delay);
                 this.game.time.events.add(delay + 300, () => this.screen.onDialogEnd())
                 previousReplicaPanel.lastHide();

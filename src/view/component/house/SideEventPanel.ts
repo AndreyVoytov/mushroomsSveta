@@ -18,9 +18,18 @@ type SideEventState = {
     totalLevels: number;
 };
 
+type SideEventChildAlphaState = {
+    target: PIXI.DisplayObject;
+    alpha: number;
+};
+
 export default class SideEventPanel extends ClosablePanel {
 
     private static readonly PANEL_SCALE = 1.1;
+    private static readonly PRE_DIALOG_FOCUS_DELAY = 1650;
+    private static readonly PRE_DIALOG_FOCUS_DURATION = 420;
+    private static readonly PRE_DIALOG_RESTORE_DURATION = 260;
+    private static readonly PRE_DIALOG_PANEL_SCALE = 1.4;
     private static readonly EVENT1_MAP2_UNLOCK_PROGRESS = 3;
     private static readonly EVENT1_MAP3_UNLOCK_PROGRESS = 7;
     private static readonly EVENT1_CHARACTER_OFFSET_Y = -45;
@@ -50,6 +59,14 @@ export default class SideEventPanel extends ClosablePanel {
     private characterSprite: Phaser.Sprite;
     private characterMoveTimer: Phaser.TimerEvent;
     private characterMoveTween: Phaser.Tween;
+    private mainImageSprite: Phaser.Sprite;
+    private preDialogFocusTargets: SideEventChildAlphaState[] = [];
+    private preDialogFocusTimer: Phaser.TimerEvent;
+    private preDialogRestoreTimer: Phaser.TimerEvent;
+    private preDialogFocusActive = false;
+    private panelBaseScaleX = 1;
+    private panelBaseScaleY = 1;
+    private preDialogTweens: Phaser.Tween[] = [];
 
     constructor(game: Phaser.Game, eventInfo: EventInfo) {
         super(game, game.width / 2, game.height / 2, false, "blank", SideEventPanel.PANEL_SCALE);
@@ -85,6 +102,7 @@ export default class SideEventPanel extends ClosablePanel {
         );
         eventImage.inputEnabled = true;
         eventImage.scale.set(EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber));
+        this.mainImageSprite = eventImage;
         this.attachPsdSprite('sideEvent1FadeTop', 'fadeTop', -18.5, -485.5);
         this.attachStretchedPsdSprite('sideEvent1FadeMiddle', 'fadeMiddle', -6.5, -85, 709, 644);
         this.attachPsdSprite('sideEvent1FadeBottom', 'fadeBottom', -18.5, 343);
@@ -195,6 +213,7 @@ export default class SideEventPanel extends ClosablePanel {
         icon.anchor.set(0.5);
         icon.y = -200;
         icon.scale.set(EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber));
+        this.mainImageSprite = icon;
 
         let closeButton = this.attachButton('closeButtonViolet', () => this.onCloseButtonClick());
         closeButton.x = 330;
@@ -321,8 +340,38 @@ export default class SideEventPanel extends ClosablePanel {
         return !!screen && !!screen.dialogPanel && screen.dialogPanel.isDialogActive();
     }
 
+    public focusBeforeDialog(delay?: number): void {
+        if (!this.mainImageSprite || this.preDialogFocusActive || this.preDialogFocusTimer) {
+            return;
+        }
+
+        this.clearPreDialogTimers(false);
+        this.preDialogFocusTimer = this.game.time.events.add(delay == null ? SideEventPanel.PRE_DIALOG_FOCUS_DELAY : delay, () => {
+            this.preDialogFocusTimer = null;
+            this.applyPreDialogFocus();
+        });
+    }
+
+    public restoreAfterDialog(delay?: number): void {
+        if (this.preDialogFocusTimer) {
+            this.game.time.events.remove(this.preDialogFocusTimer);
+            this.preDialogFocusTimer = null;
+        }
+
+        if (!this.preDialogFocusActive) {
+            return;
+        }
+
+        this.clearPreDialogTimers(false);
+        this.preDialogRestoreTimer = this.game.time.events.add(delay || 0, () => {
+            this.preDialogRestoreTimer = null;
+            this.restorePreDialogFocus();
+        });
+    }
+
     protected onClose() {
         this.stopCharacterMovement();
+        this.clearPreDialogTimers(true);
         (<HouseScreen>(this.game.state.getCurrentState())).showUI();
     }
 
@@ -439,5 +488,118 @@ export default class SideEventPanel extends ClosablePanel {
         if (this.characterSprite) {
             this.game.tweens.removeFrom(this.characterSprite);
         }
+    }
+
+    private applyPreDialogFocus(): void {
+        if (!this.mainImageSprite || !this.visible) {
+            return;
+        }
+
+        this.stopPreDialogTweens();
+
+        this.panelBaseScaleX = this.scale.x;
+        this.panelBaseScaleY = this.scale.y;
+        this.preDialogFocusTargets = [];
+
+        this.children.forEach(child => {
+            if (child === this.mainImageSprite) {
+                return;
+            }
+
+            this.preDialogFocusTargets.push({
+                target: <PIXI.DisplayObject><any>child,
+                alpha: (<any>child).alpha == null ? 1 : (<any>child).alpha
+            });
+
+            this.preDialogTweens.push(this.game.add.tween(child).to(
+                { alpha: 0 },
+                SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
+                Phaser.Easing.Quadratic.Out,
+                true,
+                0,
+                0,
+                false
+            ));
+        });
+
+        this.preDialogTweens.push(this.game.add.tween(this.scale).to(
+            {
+                x: SideEventPanel.PRE_DIALOG_PANEL_SCALE,
+                y: SideEventPanel.PRE_DIALOG_PANEL_SCALE
+            },
+            SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
+            Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        ));
+
+        this.preDialogFocusActive = true;
+    }
+
+    private restorePreDialogFocus(): void {
+        if (!this.mainImageSprite) {
+            return;
+        }
+
+        this.stopPreDialogTweens();
+
+        this.preDialogFocusTargets.forEach(state => {
+            if (!state || !state.target) {
+                return;
+            }
+
+            this.preDialogTweens.push(this.game.add.tween(state.target).to(
+                { alpha: state.alpha },
+                SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
+                Phaser.Easing.Quadratic.Out,
+                true,
+                0,
+                0,
+                false
+            ));
+        });
+
+        this.preDialogTweens.push(this.game.add.tween(this.scale).to(
+            { x: this.panelBaseScaleX, y: this.panelBaseScaleY },
+            SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
+            Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        ));
+
+        this.preDialogFocusActive = false;
+        this.preDialogFocusTargets = [];
+    }
+
+    private clearPreDialogTimers(resetState: boolean): void {
+        if (this.preDialogFocusTimer) {
+            this.game.time.events.remove(this.preDialogFocusTimer);
+            this.preDialogFocusTimer = null;
+        }
+
+        if (this.preDialogRestoreTimer) {
+            this.game.time.events.remove(this.preDialogRestoreTimer);
+            this.preDialogRestoreTimer = null;
+        }
+
+        this.stopPreDialogTweens();
+
+        if (resetState) {
+            this.preDialogFocusActive = false;
+            this.preDialogFocusTargets = [];
+        }
+    }
+
+    private stopPreDialogTweens(): void {
+        this.preDialogTweens.forEach(tween => {
+            if (tween) {
+                this.game.tweens.remove(tween);
+            }
+        });
+        this.preDialogTweens = [];
     }
 }

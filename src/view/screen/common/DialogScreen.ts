@@ -57,6 +57,8 @@ export default abstract class DialogScreen extends BaseScreen {
 
     protected abstract playAnimation(animationId: string): void;
 
+    public onDialogClosing(_delay?: number): void { }
+
     public onDialogEnd(): void { }
 }
 

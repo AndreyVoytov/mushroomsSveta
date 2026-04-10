@@ -78,6 +78,7 @@ export default class HouseScreen extends DialogScreen {
     public tasksPanel: TasksPanel;
     private diaryPanel: DiaryPanel;
     private activeEventPanel: ClosablePanel;
+    private preDialogSideEventPanel: SideEventPanel;
 
     private tasks: DiaryContentType;
     private progressBar: ProgressBar;
@@ -465,6 +466,7 @@ export default class HouseScreen extends DialogScreen {
 
     public onDialogEnd(): void {
         console.log("ON DIALOG END!")
+        this.preDialogSideEventPanel = null;
         let user = UserService.getUser();
         let currentDiaryContent = DiaryConfiguration.getCurrentRecipe(user.getCurrentForest());
         if (currentDiaryContent && RecipeUtils.getRequiredLevel(currentDiaryContent) == user.getCurrentForest()) {
@@ -480,13 +482,17 @@ export default class HouseScreen extends DialogScreen {
             return;
         }
 
-        this.showEventPanel(pendingEvent);
+        const panel = this.showEventPanel(pendingEvent);
+        if (panel instanceof SideEventPanel && this.dialogPanel && this.dialogPanel.getNextReplica()) {
+            this.preDialogSideEventPanel = panel;
+            panel.focusBeforeDialog();
+        }
     }
 
-    private showEventPanel(eventInfo: EventInfo, instantly?: boolean): void {
+    private showEventPanel(eventInfo: EventInfo, instantly?: boolean): ClosablePanel {
         if (eventInfo.eventType == EventType.configured && EventUtils.hasMissingConfiguredEventAssets(this.game, eventInfo.eventId)) {
             console.warn("Configured event assets are not loaded:", eventInfo.eventId);
-            return;
+            return null;
         }
 
         let p = eventInfo.eventType == EventType.configured
@@ -495,6 +501,15 @@ export default class HouseScreen extends DialogScreen {
         this.activeEventPanel = p;
         this.addPanel(p);
         p.show(instantly);
+        return p;
+    }
+
+    public onDialogClosing(delay?: number): void {
+        if (!this.preDialogSideEventPanel) {
+            return;
+        }
+
+        this.preDialogSideEventPanel.restoreAfterDialog(delay);
     }
 
     private tryStartConfiguredEventsAfterReplicas(): void {
