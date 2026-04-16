@@ -187,6 +187,8 @@ export default class LoadingScreen extends BaseScreen {
 
         //UI
         this.load.bitmapFont('bm_arial', 'assets/base/fonts/bitmap/bm_arial.png', 'assets/base/fonts/bitmap/bm_arial.fnt');
+        this.load.bitmapFont('bm_panel_digits_brown', 'assets/base/fonts/bitmap/bm_panel_digits_brown.png', 'assets/base/fonts/bitmap/bm_panel_digits_brown.fnt');
+        this.load.bitmapFont('bm_hive_digits_legacy', 'assets/base/fonts/bitmap/bm_hive_digits_legacy.png', 'assets/base/fonts/bitmap/bm_hive_digits_legacy.fnt');
         this.load.bitmapFont('bm_bookman', 'assets/base/fonts/bitmap/bm_bookman.png', 'assets/base/fonts/bitmap/bm_bookman.fnt');
         this.load.bitmapFont('bm_gilroy', 'assets/base/fonts/bitmap/bm_gilroy.png', 'assets/base/fonts/bitmap/bm_gilroy.fnt');
         this.load.bitmapFont('bm_balsamiq', 'assets/base/fonts/bitmap/bm_balsamiq.png', 'assets/base/fonts/bitmap/bm_balsamiq.fnt');

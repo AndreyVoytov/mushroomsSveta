@@ -21,9 +21,7 @@ export default class LifesPanel extends BasePanel {
         const lightning = this.attachSprite('lightning');
         lightning.scale.set(0.72);
 
-        this.lifesLabel = this.attachText("lifesLabel", "" + UserService.getUser().getEnergy(), { "font": "bold 42px Arial", "fill": "#ffffff" });
-        this.lifesLabel.addStrokeColor("#9e5b00", 0);
-        this.lifesLabel.strokeThickness = 4;
+        this.lifesLabel = this.attachText("lifesLabel", "" + UserService.getUser().getEnergy(), Label.PanelDigitsBrown(42));
 
         this.lifesStatus = this.attachText("lifesStatus", LocalizationService.get('ui.energy.full', 'FULL'), { "font": "bold 28px Arial ", "fill": "#d6b08b" });
 

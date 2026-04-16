@@ -118,12 +118,9 @@ export default class FailPanel extends ClosablePanel {
             // label.strokeThickness = 4;
             // label.addStrokeColor("#b6691b", 0);
             console.log("aim.count: " + aim.countLeft)
-            let label = new Label(this.game, shiftX + 40, -160 + 50+ 30, "" + aim.countLeft, { font: "bold 50px Gilroy", fill: "#ffffff" });
+            let label = new Label(this.game, shiftX + 40, -160 + 50+ 30, "" + aim.countLeft, Label.PanelDigitsBrown(50));
             label.anchor = new Phaser.Point(0.5, 0.5);
             this.addChild(label);
-            label.strokeThickness = 4;
-            // label.addStrokeColor("#b6691b", 0);
-            label.addStrokeColor("#78512c", 0);
             label.visible = aim.countLeft > 0;
         })
 

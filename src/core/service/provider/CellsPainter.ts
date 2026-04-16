@@ -14,6 +14,7 @@ import CellsProvider from './CellsProvider';
 
 
 export default class CellsPainter extends CellsProvider {
+    private static readonly HIVE_HONEY_LABEL_LEGACY = false;
 
     public constructor(forestType: ForestType, game: Phaser.Game) {
         super(forestType, game);
@@ -83,9 +84,12 @@ export default class CellsPainter extends CellsProvider {
 
         if (cell.state.content == ContentType.hive) {
             let honeyCount = Number(cell.state.metaValue);
-            cell.state.honeyLabel = new Label(game, 20, 20, "" + honeyCount, Label.BalsamiqSansBoldBold(35, "#fde700"))
-            cell.state.honeyLabel.addStrokeColor("#6c2e11", 0)
-            cell.state.honeyLabel.strokeThickness = 8;
+            const legacy = CellsPainter.HIVE_HONEY_LABEL_LEGACY;
+            const labelStyle = legacy
+                ? Label.HiveDigitsLegacy(40)
+                : Label.BalsamiqSansBoldBold(40, "#ac622c");
+
+            cell.state.honeyLabel = new Label(game, 20, 20, "" + honeyCount, labelStyle);
 
             cell.state.honeyLabel.anchor.set(0.5)
             let bg = SpriteUtils.createSprite(game, 20, 15, "honey2");

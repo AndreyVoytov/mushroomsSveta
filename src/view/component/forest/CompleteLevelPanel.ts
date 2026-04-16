@@ -75,12 +75,7 @@ export default class LevelCompletePanel extends BasePanel {
         });
         spentLabel.anchor.set(0.5);
 
-        const spentValue = this.attachText('spentValue', '' + spentEnergy, {
-            font: 'bold 52px Gilroy',
-            fill: '#ffffff'
-        });
-        spentValue.addStrokeColor('#924d1d', 0);
-        spentValue.strokeThickness = 4;
+        const spentValue = this.attachText('spentValue', '' + spentEnergy, Label.PanelDigitsBrown(52));
 
         this.attachText(
             'betterLabel',

@@ -2,7 +2,7 @@
     private static GREEN_ESCAPE_SYMBOL = '~';
     private static VIOLET_ESCAPE_SYMBOL = '@';
 
-    public static AIM_STYLE: Phaser.PhaserTextStyle = { font: 'bold 40px Arial', fill: '#ffffff' };
+    public static AIM_STYLE: Phaser.PhaserTextStyle = { font: 'bold 40px PanelDigitsBrown', fill: '#ffffff' };
 
     public static INFO_GREEN_STYLE: Phaser.PhaserTextStyle = { font: 'bold 60px Arial', fill: '#00ff00', wordWrap: true, wordWrapWidth: 800 };
     public static INFO_BLACK_STYLE: Phaser.PhaserTextStyle = { font: '50px Arial', fill: '#000000', wordWrap: true, wordWrapWidth: 800 };
@@ -38,6 +38,14 @@
 
     public static BalsamiqSansBoldBold(size: number, color?: string, width?: number): Phaser.PhaserTextStyle {
         return { font: 'bold ' + size + 'px BalsamiqSansBold', fill: color || '#ffffff', wordWrap: width ? true : false, wordWrapWidth: width || 5000 };
+    }
+
+    public static HiveDigitsLegacy(size: number): Phaser.PhaserTextStyle {
+        return { font: 'bold ' + size + 'px HiveDigitsLegacy', fill: '#ffffff' };
+    }
+
+    public static PanelDigitsBrown(size: number): Phaser.PhaserTextStyle {
+        return { font: 'bold ' + size + 'px PanelDigitsBrown', fill: '#ffffff' };
     }
 
     constructor(game: Phaser.Game, x: number, y: number, text: string, style?: Phaser.PhaserTextStyle, ignoreVioletHighlight?: boolean, symbolsInRow?: number) {
@@ -161,6 +169,8 @@
         }
 
         const lowered = fontSpec.toLowerCase();
+        if (lowered.indexOf('hivedigitslegacy') >= 0) return { key: 'bm_hive_digits_legacy', size: size, letterSpacing: -1 };
+        if (lowered.indexOf('paneldigitsbrown') >= 0) return { key: 'bm_panel_digits_brown', size: size, letterSpacing: -1 };
         if (lowered.indexOf('diarydigits') >= 0) return { key: 'bm_diary_digits', size: size, letterSpacing: -1 };
         if (lowered.indexOf('bookman') >= 0) return { key: 'bm_bookman', size: size, letterSpacing: -1 };
         if (lowered.indexOf('gilroy') >= 0) return { key: 'bm_gilroy', size: size, letterSpacing: -2 };

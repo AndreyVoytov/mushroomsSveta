@@ -87,11 +87,9 @@ export default class GiveUpPanel extends ClosablePanel {
             // this.addChild(statusImage);
 
             // let label = new Label(this.game, shiftX, -160 + 80, "" + aim.count, Label.WHITE_STYLE_SMALLEST);
-            let label = new Label(this.game, shiftX, -160 + 115, "" + aim.countLeft, { font: "bold 45px Gilroy", fill: "#ffffff" });
+            let label = new Label(this.game, shiftX, -160 + 115, "" + aim.countLeft, Label.PanelDigitsBrown(45));
             label.anchor = new Phaser.Point(0.5, 0.5);
             this.addChild(label);
-            label.strokeThickness = 4;
-            label.addStrokeColor("#b6691b", 0);
         })
 
         let isLowHeight = this.game.height / 2 < 700;

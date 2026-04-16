@@ -484,7 +484,7 @@
         "text.remainShort.second": "{count} сек.",
         "text.restoreFor": "Восстановить за {price}     ",
         "text.shareInvite": "Привет! Прими участие в приключениях в новой игре!",
-        "text.supportMessage": "Пожалуйста, сообщайте об \n ошибках в игре на почту \n ~{email}~",
+        "text.supportMessage": "Пожалуйста, сообщайте об ошибках в игре на почту ~{email}~",
         "text.tapToContinue": "нажмите для продолжения",
         "tutorial.level1.openCells": "~Открывайте клеточки~, чтобы собирать грибы",
         "tutorial.level116.amber": "Говорят, в этих песках часто попадается ~янтарь~!",

@@ -522,8 +522,6 @@ export default class ForestTopPanel extends BasePanel {
 
         let label = new Label(this.game, 370 + 18 + shiftX, 60, "" + aim.countLeft, Label.AIM_STYLE);
         this.addSprite(label);
-        label.strokeThickness = 4;
-        label.addStrokeColor("#62321c", 0);
 
         aim.label = label;
         aim.sprite = image;
