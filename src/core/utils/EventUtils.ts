@@ -161,7 +161,17 @@ export default class EventUtils {
     }
 
     public static getConfiguredEventAssets(eventId: string): EventAssetConfiguration[] {
-        return EventsConfiguration.getAssetsById(eventId);
+        const assets = EventsConfiguration.getAssetsById(eventId).slice();
+        const mainImageAsset = EventsConfiguration.getMainImageAssetById(eventId, this.getConfiguredEventDisplayLevelNumber(eventId));
+        if (mainImageAsset) {
+            assets.push(mainImageAsset);
+        }
+
+        return this.getUniqueAssets(assets);
+    }
+
+    public static getConfiguredEventDynamicAssets(eventId: string): EventAssetConfiguration[] {
+        return this.getUniqueAssets(EventsConfiguration.getAllMainImageAssetsById(eventId));
     }
 
     public static getConfiguredEventIdsWithOptionalAssets(includeAwaitingActivation?: boolean): string[] {
@@ -673,6 +683,20 @@ export default class EventUtils {
         }
 
         return user.getCurrentForest() >= eventConfig.startsatLevel;
+    }
+
+    private static getUniqueAssets(assets: EventAssetConfiguration[]): EventAssetConfiguration[] {
+        const result: EventAssetConfiguration[] = [];
+
+        (assets || []).forEach(asset => {
+            if (!asset || !asset.key || result.some(existingAsset => existingAsset.key == asset.key)) {
+                return;
+            }
+
+            result.push(asset);
+        });
+
+        return result;
     }
 
     private static canStartFirstLukoshkoEvent(user: User): boolean {

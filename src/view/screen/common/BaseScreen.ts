@@ -1,5 +1,6 @@
 import ForestDao from '../../../core/dao/ForestDao';
 import ReplicaDao from '../../../core/dao/ReplicaDao';
+import EventsConfiguration from '../../../core/configuration/EventsConfiguration';
 import AdminService from '../../../core/service/AdminService';
 import Settings from '../../../core/service/Settings';
 import UserService from '../../../core/service/UserService';
@@ -28,7 +29,9 @@ export default abstract class BaseScreen extends DebugScreen {
         if (!Settings.isGraphicsFromAtlases()) {
             this.load.image(key, path);
         }
-        SpriteUtils.images.push({ key: key, path: path });
+        if (!SpriteUtils.images.some(image => image.key == key && image.path == path)) {
+            SpriteUtils.images.push({ key: key, path: path });
+        }
     }
 
     public loadAtlas(key: string, path: string): void {
@@ -128,16 +131,34 @@ export default abstract class BaseScreen extends DebugScreen {
     }
 
     protected loadOptionalConfiguredEventResources(includeAwaitingActivation?: boolean): void {
+        const requiredAssetKeys: string[] = [];
+
         EventUtils.getConfiguredEventIdsWithOptionalAssets(includeAwaitingActivation).forEach(eventId => {
             EventUtils.getConfiguredEventAssets(eventId).forEach(asset => {
-                if (!asset || !asset.key || !asset.path || this.isImageCached(asset.key)) {
+                if (!asset || !asset.key || !asset.path) {
                     return;
                 }
 
-                this.loadImage(asset.key, asset.path);
-                if (Settings.isGraphicsFromAtlases()) {
-                    this.load.image(asset.key, asset.path + "?" + Settings.ATLASES_VERSION);
+                if (requiredAssetKeys.indexOf(asset.key) == -1) {
+                    requiredAssetKeys.push(asset.key);
                 }
+
+                if (!this.isImageCached(asset.key)) {
+                    this.loadImage(asset.key, asset.path);
+                    if (Settings.isGraphicsFromAtlases()) {
+                        this.load.image(asset.key, asset.path + "?" + Settings.ATLASES_VERSION);
+                    }
+                }
+            });
+        });
+
+        EventsConfiguration.allEvents.forEach(eventConfig => {
+            EventUtils.getConfiguredEventDynamicAssets(eventConfig.eventId).forEach(asset => {
+                if (!asset || !asset.key || requiredAssetKeys.indexOf(asset.key) != -1 || !this.isImageCached(asset.key)) {
+                    return;
+                }
+
+                this.cache.removeImage(asset.key);
             });
         });
     }

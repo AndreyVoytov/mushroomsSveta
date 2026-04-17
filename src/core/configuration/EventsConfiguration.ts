@@ -7,6 +7,7 @@ export type EventMainImageOverrideConfiguration = {
     levels: number[];
     mainImage: string;
     mainImageScale?: number;
+    path?: string;
 };
 
 export type EventConfiguration = {
@@ -19,6 +20,7 @@ export type EventConfiguration = {
     icon?: string;
     iconScale?: number;
     mainImage?: string;
+    mainImagePath?: string;
     mainImageScale?: number;
     mainImageOverrides?: EventMainImageOverrideConfiguration[];
     assets?: EventAssetConfiguration[];
@@ -36,12 +38,29 @@ export default class EventsConfiguration {
             levelsCount: -1,
             icon: "tasks",
             iconScale: 0.817,
-            mainImage: "sideEvent1EventImage",
-            mainImageScale: 1,
+            mainImage: "sideEvent1ScreenClover",
+            mainImagePath: "assets/sideEvent1Screens/clover.png",
+            mainImageScale: 1/1.4,
             mainImageOverrides: [
                 {
-                    levels: [2, 4],
-                    mainImage: "sideEvent1EventImage2"
+                    levels: [4, 5],
+                    mainImage: "sideEvent1ScreenCloverFlowers",
+                    path: "assets/sideEvent1Screens/cloverFlowers.png"
+                },
+                {
+                    levels: [6, 7],
+                    mainImage: "sideEvent1ScreenCloverHive",
+                    path: "assets/sideEvent1Screens/cloverHive.png"
+                },
+                {
+                    levels: [8, 9, 10],
+                    mainImage: "sideEvent1ScreenQueenHives",
+                    path: "assets/sideEvent1Screens/queenHives.png"
+                },
+                {
+                    levels: [11, 12, 13, 14, 15],
+                    mainImage: "sideEvent1ScreenCloverMountines",
+                    path: "assets/sideEvent1Screens/cloverMountines.png"
                 }
             ],
             assets: [
@@ -52,8 +71,6 @@ export default class EventsConfiguration {
                 { key: "sideEvent1FrameBottom", path: "assets/sideEvent1/event_frame_bottom.png" },
                 { key: "sideEvent1FrameMiddle", path: "assets/sideEvent1/event_frame_middle (source).png" },
                 { key: "sideEvent1FrameTop", path: "assets/sideEvent1/event_frame_top.png" },
-                { key: "sideEvent1EventImage", path: "assets/sideEvent1/event_image.png" },
-                { key: "sideEvent1EventImage2", path: "assets/sideEvent1/event_image2.png" },
                 { key: "sideEvent1PanelBottom", path: "assets/sideEvent1/event_panel_bottom.png" },
                 { key: "sideEvent1PanelClose", path: "assets/sideEvent1/event_panel_close.png" },
                 { key: "sideEvent1PanelRibbon", path: "assets/sideEvent1/event_panel_ribbon.png" },
@@ -73,5 +90,55 @@ export default class EventsConfiguration {
     public static getAssetsById(eventId: string): EventAssetConfiguration[] {
         const event = this.getById(eventId);
         return event && event.assets ? event.assets : [];
+    }
+
+    public static getMainImageAssetById(eventId: string, levelNumber?: number): EventAssetConfiguration {
+        const event = this.getById(eventId);
+        if (!event) {
+            return null;
+        }
+
+        const override = this.getMainImageOverride(event, levelNumber);
+        if (override && override.mainImage && override.path) {
+            return { key: override.mainImage, path: override.path };
+        }
+
+        if (event.mainImage && event.mainImagePath) {
+            return { key: event.mainImage, path: event.mainImagePath };
+        }
+
+        return null;
+    }
+
+    public static getAllMainImageAssetsById(eventId: string): EventAssetConfiguration[] {
+        const event = this.getById(eventId);
+        const result: EventAssetConfiguration[] = [];
+
+        if (!event) {
+            return result;
+        }
+
+        this.pushAsset(result, event.mainImage, event.mainImagePath);
+        (event.mainImageOverrides || []).forEach(override => {
+            this.pushAsset(result, override && override.mainImage, override && override.path);
+        });
+
+        return result;
+    }
+
+    private static getMainImageOverride(event: EventConfiguration, levelNumber?: number): EventMainImageOverrideConfiguration {
+        if (!event || !event.mainImageOverrides || event.mainImageOverrides.length == 0 || levelNumber == null) {
+            return null;
+        }
+
+        return event.mainImageOverrides.filter(override => override && override.levels && override.levels.indexOf(levelNumber) != -1).shift();
+    }
+
+    private static pushAsset(target: EventAssetConfiguration[], key: string, path: string): void {
+        if (!key || !path || target.some(asset => asset.key == key)) {
+            return;
+        }
+
+        target.push({ key: key, path: path });
     }
 }
