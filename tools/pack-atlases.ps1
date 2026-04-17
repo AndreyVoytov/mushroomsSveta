@@ -18,6 +18,7 @@ if ([string]::IsNullOrWhiteSpace($AtlasesDir)) {
 if ([string]::IsNullOrWhiteSpace($ManifestPath)) {
     $ManifestPath = Join-Path $projectRoot "src/generated/atlasManifest.ts"
 }
+$cacheVersion = "atlas-cache-v1"
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 $magickCommand = Get-Command magick.exe, magick -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -40,6 +41,111 @@ function Write-TextFile([string]$Path, [string]$Content) {
     [IO.File]::WriteAllText($Path, $Content, $utf8NoBom)
 }
 
+function Write-TextFileIfChanged([string]$Path, [string]$Content) {
+    if (Test-Path $Path) {
+        $existing = [IO.File]::ReadAllText((Resolve-Path $Path).Path)
+        if ($existing -eq $Content) {
+            return $false
+        }
+    }
+
+    Write-TextFile $Path $Content
+    return $true
+}
+
+function Read-JsonObject([string]$Path) {
+    if (-not (Test-Path $Path)) {
+        return $null
+    }
+
+    $raw = Get-Content -Path $Path -Raw
+    if ([string]::IsNullOrWhiteSpace($raw)) {
+        return $null
+    }
+
+    return $raw | ConvertFrom-Json
+}
+
+function Get-PropertyValue([object]$Object, [string]$Name) {
+    if ($null -eq $Object) {
+        return $null
+    }
+
+    $property = $Object.PSObject.Properties | Where-Object { $_.Name -eq $Name } | Select-Object -First 1
+    if ($property) {
+        return $property.Value
+    }
+
+    return $null
+}
+
+function Get-DictionaryValue([object]$Object, [string]$Name) {
+    if ($null -eq $Object) {
+        return $null
+    }
+
+    if ($Object -is [System.Collections.IDictionary]) {
+        if ($Object.Contains($Name)) {
+            return $Object[$Name]
+        }
+
+        return $null
+    }
+
+    return Get-PropertyValue $Object $Name
+}
+
+function Get-NamedChildKeys([object]$Object) {
+    if ($null -eq $Object) {
+        return @()
+    }
+
+    if ($Object -is [System.Collections.IDictionary]) {
+        return @($Object.Keys)
+    }
+
+    return @($Object.PSObject.Properties | Select-Object -ExpandProperty Name)
+}
+
+function Set-OrderedValue([System.Collections.Specialized.OrderedDictionary]$Dictionary, [string]$Name, $Value) {
+    if ($Dictionary.Contains($Name)) {
+        $Dictionary[$Name] = $Value
+    }
+    else {
+        $Dictionary.Add($Name, $Value)
+    }
+}
+
+function Get-StringArray([object]$Value) {
+    if ($null -eq $Value) {
+        return @()
+    }
+
+    $result = @()
+    foreach ($item in @($Value)) {
+        if ($null -ne $item -and -not [string]::IsNullOrWhiteSpace([string]$item)) {
+            $result += [string]$item
+        }
+    }
+
+    return @($result)
+}
+
+function ConvertTo-HexString([byte[]]$Bytes) {
+    return ([BitConverter]::ToString($Bytes)).Replace('-', '').ToLowerInvariant()
+}
+
+function Get-StringHash([string]$Text) {
+    $sha = [System.Security.Cryptography.SHA256]::Create()
+    try {
+        $bytes = [System.Text.Encoding]::UTF8.GetBytes($Text)
+        return ConvertTo-HexString ($sha.ComputeHash($bytes))
+    }
+    finally {
+        $sha.Dispose()
+    }
+}
+
 function Get-RelativePath([string]$BasePath, [string]$TargetPath) {
     $baseFullPath = (Resolve-Path $BasePath).Path.TrimEnd('\')
     $targetFullPath = (Resolve-Path $TargetPath).Path
@@ -60,6 +166,10 @@ function Get-RelativePath([string]$BasePath, [string]$TargetPath) {
 
 function Get-ForwardPath([string]$Path) {
     return $Path.Replace('\', '/')
+}
+
+function Get-ProjectRelativePath([string]$Path) {
+    return Get-ForwardPath (Get-RelativePath $projectRoot $Path)
 }
 
 function Get-ImageSize([string]$Path) {
@@ -94,7 +204,7 @@ function Get-CleanupPrefix([object]$Group) {
     return $pattern
 }
 
-function Get-AtlasItems([object]$Group) {
+function Get-AtlasSourceFiles([object]$Group) {
     $sourceRoot = Join-Path $projectRoot $Group.sourceDir
     if (-not (Test-Path $sourceRoot)) {
         return @()
@@ -120,17 +230,150 @@ function Get-AtlasItems([object]$Group) {
 
             if (-not $skip) {
                 $assetRelative = Get-ForwardPath (Get-RelativePath (Join-Path $projectRoot 'assets') $_.FullName)
-                $size = Get-ImageSize $_.FullName
                 $items += [pscustomobject]@{
                     FullPath = $_.FullName
                     FrameName = $assetRelative
-                    Width = $size.Width
-                    Height = $size.Height
                 }
             }
         }
 
+    return @($items | Sort-Object FrameName)
+}
+
+function Get-AtlasItems([object[]]$SourceFiles) {
+    $items = @()
+    foreach ($sourceFile in $SourceFiles) {
+        $size = Get-ImageSize $sourceFile.FullPath
+        $items += [pscustomobject]@{
+            FullPath = $sourceFile.FullPath
+            FrameName = $sourceFile.FrameName
+            Width = $size.Width
+            Height = $size.Height
+        }
+    }
+
     return @($items | Sort-Object @{ Expression = 'Height'; Descending = $true }, @{ Expression = 'Width'; Descending = $true }, @{ Expression = 'FrameName'; Descending = $false })
+}
+
+function Get-ScreenSourceFiles([string]$SourceDir) {
+    if (-not (Test-Path $SourceDir)) {
+        return @()
+    }
+
+    $items = @()
+    Get-ChildItem -Path $SourceDir -File |
+        Where-Object { $_.Extension.ToLowerInvariant() -in @('.png', '.jpg', '.jpeg') } |
+        ForEach-Object {
+            $items += [pscustomobject]@{
+                FullPath = $_.FullName
+                Name = [IO.Path]::GetFileNameWithoutExtension($_.Name)
+            }
+        }
+
+    return @($items | Sort-Object Name)
+}
+
+function Get-FileContentHash([string]$Path, [object]$ExistingFileHashes, [System.Collections.Specialized.OrderedDictionary]$NextFileHashes) {
+    $relativePath = Get-ProjectRelativePath $Path
+    $current = Get-DictionaryValue $NextFileHashes $relativePath
+    if ($current) {
+        return [string](Get-DictionaryValue $current 'hash')
+    }
+
+    $file = Get-Item $Path
+    $stamp = "{0}|{1}" -f $file.Length, $file.LastWriteTimeUtc.Ticks
+    $cached = Get-DictionaryValue $ExistingFileHashes $relativePath
+    $cachedStamp = [string](Get-DictionaryValue $cached 'stamp')
+    $hash = [string](Get-DictionaryValue $cached 'hash')
+
+    if ($cachedStamp -ne $stamp -or [string]::IsNullOrWhiteSpace($hash)) {
+        $stream = [IO.File]::OpenRead($Path)
+        $sha = [System.Security.Cryptography.SHA256]::Create()
+        try {
+            $hash = ConvertTo-HexString ($sha.ComputeHash($stream))
+        }
+        finally {
+            $sha.Dispose()
+            $stream.Dispose()
+        }
+    }
+
+    Set-OrderedValue $NextFileHashes $relativePath ([ordered]@{
+        stamp = $stamp
+        hash = $hash
+    })
+
+    return $hash
+}
+
+function Get-AtlasGroupSignature([object]$Group, [object[]]$SourceFiles, [object]$ExistingFileHashes, [System.Collections.Specialized.OrderedDictionary]$NextFileHashes) {
+    $parts = New-Object System.Collections.Generic.List[string]
+    $parts.Add("version=$cacheVersion")
+    $parts.Add("skipWebp=$([int](-not $SkipWebp))")
+    $parts.Add("id=$([string]$Group.id)")
+    $parts.Add("sourceDir=$([string]$Group.sourceDir)")
+    $parts.Add("outputPattern=$([string]$Group.outputPattern)")
+    $parts.Add("maxWidth=$([int]$Group.maxWidth)")
+    $parts.Add("maxHeight=$([int]$Group.maxHeight)")
+
+    if ($Group.PSObject.Properties.Name -contains 'exclude') {
+        foreach ($pattern in @($Group.exclude)) {
+            $parts.Add("exclude=$pattern")
+        }
+    }
+
+    foreach ($sourceFile in $SourceFiles) {
+        $fileHash = Get-FileContentHash $sourceFile.FullPath $ExistingFileHashes $NextFileHashes
+        $parts.Add("$($sourceFile.FrameName)|$fileHash")
+    }
+
+    return Get-StringHash ($parts -join "`n")
+}
+
+function Get-ScreensSignature([string]$SourceDirConfig, [object[]]$SourceFiles, [object]$ExistingFileHashes, [System.Collections.Specialized.OrderedDictionary]$NextFileHashes) {
+    $parts = New-Object System.Collections.Generic.List[string]
+    $parts.Add("version=$cacheVersion")
+    $parts.Add("skipWebp=$([int](-not $SkipWebp))")
+    $parts.Add("sourceDir=$SourceDirConfig")
+
+    foreach ($sourceFile in $SourceFiles) {
+        $fileHash = Get-FileContentHash $sourceFile.FullPath $ExistingFileHashes $NextFileHashes
+        $parts.Add("$($sourceFile.Name)|$fileHash")
+    }
+
+    return Get-StringHash ($parts -join "`n")
+}
+
+function Test-AtlasOutputsExist([string]$OutputDir, [string[]]$AtlasNames) {
+    foreach ($name in $AtlasNames) {
+        if (-not (Test-Path (Join-Path $OutputDir "$name.png"))) {
+            return $false
+        }
+
+        if (-not (Test-Path (Join-Path $OutputDir "$name.json"))) {
+            return $false
+        }
+
+        if (-not $SkipWebp -and -not (Test-Path (Join-Path $OutputDir "$name.webp"))) {
+            return $false
+        }
+    }
+
+    return $true
+}
+
+function Test-ScreenOutputsExist([string]$OutputDir, [string[]]$Names) {
+    foreach ($name in $Names) {
+        if (-not (Test-Path (Join-Path $OutputDir "$name.png"))) {
+            return $false
+        }
+
+        if (-not $SkipWebp -and -not (Test-Path (Join-Path $OutputDir "$name.webp"))) {
+            return $false
+        }
+    }
+
+    return $true
 }
 
 function New-AtlasPages([object[]]$Items, [int]$MaxWidth, [int]$MaxHeight) {
@@ -208,7 +451,9 @@ function Remove-StaleOutputs([string]$OutputDir, [string]$Prefix, [string[]]$Atl
     foreach ($name in $AtlasNames) {
         $keep["$name.png"] = $true
         $keep["$name.json"] = $true
-        $keep["$name.webp"] = $true
+        if (-not $SkipWebp) {
+            $keep["$name.webp"] = $true
+        }
     }
 
     Get-ChildItem -Path $OutputDir -File -ErrorAction SilentlyContinue |
@@ -308,18 +553,16 @@ function Save-AtlasJson([object]$Page, [string]$AtlasName, [string]$JsonPath) {
     Write-TextFile $JsonPath ($json + "`n")
 }
 
-function Sync-Screens([string]$SourceDir, [string]$OutputDir) {
+function Sync-Screens([object[]]$SourceFiles, [string]$OutputDir) {
     Ensure-Directory $OutputDir
     $keep = @{}
 
-    Get-ChildItem -Path $SourceDir -File |
-        Where-Object { $_.Extension.ToLowerInvariant() -in @('.png', '.jpg', '.jpeg') } |
-        ForEach-Object {
-            $name = [IO.Path]::GetFileNameWithoutExtension($_.Name)
+    foreach ($sourceFile in $SourceFiles) {
+            $name = $sourceFile.Name
             $pngPath = Join-Path $OutputDir "$name.png"
             $webpPath = Join-Path $OutputDir "$name.webp"
 
-            $image = [System.Drawing.Image]::FromFile($_.FullName)
+            $image = [System.Drawing.Image]::FromFile($sourceFile.FullPath)
             try {
                 $bitmap = New-Object System.Drawing.Bitmap $image.Width, $image.Height, ([System.Drawing.Imaging.PixelFormat]::Format32bppArgb)
                 $graphics = [System.Drawing.Graphics]::FromImage($bitmap)
@@ -338,8 +581,10 @@ function Sync-Screens([string]$SourceDir, [string]$OutputDir) {
 
             Save-Webp $pngPath $webpPath
             $keep["$name.png"] = $true
-            $keep["$name.webp"] = $true
-        }
+            if (-not $SkipWebp) {
+                $keep["$name.webp"] = $true
+            }
+    }
 
     Get-ChildItem -Path $OutputDir -File -ErrorAction SilentlyContinue |
         Where-Object { $_.Extension.ToLowerInvariant() -in @('.png', '.webp') } |
@@ -365,23 +610,70 @@ function Save-Manifest([System.Collections.Specialized.OrderedDictionary]$Manife
     $lines.Add('export function getAtlasGroupNames(groupId: string): string[] {')
     $lines.Add('    return ATLAS_GROUPS[groupId] || [groupId];')
     $lines.Add('}')
-    Write-TextFile $Path (($lines -join "`n") + "`n")
+    return Write-TextFileIfChanged $Path (($lines -join "`n") + "`n")
 }
 
 $config = Get-Content -Path $ConfigPath -Raw | ConvertFrom-Json
 Ensure-Directory $AtlasesDir
 Ensure-Directory (Join-Path $AtlasesDir 'screens')
+$cachePath = Join-Path $AtlasesDir '.atlas-cache.json'
+$screensOutputDir = Join-Path $AtlasesDir 'screens'
+$cacheState = Read-JsonObject $cachePath
+$cacheStateVersion = [string](Get-PropertyValue $cacheState 'toolVersion')
+$cachedFileHashes = if ($cacheStateVersion -eq $cacheVersion) { Get-PropertyValue $cacheState 'fileHashes' } else { $null }
+$cachedGroups = if ($cacheStateVersion -eq $cacheVersion) { Get-PropertyValue $cacheState 'groups' } else { $null }
+$cachedScreens = if ($cacheStateVersion -eq $cacheVersion) { Get-PropertyValue $cacheState 'screens' } else { $null }
 
 $manifest = New-Object System.Collections.Specialized.OrderedDictionary
+$nextFileHashes = New-Object System.Collections.Specialized.OrderedDictionary
+$nextGroups = New-Object System.Collections.Specialized.OrderedDictionary
+$currentGroupIds = @()
+$packedGroupsCount = 0
+$skippedGroupsCount = 0
 
 foreach ($group in $config.atlasGroups) {
-    $items = @(Get-AtlasItems $group)
-    $pages = @(New-AtlasPages $items ([int]$group.maxWidth) ([int]$group.maxHeight))
-    if ($pages.Count -eq 0) {
-        $manifest.Add([string]$group.id, @())
+    $groupId = [string]$group.id
+    $currentGroupIds += $groupId
+
+    $sourceFiles = @(Get-AtlasSourceFiles $group)
+    $signature = Get-AtlasGroupSignature $group $sourceFiles $cachedFileHashes $nextFileHashes
+    $cleanupPrefix = Get-CleanupPrefix $group
+    $cachedGroupState = Get-DictionaryValue $cachedGroups $groupId
+    $cachedOutputs = Get-StringArray (Get-DictionaryValue $cachedGroupState 'outputs')
+    $cachedSignature = [string](Get-DictionaryValue $cachedGroupState 'signature')
+    $cachedCleanupPrefix = [string](Get-DictionaryValue $cachedGroupState 'cleanupPrefix')
+
+    if (-not [string]::IsNullOrWhiteSpace($cachedCleanupPrefix) -and $cachedCleanupPrefix -ne $cleanupPrefix) {
+        Remove-StaleOutputs $AtlasesDir $cachedCleanupPrefix @()
+    }
+
+    if ($sourceFiles.Count -eq 0) {
+        Remove-StaleOutputs $AtlasesDir $cleanupPrefix @()
+        $manifest.Add($groupId, @())
+        Set-OrderedValue $nextGroups $groupId ([ordered]@{
+            signature = $signature
+            outputs = @()
+            cleanupPrefix = $cleanupPrefix
+        })
+        Write-Host ("Packed {0}: 0 frame(s) -> none" -f $groupId)
+        $packedGroupsCount++
         continue
     }
 
+    if ($cachedSignature -eq $signature -and $cachedOutputs.Count -gt 0 -and (Test-AtlasOutputsExist $AtlasesDir $cachedOutputs)) {
+        $manifest.Add($groupId, $cachedOutputs)
+        Set-OrderedValue $nextGroups $groupId ([ordered]@{
+            signature = $signature
+            outputs = $cachedOutputs
+            cleanupPrefix = $cleanupPrefix
+        })
+        Write-Host ("Skipped {0}: unchanged -> {1}" -f $groupId, ($cachedOutputs -join ', '))
+        $skippedGroupsCount++
+        continue
+    }
+
+    $items = @(Get-AtlasItems $sourceFiles)
+    $pages = @(New-AtlasPages $items ([int]$group.maxWidth) ([int]$group.maxHeight))
     $atlasNames = @()
     for ($pageIndex = 0; $pageIndex -lt $pages.Count; $pageIndex++) {
         $atlasNames += Get-OutputName $group $pageIndex $pages.Count
@@ -399,10 +691,56 @@ foreach ($group in $config.atlasGroups) {
         Save-Webp $pngPath $webpPath
     }
 
-    $manifest.Add([string]$group.id, $atlasNames)
-    Write-Host ("Packed {0}: {1} frame(s) -> {2}" -f $group.id, $items.Count, ($atlasNames -join ', '))
+    $manifest.Add($groupId, $atlasNames)
+    Set-OrderedValue $nextGroups $groupId ([ordered]@{
+        signature = $signature
+        outputs = @($atlasNames)
+        cleanupPrefix = $cleanupPrefix
+    })
+    Write-Host ("Packed {0}: {1} frame(s) -> {2}" -f $groupId, $items.Count, ($atlasNames -join ', '))
+    $packedGroupsCount++
 }
 
-Sync-Screens (Join-Path $projectRoot $config.screens.sourceDir) (Join-Path $AtlasesDir 'screens')
-Save-Manifest $manifest $ManifestPath
+foreach ($oldGroupId in (Get-NamedChildKeys $cachedGroups)) {
+    if ($currentGroupIds -notcontains [string]$oldGroupId) {
+        $oldGroupState = Get-DictionaryValue $cachedGroups ([string]$oldGroupId)
+        $oldCleanupPrefix = [string](Get-DictionaryValue $oldGroupState 'cleanupPrefix')
+        if (-not [string]::IsNullOrWhiteSpace($oldCleanupPrefix)) {
+            Remove-StaleOutputs $AtlasesDir $oldCleanupPrefix @()
+        }
+    }
+}
+
+$screensSourceDir = Join-Path $projectRoot $config.screens.sourceDir
+$screenSourceFiles = @(Get-ScreenSourceFiles $screensSourceDir)
+$screensSignature = Get-ScreensSignature $config.screens.sourceDir $screenSourceFiles $cachedFileHashes $nextFileHashes
+$cachedScreenSignature = [string](Get-DictionaryValue $cachedScreens 'signature')
+$cachedScreenNames = Get-StringArray (Get-DictionaryValue $cachedScreens 'names')
+$screensSkipped = $false
+
+if ($cachedScreenSignature -eq $screensSignature -and (Test-ScreenOutputsExist $screensOutputDir $cachedScreenNames)) {
+    $screensSkipped = $true
+    Write-Host ("Skipped screens: unchanged ({0} file(s))" -f $cachedScreenNames.Count)
+    $screenNames = $cachedScreenNames
+}
+else {
+    Sync-Screens $screenSourceFiles $screensOutputDir
+    $screenNames = @($screenSourceFiles | ForEach-Object { $_.Name })
+    Write-Host ("Packed screens: {0} file(s)" -f $screenNames.Count)
+}
+
+$nextCacheState = [ordered]@{
+    toolVersion = $cacheVersion
+    fileHashes = $nextFileHashes
+    groups = $nextGroups
+    screens = [ordered]@{
+        signature = $screensSignature
+        names = @($screenNames)
+    }
+}
+
+$cacheJson = ($nextCacheState | ConvertTo-Json -Depth 12)
+[void](Write-TextFileIfChanged $cachePath ($cacheJson + "`n"))
+[void](Save-Manifest $manifest $ManifestPath)
 Write-Host "Updated atlas manifest: $ManifestPath"
+Write-Host ("Atlas summary: packed={0}, skipped={1}, screens={2}" -f $packedGroupsCount, $skippedGroupsCount, ($(if ($screensSkipped) { 'skipped' } else { 'packed' })))

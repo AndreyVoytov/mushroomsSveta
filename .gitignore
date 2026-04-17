@@ -23,3 +23,4 @@ package-lock.json
 assets_hq
 assets_lq
 /.history
+.atlas-cache.json
