@@ -111,6 +111,13 @@
       "outputPattern": "minigame9",
       "maxWidth": 2048,
       "maxHeight": 2048
+    },
+    {
+      "id": "minigame10",
+      "sourceDir": "assets/minigame10",
+      "outputPattern": "minigame10",
+      "maxWidth": 2048,
+      "maxHeight": 2048
     }
   ],
   "screens": {

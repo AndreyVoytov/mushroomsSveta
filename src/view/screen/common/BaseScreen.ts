@@ -134,6 +134,12 @@ export default abstract class BaseScreen extends DebugScreen {
         } else {
             this.unloadAtlasGroup("minigame9");
         }
+
+        if ((forest && forest.header == "hiveHeader") || AdminService.isEditMode()) {
+            this.loadAtlasGroup("minigame10");
+        } else {
+            this.unloadAtlasGroup("minigame10");
+        }
     }
 
     protected loadOptionalConfiguredEventResources(includeAwaitingActivation?: boolean): void {

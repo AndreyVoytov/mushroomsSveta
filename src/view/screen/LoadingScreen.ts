@@ -409,6 +409,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('bugForestHeader', 'assets/minigame7/bugForestHeader.png');
         this.loadImage('snailForestHeader', 'assets/minigame8/snailForestHeader.png');
         this.loadImage('cloverHeader', 'assets/minigame9/cloverHeader.png');
+        this.loadImage('hiveHeader', 'assets/minigame10/hiveheader.png');
         this.loadImage('forestHeader1', 'assets/base/ui/forestHeader1.png');
         this.loadImage('forestHeader2', 'assets/minigame3/forestHeader2.png');
 

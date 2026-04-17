@@ -313,6 +313,7 @@ export default class ForestEvent1Configuration {
 					}
 				],
 				"id": "57",
+				"header": "hiveHeader",
 				"environment": 0,
 				"leafType": "leaf1",
 				"steps": 11,
@@ -330,7 +331,7 @@ export default class ForestEvent1Configuration {
 					}
 				],
 				"id": "128",
-				"header": null,
+				"header": "hiveHeader",
 				"environment": 1,
 				"leafType": "leaf1",
 				"steps": 9,
@@ -356,7 +357,7 @@ export default class ForestEvent1Configuration {
 					}
 				],
 				"id": "92",
-				"header": "mountinesHeader",
+				"header": "hiveHeader",
 				"environment": 0,
 				"leafType": "leaf1",
 				"steps": 12,
@@ -377,7 +378,7 @@ export default class ForestEvent1Configuration {
 					}
 				],
 				"id": "47",
-				"header": "mountinesHeader",
+				"header": "hiveHeader",
 				"environment": 0,
 				"leafType": "leaf1",
 				"steps": 10,
@@ -402,6 +403,7 @@ export default class ForestEvent1Configuration {
 					}
 				],
 				"id": "25",
+				"header": "hiveHeader",
 				"environment": 0,
 				"leafType": "leaf1",
 				"steps": 13,

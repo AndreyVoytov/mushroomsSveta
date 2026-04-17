@@ -17,6 +17,7 @@ export const ATLAS_GROUPS: { [key: string]: string[] } = {
     'minigame7': ['minigame7'],
     'minigame8': ['minigame8'],
     'minigame9': ['minigame9'],
+    'minigame10': ['minigame10'],
 };
 
 export function getAtlasGroupNames(groupId: string): string[] {
