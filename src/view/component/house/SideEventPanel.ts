@@ -40,6 +40,9 @@ export default class SideEventPanel extends ClosablePanel {
     private static readonly PRE_DIALOG_PANEL_SCALE_SAFETY_MULTIPLIER = 1;
     private static readonly EVENT1_MAP2_UNLOCK_PROGRESS = 3;
     private static readonly EVENT1_MAP3_UNLOCK_PROGRESS = 7;
+    private static readonly MAP_REVEAL_DELAY = 260;
+    private static readonly MAP_REVEAL_DURATION = 340;
+    private static readonly MAP_REVEAL_START_SCALE = 0.15;
     private static readonly EVENT1_CHARACTER_OFFSET_Y = -45;
     private static readonly EVENT1_CHARACTER_MOVE_DELAY = 1200;
     private static readonly EVENT1_CHARACTER_MOVE_DURATION = 540;
@@ -74,6 +77,11 @@ export default class SideEventPanel extends ClosablePanel {
     private characterMoveTween: Phaser.Tween | null = null;
     private mainImageSprite: Phaser.Sprite | null = null;
     private mainImageMask: Phaser.Graphics | null = null;
+    private pendingMapRevealSprite: Phaser.Sprite | null = null;
+    private pendingMapRevealTimer: Phaser.TimerEvent | null = null;
+    private pendingMapRevealTweens: Phaser.Tween[] = [];
+    private pendingMapRevealBaseScaleX = 1;
+    private pendingMapRevealBaseScaleY = 1;
     private backgroundPreviewButton: Phaser.Button | null = null;
     private backgroundPreviewActive = false;
     private backgroundPreviewOverlay: BasePanel | null = null;
@@ -144,6 +152,7 @@ export default class SideEventPanel extends ClosablePanel {
         map3.visible = eventState.progress >= SideEventPanel.EVENT1_MAP3_UNLOCK_PROGRESS;
         const map2 = this.attachPsdSprite('sideEvent1Map2', 'map2', -105.5, 290);
         map2.visible = eventState.progress >= SideEventPanel.EVENT1_MAP2_UNLOCK_PROGRESS;
+        this.preparePendingMapReveal(map2, map3);
         this.attachPsdSprite('sideEvent1Map1', 'map1', -139.5, 36);
         this.createEvent1Character();
 
@@ -500,6 +509,7 @@ export default class SideEventPanel extends ClosablePanel {
 
     protected onClose() {
         this.stopCharacterMovement();
+        this.stopMapRevealAnimation(true);
         this.setBackgroundPreview(false, true);
         this.clearPreDialogTimers(true);
         this.destroyBackgroundPreviewOverlay();
@@ -509,6 +519,7 @@ export default class SideEventPanel extends ClosablePanel {
     protected onShow() {
         (<HouseScreen>(this.game.state.getCurrentState())).hideUI(0, false, this.openingWithoutAnimation);
         this.scheduleCharacterMovement();
+        this.scheduleMapRevealAnimation();
     }
 
     private onActionButtonClick() {
@@ -666,6 +677,119 @@ export default class SideEventPanel extends ClosablePanel {
         if (this.characterSprite) {
             this.game.tweens.removeFrom(this.characterSprite);
         }
+    }
+
+    private preparePendingMapReveal(map2: Phaser.Sprite, map3: Phaser.Sprite): void {
+        const eventId = this.getConfiguredEventId();
+        const pendingMapRevealProgress = eventId ? EventUtils.consumePendingMapRevealProgress(eventId) : null;
+        let pendingMapRevealSprite: Phaser.Sprite | null = null;
+
+        if (pendingMapRevealProgress === SideEventPanel.EVENT1_MAP2_UNLOCK_PROGRESS && map2.visible) {
+            pendingMapRevealSprite = map2;
+        } else if (pendingMapRevealProgress === SideEventPanel.EVENT1_MAP3_UNLOCK_PROGRESS && map3.visible) {
+            pendingMapRevealSprite = map3;
+        }
+
+        if (!pendingMapRevealSprite) {
+            return;
+        }
+
+        this.pendingMapRevealSprite = pendingMapRevealSprite;
+        this.pendingMapRevealBaseScaleX = pendingMapRevealSprite.scale.x;
+        this.pendingMapRevealBaseScaleY = pendingMapRevealSprite.scale.y;
+        pendingMapRevealSprite.visible = false;
+        pendingMapRevealSprite.alpha = 0;
+        pendingMapRevealSprite.scale.set(
+            this.pendingMapRevealBaseScaleX * SideEventPanel.MAP_REVEAL_START_SCALE,
+            this.pendingMapRevealBaseScaleY * SideEventPanel.MAP_REVEAL_START_SCALE
+        );
+    }
+
+    private scheduleMapRevealAnimation(): void {
+        if (!this.pendingMapRevealSprite) {
+            return;
+        }
+
+        this.clearMapRevealAnimationHandles();
+
+        this.pendingMapRevealTimer = this.game.time.events.add(SideEventPanel.MAP_REVEAL_DELAY, () => {
+            this.pendingMapRevealTimer = null;
+            this.playMapRevealAnimation();
+        });
+    }
+
+    private playMapRevealAnimation(): void {
+        if (!this.pendingMapRevealSprite) {
+            return;
+        }
+
+        const pendingMapRevealSprite = this.pendingMapRevealSprite;
+        pendingMapRevealSprite.visible = true;
+        pendingMapRevealSprite.alpha = 0;
+        pendingMapRevealSprite.scale.set(
+            this.pendingMapRevealBaseScaleX * SideEventPanel.MAP_REVEAL_START_SCALE,
+            this.pendingMapRevealBaseScaleY * SideEventPanel.MAP_REVEAL_START_SCALE
+        );
+
+        const alphaTween = this.game.add.tween(pendingMapRevealSprite).to(
+            { alpha: 1 },
+            SideEventPanel.MAP_REVEAL_DURATION,
+            Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        );
+        const scaleTween = this.game.add.tween(pendingMapRevealSprite.scale).to(
+            {
+                x: this.pendingMapRevealBaseScaleX,
+                y: this.pendingMapRevealBaseScaleY
+            },
+            SideEventPanel.MAP_REVEAL_DURATION,
+            Phaser.Easing.Back.Out,
+            true,
+            0,
+            0,
+            false
+        );
+
+        this.pendingMapRevealTweens = [alphaTween, scaleTween];
+        alphaTween.onComplete.addOnce(() => {
+            if (this.pendingMapRevealSprite === pendingMapRevealSprite) {
+                pendingMapRevealSprite.alpha = 1;
+                pendingMapRevealSprite.scale.set(this.pendingMapRevealBaseScaleX, this.pendingMapRevealBaseScaleY);
+                this.pendingMapRevealSprite = null;
+            }
+
+            this.pendingMapRevealTweens = [];
+        });
+    }
+
+    private stopMapRevealAnimation(resetState: boolean): void {
+        this.clearMapRevealAnimationHandles();
+
+        if (!this.pendingMapRevealSprite || !resetState) {
+            return;
+        }
+
+        this.pendingMapRevealSprite.visible = true;
+        this.pendingMapRevealSprite.alpha = 1;
+        this.pendingMapRevealSprite.scale.set(this.pendingMapRevealBaseScaleX, this.pendingMapRevealBaseScaleY);
+        this.pendingMapRevealSprite = null;
+    }
+
+    private clearMapRevealAnimationHandles(): void {
+        if (this.pendingMapRevealTimer) {
+            this.game.time.events.remove(this.pendingMapRevealTimer);
+            this.pendingMapRevealTimer = null;
+        }
+
+        this.pendingMapRevealTweens.forEach(tween => {
+            if (tween) {
+                this.game.tweens.remove(tween);
+            }
+        });
+        this.pendingMapRevealTweens = [];
     }
 
     private applyPreDialogFocus(visibleTargets?: PIXI.DisplayObject[], instantly?: boolean): void {

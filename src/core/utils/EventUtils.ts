@@ -21,6 +21,8 @@ type EventLevelSession = {
 
 export default class EventUtils {
 
+    private static readonly EVENT1_MAP2_UNLOCK_PROGRESS = 3;
+    private static readonly EVENT1_MAP3_UNLOCK_PROGRESS = 7;
     private static staticEvents: EventInfo[] = [];
     private static levelForStaticEvents = 15;
     private static levelForLukoshkoEvent = 24;
@@ -348,6 +350,7 @@ export default class EventUtils {
         const eventState = user.getOrCreateEventState(eventId);
         const completedLevelId = this.getActiveLevelOrder();
         const activeEvent = this.getEventById(eventId);
+        const previousProgress = eventState.progress || 0;
 
         eventState.progress = Math.max(eventState.progress || 0, this.activeLevelSession.levelIndex + 1);
         if (totalLevels > 0 && eventState.progress > totalLevels) {
@@ -359,6 +362,7 @@ export default class EventUtils {
         eventState.pendingOpenPanel = true;
         eventState.pendingPanelEventEndAt = activeEvent ? activeEvent.eventEndAt : eventState.pendingPanelEventEndAt;
         eventState.pendingCharacterTravel = true;
+        eventState.pendingMapRevealProgress = this.getPendingMapRevealProgress(eventId, previousProgress, eventState.progress);
 
         if (totalLevels > 0 && eventState.progress >= totalLevels) {
             eventState.completedAt = Date.now();
@@ -408,6 +412,7 @@ export default class EventUtils {
         }
         eventState.pendingMainScreenLevelId = null;
         eventState.pendingCharacterTravel = false;
+        eventState.pendingMapRevealProgress = null;
         this.clearPendingHousePanelState(eventState);
 
         user.saveEventStates();
@@ -436,6 +441,7 @@ export default class EventUtils {
         eventState.expiredAt = null;
         eventState.pendingMainScreenLevelId = null;
         eventState.pendingCharacterTravel = false;
+        eventState.pendingMapRevealProgress = null;
         this.clearPendingHousePanelState(eventState);
 
         user.deleteCompletedReplicasByPrefix(eventId + "_");
@@ -471,6 +477,7 @@ export default class EventUtils {
         eventState.expiredAt = null;
         eventState.pendingMainScreenLevelId = null;
         eventState.pendingCharacterTravel = false;
+        eventState.pendingMapRevealProgress = null;
         this.clearPendingHousePanelState(eventState);
         user.saveEventStates();
 
@@ -499,6 +506,23 @@ export default class EventUtils {
         eventState.pendingCharacterTravel = false;
         user.saveEventStates();
         return true;
+    }
+
+    public static consumePendingMapRevealProgress(eventId: string): number | null {
+        if (!eventId) {
+            return null;
+        }
+
+        const user = UserService.getUser();
+        const eventState = user.getEventState(eventId);
+        if (!eventState || eventState.pendingMapRevealProgress == null) {
+            return null;
+        }
+
+        const pendingMapRevealProgress = eventState.pendingMapRevealProgress;
+        eventState.pendingMapRevealProgress = null;
+        user.saveEventStates();
+        return pendingMapRevealProgress;
     }
 
     public static getRemainTime(time: number): string {
@@ -560,6 +584,7 @@ export default class EventUtils {
         }
         eventState.pendingMainScreenLevelId = null;
         eventState.pendingCharacterTravel = false;
+        eventState.pendingMapRevealProgress = null;
         this.clearPendingHousePanelState(eventState);
 
         user.saveEventStates();
@@ -572,6 +597,22 @@ export default class EventUtils {
         if (this.activeLevelSession && this.activeLevelSession.eventId == eventId) {
             this.clearActiveLevelSession();
         }
+    }
+
+    private static getPendingMapRevealProgress(eventId: string, previousProgress: number, nextProgress: number): number | null {
+        if (eventId !== "event1") {
+            return null;
+        }
+
+        if (previousProgress < this.EVENT1_MAP2_UNLOCK_PROGRESS && nextProgress >= this.EVENT1_MAP2_UNLOCK_PROGRESS) {
+            return this.EVENT1_MAP2_UNLOCK_PROGRESS;
+        }
+
+        if (previousProgress < this.EVENT1_MAP3_UNLOCK_PROGRESS && nextProgress >= this.EVENT1_MAP3_UNLOCK_PROGRESS) {
+            return this.EVENT1_MAP3_UNLOCK_PROGRESS;
+        }
+
+        return null;
     }
 
     private static getEventConfigValue(eventId: string, key: "name" | "description"): string {

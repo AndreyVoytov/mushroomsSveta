@@ -7,6 +7,7 @@ export default class UserEventState {
     pendingOpenPanel?: boolean;
     pendingPanelEventEndAt?: number;
     pendingCharacterTravel?: boolean;
+    pendingMapRevealProgress?: number;
 
     constructor(state?: UserEventState) {
         this.eventId = state && state.eventId ? state.eventId : "";
@@ -17,5 +18,6 @@ export default class UserEventState {
         this.pendingOpenPanel = state && state.pendingOpenPanel;
         this.pendingPanelEventEndAt = state && state.pendingPanelEventEndAt;
         this.pendingCharacterTravel = state && state.pendingCharacterTravel;
+        this.pendingMapRevealProgress = state && state.pendingMapRevealProgress != null ? state.pendingMapRevealProgress : null;
     }
 }
