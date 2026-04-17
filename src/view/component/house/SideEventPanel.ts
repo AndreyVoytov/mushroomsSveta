@@ -26,6 +26,10 @@ type SideEventChildAlphaState = {
 export default class SideEventPanel extends ClosablePanel {
 
     private static readonly PANEL_SCALE = 1.1;
+    private static readonly EVENT1_MAIN_IMAGE_MASK_HEIGHT = 951;
+    private static readonly EVENT1_MAIN_IMAGE_MASK_WIDTH = 689;
+    private static readonly EVENT1_MAIN_IMAGE_MASK_RADIUS = 24;
+    private static readonly EVENT1_MAIN_IMAGE_FOCUS_OFFSET_Y = -200;
     private static readonly PRE_DIALOG_FOCUS_DELAY = 1650;
     private static readonly PRE_DIALOG_FOCUS_DURATION = 420;
     private static readonly PRE_DIALOG_RESTORE_DURATION = 260;
@@ -60,6 +64,7 @@ export default class SideEventPanel extends ClosablePanel {
     private characterMoveTimer: Phaser.TimerEvent;
     private characterMoveTween: Phaser.Tween;
     private mainImageSprite: Phaser.Sprite;
+    private mainImageMask: Phaser.Graphics;
     private preDialogFocusTargets: SideEventChildAlphaState[] = [];
     private preDialogFocusTimer: Phaser.TimerEvent;
     private preDialogRestoreTimer: Phaser.TimerEvent;
@@ -93,7 +98,6 @@ export default class SideEventPanel extends ClosablePanel {
         hitArea.alpha = 0.001;
         hitArea.inputEnabled = true;
 
-        this.attachPsdSprite('sideEvent1PanelBottom', 'panelBottom', -3, 458.5);
         const eventImage = this.attachPsdSprite(
             EventUtils.getMainImage(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber),
             'eventImage',
@@ -101,8 +105,13 @@ export default class SideEventPanel extends ClosablePanel {
             -66.5
         );
         eventImage.inputEnabled = true;
-        eventImage.scale.set(EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber));
+        this.applyEvent1MainImageMask(
+            eventImage,
+            EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber)
+        );
         this.mainImageSprite = eventImage;
+        
+        this.attachPsdSprite('sideEvent1PanelBottom', 'panelBottom', -3, 458.5);
         this.attachPsdSprite('sideEvent1FadeTop', 'fadeTop', -18.5, -485.5);
         this.attachStretchedPsdSprite('sideEvent1FadeMiddle', 'fadeMiddle', -6.5, -85, 709, 644);
         this.attachPsdSprite('sideEvent1FadeBottom', 'fadeBottom', -18.5, 343);
@@ -319,6 +328,34 @@ export default class SideEventPanel extends ClosablePanel {
         return button;
     }
 
+    private applyEvent1MainImageMask(eventImage: Phaser.Sprite, imageScale: number): void {
+        if (!eventImage) {
+            return;
+        }
+
+        const maskX = eventImage.x;
+        const maskY = eventImage.y + 17;
+        const coverScale = Math.max(
+            SideEventPanel.EVENT1_MAIN_IMAGE_MASK_WIDTH / eventImage.width,
+            SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT / eventImage.height
+        );
+        eventImage.scale.set(coverScale * Math.max(1, imageScale || 1));
+        eventImage.y = maskY + SideEventPanel.EVENT1_MAIN_IMAGE_FOCUS_OFFSET_Y;
+
+        this.mainImageMask = new Phaser.Graphics(this.game, maskX, maskY);
+        this.mainImageMask.beginFill(0xffffff, 1);
+        this.mainImageMask.drawRoundedRect(
+            -SideEventPanel.EVENT1_MAIN_IMAGE_MASK_WIDTH / 2,
+            -SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT / 2,
+            SideEventPanel.EVENT1_MAIN_IMAGE_MASK_WIDTH,
+            SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT,
+            SideEventPanel.EVENT1_MAIN_IMAGE_MASK_RADIUS
+        );
+        this.mainImageMask.endFill();
+        this.addChild(this.mainImageMask);
+        eventImage.mask = this.mainImageMask;
+    }
+
     private onBackdropTap(): void {
         if (this.isDialogBlockingPanel()) {
             return;
@@ -502,7 +539,7 @@ export default class SideEventPanel extends ClosablePanel {
         this.preDialogFocusTargets = [];
 
         this.children.forEach(child => {
-            if (child === this.mainImageSprite) {
+            if (child === this.mainImageSprite || child === this.mainImageMask) {
                 return;
             }
 
