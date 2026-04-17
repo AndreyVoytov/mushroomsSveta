@@ -11,65 +11,88 @@ type EventReplicaSet = {
     expired: ReplicaType[];
 };
 
+function createReplica(
+    id: string,
+    personImage: string,
+    personName: string,
+    text: string,
+    extra?: Partial<ReplicaType>
+): ReplicaType {
+    const replica = {
+        id: id,
+        personImage: personImage,
+        personName: personName,
+        text: text,
+        context: <any>{}
+    } as ReplicaType;
+
+    if (extra) {
+        Object.keys(extra).forEach(key => {
+            (<any>replica)[key] = (<any>extra)[key];
+        });
+    }
+
+    return replica;
+}
+
+function createDecor(image: string, x: number, y: number, rightSide?: boolean) {
+    return {
+        image: image,
+        x: x,
+        y: y,
+        rightSide: !!rightSide,
+        overDialog: false
+    };
+}
+
 export default class EventReplicasConfiguration {
 
     private static event1Replicas: EventReplicaSet = {
         forest: [
-            { id: 'event1_level_start_1', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_1', context: <any>{} },
-            { id: 'event1_level_end_1', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_1', context: <any>{} },
-            { id: 'event1_level_start_2', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_2', context: <any>{} },
-            { id: 'event1_level_end_2', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_2', context: <any>{} },
-            { id: 'event1_level_start_3', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_3', context: <any>{} },
-            { id: 'event1_level_end_3', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_3', context: <any>{} },
-            { id: 'event1_level_start_4', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_4', context: <any>{} },
-            { id: 'event1_level_end_4', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_4', context: <any>{} },
-            { id: 'event1_level_start_5', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_5', context: <any>{} },
-            { id: 'event1_level_end_5', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_5', context: <any>{} },
-            { id: 'event1_level_start_6', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_6', context: <any>{} },
-            { id: 'event1_level_end_6', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_6', context: <any>{} },
-            { id: 'event1_level_start_7', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_7', context: <any>{} },
-            { id: 'event1_level_end_7', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_7', context: <any>{} },
-            { id: 'event1_level_start_8', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_8', context: <any>{} },
-            { id: 'event1_level_end_8', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_8', context: <any>{} },
-            { id: 'event1_level_start_9', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_9', context: <any>{} },
-            { id: 'event1_level_end_9', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_9', context: <any>{} },
-            { id: 'event1_level_start_10', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_10', context: <any>{} },
-            { id: 'event1_level_end_10', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_10', context: <any>{} },
-            { id: 'event1_level_end_10_2', personImage: 'cat1', personName: 'Котёнок', text: 'level_end_10_2', rightSide: true, context: <any>{} },
-            { id: 'event1_level_start_11', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_11', context: <any>{} },
-            { id: 'event1_level_end_11', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_11', context: <any>{} },
-            { id: 'event1_level_start_12', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_12', context: <any>{} },
-            { id: 'event1_level_end_12', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_12', context: <any>{} },
-            { id: 'event1_level_start_13', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_13', context: <any>{} },
-            { id: 'event1_level_end_13', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_13', context: <any>{} },
-            { id: 'event1_level_start_14', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_14', context: <any>{} },
-            { id: 'event1_level_end_14', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_14', context: <any>{} },
-            { id: 'event1_level_start_15', personImage: 'sveta1', personName: 'Эмма', text: 'level_start_15', context: <any>{} },
-            { id: 'event1_level_end_15', personImage: 'sveta1', personName: 'Эмма', text: 'level_end_15', context: <any>{} }
+            createReplica('event1_level_end_4', 'sveta2', 'Шапка', 'Хм, к шмелю был привязан кусочек карты.')
         ],
         houseAfterLevel: [
-            { id: 'event1_main_screen_after_level_1', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_1', context: <any>{} },
-            { id: 'event1_main_screen_after_level_2', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_2', context: <any>{} },
-            { id: 'event1_main_screen_after_level_3', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_3', context: <any>{} },
-            { id: 'event1_main_screen_after_level_4', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_4', context: <any>{} },
-            { id: 'event1_main_screen_after_level_5', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_5', context: <any>{} },
-            { id: 'event1_main_screen_after_level_6', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_6', context: <any>{} },
-            { id: 'event1_main_screen_after_level_7', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_7', context: <any>{} },
-            { id: 'event1_main_screen_after_level_8', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_8', context: <any>{} },
-            { id: 'event1_main_screen_after_level_9', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_9', context: <any>{} },
-            { id: 'event1_main_screen_after_level_10', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_10', context: <any>{} },
-            { id: 'event1_main_screen_after_level_11', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_11', context: <any>{} },
-            { id: 'event1_main_screen_after_level_12', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_12', context: <any>{} },
-            { id: 'event1_main_screen_after_level_13', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_13', context: <any>{} },
-            { id: 'event1_main_screen_after_level_14', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_14', context: <any>{} },
-            { id: 'event1_main_screen_after_level_15', personImage: 'sveta1', personName: 'Эмма', text: 'main_screen_after_level_15', context: <any>{} }
+            createReplica('event1_main_screen_after_level_1', 'sveta2', 'Шапка', 'Клеверные луга... Куда мы забрели?'),
+            createReplica('event1_main_screen_after_level_1_2', 'cat2', 'Котёнок', 'Кажется, карта скоро оборвется. Поэтому смотрите в оба, ищите зацепки, друзья.', {
+                rightSide: true
+            }),
+            createReplica('event1_main_screen_after_level_5', 'sveta4', 'Шапка', 'Только посмотрите на эти огромные ульи! Давайте будем держаться от них подальше.'),
+            createReplica('event1_main_screen_after_level_7', 'sveta2', 'Шапка', 'Видите ту огромную медовую соту? Кажется, там фрагмент карты.', {
+                decor: createDecor('mapInHive', 238, 58)
+            }),
+            createReplica('event1_main_screen_after_level_10', 'sveta4', 'Шапка', 'Ой-ой. У меня плохое предчувствие.'),
+            createReplica('event1_main_screen_after_level_10_2', 'sova2', 'Совёнок', 'ААААА, мы чуть было не стали мёдом!', {
+                rightSide: true
+            }),
+            createReplica('event1_main_screen_after_level_10_3', 'cat4', 'Котёнок', 'А я даже набрал пару баночек, не пропадать же добру.', {
+                rightSide: true,
+                decor: createDecor('honeyDecor', 120, 48, true)
+            }),
+            createReplica('event1_main_screen_after_level_13', 'sveta5', 'Шапка', 'Кажется, мы почти у цели! Давайте поднажмем.')
         ],
         complete: [
-            { id: 'event1_complete', personImage: 'sveta1', personName: 'Эмма', text: 'Финал event1', context: <any>{} }
+            createReplica('event1_complete', 'sveta2', 'Шапка', 'Хм, знакомые места... Кажется, примерно тут мы и начали наше приключение...'),
+            createReplica('event1_complete_2', 'cat1', 'Котёнок', 'Смотрите, на том дереве крест! Дайте мне пару минут.', {
+                rightSide: true,
+                decor: createDecor('crossDecor', 160, 44, true),
+                decor2: createDecor('shovelDecor', 20, 0, true)
+            }),
+            createReplica('event1_complete_3', 'sveta5', 'Шапка', 'Отлично, сундучок. Откроем...', {
+                decor: createDecor('chestClosedDecor', 232, 30)
+            }),
+            createReplica('event1_complete_4', 'sveta2', 'Шапка', 'Хм, тут немного рубинов... и птичье перо.', {
+                decor: createDecor('chestOpenDecor', 232, 30)
+            }),
+            createReplica('event1_complete_5', 'sveta4', 'Шапка', 'Постойте-ка! Совёнок, эта карта - твоих рук дело?!'),
+            createReplica('event1_complete_6', 'sova3', 'Совёнок', '...', {
+                rightSide: true
+            }),
+            createReplica('event1_complete_7', 'sveta1', 'Шапка', 'Ах ты хитрый комок перьев! Постойте-ка... Тут еще бутылка.', {
+                decor: createDecor('bottleDecor', 255, 42)
+            }),
+            createReplica('event1_complete_8', 'sveta4', 'Шапка', 'А в ней снова карта.')
         ],
-        expired: [
-            { id: 'event1_expired', personImage: 'sveta1', personName: 'Эмма', text: 'Время event1 вышло', context: <any>{} }
-        ]
+        expired: []
     };
 
     public static getForestReplica(user: User): ReplicaType {

@@ -78,7 +78,17 @@ export default class EventsConfiguration {
                 { key: "sideEvent1MapBg", path: "assets/sideEvent1/map_bg.png" },
                 { key: "sideEvent1Map1", path: "assets/sideEvent1/map1.png" },
                 { key: "sideEvent1Map2", path: "assets/sideEvent1/map2.png" },
-                { key: "sideEvent1Map3", path: "assets/sideEvent1/map3.png" }
+                { key: "sideEvent1Map3", path: "assets/sideEvent1/map3.png" },
+                { key: "bottleDecor", path: "assets/sideEvent1/bottleDecor.png" },
+                { key: "chestClosedDecor", path: "assets/sideEvent1/chestClosedDecor.png" },
+                { key: "chestOpenDecor", path: "assets/sideEvent1/chestOpenDecor.png" },
+                { key: "crossDecor", path: "assets/sideEvent1/crossDecor.png" },
+                { key: "honeyDecor", path: "assets/sideEvent1/honeyDecor.png" },
+                { key: "mapInHive", path: "assets/sideEvent1/mapInHive.png" },
+                { key: "shovelDecor", path: "assets/sideEvent1/shovelDecor.png" },
+                { key: "sova1", path: "assets/additional/characters/sova1.png" },
+                { key: "sova2", path: "assets/additional/characters/sova2.png" },
+                { key: "sova3", path: "assets/additional/characters/sova3.png" }
             ]
         }
     ];
