@@ -4,6 +4,7 @@ import UserService from '../../../core/service/UserService';
 import ReplicaType from '../../../core/model/replica/ReplicaType';
 import BasePanel from '../../component/panel/BasePanel';
 import ReplicaPanel from './ReplicaPanel';
+import { DIALOG_BOTTOM_PADDING } from './DialogLayoutMetrics';
 import StripsPanel from './StripsPanel';
 import ForestScreen from '../../screen/ForestScreen';
 import HouseScreen from '../../screen/HouseScreen';
@@ -19,7 +20,7 @@ export default class DialogPanel extends BasePanel {
 
     public diaryPreset: Preset;
 
-    public static BOTTOM_PADDING = 115;
+    public static BOTTOM_PADDING = DIALOG_BOTTOM_PADDING;
 
     private lastReplicaAt = new Date().getTime();
 

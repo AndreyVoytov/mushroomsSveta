@@ -10,6 +10,7 @@ import HouseScreen from './../../screen/HouseScreen';
 import ClosablePanel from '../panel/ClosablePanel';
 import Label from '../panel/Label';
 import TreesTransitionPanel from '../panel/TreesTransitionPanel';
+import { DIALOG_BOTTOM_VISIBLE_STRIP_HEIGHT, DIALOG_TOP_STRIP_HEIGHT } from '../dialog/DialogLayoutMetrics';
 
 type SideEventState = {
     canPlay: boolean;
@@ -34,6 +35,7 @@ export default class SideEventPanel extends ClosablePanel {
     private static readonly PRE_DIALOG_FOCUS_DURATION = 420;
     private static readonly PRE_DIALOG_RESTORE_DURATION = 260;
     private static readonly PRE_DIALOG_PANEL_SCALE = 1.4;
+    private static readonly PRE_DIALOG_PANEL_SCALE_SAFETY_MULTIPLIER = 1;
     private static readonly EVENT1_MAP2_UNLOCK_PROGRESS = 3;
     private static readonly EVENT1_MAP3_UNLOCK_PROGRESS = 7;
     private static readonly EVENT1_CHARACTER_OFFSET_Y = -45;
@@ -71,6 +73,7 @@ export default class SideEventPanel extends ClosablePanel {
     private preDialogFocusActive = false;
     private panelBaseScaleX = 1;
     private panelBaseScaleY = 1;
+    private panelBaseY = 0;
     private preDialogTweens: Phaser.Tween[] = [];
 
     constructor(game: Phaser.Game, eventInfo: EventInfo) {
@@ -328,6 +331,64 @@ export default class SideEventPanel extends ClosablePanel {
         return button;
     }
 
+    private getPreDialogPanelScale(): number {
+        const focusBounds = this.getPreDialogFocusBounds();
+        if (!focusBounds) {
+            return SideEventPanel.PRE_DIALOG_PANEL_SCALE;
+        }
+
+        const availableHeight = this.game.height - DIALOG_TOP_STRIP_HEIGHT - DIALOG_BOTTOM_VISIBLE_STRIP_HEIGHT;
+        if (availableHeight <= 0) {
+            return SideEventPanel.PRE_DIALOG_PANEL_SCALE;
+        }
+
+        return Math.max(
+            SideEventPanel.PRE_DIALOG_PANEL_SCALE,
+            availableHeight / (focusBounds.bottom - focusBounds.top)
+        ) * SideEventPanel.PRE_DIALOG_PANEL_SCALE_SAFETY_MULTIPLIER;
+    }
+
+    private getPreDialogPanelY(panelScale: number): number {
+        const focusBounds = this.getPreDialogFocusBounds();
+        if (!focusBounds) {
+            return this.getPanelScreenY();
+        }
+
+        const screenTop = DIALOG_TOP_STRIP_HEIGHT;
+        const screenBottom = this.game.height - DIALOG_BOTTOM_VISIBLE_STRIP_HEIGHT;
+        const screenCenterY = (screenTop + screenBottom) / 2;
+        const focusCenterY = (focusBounds.top + focusBounds.bottom) / 2;
+
+        return screenCenterY - focusCenterY * panelScale;
+    }
+
+    private getPreDialogFocusBounds(): { top: number, bottom: number } {
+        if (this.mainImageMask) {
+            return {
+                top: this.mainImageMask.y - SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT / 2,
+                bottom: this.mainImageMask.y + SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT / 2
+            };
+        }
+
+        if (!this.mainImageSprite) {
+            return null;
+        }
+
+        const anchorY = this.mainImageSprite.anchor ? this.mainImageSprite.anchor.y : 0.5;
+        return {
+            top: this.mainImageSprite.y - this.mainImageSprite.height * anchorY,
+            bottom: this.mainImageSprite.y + this.mainImageSprite.height * (1 - anchorY)
+        };
+    }
+
+    private getPanelScreenY(): number {
+        return this.fixedToCamera ? this.cameraOffset.y : this.y;
+    }
+
+    private getPanelPositionTweenTarget(): Phaser.Point | Phaser.Sprite {
+        return this.fixedToCamera ? this.cameraOffset : this;
+    }
+
     private applyEvent1MainImageMask(eventImage: Phaser.Sprite, imageScale: number): void {
         if (!eventImage) {
             return;
@@ -534,8 +595,13 @@ export default class SideEventPanel extends ClosablePanel {
 
         this.stopPreDialogTweens();
 
+        const preDialogPanelScale = this.getPreDialogPanelScale();
+        const preDialogPanelY = this.getPreDialogPanelY(preDialogPanelScale);
+        const panelPositionTweenTarget = this.getPanelPositionTweenTarget();
+
         this.panelBaseScaleX = this.scale.x;
         this.panelBaseScaleY = this.scale.y;
+        this.panelBaseY = this.getPanelScreenY();
         this.preDialogFocusTargets = [];
 
         this.children.forEach(child => {
@@ -561,9 +627,18 @@ export default class SideEventPanel extends ClosablePanel {
 
         this.preDialogTweens.push(this.game.add.tween(this.scale).to(
             {
-                x: SideEventPanel.PRE_DIALOG_PANEL_SCALE,
-                y: SideEventPanel.PRE_DIALOG_PANEL_SCALE
+                x: preDialogPanelScale,
+                y: preDialogPanelScale
             },
+            SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
+            Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        ));
+        this.preDialogTweens.push(this.game.add.tween(panelPositionTweenTarget).to(
+            { y: preDialogPanelY },
             SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
             Phaser.Easing.Quadratic.Out,
             true,
@@ -600,6 +675,15 @@ export default class SideEventPanel extends ClosablePanel {
 
         this.preDialogTweens.push(this.game.add.tween(this.scale).to(
             { x: this.panelBaseScaleX, y: this.panelBaseScaleY },
+            SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
+            Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        ));
+        this.preDialogTweens.push(this.game.add.tween(this.getPanelPositionTweenTarget()).to(
+            { y: this.panelBaseY },
             SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
             Phaser.Easing.Quadratic.Out,
             true,

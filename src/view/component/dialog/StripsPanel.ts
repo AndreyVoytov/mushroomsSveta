@@ -1,7 +1,7 @@
 import DialogScreen from '../../screen/common/DialogScreen';
 import HouseScreen from './../../screen/HouseScreen';
 import BasePanel from '../panel/BasePanel';
-import DialogPanel from './DialogPanel';
+import { DIALOG_BOTTOM_STRIP_HEIGHT, DIALOG_TOP_STRIP_HEIGHT } from './DialogLayoutMetrics';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import Settings from '../../../core/service/Settings';
 export default class StripsPanel extends BasePanel {
@@ -10,8 +10,8 @@ export default class StripsPanel extends BasePanel {
 
     private screen: DialogScreen;
 
-    public static BOTTOM_STRIP_HEIGHT = 215 + DialogPanel.BOTTOM_PADDING;
-    private TOP_STRIP_HEIGHT = 215;
+    public static BOTTOM_STRIP_HEIGHT = DIALOG_BOTTOM_STRIP_HEIGHT;
+    private TOP_STRIP_HEIGHT = DIALOG_TOP_STRIP_HEIGHT;
     public static SHOW_DURATION = 500;
 
     constructor(game: Phaser.Game, screen: DialogScreen) {
