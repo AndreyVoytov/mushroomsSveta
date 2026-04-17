@@ -34,7 +34,8 @@ enum AnimalsContent {
     bet,
     owl, 
     owlFlying, 
-    bird
+    bird,
+    horseshoe
 }
 
 enum BoostersContent {

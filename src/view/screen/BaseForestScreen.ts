@@ -219,7 +219,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
             // let keyAndRect = SpriteUtils.getKeyAndRect(this.game, "fadeStrip");
             // let bmd = this.game.make.bitmapData(keyAndRect.atlasRect.width, keyAndRect.atlasRect.height);
-            let bgImage = LocationUtils.getBg(this.getForestType().environment);
+            let bgImage = LocationUtils.getBg(this.getForestType().environment, this.getForestType());
 
             let keyAndRect = SpriteUtils.getKeyAndRect(this.game, "fadeStrip");
             let bmd = this.game.make.bitmapData(keyAndRect.atlasRect.width, keyAndRect.atlasRect.height);

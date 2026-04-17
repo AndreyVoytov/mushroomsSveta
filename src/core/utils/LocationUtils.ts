@@ -135,6 +135,10 @@ export default class LocationUtils {
         return Math.min(game.height * 0.35, this.getHeaderHeight(forestType));
     }
 
+    private static usesCloverForestSkin(forestType?: ForestType): boolean {
+        return !!forestType && (forestType.header == "cloverHeader" || forestType.leafType == "leafClover");
+    }
+
     //MINIGAME 
     public static getMiniGameLayout(game: Phaser.Game, cellProvider:CellsProvider,  forestType:ForestType): (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text)[] {
         let environment = forestType.environment;
@@ -438,12 +442,14 @@ export default class LocationUtils {
             case Environment.forest:
             case Environment.jungles:
             default:
-                
-                background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, "bg");
+
+                background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, this.getBg(environment, forestType));
                 background.inputEnabled = true;
                 res.push(background);
                 
-                res.push(SpriteUtils.createSprite(game, 500, 500, 'grassLight', 'grassLight2'));
+                if (!this.usesCloverForestSkin(forestType)) {
+                    res.push(SpriteUtils.createSprite(game, 500, 500, 'grassLight', 'grassLight2'));
+                }
                 
                 visibleHeaderHeight = LocationUtils.getVisibleHeaderHeight(game, forestType);
                 headerImage = forestType.header || "forestHeader1";
@@ -609,7 +615,7 @@ export default class LocationUtils {
         }
     }
 
-    public static getBg(env: Environment): string {
+    public static getBg(env: Environment, forestType?: ForestType): string {
         switch (env) {
             case Environment.lake:
                 return 'bgLake';
@@ -622,6 +628,9 @@ export default class LocationUtils {
             case Environment.forest:
             case Environment.jungles:
             default:
+                if (this.usesCloverForestSkin(forestType)) {
+                    return 'bgClover';
+                }
                 return 'bg';
                 // throw new NeverError(env);
         }

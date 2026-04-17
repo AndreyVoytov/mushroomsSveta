@@ -51,7 +51,7 @@ export default class BoosterInfoPanel extends BasePanel {
 
         let keyAndRect = SpriteUtils.getKeyAndRect(this.game, "fadeStrip");
         let bmd = this.game.make.bitmapData(keyAndRect.atlasRect.width, keyAndRect.atlasRect.height);
-        let bgImage = LocationUtils.getBg(forestType.environment); 
+        let bgImage = LocationUtils.getBg(forestType.environment, forestType); 
         bmd.alphaMask(SpriteUtils.createBitmapData(this.game, bgImage), SpriteUtils.createBitmapData(this.game, 'fadeStrip'));
         this.fadeStripBottom = new Phaser.TileSprite(this.game, 0, this.game.height - 515 + 370 + 56-30 -50, this.game.width, 118,  bmd);
         this.fadeStripBottom.anchor.set(0, 1)

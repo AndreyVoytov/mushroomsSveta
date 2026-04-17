@@ -86,6 +86,11 @@ export default class EventsConfiguration {
                 { key: "honeyDecor", path: "assets/sideEvent1/honeyDecor.png" },
                 { key: "mapInHive", path: "assets/sideEvent1/mapInHive.png" },
                 { key: "shovelDecor", path: "assets/sideEvent1/shovelDecor.png" },
+                { key: "cloverHeader", path: "assets/minigame9/cloverHeader.png" },
+                { key: "bgClover", path: "assets/minigame9/bgClover.png" },
+                { key: "leafClover", path: "assets/base/hex/leafClover.png" },
+                { key: "leafCloverg", path: "assets/base/hex/leafCloverg.png" },
+                { key: "horseshoe", path: "assets/base/items/horseshoe.png" },
                 { key: "sova1", path: "assets/additional/characters/sova1.png" },
                 { key: "sova2", path: "assets/additional/characters/sova2.png" },
                 { key: "sova3", path: "assets/additional/characters/sova3.png" }
