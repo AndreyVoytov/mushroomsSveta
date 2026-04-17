@@ -8,6 +8,7 @@ import BasePanel from '../../component/panel/BasePanel';
 import BubblePanel from './BubblePanel';
 import DialogPanel from './DialogPanel';
 import ReplicaDiaryPanel from './ReplicaDiaryPanel';
+import ReplicaMapPartPanel from './ReplicaMapPartPanel';
 import ForestScreen from '../../screen/ForestScreen';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import BigBubblePanel from './BigBubblePanel';
@@ -45,6 +46,7 @@ export default class ReplicaPanel extends BasePanel {
     private glint: Phaser.Sprite;
 
     private diaryPanel: ReplicaDiaryPanel;
+    private mapPartPanel: ReplicaMapPartPanel;
     private actionButton: Phaser.Button;
     private clickToSkipInfo: Label;
 
@@ -146,6 +148,32 @@ export default class ReplicaPanel extends BasePanel {
         return button;
     }
 
+    private hasIntroPanel(): boolean {
+        return !!this.diaryPanel || !!this.mapPartPanel;
+    }
+
+    private showIntroPanels(): void {
+        if (this.diaryPanel) {
+            this.diaryPanel.visible = true;
+            this.diaryPanel.show();
+        }
+
+        if (this.mapPartPanel) {
+            this.mapPartPanel.visible = true;
+            this.mapPartPanel.show();
+        }
+    }
+
+    private hideIntroPanels(): void {
+        if (this.diaryPanel) {
+            this.diaryPanel.hide();
+        }
+
+        if (this.mapPartPanel) {
+            this.mapPartPanel.hide();
+        }
+    }
+
     constructor(game: Phaser.Game, parentCont: DialogPanel, x: number, y: number, r: ReplicaType, 
         playAnimationCallback: (animation:string)=> void, diaryPrest?: Preset) {
 
@@ -169,6 +197,13 @@ export default class ReplicaPanel extends BasePanel {
             this.diaryPanel.visible = false;
             this.diaryPanel.x += this.x; this.diaryPanel.y += this.y;
             parentCont.addChild(this.diaryPanel);
+        }
+
+        if (r.panelItem) {
+            this.mapPartPanel = new ReplicaMapPartPanel(this.game, 0, 0, r, r.panelItem);
+            this.mapPartPanel.visible = false;
+            this.mapPartPanel.x += this.x; this.mapPartPanel.y += this.y;
+            parentCont.addChild(this.mapPartPanel);
         }
 
         if (r.personalAnimation && r.personalAnimation.endsWith("Bubble")) { 
@@ -474,12 +509,9 @@ export default class ReplicaPanel extends BasePanel {
         this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
         this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
 
-        if (this.diaryPanel) {
-            this.diaryPanel.visible = true;
-            this.diaryPanel.show();
-        }
+        this.showIntroPanels();
 
-            let showEvent = this.game.time.events.add(this.r.showDiary && screen instanceof ForestScreen? 1500 : 1, () => {
+            let showEvent = this.game.time.events.add(this.hasIntroPanel() && screen instanceof ForestScreen? 1500 : 1, () => {
             this.game.add.tween(this.personImage).to({ x: startX }, timePerson, Phaser.Easing.Linear.None, true, 0, 0, false)
 
             if(this.secondPersonImage){
@@ -626,12 +658,9 @@ export default class ReplicaPanel extends BasePanel {
         this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
         this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
 
-        if (this.diaryPanel) {
-            this.diaryPanel.visible = true;
-            this.diaryPanel.show();
-        }
+        this.showIntroPanels();
 
-        let showEvent = this.game.time.events.add(this.r.showDiary && screen instanceof ForestScreen? 1500 : 1, () => {
+        let showEvent = this.game.time.events.add(this.hasIntroPanel() && screen instanceof ForestScreen? 1500 : 1, () => {
             this.dialogPnl.alpha = 0;
             this.setNameplatePreparedHidden();
             this.ensureNameplateOnTop();
@@ -701,9 +730,7 @@ export default class ReplicaPanel extends BasePanel {
         this.hideActionButton()
         this.hideSckipToClickInfo();
 
-        if (this.diaryPanel) {
-            this.diaryPanel.hide();
-        }
+        this.hideIntroPanels();
 
         console.log("REPLICA HIDE: " + this.r.text)
         this.game.add.tween(this.personImage).to({ alpha: 0 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 0, 0, false)
@@ -749,9 +776,7 @@ export default class ReplicaPanel extends BasePanel {
         this.hideActionButton()
         this.hideSckipToClickInfo();
 
-        if (this.diaryPanel) {
-            this.diaryPanel.hide();
-        }
+        this.hideIntroPanels();
 
         console.log("LAST REPLICA HIDE: " + this.r.text)
         let timePerson = ReplicaPanel.LAST_HIDE_PERSON_DURATION;

@@ -1,4 +1,5 @@
 import ReplicaType from '../model/replica/ReplicaType';
+import ReplicaPanelItemType from '../model/replica/ReplicaPanelItemType';
 import User from '../model/user/User';
 import UserEventState from '../model/event/UserEventState';
 import EventUtils from '../utils/EventUtils';
@@ -45,11 +46,31 @@ function createDecor(image: string, x: number, y: number, rightSide?: boolean) {
     };
 }
 
+function createPanelItem(
+    image: string,
+    glowImage: string,
+    highlightColor?: string,
+    extra?: Partial<ReplicaPanelItemType>
+): ReplicaPanelItemType {
+    return {
+        image: image,
+        glowImage: glowImage,
+        highlightColor: highlightColor,
+        scaleMultiplier: extra && extra.scaleMultiplier != null ? extra.scaleMultiplier : null,
+        offsetX: extra && extra.offsetX != null ? extra.offsetX : null,
+        offsetY: extra && extra.offsetY != null ? extra.offsetY : null
+    };
+}
+
 export default class EventReplicasConfiguration {
 
     private static event1Replicas: EventReplicaSet = {
         forest: [
-            createReplica('event1_level_end_4', 'sveta2', 'Шапка', 'Хм, к шмелю был привязан кусочек карты.')
+            createReplica('event1_level_end_4', 'sveta2', 'Шапка', 'Хм, к шмелю был привязан кусочек карты.', {
+                panelItem: createPanelItem('sideEvent1Map2', 'map2Shine', 'blue', {
+                    scaleMultiplier: 3
+                })
+            })
         ],
         houseAfterLevel: [
             createReplica('event1_main_screen_after_level_1', 'sveta2', 'Шапка', 'Клеверные луга... Куда мы забрели?'),
@@ -58,6 +79,10 @@ export default class EventReplicasConfiguration {
             }),
             createReplica('event1_main_screen_after_level_5', 'sveta4', 'Шапка', 'Только посмотрите на эти огромные ульи! Давайте будем держаться от них подальше.'),
             createReplica('event1_main_screen_after_level_7', 'sveta2', 'Шапка', 'Видите ту огромную медовую соту? Кажется, там фрагмент карты.', {
+                panelItem: createPanelItem('sideEvent1Map3', 'map3Shine', 'blue', {
+                    scaleMultiplier: 2.5,
+                    offsetX: -150
+                }),
                 decor: createDecor('mapInHive', 238, 58)
             }),
             createReplica('event1_main_screen_after_level_10', 'sveta4', 'Шапка', 'Ой-ой. У меня плохое предчувствие.'),

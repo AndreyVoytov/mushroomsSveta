@@ -113,7 +113,8 @@ export default class DialogPanel extends BasePanel {
 
         let lockTime = 0;
         if (!ignoreLockedScreen && currentReplica != null) {
-            lockTime = (currentReplica.showDiary ? 1500 : 1000) + (currentReplica.showDiary && screen instanceof ForestScreen? 1000 : 0);
+            const hasIntroPanel = currentReplica.showDiary || !!currentReplica.panelItem;
+            lockTime = (hasIntroPanel ? 1500 : 1000) + (hasIntroPanel && screen instanceof ForestScreen? 1000 : 0);
         }
 
         let nextReplica = currentReplica;

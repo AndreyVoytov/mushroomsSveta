@@ -1,5 +1,6 @@
 import ReplicaContextType from './ReplicaContextType';
 import ReplicaDecor from './ReplicaDecor';
+import ReplicaPanelItemType from './ReplicaPanelItemType';
 import StoryLocation from '../enum/StoryLocation';
 export default class ReplicaType {
     id: string;
@@ -12,6 +13,7 @@ export default class ReplicaType {
     afterLevelLocation?:StoryLocation;
 
     showDiary?: boolean;
+    panelItem?: ReplicaPanelItemType;
     // highlightDiary?: boolean;
     // diaryDelay?: number;
 

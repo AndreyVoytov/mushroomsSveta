@@ -2,8 +2,8 @@
     "frames":  {
                    "sideEvent1/crossDecor.png":  {
                                                      "frame":  {
-                                                                   "x":  996,
-                                                                   "y":  404,
+                                                                   "x":  1344,
+                                                                   "y":  409,
                                                                    "w":  88,
                                                                    "h":  84
                                                                },
@@ -27,7 +27,7 @@
                    "sideEvent1/event_button.png":  {
                                                        "frame":  {
                                                                      "x":  699,
-                                                                     "y":  404,
+                                                                     "y":  409,
                                                                      "w":  295,
                                                                      "h":  116
                                                                  },
@@ -75,7 +75,7 @@
                    "sideEvent1/event_fade_middle(source).png":  {
                                                                     "frame":  {
                                                                                   "x":  699,
-                                                                                  "y":  535,
+                                                                                  "y":  540,
                                                                                   "w":  692,
                                                                                   "h":  28
                                                                               },
@@ -98,7 +98,7 @@
                                                                 },
                    "sideEvent1/event_fade_top.png":  {
                                                          "frame":  {
-                                                                       "x":  1,
+                                                                       "x":  139,
                                                                        "y":  245,
                                                                        "w":  763,
                                                                        "h":  157
@@ -122,7 +122,7 @@
                                                      },
                    "sideEvent1/event_frame_bottom.png":  {
                                                              "frame":  {
-                                                                           "x":  766,
+                                                                           "x":  904,
                                                                            "y":  245,
                                                                            "w":  696,
                                                                            "h":  129
@@ -147,7 +147,7 @@
                    "sideEvent1/event_frame_middle (source).png":  {
                                                                       "frame":  {
                                                                                     "x":  1,
-                                                                                    "y":  535,
+                                                                                    "y":  540,
                                                                                     "w":  696,
                                                                                     "h":  48
                                                                                 },
@@ -171,7 +171,7 @@
                    "sideEvent1/event_frame_top.png":  {
                                                           "frame":  {
                                                                         "x":  1,
-                                                                        "y":  404,
+                                                                        "y":  409,
                                                                         "w":  696,
                                                                         "h":  129
                                                                     },
@@ -194,7 +194,7 @@
                                                       },
                    "sideEvent1/event_panel_bottom.png":  {
                                                              "frame":  {
-                                                                           "x":  1047,
+                                                                           "x":  1299,
                                                                            "y":  1,
                                                                            "w":  698,
                                                                            "h":  181
@@ -218,8 +218,8 @@
                                                          },
                    "sideEvent1/event_panel_close.png":  {
                                                             "frame":  {
-                                                                          "x":  1294,
-                                                                          "y":  404,
+                                                                          "x":  1642,
+                                                                          "y":  409,
                                                                           "w":  56,
                                                                           "h":  58
                                                                       },
@@ -242,8 +242,8 @@
                                                         },
                    "sideEvent1/event_timer.png":  {
                                                       "frame":  {
-                                                                    "x":  1086,
-                                                                    "y":  404,
+                                                                    "x":  1434,
+                                                                    "y":  409,
                                                                     "w":  206,
                                                                     "h":  74
                                                                 },
@@ -267,7 +267,7 @@
                    "sideEvent1/header.png":  {
                                                  "frame":  {
                                                                "x":  1393,
-                                                               "y":  535,
+                                                               "y":  540,
                                                                "w":  232,
                                                                "h":  25
                                                            },
@@ -312,10 +312,82 @@
                                                                    "y":  0.5
                                                                }
                                                  },
+                   "sideEvent1/map1Shine.png":  {
+                                                    "frame":  {
+                                                                  "x":  996,
+                                                                  "y":  409,
+                                                                  "w":  160,
+                                                                  "h":  113
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  160,
+                                                                             "h":  113
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  160,
+                                                                       "h":  113
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "sideEvent1/map2Shine.png":  {
+                                                    "frame":  {
+                                                                  "x":  1158,
+                                                                  "y":  409,
+                                                                  "w":  184,
+                                                                  "h":  106
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  184,
+                                                                             "h":  106
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  184,
+                                                                       "h":  106
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "sideEvent1/map3Shine.png":  {
+                                                    "frame":  {
+                                                                  "x":  1047,
+                                                                  "y":  1,
+                                                                  "w":  250,
+                                                                  "h":  194
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  250,
+                                                                             "h":  194
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  250,
+                                                                       "h":  194
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
                    "sideEvent1/mapInHive.png":  {
                                                     "frame":  {
-                                                                  "x":  1747,
-                                                                  "y":  1,
+                                                                  "x":  1,
+                                                                  "y":  245,
                                                                   "w":  136,
                                                                   "h":  162
                                                               },
@@ -343,8 +415,8 @@
                  "image":  "sideEvent1-1.png",
                  "format":  "RGBA8888",
                  "size":  {
-                              "w":  1884,
-                              "h":  584
+                              "w":  1998,
+                              "h":  589
                           },
                  "scale":  1
              }
