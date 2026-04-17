@@ -78,8 +78,8 @@ export default class HouseScreen extends DialogScreen {
     public settingsPanel: SettingsPanel;
     public tasksPanel: TasksPanel;
     private diaryPanel: DiaryPanel;
-    private activeEventPanel: ClosablePanel;
-    private preDialogSideEventPanel: SideEventPanel;
+    private activeEventPanel: ClosablePanel | null = null;
+    private preDialogSideEventPanel: SideEventPanel | null = null;
 
     private tasks: DiaryContentType;
     private progressBar: ProgressBar;
@@ -95,7 +95,7 @@ export default class HouseScreen extends DialogScreen {
 
     public progressAnimation: boolean = false;
 
-    private fakeTrees: Phaser.Sprite;
+    private fakeTrees: Phaser.Sprite | null = null;
 
     private renderedEventKeys: string[] = [];
     private configuredEventOffsetY = 0;
@@ -499,7 +499,7 @@ export default class HouseScreen extends DialogScreen {
         }
     }
 
-    private showEventPanel(eventInfo: EventInfo, instantly?: boolean, withoutAnimation?: boolean): ClosablePanel {
+    private showEventPanel(eventInfo: EventInfo, instantly?: boolean, withoutAnimation?: boolean): ClosablePanel | null {
         if (eventInfo.eventType == EventType.configured && EventUtils.hasMissingConfiguredEventAssets(this.game, eventInfo.eventId)) {
             console.warn("Configured event assets are not loaded:", eventInfo.eventId);
             return null;
@@ -528,7 +528,7 @@ export default class HouseScreen extends DialogScreen {
             return;
         }
 
-        let autoOpenEvent: EventInfo = null;
+        let autoOpenEvent: EventInfo | null = null;
 
         EventUtils.getActualEvents().forEach(eventInfo => {
             const eventKey = EventUtils.getEventKey(eventInfo);

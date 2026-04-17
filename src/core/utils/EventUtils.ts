@@ -14,7 +14,7 @@ import NeverError from './NeverError';
 type EventLevelSession = {
     eventId: string;
     levelIndex: number;
-    replicaStage?: string;
+    replicaStage?: string | null;
 };
 
 export default class EventUtils {
@@ -22,7 +22,7 @@ export default class EventUtils {
     private static staticEvents: EventInfo[] = [];
     private static levelForStaticEvents = 15;
     private static levelForLukoshkoEvent = 24;
-    private static activeLevelSession: EventLevelSession = null;
+    private static activeLevelSession: EventLevelSession | null = null;
 
     public static updateEvents(): string[] {
         const result: string[] = [];
@@ -292,15 +292,15 @@ export default class EventUtils {
         return this.activeLevelSession != null;
     }
 
-    public static getActiveLevelEventId(): string {
+    public static getActiveLevelEventId(): string | null {
         return this.activeLevelSession ? this.activeLevelSession.eventId : null;
     }
 
-    public static getActiveLevelIndex(): number {
+    public static getActiveLevelIndex(): number | null {
         return this.activeLevelSession ? this.activeLevelSession.levelIndex : null;
     }
 
-    public static getActiveLevelReplicaStage(): string {
+    public static getActiveLevelReplicaStage(): string | null {
         return this.activeLevelSession ? this.activeLevelSession.replicaStage : null;
     }
 
@@ -373,7 +373,7 @@ export default class EventUtils {
         this.activeLevelSession = null;
     }
 
-    public static consumePendingHousePanelEvent(): EventInfo {
+    public static consumePendingHousePanelEvent(): EventInfo | null {
         const user = UserService.getUser();
 
         for (let i = 0; i < EventsConfiguration.allEvents.length; i++) {
@@ -503,8 +503,8 @@ export default class EventUtils {
         return GameText.remain(time);
     }
 
-    private static getEventById(eventId: string): EventInfo {
-        return UserService.getUser().getEvents().filter(event => event.eventId == eventId).shift();
+    private static getEventById(eventId: string): EventInfo | null {
+        return UserService.getUser().getEvents().filter(event => event.eventId == eventId).shift() || null;
     }
 
     private static deleteConfiguredEventsById(eventId: string): void {
@@ -598,14 +598,14 @@ export default class EventUtils {
         return eventConfig && eventConfig.mainImageScale != null ? Number(eventConfig.mainImageScale) : 1.18;
     }
 
-    private static getConfiguredEventMainImageOverride(eventId: string, levelNumber?: number): EventMainImageOverrideConfiguration {
+    private static getConfiguredEventMainImageOverride(eventId: string, levelNumber?: number): EventMainImageOverrideConfiguration | null {
         const eventConfig = EventsConfiguration.getById(eventId);
         if (!eventConfig || !eventConfig.mainImageOverrides || eventConfig.mainImageOverrides.length == 0) {
             return null;
         }
 
         const resolvedLevelNumber = levelNumber || this.getConfiguredEventDisplayLevelNumber(eventId);
-        return eventConfig.mainImageOverrides.filter(override => override && override.levels && override.levels.indexOf(resolvedLevelNumber) != -1).shift();
+        return eventConfig.mainImageOverrides.filter(override => override && override.levels && override.levels.indexOf(resolvedLevelNumber) != -1).shift() || null;
     }
 
     private static getConfiguredEventDisplayLevelNumber(eventId: string): number {

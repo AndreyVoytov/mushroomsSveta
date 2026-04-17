@@ -10,7 +10,7 @@ export default class CellState {
 
     sprite: Phaser.Sprite;
     cover: ForestCellCover;
-    label: Label = null;
+    label: Label | null = null;
     
     metaValue:string;
 

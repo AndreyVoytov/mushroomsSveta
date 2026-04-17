@@ -4,7 +4,7 @@ export default class YandexGamesHelper {
 
     private static ysdk: any = null;
     private static payments: any = null;
-    private static initPromise: Promise<void> = null;
+    private static initPromise: Promise<void> | null = null;
     private static readySent = false;
     private static gameplayActive = false;
     private static catalogById: { [id: string]: any } = {};

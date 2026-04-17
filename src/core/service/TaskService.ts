@@ -188,7 +188,7 @@ export default class TaskService {
         this.pendingLevelCollections = {};
     }
 
-    public static claimDailyTask(taskId: string, user?: User): TaskRewardGrant {
+    public static claimDailyTask(taskId: string, user?: User): TaskRewardGrant | null {
         let safeUser = user || UserService.getUser();
         this.ensureDailyState(safeUser);
         let state = this.getState(safeUser);
@@ -205,11 +205,11 @@ export default class TaskService {
         return this.toRewardGrant(task.title, task.reward, true);
     }
 
-    public static claimCampaignTask(taskId: string, user?: User): TaskRewardGrant {
+    public static claimCampaignTask(taskId: string, user?: User): TaskRewardGrant | null {
         let safeUser = user || UserService.getUser();
         let state = this.getState(safeUser);
         let maxUnlockedChapter = this.getCurrentCampaignChapterIndex(safeUser);
-        let task: TaskDefinition = null;
+        let task: TaskDefinition | undefined;
 
         for (let i = 0; i <= maxUnlockedChapter; i++) {
             task = TasksConfiguration.campaignChapters[i].tasks.filter(item => item.id == taskId).shift();

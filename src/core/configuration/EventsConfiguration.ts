@@ -31,7 +31,7 @@ export default class EventsConfiguration {
     public static allEvents: EventConfiguration[] = [
         {
             eventId: "event1",
-            name: "Лесной рейд",
+            name: "Гудящая долина",
             description: "15 особых лесных и горных уровней с медом и пчелами.",
             duration: 1000 * 60 * 60 * 24 * 3,
             startsatLevel: 3,
@@ -83,8 +83,8 @@ export default class EventsConfiguration {
         }
     ];
 
-    public static getById(eventId: string): EventConfiguration {
-        return this.allEvents.filter(event => event.eventId == eventId).shift();
+    public static getById(eventId: string): EventConfiguration | null {
+        return this.allEvents.filter(event => event.eventId == eventId).shift() || null;
     }
 
     public static getAssetsById(eventId: string): EventAssetConfiguration[] {
@@ -92,7 +92,7 @@ export default class EventsConfiguration {
         return event && event.assets ? event.assets : [];
     }
 
-    public static getMainImageAssetById(eventId: string, levelNumber?: number): EventAssetConfiguration {
+    public static getMainImageAssetById(eventId: string, levelNumber?: number): EventAssetConfiguration | null {
         const event = this.getById(eventId);
         if (!event) {
             return null;
@@ -126,12 +126,12 @@ export default class EventsConfiguration {
         return result;
     }
 
-    private static getMainImageOverride(event: EventConfiguration, levelNumber?: number): EventMainImageOverrideConfiguration {
+    private static getMainImageOverride(event: EventConfiguration, levelNumber?: number): EventMainImageOverrideConfiguration | null {
         if (!event || !event.mainImageOverrides || event.mainImageOverrides.length == 0 || levelNumber == null) {
             return null;
         }
 
-        return event.mainImageOverrides.filter(override => override && override.levels && override.levels.indexOf(levelNumber) != -1).shift();
+        return event.mainImageOverrides.filter(override => override && override.levels && override.levels.indexOf(levelNumber) != -1).shift() || null;
     }
 
     private static pushAsset(target: EventAssetConfiguration[], key: string, path: string): void {

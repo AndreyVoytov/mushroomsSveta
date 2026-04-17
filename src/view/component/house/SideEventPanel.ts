@@ -59,17 +59,17 @@ export default class SideEventPanel extends ClosablePanel {
         new Phaser.Point(134.5, 12.5)
     ];
 
-    private actionButton: Phaser.Button;
+    private actionButton!: Phaser.Button;
     private eventInfo: EventInfo;
     private eventPointPositions: Phaser.Point[] = [];
-    private characterSprite: Phaser.Sprite;
-    private characterMoveTimer: Phaser.TimerEvent;
-    private characterMoveTween: Phaser.Tween;
-    private mainImageSprite: Phaser.Sprite;
-    private mainImageMask: Phaser.Graphics;
+    private characterSprite: Phaser.Sprite | null = null;
+    private characterMoveTimer: Phaser.TimerEvent | null = null;
+    private characterMoveTween: Phaser.Tween | null = null;
+    private mainImageSprite: Phaser.Sprite | null = null;
+    private mainImageMask: Phaser.Graphics | null = null;
     private preDialogFocusTargets: SideEventChildAlphaState[] = [];
-    private preDialogFocusTimer: Phaser.TimerEvent;
-    private preDialogRestoreTimer: Phaser.TimerEvent;
+    private preDialogFocusTimer: Phaser.TimerEvent | null = null;
+    private preDialogRestoreTimer: Phaser.TimerEvent | null = null;
     private preDialogFocusActive = false;
     private panelBaseScaleX = 1;
     private panelBaseScaleY = 1;
@@ -292,12 +292,18 @@ export default class SideEventPanel extends ClosablePanel {
         }
     }
 
+    private getConfiguredEventId(): string | null {
+        return this.eventInfo.eventType == EventType.configured && this.eventInfo.eventId
+            ? this.eventInfo.eventId
+            : null;
+    }
+
     private getEventState(): SideEventState {
-        const isConfiguredEvent = this.eventInfo.eventType == EventType.configured;
-        const totalLevels = isConfiguredEvent ? EventUtils.getEventLevelsCount(this.eventInfo.eventId) : 0;
-        const progress = isConfiguredEvent ? EventUtils.getEventProgress(this.eventInfo.eventId) : 0;
+        const configuredEventId = this.getConfiguredEventId();
+        const totalLevels = configuredEventId ? EventUtils.getEventLevelsCount(configuredEventId) : 0;
+        const progress = configuredEventId ? EventUtils.getEventProgress(configuredEventId) : 0;
         const nextLevelNumber = Math.min(progress + 1, totalLevels);
-        const canPlay = isConfiguredEvent
+        const canPlay = !!configuredEventId
             && EventUtils.getStage(this.eventInfo) == EventStage.active
             && nextLevelNumber > 0
             && progress < totalLevels;
@@ -362,7 +368,7 @@ export default class SideEventPanel extends ClosablePanel {
         return screenCenterY - focusCenterY * panelScale;
     }
 
-    private getPreDialogFocusBounds(): { top: number, bottom: number } {
+    private getPreDialogFocusBounds(): { top: number, bottom: number } | null {
         if (this.mainImageMask) {
             return {
                 top: this.mainImageMask.y - SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT / 2,
@@ -488,7 +494,13 @@ export default class SideEventPanel extends ClosablePanel {
             return;
         }
 
-        if (!EventUtils.startEventLevel(this.eventInfo.eventId)) {
+        const eventId = this.getConfiguredEventId();
+        if (!eventId) {
+            this.close();
+            return;
+        }
+
+        if (!EventUtils.startEventLevel(eventId)) {
             if (EventUtils.getStage(this.eventInfo) === EventStage.expired) {
                 EventUtils.expireConfiguredEvent(this.eventInfo);
             }
@@ -521,7 +533,8 @@ export default class SideEventPanel extends ClosablePanel {
         this.characterSprite.visible = true;
         this.characterSprite.alpha = 1;
 
-        const animateLastSection = EventUtils.consumePendingCharacterTravel(this.eventInfo.eventId) && targetPointIndex > 0;
+        const eventId = this.getConfiguredEventId();
+        const animateLastSection = !!eventId && EventUtils.consumePendingCharacterTravel(eventId) && targetPointIndex > 0;
         if (!animateLastSection) {
             this.characterSprite.position.set(targetPoint.x, targetPoint.y);
             return;
