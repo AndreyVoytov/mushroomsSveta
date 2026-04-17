@@ -7,10 +7,12 @@ import EventType from '../../../core/model/event/EventType';
 import EventUtils from '../../../core/utils/EventUtils';
 import ForestScreen from '../../screen/ForestScreen';
 import HouseScreen from './../../screen/HouseScreen';
+import BasePanel from '../panel/BasePanel';
 import ClosablePanel from '../panel/ClosablePanel';
 import Label from '../panel/Label';
+import StripsPanel from '../dialog/StripsPanel';
 import TreesTransitionPanel from '../panel/TreesTransitionPanel';
-import { DIALOG_BOTTOM_VISIBLE_STRIP_HEIGHT, DIALOG_TOP_STRIP_HEIGHT } from '../dialog/DialogLayoutMetrics';
+import { DIALOG_BOTTOM_STRIP_HEIGHT, DIALOG_BOTTOM_VISIBLE_STRIP_HEIGHT, DIALOG_TOP_STRIP_HEIGHT } from '../dialog/DialogLayoutMetrics';
 
 type SideEventState = {
     canPlay: boolean;
@@ -41,6 +43,11 @@ export default class SideEventPanel extends ClosablePanel {
     private static readonly EVENT1_CHARACTER_OFFSET_Y = -45;
     private static readonly EVENT1_CHARACTER_MOVE_DELAY = 1200;
     private static readonly EVENT1_CHARACTER_MOVE_DURATION = 540;
+    private static readonly EVENT1_LOUPE_BUTTON_X = 271;
+    private static readonly EVENT1_LOUPE_BUTTON_Y = -172;
+    private static readonly EVENT1_LOUPE_BUTTON_ALPHA = 0.8;
+    private static readonly EVENT1_LOUPE_BUTTON_SCALE = 0.7;
+    private static readonly PREVIEW_STRIPS_HIDE_DURATION = Math.round(StripsPanel.SHOW_DURATION / 1.5);
 
     private static readonly EVENT1_POINT_POSITIONS: Phaser.Point[] = [
         new Phaser.Point(-17.5, -32.5),
@@ -67,6 +74,11 @@ export default class SideEventPanel extends ClosablePanel {
     private characterMoveTween: Phaser.Tween | null = null;
     private mainImageSprite: Phaser.Sprite | null = null;
     private mainImageMask: Phaser.Graphics | null = null;
+    private backgroundPreviewButton: Phaser.Button | null = null;
+    private backgroundPreviewActive = false;
+    private backgroundPreviewOverlay: BasePanel | null = null;
+    private backgroundPreviewTopStrip: Phaser.Graphics | null = null;
+    private backgroundPreviewBottomStrip: Phaser.Graphics | null = null;
     private preDialogFocusTargets: SideEventChildAlphaState[] = [];
     private preDialogFocusTimer: Phaser.TimerEvent | null = null;
     private preDialogRestoreTimer: Phaser.TimerEvent | null = null;
@@ -100,6 +112,7 @@ export default class SideEventPanel extends ClosablePanel {
         hitArea.height = 1180;
         hitArea.alpha = 0.001;
         hitArea.inputEnabled = true;
+        hitArea.events.onInputDown.add(() => this.onExpandedPreviewTap(), this);
 
         const eventImage = this.attachPsdSprite(
             EventUtils.getMainImage(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber),
@@ -108,6 +121,7 @@ export default class SideEventPanel extends ClosablePanel {
             -66.5
         );
         eventImage.inputEnabled = true;
+        eventImage.events.onInputDown.add(() => this.onExpandedPreviewTap(), this);
         this.applyEvent1MainImageMask(
             eventImage,
             EventUtils.getMainImageScale(this.eventInfo.eventType, this.eventInfo.eventId, eventState.nextLevelNumber)
@@ -138,6 +152,11 @@ export default class SideEventPanel extends ClosablePanel {
 
         const closeButton = this.attachPsdButton('sideEvent1PanelClose', () => this.onCloseButtonClick(), 'closeButton', 311, -576);
         closeButton.bringToTop();
+
+        this.backgroundPreviewButton = this.attachPsdButton('loupe', () => this.onBackgroundPreviewButtonClick(), 'backgroundPreviewButton', SideEventPanel.EVENT1_LOUPE_BUTTON_X, SideEventPanel.EVENT1_LOUPE_BUTTON_Y);
+        this.backgroundPreviewButton.alpha = SideEventPanel.EVENT1_LOUPE_BUTTON_ALPHA;
+        this.backgroundPreviewButton.scale.set(SideEventPanel.EVENT1_LOUPE_BUTTON_SCALE);
+        this.backgroundPreviewButton.bringToTop();
 
         const title = this.attachText('titleLabel', EventUtils.getName(this.eventInfo.eventType, this.eventInfo.eventId), {
             font: 'bold 48px Gilroy',
@@ -428,6 +447,11 @@ export default class SideEventPanel extends ClosablePanel {
             return;
         }
 
+        if (this.backgroundPreviewActive) {
+            this.setBackgroundPreview(false);
+            return;
+        }
+
         this.close();
     }
 
@@ -475,7 +499,9 @@ export default class SideEventPanel extends ClosablePanel {
 
     protected onClose() {
         this.stopCharacterMovement();
+        this.setBackgroundPreview(false, true);
         this.clearPreDialogTimers(true);
+        this.destroyBackgroundPreviewOverlay();
         (<HouseScreen>(this.game.state.getCurrentState())).showUI();
     }
 
@@ -519,6 +545,46 @@ export default class SideEventPanel extends ClosablePanel {
             AnalyticUtils.logLevelStart();
             houseScreen.startScreen(ForestScreen, true, false);
         }, this);
+    }
+
+    private onBackgroundPreviewButtonClick(): void {
+        if (this.isDialogBlockingPanel()) {
+            return;
+        }
+
+        this.setBackgroundPreview(!this.backgroundPreviewActive);
+    }
+
+    private onExpandedPreviewTap(): void {
+        if (!this.backgroundPreviewActive || this.isDialogBlockingPanel()) {
+            return;
+        }
+
+        this.setBackgroundPreview(false);
+    }
+
+    private setBackgroundPreview(active: boolean, instantly?: boolean): void {
+        if (active) {
+            if (this.backgroundPreviewActive || !this.mainImageSprite) {
+                return;
+            }
+
+            this.clearPreDialogTimers(false);
+            this.applyPreDialogFocus(undefined, !!instantly);
+            this.showBackgroundPreviewStrips(!!instantly);
+            this.backgroundPreviewActive = true;
+            return;
+        }
+
+        if (!this.backgroundPreviewActive) {
+            this.hideBackgroundPreviewStrips(!!instantly);
+            return;
+        }
+
+        this.clearPreDialogTimers(false);
+        this.restorePreDialogFocus(!!instantly);
+        this.hideBackgroundPreviewStrips(!!instantly);
+        this.backgroundPreviewActive = false;
     }
 
     private scheduleCharacterMovement(): void {
@@ -601,7 +667,7 @@ export default class SideEventPanel extends ClosablePanel {
         }
     }
 
-    private applyPreDialogFocus(): void {
+    private applyPreDialogFocus(visibleTargets?: PIXI.DisplayObject[], instantly?: boolean): void {
         if (!this.mainImageSprite || !this.visible) {
             return;
         }
@@ -616,9 +682,10 @@ export default class SideEventPanel extends ClosablePanel {
         this.panelBaseScaleY = this.scale.y;
         this.panelBaseY = this.getPanelScreenY();
         this.preDialogFocusTargets = [];
+        const allowedVisibleTargets = visibleTargets || [];
 
         this.children.forEach(child => {
-            if (child === this.mainImageSprite || child === this.mainImageMask) {
+            if (child === this.mainImageSprite || child === this.mainImageMask || allowedVisibleTargets.indexOf(<PIXI.DisplayObject><any>child) != -1) {
                 return;
             }
 
@@ -627,8 +694,30 @@ export default class SideEventPanel extends ClosablePanel {
                 alpha: (<any>child).alpha == null ? 1 : (<any>child).alpha
             });
 
-            this.preDialogTweens.push(this.game.add.tween(child).to(
-                { alpha: 0 },
+            if (instantly) {
+                (<any>child).alpha = 0;
+            } else {
+                this.preDialogTweens.push(this.game.add.tween(child).to(
+                    { alpha: 0 },
+                    SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
+                    Phaser.Easing.Quadratic.Out,
+                    true,
+                    0,
+                    0,
+                    false
+                ));
+            }
+        });
+
+        if (instantly) {
+            this.scale.set(preDialogPanelScale);
+            panelPositionTweenTarget.y = preDialogPanelY;
+        } else {
+            this.preDialogTweens.push(this.game.add.tween(this.scale).to(
+                {
+                    x: preDialogPanelScale,
+                    y: preDialogPanelScale
+                },
                 SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
                 Phaser.Easing.Quadratic.Out,
                 true,
@@ -636,34 +725,21 @@ export default class SideEventPanel extends ClosablePanel {
                 0,
                 false
             ));
-        });
-
-        this.preDialogTweens.push(this.game.add.tween(this.scale).to(
-            {
-                x: preDialogPanelScale,
-                y: preDialogPanelScale
-            },
-            SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
-            Phaser.Easing.Quadratic.Out,
-            true,
-            0,
-            0,
-            false
-        ));
-        this.preDialogTweens.push(this.game.add.tween(panelPositionTweenTarget).to(
-            { y: preDialogPanelY },
-            SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
-            Phaser.Easing.Quadratic.Out,
-            true,
-            0,
-            0,
-            false
-        ));
+            this.preDialogTweens.push(this.game.add.tween(panelPositionTweenTarget).to(
+                { y: preDialogPanelY },
+                SideEventPanel.PRE_DIALOG_FOCUS_DURATION,
+                Phaser.Easing.Quadratic.Out,
+                true,
+                0,
+                0,
+                false
+            ));
+        }
 
         this.preDialogFocusActive = true;
     }
 
-    private restorePreDialogFocus(): void {
+    private restorePreDialogFocus(instantly?: boolean): void {
         if (!this.mainImageSprite) {
             return;
         }
@@ -675,8 +751,27 @@ export default class SideEventPanel extends ClosablePanel {
                 return;
             }
 
-            this.preDialogTweens.push(this.game.add.tween(state.target).to(
-                { alpha: state.alpha },
+            if (instantly) {
+                (<any>state.target).alpha = state.alpha;
+            } else {
+                this.preDialogTweens.push(this.game.add.tween(state.target).to(
+                    { alpha: state.alpha },
+                    SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
+                    Phaser.Easing.Quadratic.Out,
+                    true,
+                    0,
+                    0,
+                    false
+                ));
+            }
+        });
+
+        if (instantly) {
+            this.scale.set(this.panelBaseScaleX, this.panelBaseScaleY);
+            this.getPanelPositionTweenTarget().y = this.panelBaseY;
+        } else {
+            this.preDialogTweens.push(this.game.add.tween(this.scale).to(
+                { x: this.panelBaseScaleX, y: this.panelBaseScaleY },
                 SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
                 Phaser.Easing.Quadratic.Out,
                 true,
@@ -684,26 +779,16 @@ export default class SideEventPanel extends ClosablePanel {
                 0,
                 false
             ));
-        });
-
-        this.preDialogTweens.push(this.game.add.tween(this.scale).to(
-            { x: this.panelBaseScaleX, y: this.panelBaseScaleY },
-            SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
-            Phaser.Easing.Quadratic.Out,
-            true,
-            0,
-            0,
-            false
-        ));
-        this.preDialogTweens.push(this.game.add.tween(this.getPanelPositionTweenTarget()).to(
-            { y: this.panelBaseY },
-            SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
-            Phaser.Easing.Quadratic.Out,
-            true,
-            0,
-            0,
-            false
-        ));
+            this.preDialogTweens.push(this.game.add.tween(this.getPanelPositionTweenTarget()).to(
+                { y: this.panelBaseY },
+                SideEventPanel.PRE_DIALOG_RESTORE_DURATION,
+                Phaser.Easing.Quadratic.Out,
+                true,
+                0,
+                0,
+                false
+            ));
+        }
 
         this.preDialogFocusActive = false;
         this.preDialogFocusTargets = [];
@@ -735,5 +820,129 @@ export default class SideEventPanel extends ClosablePanel {
             }
         });
         this.preDialogTweens = [];
+    }
+
+    private ensureBackgroundPreviewOverlay(): BasePanel | null {
+        if (this.backgroundPreviewOverlay && this.backgroundPreviewOverlay.parent) {
+            return this.backgroundPreviewOverlay;
+        }
+
+        const screen = <HouseScreen>this.game.state.getCurrentState();
+        if (!screen || !screen.addDialogOverlayPanel) {
+            return null;
+        }
+
+        const overlay = new BasePanel(this.game, 0, 0, 'sideEventPreviewOverlay');
+        overlay.fixedToCamera = false;
+
+        this.backgroundPreviewTopStrip = new Phaser.Graphics(this.game, 0, 0);
+        this.backgroundPreviewTopStrip.beginFill(0x000000, 1);
+        this.backgroundPreviewTopStrip.drawRect(0, 0, this.game.width, DIALOG_TOP_STRIP_HEIGHT);
+        this.backgroundPreviewTopStrip.endFill();
+        this.backgroundPreviewTopStrip.y = -DIALOG_TOP_STRIP_HEIGHT;
+        overlay.addChild(this.backgroundPreviewTopStrip);
+
+        this.backgroundPreviewBottomStrip = new Phaser.Graphics(this.game, 0, 0);
+        this.backgroundPreviewBottomStrip.beginFill(0x000000, 1);
+        this.backgroundPreviewBottomStrip.drawRect(0, 0, this.game.width, DIALOG_BOTTOM_STRIP_HEIGHT);
+        this.backgroundPreviewBottomStrip.endFill();
+        this.backgroundPreviewBottomStrip.y = this.game.height;
+        overlay.addChild(this.backgroundPreviewBottomStrip);
+
+        this.backgroundPreviewOverlay = screen.addDialogOverlayPanel(overlay);
+        screen.bringDialogOverlayToFront();
+        return this.backgroundPreviewOverlay;
+    }
+
+    private showBackgroundPreviewStrips(instantly?: boolean): void {
+        if (!this.ensureBackgroundPreviewOverlay() || !this.backgroundPreviewTopStrip || !this.backgroundPreviewBottomStrip) {
+            return;
+        }
+
+        const screen = <HouseScreen>this.game.state.getCurrentState();
+        if (screen && screen.bringDialogOverlayToFront) {
+            screen.bringDialogOverlayToFront();
+        }
+
+        this.game.tweens.removeFrom(this.backgroundPreviewTopStrip);
+        this.game.tweens.removeFrom(this.backgroundPreviewBottomStrip);
+
+        if (instantly) {
+            this.backgroundPreviewTopStrip.y = 0;
+            this.backgroundPreviewBottomStrip.y = this.game.height - DIALOG_BOTTOM_STRIP_HEIGHT;
+            return;
+        }
+
+        this.game.add.tween(this.backgroundPreviewTopStrip).to(
+            { y: 0 },
+            StripsPanel.SHOW_DURATION,
+            Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        );
+        this.game.add.tween(this.backgroundPreviewBottomStrip).to(
+            { y: this.game.height - DIALOG_BOTTOM_STRIP_HEIGHT },
+            StripsPanel.SHOW_DURATION,
+            Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        );
+    }
+
+    private hideBackgroundPreviewStrips(instantly?: boolean): void {
+        if (!this.backgroundPreviewTopStrip || !this.backgroundPreviewBottomStrip) {
+            return;
+        }
+
+        this.game.tweens.removeFrom(this.backgroundPreviewTopStrip);
+        this.game.tweens.removeFrom(this.backgroundPreviewBottomStrip);
+
+        if (instantly) {
+            this.backgroundPreviewTopStrip.y = -DIALOG_TOP_STRIP_HEIGHT;
+            this.backgroundPreviewBottomStrip.y = this.game.height;
+            return;
+        }
+
+        this.game.add.tween(this.backgroundPreviewTopStrip).to(
+            { y: -DIALOG_TOP_STRIP_HEIGHT },
+            SideEventPanel.PREVIEW_STRIPS_HIDE_DURATION,
+            Phaser.Easing.Quadratic.Out,
+            true,
+            0,
+            0,
+            false
+        );
+        this.game.add.tween(this.backgroundPreviewBottomStrip).to(
+            { y: this.game.height },
+            SideEventPanel.PREVIEW_STRIPS_HIDE_DURATION,
+            Phaser.Easing.Quadratic.In,
+            true,
+            0,
+            0,
+            false
+        );
+    }
+
+    private destroyBackgroundPreviewOverlay(): void {
+        if (this.backgroundPreviewTopStrip) {
+            this.game.tweens.removeFrom(this.backgroundPreviewTopStrip);
+        }
+
+        if (this.backgroundPreviewBottomStrip) {
+            this.game.tweens.removeFrom(this.backgroundPreviewBottomStrip);
+        }
+
+        if (this.backgroundPreviewOverlay) {
+            this.backgroundPreviewOverlay.destroy(true);
+        }
+
+        this.backgroundPreviewOverlay = null;
+        this.backgroundPreviewTopStrip = null;
+        this.backgroundPreviewBottomStrip = null;
+        this.backgroundPreviewActive = false;
     }
 }
