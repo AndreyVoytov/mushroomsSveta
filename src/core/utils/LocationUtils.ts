@@ -13,6 +13,7 @@ import DarkForestLayout from '../../view/component/house/layout/DarkForestLayout
 import ForestLayout from '../../view/component/house/layout/ForestLayout';
 import SpriteUtils from './SpriteUtils';
 import ForestType from '../model/forest/ForestType';
+import ForestUtils from './ForestUtils';
 import Utils from './Utils';
 import BaseForestScreen from '../../view/screen/BaseForestScreen';
 import CellsProvider from '../service/provider/CellsProvider';
@@ -133,10 +134,6 @@ export default class LocationUtils {
 
     public static getVisibleHeaderHeight(game:Phaser.Game, forestType: ForestType):number{
         return Math.min(game.height * 0.35, this.getHeaderHeight(forestType));
-    }
-
-    private static usesCloverForestSkin(forestType?: ForestType): boolean {
-        return !!forestType && (forestType.header == "cloverHeader" || forestType.leafType == "leafClover");
     }
 
     //MINIGAME 
@@ -447,7 +444,7 @@ export default class LocationUtils {
                 background.inputEnabled = true;
                 res.push(background);
                 
-                if (!this.usesCloverForestSkin(forestType)) {
+                if (!ForestUtils.isCloverReskin(forestType)) {
                     res.push(SpriteUtils.createSprite(game, 500, 500, 'grassLight', 'grassLight2'));
                 }
                 
@@ -628,7 +625,7 @@ export default class LocationUtils {
             case Environment.forest:
             case Environment.jungles:
             default:
-                if (this.usesCloverForestSkin(forestType)) {
+                if (ForestUtils.isCloverReskin(forestType)) {
                     return 'bgClover';
                 }
                 return 'bg';

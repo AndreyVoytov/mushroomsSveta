@@ -7,6 +7,7 @@ export const ATLAS_GROUPS: { [key: string]: string[] } = {
     'additional': ['additional0'],
     'chapter1': ['chapter1_0', 'chapter1_1'],
     'event1': ['event1'],
+    'sideEvent1': ['sideEvent1-0', 'sideEvent1-1'],
     'minigame1': ['minigame1'],
     'minigame2': ['minigame2'],
     'minigame3': ['minigame3'],
@@ -15,6 +16,7 @@ export const ATLAS_GROUPS: { [key: string]: string[] } = {
     'minigame6': ['minigame6'],
     'minigame7': ['minigame7'],
     'minigame8': ['minigame8'],
+    'minigame9': ['minigame9'],
 };
 
 export function getAtlasGroupNames(groupId: string): string[] {

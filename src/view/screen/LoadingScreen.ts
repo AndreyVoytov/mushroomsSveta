@@ -400,6 +400,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('bgDark', 'assets/minigame3/bgDark.jpg');
         this.loadImage('bgLake', 'assets/minigame4/bgLake.jpg');
         this.loadImage('bgLight', 'assets/minigame5/bgLight.jpg');
+        this.loadImage('bgClover', 'assets/minigame9/bgClover.png');
         this.loadImage('flowersBig', 'assets/minigame5/flowersBig.png');
 
         this.loadImage('flowersFieldHeader', 'assets/minigame5/flowersFieldHeader.png');
@@ -407,6 +408,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('junglesHeader', 'assets/minigame6/junglesHeader.png');
         this.loadImage('bugForestHeader', 'assets/minigame7/bugForestHeader.png');
         this.loadImage('snailForestHeader', 'assets/minigame8/snailForestHeader.png');
+        this.loadImage('cloverHeader', 'assets/minigame9/cloverHeader.png');
         this.loadImage('forestHeader1', 'assets/base/ui/forestHeader1.png');
         this.loadImage('forestHeader2', 'assets/minigame3/forestHeader2.png');
 
@@ -577,6 +579,8 @@ export default class LoadingScreen extends BaseScreen {
         // this.loadImage('leaf3r', 'assets/base/hex/leaf3r.png');
         this.loadImage('leaf4', 'assets/base/hex/leaf4.png');
         this.loadImage('leaf4g', 'assets/base/hex/leaf4g.png');
+        this.loadImage('leafClover', 'assets/base/hex/leafClover.png');
+        this.loadImage('leafCloverg', 'assets/base/hex/leafCloverg.png');
         // this.loadImage('leaf4r', 'assets/base/hex/leaf4r.png');
         // this.loadImage('leaf5', 'assets/base/hex/leaf5.png');
         // this.loadImage('leaf5g', 'assets/base/hex/leaf5g.png');
@@ -690,6 +694,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('owlFlying', 'assets/base/items/owlFlying.png');
         this.loadImage('fish', 'assets/base/items/fish.png');
         this.loadImage('bird', 'assets/base/items/bird.png');
+        this.loadImage('horseshoe', 'assets/base/items/horseshoe.png');
 
         this.loadImage('bug1', 'assets/base/items/bug1.png');
         this.loadImage('bug2', 'assets/base/items/bug2.png');

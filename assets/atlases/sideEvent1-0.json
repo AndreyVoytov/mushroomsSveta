@@ -1,0 +1,255 @@
+{
+    "frames":  {
+                   "sideEvent1/bottleDecor.png":  {
+                                                      "frame":  {
+                                                                    "x":  1767,
+                                                                    "y":  1538,
+                                                                    "w":  279,
+                                                                    "h":  242
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  279,
+                                                                               "h":  242
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  279,
+                                                                         "h":  242
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  },
+                   "sideEvent1/chestClosedDecor.png":  {
+                                                           "frame":  {
+                                                                         "x":  1113,
+                                                                         "y":  1538,
+                                                                         "w":  325,
+                                                                         "h":  297
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  325,
+                                                                                    "h":  297
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  325,
+                                                                              "h":  297
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "sideEvent1/chestOpenDecor.png":  {
+                                                         "frame":  {
+                                                                       "x":  1440,
+                                                                       "y":  1538,
+                                                                       "w":  325,
+                                                                       "h":  297
+                                                                   },
+                                                         "rotated":  false,
+                                                         "trimmed":  false,
+                                                         "spriteSourceSize":  {
+                                                                                  "x":  0,
+                                                                                  "y":  0,
+                                                                                  "w":  325,
+                                                                                  "h":  297
+                                                                              },
+                                                         "sourceSize":  {
+                                                                            "w":  325,
+                                                                            "h":  297
+                                                                        },
+                                                         "pivot":  {
+                                                                       "x":  0.5,
+                                                                       "y":  0.5
+                                                                   }
+                                                     },
+                   "sideEvent1/event_image.png":  {
+                                                      "frame":  {
+                                                                    "x":  1,
+                                                                    "y":  1,
+                                                                    "w":  687,
+                                                                    "h":  949
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  687,
+                                                                               "h":  949
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  687,
+                                                                         "h":  949
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  },
+                   "sideEvent1/event_panel_ribbon.png":  {
+                                                             "frame":  {
+                                                                           "x":  1,
+                                                                           "y":  1538,
+                                                                           "w":  555,
+                                                                           "h":  326
+                                                                       },
+                                                             "rotated":  false,
+                                                             "trimmed":  false,
+                                                             "spriteSourceSize":  {
+                                                                                      "x":  0,
+                                                                                      "y":  0,
+                                                                                      "w":  555,
+                                                                                      "h":  326
+                                                                                  },
+                                                             "sourceSize":  {
+                                                                                "w":  555,
+                                                                                "h":  326
+                                                                            },
+                                                             "pivot":  {
+                                                                           "x":  0.5,
+                                                                           "y":  0.5
+                                                                       }
+                                                         },
+                   "sideEvent1/map_bg.png":  {
+                                                 "frame":  {
+                                                               "x":  690,
+                                                               "y":  1,
+                                                               "w":  789,
+                                                               "h":  599
+                                                           },
+                                                 "rotated":  false,
+                                                 "trimmed":  false,
+                                                 "spriteSourceSize":  {
+                                                                          "x":  0,
+                                                                          "y":  0,
+                                                                          "w":  789,
+                                                                          "h":  599
+                                                                      },
+                                                 "sourceSize":  {
+                                                                    "w":  789,
+                                                                    "h":  599
+                                                                },
+                                                 "pivot":  {
+                                                               "x":  0.5,
+                                                               "y":  0.5
+                                                           }
+                                             },
+                   "sideEvent1/map1.png":  {
+                                               "frame":  {
+                                                             "x":  1016,
+                                                             "y":  952,
+                                                             "w":  482,
+                                                             "h":  341
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  482,
+                                                                        "h":  341
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  482,
+                                                                  "h":  341
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "sideEvent1/map2.png":  {
+                                               "frame":  {
+                                                             "x":  558,
+                                                             "y":  1538,
+                                                             "w":  553,
+                                                             "h":  318
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  553,
+                                                                        "h":  318
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  553,
+                                                                  "h":  318
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "sideEvent1/map3.png":  {
+                                               "frame":  {
+                                                             "x":  1,
+                                                             "y":  952,
+                                                             "w":  751,
+                                                             "h":  584
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  751,
+                                                                        "h":  584
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  751,
+                                                                  "h":  584
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "sideEvent1/shovelDecor.png":  {
+                                                      "frame":  {
+                                                                    "x":  754,
+                                                                    "y":  952,
+                                                                    "w":  260,
+                                                                    "h":  507
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  260,
+                                                                               "h":  507
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  260,
+                                                                         "h":  507
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "sideEvent1-0.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  2047,
+                              "h":  1865
+                          },
+                 "scale":  1
+             }
+}

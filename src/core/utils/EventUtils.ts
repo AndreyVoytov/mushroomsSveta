@@ -9,7 +9,9 @@ import EventStage from '../model/event/EventStage';
 import EventType from '../model/event/EventType';
 import User from '../model/user/User';
 import UserService from '../service/UserService';
+import Settings from '../service/Settings';
 import NeverError from './NeverError';
+import { getAtlasGroupNames } from '../../generated/atlasManifest';
 
 type EventLevelSession = {
     eventId: string;
@@ -212,7 +214,7 @@ export default class EventUtils {
             return false;
         }
 
-        return assets.some(asset => !this.isImageCached(game, asset.key));
+        return assets.some(asset => !this.isAssetCached(game, asset));
     }
 
     public static getName(eventType: EventType, eventId?: string): string {
@@ -647,6 +649,27 @@ export default class EventUtils {
         } catch (e) {
             return false;
         }
+    }
+
+    private static isAssetCached(game: Phaser.Game, asset: EventAssetConfiguration): boolean {
+        if (!asset || !asset.key) {
+            return false;
+        }
+
+        if (Settings.isGraphicsFromAtlases() && asset.atlasGroup && asset.path) {
+            const cache: any = game && game.cache;
+            if (!cache) {
+                return false;
+            }
+
+            const frameName = asset.path.indexOf("assets/") == 0 ? asset.path.substring(7) : asset.path;
+            return getAtlasGroupNames(asset.atlasGroup).some(groupName => {
+                const frameData = cache.getFrameData ? cache.getFrameData(groupName) : null;
+                return !!frameData && frameData.checkFrameName(frameName);
+            });
+        }
+
+        return this.isImageCached(game, asset.key);
     }
 
     private static createHousePanelEvent(eventId: string, fallbackEventEndAt?: number): EventInfo {

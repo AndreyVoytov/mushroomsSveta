@@ -43,6 +43,13 @@
       "maxHeight": 2048
     },
     {
+      "id": "sideEvent1",
+      "sourceDir": "assets/sideEvent1",
+      "outputPattern": "sideEvent1",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
       "id": "minigame1",
       "sourceDir": "assets/minigame1",
       "outputPattern": "minigame1",
@@ -95,6 +102,13 @@
       "id": "minigame8",
       "sourceDir": "assets/minigame8",
       "outputPattern": "minigame8",
+      "maxWidth": 2048,
+      "maxHeight": 2048
+    },
+    {
+      "id": "minigame9",
+      "sourceDir": "assets/minigame9",
+      "outputPattern": "minigame9",
       "maxWidth": 2048,
       "maxHeight": 2048
     }

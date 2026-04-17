@@ -234,6 +234,10 @@ export default class ForestUtils {
         }
     }
 
+    public static isCloverReskin(forestType?: ForestType): boolean {
+        return !!forestType && (forestType.header == "cloverHeader" || forestType.leafType == "leafClover");
+    }
+
     public static getPrizeGemsCount(stepsLeft:number):number {
         // return 10;
         return Math.floor(14 + 7 * (Math.min(1, stepsLeft / 10)));

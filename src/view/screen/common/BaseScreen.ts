@@ -1,6 +1,6 @@
 import ForestDao from '../../../core/dao/ForestDao';
 import ReplicaDao from '../../../core/dao/ReplicaDao';
-import EventsConfiguration from '../../../core/configuration/EventsConfiguration';
+import EventsConfiguration, { EventAssetConfiguration } from '../../../core/configuration/EventsConfiguration';
 import AdminService from '../../../core/service/AdminService';
 import Settings from '../../../core/service/Settings';
 import UserService from '../../../core/service/UserService';
@@ -128,10 +128,17 @@ export default abstract class BaseScreen extends DebugScreen {
                 this.unloadAtlasGroup(s)
             }
         });
+
+        if (ForestUtils.isCloverReskin(forest) || AdminService.isEditMode()) {
+            this.loadAtlasGroup("minigame9");
+        } else {
+            this.unloadAtlasGroup("minigame9");
+        }
     }
 
     protected loadOptionalConfiguredEventResources(includeAwaitingActivation?: boolean): void {
         const requiredAssetKeys: string[] = [];
+        const requiredAtlasGroups: string[] = [];
 
         EventUtils.getConfiguredEventIdsWithOptionalAssets(includeAwaitingActivation).forEach(eventId => {
             EventUtils.getConfiguredEventAssets(eventId).forEach(asset => {
@@ -143,14 +150,29 @@ export default abstract class BaseScreen extends DebugScreen {
                     requiredAssetKeys.push(asset.key);
                 }
 
-                if (!this.isImageCached(asset.key)) {
-                    this.loadImage(asset.key, asset.path);
-                    if (Settings.isGraphicsFromAtlases()) {
-                        this.load.image(asset.key, asset.path + "?" + Settings.ATLASES_VERSION);
+                this.loadImage(asset.key, asset.path);
+
+                if (Settings.isGraphicsFromAtlases() && asset.atlasGroup) {
+                    if (requiredAtlasGroups.indexOf(asset.atlasGroup) == -1) {
+                        requiredAtlasGroups.push(asset.atlasGroup);
                     }
+
+                    if (!this.isOptionalEventAssetCached(asset)) {
+                        this.loadAtlasGroup(asset.atlasGroup);
+                    }
+                } else if (!this.isOptionalEventAssetCached(asset) && Settings.isGraphicsFromAtlases()) {
+                    this.load.image(asset.key, asset.path + "?" + Settings.ATLASES_VERSION);
                 }
             });
         });
+
+        if (Settings.isGraphicsFromAtlases()) {
+            EventsConfiguration.getOptionalAtlasGroups().forEach(groupId => {
+                if (requiredAtlasGroups.indexOf(groupId) == -1 && !AdminService.isEditMode()) {
+                    this.unloadAtlasGroup(groupId);
+                }
+            });
+        }
 
         EventsConfiguration.allEvents.forEach(eventConfig => {
             EventUtils.getConfiguredEventDynamicAssets(eventConfig.eventId).forEach(asset => {
@@ -332,6 +354,22 @@ export default abstract class BaseScreen extends DebugScreen {
         } catch (e) {
             return false;
         }
+    }
+
+    private isOptionalEventAssetCached(asset: EventAssetConfiguration): boolean {
+        if (!asset) {
+            return false;
+        }
+
+        if (Settings.isGraphicsFromAtlases() && asset.atlasGroup && asset.path) {
+            const frameName = asset.path.indexOf("assets/") == 0 ? asset.path.substring(7) : asset.path;
+            return getAtlasGroupNames(asset.atlasGroup).some(groupName => {
+                const frameData = this.cache.getFrameData(groupName);
+                return !!frameData && frameData.checkFrameName(frameName);
+            });
+        }
+
+        return this.isImageCached(asset.key);
     }
 
     protected attachText(name: string, text: string, style?: Phaser.PhaserTextStyle): Label {

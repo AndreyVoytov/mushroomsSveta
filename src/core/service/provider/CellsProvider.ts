@@ -35,10 +35,6 @@ export default class CellsProvider extends BaseCellsProvider {
         super(forestType, game);
     }
 
-    private usesCloverForestSkin(): boolean {
-        return this.forestType.header == "cloverHeader" || this.forestType.leafType == "leafClover";
-    }
-
     public refreshWater(ladybugs: Movable[]): void {
         if (this.forestType.waterCenter) {
             this.switchCellsByCircle(this.waterParts.map<ForestCell>(part => part.cell), ladybugs);
@@ -401,7 +397,7 @@ export default class CellsProvider extends BaseCellsProvider {
             let index = this.getEmptyCell(types, possibleAnimalBioms);
             let maskCell = this.getMask()[index];
             if(maskCell){
-                if (this.usesCloverForestSkin()) {
+                if (ForestUtils.isCloverReskin(this.forestType)) {
                     types[index] = ContentType.horseshoe;
                     continue;
                 }
