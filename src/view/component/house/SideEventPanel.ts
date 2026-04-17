@@ -79,6 +79,7 @@ export default class SideEventPanel extends ClosablePanel {
     private backgroundPreviewOverlay: BasePanel | null = null;
     private backgroundPreviewTopStrip: Phaser.Graphics | null = null;
     private backgroundPreviewBottomStrip: Phaser.Graphics | null = null;
+    private backgroundPreviewBottomStripHeight = DIALOG_BOTTOM_STRIP_HEIGHT;
     private preDialogFocusTargets: SideEventChildAlphaState[] = [];
     private preDialogFocusTimer: Phaser.TimerEvent | null = null;
     private preDialogRestoreTimer: Phaser.TimerEvent | null = null;
@@ -824,6 +825,7 @@ export default class SideEventPanel extends ClosablePanel {
 
     private ensureBackgroundPreviewOverlay(): BasePanel | null {
         if (this.backgroundPreviewOverlay && this.backgroundPreviewOverlay.parent) {
+            this.updateBackgroundPreviewOverlayLayout();
             return this.backgroundPreviewOverlay;
         }
 
@@ -843,13 +845,11 @@ export default class SideEventPanel extends ClosablePanel {
         overlay.addChild(this.backgroundPreviewTopStrip);
 
         this.backgroundPreviewBottomStrip = new Phaser.Graphics(this.game, 0, 0);
-        this.backgroundPreviewBottomStrip.beginFill(0x000000, 1);
-        this.backgroundPreviewBottomStrip.drawRect(0, 0, this.game.width, DIALOG_BOTTOM_STRIP_HEIGHT);
-        this.backgroundPreviewBottomStrip.endFill();
         this.backgroundPreviewBottomStrip.y = this.game.height;
         overlay.addChild(this.backgroundPreviewBottomStrip);
 
         this.backgroundPreviewOverlay = screen.addDialogOverlayPanel(overlay);
+        this.updateBackgroundPreviewOverlayLayout();
         screen.bringDialogOverlayToFront();
         return this.backgroundPreviewOverlay;
     }
@@ -869,7 +869,7 @@ export default class SideEventPanel extends ClosablePanel {
 
         if (instantly) {
             this.backgroundPreviewTopStrip.y = 0;
-            this.backgroundPreviewBottomStrip.y = this.game.height - DIALOG_BOTTOM_STRIP_HEIGHT;
+            this.backgroundPreviewBottomStrip.y = this.game.height - this.backgroundPreviewBottomStripHeight;
             return;
         }
 
@@ -883,7 +883,7 @@ export default class SideEventPanel extends ClosablePanel {
             false
         );
         this.game.add.tween(this.backgroundPreviewBottomStrip).to(
-            { y: this.game.height - DIALOG_BOTTOM_STRIP_HEIGHT },
+            { y: this.game.height - this.backgroundPreviewBottomStripHeight },
             StripsPanel.SHOW_DURATION,
             Phaser.Easing.Quadratic.Out,
             true,
@@ -943,6 +943,61 @@ export default class SideEventPanel extends ClosablePanel {
         this.backgroundPreviewOverlay = null;
         this.backgroundPreviewTopStrip = null;
         this.backgroundPreviewBottomStrip = null;
+        this.backgroundPreviewBottomStripHeight = DIALOG_BOTTOM_STRIP_HEIGHT;
         this.backgroundPreviewActive = false;
+    }
+
+    private updateBackgroundPreviewOverlayLayout(): void {
+        this.backgroundPreviewBottomStripHeight = this.shouldUseSymmetricPreviewStrips()
+            ? DIALOG_TOP_STRIP_HEIGHT
+            : DIALOG_BOTTOM_STRIP_HEIGHT;
+
+        if (this.backgroundPreviewTopStrip) {
+            this.backgroundPreviewTopStrip.clear();
+            this.backgroundPreviewTopStrip.beginFill(0x000000, 1);
+            this.backgroundPreviewTopStrip.drawRect(0, 0, this.game.width, DIALOG_TOP_STRIP_HEIGHT);
+            this.backgroundPreviewTopStrip.endFill();
+        }
+
+        if (this.backgroundPreviewBottomStrip) {
+            this.backgroundPreviewBottomStrip.clear();
+            this.backgroundPreviewBottomStrip.beginFill(0x000000, 1);
+            this.backgroundPreviewBottomStrip.drawRect(0, 0, this.game.width, this.backgroundPreviewBottomStripHeight);
+            this.backgroundPreviewBottomStrip.endFill();
+        }
+    }
+
+    private shouldUseSymmetricPreviewStrips(): boolean {
+        const visibleBounds = this.getPreviewVisibleContentBounds();
+        if (!visibleBounds) {
+            return false;
+        }
+
+        const panelScale = this.getPreDialogPanelScale();
+        const panelY = this.getPreDialogPanelY(panelScale);
+        const visibleTop = panelY + visibleBounds.top * panelScale;
+        const visibleBottom = panelY + visibleBounds.bottom * panelScale;
+        const symmetricTopStripBottom = DIALOG_TOP_STRIP_HEIGHT;
+        const symmetricBottomStripTop = this.game.height - DIALOG_TOP_STRIP_HEIGHT;
+
+        return visibleTop <= symmetricTopStripBottom + 1
+            && visibleBottom >= symmetricBottomStripTop - 1;
+    }
+
+    private getPreviewVisibleContentBounds(): { top: number, bottom: number } | null {
+        if (this.mainImageMask && this.mainImageSprite) {
+            const anchorY = this.mainImageSprite.anchor ? this.mainImageSprite.anchor.y : 0.5;
+            const imageTop = this.mainImageSprite.y - this.mainImageSprite.height * anchorY;
+            const imageBottom = this.mainImageSprite.y + this.mainImageSprite.height * (1 - anchorY);
+            const maskTop = this.mainImageMask.y - SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT / 2;
+            const maskBottom = this.mainImageMask.y + SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT / 2;
+
+            return {
+                top: Math.max(maskTop, imageTop),
+                bottom: Math.min(maskBottom, imageBottom)
+            };
+        }
+
+        return this.getPreDialogFocusBounds();
     }
 }
