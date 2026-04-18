@@ -61,7 +61,7 @@ export default class LevelCompletePanel extends BasePanel {
         const cat = this.attachSprite('cat4', 'cat');
         cat.scale.set(0.75);
 
-        const title = this.attachText('title', LocalizationService.get('ui.energy.winTitle', 'Уровень пройден'), {
+        const title = this.attachText('title', LocalizationService.get('ui.energy.winTitle', 'Level Complete'), {
             font: 'bold 40px Arial',
             fill: '#ffffff'
         });
@@ -69,7 +69,7 @@ export default class LevelCompletePanel extends BasePanel {
         const lightning = this.attachSprite('lightning', 'lightning');
         lightning.scale.set(0.62);
 
-        const spentLabel = this.attachText('spentLabel', LocalizationService.get('ui.energy.spent', 'Потрачено энергии'), {
+        const spentLabel = this.attachText('spentLabel', LocalizationService.get('ui.energy.spent', 'Energy spent'), {
             font: 'bold 28px Arial',
             fill: '#8f6130'
         });
@@ -79,7 +79,7 @@ export default class LevelCompletePanel extends BasePanel {
 
         this.attachText(
             'betterLabel',
-            LocalizationService.get('ui.energy.better', 'Лучше, чем {percent}% игроков').replace('{percent}', '' + supportPercent),
+            LocalizationService.get('ui.energy.better', 'Better than {percent}% of players').replace('{percent}', '' + supportPercent),
             {
                 font: 'bold 30px Arial',
                 fill: '#7b4037',
@@ -101,7 +101,7 @@ export default class LevelCompletePanel extends BasePanel {
         this.continueButton.scale.set(1.04, 0.96);
         this.continueButton.inputEnabled = false;
 
-        const continueLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.ok', 'Ок'), {
+        const continueLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.ok', 'OK'), {
             font: 'bolder 40px Gilroy',
             fill: '#f0f1ec'
         });

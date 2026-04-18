@@ -981,7 +981,7 @@ export default class SideEventPanel extends ClosablePanel {
             this.game,
             this.game.width / 2,
             this.backgroundPreviewBottomStripHeight / 2,
-            LocalizationService.get('ui.tapToExitPreview', '\u041d\u0430\u0436\u043c\u0438\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u0432\u044b\u0439\u0442\u0438'),
+            LocalizationService.get('ui.tapToExitPreview', 'Tap to exit'),
             {
                 font: '40px Gilroy',
                 fill: '#9d9d9d',

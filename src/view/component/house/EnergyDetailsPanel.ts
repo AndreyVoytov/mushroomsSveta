@@ -44,7 +44,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         const closeButton = this.attachButton('closeButtonViolet', () => this.close());
         closeButton.scale.set(1);
 
-        this.attachText("title", LocalizationService.get('ui.energy.title', 'Энергия'), {
+        this.attachText("title", LocalizationService.get('ui.energy.title', 'Energy'), {
             font: "46px Bookman Old Style",
             fill: "#ffffff"
         });
@@ -93,7 +93,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         this.actionLabel.addStrokeColor('#61b019', 0);
         actionButton.addChild(this.actionLabel);
 
-        this.attachText("energyHint", LocalizationService.get('ui.energy.hint', '100 энергии за самоцветы. Цена растёт с каждой покупкой за день.'), {
+        this.attachText("energyHint", LocalizationService.get('ui.energy.hint', '100 energy for gems. The price increases with each purchase per day.'), {
             font: "bold 30px Arial",
             fill: "#7b4037",
             align: "center",
@@ -152,25 +152,25 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         this.energyLabel.text = "" + energy;
 
         if (energy > maxEnergy) {
-            this.statusLabel.text = LocalizationService.get('ui.energy.overLimit', 'Сверх лимита. Регенерация возобновится после расхода.');
+            this.statusLabel.text = LocalizationService.get('ui.energy.overLimit', 'Above the limit. Regeneration will resume after you spend some energy.');
         } else if (energy >= maxEnergy) {
-            this.statusLabel.text = LocalizationService.get('ui.energy.full', 'Энергия полная');
+            this.statusLabel.text = LocalizationService.get('ui.energy.full', 'Energy is full');
         } else {
             const remain = Math.max(0, EnergyUtils.MILLIS_FOR_ENERGY - (Date.now() - user.getLastEnergyRegenerationAt()));
             const seconds = Math.floor(remain / 1000) % 60;
             const minutes = Math.floor(remain / 1000 / 60);
             const secondsText = seconds >= 10 ? "" + seconds : "0" + seconds;
             const minutesText = minutes >= 10 ? "" + minutes : "0" + minutes;
-            this.statusLabel.text = LocalizationService.get('ui.energy.restoreIn', 'До +1 энергии: {time}')
+            this.statusLabel.text = LocalizationService.get('ui.energy.restoreIn', 'Next +1 energy in: {time}')
                 .replace('{time}', minutesText + ":" + secondsText);
         }
 
-        this.actionLabel.text = LocalizationService.get('ui.energy.buyPack', '+100 за {price}')
+        this.actionLabel.text = LocalizationService.get('ui.energy.buyPack', '+100 for {price}')
             .replace('{price}', "" + currentPrice);
 
         this.resetLabel.text = LocalizationService.get(
             'ui.energy.reset',
-            'Сброс цены через {time}'
+            'Price resets in {time}'
         )
             .replace('{time}', this.formatResetTime(millisToMidnight));
     }
@@ -181,10 +181,14 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         const minutesText = minutes >= 10 ? "" + minutes : "0" + minutes;
 
         if (hours > 0) {
-            return hours + "ч " + minutesText + "м";
+            return LocalizationService.get('text.remain.hourCompact', '{hours}h. {minutes}m.')
+                .replace('{hours}', '' + hours)
+                .replace('{minutes}', minutesText);
         }
 
-        return Math.max(1, minutes) + "м";
+        return LocalizationService.get('text.remain.minuteCompact', '{minutes}m. {seconds}s.')
+            .replace('{minutes}', '' + Math.max(1, minutes))
+            .replace('{seconds}', '00');
     }
 
     protected onClose(): void {

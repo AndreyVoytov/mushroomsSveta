@@ -348,7 +348,7 @@ export default class RewardItemsPanel extends BasePanel {
         this.ctaButton.scale.set(RewardItemsPanel.CTA_SCALE * 0.92);
         this.content.add(this.ctaButton);
 
-        let label = new Label(this.game, -8, -2, LocalizationService.get("ui.collectRewardCta", "ПОЛУЧИТЬ"), {
+        let label = new Label(this.game, -8, -2, LocalizationService.get("ui.collectRewardCta", "Collect"), {
             font: "bold 42px Arial",
             fill: "#ffffff"
         });

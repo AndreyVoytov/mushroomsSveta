@@ -113,7 +113,7 @@ class TaskCardPanel extends BasePanel {
         this.progressLabel.x = TaskCardPanel.PROGRESS_LEFT + this.progressEmpty.width / 2;
         this.progressLabel.y = TaskCardPanel.PROGRESS_FULL_TOP + this.progressFull.height / 2 + 1;
 
-        this.rewardTitleLabel = this.attachText("rewardTitle", LocalizationService.get("ui.tasks.reward", "Награда"), {
+        this.rewardTitleLabel = this.attachText("rewardTitle", LocalizationService.get("ui.tasks.reward", "Reward"), {
             font: "bold 20px Arial",
             fill: "#9a6842",
             align: "center",
@@ -124,7 +124,7 @@ class TaskCardPanel extends BasePanel {
         this.rewardTitleLabel.x = TaskCardPanel.REWARD_LEFT + TaskCardPanel.REWARD_WIDTH / 2;
         this.rewardTitleLabel.y = TaskCardPanel.REWARD_TOP + 16;
 
-        this.claimTitleLabel = this.attachText("claimTitle", LocalizationService.get("ui.tasks.claim", "Забрать"), {
+        this.claimTitleLabel = this.attachText("claimTitle", LocalizationService.get("ui.tasks.claim", "Claim"), {
             font: "bold 22px Gilroy",
             fill: "#6d9a1f",
             align: "center",
@@ -203,8 +203,8 @@ class TaskCardPanel extends BasePanel {
         this.updateProgressBar(progressRatio);
 
         this.rewardTitleLabel.text = isClaimed
-            ? LocalizationService.get("ui.tasks.rewardReceived", "Награда получена")
-            : LocalizationService.get("ui.tasks.reward", "Награда");
+            ? LocalizationService.get("ui.tasks.rewardReceived", "Reward claimed")
+            : LocalizationService.get("ui.tasks.reward", "Reward");
         this.rewardTitleLabel.visible = !isClaimable;
         this.claimTitleLabel.visible = isClaimable;
         this.rewardIcon.visible = !isClaimed;
@@ -382,7 +382,7 @@ export default class TasksPanel extends ClosablePanel {
         this.closeButton.x = this.psdX(898);
         this.closeButton.y = this.psdY(208);
 
-        this.titleLabel = this.attachText("title", LocalizationService.get("ui.tasks.title", "Задания"), {
+        this.titleLabel = this.attachText("title", LocalizationService.get("ui.tasks.title", "Tasks"), {
             font: "46px Bookman Old Style",
             fill: "#fdf6ff",
             align: "center",
@@ -400,7 +400,7 @@ export default class TasksPanel extends ClosablePanel {
         this.dailyTabButton.alpha = 0.001;
         this.dailyTabButton.width = TasksPanel.TAB_SLOT_WIDTH;
         this.dailyTabButton.height = TasksPanel.TAB_HIT_HEIGHT;
-        this.dailyTabLabel = this.attachText("dailyTabLabel", LocalizationService.get("ui.tasks.daily", "Ежедневные"), {
+        this.dailyTabLabel = this.attachText("dailyTabLabel", LocalizationService.get("ui.tasks.daily", "Daily"), {
             font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
             fill: "#82533a",
             align: "center",
@@ -416,7 +416,7 @@ export default class TasksPanel extends ClosablePanel {
         this.campaignTabButton.alpha = 0.001;
         this.campaignTabButton.width = TasksPanel.TAB_SLOT_WIDTH;
         this.campaignTabButton.height = TasksPanel.TAB_HIT_HEIGHT;
-        this.campaignTabLabel = this.attachText("campaignTabLabel", LocalizationService.get("ui.tasks.campaign", "Кампания"), {
+        this.campaignTabLabel = this.attachText("campaignTabLabel", LocalizationService.get("ui.tasks.campaign", "Campaign"), {
             font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
             fill: "#f5ebdb",
             align: "center",
@@ -678,9 +678,9 @@ export default class TasksPanel extends ClosablePanel {
                 wordWrapWidth: 620
             });
             this.progressTitle.y = this.psdY(338 + 17);
-            this.progressTitle.text = LocalizationService.get("ui.tasks.dailyProgress", "Прогресс дня");
+            this.progressTitle.text = LocalizationService.get("ui.tasks.dailyProgress", "Daily progress");
             this.resetLabel.visible = true;
-            this.resetLabel.text = LocalizationService.get("ui.tasks.refreshIn", "Обновление через {time}")
+            this.resetLabel.text = LocalizationService.get("ui.tasks.refreshIn", "Refresh in {time}")
                 .replace("{time}", this.formatDuration(EnergyUtils.getMillisToNextMoscowMidnight()));
             this.updateProgressBar(claimedTasks / totalTasks, dailyRewards);
             return;
@@ -710,7 +710,7 @@ export default class TasksPanel extends ClosablePanel {
         const sortedTasks = this.sortTasksForDisplay(tasks);
 
         this.taskCards.forEach((card, index) => {
-            card.setData(sortedTasks[index], LocalizationService.get("ui.tasks.claim", "Забрать"));
+            card.setData(sortedTasks[index], LocalizationService.get("ui.tasks.claim", "Claim"));
         });
 
         this.taskCardsStack.relayout();

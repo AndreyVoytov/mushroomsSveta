@@ -889,7 +889,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.game,
             LocalizationService.get('ui.confirmation'),
             LocalizationService.get('ui.ok'),
-            LocalizationService.get('ui.rewardedAdUnavailable', 'Реклама сейчас недоступна. Попробуйте чуть позже.')
+            LocalizationService.get('ui.rewardedAdUnavailable', 'Ads are unavailable right now. Please try again later.')
         );
         this.addPanel(panel);
         panel.show();

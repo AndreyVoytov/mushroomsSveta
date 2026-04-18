@@ -211,10 +211,10 @@ export default abstract class BaseScreen extends DebugScreen {
         this.add.existing(this.transitionBlocker);
 
         if (AdminService.isEditMode()) {
-            // this.lockedMarker = new Label(this.game, 0, this.game.height/2, "\u2022" )
+            // this.lockedMarker = new Label(this.game, 0, this.game.height/2, "•" )
             // this.lockedMarker.fixedToCamera  = true;
             // this.lockedMarker.scale.set(20);
-            this.lockedMarker = this.game.add.text(0, this.game.height - 120, "\u2022", { font: "40px Arial", fill: "#ffffff" })
+            this.lockedMarker = this.game.add.text(0, this.game.height - 120, "•", { font: "40px Arial", fill: "#ffffff" })
             this.lockedMarker.fixedToCamera = true;
             this.lockedMarker.scale.set(5);
             this.addSprite(this.lockedMarker);
