@@ -51,6 +51,8 @@ export default class SideEventPanel extends ClosablePanel {
     private static readonly EVENT1_LOUPE_BUTTON_ALPHA = 0.8;
     private static readonly EVENT1_LOUPE_BUTTON_SCALE = 0.7;
     private static readonly PREVIEW_STRIPS_HIDE_DURATION = Math.round(StripsPanel.SHOW_DURATION / 1.5);
+    private static readonly PREVIEW_EXIT_HINT_DELAY = 500;
+    private static readonly PREVIEW_EXIT_HINT_FADE_DURATION = 300;
 
     private static readonly EVENT1_POINT_POSITIONS: Phaser.Point[] = [
         new Phaser.Point(-17.5, -32.5),
@@ -87,6 +89,9 @@ export default class SideEventPanel extends ClosablePanel {
     private backgroundPreviewOverlay: BasePanel | null = null;
     private backgroundPreviewTopStrip: Phaser.Graphics | null = null;
     private backgroundPreviewBottomStrip: Phaser.Graphics | null = null;
+    private backgroundPreviewHintLabel: Label | null = null;
+    private backgroundPreviewHintTimer: Phaser.TimerEvent | null = null;
+    private backgroundPreviewHintTween: Phaser.Tween | null = null;
     private backgroundPreviewBottomStripHeight = DIALOG_BOTTOM_STRIP_HEIGHT;
     private preDialogFocusTargets: SideEventChildAlphaState[] = [];
     private preDialogFocusTimer: Phaser.TimerEvent | null = null;
@@ -972,6 +977,21 @@ export default class SideEventPanel extends ClosablePanel {
         this.backgroundPreviewBottomStrip.y = this.game.height;
         overlay.addChild(this.backgroundPreviewBottomStrip);
 
+        this.backgroundPreviewHintLabel = new Label(
+            this.game,
+            this.game.width / 2,
+            this.backgroundPreviewBottomStripHeight / 2,
+            LocalizationService.get('ui.tapToExitPreview', '\u041d\u0430\u0436\u043c\u0438\u0442\u0435, \u0447\u0442\u043e\u0431\u044b \u0432\u044b\u0439\u0442\u0438'),
+            {
+                font: '40px Gilroy',
+                fill: '#9d9d9d',
+                align: 'center'
+            }
+        );
+        this.backgroundPreviewHintLabel.anchor.set(0.5);
+        this.backgroundPreviewHintLabel.alpha = 0;
+        this.backgroundPreviewBottomStrip.addChild(this.backgroundPreviewHintLabel);
+
         this.backgroundPreviewOverlay = screen.addDialogOverlayPanel(overlay);
         this.updateBackgroundPreviewOverlayLayout();
         screen.bringDialogOverlayToFront();
@@ -990,10 +1010,12 @@ export default class SideEventPanel extends ClosablePanel {
 
         this.game.tweens.removeFrom(this.backgroundPreviewTopStrip);
         this.game.tweens.removeFrom(this.backgroundPreviewBottomStrip);
+        this.resetBackgroundPreviewHint();
 
         if (instantly) {
             this.backgroundPreviewTopStrip.y = 0;
             this.backgroundPreviewBottomStrip.y = this.game.height - this.backgroundPreviewBottomStripHeight;
+            this.scheduleBackgroundPreviewHint();
             return;
         }
 
@@ -1015,6 +1037,7 @@ export default class SideEventPanel extends ClosablePanel {
             0,
             false
         );
+        this.scheduleBackgroundPreviewHint();
     }
 
     private hideBackgroundPreviewStrips(instantly?: boolean): void {
@@ -1024,6 +1047,7 @@ export default class SideEventPanel extends ClosablePanel {
 
         this.game.tweens.removeFrom(this.backgroundPreviewTopStrip);
         this.game.tweens.removeFrom(this.backgroundPreviewBottomStrip);
+        this.resetBackgroundPreviewHint();
 
         if (instantly) {
             this.backgroundPreviewTopStrip.y = -DIALOG_TOP_STRIP_HEIGHT;
@@ -1060,6 +1084,8 @@ export default class SideEventPanel extends ClosablePanel {
             this.game.tweens.removeFrom(this.backgroundPreviewBottomStrip);
         }
 
+        this.resetBackgroundPreviewHint();
+
         if (this.backgroundPreviewOverlay) {
             this.backgroundPreviewOverlay.destroy(true);
         }
@@ -1067,6 +1093,7 @@ export default class SideEventPanel extends ClosablePanel {
         this.backgroundPreviewOverlay = null;
         this.backgroundPreviewTopStrip = null;
         this.backgroundPreviewBottomStrip = null;
+        this.backgroundPreviewHintLabel = null;
         this.backgroundPreviewBottomStripHeight = DIALOG_BOTTOM_STRIP_HEIGHT;
         this.backgroundPreviewActive = false;
     }
@@ -1088,6 +1115,56 @@ export default class SideEventPanel extends ClosablePanel {
             this.backgroundPreviewBottomStrip.beginFill(0x000000, 1);
             this.backgroundPreviewBottomStrip.drawRect(0, 0, this.game.width, this.backgroundPreviewBottomStripHeight);
             this.backgroundPreviewBottomStrip.endFill();
+        }
+
+        if (this.backgroundPreviewHintLabel) {
+            this.backgroundPreviewHintLabel.x = this.game.width / 2;
+            this.backgroundPreviewHintLabel.y = Math.round(this.backgroundPreviewBottomStripHeight / 2);
+        }
+    }
+
+    private scheduleBackgroundPreviewHint(): void {
+        if (!this.backgroundPreviewHintLabel) {
+            return;
+        }
+
+        this.resetBackgroundPreviewHint();
+        this.backgroundPreviewHintLabel.alpha = 0;
+        this.backgroundPreviewHintTimer = this.game.time.events.add(SideEventPanel.PREVIEW_EXIT_HINT_DELAY, () => {
+            this.backgroundPreviewHintTimer = null;
+
+            if (!this.backgroundPreviewHintLabel || !this.backgroundPreviewActive) {
+                return;
+            }
+
+            this.backgroundPreviewHintTween = this.game.add.tween(this.backgroundPreviewHintLabel).to(
+                { alpha: 0.3 },
+                SideEventPanel.PREVIEW_EXIT_HINT_FADE_DURATION,
+                Phaser.Easing.Quadratic.Out,
+                true,
+                0,
+                0,
+                false
+            );
+            this.backgroundPreviewHintTween.onComplete.addOnce(() => {
+                this.backgroundPreviewHintTween = null;
+            });
+        });
+    }
+
+    private resetBackgroundPreviewHint(): void {
+        if (this.backgroundPreviewHintTimer) {
+            this.game.time.events.remove(this.backgroundPreviewHintTimer);
+            this.backgroundPreviewHintTimer = null;
+        }
+
+        if (this.backgroundPreviewHintTween) {
+            this.game.tweens.remove(this.backgroundPreviewHintTween);
+            this.backgroundPreviewHintTween = null;
+        }
+
+        if (this.backgroundPreviewHintLabel) {
+            this.backgroundPreviewHintLabel.alpha = 0;
         }
     }
 
