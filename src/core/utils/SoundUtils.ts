@@ -127,6 +127,9 @@ export default class SoundUtils {
     public static successfulEverydayGems(){
         let sound = Game.getInstance().sound.play("win", 0.03 * this.volumeRatio)
     }
+    public static rewardReceived(){
+        let sound = Game.getInstance().sound.play("win", 0.03 * this.volumeRatio)
+    }
     public static restoreLifes(){
         let sound = Game.getInstance().sound.play("win", 0.03 * this.volumeRatio)
     }

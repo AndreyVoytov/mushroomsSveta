@@ -92,9 +92,9 @@ export default class EventsConfiguration {
                 { key: "honeyDecor", path: "assets/sideEvent1/honeyDecor.png", atlasGroup: "sideEvent1" },
                 { key: "mapInHive", path: "assets/sideEvent1/mapInHive.png", atlasGroup: "sideEvent1" },
                 { key: "shovelDecor", path: "assets/sideEvent1/shovelDecor.png", atlasGroup: "sideEvent1" },
-                { key: "sova1", path: "assets/additional/characters/sova1.png" },
-                { key: "sova2", path: "assets/additional/characters/sova2.png" },
-                { key: "sova3", path: "assets/additional/characters/sova3.png" }
+                { key: "sova1", path: "assets/additional/characters/sova1.png", atlasGroup: "additional" },
+                { key: "sova2", path: "assets/additional/characters/sova2.png", atlasGroup: "additional" },
+                { key: "sova3", path: "assets/additional/characters/sova3.png", atlasGroup: "additional" }
             ]
         }
     ];
@@ -110,19 +110,21 @@ export default class EventsConfiguration {
 
     public static getOptionalAtlasGroups(): string[] {
         const result: string[] = [];
+        const sharedAtlasGroups = ['base', 'basehq', 'additional', 'chapter1'];
+
         this.allEvents.forEach(event => {
-            if (event.mainImageAtlasGroup && result.indexOf(event.mainImageAtlasGroup) == -1) {
+            if (event.mainImageAtlasGroup && result.indexOf(event.mainImageAtlasGroup) == -1 && sharedAtlasGroups.indexOf(event.mainImageAtlasGroup) == -1) {
                 result.push(event.mainImageAtlasGroup);
             }
 
             (event.mainImageOverrides || []).forEach(override => {
-                if (override && override.atlasGroup && result.indexOf(override.atlasGroup) == -1) {
+                if (override && override.atlasGroup && result.indexOf(override.atlasGroup) == -1 && sharedAtlasGroups.indexOf(override.atlasGroup) == -1) {
                     result.push(override.atlasGroup);
                 }
             });
 
             (event.assets || []).forEach(asset => {
-                if (asset && asset.atlasGroup && result.indexOf(asset.atlasGroup) == -1) {
+                if (asset && asset.atlasGroup && result.indexOf(asset.atlasGroup) == -1 && sharedAtlasGroups.indexOf(asset.atlasGroup) == -1) {
                     result.push(asset.atlasGroup);
                 }
             });

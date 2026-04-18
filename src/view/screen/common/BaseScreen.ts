@@ -7,8 +7,10 @@ import UserService from '../../../core/service/UserService';
 import EventUtils from '../../../core/utils/EventUtils';
 import ForestUtils from '../../../core/utils/ForestUtils';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
+import RewardItemType from '../../../core/model/reward/RewardItemType';
 import BasePanel from '../../component/panel/BasePanel';
 import Label from '../../component/panel/Label';
+import { RewardItemsShowOptions } from '../../component/panel/RewardItemsPanel';
 import { getAtlasGroupNames } from '../../../generated/atlasManifest';
 import Game from '../../game/Game';
 import Preset from '../../game/Preset';
@@ -298,6 +300,20 @@ export default abstract class BaseScreen extends DebugScreen {
 
     public bringTopOverlayToFront(): void {
         this.refreshOverlayOrder();
+    }
+
+    public showRewardItems(_items: RewardItemType[], onComplete?: () => void, _showOptions?: RewardItemsShowOptions): void {
+        if (!onComplete) {
+            return;
+        }
+
+        this.game.time.events.add(1, () => {
+            onComplete();
+        });
+    }
+
+    public getRewardFlyTarget(_reward?: RewardItemType, _index?: number): Phaser.Point {
+        return new Phaser.Point(this.game.width - 110, 90);
     }
 
     protected applyPreset(presets: Preset[]) {

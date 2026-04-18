@@ -46,9 +46,11 @@ import Label from '../component/panel/Label';
 import EventUtils from './../../core/utils/EventUtils';
 import EventInfo from './../../core/model/event/EventInfo';
 import EventType from './../../core/model/event/EventType';
+import RewardItemType from '../../core/model/reward/RewardItemType';
 import HouseFrameLayout from '../component/house/layout/HouseFrameLayout';
 import HouseLayout from '../component/house/layout/HouseLayout';
 import TasksPanel from '../component/house/TasksPanel';
+import RewardItemsPanel, { RewardItemsShowOptions } from '../component/panel/RewardItemsPanel';
 import TaskService from '../../core/service/TaskService';
 export default class HouseScreen extends DialogScreen {
     private static readonly FAKE_TREES_RELEASE_DELAY = 120;
@@ -80,6 +82,9 @@ export default class HouseScreen extends DialogScreen {
     private diaryPanel: DiaryPanel;
     private activeEventPanel: ClosablePanel | null = null;
     private preDialogSideEventPanel: SideEventPanel | null = null;
+    private activeRewardPanel: RewardItemsPanel | null = null;
+    private pendingRewardPanels: { items: RewardItemType[], onComplete?: () => void, showOptions?: RewardItemsShowOptions }[] = [];
+    private rewardQueueOwnsLock: boolean = false;
 
     private tasks: DiaryContentType;
     private progressBar: ProgressBar;
@@ -652,6 +657,39 @@ export default class HouseScreen extends DialogScreen {
         return false;
     }
 
+    public showRewardItems(items: RewardItemType[], onComplete?: () => void, showOptions?: RewardItemsShowOptions): void {
+        if (!items || items.length == 0) {
+            if (onComplete) {
+                this.game.time.events.add(1, () => onComplete());
+            }
+            return;
+        }
+
+        this.pendingRewardPanels.push({
+            items: items,
+            onComplete: onComplete,
+            showOptions: showOptions
+        });
+
+        if (this.activeRewardPanel) {
+            return;
+        }
+
+        if (!this.isLocked()) {
+            this.rewardQueueOwnsLock = true;
+            this.lockScreen();
+        } else {
+            this.rewardQueueOwnsLock = false;
+        }
+
+        this.showNextRewardPanel();
+    }
+
+    public getRewardFlyTarget(_reward?: RewardItemType, index?: number): Phaser.Point {
+        let safeIndex = index || 0;
+        return new Phaser.Point(this.game.width - 112 - safeIndex * 8, 88 + safeIndex * 8);
+    }
+
     protected playAnimation(animationId: string): void {
         if (animationId == "afterNotebookFoundAnimation") {
             this.layout.playAnimation("boilerAppear");
@@ -879,6 +917,48 @@ export default class HouseScreen extends DialogScreen {
 
     public isEventPanelBlockingUI(): boolean {
         return !!this.activeEventPanel && this.activeEventPanel.opened;
+    }
+
+    private showNextRewardPanel(): void {
+        if (this.activeRewardPanel || this.pendingRewardPanels.length == 0) {
+            if (!this.activeRewardPanel && this.pendingRewardPanels.length == 0 && this.rewardQueueOwnsLock) {
+                this.unlockScreen();
+                this.rewardQueueOwnsLock = false;
+            }
+            return;
+        }
+
+        const pendingReward = this.pendingRewardPanels.shift();
+        if (!pendingReward || !pendingReward.items || pendingReward.items.length == 0) {
+            this.showNextRewardPanel();
+            return;
+        }
+
+        let panel = new RewardItemsPanel(
+            this.game,
+            pendingReward.items,
+            (reward, index) => this.getRewardFlyTarget(reward, index),
+            () => {
+                if (panel.parent) {
+                    panel.parent.removeChild(panel);
+                }
+                panel.destroy(true);
+
+                if (this.activeRewardPanel == panel) {
+                    this.activeRewardPanel = null;
+                }
+
+                if (pendingReward.onComplete) {
+                    pendingReward.onComplete();
+                }
+
+                this.game.time.events.add(1, () => this.showNextRewardPanel());
+            },
+            pendingReward.showOptions
+        );
+
+        this.activeRewardPanel = this.addTopOverlay(panel);
+        panel.show();
     }
 
     private setPanelButtonsEnabled(panel: { buttons: Phaser.Button[] }, enabled: boolean): void {

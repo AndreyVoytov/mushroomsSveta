@@ -1,5 +1,6 @@
 import ReplicaType from '../model/replica/ReplicaType';
 import ReplicaPanelItemType from '../model/replica/ReplicaPanelItemType';
+import RewardItemType from '../model/reward/RewardItemType';
 import User from '../model/user/User';
 import UserEventState from '../model/event/UserEventState';
 import EventUtils from '../utils/EventUtils';
@@ -62,6 +63,13 @@ function createPanelItem(
     };
 }
 
+function createReward(kind: "gems" | "booster", count: number): RewardItemType {
+    return {
+        kind: kind,
+        count: count
+    };
+}
+
 export default class EventReplicasConfiguration {
 
     private static event1Replicas: EventReplicaSet = {
@@ -106,7 +114,8 @@ export default class EventReplicasConfiguration {
                 decor: createDecor('chestClosedDecor', 232, 30)
             }),
             createReplica('event1_complete_4', 'sveta2', 'Шапка', 'Хм, тут немного рубинов... и птичье перо.', {
-                decor: createDecor('chestOpenDecor', 232, 30)
+                decor: createDecor('chestOpenDecor', 232, 30),
+                rewards: [createReward('gems', 100)]
             }),
             createReplica('event1_complete_5', 'sveta4', 'Шапка', 'Постойте-ка! Совёнок, эта карта - твоих рук дело?!'),
             createReplica('event1_complete_6', 'sova3', 'Совёнок', '...', {

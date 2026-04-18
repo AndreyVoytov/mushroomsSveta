@@ -6,6 +6,7 @@ import BasePanel from '../../component/panel/BasePanel';
 import ReplicaPanel from './ReplicaPanel';
 import { DIALOG_BOTTOM_PADDING } from './DialogLayoutMetrics';
 import StripsPanel from './StripsPanel';
+import RewardUtils from '../../../core/utils/RewardUtils';
 import ForestScreen from '../../screen/ForestScreen';
 import HouseScreen from '../../screen/HouseScreen';
 export default class DialogPanel extends BasePanel {
@@ -25,6 +26,7 @@ export default class DialogPanel extends BasePanel {
     private lastReplicaAt = new Date().getTime();
 
     public replicaDelay = 0;
+    private rewardGrantedReplicaId: string = null;
 
     constructor(game: Phaser.Game, screen: DialogScreen, playAnimationCallback: (animation: string)=> void, nextReplicaCallback: ()=>ReplicaType) {
         super(game, 0, 0);
@@ -63,6 +65,9 @@ export default class DialogPanel extends BasePanel {
             // }
             if (nextReplica.location) {
                 user.setLocation(nextReplica.location);
+            }
+            if (nextReplica.rewards && nextReplica.rewards.length > 0) {
+                RewardUtils.applyRewards(user, nextReplica.rewards);
             }
             user.addCompletedReplica(nextReplica.id);
             nextReplica = this.getNextReplica();
@@ -123,6 +128,19 @@ export default class DialogPanel extends BasePanel {
             console.log("PREVIOUS REPLICA IS NOT NULL! : " + previousReplicaPanel.r.text)
             if (currentReplica != null && !notSaveCompletedReplica) {
                 console.log("CURRENT REPLICA IS NOT NULL! : " + currentReplica.id)
+                if (currentReplica.rewards && currentReplica.rewards.length > 0 && this.rewardGrantedReplicaId != currentReplica.id) {
+                    let rewards = RewardUtils.cloneRewards(currentReplica.rewards);
+                    this.screen.showRewardItems(rewards, () => {
+                        RewardUtils.applyRewards(user, rewards);
+                        this.rewardGrantedReplicaId = currentReplica.id;
+                        this.game.time.events.add(1, () => {
+                            if (this.parent) {
+                                this.updateReplica(true, noAnimation, notSaveCompletedReplica);
+                            }
+                        });
+                    });
+                    return;
+                }
                 // if (currentReplica.setMarkerAfter) {
                 //     user.addMarker(currentReplica.setMarkerAfter);
                 // }
@@ -139,6 +157,9 @@ export default class DialogPanel extends BasePanel {
                 //     lockTime = currentReplica.afterAnimationDuration;
                 // }
                 user.addCompletedReplica(currentReplica.id);
+                if (this.rewardGrantedReplicaId == currentReplica.id) {
+                    this.rewardGrantedReplicaId = null;
+                }
             }
             nextReplica = this.getNextReplica();
         }

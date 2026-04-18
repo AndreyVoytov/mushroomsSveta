@@ -1,6 +1,7 @@
 import ReplicaContextType from './ReplicaContextType';
 import ReplicaDecor from './ReplicaDecor';
 import ReplicaPanelItemType from './ReplicaPanelItemType';
+import RewardItemType from '../reward/RewardItemType';
 import StoryLocation from '../enum/StoryLocation';
 export default class ReplicaType {
     id: string;
@@ -14,6 +15,7 @@ export default class ReplicaType {
 
     showDiary?: boolean;
     panelItem?: ReplicaPanelItemType;
+    rewards?: RewardItemType[];
     // highlightDiary?: boolean;
     // diaryDelay?: number;
 

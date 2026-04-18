@@ -9,13 +9,12 @@ import SpriteUtils from '../../../core/utils/SpriteUtils';
 import PrizesConfiguration from '../../../core/configuration/PrizesConfiguration';
 import ForestDao from '../../../core/dao/ForestDao';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
-import { Easing, Game } from 'phaser-ce';
-import InfoPanel from './InfoPanel';
-import BoosterType from '../../../core/model/enum/BoosterType';
-import ForestUtils from '../../../core/utils/ForestUtils';
+import RewardUtils from '../../../core/utils/RewardUtils';
 import Settings from '../../../core/service/Settings';
 import LocalizationService from '../../../core/localization/LocalizationService';
 export default class ProgressBar extends BasePanel {
+    private static readonly PROGRESS_VISUALIZE_DELAY = 1000;
+    private static readonly PROGRESS_VISUALIZE_DURATION = 500;
     private screen: HouseScreen;
 
     private currentTask: DiaryContentType;
@@ -150,7 +149,7 @@ export default class ProgressBar extends BasePanel {
                 this.characterImage.x = this.progressBarTail.x;
             }
 
-            this.visualizeAndSetProgress(this.currentCount + 1, 1000);
+            this.visualizeAndSetProgress(this.currentCount + 1, ProgressBar.PROGRESS_VISUALIZE_DELAY);
         } else {
             this.progressBarBody.width = this.getProgressBodyWidth(this.currentCount);
             this.progressBarTail.x = this.progressBarBody.x + this.getProgressBodyWidth(this.currentCount) - 10;
@@ -199,51 +198,23 @@ export default class ProgressBar extends BasePanel {
                 // this.game.add.tween(gift).to({y: gift.y - 8, x: gift.x}, 1000, Easing.Sinusoidal.InOut, true, 0, -1, true)
 
                 if(level == start + this.currentCount){
-                    AnimationUtils.emphasize(this.game, gift)
-                    this.game.time.events.add(300, ()=>{
-                    this.game.tweens.removeFrom(gift);
+                    const rewardDelay = user.isJustCompletedLevel()
+                        ? ProgressBar.PROGRESS_VISUALIZE_DELAY + ProgressBar.PROGRESS_VISUALIZE_DURATION
+                        : 0;
+                    const giftOrigin = this.getGlobalPointForChild(gift.x, gift.y);
 
-                    let user = UserService.getUser();
-                    AnimationUtils.fadeOut(this.game, gift, 1000);
-                        this.game.time.events.add(1000, ()=>{
-                            let texts = []
-                            let images = []
-                            if(p.boosters){
-                                p.boosters.forEach(b => {
-                                    texts.push("+" +b.count)
-                                    images.push(b.type)
+                    this.game.time.events.add(rewardDelay, ()=>{
+                        this.game.tweens.removeFrom(gift);
 
-                                    user.increaseBoostersCount(b.type, b.count)
-                                    ForestUtils.markBoosterSeen(b.type);
-                                })
-                            }
-                            if(p.gems){
-                                texts.push("+" +p.gems)
-                                images.push("gems")
-                                user.setSupermoney(user.getSupermoney() + p.gems)
-                            }
+                        let rewards = RewardUtils.fromPrize(p);
+                        AnimationUtils.fadeOut(this.game, gift, 0, 220);
+                        this.screen.showRewardItems(rewards, () => {
+                            RewardUtils.applyRewards(user, rewards);
                             user.addMarker(p.id);
-
-                            let info =  new InfoPanel(this.game, this.progressBarBody.x + width - 10, this.progressBarBody.y - 100, texts, images, false, false);
-                            this.game.tweens.removeFrom(info);
-                          
-                            info.scale.set(1,1)
-                            info.x -= (texts.length + images.length)*50;
-                            info.x+=this.x;
-                            info.y+=this.y;
-                            this.screen.add.existing(info);
-                              this.game.add.tween(info).to({  y: info.y - 360}, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, 0, 0, false);
-                            this.game.add.tween(info).to({  alpha: [1, 1, 1, 1, 1, 1, 0.5, 0 ] }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false);
-
-                            // console.log("info.x " + info.x)
-                            // console.log("info.y " + info.y)
-                            // this.game.time.events.loop(10, ()=>{
-                            //     info.bringToTop();
-                            // })
-
-
-                        })
-                    })
+                        }, {
+                            firstRewardOrigin: giftOrigin
+                        });
+                    });
                 }
             }
         })
@@ -253,7 +224,7 @@ export default class ProgressBar extends BasePanel {
 
         let barBodyWidth = this.getProgressBodyWidth(currentCount);
 
-        let animationTime = 500;
+        let animationTime = ProgressBar.PROGRESS_VISUALIZE_DURATION;
         this.game.add.tween(this.progressBarBody).to({ width: barBodyWidth }, animationTime, Phaser.Easing.Linear.None, true, delay, 0, false);
         this.game.add.tween(this.progressBarTail).to({ x: this.progressBarBody.x + barBodyWidth - 10 }, animationTime, Phaser.Easing.Linear.None, true, delay, 0, false);
         if (this.characterImage) {
@@ -311,5 +282,13 @@ export default class ProgressBar extends BasePanel {
 
     public getTotal(): number {
         return this.totalCount;
+    }
+
+    private getGlobalPointForChild(x: number, y: number): Phaser.Point {
+        if (!(<any>this).toGlobal) {
+            return new Phaser.Point(this.x + x, this.y + y);
+        }
+
+        return (<any>this).toGlobal(new Phaser.Point(x, y));
     }
 }
