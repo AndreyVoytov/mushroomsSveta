@@ -362,8 +362,29 @@ export default class ForestEvent1Configuration {
 				"leafType": "leaf1",
 				"steps": 12,
 				"bushes": 2,
-				"mask": "mmmmmm0mmmwmmmmmwwmm00wwwww0iiwwli0iiiwiiiiiiiii",
+				"mask": "mmmmmm0mmmwmmmmmwwmm00wwhhw0iiwhli0iiiwiiiiiiiii",
 				"bonuses": 2,
+				"honey": 18,
+				"hiveGroups": [
+					{
+						"cells": [
+							{
+								"X": 3,
+								"Y": 3
+							},
+							{
+								"X": 4,
+								"Y": 3
+							},
+							{
+								"X": 3,
+								"Y": 4
+							}
+						],
+						"output": 3,
+						"image": "mega-hive"
+					}
+				],
 				"cankerberries": 0
 			},
 			{

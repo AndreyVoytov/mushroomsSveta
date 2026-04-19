@@ -13,6 +13,8 @@ export default class CellState {
     label: Label | null = null;
     
     metaValue:string;
+    baseScaleX: number = 1;
+    baseScaleY: number = 1;
 
     valueProbability: number;
     adjucentValueProbability: number;

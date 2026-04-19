@@ -3,6 +3,18 @@ import ForestItemType from './ForestItemType';
 import MaskCell from './MaskCell';
 import Separator from './Separator';
 import BiomType from './../enum/BiomType';
+
+export interface HiveGroupCellType {
+    X: number;
+    Y: number;
+}
+
+export interface HiveGroupType {
+    cells: HiveGroupCellType[];
+    output?: number;
+    image?: string;
+}
+
 export default class ForestType {
     id: string;
 
@@ -44,6 +56,7 @@ export default class ForestType {
     waterCenter?: number;
 
     slots?: {count:number, biom:BiomType}[];
+    hiveGroups?: HiveGroupType[];
 
     constructor(forestType:ForestType){
             this.name = forestType.name;
@@ -77,6 +90,7 @@ export default class ForestType {
             this.waterCenter = forestType.waterCenter;
 
             this.slots = forestType.slots;
+            this.hiveGroups = forestType.hiveGroups;
     }
 }
 

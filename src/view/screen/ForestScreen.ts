@@ -1271,14 +1271,12 @@ export default class ForestScreen extends BaseForestScreen {
             })
 
             //Следим, чтобы можно было собрать весь мёд 
-            let hiveCells = this.cellsProvider.getCells().filter(c => this.cellsProvider.areAdjucentAndNoSeparators(cell, c) &&
-                c.state.honeyLabel && Number(c.state.honeyLabel.text) > 0);
+            let hiveCells = this.cellsProvider.getAdjacentHiveAnchors(cell);
 
             hiveCells.forEach(hiveCell => {
-                let adjucentOpenable = this.cellsProvider.getCells().filter(c => this.cellsProvider.areAdjucentAndNoSeparators(hiveCell, c)
-                    && c.state.opened == false && !c.state.cover.isLocked() && !c.state.cover.isDark());
+                let adjucentOpenable = this.cellsProvider.getHiveOpenableCells(hiveCell);
 
-                if (adjucentOpenable.length <= Number(hiveCell.state.honeyLabel.text)) {
+                if (adjucentOpenable.length <= this.cellsProvider.getHiveRequiredOpenings(hiveCell)) {
                     canMakeDark = false;
                 }
             })
@@ -1393,46 +1391,8 @@ export default class ForestScreen extends BaseForestScreen {
             this.moveDragonflies(dragonfliesToMove, openingType);
 
             if (this.getForestType().honey) {
-                let affectedHives = this.cellsProvider.getCells().filter(cell => CellType.HIVE &&
-                    cell.state.honeyLabel && Number(cell.state.honeyLabel.text) > 0 && this.cellsProvider.areAdjucentAndNoSeparators(openedCell, cell));
-
-                affectedHives.forEach(cell => {
-                    let countWas = Number(cell.state.honeyLabel.text);
-                    let openableCells = this.cellsProvider.getCells().filter(cc => this.cellsProvider.areAdjucent(cell, cc) &&
-                    !cc.state.opened && !cc.state.cover.isLocked() && !cc.state.cover.isDark()).length;
-
-
-                    if (openableCells == 0) {
-                    // if (countWas == 1) {
-                        for(let i=0; i<countWas; i++){
-                            this.game.time.events.add(i*100+1, ()=>{
-                                cell.state.honeyLabel.text = "" + (countWas - i - 1);
-                                this.topPanel.collectHoney(cell);
-                                SoundUtils.honey();
-
-                                if(countWas - i - 1 == 0){
-                                    this.game.add.tween(cell.state.sprite.scale).to({ x: 0, y: 0 }, 400, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true, 300);
-                                    this.game.time.events.add(700, () => {
-                                        cell.state.content = ContentType.empty;
-                                    })
-                                }   
-                            })
-                        }
-                    } else {
-                        cell.state.honeyLabel.text = "" + (countWas - 1);
-                        this.game.tweens.removeFrom(cell.state.sprite)
-                        cell.state.sprite.scale.set(1, 1);
-                        AnimationUtils.jelly(this.game, cell.state.sprite, 0, true)
-                        this.topPanel.collectHoney(cell);
-                        SoundUtils.honey();
-                        if(countWas - 1 == 0){
-                            this.game.add.tween(cell.state.sprite.scale).to({ x: 0, y: 0 }, 400, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true, 300);
-                            this.game.time.events.add(700, () => {
-                                cell.state.content = ContentType.empty;
-                            })
-                        }
-                    }
-                });
+                let affectedHives = this.cellsProvider.getAdjacentHiveAnchors(openedCell);
+                affectedHives.forEach(cell => this.collectHoneyFromHive(cell));
             }
 
 
@@ -1492,6 +1452,53 @@ export default class ForestScreen extends BaseForestScreen {
                 }
             }
         }
+    }
+
+    private collectHoneyFromHive(cell: ForestCell): void {
+        let hiveCell = this.cellsProvider.getHiveAnchorCell(cell);
+        let countWas = this.cellsProvider.getHiveRemainingHoney(hiveCell);
+        if (countWas <= 0 || !hiveCell.state.honeyLabel) {
+            return;
+        }
+
+        let openableCells = this.cellsProvider.getHiveOpenableCells(hiveCell).length;
+        let honeyPerActivation = this.cellsProvider.getHiveOutput(hiveCell);
+        let honeyToCollect = openableCells == 0 ? countWas : Math.min(honeyPerActivation, countWas);
+
+        if (openableCells > 0) {
+            this.game.tweens.removeFrom(hiveCell.state.sprite);
+            this.game.tweens.removeFrom(hiveCell.state.sprite.scale);
+            hiveCell.state.sprite.scale.set(hiveCell.state.baseScaleX || 1, hiveCell.state.baseScaleY || 1);
+            AnimationUtils.jelly(this.game, hiveCell.state.sprite, 0, true);
+        }
+
+        for (let i = 0; i < honeyToCollect; i++) {
+            this.game.time.events.add(i * 100 + 1, () => {
+                let currentHoney = this.cellsProvider.getHiveRemainingHoney(hiveCell);
+                let remainingHoney = Math.max(0, currentHoney - 1);
+
+                hiveCell.state.honeyLabel.text = "" + remainingHoney;
+                this.topPanel.collectHoney(hiveCell);
+                SoundUtils.honey();
+
+                if (remainingHoney == 0) {
+                    this.hideHive(hiveCell);
+                }
+            });
+        }
+    }
+
+    private hideHive(cell: ForestCell): void {
+        let hiveCell = this.cellsProvider.getHiveAnchorCell(cell);
+        this.game.tweens.removeFrom(hiveCell.state.sprite);
+        this.game.tweens.removeFrom(hiveCell.state.sprite.scale);
+        this.game.add.tween(hiveCell.state.sprite.scale).to({ x: 0, y: 0 }, 400,
+            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true, 300);
+        this.game.time.events.add(700, () => {
+            this.cellsProvider.getHiveGroupCells(hiveCell).forEach(groupCell => {
+                groupCell.state.content = ContentType.empty;
+            });
+        });
     }
 
     private markValuableCells(): void {

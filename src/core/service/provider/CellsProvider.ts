@@ -6,7 +6,7 @@ import NeverError from '../../utils/NeverError';
 import Utils from '../../utils/Utils';
 import Environment from '../../model/enum/Environment';
 import ForestCell from '../../model/forest/ForestCell';
-import ForestType from '../../model/forest/ForestType';
+import ForestType, { HiveGroupType } from '../../model/forest/ForestType';
 import MaskCell from '../../model/forest/MaskCell';
 import Movable from '../../model/forest/Movable';
 import WaterPart from '../../model/forest/WaterPart';
@@ -20,6 +20,13 @@ import ForestsConfiguration from '../../configuration/ForestConfiguration';
 import EventUtils from '../../utils/EventUtils';
 import EventType from '../../model/event/EventType';
 
+interface ResolvedHiveGroup {
+    anchorIndex: number;
+    hiveIndexes: number[];
+    output: number;
+    image: string;
+    maxHoney: number;
+}
 
 export default class CellsProvider extends BaseCellsProvider {
 
@@ -71,6 +78,8 @@ export default class CellsProvider extends BaseCellsProvider {
                 }
             });
         }
+
+        this.configureHiveGroups(cells);
         
         this.additionalCellTypes = typesInfo.types.slice(cellsCount, typesInfo.types.length);
         this.additionalCellTypes.forEach((t, i) => {
@@ -181,7 +190,67 @@ export default class CellsProvider extends BaseCellsProvider {
         });
 
         if (this.forestType.honey) {
-            let hiveIndexes = types.map((t, i) => t == ContentType.hive ? i : -1).filter(i => i != -1);
+            let handledGroupedHives = false;
+            let hiveGroups = this.resolveHiveGroups(types);
+
+            if (hiveGroups.length > 0) {
+                handledGroupedHives = true;
+
+                let honeyCount = 0;
+                hiveGroups.forEach(group => {
+                    group.maxHoney = this.getMaxHoneyForHiveGroup(types, group);
+                    metaDataByIndex[group.anchorIndex] = String(group.maxHoney);
+                    group.hiveIndexes.filter(index => index != group.anchorIndex).forEach(index => {
+                        metaDataByIndex[index] = "0";
+                    });
+                    honeyCount += group.maxHoney;
+                });
+
+                let targetHoney = this.forestType.honey;
+                let minHoney = hiveGroups.reduce((sum, group) => {
+                    return sum + (group.maxHoney > 0 ? group.output : 0);
+                }, 0);
+                let attempts = 0;
+
+                if (minHoney <= targetHoney && targetHoney <= honeyCount) {
+                    while (!this.getForestType().cellsToSpawn && attempts < 1000 && honeyCount > targetHoney) {
+                        let choosableGroups = hiveGroups.filter(group => Number(metaDataByIndex[group.anchorIndex]) > group.output);
+                        if (choosableGroups.length == 0) {
+                            break;
+                        }
+
+                        let choosen = Utils.getRandomElement(choosableGroups);
+                        let honeyNumber = Number(metaDataByIndex[choosen.anchorIndex]);
+
+                        metaDataByIndex[choosen.anchorIndex] = String(honeyNumber - choosen.output);
+                        honeyCount -= choosen.output;
+                        attempts++;
+                    }
+
+                    while (attempts < 1000 && targetHoney > honeyCount) {
+                        let choosableGroups = hiveGroups.filter(group => Number(metaDataByIndex[group.anchorIndex]) + group.output <= group.maxHoney);
+                        if (choosableGroups.length == 0) {
+                            break;
+                        }
+
+                        let choosen = Utils.getRandomElement(choosableGroups);
+                        let honeyNumber = Number(metaDataByIndex[choosen.anchorIndex]);
+
+                        metaDataByIndex[choosen.anchorIndex] = String(honeyNumber + choosen.output);
+                        honeyCount += choosen.output;
+                        attempts++;
+                    }
+
+                    if (attempts == 1000 || honeyCount != targetHoney) {
+                        console.error("CRITICAL ERROR: can not generate hives properly!");
+                    }
+                } else {
+                    this.message = "РЎР»РёС€РєРѕРј РјР°Р»Рѕ РјС‘РґР°!";
+                    console.log("Not enough honey!");
+                }
+            }
+
+            let hiveIndexes = handledGroupedHives ? [] : types.map((t, i) => t == ContentType.hive ? i : -1).filter(i => i != -1);
 
             if (hiveIndexes.length > 0) {
 
@@ -478,6 +547,187 @@ export default class CellsProvider extends BaseCellsProvider {
         return cells;
     }
 
+    private configureHiveGroups(cells: ForestCell[]): void {
+        let configuredGroups = this.forestType.hiveGroups || [];
+
+        configuredGroups.forEach(group => {
+            let groupCells = group.cells.map(groupCell => {
+                return cells.find(cell => cell.X == groupCell.X && cell.Y == groupCell.Y && cell.state.content == ContentType.hive);
+            }).filter(cell => !!cell);
+
+            groupCells = groupCells.filter((cell, index) => groupCells.indexOf(cell) == index);
+
+            if (groupCells.length == 0) {
+                return;
+            }
+
+            let anchor = this.getBestHiveAnchorCell(groupCells);
+            let output = group.output || 1;
+            let image = group.image || "hive";
+
+            groupCells.forEach(cell => {
+                cell.hiveAnchor = anchor;
+                cell.hiveGroupCells = groupCells;
+                cell.hiveOutput = output;
+                cell.hiveImage = image;
+            });
+        });
+
+        cells.filter(cell => cell.state.content == ContentType.hive && !cell.hiveAnchor).forEach(cell => {
+            cell.hiveAnchor = cell;
+            cell.hiveGroupCells = [cell];
+            cell.hiveOutput = 1;
+            cell.hiveImage = "hive";
+        });
+    }
+
+    private resolveHiveGroups(types: ContentType[]): ResolvedHiveGroup[] {
+        let result: ResolvedHiveGroup[] = [];
+        let configuredIndexes: number[] = [];
+
+        (this.forestType.hiveGroups || []).forEach((group: HiveGroupType) => {
+            let hiveIndexes = group.cells.map(cell => this.findMaskIndex(cell.X, cell.Y)).filter(index => index != -1 && types[index] == ContentType.hive);
+            hiveIndexes = hiveIndexes.filter((index, position) => hiveIndexes.indexOf(index) == position);
+
+            if (hiveIndexes.length == 0) {
+                return;
+            }
+
+            result.push({
+                anchorIndex: this.getBestHiveAnchorIndex(hiveIndexes),
+                hiveIndexes: hiveIndexes,
+                output: group.output || 1,
+                image: group.image || "hive",
+                maxHoney: 0
+            });
+
+            configuredIndexes = configuredIndexes.concat(hiveIndexes);
+        });
+
+        types.forEach((type, index) => {
+            if (type == ContentType.hive && configuredIndexes.indexOf(index) == -1) {
+                result.push({
+                    anchorIndex: index,
+                    hiveIndexes: [index],
+                    output: 1,
+                    image: "hive",
+                    maxHoney: 0
+                });
+            }
+        });
+
+        return result;
+    }
+
+    private getMaxHoneyForHiveGroup(types: ContentType[], group: ResolvedHiveGroup): number {
+        let maxHoneyTriggers = this.getMask().filter((cell, index) => {
+            if (types[index] != null) {
+                return false;
+            }
+
+            return group.hiveIndexes.some(hiveIndex => {
+                let hiveCell = this.getMask()[hiveIndex];
+                return this.areAdjucentCoordinates(cell.X, cell.Y, hiveCell.X, hiveCell.Y)
+                    && !this.haveSeparatorsBetweenMaskCells(cell, hiveCell);
+            });
+        }).length;
+
+        return maxHoneyTriggers * group.output;
+    }
+
+    private findMaskIndex(X: number, Y: number): number {
+        return this.getMask().findIndex(cell => cell.X == X && cell.Y == Y);
+    }
+
+    private getBestHiveAnchorIndex(hiveIndexes: number[]): number {
+        return hiveIndexes.slice().sort((firstIndex, secondIndex) => {
+            let firstCell = this.getMask()[firstIndex];
+            let secondCell = this.getMask()[secondIndex];
+
+            if (firstCell.Y != secondCell.Y) {
+                return secondCell.Y - firstCell.Y;
+            }
+
+            return secondCell.X - firstCell.X;
+        })[0];
+    }
+
+    private getBestHiveAnchorCell(cells: ForestCell[]): ForestCell {
+        return cells.slice().sort((firstCell, secondCell) => {
+            if (firstCell.Y != secondCell.Y) {
+                return secondCell.Y - firstCell.Y;
+            }
+
+            return secondCell.X - firstCell.X;
+        })[0];
+    }
+
+    public getHiveAnchorCell(cell: ForestCell): ForestCell {
+        return cell && cell.hiveAnchor ? cell.hiveAnchor : cell;
+    }
+
+    public getHiveGroupCells(cell: ForestCell): ForestCell[] {
+        let anchor = this.getHiveAnchorCell(cell);
+        return anchor && anchor.hiveGroupCells && anchor.hiveGroupCells.length > 0 ? anchor.hiveGroupCells : (cell ? [cell] : []);
+    }
+
+    public getHiveOutput(cell: ForestCell): number {
+        let anchor = this.getHiveAnchorCell(cell);
+        return anchor && anchor.hiveOutput ? anchor.hiveOutput : 1;
+    }
+
+    public getHiveImage(cell: ForestCell): string {
+        let anchor = this.getHiveAnchorCell(cell);
+        return anchor && anchor.hiveImage ? anchor.hiveImage : "hive";
+    }
+
+    public isMegaHiveAnchor(cell: ForestCell): boolean {
+        return !!cell && this.getHiveAnchorCell(cell) == cell && this.getHiveGroupCells(cell).length > 1;
+    }
+
+    public isMegaHiveHiddenPart(cell: ForestCell): boolean {
+        return !!cell && this.getHiveAnchorCell(cell) != cell && this.getHiveGroupCells(cell).length > 1;
+    }
+
+    public getHiveRemainingHoney(cell: ForestCell): number {
+        let anchor = this.getHiveAnchorCell(cell);
+        return anchor && anchor.state && anchor.state.honeyLabel ? Number(anchor.state.honeyLabel.text) : 0;
+    }
+
+    public getHiveRequiredOpenings(cell: ForestCell): number {
+        let output = this.getHiveOutput(cell);
+        let honey = this.getHiveRemainingHoney(cell);
+        return output > 0 ? Math.ceil(honey / output) : honey;
+    }
+
+    public isHiveActive(cell: ForestCell): boolean {
+        return !!cell && this.getHiveRemainingHoney(cell) > 0;
+    }
+
+    public getHiveOpenableCells(cell: ForestCell): ForestCell[] {
+        let hiveCells = this.getHiveGroupCells(cell);
+
+        return this.getCells().filter(otherCell => !otherCell.state.opened && !otherCell.state.cover.isLocked() && !otherCell.state.cover.isDark()
+            && hiveCells.some(hiveCell => this.areAdjucentAndNoSeparators(hiveCell, otherCell)));
+    }
+
+    public getAdjacentHiveAnchors(cell: ForestCell): ForestCell[] {
+        let result: ForestCell[] = [];
+
+        this.getCells().forEach(otherCell => {
+            if (otherCell.state.content != ContentType.hive || !this.isHiveActive(otherCell) || !this.areAdjucentAndNoSeparators(cell, otherCell)) {
+                return;
+            }
+
+            let anchor = this.getHiveAnchorCell(otherCell);
+            if (result.indexOf(anchor) == -1) {
+                result.push(anchor);
+            }
+        });
+
+        return result;
+    }
+
     public generateCankerberries(covers: ForestCellCover[], cankerberries: number, transparent?: boolean): void {
         if (cankerberries) {
             let alreadyPlaced = covers.map<number>(c => {
@@ -581,7 +831,7 @@ export default class CellsProvider extends BaseCellsProvider {
 
         if (ForestUtils.isLandscapeType(cell.type)) {
             return cell.state.label.text == "" || !cell.state.label.visible;
-        } else if (cell.type == CellType.HIVE && cell.state.honeyLabel && Number(cell.state.honeyLabel.text) != 0) {
+        } else if (cell.type == CellType.HIVE && cell.state.content == ContentType.hive && this.isHiveActive(cell)) {
             return false;
         }
 

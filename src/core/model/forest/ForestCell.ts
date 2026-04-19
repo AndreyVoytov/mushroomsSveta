@@ -14,6 +14,10 @@ export default class ForestCell {
     bg: Phaser.Sprite;
     bgShadow: Phaser.Sprite;
     separators: SeparatorType[] = [];
+    hiveAnchor: ForestCell;
+    hiveGroupCells: ForestCell[];
+    hiveOutput: number = 1;
+    hiveImage: string;
 
     constructor(X: number, Y: number, content: ContentType, type: CellType, biomType: BiomType, leafType: string, metaValue?: string) {
         this.type = type;

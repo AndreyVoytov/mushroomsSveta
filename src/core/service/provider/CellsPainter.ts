@@ -15,6 +15,7 @@ import CellsProvider from './CellsProvider';
 
 export default class CellsPainter extends CellsProvider {
     private static readonly HIVE_HONEY_LABEL_LEGACY = false;
+    private static readonly MEGA_HIVE_SCALE = 0.8;
 
     public constructor(forestType: ForestType, game: Phaser.Game) {
         super(forestType, game);
@@ -35,14 +36,26 @@ export default class CellsPainter extends CellsProvider {
         let image = ContentType[cell.state.content];
         if (cell.state.content == ContentType.specificItem || cell.state.content == ContentType.randomItem) {
             image = String(cell.state.metaValue)
+        } else if (cell.state.content == ContentType.hive) {
+            image = this.getHiveImage(cell);
         }
 
-        let cellSprite = SpriteUtils.createSprite(game, this.calculateX(cell), this.calculateY(cell), image);
+        let spritePosition = cell.state.content == ContentType.hive && this.isMegaHiveAnchor(cell) ? this.getMegaHiveCenter(cell) :
+            new Phaser.Point(this.calculateX(cell), this.calculateY(cell));
+        let cellSprite = SpriteUtils.createSprite(game, spritePosition.x, spritePosition.y, image);
         cellSprite.anchor = new Phaser.Point(0.5, 0.5);
-        cellSprite.width = BaseCellsProvider.CELL_WIDTH;
-        cellSprite.height = BaseCellsProvider.CELL_HEIGHT;
+
+        if (this.isMegaHiveAnchor(cell)) {
+            cellSprite.scale.set(CellsPainter.MEGA_HIVE_SCALE);
+        } else {
+            cellSprite.width = BaseCellsProvider.CELL_WIDTH;
+            cellSprite.height = BaseCellsProvider.CELL_HEIGHT;
+        }
+
         screen.add.existing(cellSprite);
         cell.state.sprite = cellSprite;
+        cell.state.baseScaleX = cellSprite.scale.x;
+        cell.state.baseScaleY = cellSprite.scale.y;
 
         if (boostersProvider && ForestUtils.isBoosterType(cell.type)) {
             cellSprite.events.onInputDown.add(() => {
@@ -83,23 +96,17 @@ export default class CellsPainter extends CellsProvider {
         }
 
         if (cell.state.content == ContentType.hive) {
-            let honeyCount = Number(cell.state.metaValue);
-            const legacy = CellsPainter.HIVE_HONEY_LABEL_LEGACY;
-            const labelStyle = legacy
-                ? Label.HiveDigitsLegacy(40)
-                : Label.BalsamiqSansBoldBold(40, "#ac622c");
+            if (this.isMegaHiveHiddenPart(cell)) {
+                cell.state.sprite.visible = false;
+            } else {
+                let labelPosition = this.isMegaHiveAnchor(cell) ? { x: 0, y: 18 } : { x: 20, y: 20 };
+                this.addHiveHoneyLabel(game, cell, labelPosition.x, labelPosition.y);
 
-            cell.state.honeyLabel = new Label(game, 20, 20, "" + honeyCount, labelStyle);
-
-            cell.state.honeyLabel.anchor.set(0.5)
-            let bg = SpriteUtils.createSprite(game, 20, 15, "honey2");
-            bg.anchor.set(0.5)
-            bg.scale.set(1, 0.9)
-            cell.state.sprite.addChild(bg);
-            cell.state.sprite.addChild(cell.state.honeyLabel);
-
-            cell.state.sprite.x -= 5;
-            cell.state.sprite.y -= -3;
+                if (!this.isMegaHiveAnchor(cell)) {
+                    cell.state.sprite.x -= 5;
+                    cell.state.sprite.y -= -3;
+                }
+            }
         }
 
         if (cell.state.content == ContentType.moonflowerClosed) {
@@ -125,6 +132,32 @@ export default class CellsPainter extends CellsProvider {
             cell.state.sprite.visible = false;
             cell.bg.visible = false;
         }
+    }
+
+    private addHiveHoneyLabel(game: Phaser.Game, cell: ForestCell, x: number, y: number): void {
+        let honeyCount = Number(cell.state.metaValue);
+        const legacy = CellsPainter.HIVE_HONEY_LABEL_LEGACY;
+        const labelStyle = legacy
+            ? Label.HiveDigitsLegacy(40)
+            : Label.BalsamiqSansBoldBold(40, "#ac622c");
+        const scaleCompensation = this.isMegaHiveAnchor(cell) ? 1 / CellsPainter.MEGA_HIVE_SCALE : 1;
+
+        cell.state.honeyLabel = new Label(game, x, y, "" + honeyCount, labelStyle);
+        cell.state.honeyLabel.anchor.set(0.5);
+        cell.state.honeyLabel.scale.set(scaleCompensation, scaleCompensation);
+
+        let bg = SpriteUtils.createSprite(game, x, y - 5, "honey2");
+        bg.anchor.set(0.5);
+        bg.scale.set(scaleCompensation, 0.9 * scaleCompensation);
+        cell.state.sprite.addChild(bg);
+        cell.state.sprite.addChild(cell.state.honeyLabel);
+    }
+
+    private getMegaHiveCenter(cell: ForestCell): Phaser.Point {
+        let hiveCells = this.getHiveGroupCells(cell);
+        let x = hiveCells.map(hiveCell => this.calculateX(hiveCell)).reduce((sum, current) => sum + current, 0) / hiveCells.length;
+        let y = hiveCells.map(hiveCell => this.calculateY(hiveCell)).reduce((sum, current) => sum + current, 0) / hiveCells.length;
+        return new Phaser.Point(x, y);
     }
 
 }

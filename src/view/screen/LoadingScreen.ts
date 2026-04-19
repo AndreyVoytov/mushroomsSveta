@@ -643,6 +643,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('chamomileSmall', 'assets/base/items/chamomileSmall.png');
         this.loadImage('dragonfly', 'assets/base/items/dragonfly.png');
         this.loadImage('hive', 'assets/base/items/hive.png');
+        this.loadImage('mega-hive', 'assets/base/items/hive_big.png');
         this.loadImage('honey', 'assets/base/items/honey.png');
         this.loadImage('honey2', 'assets/base/items/honey2.png');
         this.loadImage('mushroom', 'assets/base/items/mushroom.png');
