@@ -883,7 +883,7 @@ export default class ForestScreen extends BaseForestScreen {
             const direction = openedCell.state.sprite.x < beeCell.state.cover.bee.x ? -1 : 1;
             SoundUtils.beeSting();
             AnimationUtils.beeSting(this.game, beeCell.state.cover.bee, direction);
-            if (this.topPanel.spendAdditionalEnergy(1)) {
+            if (beeCell.type != CellType.BEE_M && this.topPanel.spendAdditionalEnergy(1)) {
                 this.showBeeStingEnergyLoss(beeCell.state.cover.bee.x, beeCell.state.cover.bee.y);
             }
         });
@@ -899,12 +899,16 @@ export default class ForestScreen extends BaseForestScreen {
 
             if (cellsToGo.length == 0) {
                 const bee = c.state.cover.bee;
-                this.game.tweens.removeFrom(bee);
-                this.game.add.tween(bee).to({ alpha: 0, y: bee.y - 16 }, 220,
-                    Easing.Quadratic.Out, true);
-                this.game.time.events.add(240, () => {
-                    bee.kill();
-                });
+                const collectedToAim = this.topPanel.collectBee(bee);
+
+                if (!collectedToAim) {
+                    this.game.tweens.removeFrom(bee);
+                    this.game.add.tween(bee).to({ alpha: 0, y: bee.y - 16 }, 220,
+                        Easing.Quadratic.Out, true);
+                    this.game.time.events.add(240, () => {
+                        bee.kill();
+                    });
+                }
 
                 c.state.cover.bee = null;
                 c.state.cover.openableCover.inputEnabled = true;

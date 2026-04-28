@@ -44,6 +44,7 @@ export default class ForestType {
 
     ladybugs?: number[];   
     acorns?: number;
+    bees?: number;
     honey?: number; //Нужно рандомное расставление ульев в лесочке
     jellyMushrooms?: number; //Нужно рандомное расставление грибочков в лесочке; причем красиво или симметрично
    
@@ -81,6 +82,7 @@ export default class ForestType {
             this.ladybugs = forestType.ladybugs;
             this.flowers = forestType.flowers;
             this.acorns = forestType.acorns;
+            this.bees = forestType.bees;
             this.honey = forestType.honey;
             this.jellyMushrooms = forestType.jellyMushrooms;
             this.dragonflies = forestType.dragonflies;

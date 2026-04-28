@@ -164,6 +164,9 @@ export default class GameText {
         if (aim.type === AimType.item && (aim.image === 'blueberry' || aim.image === 'blackberry' || aim.image === 'strawberry')) {
             return this.text('completeAim.berries', 'All berries collected!');
         }
+        if (aim.type === AimType.bee) {
+            return this.text('completeAim.bees', 'All bees cleared!');
+        }
         return this.text('completeAim.items', 'All items collected!');
     }
 
@@ -229,6 +232,9 @@ export default class GameText {
         }
         if (aim.image === 'ladybug') {
             return this.word('aim.ladybug', aim.countLeft, 'ladybug', 'ladybugs');
+        }
+        if (aim.image === 'bumblebee') {
+            return this.word('aim.bee', aim.countLeft, 'bee', 'bees');
         }
         if (aim.image.indexOf('bug') === 0) {
             return this.word('aim.beetle', aim.countLeft, 'beetle', 'beetles');

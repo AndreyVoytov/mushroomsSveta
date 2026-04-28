@@ -543,10 +543,10 @@ export default class ForestCellCover extends Phaser.Group {
             case CellType.PLANK1_M:
             case CellType.PLANK2_M:
             case CellType.PLANK3_M:
-            case CellType.BEE_M:
             case CellType.MOUNTAIN:
                 return "hexMountain";
             case CellType.BEE:
+            case CellType.BEE_M:
                 return this.getCoverBg(this.environment);
             case CellType.BOAT:
             case CellType.WATER:
@@ -571,7 +571,6 @@ export default class ForestCellCover extends Phaser.Group {
             case CellType.PLANK1_M:
             case CellType.PLANK2_M:
             case CellType.PLANK3_M:
-            case CellType.BEE_M:
                 return "mount";
             case CellType.WATER:
             case CellType.BOAT:
@@ -608,6 +607,7 @@ export default class ForestCellCover extends Phaser.Group {
             case CellType.ACORN:
             case CellType.DRAGONFLY:
             case CellType.BEE:
+            case CellType.BEE_M:
 
                 return null;
             default:
@@ -696,7 +696,7 @@ export default class ForestCellCover extends Phaser.Group {
                 break;
             case CellType.BEE:
             case CellType.BEE_M:
-                this.bee = SpriteUtils.createSprite(this.game, 0, 2, "bee");
+                this.bee = SpriteUtils.createSprite(this.game, 0, 2, this.cellType == CellType.BEE_M ? "bumblebee" : "bee");
                 this.bee.anchor.set(0.5, 0.6);
                 this.bee.width = (this.openableCover.width * 0.95) / Math.max(Math.abs(this.openableCover.scale.x), 0.001);
                 this.bee.height = (this.openableCover.height * 0.95) / Math.max(Math.abs(this.openableCover.scale.y), 0.001);

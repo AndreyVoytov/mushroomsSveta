@@ -14,8 +14,9 @@ export default class ForestEvent1Configuration {
 				"environment": 0,
 				"leafType": "leafClover",
 				"steps": 6,
-				"mask": "00elg000tliiililgiilt0jlhhgi0jhshl00ilhhlltllllil0lilglt00gig000",
+				"mask": "00nlg000tliiililgiilt0jlhhgi0jhshl00ilhhlltllllil0lilglt00gig000",
 				"bonuses": 1,
+				"bees": 1,
 				"honey": 18,
 				"dragonflies": 0,
 				"waterCenter": null
@@ -255,9 +256,10 @@ export default class ForestEvent1Configuration {
 				"leafType": "leafClover",
 				"steps": 7,
 				"bushes": 3,
-				"mask": "0eggg000ggggg0ghhhhg0ghggghgghhhhg00ggggg00gggg0",
+				"mask": "0nggg000ggggg0ghhhhg0ghggghgghhhhg00ggggg00gggg0",
 				"bonuses": 2,
 				"cankerberries": 0,
+				"bees": 1,
 				"honey": 24,
 				"dragonflies": 0
 			},
@@ -277,7 +279,7 @@ export default class ForestEvent1Configuration {
 				"environment": 0,
 				"leafType": "leafClover",
 				"steps": 10,
-				"mask": "le0lAA0glglA0AghhlnA0glhgmlgglmmlg0glmghlgAmlhhg0A0AlglgAAl0gl00",
+				"mask": "ln0lAA0glglA0AghhlnA0glhgmlgglmmlg0glmghlgAmlhhg0A0AlglgAAl0gl00",
 				"bonuses": 3,
 				"honey": 22,
 				"dragonflies": 0
@@ -295,7 +297,7 @@ export default class ForestEvent1Configuration {
 				"leafType": "leafClover",
 				"steps": 8,
 				"bushes": 3,
-				"mask": "000000000egg00ggaagg0giaiaiggiiiig0gihihiggghhgg000ggg00",
+				"mask": "000000000ngg00ggaagg0giaiaiggiiiig0gihihiggghhgg000ggg00",
 				"bonuses": 1,
 				"acorns": 4,
 				"honey": 12,
@@ -318,7 +320,7 @@ export default class ForestEvent1Configuration {
 				"leafType": "leaf1",
 				"steps": 11,
 				"bushes": 3,
-				"mask": "00000000ll0ll0lhiihl0eiiliigigllgi0eiiliiglhiihl00ll0ll0",
+				"mask": "00000000ll0ll0lhiihl0niiliigigllgi0eiiliiglhiihl00ll0ll0",
 				"bonuses": 4,
 				"honey": 24,
 				"dragonflies": 0
@@ -336,7 +338,7 @@ export default class ForestEvent1Configuration {
 				"leafType": "leaf1",
 				"steps": 9,
 				"bushes": 3,
-				"mask": "0ll0ll0llpiiglejffjg0lifhfilgjffjg0lgiipllll0ll0",
+				"mask": "0ll0ll0llpiinlejffjg0lifhfilgjffjg0lgiipllll0ll0",
 				"bonuses": 4,
 				"honey": 6,
 				"dragonflies": 6

@@ -107,6 +107,11 @@ export default class ForestUtils {
                         res.push(new ForestAim(AimType.dragonfly, "dragonfly", forestType.dragonflies));
                     }
                     break;
+                case AimType.bee:
+                    if (forestType.bees && forestType.bees != 0) {
+                        res.push(new ForestAim(AimType.bee, "bumblebee", forestType.bees));
+                    }
+                    break;
                 case AimType.honey:
                     if (forestType.honey && forestType.honey != 0) {
                         res.push(new ForestAim(AimType.honey, "honey", forestType.honey));

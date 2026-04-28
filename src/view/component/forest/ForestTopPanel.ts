@@ -363,6 +363,9 @@ export default class ForestTopPanel extends BasePanel {
     public collectBook(book: Phaser.Sprite) {
         this.collectSprite(book, AimType.book);
     }
+    public collectBee(bee: Phaser.Sprite): boolean {
+        return this.collectSprite(bee, AimType.bee);
+    }
 
     public collectHoney(cell: ForestCell) {
         let honey = SpriteUtils.createSprite(this.game, cell.state.sprite.x + 20, cell.state.sprite.y + 20, "honey2")
@@ -393,7 +396,7 @@ export default class ForestTopPanel extends BasePanel {
 
     }
 
-    public collectSprite(sprite: Phaser.Sprite, aimType: AimType) {
+    public collectSprite(sprite: Phaser.Sprite, aimType: AimType): boolean {
         let aim = this.aims.filter(aim => aim.type == aimType).shift();
 
         if (aim) {
@@ -426,7 +429,9 @@ export default class ForestTopPanel extends BasePanel {
                 sprite.bringToTop();
                 // this.screen.bringUiToTop();
             })
+            return true;
         }
+        return false;
     }
 
     public tryCollectCankerberry(cover: ForestCellCover) {
