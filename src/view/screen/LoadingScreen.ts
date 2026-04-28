@@ -723,6 +723,13 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('chest3', 'assets/base/ui/shop/chest3.png');
         this.loadImage('chest4', 'assets/base/ui/shop/chest4.png');
         this.loadImage('chest4cap', 'assets/base/ui/shop/chest4cap.png');
+        this.loadImage('shopHeader', 'assets/base/ui/shop/header.png');
+        this.loadImage('shopNavBg', 'assets/base/ui/shop/nav_bg.png');
+        this.loadImage('shopNavSelected', 'assets/base/ui/shop/nav_selected.png');
+        // Fallback for new shop art until it is repacked into base atlases.
+        this.load.image('shopHeader', 'assets/base/ui/shop/header.png');
+        this.load.image('shopNavBg', 'assets/base/ui/shop/nav_bg.png');
+        this.load.image('shopNavSelected', 'assets/base/ui/shop/nav_selected.png');
 
         this.loadImage('cankerberry', 'assets/base/items/cankerberry.png');
         this.loadImage('witchMushroom', 'assets/base/items/witchMushroom.png');
