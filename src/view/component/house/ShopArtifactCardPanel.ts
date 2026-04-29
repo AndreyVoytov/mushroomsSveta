@@ -145,17 +145,20 @@ export default class ShopArtifactCardPanel extends BasePanel {
         this.priceLabel.x = 76;
         this.priceLabel.y = 137;
 
-        this.disabledShade = this.attachSprite("panel2", "disabledShade");
-        this.disabledShade.scale.set(this.panel.scale.x, this.panel.scale.y);
-        this.disabledShade.alpha = 0.34;
-        this.disabledShade.tint = 0x6f6258;
-        this.disabledShade.visible = false;
-
         this.purchasedCheck = this.attachSprite("check", "purchasedCheck");
         this.purchasedCheck.x = 0;
         this.purchasedCheck.y = 18;
-        this.purchasedCheck.scale.set(1.05);
+        this.purchasedCheck.scale.set(1);
+        this.purchasedCheck.alpha = 0.9;
         this.purchasedCheck.visible = false;
+
+        this.disabledShade = this.attachSprite("panel2", "disabledShade");
+        this.disabledShade.scale.set(this.panel.scale.x, this.panel.scale.y);
+        this.disabledShade.alpha = 0.54;
+        this.disabledShade.tint = 0x6f6258;
+        this.disabledShade.visible = false;
+
+       
 
         this.refreshState();
     }
@@ -183,8 +186,8 @@ export default class ShopArtifactCardPanel extends BasePanel {
         this.buyButton.visible = !purchased;
         this.priceLabel.visible = !purchased;
         this.priceGemIcon.visible = !purchased;
-        this.itemBackground.alpha = purchased ? 0.5 : 0.95;
-        this.itemSplash.alpha = purchased ? 0.35 : 0.8;
+        this.itemBackground.visible = !purchased;
+        this.itemSplash.visible = !purchased;
         this.itemIcon.alpha = purchased ? 0.72 : 1;
         this.panel.inputEnabled = !purchased;
         this.buyButton.inputEnabled = !purchased;
