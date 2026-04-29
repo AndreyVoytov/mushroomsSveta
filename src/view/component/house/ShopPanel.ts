@@ -34,7 +34,7 @@ export default class ShopPanel extends ClosablePanel {
         this.header.scale.set(0.78);
 
         this.titleLabel = this.attachText("shopTitle", LocalizationService.get('ui.shopTitle', 'Shop'), {
-            font: "58px Bookman Old Style",
+            font: "50px Bookman Old Style",
             fill: "#f7efe8",
             align: "center",
             wordWrap: true,
@@ -109,9 +109,9 @@ export default class ShopPanel extends ClosablePanel {
     }
 
     private layout(): void {
-        this.sections.bank.y = 94;
-        this.sections.items.y = 94;
-        this.sections.heroes.y = 94;
+        this.sections.bank.y = 124;
+        this.sections.items.y = 124;
+        this.sections.heroes.y = 124;
 
         this.navBackground.x = 0;
         this.navBackground.y = -283;
@@ -119,13 +119,13 @@ export default class ShopPanel extends ClosablePanel {
         this.activeTabSprite.y = -283;
 
         this.header.x = 0;
-        this.header.y = -400;
+        this.header.y = -385;
 
         this.titleLabel.x = 0;
-        this.titleLabel.y = -401;
+        this.titleLabel.y = -402;
 
         this.closeButton.x = 382;
-        this.closeButton.y = -336;
+        this.closeButton.y = -405;
         this.closeButton.scale.set(0.9);
 
         this.layoutTab(this.tabs.bank, 'bank');

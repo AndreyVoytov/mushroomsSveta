@@ -82,6 +82,7 @@ const manualKeys = [
     'ui.tasks.rewardReceived',
     'ui.tasks.dailyProgress',
     'ui.tasks.refreshIn',
+    'shop.item.level',
     'ui.transition.sheWontHelp',
     'ui.transition.thirtyMinutesLater',
     'ui.transition.hourLater'
@@ -306,6 +307,19 @@ function collectBuyKeys(filePath) {
     return keys;
 }
 
+function collectStaticArrayStringFields(filePath, propertyName, fieldNames) {
+    const keys = new Set();
+    getStaticArrayObjects(filePath, propertyName).forEach(objectNode => {
+        fieldNames.forEach(fieldName => {
+            const value = getObjectStringProperty(objectNode, fieldName);
+            if (value) {
+                keys.add(value);
+            }
+        });
+    });
+    return keys;
+}
+
 function collectStringArrayPropertyValues(filePath, propertyName) {
     const sourceText = fs.readFileSync(filePath, 'utf8');
     const sourceFile = ts.createSourceFile(filePath, sourceText, ts.ScriptTarget.Latest, true);
@@ -344,6 +358,8 @@ function buildExpectedKeys() {
         collectReplicaKeys(path.join(rootDir, 'src', 'core', 'configuration', 'ForestReplicasConfiguration.ts')),
         collectDiaryKeys(path.join(rootDir, 'src', 'core', 'configuration', 'DiaryConfiguration.ts')),
         collectBuyKeys(path.join(rootDir, 'src', 'core', 'service', 'Settings.ts')),
+        collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactSkillsConfiguration.ts'), 'allSkills', ['name']),
+        collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactItemsConfiguration.ts'), 'allItems', ['name', 'usageText']),
         collectStringArrayPropertyValues(path.join(rootDir, 'src', 'core', 'configuration', 'MapPresetConfiguration.ts'), 'notes')
     ].forEach(set => {
         set.forEach(key => keys.add(key));

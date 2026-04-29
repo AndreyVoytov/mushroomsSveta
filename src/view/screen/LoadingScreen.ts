@@ -726,10 +726,30 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('shopHeader', 'assets/base/ui/shop/header.png');
         this.loadImage('shopNavBg', 'assets/base/ui/shop/nav_bg.png');
         this.loadImage('shopNavSelected', 'assets/base/ui/shop/nav_selected.png');
+        this.loadImage('shopBuyItemButton', 'assets/base/ui/shop/buy_item_button.png');
+        this.loadImage('shopInfoButton', 'assets/base/ui/shop/info_button.png');
+        this.loadImage('shopSkillBravery', 'assets/base/ui/skills/skill_bravery.png');
+        this.loadImage('shopSkillEnergy', 'assets/base/ui/skills/skill_energy.png');
+        this.loadImage('shopSkillFriendship', 'assets/base/ui/skills/skill_frendship.png');
+        this.loadImage('shopSkillKnowledge', 'assets/base/ui/skills/skill_knowledge.png');
+        this.loadImage('shopItem1', 'assets/base/ui/items/item1.png');
+        this.loadImage('shopItem2', 'assets/base/ui/items/item2.png');
+        this.loadImage('shopItem3', 'assets/base/ui/items/item3.png');
+        this.loadImage('shopItem4', 'assets/base/ui/items/item4.png');
         // Fallback for new shop art until it is repacked into base atlases.
         this.load.image('shopHeader', 'assets/base/ui/shop/header.png');
         this.load.image('shopNavBg', 'assets/base/ui/shop/nav_bg.png');
         this.load.image('shopNavSelected', 'assets/base/ui/shop/nav_selected.png');
+        this.load.image('shopBuyItemButton', 'assets/base/ui/shop/buy_item_button.png');
+        this.load.image('shopInfoButton', 'assets/base/ui/shop/info_button.png');
+        this.load.image('shopSkillBravery', 'assets/base/ui/skills/skill_bravery.png');
+        this.load.image('shopSkillEnergy', 'assets/base/ui/skills/skill_energy.png');
+        this.load.image('shopSkillFriendship', 'assets/base/ui/skills/skill_frendship.png');
+        this.load.image('shopSkillKnowledge', 'assets/base/ui/skills/skill_knowledge.png');
+        this.load.image('shopItem1', 'assets/base/ui/items/item1.png');
+        this.load.image('shopItem2', 'assets/base/ui/items/item2.png');
+        this.load.image('shopItem3', 'assets/base/ui/items/item3.png');
+        this.load.image('shopItem4', 'assets/base/ui/items/item4.png');
 
         this.loadImage('cankerberry', 'assets/base/items/cankerberry.png');
         this.loadImage('witchMushroom', 'assets/base/items/witchMushroom.png');
