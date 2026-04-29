@@ -728,6 +728,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('shopNavSelected', 'assets/base/ui/shop/nav_selected.png');
         this.loadImage('shopBuyItemButton', 'assets/base/ui/shop/buy_item_button.png');
         this.loadImage('shopInfoButton', 'assets/base/ui/shop/info_button.png');
+        this.loadImage('shopItemBg', 'assets/base/ui/shop/itemBg.png');
         this.loadImage('shopSkillBravery', 'assets/base/ui/skills/skill_bravery.png');
         this.loadImage('shopSkillEnergy', 'assets/base/ui/skills/skill_energy.png');
         this.loadImage('shopSkillFriendship', 'assets/base/ui/skills/skill_frendship.png');
@@ -742,6 +743,7 @@ export default class LoadingScreen extends BaseScreen {
         this.load.image('shopNavSelected', 'assets/base/ui/shop/nav_selected.png');
         this.load.image('shopBuyItemButton', 'assets/base/ui/shop/buy_item_button.png');
         this.load.image('shopInfoButton', 'assets/base/ui/shop/info_button.png');
+        this.load.image('shopItemBg', 'assets/base/ui/shop/itemBg.png');
         this.load.image('shopSkillBravery', 'assets/base/ui/skills/skill_bravery.png');
         this.load.image('shopSkillEnergy', 'assets/base/ui/skills/skill_energy.png');
         this.load.image('shopSkillFriendship', 'assets/base/ui/skills/skill_frendship.png');

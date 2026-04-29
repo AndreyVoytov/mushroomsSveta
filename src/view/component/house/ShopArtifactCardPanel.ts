@@ -62,10 +62,10 @@ export default class ShopArtifactCardPanel extends BasePanel {
             font: "bold 20px Arial",
             fill: "#7f187e",
             align: "right",
-            lineSpacing: 26,
             wordWrap: true,
             wordWrapWidth: 180
         });
+        usageLabel.lineSpacing = 26;
         usageLabel.anchor.set(1, 1);
         usageLabel.x = 138;
         usageLabel.y = 63;
@@ -83,6 +83,19 @@ export default class ShopArtifactCardPanel extends BasePanel {
         levelLabel.anchor.set(1, 0.5);
         levelLabel.x = 138;
         levelLabel.y = 80;
+
+        const itemBackground = this.attachSprite("shopItemBg", "itemBackground");
+        itemBackground.x = -110;
+        itemBackground.y = 92;
+        itemBackground.scale.set(0.95);
+        itemBackground.alpha = 0.95;
+        this.game.add.tween(itemBackground).to({ angle: 360 }, 40000, Phaser.Easing.Linear.None, true, 0, -1, false);
+
+        const itemSplash = this.attachSprite("splashY", "itemSplash");
+        itemSplash.x = -110;
+        itemSplash.y = 90;
+        itemSplash.scale.set(1);
+        itemSplash.alpha = 0.8;
 
         const itemIcon = this.attachSprite(item.icon, "itemIcon");
         itemIcon.x = -110;
