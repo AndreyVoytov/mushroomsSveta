@@ -5,6 +5,11 @@ import ShopArtifactCardPanel from './ShopArtifactCardPanel';
 import ShopSectionPanel from './ShopSectionPanel';
 
 export default class ShopItemsSectionPanel extends ShopSectionPanel {
+    private static readonly CARD_SCALE = 1.25;
+    private static readonly COLUMN_OFFSET = 232;
+    private static readonly ROW_START_Y = -158;
+    private static readonly ROW_STEP = 390;
+
     private cards: ShopArtifactCardPanel[] = [];
 
     constructor(game: Phaser.Game) {
@@ -15,8 +20,9 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
             const row = Math.floor(index / 2);
             const column = index % 2;
 
-            card.x = column == 0 ? -187 : 187;
-            card.y = -84 + row * 265;
+            card.scale.set(ShopItemsSectionPanel.CARD_SCALE);
+            card.x = column == 0 ? -ShopItemsSectionPanel.COLUMN_OFFSET : ShopItemsSectionPanel.COLUMN_OFFSET;
+            card.y = ShopItemsSectionPanel.ROW_START_Y + row * ShopItemsSectionPanel.ROW_STEP;
             card.alpha = 0;
 
             this.addSprite(card);
@@ -34,7 +40,7 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
 
         this.cards.forEach(card => card.alpha = 0);
         this.animateRow(0, 200);
-        this.animateRow(1, 380);
+        this.animateRow(1, 400);
     }
 
     public hideSection(): void {

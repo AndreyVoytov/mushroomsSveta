@@ -1,3 +1,4 @@
+import AnimationUtils from '../../../core/utils/AnimationUtils';
 import BasePanel from '../panel/BasePanel';
 
 export default class ShopSectionPanel extends BasePanel {
@@ -8,8 +9,7 @@ export default class ShopSectionPanel extends BasePanel {
     }
 
     public showSection(_animate?: boolean): void {
-        this.visible = true;
-        this.alpha = 1;
+        AnimationUtils.showStable(this);
     }
 
     public hideSection(): void {

@@ -24,7 +24,7 @@ export default class GemsPanel extends BasePanel {
             }
 
             if (!houseScreen.shopShown) {
-                let shopPanel = new ShopPanel(this.game, houseScreen);
+                let shopPanel = new ShopPanel(this.game, houseScreen, undefined, 'items');
                 shopPanel.show();
 
                 houseScreen.addPanel(shopPanel);

@@ -18,13 +18,16 @@ export default class ShopPanel extends ClosablePanel {
     private titleLabel: Label;
     private closeButton: Phaser.Button;
     private activeTab: ShopTabId = 'bank';
+    private defaultTab: ShopTabId = 'bank';
     private tabs: { [key: string]: ShopTabButton } = {};
     private sections: { [key: string]: ShopSectionPanel } = {};
 
-    constructor(game: Phaser.Game, screen: Phaser.State, callbackOnBuy?: () => void) {
+    constructor(game: Phaser.Game, screen: Phaser.State, callbackOnBuy?: () => void, defaultTab: ShopTabId = 'bank') {
         super(game, game.width / 2 - 1, game.height / 2 - 45, true, "blank", 1.04);
         this.game = game;
         this.screen = screen;
+        this.defaultTab = defaultTab;
+        this.activeTab = defaultTab;
         this.fixedToCamera = true;
 
         this.createSections(callbackOnBuy);
@@ -54,7 +57,7 @@ export default class ShopPanel extends ClosablePanel {
         this.closeButton.addChild(cross);
 
         this.layout();
-        this.selectTab('bank', false, false);
+        this.selectTab(this.defaultTab, false, false);
     }
 
     protected onClose() {
@@ -67,12 +70,22 @@ export default class ShopPanel extends ClosablePanel {
     }
 
     protected onShow() {
-        this.selectTab('bank', false, true);
+        this.selectTab(this.defaultTab, false, true);
 
         if (this.screen instanceof HouseScreen) {
             this.screen.hideUI(0, true);
             this.screen.shopShown = true;
         }
+    }
+
+    public setDefaultTab(tab: ShopTabId, switchImmediately?: boolean): ShopPanel {
+        this.defaultTab = tab;
+
+        if (switchImmediately || this.opened) {
+            this.selectTab(tab, false, this.opened);
+        }
+
+        return this;
     }
 
     private createSections(callbackOnBuy?: () => void): void {
