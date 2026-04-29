@@ -23,6 +23,8 @@ interface SkillRowView {
 }
 
 interface SlotView {
+    equippedBg: Phaser.Sprite;
+    highlight: Phaser.Sprite;
     icon: Phaser.Sprite;
     hitArea: Phaser.Button;
     infoButton: Phaser.Button;
@@ -32,6 +34,10 @@ export default class CharacterPanel extends ClosablePanel {
     private static readonly PSD_WIDTH = 960;
     private static readonly PSD_HEIGHT = 1669;
     private static readonly MAX_VISIBLE_SKILLS = 3;
+    private static readonly ACTION_BUTTON_HIDDEN_OFFSET = 240;
+    private static readonly ACTION_BUTTON_OPEN_DELAY = 220;
+    private static readonly ACTION_BUTTON_OPEN_DURATION = 260;
+    private static readonly ACTION_BUTTON_CLOSE_DURATION = 120;
 
     private static readonly SKILL_ROWS = [
         { iconX: 551, iconY: 410.5, valueX: 663.5, valueY: 409.5, infoX: 774.5, infoY: 408 },
@@ -49,6 +55,7 @@ export default class CharacterPanel extends ClosablePanel {
     ];
 
     private screen: HouseScreen;
+    private panelScale: number;
     private panelHitArea: Phaser.Sprite;
     private portrait: Phaser.Sprite;
     private portraitHitArea: Phaser.Button;
@@ -63,6 +70,8 @@ export default class CharacterPanel extends ClosablePanel {
     private shopButtonLabel: Label;
     private closeButton: Phaser.Button;
     private closeButtonLabel: Label;
+    private backpackButtonShownY: number;
+    private shopButtonShownY: number;
     private upgradeButton: Phaser.Button;
     private upgradeButtonLabel: Label;
     private upgradeButtonGemIcon: Phaser.Sprite;
@@ -82,6 +91,7 @@ export default class CharacterPanel extends ClosablePanel {
             Math.min(1, game.width / CharacterPanel.PSD_WIDTH, game.height / CharacterPanel.PSD_HEIGHT)
         );
         this.screen = screen;
+        this.panelScale = Math.min(1, game.width / CharacterPanel.PSD_WIDTH, game.height / CharacterPanel.PSD_HEIGHT);
         this.visible = false;
         this.fixedToCamera = true;
 
@@ -90,13 +100,23 @@ export default class CharacterPanel extends ClosablePanel {
 
     protected onShow(): void {
         this.openingShop = false;
+        this.prepareBottomActionButtonsForShow();
         this.syncSelectedCharacter();
         this.refreshStaticTexts();
         this.refreshView();
         this.screen.hideUI(0, true);
+        this.bringDetachedActionButtonsToTop();
+        this.game.time.events.add(140, () => {
+            if (this.visible) {
+                this.bringDetachedActionButtonsToTop();
+            }
+        });
+        this.animateBottomActionButtonsIn();
     }
 
     protected onClose(): void {
+        this.animateBottomActionButtonsOut();
+
         if (this.openingShop) {
             this.game.time.events.add(360, () => {
                 let shopPanel = new ShopPanel(this.game, this.screen, undefined, 'items');
@@ -211,6 +231,14 @@ export default class CharacterPanel extends ClosablePanel {
         this.upgradeButton.addChild(this.upgradeButtonGemIcon);
 
         CharacterPanel.SLOT_LAYOUT.forEach(layout => {
+            const equippedBg = this.attachSprite("characterEquippedBg", layout.slotId + "EquippedBg");
+            this.placeAtPsdCenter(equippedBg, layout.x, layout.y);
+            equippedBg.visible = false;
+
+            const highlight = this.attachSprite("characterArtifactHighlight", layout.slotId + "Highlight");
+            this.placeAtPsdCenter(highlight, layout.x, layout.y);
+            highlight.visible = false;
+
             const icon = this.attachSprite("shopItem1", layout.slotId + "Icon");
             this.placeAtPsdCenter(icon, layout.x, layout.y);
             icon.visible = false;
@@ -229,27 +257,32 @@ export default class CharacterPanel extends ClosablePanel {
             infoButton.inputEnabled = false;
 
             this.slotViews[layout.slotId] = {
+                equippedBg: equippedBg,
+                highlight: highlight,
                 icon: icon,
                 hitArea: hitArea,
                 infoButton: infoButton
             };
         });
 
-        this.backpackButton = this.attachButton("characterBackpackButton", () => this.showBackpackInfo(), "backpackButton");
-        this.placeAtPsdCenter(this.backpackButton, 120.5, 1559);
+        this.backpackButton = this.createDetachedActionButton("characterBackpackButton", () => this.showBackpackInfo(), "backpackButton");
+        this.placeDetachedActionButtonAtPsdCenter(this.backpackButton, 120.5, 1559);
         this.backpackButtonLabel = this.addButtonText(this.backpackButton, "", {
             font: "bold 30px Gilroy",
             fill: "#fff1d7",
             align: "center"
         }, 58);
+        this.backpackButtonShownY = this.backpackButton.cameraOffset.y;
 
-        this.shopButton = this.attachButton("characterShopButton", () => this.openShop(), "shopButton");
-        this.placeAtPsdCenter(this.shopButton, 842.5, 1554.5);
+        this.shopButton = this.createDetachedActionButton("characterShopButton", () => this.openShop(), "shopButton");
+        this.placeDetachedActionButtonAtPsdCenter(this.shopButton, 842.5, 1554.5);
         this.shopButtonLabel = this.addButtonText(this.shopButton, "", {
             font: "bold 30px Gilroy",
             fill: "#fff1d7",
             align: "center"
         }, 62);
+        this.shopButtonShownY = this.shopButton.cameraOffset.y;
+        this.setBottomActionButtonsHiddenState();
 
         this.closeButton = this.attachButton("characterCloseButton", () => this.close(), "closeButton");
         this.placeAtPsdCenter(this.closeButton, 481.5, 1549.5);
@@ -258,6 +291,118 @@ export default class CharacterPanel extends ClosablePanel {
             fill: "#efffdd",
             align: "center"
         }, -1);
+    }
+
+    private prepareBottomActionButtonsForShow(): void {
+        this.stopBottomActionButtonTweens();
+        this.setBottomActionButtonsVisible(true);
+
+        if (this.openingWithoutAnimation) {
+            this.setBottomActionButtonsShownState();
+            this.setBottomActionButtonsInteractive(true);
+            return;
+        }
+
+        this.setBottomActionButtonsInteractive(false);
+        this.setBottomActionButtonsHiddenState();
+    }
+
+    private animateBottomActionButtonsIn(): void {
+        if (this.openingWithoutAnimation) {
+            this.setBottomActionButtonsShownState();
+            this.setBottomActionButtonsInteractive(true);
+            return;
+        }
+
+        this.game.add.tween(this.backpackButton).to({
+            alpha: 1
+        }, CharacterPanel.ACTION_BUTTON_OPEN_DURATION, Phaser.Easing.Back.Out, true, CharacterPanel.ACTION_BUTTON_OPEN_DELAY);
+        this.game.add.tween(this.backpackButton.cameraOffset).to({
+            y: this.backpackButtonShownY
+        }, CharacterPanel.ACTION_BUTTON_OPEN_DURATION, Phaser.Easing.Back.Out, true, CharacterPanel.ACTION_BUTTON_OPEN_DELAY);
+
+        this.game.add.tween(this.shopButton).to({
+            alpha: 1
+        }, CharacterPanel.ACTION_BUTTON_OPEN_DURATION, Phaser.Easing.Back.Out, true, CharacterPanel.ACTION_BUTTON_OPEN_DELAY + 40);
+        this.game.add.tween(this.shopButton.cameraOffset).to({
+            y: this.shopButtonShownY
+        }, CharacterPanel.ACTION_BUTTON_OPEN_DURATION, Phaser.Easing.Back.Out, true, CharacterPanel.ACTION_BUTTON_OPEN_DELAY + 40);
+
+        this.game.time.events.add(CharacterPanel.ACTION_BUTTON_OPEN_DELAY + CharacterPanel.ACTION_BUTTON_OPEN_DURATION + 50, () => {
+            if (this.visible && this.opened) {
+                this.setBottomActionButtonsInteractive(true);
+            }
+        });
+    }
+
+    private animateBottomActionButtonsOut(): void {
+        this.stopBottomActionButtonTweens();
+        this.setBottomActionButtonsInteractive(false);
+
+        this.game.add.tween(this.backpackButton).to({
+            alpha: 0
+        }, CharacterPanel.ACTION_BUTTON_CLOSE_DURATION, Phaser.Easing.Quadratic.In, true);
+        this.game.add.tween(this.backpackButton.cameraOffset).to({
+            y: this.backpackButtonShownY + CharacterPanel.ACTION_BUTTON_HIDDEN_OFFSET
+        }, CharacterPanel.ACTION_BUTTON_CLOSE_DURATION, Phaser.Easing.Quadratic.In, true);
+
+        this.game.add.tween(this.shopButton).to({
+            alpha: 0
+        }, CharacterPanel.ACTION_BUTTON_CLOSE_DURATION, Phaser.Easing.Quadratic.In, true);
+        this.game.add.tween(this.shopButton.cameraOffset).to({
+            y: this.shopButtonShownY + CharacterPanel.ACTION_BUTTON_HIDDEN_OFFSET
+        }, CharacterPanel.ACTION_BUTTON_CLOSE_DURATION, Phaser.Easing.Quadratic.In, true);
+
+        this.game.time.events.add(CharacterPanel.ACTION_BUTTON_CLOSE_DURATION + 20, () => {
+            if (!this.opened) {
+                this.setBottomActionButtonsVisible(false);
+            }
+        });
+    }
+
+    private setBottomActionButtonsShownState(): void {
+        this.backpackButton.cameraOffset.y = this.backpackButtonShownY;
+        this.backpackButton.alpha = 1;
+        this.shopButton.cameraOffset.y = this.shopButtonShownY;
+        this.shopButton.alpha = 1;
+    }
+
+    private setBottomActionButtonsHiddenState(): void {
+        this.backpackButton.cameraOffset.y = this.backpackButtonShownY + CharacterPanel.ACTION_BUTTON_HIDDEN_OFFSET;
+        this.backpackButton.alpha = 0;
+        this.shopButton.cameraOffset.y = this.shopButtonShownY + CharacterPanel.ACTION_BUTTON_HIDDEN_OFFSET;
+        this.shopButton.alpha = 0;
+    }
+
+    private setBottomActionButtonsVisible(visible: boolean): void {
+        this.backpackButton.visible = visible;
+        this.shopButton.visible = visible;
+    }
+
+    private setBottomActionButtonsInteractive(enabled: boolean): void {
+        this.backpackButton.inputEnabled = enabled;
+        this.shopButton.inputEnabled = enabled;
+    }
+
+    private stopBottomActionButtonTweens(): void {
+        this.game.tweens.removeFrom(this.backpackButton);
+        this.game.tweens.removeFrom(this.shopButton);
+        this.game.tweens.removeFrom(this.backpackButton.cameraOffset);
+        this.game.tweens.removeFrom(this.shopButton.cameraOffset);
+    }
+
+    private refreshSlotSelectionVisuals(): void {
+        CharacterPanel.SLOT_LAYOUT.forEach(layout => {
+            const slotView = this.slotViews[layout.slotId];
+            const hasArtifact = slotView.icon.visible;
+            slotView.equippedBg.visible = hasArtifact;
+            slotView.highlight.visible = hasArtifact && this.selectedArtifactSlot == layout.slotId;
+        });
+    }
+
+    private bringDetachedActionButtonsToTop(): void {
+        this.game.world.bringToTop(this.backpackButton);
+        this.game.world.bringToTop(this.shopButton);
     }
 
     private refreshStaticTexts(): void {
@@ -326,6 +471,8 @@ export default class CharacterPanel extends ClosablePanel {
             const slotView = this.slotViews[layout.slotId];
             const artifactEntry = user.getCharacterEquippedArtifact(character.id, layout.slotId);
             if (!artifactEntry) {
+                slotView.equippedBg.visible = false;
+                slotView.highlight.visible = false;
                 slotView.icon.visible = false;
                 slotView.hitArea.visible = false;
                 slotView.hitArea.inputEnabled = false;
@@ -336,6 +483,8 @@ export default class CharacterPanel extends ClosablePanel {
 
             const item = ShopArtifactItemsConfiguration.getById(artifactEntry.id);
             if (!item) {
+                slotView.equippedBg.visible = false;
+                slotView.highlight.visible = false;
                 slotView.icon.visible = false;
                 slotView.hitArea.visible = false;
                 slotView.hitArea.inputEnabled = false;
@@ -352,6 +501,7 @@ export default class CharacterPanel extends ClosablePanel {
             slotView.infoButton.visible = true;
             slotView.infoButton.inputEnabled = true;
         });
+        this.refreshSlotSelectionVisuals();
 
         const showArrows = characters.length > 1;
         this.arrowLeftButton.visible = showArrows;
@@ -403,6 +553,7 @@ export default class CharacterPanel extends ClosablePanel {
         const config = CharactersConfiguration.getById(character.id);
         this.selectedArtifactSlot = null;
         this.setUpgradeButtonVisible(false);
+        this.refreshSlotSelectionVisuals();
         this.contentTitle.text = config ? config.name : LocalizationService.get("ui.character.title", "Character");
         this.contentBody.text = config ? LocalizationService.get(config.descriptionText, config.descriptionText) : "";
     }
@@ -425,6 +576,7 @@ export default class CharacterPanel extends ClosablePanel {
 
         this.selectedArtifactSlot = null;
         this.setUpgradeButtonVisible(false);
+        this.refreshSlotSelectionVisuals();
         this.contentTitle.text = this.capitalize(LocalizationService.get(skillConfig.name));
         this.contentBody.text = [
             LocalizationService.get("ui.character.currentValue", "Current value: {value}", { value: skillValue.value }),
@@ -448,6 +600,7 @@ export default class CharacterPanel extends ClosablePanel {
         if (!artifactEntry) {
             this.selectedArtifactSlot = null;
             this.setUpgradeButtonVisible(false);
+            this.refreshSlotSelectionVisuals();
             this.contentTitle.text = this.getSlotName(slotId);
             this.contentBody.text = LocalizationService.get("ui.character.noArtifact", "No artifact equipped.");
             return;
@@ -455,6 +608,9 @@ export default class CharacterPanel extends ClosablePanel {
 
         const item = ShopArtifactItemsConfiguration.getById(artifactEntry.id);
         if (!item) {
+            this.selectedArtifactSlot = null;
+            this.setUpgradeButtonVisible(false);
+            this.refreshSlotSelectionVisuals();
             return;
         }
 
@@ -470,6 +626,7 @@ export default class CharacterPanel extends ClosablePanel {
             .filter(text => !!text);
 
         this.selectedArtifactSlot = slotId;
+        this.refreshSlotSelectionVisuals();
         this.contentTitle.text = LocalizationService.get(item.name);
         this.contentBody.text = [
             LocalizationService.get(item.descriptionText, ""),
@@ -489,6 +646,7 @@ export default class CharacterPanel extends ClosablePanel {
         const backpack = UserService.getUser().getArtifactBackpack();
         this.selectedArtifactSlot = null;
         this.setUpgradeButtonVisible(false);
+        this.refreshSlotSelectionVisuals();
         this.contentTitle.text = LocalizationService.get("ui.character.backpackTitle", "Backpack");
 
         if (backpack.length == 0) {
@@ -624,9 +782,29 @@ export default class CharacterPanel extends ClosablePanel {
         return label;
     }
 
+    private createDetachedActionButton(spriteId: string, callback, name?: string): Phaser.Button {
+        const button = SpriteUtils.createButton(this.game, 0, 0, spriteId, callback);
+        button.anchor.set(0.5);
+        button.name = name || spriteId;
+        button.fixedToCamera = true;
+        button.visible = false;
+        button.alpha = 0;
+        button.inputEnabled = false;
+        this.game.add.existing(button);
+        return button;
+    }
+
     private placeAtPsdCenter(displayObject: PIXI.DisplayObject, centerX: number, centerY: number): void {
         (<any>displayObject).x = this.psdX(centerX);
         (<any>displayObject).y = this.psdY(centerY);
+    }
+
+    private placeDetachedActionButtonAtPsdCenter(button: Phaser.Button, centerX: number, centerY: number): void {
+        button.scale.set(this.panelScale);
+        button.cameraOffset.set(
+            this.game.width / 2 + this.psdX(centerX) * this.panelScale,
+            this.game.height / 2 + this.psdY(centerY) * this.panelScale
+        );
     }
 
     private psdX(value: number): number {

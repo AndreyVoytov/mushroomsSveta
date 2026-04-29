@@ -745,6 +745,8 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('characterBackpackButton', 'assets/base/ui/character/backpack_button.png');
         this.loadImage('characterShopButton', 'assets/base/ui/character/shop_button.png');
         this.loadImage('characterCloseButton', 'assets/base/ui/character/close_button.png');
+        this.loadImage('characterEquippedBg', 'assets/base/ui/character/equipped_bg.png');
+        this.loadImage('characterArtifactHighlight', 'assets/base/ui/character/highlight.png');
         this.loadImage('characterSkillInfoButton', 'assets/base/ui/character/info_button1.png');
         this.loadImage('characterArtifactInfoButton', 'assets/base/ui/character/info_button_item.png');
         // Fallback for new shop art until it is repacked into base atlases.
@@ -770,6 +772,8 @@ export default class LoadingScreen extends BaseScreen {
         this.load.image('characterBackpackButton', 'assets/base/ui/character/backpack_button.png');
         this.load.image('characterShopButton', 'assets/base/ui/character/shop_button.png');
         this.load.image('characterCloseButton', 'assets/base/ui/character/close_button.png');
+        this.load.image('characterEquippedBg', 'assets/base/ui/character/equipped_bg.png');
+        this.load.image('characterArtifactHighlight', 'assets/base/ui/character/highlight.png');
         this.load.image('characterSkillInfoButton', 'assets/base/ui/character/info_button1.png');
         this.load.image('characterArtifactInfoButton', 'assets/base/ui/character/info_button_item.png');
 
