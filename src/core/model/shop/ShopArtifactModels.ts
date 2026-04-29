@@ -19,6 +19,7 @@ export interface ShopArtifactSkillConfig {
 export interface ShopArtifactItemConfig {
     id: string;
     name: string;
+    descriptionText: string;
     icon: string;
     price: number;
     skillIds: ShopArtifactSkillId[];

@@ -1,5 +1,6 @@
 import ShopArtifactItemsConfiguration from "../configuration/ShopArtifactItemsConfiguration";
 import CharactersConfiguration from "../configuration/CharactersConfiguration";
+import ShopArtifactSkillsConfiguration from "../configuration/ShopArtifactSkillsConfiguration";
 import { CharacterArtifactSlotId, CharacterTagId } from "../model/character/CharacterModels";
 import { ShopArtifactItemConfig } from "../model/shop/ShopArtifactModels";
 import User from "../model/user/User";
@@ -7,6 +8,7 @@ import UserService from "./UserService";
 
 export type ShopArtifactPurchaseResult = 'success' | 'notEnoughGems' | 'alreadyPurchased' | 'unknownItem';
 export type ShopArtifactGrantResult = 'equipped' | 'backpack' | 'unknownItem';
+export type ShopArtifactUpgradeResult = 'success' | 'notEnoughGems' | 'maxLevel' | 'notOwned' | 'unknownItem';
 
 export default class ShopArtifactService {
 
@@ -25,6 +27,17 @@ export default class ShopArtifactService {
     public static getItemLevel(item: ShopArtifactItemConfig): number {
         let itemLevel = UserService.getUser().getOwnedArtifactLevel(item.id);
         return itemLevel > 0 ? itemLevel : Math.max(1, item.currentLevel || 1);
+    }
+
+    public static getUpgradePrice(item: ShopArtifactItemConfig, currentLevel?: number): number {
+        if (!item) {
+            return 0;
+        }
+
+        const safeCurrentLevel = Math.max(1, currentLevel || this.getItemLevel(item));
+        return (item.skillIds || []).reduce((total, skillId) => {
+            return total + ShopArtifactSkillsConfiguration.getUpgradePrice(skillId, safeCurrentLevel);
+        }, 0);
     }
 
     public static buy(item: ShopArtifactItemConfig, callbackOnBought?: () => void): ShopArtifactPurchaseResult {
@@ -68,6 +81,32 @@ export default class ShopArtifactService {
 
         user.putArtifactToBackpack(item.id, safeLevel);
         return 'backpack';
+    }
+
+    public static upgradeOwnedItem(itemId: string, user?: User): ShopArtifactUpgradeResult {
+        const item = ShopArtifactItemsConfiguration.getById(itemId);
+        if (!item) {
+            return 'unknownItem';
+        }
+
+        const safeUser = user || UserService.getUser();
+        const currentLevel = safeUser.getOwnedArtifactLevel(item.id);
+        if (currentLevel <= 0) {
+            return 'notOwned';
+        }
+
+        if (currentLevel >= item.maxLevel) {
+            return 'maxLevel';
+        }
+
+        const price = this.getUpgradePrice(item, currentLevel);
+        if (safeUser.getSupermoney() < price) {
+            return 'notEnoughGems';
+        }
+
+        safeUser.setSupermoney(safeUser.getSupermoney() - price);
+        safeUser.setOwnedArtifactLevel(item.id, currentLevel + 1);
+        return 'success';
     }
 
     private static compareItems(left: ShopArtifactItemConfig, right: ShopArtifactItemConfig): number {

@@ -8,6 +8,7 @@ export default class CharactersConfiguration {
         {
             id: 'sveta',
             name: 'Emma',
+            descriptionText: 'character.sveta.description',
             aliases: ['Sveta', 'Red Hood'],
             imageKey: 'sveta1',
             tags: ['human'],

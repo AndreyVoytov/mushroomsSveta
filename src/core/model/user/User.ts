@@ -482,6 +482,22 @@ export default class User {
         ServerStoreComponent.saveLocalUser(this);
     }
 
+    public setOwnedArtifactLevel(id: string, level?: number): void {
+        const safeLevel = Math.max(1, level || 1);
+        const backpackEntry = this.getArtifactBackpackEntry(id);
+        if (backpackEntry) {
+            backpackEntry.level = safeLevel;
+            ServerStoreComponent.saveLocalUser(this);
+            return;
+        }
+
+        const equippedEntry = this.getEquippedArtifactEntry(id);
+        if (equippedEntry) {
+            equippedEntry.level = safeLevel;
+            ServerStoreComponent.saveLocalUser(this);
+        }
+    }
+
     public removeArtifactFromBackpack(id: string): void {
         this.removeArtifactFromBackpackInternal(id);
         ServerStoreComponent.saveLocalUser(this);

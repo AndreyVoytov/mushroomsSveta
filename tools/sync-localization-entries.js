@@ -106,6 +106,9 @@ const manualKeys = [
     'ui.character.slot.amulet',
     'ui.character.slot.armor',
     'ui.character.slot.ring',
+    'ui.character.maxLevel',
+    'ui.character.upgrade',
+    'ui.character.upgradedSuccess',
     'shop.item.level',
     'ui.transition.sheWontHelp',
     'ui.transition.thirtyMinutesLater',
@@ -383,7 +386,8 @@ function buildExpectedKeys() {
         collectDiaryKeys(path.join(rootDir, 'src', 'core', 'configuration', 'DiaryConfiguration.ts')),
         collectBuyKeys(path.join(rootDir, 'src', 'core', 'service', 'Settings.ts')),
         collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactSkillsConfiguration.ts'), 'allSkills', ['name']),
-        collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactItemsConfiguration.ts'), 'allItems', ['name', 'usageText']),
+        collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactItemsConfiguration.ts'), 'allItems', ['name', 'usageText', 'descriptionText']),
+        collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'CharactersConfiguration.ts'), 'allCharacters', ['descriptionText']),
         collectStringArrayPropertyValues(path.join(rootDir, 'src', 'core', 'configuration', 'MapPresetConfiguration.ts'), 'notes')
     ].forEach(set => {
         set.forEach(key => keys.add(key));

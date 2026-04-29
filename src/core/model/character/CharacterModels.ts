@@ -17,6 +17,7 @@ export interface CharacterArtifactEntry {
 export interface CharacterConfig {
     id: string;
     name: string;
+    descriptionText: string;
     aliases?: string[];
     imageKey?: string;
     tags: CharacterTagId[];

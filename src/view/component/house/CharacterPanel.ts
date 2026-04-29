@@ -1,14 +1,19 @@
 import CharactersConfiguration from "../../../core/configuration/CharactersConfiguration";
 import ShopArtifactItemsConfiguration from "../../../core/configuration/ShopArtifactItemsConfiguration";
 import ShopArtifactSkillsConfiguration from "../../../core/configuration/ShopArtifactSkillsConfiguration";
+import GameText from "../../../core/localization/GameText";
 import LocalizationService from "../../../core/localization/LocalizationService";
-import { CharacterArtifactSlotId, CharacterSkillValue } from "../../../core/model/character/CharacterModels";
+import { CharacterArtifactSlotId } from "../../../core/model/character/CharacterModels";
 import { ShopArtifactBackpackEntry, ShopArtifactItemConfig } from "../../../core/model/shop/ShopArtifactModels";
+import ShopArtifactService from "../../../core/service/ShopArtifactService";
 import UserService from "../../../core/service/UserService";
+import AnimationUtils from "../../../core/utils/AnimationUtils";
+import SoundUtils from "../../../core/utils/SoundUtils";
 import SpriteUtils from "../../../core/utils/SpriteUtils";
 import HouseScreen from "../../screen/HouseScreen";
 import ClosablePanel from "../panel/ClosablePanel";
 import Label from "../panel/Label";
+import ConfirmPanel from "./ConfirmPanel";
 import ShopPanel from "./ShopPanel";
 
 interface SkillRowView {
@@ -19,6 +24,7 @@ interface SkillRowView {
 
 interface SlotView {
     icon: Phaser.Sprite;
+    hitArea: Phaser.Button;
     infoButton: Phaser.Button;
 }
 
@@ -43,19 +49,28 @@ export default class CharacterPanel extends ClosablePanel {
     ];
 
     private screen: HouseScreen;
+    private panelHitArea: Phaser.Sprite;
     private portrait: Phaser.Sprite;
+    private portraitHitArea: Phaser.Button;
     private bannerTitle: Label;
     private contentTitle: Label;
     private contentBody: Label;
     private arrowLeftButton: Phaser.Button;
     private arrowRightButton: Phaser.Button;
     private backpackButton: Phaser.Button;
+    private backpackButtonLabel: Label;
     private shopButton: Phaser.Button;
+    private shopButtonLabel: Label;
     private closeButton: Phaser.Button;
+    private closeButtonLabel: Label;
+    private upgradeButton: Phaser.Button;
+    private upgradeButtonLabel: Label;
+    private upgradeButtonGemIcon: Phaser.Sprite;
     private skillRows: SkillRowView[] = [];
     private slotViews: { [slotId: string]: SlotView } = {};
     private currentCharacterIndex: number = 0;
     private openingShop: boolean = false;
+    private selectedArtifactSlot: CharacterArtifactSlotId = null;
 
     constructor(game: Phaser.Game, screen: HouseScreen) {
         super(
@@ -76,6 +91,7 @@ export default class CharacterPanel extends ClosablePanel {
     protected onShow(): void {
         this.openingShop = false;
         this.syncSelectedCharacter();
+        this.refreshStaticTexts();
         this.refreshView();
         this.screen.hideUI(0, true);
     }
@@ -94,11 +110,23 @@ export default class CharacterPanel extends ClosablePanel {
     }
 
     private createLayout(): void {
+        this.panelHitArea = this.attachSprite("blank", "panelHitArea");
+        this.panelHitArea.width = CharacterPanel.PSD_WIDTH;
+        this.panelHitArea.height = CharacterPanel.PSD_HEIGHT;
+        this.panelHitArea.alpha = 0.001;
+        this.panelHitArea.inputEnabled = true;
+
         const skillsBg = this.attachSprite("characterSkillsBg", "skillsBg");
         this.placeAtPsdCenter(skillsBg, 645.5, 550);
 
         this.portrait = this.attachSprite("sveta1", "portrait");
         this.placeAtPsdCenter(this.portrait, 290.5, 534.5);
+
+        this.portraitHitArea = this.attachButton("blank", () => this.showCharacterDescription(), "portraitHitArea");
+        this.placeAtPsdCenter(this.portraitHitArea, 286, 532);
+        this.portraitHitArea.width = 360;
+        this.portraitHitArea.height = 600;
+        this.portraitHitArea.alpha = 0.001;
 
         const board = this.attachSprite("characterPanelBg", "board");
         this.placeAtPsdCenter(board, 480, 1121.5);
@@ -118,11 +146,9 @@ export default class CharacterPanel extends ClosablePanel {
 
         this.arrowLeftButton = this.attachButton("characterArrowLeft", () => this.shiftCharacter(-1), "arrowLeftButton");
         this.placeAtPsdCenter(this.arrowLeftButton, 81, 731);
-        this.arrowLeftButton.scale.set(1);
 
         this.arrowRightButton = this.attachButton("characterArrowRight", () => this.shiftCharacter(1), "arrowRightButton");
         this.placeAtPsdCenter(this.arrowRightButton, 877, 728.5);
-        this.arrowRightButton.scale.set(1);
 
         CharacterPanel.SKILL_ROWS.forEach((row, index) => {
             const icon = this.attachSprite("shopSkillEnergy", "skillIcon" + index);
@@ -139,7 +165,6 @@ export default class CharacterPanel extends ClosablePanel {
 
             const infoButton = this.attachButton("characterSkillInfoButton", () => this.showSkillInfo(index), "skillInfo" + index);
             this.placeAtPsdCenter(infoButton, row.infoX, row.infoY);
-            infoButton.scale.set(1);
 
             this.skillRows.push({
                 icon: icon,
@@ -159,7 +184,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.placeAtPsdCenter(this.contentTitle, 480, 885);
 
         this.contentBody = this.attachText("contentBody", "", {
-            font: "bold 24px Arial",
+            font: "bold 23px Arial",
             fill: "#855331",
             align: "center",
             wordWrap: true,
@@ -170,10 +195,33 @@ export default class CharacterPanel extends ClosablePanel {
         this.contentBody.x = this.psdX(480);
         this.contentBody.y = this.psdY(922);
 
+        this.upgradeButton = this.attachButton("characterCloseButton", () => this.tryUpgradeSelectedArtifact(), "upgradeButton");
+        this.placeAtPsdCenter(this.upgradeButton, 480, 1318);
+        this.upgradeButton.visible = false;
+
+        this.upgradeButtonLabel = this.addButtonText(this.upgradeButton, "", {
+            font: "bold 28px Gilroy",
+            fill: "#efffdd",
+            align: "center"
+        }, -2);
+
+        this.upgradeButtonGemIcon = SpriteUtils.createSprite(this.game, 118, -1, "gems");
+        this.upgradeButtonGemIcon.anchor.set(0.5);
+        this.upgradeButtonGemIcon.scale.set(0.35);
+        this.upgradeButton.addChild(this.upgradeButtonGemIcon);
+
         CharacterPanel.SLOT_LAYOUT.forEach(layout => {
             const icon = this.attachSprite("shopItem1", layout.slotId + "Icon");
             this.placeAtPsdCenter(icon, layout.x, layout.y);
             icon.visible = false;
+
+            const hitArea = this.attachButton("blank", () => this.showArtifactInfo(layout.slotId), layout.slotId + "HitArea");
+            this.placeAtPsdCenter(hitArea, layout.x, layout.y);
+            hitArea.width = 160;
+            hitArea.height = 160;
+            hitArea.alpha = 0.001;
+            hitArea.visible = false;
+            hitArea.inputEnabled = false;
 
             const infoButton = this.attachButton("characterArtifactInfoButton", () => this.showArtifactInfo(layout.slotId), layout.slotId + "Info");
             this.placeAtPsdCenter(infoButton, layout.infoX, layout.infoY);
@@ -182,36 +230,40 @@ export default class CharacterPanel extends ClosablePanel {
 
             this.slotViews[layout.slotId] = {
                 icon: icon,
+                hitArea: hitArea,
                 infoButton: infoButton
             };
         });
 
         this.backpackButton = this.attachButton("characterBackpackButton", () => this.showBackpackInfo(), "backpackButton");
         this.placeAtPsdCenter(this.backpackButton, 120.5, 1559);
-        this.backpackButton.scale.set(1);
-        this.addButtonText(this.backpackButton, LocalizationService.get("ui.character.backpack", "Backpack"), {
+        this.backpackButtonLabel = this.addButtonText(this.backpackButton, "", {
             font: "bold 30px Gilroy",
             fill: "#fff1d7",
             align: "center"
-        }, 12);
+        }, 32);
 
         this.shopButton = this.attachButton("characterShopButton", () => this.openShop(), "shopButton");
         this.placeAtPsdCenter(this.shopButton, 842.5, 1554.5);
-        this.shopButton.scale.set(1);
-        this.addButtonText(this.shopButton, LocalizationService.get("ui.character.shop", "Shop"), {
+        this.shopButtonLabel = this.addButtonText(this.shopButton, "", {
             font: "bold 30px Gilroy",
             fill: "#fff1d7",
             align: "center"
-        }, 18);
+        }, 38);
 
         this.closeButton = this.attachButton("characterCloseButton", () => this.close(), "closeButton");
         this.placeAtPsdCenter(this.closeButton, 481.5, 1549.5);
-        this.closeButton.scale.set(1);
-        this.addButtonText(this.closeButton, LocalizationService.get("ui.character.close", "Close"), {
+        this.closeButtonLabel = this.addButtonText(this.closeButton, "", {
             font: "bold 40px Gilroy",
             fill: "#efffdd",
             align: "center"
-        }, 4);
+        }, -1);
+    }
+
+    private refreshStaticTexts(): void {
+        this.backpackButtonLabel.text = LocalizationService.get("ui.character.backpack", "Backpack");
+        this.shopButtonLabel.text = LocalizationService.get("ui.character.shop", "Shop");
+        this.closeButtonLabel.text = LocalizationService.get("ui.character.close", "Close");
     }
 
     private refreshView(): void {
@@ -232,7 +284,6 @@ export default class CharacterPanel extends ClosablePanel {
         }
 
         user.setCurrentCharacterId(character.id);
-
         this.bannerTitle.text = config.name;
 
         if (config.imageKey) {
@@ -276,6 +327,8 @@ export default class CharacterPanel extends ClosablePanel {
             const artifactEntry = user.getCharacterEquippedArtifact(character.id, layout.slotId);
             if (!artifactEntry) {
                 slotView.icon.visible = false;
+                slotView.hitArea.visible = false;
+                slotView.hitArea.inputEnabled = false;
                 slotView.infoButton.visible = false;
                 slotView.infoButton.inputEnabled = false;
                 return;
@@ -284,6 +337,8 @@ export default class CharacterPanel extends ClosablePanel {
             const item = ShopArtifactItemsConfiguration.getById(artifactEntry.id);
             if (!item) {
                 slotView.icon.visible = false;
+                slotView.hitArea.visible = false;
+                slotView.hitArea.inputEnabled = false;
                 slotView.infoButton.visible = false;
                 slotView.infoButton.inputEnabled = false;
                 return;
@@ -292,6 +347,8 @@ export default class CharacterPanel extends ClosablePanel {
             SpriteUtils.loadTexture(slotView.icon, item.icon);
             slotView.icon.visible = true;
             slotView.icon.scale.set((item.iconScale || 0.52) * 1.45);
+            slotView.hitArea.visible = true;
+            slotView.hitArea.inputEnabled = true;
             slotView.infoButton.visible = true;
             slotView.infoButton.inputEnabled = true;
         });
@@ -302,7 +359,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.arrowRightButton.visible = showArrows;
         this.arrowRightButton.inputEnabled = showArrows;
 
-        this.showOverview();
+        this.showCharacterDescription();
     }
 
     private syncSelectedCharacter(): void {
@@ -336,7 +393,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.refreshView();
     }
 
-    private showOverview(): void {
+    private showCharacterDescription(): void {
         const user = UserService.getUser();
         const character = user.getCharacters()[this.currentCharacterIndex];
         if (!character) {
@@ -344,20 +401,10 @@ export default class CharacterPanel extends ClosablePanel {
         }
 
         const config = CharactersConfiguration.getById(character.id);
-        const equippedCount = CharacterPanel.SLOT_LAYOUT
-            .filter(layout => !!user.getCharacterEquippedArtifact(character.id, layout.slotId))
-            .length;
-
+        this.selectedArtifactSlot = null;
+        this.setUpgradeButtonVisible(false);
         this.contentTitle.text = config ? config.name : LocalizationService.get("ui.character.title", "Character");
-        this.contentBody.text = LocalizationService.get(
-            "ui.character.overview",
-            "Equipped artifacts: {equipped}/{total}\nBackpack: {backpack}\nTap i next to a skill or artifact to see details.",
-            {
-                equipped: equippedCount,
-                total: CharacterPanel.SLOT_LAYOUT.length,
-                backpack: user.getArtifactBackpack().length
-            }
-        );
+        this.contentBody.text = config ? LocalizationService.get(config.descriptionText, config.descriptionText) : "";
     }
 
     private showSkillInfo(index: number): void {
@@ -376,6 +423,8 @@ export default class CharacterPanel extends ClosablePanel {
             return;
         }
 
+        this.selectedArtifactSlot = null;
+        this.setUpgradeButtonVisible(false);
         this.contentTitle.text = this.capitalize(LocalizationService.get(skillConfig.name));
         this.contentBody.text = [
             LocalizationService.get("ui.character.currentValue", "Current value: {value}", { value: skillValue.value }),
@@ -397,6 +446,8 @@ export default class CharacterPanel extends ClosablePanel {
 
         const artifactEntry = user.getCharacterEquippedArtifact(character.id, slotId);
         if (!artifactEntry) {
+            this.selectedArtifactSlot = null;
+            this.setUpgradeButtonVisible(false);
             this.contentTitle.text = this.getSlotName(slotId);
             this.contentBody.text = LocalizationService.get("ui.character.noArtifact", "No artifact equipped.");
             return;
@@ -418,8 +469,10 @@ export default class CharacterPanel extends ClosablePanel {
             })
             .filter(text => !!text);
 
+        this.selectedArtifactSlot = slotId;
         this.contentTitle.text = LocalizationService.get(item.name);
         this.contentBody.text = [
+            LocalizationService.get(item.descriptionText, ""),
             LocalizationService.get("shop.item.level", "Level {level} of {max}", {
                 level: artifactEntry.level,
                 max: item.maxLevel
@@ -429,10 +482,13 @@ export default class CharacterPanel extends ClosablePanel {
             }),
             LocalizationService.get(item.usageText)
         ].concat(bonuses as string[]).join("\n");
+        this.refreshUpgradeButton(item, artifactEntry.level);
     }
 
     private showBackpackInfo(): void {
         const backpack = UserService.getUser().getArtifactBackpack();
+        this.selectedArtifactSlot = null;
+        this.setUpgradeButtonVisible(false);
         this.contentTitle.text = LocalizationService.get("ui.character.backpackTitle", "Backpack");
 
         if (backpack.length == 0) {
@@ -442,7 +498,103 @@ export default class CharacterPanel extends ClosablePanel {
 
         this.contentBody.text = backpack
             .map(entry => this.formatBackpackEntry(entry))
+            .filter(text => !!text)
             .join("\n");
+    }
+
+    private tryUpgradeSelectedArtifact(): void {
+        if (!this.selectedArtifactSlot) {
+            return;
+        }
+
+        const selectedSlot = this.selectedArtifactSlot;
+        const user = UserService.getUser();
+        const character = user.getCharacters()[this.currentCharacterIndex];
+        if (!character) {
+            return;
+        }
+
+        const artifactEntry = user.getCharacterEquippedArtifact(character.id, selectedSlot);
+        if (!artifactEntry) {
+            return;
+        }
+
+        const item = ShopArtifactItemsConfiguration.getById(artifactEntry.id);
+        if (!item) {
+            return;
+        }
+
+        const result = ShopArtifactService.upgradeOwnedItem(item.id, user);
+        if (result == 'success') {
+            SoundUtils.successfulBuy();
+            AnimationUtils.highlight(this.game, this.game.width / 2, this.game.height / 2 + 185, "splashY", 0, 1.3, 900);
+            this.showUpgradeSuccessFeedback();
+            this.refreshView();
+            this.showArtifactInfo(selectedSlot);
+            return;
+        }
+
+        if (result == 'notEnoughGems') {
+            this.showNotEnoughGems(item, artifactEntry.level);
+        }
+    }
+
+    private refreshUpgradeButton(item: ShopArtifactItemConfig, currentLevel: number): void {
+        this.setUpgradeButtonVisible(true);
+
+        if (currentLevel >= item.maxLevel) {
+            this.upgradeButton.tint = 0x8f8f8f;
+            this.upgradeButton.alpha = 0.92;
+            this.upgradeButton.inputEnabled = false;
+            this.upgradeButtonLabel.text = LocalizationService.get("ui.character.maxLevel", "Max level");
+            this.upgradeButtonGemIcon.visible = false;
+            return;
+        }
+
+        this.upgradeButton.tint = 0xffffff;
+        this.upgradeButton.alpha = 1;
+        this.upgradeButton.inputEnabled = true;
+        this.upgradeButtonGemIcon.visible = true;
+        this.upgradeButtonLabel.text = LocalizationService.get("ui.character.upgrade", "Upgrade for {price}", {
+            price: ShopArtifactService.getUpgradePrice(item, currentLevel)
+        });
+    }
+
+    private setUpgradeButtonVisible(visible: boolean): void {
+        this.upgradeButton.visible = visible;
+        this.upgradeButton.inputEnabled = visible;
+        this.upgradeButtonGemIcon.visible = visible;
+    }
+
+    private showUpgradeSuccessFeedback(): void {
+        const label = new Label(this.game, this.upgradeButton.x, this.upgradeButton.y - 74, LocalizationService.get("ui.character.upgradedSuccess", "Upgraded!"), {
+            font: "bold 34px Gilroy",
+            fill: "#8ef26d",
+            align: "center"
+        });
+        label.anchor.set(0.5);
+        this.addChild(label);
+        this.game.add.tween(label).to({ y: label.y - 55, alpha: 0 }, 800, Phaser.Easing.Quadratic.Out, true);
+        this.game.time.events.add(820, () => {
+            if (label.parent) {
+                label.parent.removeChild(label);
+            }
+            label.destroy(true);
+        });
+    }
+
+    private showNotEnoughGems(item: ShopArtifactItemConfig, currentLevel: number): void {
+        const missingGems = Math.max(0, ShopArtifactService.getUpgradePrice(item, currentLevel) - UserService.getUser().getSupermoney());
+        let info = new ConfirmPanel(
+            this.game,
+            LocalizationService.get('ui.shop.notEnoughGemsTitle', 'Not enough gems'),
+            LocalizationService.get('ui.ok', 'OK'),
+            LocalizationService.get('ui.shop.notEnoughGemsText', 'You are short of ~{gems}~ for this purchase.', {
+                gems: GameText.gems(missingGems)
+            })
+        );
+        this.game.add.existing(info);
+        info.show();
     }
 
     private openShop(): void {

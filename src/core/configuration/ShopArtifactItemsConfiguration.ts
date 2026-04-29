@@ -6,6 +6,7 @@ export default class ShopArtifactItemsConfiguration {
         {
             id: 'crownOfDawn',
             name: 'shop.item.crownOfDawn.name',
+            descriptionText: 'shop.item.crownOfDawn.description',
             icon: 'shopItem1',
             price: 79,
             skillIds: ['knowledge', 'friendship'],
@@ -20,6 +21,7 @@ export default class ShopArtifactItemsConfiguration {
         {
             id: 'keeperMantle',
             name: 'shop.item.keeperMantle.name',
+            descriptionText: 'shop.item.keeperMantle.description',
             icon: 'shopItem2',
             price: 95,
             skillIds: ['friendship', 'energy'],
@@ -34,6 +36,7 @@ export default class ShopArtifactItemsConfiguration {
         {
             id: 'stormMace',
             name: 'shop.item.stormMace.name',
+            descriptionText: 'shop.item.stormMace.description',
             icon: 'shopItem3',
             price: 105,
             skillIds: ['bravery', 'knowledge'],
@@ -48,6 +51,7 @@ export default class ShopArtifactItemsConfiguration {
         {
             id: 'titanBow',
             name: 'shop.item.titanBow.name',
+            descriptionText: 'shop.item.titanBow.description',
             icon: 'shopItem4',
             price: 115,
             skillIds: ['energy', 'bravery'],
