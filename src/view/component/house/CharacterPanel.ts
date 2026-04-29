@@ -241,7 +241,7 @@ export default class CharacterPanel extends ClosablePanel {
             font: "bold 30px Gilroy",
             fill: "#fff1d7",
             align: "center"
-        }, 32);
+        }, 58);
 
         this.shopButton = this.attachButton("characterShopButton", () => this.openShop(), "shopButton");
         this.placeAtPsdCenter(this.shopButton, 842.5, 1554.5);
@@ -249,7 +249,7 @@ export default class CharacterPanel extends ClosablePanel {
             font: "bold 30px Gilroy",
             fill: "#fff1d7",
             align: "center"
-        }, 38);
+        }, 62);
 
         this.closeButton = this.attachButton("characterCloseButton", () => this.close(), "closeButton");
         this.placeAtPsdCenter(this.closeButton, 481.5, 1549.5);
