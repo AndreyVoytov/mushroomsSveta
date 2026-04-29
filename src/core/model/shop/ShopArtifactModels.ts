@@ -10,6 +10,7 @@ export interface ShopArtifactSkillUpgradePriceFormula {
 export interface ShopArtifactSkillConfig {
     id: ShopArtifactSkillId;
     name: string;
+    descriptionText: string;
     icon: string;
     valuePerLevel: number;
     effectValue: number;

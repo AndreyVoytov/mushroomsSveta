@@ -4,7 +4,7 @@ import ShopArtifactSkillsConfiguration from "../../../core/configuration/ShopArt
 import GameText from "../../../core/localization/GameText";
 import LocalizationService from "../../../core/localization/LocalizationService";
 import { CharacterArtifactSlotId } from "../../../core/model/character/CharacterModels";
-import { ShopArtifactBackpackEntry, ShopArtifactItemConfig } from "../../../core/model/shop/ShopArtifactModels";
+import { ShopArtifactBackpackEntry, ShopArtifactItemConfig, ShopArtifactSkillId } from "../../../core/model/shop/ShopArtifactModels";
 import ShopArtifactService from "../../../core/service/ShopArtifactService";
 import UserService from "../../../core/service/UserService";
 import AnimationUtils from "../../../core/utils/AnimationUtils";
@@ -14,6 +14,7 @@ import HouseScreen from "../../screen/HouseScreen";
 import ClosablePanel from "../panel/ClosablePanel";
 import Label from "../panel/Label";
 import ConfirmPanel from "./ConfirmPanel";
+import SkillInfoPanel from "./SkillInfoPanel";
 import ShopPanel from "./ShopPanel";
 
 interface SkillRowView {
@@ -28,6 +29,11 @@ interface SlotView {
     icon: Phaser.Sprite;
     hitArea: Phaser.Button;
     infoButton: Phaser.Button;
+}
+
+interface RichTextLine {
+    text: string;
+    color?: string;
 }
 
 export default class CharacterPanel extends ClosablePanel {
@@ -62,6 +68,7 @@ export default class CharacterPanel extends ClosablePanel {
     private bannerTitle: Label;
     private contentTitle: Label;
     private contentBody: Label;
+    private contentBodyRich: Phaser.Text;
     private arrowLeftButton: Phaser.Button;
     private arrowRightButton: Phaser.Button;
     private backpackButton: Phaser.Button;
@@ -214,6 +221,19 @@ export default class CharacterPanel extends ClosablePanel {
         this.contentBody.lineSpacing = 10;
         this.contentBody.x = this.psdX(480);
         this.contentBody.y = this.psdY(922);
+
+        this.contentBodyRich = new Phaser.Text(this.game, this.psdX(480), this.psdY(922), "", {
+            font: "bold 23px Arial",
+            fill: "#855331",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 430
+        });
+        this.contentBodyRich.name = "contentBodyRich";
+        this.contentBodyRich.anchor.set(0.5, 0);
+        this.contentBodyRich.lineSpacing = 10;
+        this.contentBodyRich.visible = false;
+        this.addSprite(this.contentBodyRich);
 
         this.upgradeButton = this.attachButton("characterCloseButton", () => this.tryUpgradeSelectedArtifact(), "upgradeButton");
         this.placeAtPsdCenter(this.upgradeButton, 480, 1318);
@@ -432,6 +452,7 @@ export default class CharacterPanel extends ClosablePanel {
 
         user.setCurrentCharacterId(character.id);
         this.bannerTitle.text = config.name;
+        const artifactBonuses = this.getArtifactBonusesBySkill(character.id);
 
         if (config.imageKey) {
             SpriteUtils.loadTexture(this.portrait, config.imageKey);
@@ -464,8 +485,9 @@ export default class CharacterPanel extends ClosablePanel {
             SpriteUtils.loadTexture(row.icon, skillConfig.icon);
             row.icon.visible = true;
             row.valueLabel.visible = true;
-            row.infoButton.visible = true;
-            row.infoButton.inputEnabled = true;
+            const showInfoButton = (artifactBonuses[skillValue.skillId] || 0) > 0;
+            row.infoButton.visible = showInfoButton;
+            row.infoButton.inputEnabled = showInfoButton;
             row.valueLabel.text = "" + skillValue.value;
         });
 
@@ -557,7 +579,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.setUpgradeButtonVisible(false);
         this.refreshSlotSelectionVisuals();
         this.contentTitle.text = config ? config.name : LocalizationService.get("ui.character.title", "Character");
-        this.contentBody.text = config ? LocalizationService.get(config.descriptionText, config.descriptionText) : "";
+        this.setContentBodyPlain(config ? LocalizationService.get(config.descriptionText, config.descriptionText) : "");
     }
 
     private showSkillInfo(index: number): void {
@@ -576,19 +598,8 @@ export default class CharacterPanel extends ClosablePanel {
             return;
         }
 
-        this.selectedArtifactSlot = null;
-        this.setUpgradeButtonVisible(false);
-        this.refreshSlotSelectionVisuals();
-        this.contentTitle.text = this.capitalize(LocalizationService.get(skillConfig.name));
-        this.contentBody.text = [
-            LocalizationService.get("ui.character.currentValue", "Current value: {value}", { value: skillValue.value }),
-            LocalizationService.get("ui.character.upgradeCost", "Upgrade cost +1: {price}", {
-                price: ShopArtifactSkillsConfiguration.getUpgradePrice(skillValue.skillId, skillValue.value)
-            }),
-            LocalizationService.get("ui.character.effectPerLevel", "One artifact level gives +{value}.", {
-                value: skillConfig.valuePerLevel
-            })
-        ].join("\n");
+        const artifactBonuses = this.getArtifactBonusesBySkill(character.id);
+        this.openSkillInfoPanel(skillValue.skillId, skillValue.value, artifactBonuses[skillValue.skillId] || 0);
     }
 
     private showArtifactInfo(slotId: CharacterArtifactSlotId): void {
@@ -604,7 +615,7 @@ export default class CharacterPanel extends ClosablePanel {
             this.setUpgradeButtonVisible(false);
             this.refreshSlotSelectionVisuals();
             this.contentTitle.text = this.getSlotName(slotId);
-            this.contentBody.text = LocalizationService.get("ui.character.noArtifact", "No artifact equipped.");
+            this.setContentBodyPlain(LocalizationService.get("ui.character.noArtifact", "No artifact equipped."));
             return;
         }
 
@@ -616,31 +627,47 @@ export default class CharacterPanel extends ClosablePanel {
             return;
         }
 
-        const bonuses = item.skillIds
+        const bonusLines = item.skillIds
             .map(skillId => {
                 const skillConfig = ShopArtifactSkillsConfiguration.getById(skillId);
                 if (!skillConfig) {
                     return null;
                 }
 
-                return this.capitalize(LocalizationService.get(skillConfig.name)) + " +" + artifactEntry.level * skillConfig.valuePerLevel;
+                return {
+                    text: this.capitalize(LocalizationService.get(skillConfig.name)) + " +" + artifactEntry.level * skillConfig.valuePerLevel,
+                    color: "#0b6e22"
+                };
             })
             .filter(text => !!text);
 
         this.selectedArtifactSlot = slotId;
         this.refreshSlotSelectionVisuals();
         this.contentTitle.text = LocalizationService.get(item.name);
-        this.contentBody.text = [
-            LocalizationService.get(item.descriptionText, ""),
-            LocalizationService.get("shop.item.level", "Level {level} of {max}", {
-                level: artifactEntry.level,
-                max: item.maxLevel
-            }),
-            LocalizationService.get("ui.character.artifactSlot", "Slot: {slot}", {
-                slot: this.getSlotName(slotId)
-            }),
-            LocalizationService.get(item.usageText)
-        ].concat(bonuses as string[]).join("\n");
+        const richLines: RichTextLine[] = [
+            {
+                text: LocalizationService.get(item.descriptionText, ""),
+                color: "#855331"
+            },
+            {
+                text: LocalizationService.get("shop.item.level", "Level {level} of {max}", {
+                    level: artifactEntry.level,
+                    max: item.maxLevel
+                }),
+                color: "#855331"
+            },
+            {
+                text: LocalizationService.get("ui.character.artifactSlot", "Slot: {slot}", {
+                    slot: this.getSlotName(slotId)
+                }),
+                color: "#855331"
+            },
+            {
+                text: LocalizationService.get(item.usageText),
+                color: "#7f187e"
+            }
+        ];
+        this.setContentBodyRich(richLines.concat(bonusLines as RichTextLine[]));
         this.refreshUpgradeButton(item, artifactEntry.level);
     }
 
@@ -652,14 +679,14 @@ export default class CharacterPanel extends ClosablePanel {
         this.contentTitle.text = LocalizationService.get("ui.character.backpackTitle", "Backpack");
 
         if (backpack.length == 0) {
-            this.contentBody.text = LocalizationService.get("ui.character.backpackEmpty", "Backpack is empty for now.");
+            this.setContentBodyPlain(LocalizationService.get("ui.character.backpackEmpty", "Backpack is empty for now."));
             return;
         }
 
-        this.contentBody.text = backpack
+        this.setContentBodyPlain(backpack
             .map(entry => this.formatBackpackEntry(entry))
             .filter(text => !!text)
-            .join("\n");
+            .join("\n"));
     }
 
     private tryUpgradeSelectedArtifact(): void {
@@ -775,6 +802,83 @@ export default class CharacterPanel extends ClosablePanel {
         return LocalizationService.get(item.name) + " " + LocalizationService.get("ui.character.levelShort", "Lv. {level}", {
             level: entry.level
         });
+    }
+
+    private openSkillInfoPanel(skillId: ShopArtifactSkillId, currentValue?: number, artifactBonus?: number): void {
+        const info = new SkillInfoPanel(this.game, skillId, {
+            currentValue: currentValue,
+            artifactBonus: artifactBonus
+        });
+        this.game.add.existing(info);
+        info.show();
+    }
+
+    private setContentBodyPlain(text: string): void {
+        this.contentBody.visible = true;
+        this.contentBodyRich.visible = false;
+        this.contentBody.text = text;
+        this.contentBodyRich.clearColors();
+        this.contentBodyRich.text = "";
+    }
+
+    private setContentBodyRich(lines: RichTextLine[]): void {
+        this.contentBody.visible = false;
+        this.contentBodyRich.visible = true;
+
+        let text = "";
+        let ranges: { start: number, color: string }[] = [];
+
+        lines.forEach((line, index) => {
+            if (!line || !line.text) {
+                return;
+            }
+
+            if (text.length > 0) {
+                text += "\n";
+            }
+
+            if (line.color) {
+                ranges.push({ start: text.length, color: line.color });
+            }
+
+            text += line.text;
+
+            if (line.color) {
+                ranges.push({ start: text.length, color: "#855331" });
+            }
+        });
+
+        this.contentBodyRich.clearColors();
+        this.contentBodyRich.text = text;
+        ranges.forEach(range => this.contentBodyRich.addColor(range.color, range.start));
+    }
+
+    private getArtifactBonusesBySkill(characterId: string): { [skillId: string]: number } {
+        const user = UserService.getUser();
+        const bonuses: { [skillId: string]: number } = {};
+
+        CharacterPanel.SLOT_LAYOUT.forEach(layout => {
+            const artifactEntry = user.getCharacterEquippedArtifact(characterId, layout.slotId);
+            if (!artifactEntry) {
+                return;
+            }
+
+            const item = ShopArtifactItemsConfiguration.getById(artifactEntry.id);
+            if (!item) {
+                return;
+            }
+
+            item.skillIds.forEach(skillId => {
+                const skillConfig = ShopArtifactSkillsConfiguration.getById(skillId);
+                if (!skillConfig) {
+                    return;
+                }
+
+                bonuses[skillId] = (bonuses[skillId] || 0) + artifactEntry.level * skillConfig.valuePerLevel;
+            });
+        });
+
+        return bonuses;
     }
 
     private addButtonText(button: Phaser.Button, text: string, style: Phaser.PhaserTextStyle, offsetY?: number): Label {

@@ -9,6 +9,7 @@ export default class ShopArtifactCardPanel extends BasePanel {
     private item: ShopArtifactItemConfig;
     private sortIndex: number;
     private onBuy?: (item: ShopArtifactItemConfig) => void;
+    private onSkillInfo?: (skillId: ShopArtifactSkillId) => void;
     private skillLabels: { skillId: ShopArtifactSkillId, label: Label }[] = [];
     private levelLabel: Label;
     private panel: Phaser.Sprite;
@@ -21,11 +22,12 @@ export default class ShopArtifactCardPanel extends BasePanel {
     private disabledShade: Phaser.Sprite;
     private purchasedCheck: Phaser.Sprite;
 
-    constructor(game: Phaser.Game, name: string, item: ShopArtifactItemConfig, sortIndex: number, onBuy?: (item: ShopArtifactItemConfig) => void) {
+    constructor(game: Phaser.Game, name: string, item: ShopArtifactItemConfig, sortIndex: number, onBuy?: (item: ShopArtifactItemConfig) => void, onSkillInfo?: (skillId: ShopArtifactSkillId) => void) {
         super(game, 0, 0, name, "blank");
         this.item = item;
         this.sortIndex = sortIndex;
         this.onBuy = onBuy;
+        this.onSkillInfo = onSkillInfo;
 
         this.panel = this.attachSprite("panel2", "panel");
         this.panel.scale.set(0.515, 0.54);
@@ -75,7 +77,7 @@ export default class ShopArtifactCardPanel extends BasePanel {
             label.y = rowY - 1;
             this.skillLabels.push({ skillId: skillId, label: label });
 
-            const infoButton = this.attachSprite("shopInfoButton", "skillInfo" + index);
+            const infoButton = this.attachButton("shopInfoButton", () => this.handleSkillInfo(skillId), "skillInfo" + index);
             infoButton.x = 134;
             infoButton.y = rowY;
             infoButton.scale.set(1.08);
@@ -214,6 +216,12 @@ export default class ShopArtifactCardPanel extends BasePanel {
 
         if (this.onBuy) {
             this.onBuy(this.item);
+        }
+    }
+
+    private handleSkillInfo(skillId: ShopArtifactSkillId): void {
+        if (this.onSkillInfo) {
+            this.onSkillInfo(skillId);
         }
     }
 }

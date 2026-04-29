@@ -109,6 +109,7 @@ const manualKeys = [
     'ui.character.maxLevel',
     'ui.character.upgrade',
     'ui.character.upgradedSuccess',
+    'ui.skillInfo.artifactBonus',
     'shop.item.level',
     'ui.transition.sheWontHelp',
     'ui.transition.thirtyMinutesLater',
@@ -385,7 +386,7 @@ function buildExpectedKeys() {
         collectReplicaKeys(path.join(rootDir, 'src', 'core', 'configuration', 'ForestReplicasConfiguration.ts')),
         collectDiaryKeys(path.join(rootDir, 'src', 'core', 'configuration', 'DiaryConfiguration.ts')),
         collectBuyKeys(path.join(rootDir, 'src', 'core', 'service', 'Settings.ts')),
-        collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactSkillsConfiguration.ts'), 'allSkills', ['name']),
+        collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactSkillsConfiguration.ts'), 'allSkills', ['name', 'descriptionText']),
         collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactItemsConfiguration.ts'), 'allItems', ['name', 'usageText', 'descriptionText']),
         collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'CharactersConfiguration.ts'), 'allCharacters', ['descriptionText']),
         collectStringArrayPropertyValues(path.join(rootDir, 'src', 'core', 'configuration', 'MapPresetConfiguration.ts'), 'notes')

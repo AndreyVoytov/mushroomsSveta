@@ -9,6 +9,8 @@ import BuyConfirmPanel from './BuyConfirmPanel';
 import ConfirmPanel from './ConfirmPanel';
 import ShopArtifactCardPanel from './ShopArtifactCardPanel';
 import ShopSectionPanel from './ShopSectionPanel';
+import SkillInfoPanel from './SkillInfoPanel';
+import { ShopArtifactSkillId } from '../../../core/model/shop/ShopArtifactModels';
 
 export default class ShopItemsSectionPanel extends ShopSectionPanel {
     private static readonly CARD_SCALE = 1.25;
@@ -24,7 +26,14 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
         this.onOpenBank = onOpenBank;
 
         ShopArtifactItemsConfiguration.getAvailableForForest(UserService.getUser().getCurrentForest()).forEach((item, index) => {
-            const card = new ShopArtifactCardPanel(this.game, "artifactCard" + index, item, index, boughtItem => this.buyItem(boughtItem));
+            const card = new ShopArtifactCardPanel(
+                this.game,
+                "artifactCard" + index,
+                item,
+                index,
+                boughtItem => this.buyItem(boughtItem),
+                skillId => this.showSkillInfo(skillId)
+            );
             card.scale.set(ShopItemsSectionPanel.CARD_SCALE);
             card.alpha = 0;
 
@@ -103,6 +112,12 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
         this.cards
             .filter((_card, index) => Math.floor(index / 2) == row)
             .forEach(card => AnimationUtils.appear2(this.game, card, delay, 1, 1, 1));
+    }
+
+    private showSkillInfo(skillId: ShopArtifactSkillId): void {
+        const info = new SkillInfoPanel(this.game, skillId);
+        this.game.add.existing(info);
+        info.show();
     }
 
     private showArtifactPurchased(item: ShopArtifactItemConfig): void {
