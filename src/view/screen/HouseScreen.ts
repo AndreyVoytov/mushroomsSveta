@@ -50,6 +50,7 @@ import RewardItemType from '../../core/model/reward/RewardItemType';
 import HouseFrameLayout from '../component/house/layout/HouseFrameLayout';
 import HouseLayout from '../component/house/layout/HouseLayout';
 import TasksPanel from '../component/house/TasksPanel';
+import CharacterPanel from '../component/house/CharacterPanel';
 import RewardItemsPanel, { RewardItemsShowOptions } from '../component/panel/RewardItemsPanel';
 import TaskService from '../../core/service/TaskService';
 export default class HouseScreen extends DialogScreen {
@@ -73,12 +74,14 @@ export default class HouseScreen extends DialogScreen {
     private playButton: Phaser.Button;
 
     private notebookButton: Phaser.Button;
+    private characterButton: Phaser.Button;
     private tasksButton: Phaser.Button;
     private tasksBadge: Phaser.Graphics;
 
     public startLevelPanel: StartLevelPanel;
     public settingsPanel: SettingsPanel;
     public tasksPanel: TasksPanel;
+    public characterPanel: CharacterPanel;
     private diaryPanel: DiaryPanel;
     private activeEventPanel: ClosablePanel | null = null;
     private preDialogSideEventPanel: SideEventPanel | null = null;
@@ -250,6 +253,22 @@ export default class HouseScreen extends DialogScreen {
         }
         this.addButton(this.notebookButton);
 
+        this.characterButton = SpriteUtils.createButton(this.game, 90, this.game.height - 200 - 75 - 145, 'actionCircle', () => {
+            if (!this.isLocked()) {
+                this.characterPanel.show();
+            }
+        });
+        this.characterButton.anchor.set(0.5);
+        this.characterButton.scale.set(1);
+        this.characterButton.name = "characterButton";
+        this.registerSideButton(this.characterButton);
+
+        let characterIcon = SpriteUtils.createSprite(this.game, 0, 0, 'tasks');
+        characterIcon.anchor.set(0.5);
+        characterIcon.scale.set(0.86 * 0.95);
+        this.characterButton.addChild(characterIcon);
+        this.addButton(this.characterButton);
+
         let currentRecipe = DiaryConfiguration.getCurrentRecipe(user.getCurrentForest());
         if (currentRecipe) {
             this.progressAnimation = this.showProgress(currentRecipe);
@@ -287,6 +306,11 @@ export default class HouseScreen extends DialogScreen {
         this.addPanel(this.tasksPanel);
         this.tasksPanel.visible = false;
         this.tasksPanel.fixedToCamera = true;
+
+        this.characterPanel = new CharacterPanel(this.game, this);
+        this.addPanel(this.characterPanel);
+        this.characterPanel.visible = false;
+        this.characterPanel.fixedToCamera = true;
 
         this.tasksButton = SpriteUtils.createButton(this.game, this.game.width - 100, 220, 'actionCircle', () => {
             if (!this.isLocked()) {

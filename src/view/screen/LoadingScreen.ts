@@ -737,6 +737,16 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('shopItem2', 'assets/base/ui/items/item2.png');
         this.loadImage('shopItem3', 'assets/base/ui/items/item3.png');
         this.loadImage('shopItem4', 'assets/base/ui/items/item4.png');
+        this.loadImage('characterPanelBg', 'assets/base/ui/character/character_panel.png');
+        this.loadImage('characterPanelBanner', 'assets/base/ui/character/banner.png');
+        this.loadImage('characterSkillsBg', 'assets/base/ui/character/skills_bg.png');
+        this.loadImage('characterArrowLeft', 'assets/base/ui/character/arrow_left.png');
+        this.loadImage('characterArrowRight', 'assets/base/ui/character/arrow_right.png');
+        this.loadImage('characterBackpackButton', 'assets/base/ui/character/backpack_button.png');
+        this.loadImage('characterShopButton', 'assets/base/ui/character/shop_button.png');
+        this.loadImage('characterCloseButton', 'assets/base/ui/character/close_button.png');
+        this.loadImage('characterSkillInfoButton', 'assets/base/ui/character/info_button1.png');
+        this.loadImage('characterArtifactInfoButton', 'assets/base/ui/character/info_button_item.png');
         // Fallback for new shop art until it is repacked into base atlases.
         this.load.image('shopHeader', 'assets/base/ui/shop/header.png');
         this.load.image('shopNavBg', 'assets/base/ui/shop/nav_bg.png');
@@ -752,6 +762,16 @@ export default class LoadingScreen extends BaseScreen {
         this.load.image('shopItem2', 'assets/base/ui/items/item2.png');
         this.load.image('shopItem3', 'assets/base/ui/items/item3.png');
         this.load.image('shopItem4', 'assets/base/ui/items/item4.png');
+        this.load.image('characterPanelBg', 'assets/base/ui/character/character_panel.png');
+        this.load.image('characterPanelBanner', 'assets/base/ui/character/banner.png');
+        this.load.image('characterSkillsBg', 'assets/base/ui/character/skills_bg.png');
+        this.load.image('characterArrowLeft', 'assets/base/ui/character/arrow_left.png');
+        this.load.image('characterArrowRight', 'assets/base/ui/character/arrow_right.png');
+        this.load.image('characterBackpackButton', 'assets/base/ui/character/backpack_button.png');
+        this.load.image('characterShopButton', 'assets/base/ui/character/shop_button.png');
+        this.load.image('characterCloseButton', 'assets/base/ui/character/close_button.png');
+        this.load.image('characterSkillInfoButton', 'assets/base/ui/character/info_button1.png');
+        this.load.image('characterArtifactInfoButton', 'assets/base/ui/character/info_button_item.png');
 
         this.loadImage('cankerberry', 'assets/base/items/cankerberry.png');
         this.loadImage('witchMushroom', 'assets/base/items/witchMushroom.png');

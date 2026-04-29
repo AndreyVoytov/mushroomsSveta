@@ -3,6 +3,7 @@ import BoosterType from '../enum/BoosterType';
 import ForestUtils from '../../utils/ForestUtils';
 import GameText from '../../localization/GameText';
 import LocalizationService from '../../localization/LocalizationService';
+import ShopArtifactService from '../../service/ShopArtifactService';
 
 export default class Buy {
     id: string;
@@ -18,7 +19,7 @@ export default class Buy {
         user.setSupermoney(user.getSupermoney() + buy.gems);
 
         if (buy.artifactId) {
-            user.putArtifactToBackpack(buy.artifactId, 1);
+            ShopArtifactService.grantToUser(user, buy.artifactId, 1);
         }
 
         if (buy.boosters) {
@@ -33,7 +34,7 @@ export default class Buy {
         user.setSupermoney(Math.max(0, user.getSupermoney() - buy.gems));
 
         if (buy.artifactId) {
-            user.removeArtifactFromBackpack(buy.artifactId);
+            user.removeOwnedArtifact(buy.artifactId);
         }
 
         if (buy.boosters) {

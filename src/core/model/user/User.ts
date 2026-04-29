@@ -10,7 +10,9 @@ import UserEventState from './../event/UserEventState';
 import Utils from './../../utils/Utils';
 import EnergyUtils from '../../utils/EnergyUtils';
 import { createEmptyUserTasksState, UserTasksState } from '../task/TaskModels';
-import { ShopArtifactBackpackEntry } from '../shop/ShopArtifactModels';
+import { ShopArtifactBackpackEntry, ShopArtifactSkillId } from '../shop/ShopArtifactModels';
+import CharactersConfiguration from '../../configuration/CharactersConfiguration';
+import { CHARACTER_ARTIFACT_SLOTS, CharacterArtifactEntry, CharacterArtifactSlotId, CharacterSkillValue, UserCharacterEquipment, UserCharacterState } from '../character/CharacterModels';
 export default class User {
 
     public createdAt: string = new Date().toISOString();
@@ -47,6 +49,8 @@ export default class User {
     private completedTasks: string[] = ["rec0"];
     private tasksState: UserTasksState = createEmptyUserTasksState();
     private backpack: ShopArtifactBackpackEntry[] = [];
+    private characters: UserCharacterState[] = [];
+    private currentCharacterId: string = null;
 
     private location:StoryLocation;
     private afterLevelLocation:StoryLocation;
@@ -90,6 +94,8 @@ export default class User {
                     id: entry.id,
                     level: Math.max(1, entry.level || 1)
                 }));
+            this.characters = this.normalizeCharacters(user.characters || []);
+            this.currentCharacterId = user.currentCharacterId || null;
             // this.items = user.items;
             this.justCompletedLevel = user.justCompletedLevel;
 
@@ -99,6 +105,9 @@ export default class User {
         } else {
             this.location = StoryLocation.forest;
         }
+
+        this.ensureStartCharacter();
+        this.ensureCurrentCharacterId();
     }
 
     public getEvents():EventInfo[]{
@@ -333,6 +342,99 @@ export default class User {
         return this.completedReplicas;
     }
 
+    public getCharacters(): UserCharacterState[] {
+        if (!this.characters) {
+            this.characters = [];
+        }
+        return this.characters;
+    }
+
+    public getCharacterById(characterId: string): UserCharacterState {
+        return this.getCharacters().filter(character => character.id == characterId).shift();
+    }
+
+    public hasCharacter(characterId: string): boolean {
+        return !!this.getCharacterById(characterId);
+    }
+
+    public unlockCharacter(characterId: string): UserCharacterState {
+        const existing = this.getCharacterById(characterId);
+        if (existing) {
+            return existing;
+        }
+
+        const state = this.createCharacterState(characterId);
+        if (!state) {
+            return null;
+        }
+
+        this.getCharacters().push(state);
+        if (!this.currentCharacterId) {
+            this.currentCharacterId = characterId;
+        }
+
+        ServerStoreComponent.saveLocalUser(this);
+        return state;
+    }
+
+    public getCurrentCharacterId(): string {
+        this.ensureCurrentCharacterId();
+        return this.currentCharacterId;
+    }
+
+    public setCurrentCharacterId(characterId: string): void {
+        if (!this.hasCharacter(characterId)) {
+            return;
+        }
+
+        this.currentCharacterId = characterId;
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public getCurrentCharacter(): UserCharacterState {
+        return this.getCharacterById(this.getCurrentCharacterId());
+    }
+
+    public getCharacterSkillValue(characterId: string, skillId: ShopArtifactSkillId): number {
+        const character = this.getCharacterById(characterId);
+        if (!character) {
+            return 0;
+        }
+
+        const skill = (character.skills || []).filter(skillValue => skillValue.skillId == skillId).shift();
+        return skill ? Math.max(0, skill.value || 0) : 0;
+    }
+
+    public getCharacterEquippedArtifacts(characterId: string): UserCharacterEquipment {
+        const character = this.getCharacterById(characterId);
+        if (!character) {
+            return {};
+        }
+
+        if (!character.equippedArtifacts) {
+            character.equippedArtifacts = {};
+        }
+
+        return character.equippedArtifacts;
+    }
+
+    public getCharacterEquippedArtifact(characterId: string, slot: CharacterArtifactSlotId): CharacterArtifactEntry {
+        return this.getCharacterEquippedArtifacts(characterId)[slot];
+    }
+
+    public equipArtifactToCharacter(characterId: string, slot: CharacterArtifactSlotId, artifactId: string, level?: number): void {
+        const character = this.getCharacterById(characterId);
+        if (!character || !artifactId) {
+            return;
+        }
+
+        const safeLevel = Math.max(1, level || 1);
+        this.removeArtifactFromBackpackInternal(artifactId);
+        this.removeEquippedArtifactInternal(artifactId);
+        this.getCharacterEquippedArtifacts(characterId)[slot] = { id: artifactId, level: safeLevel };
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
     public getArtifactBackpack(): ShopArtifactBackpackEntry[] {
         if (!this.backpack) {
             this.backpack = [];
@@ -353,6 +455,20 @@ export default class User {
         return entry ? Math.max(1, entry.level || 1) : 0;
     }
 
+    public hasOwnedArtifact(id: string): boolean {
+        return this.getOwnedArtifactLevel(id) > 0;
+    }
+
+    public getOwnedArtifactLevel(id: string): number {
+        const backpackLevel = this.getArtifactLevel(id);
+        if (backpackLevel > 0) {
+            return backpackLevel;
+        }
+
+        const equippedEntry = this.getEquippedArtifactEntry(id);
+        return equippedEntry ? Math.max(1, equippedEntry.level || 1) : 0;
+    }
+
     public putArtifactToBackpack(id: string, level?: number): void {
         let entry = this.getArtifactBackpackEntry(id);
         let safeLevel = Math.max(1, level || 1);
@@ -367,8 +483,16 @@ export default class User {
     }
 
     public removeArtifactFromBackpack(id: string): void {
-        this.backpack = this.getArtifactBackpack().filter(entry => entry.id != id);
+        this.removeArtifactFromBackpackInternal(id);
         ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public removeOwnedArtifact(id: string): void {
+        const removedFromBackpack = this.removeArtifactFromBackpackInternal(id);
+        const removedFromEquipment = this.removeEquippedArtifactInternal(id);
+        if (removedFromBackpack || removedFromEquipment) {
+            ServerStoreComponent.saveLocalUser(this);
+        }
     }
 
     // public getItems(): UserItemType[] {
@@ -577,6 +701,129 @@ export default class User {
     public setPlatformSource(platformSource:string): void {
         this.platformSource = platformSource;  
         ServerStoreComponent.saveLocalUser(this);
+    }
+
+    private normalizeCharacters(rawCharacters: UserCharacterState[]): UserCharacterState[] {
+        return (rawCharacters || [])
+            .map(character => this.normalizeCharacterState(character))
+            .filter(character => !!character);
+    }
+
+    private normalizeCharacterState(rawCharacter: UserCharacterState): UserCharacterState {
+        if (!rawCharacter || !rawCharacter.id) {
+            return null;
+        }
+
+        const config = CharactersConfiguration.getById(rawCharacter.id);
+        if (!config) {
+            return null;
+        }
+
+        const rawSkills = rawCharacter.skills || [];
+        const skills: CharacterSkillValue[] = config.skills.map(skill => {
+            const existingSkill = rawSkills.filter(skillValue => skillValue && skillValue.skillId == skill.skillId).shift();
+            return {
+                skillId: skill.skillId,
+                value: Math.max(0, existingSkill ? existingSkill.value || skill.value : skill.value)
+            };
+        });
+
+        const rawEquipment = rawCharacter.equippedArtifacts || {};
+        const equippedArtifacts: UserCharacterEquipment = {};
+        CHARACTER_ARTIFACT_SLOTS.forEach(slot => {
+            const entry = rawEquipment[slot];
+            if (entry && entry.id) {
+                equippedArtifacts[slot] = {
+                    id: entry.id,
+                    level: Math.max(1, entry.level || 1)
+                };
+            }
+        });
+
+        return {
+            id: rawCharacter.id,
+            skills: skills,
+            equippedArtifacts: equippedArtifacts
+        };
+    }
+
+    private createCharacterState(characterId: string): UserCharacterState {
+        const config = CharactersConfiguration.getById(characterId);
+        if (!config) {
+            return null;
+        }
+
+        return {
+            id: config.id,
+            skills: config.skills.map(skill => ({
+                skillId: skill.skillId,
+                value: Math.max(0, skill.value || 0)
+            })),
+            equippedArtifacts: {}
+        };
+    }
+
+    private ensureStartCharacter(): void {
+        const startCharacter = CharactersConfiguration.getStartCharacter();
+        if (!startCharacter || this.getCharacters().length > 0) {
+            return;
+        }
+
+        const state = this.createCharacterState(startCharacter.id);
+        if (state) {
+            this.getCharacters().push(state);
+        }
+    }
+
+    private ensureCurrentCharacterId(): void {
+        if (this.currentCharacterId && this.hasCharacter(this.currentCharacterId)) {
+            return;
+        }
+
+        const characters = this.getCharacters();
+        this.currentCharacterId = characters.length > 0 ? characters[0].id : null;
+    }
+
+    private getEquippedArtifactEntry(id: string): CharacterArtifactEntry {
+        const characters = this.getCharacters();
+        for (let i = 0; i < characters.length; i++) {
+            const character = characters[i];
+            for (let j = 0; j < CHARACTER_ARTIFACT_SLOTS.length; j++) {
+                const slot = CHARACTER_ARTIFACT_SLOTS[j];
+                const entry = this.getCharacterEquippedArtifact(character.id, slot);
+                if (entry && entry.id == id) {
+                    return entry;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private removeArtifactFromBackpackInternal(id: string): boolean {
+        const nextBackpack = this.getArtifactBackpack().filter(entry => entry.id != id);
+        if (nextBackpack.length == this.getArtifactBackpack().length) {
+            return false;
+        }
+
+        this.backpack = nextBackpack;
+        return true;
+    }
+
+    private removeEquippedArtifactInternal(id: string): boolean {
+        let removed = false;
+
+        this.getCharacters().forEach(character => {
+            CHARACTER_ARTIFACT_SLOTS.forEach(slot => {
+                const entry = this.getCharacterEquippedArtifact(character.id, slot);
+                if (entry && entry.id == id) {
+                    delete character.equippedArtifacts[slot];
+                    removed = true;
+                }
+            });
+        });
+
+        return removed;
     }
 
 

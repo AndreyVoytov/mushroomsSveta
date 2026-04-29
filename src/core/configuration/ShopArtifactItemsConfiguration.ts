@@ -9,10 +9,12 @@ export default class ShopArtifactItemsConfiguration {
             icon: 'shopItem1',
             price: 79,
             skillIds: ['knowledge', 'friendship'],
-            usageText: 'shop.item.crownOfDawn.usage',
+            usageText: 'shop.item.onlyHuman.usage',
             currentLevel: 1,
             maxLevel: 10,
             availableFromForest: 1,
+            requiredCharacterTags: ['human'],
+            allowedSlots: ['helmet'],
             iconScale: 0.52
         },
         {
@@ -21,10 +23,12 @@ export default class ShopArtifactItemsConfiguration {
             icon: 'shopItem2',
             price: 95,
             skillIds: ['friendship', 'energy'],
-            usageText: 'shop.item.keeperMantle.usage',
+            usageText: 'shop.item.onlyHuman.usage',
             currentLevel: 1,
             maxLevel: 10,
             availableFromForest: 1,
+            requiredCharacterTags: ['human'],
+            allowedSlots: ['armor'],
             iconScale: 0.5
         },
         {
@@ -33,10 +37,12 @@ export default class ShopArtifactItemsConfiguration {
             icon: 'shopItem3',
             price: 105,
             skillIds: ['bravery', 'knowledge'],
-            usageText: 'shop.item.stormMace.usage',
+            usageText: 'shop.item.onlyHuman.usage',
             currentLevel: 1,
             maxLevel: 10,
             availableFromForest: 1,
+            requiredCharacterTags: ['human'],
+            allowedSlots: ['weapon'],
             iconScale: 0.5
         },
         {
@@ -45,13 +51,19 @@ export default class ShopArtifactItemsConfiguration {
             icon: 'shopItem4',
             price: 115,
             skillIds: ['energy', 'bravery'],
-            usageText: 'shop.item.titanBow.usage',
+            usageText: 'shop.item.onlyHuman.usage',
             currentLevel: 1,
             maxLevel: 10,
             availableFromForest: 1,
+            requiredCharacterTags: ['human'],
+            allowedSlots: ['weapon'],
             iconScale: 0.55
         }
     ];
+
+    public static getById(itemId: string): ShopArtifactItemConfig {
+        return this.allItems.filter(item => item.id == itemId).shift();
+    }
 
     public static getAvailableForForest(currentForest: number): ShopArtifactItemConfig[] {
         const forestIndex = Math.max(1, currentForest + 1);
