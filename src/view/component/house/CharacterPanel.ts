@@ -217,7 +217,8 @@ export default class CharacterPanel extends ClosablePanel {
 
         this.upgradeButton = this.attachButton("characterCloseButton", () => this.tryUpgradeSelectedArtifact(), "upgradeButton");
         this.placeAtPsdCenter(this.upgradeButton, 480, 1318);
-        this.upgradeButton.visible = false;
+        this.upgradeButton.alpha = 0;
+        this.upgradeButton.inputEnabled = false;
 
         this.upgradeButtonLabel = this.addButtonText(this.upgradeButton, "", {
             font: "bold 28px Gilroy",
@@ -228,6 +229,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.upgradeButtonGemIcon = SpriteUtils.createSprite(this.game, 118, -1, "gems");
         this.upgradeButtonGemIcon.anchor.set(0.5);
         this.upgradeButtonGemIcon.scale.set(0.35);
+        this.upgradeButtonGemIcon.alpha = 0;
         this.upgradeButton.addChild(this.upgradeButtonGemIcon);
 
         CharacterPanel.SLOT_LAYOUT.forEach(layout => {
@@ -705,23 +707,23 @@ export default class CharacterPanel extends ClosablePanel {
             this.upgradeButton.alpha = 0.92;
             this.upgradeButton.inputEnabled = false;
             this.upgradeButtonLabel.text = LocalizationService.get("ui.character.maxLevel", "Max level");
-            this.upgradeButtonGemIcon.visible = false;
+            this.upgradeButtonGemIcon.alpha = 0;
             return;
         }
 
         this.upgradeButton.tint = 0xffffff;
         this.upgradeButton.alpha = 1;
         this.upgradeButton.inputEnabled = true;
-        this.upgradeButtonGemIcon.visible = true;
+        this.upgradeButtonGemIcon.alpha = 1;
         this.upgradeButtonLabel.text = LocalizationService.get("ui.character.upgrade", "Upgrade for {price}", {
             price: ShopArtifactService.getUpgradePrice(item, currentLevel)
         });
     }
 
     private setUpgradeButtonVisible(visible: boolean): void {
-        this.upgradeButton.visible = visible;
+        this.upgradeButton.alpha = visible ? 1 : 0;
         this.upgradeButton.inputEnabled = visible;
-        this.upgradeButtonGemIcon.visible = visible;
+        this.upgradeButtonGemIcon.alpha = visible ? 1 : 0;
     }
 
     private showUpgradeSuccessFeedback(): void {
