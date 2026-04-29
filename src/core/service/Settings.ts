@@ -30,7 +30,7 @@ export default class Settings {
     public static SUPPORT_MAIL = "redhat.game.help@gmail.com";
     public static OK_GROUP_URL = "https://ok.ru/group/1";
 
-    public static BUYS: Buy[] = [
+    public static BUYS: Buy[] = (<Buy[]>[
         { id: "r110", gems: 110, price: 19/*39*/ },
         { id: "r200", gems: 200, price: 39/*75*/ },
         { id: "r1100", gems: 1100, price: 179/*379*/ },
@@ -40,7 +40,7 @@ export default class Settings {
         // { id: "r10500", gems: 10500, price: 2990 },
         { id: "bunch2", name: "buy.bunch2.name", price: 279 /*579*/, gems: 1100, boosters:
                         [{ type: BoosterType.beans, count: 3}, { type: BoosterType.rainbow, count: 3}, { type: BoosterType.vision, count: 3}   /* , potions: 4 */] },
-    ]
+    ]);
 
     /*
     public static MUSIC_CREDITS =

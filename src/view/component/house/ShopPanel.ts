@@ -88,6 +88,11 @@ export default class ShopPanel extends ClosablePanel {
         return this;
     }
 
+    public openTab(tab: ShopTabId, animateSelector?: boolean, animateSection?: boolean): ShopPanel {
+        this.selectTab(tab, !!animateSelector, !!animateSection);
+        return this;
+    }
+
     private createSections(callbackOnBuy?: () => void): void {
         this.sections.bank = new ShopBankSectionPanel(this.game, () => {
             if (this.opened && !this.processing) {
@@ -97,7 +102,7 @@ export default class ShopPanel extends ClosablePanel {
                 callbackOnBuy();
             }
         });
-        this.sections.items = new ShopItemsSectionPanel(this.game);
+        this.sections.items = new ShopItemsSectionPanel(this.game, () => this.openTab('bank', false, false));
         this.sections.heroes = new ShopHeroesSectionPanel(this.game);
 
         this.addSprite(this.sections.bank);

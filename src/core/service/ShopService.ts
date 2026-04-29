@@ -35,6 +35,11 @@ export default class ShopService {
 
         this.initiatePayment(buy);
 
+        if (AnalyticUtils.getCustomization() == CustomizationType.webDev) {
+            this.checkAndApplyLastBuys(true);
+            return;
+        }
+
         //РџРѕРґСЃС‚СЂР°С…РѕРІРєР°: 10 РјРёРЅСѓС‚ РїС‹С‚Р°РµРјСЃСЏ РїРѕР»СѓС‡РёС‚СЊ РїР»Р°С‚РµР¶ РЅР°РїСЂСЏРјСѓСЋ СЃ СЃРµСЂРІРµСЂР°
         let loop = game.time.events.repeat(3000, 400, () => {
             if(!this.paymentsLoaded){
@@ -217,7 +222,13 @@ export default class ShopService {
     }
 
     private static showBuyConfirmation(buy: Buy): void {
-        let info = new BuyConfirmPanel(Game.getInstance(), LocalizationService.get('ui.purchaseReceived'), LocalizationService.get('ui.ok'), GameText.purchaseReward(Buy.getName(buy)), buy.name != undefined)
+        let info = new BuyConfirmPanel(
+            Game.getInstance(),
+            LocalizationService.get('ui.purchaseReceived'),
+            LocalizationService.get('ui.ok'),
+            GameText.purchaseReward(Buy.getName(buy)),
+            buy.name != undefined && !buy.artifactId
+        )
         Game.getInstance().add.existing(info);
         info.show();
     }

@@ -20,3 +20,8 @@ export interface ShopArtifactItemConfig {
     availableFromForest: number;
     iconScale?: number;
 }
+
+export interface ShopArtifactBackpackEntry {
+    id: string;
+    level: number;
+}

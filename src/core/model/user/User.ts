@@ -10,6 +10,7 @@ import UserEventState from './../event/UserEventState';
 import Utils from './../../utils/Utils';
 import EnergyUtils from '../../utils/EnergyUtils';
 import { createEmptyUserTasksState, UserTasksState } from '../task/TaskModels';
+import { ShopArtifactBackpackEntry } from '../shop/ShopArtifactModels';
 export default class User {
 
     public createdAt: string = new Date().toISOString();
@@ -45,6 +46,7 @@ export default class User {
     private completedReplicas: string[] = [];
     private completedTasks: string[] = ["rec0"];
     private tasksState: UserTasksState = createEmptyUserTasksState();
+    private backpack: ShopArtifactBackpackEntry[] = [];
 
     private location:StoryLocation;
     private afterLevelLocation:StoryLocation;
@@ -82,6 +84,12 @@ export default class User {
             this.completedReplicas = user.completedReplicas || [];
             this.completedTasks = user.completedTasks || ["rec0"];
             this.tasksState = user.tasksState || createEmptyUserTasksState();
+            this.backpack = (user.backpack || [])
+                .filter(entry => !!entry && !!entry.id)
+                .map(entry => ({
+                    id: entry.id,
+                    level: Math.max(1, entry.level || 1)
+                }));
             // this.items = user.items;
             this.justCompletedLevel = user.justCompletedLevel;
 
@@ -323,6 +331,44 @@ export default class User {
 
     public getCompletedReplicas(): string[] {
         return this.completedReplicas;
+    }
+
+    public getArtifactBackpack(): ShopArtifactBackpackEntry[] {
+        if (!this.backpack) {
+            this.backpack = [];
+        }
+        return this.backpack;
+    }
+
+    public getArtifactBackpackEntry(id: string): ShopArtifactBackpackEntry {
+        return this.getArtifactBackpack().filter(entry => entry.id == id).shift();
+    }
+
+    public hasArtifactInBackpack(id: string): boolean {
+        return !!this.getArtifactBackpackEntry(id);
+    }
+
+    public getArtifactLevel(id: string): number {
+        let entry = this.getArtifactBackpackEntry(id);
+        return entry ? Math.max(1, entry.level || 1) : 0;
+    }
+
+    public putArtifactToBackpack(id: string, level?: number): void {
+        let entry = this.getArtifactBackpackEntry(id);
+        let safeLevel = Math.max(1, level || 1);
+
+        if (entry) {
+            entry.level = safeLevel;
+        } else {
+            this.getArtifactBackpack().push({ id: id, level: safeLevel });
+        }
+
+        ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public removeArtifactFromBackpack(id: string): void {
+        this.backpack = this.getArtifactBackpack().filter(entry => entry.id != id);
+        ServerStoreComponent.saveLocalUser(this);
     }
 
     // public getItems(): UserItemType[] {

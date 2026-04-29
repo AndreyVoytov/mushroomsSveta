@@ -32,7 +32,7 @@ export default class ConfirmPanel extends ClosablePanel {
         const textStyle = big
             ? { font: "bold 31px Arial", fill: "#804119", align:"center", wordWrap: true, wordWrapWidth: 700 }
             : { font: "bold 45px Arial", fill: "#804119", align:"center", wordWrap: true, wordWrapWidth: 560 };
-        let labelText = this.attachText("textLabel", text, textStyle, true)
+        let labelText = this.createMessageLabel("textLabel", text, textStyle)
         labelText.alpha = 0.8;
         labelText.lineSpacing = 6;
 
@@ -88,5 +88,53 @@ export default class ConfirmPanel extends ClosablePanel {
         this.game.time.events.add(210, () => {
             InGameSettingsPanel.shown = true;
         })
+    }
+
+    private createMessageLabel(name: string, text: string, style: Phaser.PhaserTextStyle): Label | Phaser.Text {
+        if (!text || text.indexOf('~') == -1) {
+            return this.attachText(name, text, style, true);
+        }
+
+        const parsed = this.parseGreenHighlightText(text);
+        const label = new Phaser.Text(this.game, 0, 0, parsed.text, style);
+        label.name = name;
+        label.anchor.set(0.5);
+        label.align = style.align || 'center';
+
+        parsed.ranges.forEach(range => {
+            label.addColor('#2fa512', range.start);
+            label.addColor(style.fill ? style.fill.toString() : '#804119', range.end);
+        });
+
+        this.addSprite(label);
+        return label;
+    }
+
+    private parseGreenHighlightText(source: string): { text: string, ranges: { start: number, end: number }[] } {
+        let clean = '';
+        let ranges: { start: number, end: number }[] = [];
+        let markerOpenAt: number = null;
+
+        for (let i = 0; i < source.length; i++) {
+            const char = source.charAt(i);
+
+            if (char == '~') {
+                if (markerOpenAt == null) {
+                    markerOpenAt = clean.length;
+                } else {
+                    ranges.push({ start: markerOpenAt, end: clean.length });
+                    markerOpenAt = null;
+                }
+                continue;
+            }
+
+            if (char == '@') {
+                continue;
+            }
+
+            clean += char;
+        }
+
+        return { text: clean, ranges: ranges };
     }
 };

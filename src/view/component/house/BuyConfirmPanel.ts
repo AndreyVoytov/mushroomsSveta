@@ -3,12 +3,21 @@ import ClosablePanel from '../panel/ClosablePanel';
 import Label from '../panel/Label';
 import SoundUtils from '../../../core/utils/SoundUtils';
 
+export interface BuyConfirmRewardOptions {
+    bunchBuy?: boolean;
+    rewardIconKey?: string;
+    rewardIconScale?: number;
+}
+
 export default class BuyConfirmPanel extends ClosablePanel {
 
     private actionButton:Phaser.Button;
 
-    constructor(game: Phaser.Game, header: string, actionName: string,  text:string, bunchBuy?:boolean) {
+    constructor(game: Phaser.Game, header: string, actionName: string,  text:string, visualOptions?: boolean | BuyConfirmRewardOptions) {
         super(game, game.width/2, game.height/2, true, "blank");
+        const options: BuyConfirmRewardOptions = typeof visualOptions == 'boolean'
+            ? { bunchBuy: visualOptions }
+            : (visualOptions || {});
 
         this.visible = false;
         this.fixedToCamera = true;
@@ -20,7 +29,14 @@ export default class BuyConfirmPanel extends ClosablePanel {
 
         let helperPanel =  this.attachSprite("helperPanel")
 
-        if(bunchBuy){
+        let rewardBg: Phaser.Sprite;
+        let rewardSplash: Phaser.Sprite;
+        let rewardIcon: Phaser.Sprite;
+        if (options.rewardIconKey) {
+            rewardBg = this.attachSprite('shopItemBg', 'rewardBg');
+            rewardSplash = this.attachSprite('splashY', 'rewardSplash');
+            rewardIcon = this.attachSprite(options.rewardIconKey, 'rewardIcon');
+        } else if(options.bunchBuy){
             this.attachSprite('chest1')
         } else {
             this.attachSprite('chest4')
@@ -63,6 +79,24 @@ export default class BuyConfirmPanel extends ClosablePanel {
 {"spriteId":"levelLabel","x":0,"y":-234,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":46},
 {"spriteId":"textLabel","x":6,"y":-83,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":45},
 {"spriteId":"actionButton","x":0,"y":98,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0}])
+
+        if (rewardBg && rewardSplash && rewardIcon) {
+            rewardBg.x = -6;
+            rewardBg.y = -357;
+            rewardBg.scale.set(1.56);
+            rewardBg.alpha = 0.92;
+
+            rewardSplash.x = -6;
+            rewardSplash.y = -357;
+            rewardSplash.scale.set(1.35);
+            rewardSplash.alpha = 0.78;
+
+            rewardIcon.x = -6;
+            rewardIcon.y = -349;
+            rewardIcon.scale.set(options.rewardIconScale || 1.45);
+
+            this.game.add.tween(rewardBg).to({ angle: 360 }, 40000, Phaser.Easing.Linear.None, true, 0, -1, false);
+        }
 
         // if(panel){
         //     panel.scale.set(panel.scale.x * 1.3, panel.scale.y)
