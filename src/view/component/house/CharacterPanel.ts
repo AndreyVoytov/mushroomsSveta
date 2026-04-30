@@ -3,7 +3,7 @@ import ShopArtifactItemsConfiguration from "../../../core/configuration/ShopArti
 import ShopArtifactSkillsConfiguration from "../../../core/configuration/ShopArtifactSkillsConfiguration";
 import GameText from "../../../core/localization/GameText";
 import LocalizationService from "../../../core/localization/LocalizationService";
-import { CharacterArtifactSlotId } from "../../../core/model/character/CharacterModels";
+import { CharacterArtifactSlotId, CharacterConfig } from "../../../core/model/character/CharacterModels";
 import { ShopArtifactBackpackEntry, ShopArtifactItemConfig, ShopArtifactSkillId } from "../../../core/model/shop/ShopArtifactModels";
 import ShopArtifactService from "../../../core/service/ShopArtifactService";
 import UserService from "../../../core/service/UserService";
@@ -492,7 +492,7 @@ export default class CharacterPanel extends ClosablePanel {
         }
 
         user.setCurrentCharacterId(character.id);
-        this.bannerTitle.text = config.name;
+        this.bannerTitle.text = this.getCharacterDisplayName(character.id, config);
         const artifactBonuses = this.getArtifactBonusesBySkill(character.id);
 
         if (config.imageKey) {
@@ -619,8 +619,8 @@ export default class CharacterPanel extends ClosablePanel {
         this.selectedArtifactSlot = null;
         this.setUpgradeButtonVisible(false);
         this.refreshSlotSelectionVisuals();
-        this.contentTitle.text = config ? config.name : LocalizationService.get("ui.character.title", "Character");
-        this.setContentBodyPlain(config ? LocalizationService.get(config.descriptionText, config.descriptionText) : "");
+        this.contentTitle.text = config ? this.getCharacterDisplayName(character.id, config) : LocalizationService.get("ui.character.title", "Character");
+        this.setContentBodyPlain(this.getCharacterDescription(character.id, config));
     }
 
     private showSkillInfo(index: number): void {
@@ -1011,6 +1011,44 @@ export default class CharacterPanel extends ClosablePanel {
 
         const totalArtifactBonuses = artifactBonuses || this.getArtifactBonusesBySkill(character.id);
         return skill.value + (totalArtifactBonuses[skillId] || 0);
+    }
+
+    private getCharacterDisplayName(characterId: string, config?: CharacterConfig): string {
+        if (characterId == CharactersConfiguration.BORIS_CHARACTER_ID) {
+            return this.isBorisRevealed()
+                ? (LocalizationService.isRussian() ? "Борис" : "Boris")
+                : (LocalizationService.isRussian() ? "Котёнок" : "Kitten");
+        }
+
+        if (characterId == CharactersConfiguration.OWL_CHARACTER_ID) {
+            return LocalizationService.isRussian() ? "Совёнок" : "Owlet";
+        }
+
+        if (characterId == CharactersConfiguration.LESHY_CHARACTER_ID) {
+            return LocalizationService.isRussian() ? "Леший" : "Leshy";
+        }
+
+        return config ? LocalizationService.get(config.name, config.name) : LocalizationService.get("ui.character.title", "Character");
+    }
+
+    private getCharacterDescription(characterId: string, config?: CharacterConfig): string {
+        if (characterId == CharactersConfiguration.BORIS_CHARACTER_ID) {
+            if (this.isBorisRevealed()) {
+                return LocalizationService.isRussian()
+                    ? "Борис быстро соображает, любит импровизировать и почти всегда находит выгоду там, где остальные видят только неприятности."
+                    : "Boris thinks fast, improvises easily, and usually spots an opportunity before anyone else notices it.";
+            }
+
+            return LocalizationService.isRussian()
+                ? "Потерявший память котёнок уже стал частью команды. Он любопытен, ловок и постоянно втягивает Эмму в новые приключения."
+                : "The amnesiac kitten has already become part of the party. He is curious, nimble, and always pulls Emma toward the next adventure.";
+        }
+
+        return config ? LocalizationService.get(config.descriptionText, config.descriptionText) : "";
+    }
+
+    private isBorisRevealed(): boolean {
+        return UserService.getUser().getCompletedReplicas().indexOf("r27") != -1;
     }
 
     private isArtifactSkill(skillId: ShopArtifactSkillId): boolean {

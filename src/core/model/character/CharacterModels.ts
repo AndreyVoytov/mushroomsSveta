@@ -1,4 +1,4 @@
-export type CharacterTagId = 'human';
+export type CharacterTagId = 'human' | 'cat' | 'owl' | 'leshy';
 export type CharacterArtifactSlotId = 'helmet' | 'weapon' | 'boots' | 'amulet' | 'armor' | 'ring';
 export type CharacterSkillId = 'energy' | 'bravery' | 'friendship' | 'knowledge';
 

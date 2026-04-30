@@ -295,12 +295,14 @@ export default class User {
 
     public addMarker(marker: string) {
         this.markers.push(marker);
+        this.ensureStoryCharactersUnlocked();
         ServerStoreComponent.saveLocalUser(this);
     }
 
     public addCompletedReplica(id: string): void {
         console.log("COMPLETED REPLICA: " + id)
         this.completedReplicas.push(id);
+        this.ensureReplicaCharactersUnlocked(id);
         ServerStoreComponent.saveLocalUser(this);
     }
 
@@ -788,6 +790,33 @@ export default class User {
         const state = this.createCharacterState(startCharacter.id);
         if (state) {
             this.getCharacters().push(state);
+        }
+    }
+
+    private ensureStoryCharactersUnlocked(): void {
+        if (this.getMarkers().indexOf("catFound") != -1) {
+            this.ensureCharacterUnlocked(CharactersConfiguration.BORIS_CHARACTER_ID);
+        }
+
+        if (this.getMarkers().indexOf("owl2found") != -1) {
+            this.ensureCharacterUnlocked(CharactersConfiguration.OWL_CHARACTER_ID);
+        }
+    }
+
+    private ensureCharacterUnlocked(characterId: string): void {
+        if (!characterId || this.hasCharacter(characterId)) {
+            return;
+        }
+
+        const state = this.createCharacterState(characterId);
+        if (state) {
+            this.getCharacters().push(state);
+        }
+    }
+
+    private ensureReplicaCharactersUnlocked(replicaId: string): void {
+        if (replicaId == "r51") {
+            this.ensureCharacterUnlocked(CharactersConfiguration.LESHY_CHARACTER_ID);
         }
     }
 
