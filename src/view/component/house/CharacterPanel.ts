@@ -127,10 +127,26 @@ export default class CharacterPanel extends ClosablePanel {
         this.animateBottomActionButtonsOut();
 
         if (this.openingShop) {
-            this.game.time.events.add(360, () => {
-                let shopPanel = new ShopPanel(this.game, this.screen, undefined, 'items');
-                this.screen.addPanel(shopPanel);
-                shopPanel.show();
+            let shopPanel = new ShopPanel(this.game, this.screen, undefined, 'items');
+            shopPanel.blackTransparent.alpha = 0;
+            this.screen.addPanel(shopPanel);
+            shopPanel.show();
+            this.game.tweens.removeFrom(shopPanel.blackTransparent);
+            shopPanel.blackTransparent.alpha = 0;
+            shopPanel.blackTransparent.inputEnabled = false;
+
+            this.game.time.events.add(0, () => {
+                this.game.tweens.removeFrom(this.blackTransparent);
+                this.blackTransparent.alpha = 0.5;
+            });
+
+            this.game.time.events.add(300, () => {
+                this.game.tweens.removeFrom(shopPanel.blackTransparent);
+                shopPanel.blackTransparent.alpha = 0.5;
+                shopPanel.blackTransparent.inputEnabled = true;
+                this.blackTransparent.alpha = 0;
+                this.blackTransparent.inputEnabled = false;
+                this.screen.bringShopHudToTop();
             });
             return;
         }
@@ -513,7 +529,7 @@ export default class CharacterPanel extends ClosablePanel {
             const showInfoButton = this.isArtifactSkill(skillValue.skillId);
             row.infoButton.visible = showInfoButton;
             row.infoButton.inputEnabled = showInfoButton;
-            row.valueLabel.text = "" + skillValue.value;
+            row.valueLabel.text = "" + this.getCurrentCharacterSkillValue(skillValue.skillId, character, artifactBonuses);
         });
 
         CharacterPanel.SLOT_LAYOUT.forEach(layout => {
@@ -624,7 +640,11 @@ export default class CharacterPanel extends ClosablePanel {
         }
 
         const artifactBonuses = this.getArtifactBonusesBySkill(character.id);
-        this.openSkillInfoPanel(skillValue.skillId, skillValue.value, artifactBonuses[skillValue.skillId] || 0);
+        this.openSkillInfoPanel(
+            skillValue.skillId,
+            this.getCurrentCharacterSkillValue(skillValue.skillId, character, artifactBonuses),
+            artifactBonuses[skillValue.skillId] || 0
+        );
     }
 
     private showArtifactInfo(slotId: CharacterArtifactSlotId): void {
@@ -974,14 +994,23 @@ export default class CharacterPanel extends ClosablePanel {
         return bonuses;
     }
 
-    private getCurrentCharacterSkillValue(skillId: ShopArtifactSkillId): number {
-        const character = UserService.getUser().getCharacters()[this.currentCharacterIndex];
+    private getCurrentCharacterSkillValue(
+        skillId: ShopArtifactSkillId,
+        characterOverride?: { id: string, skills?: { skillId: ShopArtifactSkillId, value: number }[] },
+        artifactBonuses?: { [skillId: string]: number }
+    ): number {
+        const character = characterOverride || UserService.getUser().getCharacters()[this.currentCharacterIndex];
         if (!character || !character.skills) {
             return null;
         }
 
         const skill = character.skills.filter(entry => entry.skillId == skillId).shift();
-        return skill ? skill.value : null;
+        if (!skill) {
+            return null;
+        }
+
+        const totalArtifactBonuses = artifactBonuses || this.getArtifactBonusesBySkill(character.id);
+        return skill.value + (totalArtifactBonuses[skillId] || 0);
     }
 
     private isArtifactSkill(skillId: ShopArtifactSkillId): boolean {

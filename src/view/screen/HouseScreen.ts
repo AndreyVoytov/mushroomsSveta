@@ -823,10 +823,7 @@ export default class HouseScreen extends DialogScreen {
             this.game.add.tween(this.settingsButton).to({ alpha: 0 }, duration, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.In, true, 0, 0, false)
         } else {
             this.game.time.events.add(101, () => {
-                this.keysPanel.bringToTop();
-                this.lifesPanel.bringToTop();
-                this.settingsButton.bringToTop();
-                this.gemsPanel.bringToTop();
+                this.bringShopHudToTop();
             });
 
             this.game.add.tween(this.settingsButton).to({ alpha: 0 }, duration + 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 0, 0, false)
@@ -904,6 +901,24 @@ export default class HouseScreen extends DialogScreen {
 
         this.playButton.bringToTop();
         this.notebookButton.bringToTop();
+    }
+
+    public bringShopHudToTop(): void {
+        if (this.keysPanel) {
+            this.keysPanel.bringToTop();
+        }
+
+        if (this.lifesPanel) {
+            this.lifesPanel.bringToTop();
+        }
+
+        if (this.settingsButton) {
+            this.settingsButton.bringToTop();
+        }
+
+        if (this.gemsPanel) {
+            this.gemsPanel.bringToTop();
+        }
     }
 
     public startLevel(): void {
