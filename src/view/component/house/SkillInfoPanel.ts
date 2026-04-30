@@ -30,7 +30,7 @@ export default class SkillInfoPanel extends ClosablePanel {
         panel.inputEnabled = true;
 
         const helperPanel = this.attachSprite("helperPanel", "helperPanel");
-        helperPanel.scale.set(1.02, 1.02);
+        helperPanel.scale.set(1.02, 1.2);
         helperPanel.y = 18;
 
         const closeButton = this.attachButton("closeButton", () => this.close(), "closeButton");
@@ -87,31 +87,6 @@ export default class SkillInfoPanel extends ClosablePanel {
                     value: options.currentValue
                 }),
                 color: "#855331"
-            });
-        }
-
-        if ((options.artifactBonus || 0) > 0) {
-            lines.push({
-                text: LocalizationService.get("ui.skillInfo.artifactBonus", "From equipped artifacts: +{value}", {
-                    value: options.artifactBonus
-                }),
-                color: "#0b6e22"
-            });
-        }
-
-        lines.push({
-            text: LocalizationService.get("ui.character.effectPerLevel", "One artifact level gives +{value}.", {
-                value: skill.valuePerLevel
-            }),
-            color: "#0b6e22"
-        });
-
-        if (options.currentValue != null) {
-            lines.push({
-                text: LocalizationService.get("ui.character.upgradeCost", "Upgrade cost +1: {price}", {
-                    price: ShopArtifactSkillsConfiguration.getUpgradePrice(skillId, options.currentValue)
-                }),
-                color: "#7f187e"
             });
         }
 

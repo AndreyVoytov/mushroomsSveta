@@ -69,6 +69,7 @@ export default class CharacterPanel extends ClosablePanel {
     private contentTitle: Label;
     private contentBody: Label;
     private contentBodyRich: Phaser.Text;
+    private artifactBonusLabels: Label[] = [];
     private arrowLeftButton: Phaser.Button;
     private arrowRightButton: Phaser.Button;
     private backpackButton: Phaser.Button;
@@ -82,6 +83,7 @@ export default class CharacterPanel extends ClosablePanel {
     private upgradeButton: Phaser.Button;
     private upgradeButtonLabel: Label;
     private upgradeButtonGemIcon: Phaser.Sprite;
+    private artifactBonusInfoButtons: Phaser.Button[] = [];
     private skillRows: SkillRowView[] = [];
     private slotViews: { [slotId: string]: SlotView } = {};
     private currentCharacterIndex: number = 0;
@@ -234,6 +236,29 @@ export default class CharacterPanel extends ClosablePanel {
         this.contentBodyRich.lineSpacing = 10;
         this.contentBodyRich.visible = false;
         this.addSprite(this.contentBodyRich);
+
+        for (let i = 0; i < 2; i++) {
+            const bonusLabel = this.attachText("artifactBonusLabel" + i, "", {
+                font: "bold 23px Arial",
+                fill: "#0b6e22",
+                align: "center",
+                wordWrap: true,
+                wordWrapWidth: 430
+            });
+            bonusLabel.anchor.set(0.5, 0);
+            bonusLabel.visible = false;
+            bonusLabel.x = this.contentBodyRich.x;
+            this.artifactBonusLabels.push(bonusLabel);
+        }
+
+        for (let i = 0; i < 2; i++) {
+            const infoButton = this.attachButton("characterArtifactInfoButton", () => this.showArtifactBonusSkillInfo(i), "artifactBonusInfo" + i);
+            infoButton.visible = false;
+            infoButton.inputEnabled = false;
+            infoButton.scale.set(0.72);
+            infoButton.anchor.set(0.5);
+            this.artifactBonusInfoButtons.push(infoButton);
+        }
 
         this.upgradeButton = this.attachButton("characterCloseButton", () => this.tryUpgradeSelectedArtifact(), "upgradeButton");
         this.placeAtPsdCenter(this.upgradeButton, 480, 1318);
@@ -485,7 +510,7 @@ export default class CharacterPanel extends ClosablePanel {
             SpriteUtils.loadTexture(row.icon, skillConfig.icon);
             row.icon.visible = true;
             row.valueLabel.visible = true;
-            const showInfoButton = (artifactBonuses[skillValue.skillId] || 0) > 0;
+            const showInfoButton = this.isArtifactSkill(skillValue.skillId);
             row.infoButton.visible = showInfoButton;
             row.infoButton.inputEnabled = showInfoButton;
             row.valueLabel.text = "" + skillValue.value;
@@ -627,7 +652,10 @@ export default class CharacterPanel extends ClosablePanel {
             return;
         }
 
-        const bonusLines = item.skillIds
+        const bonusSkillIds = item.skillIds
+            .filter(skillId => !!ShopArtifactSkillsConfiguration.getById(skillId));
+
+        const bonusLines = <RichTextLine[]>bonusSkillIds
             .map(skillId => {
                 const skillConfig = ShopArtifactSkillsConfiguration.getById(skillId);
                 if (!skillConfig) {
@@ -667,7 +695,8 @@ export default class CharacterPanel extends ClosablePanel {
                 color: "#7f187e"
             }
         ];
-        this.setContentBodyRich(richLines.concat(bonusLines as RichTextLine[]));
+        this.setContentBodyRich(richLines);
+        this.showArtifactBonusLines(bonusSkillIds, bonusLines);
         this.refreshUpgradeButton(item, artifactEntry.level);
     }
 
@@ -816,6 +845,7 @@ export default class CharacterPanel extends ClosablePanel {
     private setContentBodyPlain(text: string): void {
         this.contentBody.visible = true;
         this.contentBodyRich.visible = false;
+        this.hideArtifactBonusDetails();
         this.contentBody.text = text;
         this.contentBodyRich.clearColors();
         this.contentBodyRich.text = "";
@@ -824,6 +854,7 @@ export default class CharacterPanel extends ClosablePanel {
     private setContentBodyRich(lines: RichTextLine[]): void {
         this.contentBody.visible = false;
         this.contentBodyRich.visible = true;
+        this.hideArtifactBonusDetails();
 
         let text = "";
         let ranges: { start: number, color: string }[] = [];
@@ -853,6 +884,68 @@ export default class CharacterPanel extends ClosablePanel {
         ranges.forEach(range => this.contentBodyRich.addColor(range.color, range.start));
     }
 
+    private showArtifactBonusLines(skillIds: ShopArtifactSkillId[], lines: RichTextLine[]): void {
+        this.hideArtifactBonusDetails();
+
+        if (!skillIds || skillIds.length == 0 || !lines || lines.length == 0) {
+            return;
+        }
+
+        const bonusButtonX = this.psdX(632);
+        let nextLabelY = this.contentBodyRich.y + this.contentBodyRich.height + 6;
+
+        skillIds.forEach((skillId, index) => {
+            const line = lines[index];
+            const label = this.artifactBonusLabels[index];
+            const button = this.artifactBonusInfoButtons[index];
+            if (!line || !label || !button) {
+                return;
+            }
+
+            label.text = line.text;
+            label.x = this.contentBodyRich.x;
+            label.y = nextLabelY;
+            label.visible = true;
+            label.updateText();
+
+            (<any>button).skillId = skillId;
+            button.x = bonusButtonX;
+            button.y = label.y + label.height / 2;
+            button.visible = true;
+            button.inputEnabled = true;
+
+            nextLabelY = label.y + label.height + 2;
+        });
+    }
+
+    private hideArtifactBonusDetails(): void {
+        this.artifactBonusLabels.forEach(label => {
+            label.visible = false;
+            label.text = "";
+        });
+
+        this.hideArtifactBonusInfoButtons();
+    }
+
+    private hideArtifactBonusInfoButtons(): void {
+        this.artifactBonusInfoButtons.forEach(button => {
+            (<any>button).skillId = null;
+            button.visible = false;
+            button.inputEnabled = false;
+        });
+    }
+
+    private showArtifactBonusSkillInfo(index: number): void {
+        const button = this.artifactBonusInfoButtons[index];
+        const skillId = button ? <ShopArtifactSkillId>(<any>button).skillId : null;
+        if (!skillId) {
+            return;
+        }
+
+        const currentValue = this.getCurrentCharacterSkillValue(skillId);
+        this.openSkillInfoPanel(skillId, currentValue);
+    }
+
     private getArtifactBonusesBySkill(characterId: string): { [skillId: string]: number } {
         const user = UserService.getUser();
         const bonuses: { [skillId: string]: number } = {};
@@ -879,6 +972,20 @@ export default class CharacterPanel extends ClosablePanel {
         });
 
         return bonuses;
+    }
+
+    private getCurrentCharacterSkillValue(skillId: ShopArtifactSkillId): number {
+        const character = UserService.getUser().getCharacters()[this.currentCharacterIndex];
+        if (!character || !character.skills) {
+            return null;
+        }
+
+        const skill = character.skills.filter(entry => entry.skillId == skillId).shift();
+        return skill ? skill.value : null;
+    }
+
+    private isArtifactSkill(skillId: ShopArtifactSkillId): boolean {
+        return ShopArtifactItemsConfiguration.allItems.some(item => (item.skillIds || []).indexOf(skillId) != -1);
     }
 
     private addButtonText(button: Phaser.Button, text: string, style: Phaser.PhaserTextStyle, offsetY?: number): Label {
