@@ -27,6 +27,7 @@ export default class CharactersConfiguration {
             descriptionText: 'character.boris.description',
             aliases: ['Boris', 'Kitten', 'Cat'],
             imageKey: 'cat1',
+            characterPanelPortraitOffsetY: 30,
             tags: ['cat'],
             skills: [
                 { skillId: 'energy', value: 6 },

@@ -20,6 +20,7 @@ export interface CharacterConfig {
     descriptionText: string;
     aliases?: string[];
     imageKey?: string;
+    characterPanelPortraitOffsetY?: number;
     tags: CharacterTagId[];
     skills: CharacterSkillValue[];
 }

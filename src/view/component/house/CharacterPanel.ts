@@ -5,6 +5,7 @@ import GameText from "../../../core/localization/GameText";
 import LocalizationService from "../../../core/localization/LocalizationService";
 import { CharacterArtifactSlotId, CharacterConfig } from "../../../core/model/character/CharacterModels";
 import { ShopArtifactBackpackEntry, ShopArtifactItemConfig, ShopArtifactSkillId } from "../../../core/model/shop/ShopArtifactModels";
+import Settings from "../../../core/service/Settings";
 import ShopArtifactService from "../../../core/service/ShopArtifactService";
 import UserService from "../../../core/service/UserService";
 import AnimationUtils from "../../../core/utils/AnimationUtils";
@@ -63,6 +64,7 @@ export default class CharacterPanel extends ClosablePanel {
     private screen: HouseScreen;
     private panelScale: number;
     private panelHitArea: Phaser.Sprite;
+    private skillsBg: Phaser.Sprite;
     private portrait: Phaser.Sprite;
     private portraitHitArea: Phaser.Button;
     private bannerTitle: Label;
@@ -89,6 +91,14 @@ export default class CharacterPanel extends ClosablePanel {
     private currentCharacterIndex: number = 0;
     private openingShop: boolean = false;
     private selectedArtifactSlot: CharacterArtifactSlotId = null;
+    private ambientTweens: Phaser.Tween[] = [];
+    private portraitDefaultBaseX: number = 0;
+    private portraitDefaultBaseY: number = 0;
+    private portraitBaseX: number = 0;
+    private portraitBaseY: number = 0;
+    private portraitBaseScaleX: number = 1;
+    private portraitBaseScaleY: number = 1;
+    private skillsBgBaseX: number = 0;
 
     constructor(game: Phaser.Game, screen: HouseScreen) {
         super(
@@ -125,6 +135,7 @@ export default class CharacterPanel extends ClosablePanel {
 
     protected onClose(): void {
         this.animateBottomActionButtonsOut();
+        this.stopAmbientTweens();
 
         if (this.openingShop) {
             let shopPanel = new ShopPanel(this.game, this.screen, undefined, 'items');
@@ -161,11 +172,18 @@ export default class CharacterPanel extends ClosablePanel {
         this.panelHitArea.alpha = 0.001;
         this.panelHitArea.inputEnabled = true;
 
-        const skillsBg = this.attachSprite("characterSkillsBg", "skillsBg");
-        this.placeAtPsdCenter(skillsBg, 645.5, 550);
+        this.skillsBg = this.attachSprite("characterSkillsBg", "skillsBg");
+        this.placeAtPsdCenter(this.skillsBg, 645.5, 550);
+        this.skillsBgBaseX = this.skillsBg.x;
 
         this.portrait = this.attachSprite("sveta1", "portrait");
         this.placeAtPsdCenter(this.portrait, 290.5, 534.5);
+        this.portraitDefaultBaseX = this.portrait.x;
+        this.portraitDefaultBaseY = this.portrait.y;
+        this.portraitBaseX = this.portrait.x;
+        this.portraitBaseY = this.portrait.y;
+        this.portraitBaseScaleX = this.portrait.scale.x;
+        this.portraitBaseScaleY = this.portrait.scale.y;
 
         this.portraitHitArea = this.attachButton("blank", () => this.showCharacterDescription(), "portraitHitArea");
         this.placeAtPsdCenter(this.portraitHitArea, 286, 532);
@@ -478,6 +496,7 @@ export default class CharacterPanel extends ClosablePanel {
         const user = UserService.getUser();
         const characters = user.getCharacters();
         if (characters.length == 0) {
+            this.stopAmbientTweens();
             return;
         }
 
@@ -498,7 +517,13 @@ export default class CharacterPanel extends ClosablePanel {
         if (config.imageKey) {
             SpriteUtils.loadTexture(this.portrait, config.imageKey);
             this.portrait.visible = true;
+            this.portraitBaseX = this.portraitDefaultBaseX;
+            this.portraitBaseY = this.portraitDefaultBaseY + (config.characterPanelPortraitOffsetY || 0);
+            this.portrait.x = this.portraitBaseX;
+            this.portrait.y = this.portraitBaseY;
             this.portrait.scale.set(1);
+            this.portraitBaseScaleX = this.portrait.scale.x;
+            this.portraitBaseScaleY = this.portrait.scale.y;
         } else {
             this.portrait.visible = false;
         }
@@ -574,7 +599,67 @@ export default class CharacterPanel extends ClosablePanel {
         this.arrowRightButton.visible = showArrows;
         this.arrowRightButton.inputEnabled = showArrows;
 
+        this.startAmbientTweens();
         this.showCharacterDescription();
+    }
+
+    private startAmbientTweens(): void {
+        this.stopAmbientTweens();
+
+        const easing = Settings.isOnlyLinearAnimations()
+            ? Phaser.Easing.Linear.None
+            : Phaser.Easing.Sinusoidal.InOut;
+
+        if (!this.portrait || !this.portrait.visible) {
+            return;
+        }
+
+        this.ambientTweens.push(this.game.add.tween(this.portrait).to(
+            { x: this.portraitBaseX + 12 },
+            2925,
+            easing,
+            true,
+            0,
+            -1,
+            true
+        ));
+        this.ambientTweens.push(this.game.add.tween(this.portrait).to(
+            { y: this.portraitBaseY - 13.5 },
+            2325,
+            easing,
+            true,
+            0,
+            -1,
+            true
+        ));
+        this.ambientTweens.push(this.game.add.tween(this.portrait.scale).to(
+            { x: this.portraitBaseScaleX * 1.027, y: this.portraitBaseScaleY * 1.027 },
+            2325,
+            easing,
+            true,
+            0,
+            -1,
+            true
+        ));
+    }
+
+    private stopAmbientTweens(): void {
+        this.ambientTweens.forEach(tween => {
+            if (tween) {
+                tween.stop(false);
+            }
+        });
+        this.ambientTweens = [];
+
+        if (this.skillsBg) {
+            this.skillsBg.x = this.skillsBgBaseX;
+        }
+
+        if (this.portrait) {
+            this.portrait.x = this.portraitBaseX;
+            this.portrait.y = this.portraitBaseY;
+            this.portrait.scale.set(this.portraitBaseScaleX, this.portraitBaseScaleY);
+        }
     }
 
     private syncSelectedCharacter(): void {
