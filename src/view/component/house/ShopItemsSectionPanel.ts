@@ -2,8 +2,9 @@ import GameText from '../../../core/localization/GameText';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import ShopArtifactItemsConfiguration from '../../../core/configuration/ShopArtifactItemsConfiguration';
 import { ShopArtifactItemConfig } from '../../../core/model/shop/ShopArtifactModels';
-import ShopArtifactService from '../../../core/service/ShopArtifactService';
+import ShopArtifactService, { ShopArtifactGrantResult } from '../../../core/service/ShopArtifactService';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
+import CharacterTextUtils from '../../../core/utils/CharacterTextUtils';
 import UserService from '../../../core/service/UserService';
 import BuyConfirmPanel from './BuyConfirmPanel';
 import ConfirmPanel from './ConfirmPanel';
@@ -20,10 +21,14 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
 
     private cards: ShopArtifactCardPanel[] = [];
     private onOpenBank?: () => void;
+    private preferredCharacterId?: string;
+    private onOpenCharacter?: (characterId: string) => void;
 
-    constructor(game: Phaser.Game, onOpenBank?: () => void) {
+    constructor(game: Phaser.Game, onOpenBank?: () => void, preferredCharacterId?: string, onOpenCharacter?: (characterId: string) => void) {
         super(game, "itemsSection");
         this.onOpenBank = onOpenBank;
+        this.preferredCharacterId = preferredCharacterId;
+        this.onOpenCharacter = onOpenCharacter;
 
         ShopArtifactItemsConfiguration.getAvailableForForest(UserService.getUser().getCurrentForest()).forEach((item, index) => {
             const card = new ShopArtifactCardPanel(
@@ -66,14 +71,14 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
     private buyItem(item: ShopArtifactItemConfig): void {
         const result = ShopArtifactService.buy(item, () => {
             this.refreshCardsLayout(true);
-        });
+        }, this.preferredCharacterId);
 
-        if (result == 'success') {
-            this.showArtifactPurchased(item);
+        if (result.result == 'success') {
+            this.showArtifactPurchased(item, result.grantResult);
             return;
         }
 
-        if (result == 'notEnoughGems') {
+        if (result.result == 'notEnoughGems') {
             this.showNotEnoughGems(item);
         }
     }
@@ -120,15 +125,35 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
         info.show();
     }
 
-    private showArtifactPurchased(item: ShopArtifactItemConfig): void {
+    private showArtifactPurchased(item: ShopArtifactItemConfig, grantResult?: ShopArtifactGrantResult): void {
+        const equippedCharacterId = grantResult && grantResult.placement == 'equipped' ? grantResult.characterId : null;
+        const canOpenCharacter = !!equippedCharacterId && !!this.onOpenCharacter;
+        const actionName = canOpenCharacter
+            ? LocalizationService.get('ui.shop.toCharacter', LocalizationService.isRussian() ? 'К персонажу' : 'To character')
+            : LocalizationService.get('ui.ok', 'OK');
+        const text = equippedCharacterId
+            ? GameText.purchaseRewardEquipped(
+                LocalizationService.get(item.name),
+                CharacterTextUtils.getDisplayName(equippedCharacterId)
+            )
+            : GameText.purchaseRewardBackpack(LocalizationService.get(item.name));
+        let actionCallback: (() => void) | undefined = undefined;
+
+        if (canOpenCharacter) {
+            const safeCharacterId = equippedCharacterId;
+            const safeOpenCharacter = this.onOpenCharacter;
+            actionCallback = () => safeOpenCharacter(safeCharacterId);
+        }
+
         let info = new BuyConfirmPanel(
             this.game,
             LocalizationService.get('ui.purchaseReceived'),
-            LocalizationService.get('ui.ok'),
-            GameText.purchaseReward(LocalizationService.get(item.name)),
+            actionName,
+            text,
             {
                 rewardIconKey: item.icon,
-                rewardIconScale: (item.iconScale || 0.52) * 2.8
+                rewardIconScale: (item.iconScale || 0.52) * 2.8,
+                actionCallback: actionCallback
             }
         );
         this.game.add.existing(info);

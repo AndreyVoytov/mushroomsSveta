@@ -9,6 +9,7 @@ import Settings from "../../../core/service/Settings";
 import ShopArtifactService from "../../../core/service/ShopArtifactService";
 import UserService from "../../../core/service/UserService";
 import AnimationUtils from "../../../core/utils/AnimationUtils";
+import CharacterTextUtils from "../../../core/utils/CharacterTextUtils";
 import SoundUtils from "../../../core/utils/SoundUtils";
 import SpriteUtils from "../../../core/utils/SpriteUtils";
 import HouseScreen from "../../screen/HouseScreen";
@@ -90,6 +91,7 @@ export default class CharacterPanel extends ClosablePanel {
     private slotViews: { [slotId: string]: SlotView } = {};
     private currentCharacterIndex: number = 0;
     private openingShop: boolean = false;
+    private openingShopSourceCharacterId: string = null;
     private selectedArtifactSlot: CharacterArtifactSlotId = null;
     private ambientTweens: Phaser.Tween[] = [];
     private portraitDefaultBaseX: number = 0;
@@ -119,6 +121,7 @@ export default class CharacterPanel extends ClosablePanel {
 
     protected onShow(): void {
         this.openingShop = false;
+        this.openingShopSourceCharacterId = null;
         this.prepareBottomActionButtonsForShow();
         this.syncSelectedCharacter();
         this.refreshStaticTexts();
@@ -138,7 +141,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.stopAmbientTweens();
 
         if (this.openingShop) {
-            let shopPanel = new ShopPanel(this.game, this.screen, undefined, 'items');
+            let shopPanel = new ShopPanel(this.game, this.screen, undefined, 'items', this.openingShopSourceCharacterId);
             shopPanel.blackTransparent.alpha = 0;
             this.screen.addPanel(shopPanel);
             shopPanel.show();
@@ -923,6 +926,9 @@ export default class CharacterPanel extends ClosablePanel {
             return;
         }
 
+        const user = UserService.getUser();
+        const currentCharacter = user.getCharacters()[this.currentCharacterIndex];
+        this.openingShopSourceCharacterId = currentCharacter ? currentCharacter.id : user.getCurrentCharacterId();
         this.openingShop = true;
         this.close();
     }
@@ -1099,21 +1105,7 @@ export default class CharacterPanel extends ClosablePanel {
     }
 
     private getCharacterDisplayName(characterId: string, config?: CharacterConfig): string {
-        if (characterId == CharactersConfiguration.BORIS_CHARACTER_ID) {
-            return this.isBorisRevealed()
-                ? (LocalizationService.isRussian() ? "Борис" : "Boris")
-                : (LocalizationService.isRussian() ? "Котёнок" : "Kitten");
-        }
-
-        if (characterId == CharactersConfiguration.OWL_CHARACTER_ID) {
-            return LocalizationService.isRussian() ? "Совёнок" : "Owlet";
-        }
-
-        if (characterId == CharactersConfiguration.LESHY_CHARACTER_ID) {
-            return LocalizationService.isRussian() ? "Леший" : "Leshy";
-        }
-
-        return config ? LocalizationService.get(config.name, config.name) : LocalizationService.get("ui.character.title", "Character");
+        return CharacterTextUtils.getDisplayName(characterId, config);
     }
 
     private getCharacterDescription(characterId: string, config?: CharacterConfig): string {
@@ -1133,7 +1125,7 @@ export default class CharacterPanel extends ClosablePanel {
     }
 
     private isBorisRevealed(): boolean {
-        return UserService.getUser().getCompletedReplicas().indexOf("r27") != -1;
+        return CharacterTextUtils.isBorisRevealed();
     }
 
     private isArtifactSkill(skillId: ShopArtifactSkillId): boolean {

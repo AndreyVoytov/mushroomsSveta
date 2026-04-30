@@ -7,6 +7,7 @@ export interface BuyConfirmRewardOptions {
     bunchBuy?: boolean;
     rewardIconKey?: string;
     rewardIconScale?: number;
+    actionCallback?: () => void;
 }
 
 export default class BuyConfirmPanel extends ClosablePanel {
@@ -54,10 +55,10 @@ export default class BuyConfirmPanel extends ClosablePanel {
         labelText.alpha = 0.8;
 
         this.actionButton = this.attachButton("pnlButton", () => {
-            // if(actionCallback){
-            //     actionCallback();
-            // }
             this.close();
+            if (options.actionCallback) {
+                this.game.time.events.add(220, () => options.actionCallback());
+            }
         }, "actionButton");
 
         let continueLabel = new Label(this.game, 0, 0, actionName, { font: "bolder 60px Gilroy", fill: "#f0f1ec" });

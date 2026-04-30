@@ -1,14 +1,24 @@
 import ShopArtifactItemsConfiguration from "../configuration/ShopArtifactItemsConfiguration";
 import CharactersConfiguration from "../configuration/CharactersConfiguration";
 import ShopArtifactSkillsConfiguration from "../configuration/ShopArtifactSkillsConfiguration";
-import { CharacterArtifactSlotId, CharacterTagId } from "../model/character/CharacterModels";
+import { CHARACTER_ARTIFACT_SLOTS, CharacterArtifactSlotId, CharacterTagId } from "../model/character/CharacterModels";
 import { ShopArtifactItemConfig } from "../model/shop/ShopArtifactModels";
 import User from "../model/user/User";
 import UserService from "./UserService";
 
 export type ShopArtifactPurchaseResult = 'success' | 'notEnoughGems' | 'alreadyPurchased' | 'unknownItem';
-export type ShopArtifactGrantResult = 'equipped' | 'backpack' | 'unknownItem';
+export type ShopArtifactGrantPlacement = 'equipped' | 'backpack' | 'unknownItem';
 export type ShopArtifactUpgradeResult = 'success' | 'notEnoughGems' | 'maxLevel' | 'notOwned' | 'unknownItem';
+
+export interface ShopArtifactGrantResult {
+    placement: ShopArtifactGrantPlacement;
+    characterId?: string;
+}
+
+export interface ShopArtifactPurchaseOutcome {
+    result: ShopArtifactPurchaseResult;
+    grantResult?: ShopArtifactGrantResult;
+}
 
 export default class ShopArtifactService {
 
@@ -40,47 +50,65 @@ export default class ShopArtifactService {
         }, 0);
     }
 
-    public static buy(item: ShopArtifactItemConfig, callbackOnBought?: () => void): ShopArtifactPurchaseResult {
+    public static buy(item: ShopArtifactItemConfig, callbackOnBought?: () => void, preferredCharacterId?: string): ShopArtifactPurchaseOutcome {
         if (!item) {
-            return 'unknownItem';
+            return { result: 'unknownItem' };
         }
 
         if (this.isPurchased(item.id)) {
-            return 'alreadyPurchased';
+            return {
+                result: 'alreadyPurchased',
+                grantResult: this.getExistingGrantResult(UserService.getUser(), item.id)
+            };
         }
 
         let user = UserService.getUser();
         if (user.getSupermoney() < item.price) {
-            return 'notEnoughGems';
+            return { result: 'notEnoughGems' };
         }
 
         user.setSupermoney(user.getSupermoney() - item.price);
-        this.grantToUser(user, item.id, Math.max(1, item.currentLevel || 1));
+        const grantResult = this.grantToUser(user, item.id, Math.max(1, item.currentLevel || 1), preferredCharacterId);
 
         if (callbackOnBought) {
             callbackOnBought();
         }
 
-        return 'success';
+        return {
+            result: 'success',
+            grantResult: grantResult
+        };
     }
 
-    public static grantToUser(user: User, itemId: string, level?: number): ShopArtifactGrantResult {
+    public static grantToUser(user: User, itemId: string, level?: number, preferredCharacterId?: string): ShopArtifactGrantResult {
         const item = ShopArtifactItemsConfiguration.getById(itemId);
         if (!item) {
-            return 'unknownItem';
+            return { placement: 'unknownItem' };
         }
 
         if (user.hasOwnedArtifact(item.id)) {
-            return user.hasArtifactInBackpack(item.id) ? 'backpack' : 'equipped';
+            return this.getExistingGrantResult(user, item.id);
         }
 
         const safeLevel = Math.max(1, level || 1);
-        if (this.tryEquipToCurrentCharacter(user, item, safeLevel)) {
-            return 'equipped';
+        const prioritizedCharacterId = this.tryEquipToCharacter(user, preferredCharacterId, item, safeLevel);
+        if (prioritizedCharacterId) {
+            return {
+                placement: 'equipped',
+                characterId: prioritizedCharacterId
+            };
+        }
+
+        const fallbackCharacterId = this.tryEquipByFallbackPriority(user, item, safeLevel, preferredCharacterId ? [preferredCharacterId] : []);
+        if (fallbackCharacterId) {
+            return {
+                placement: 'equipped',
+                characterId: fallbackCharacterId
+            };
         }
 
         user.putArtifactToBackpack(item.id, safeLevel);
-        return 'backpack';
+        return { placement: 'backpack' };
     }
 
     public static upgradeOwnedItem(itemId: string, user?: User): ShopArtifactUpgradeResult {
@@ -125,24 +153,64 @@ export default class ShopArtifactService {
         return index == -1 ? 9999 : index;
     }
 
-    private static tryEquipToCurrentCharacter(user: User, item: ShopArtifactItemConfig, level: number): boolean {
-        const character = user.getCurrentCharacter();
+    private static getExistingGrantResult(user: User, itemId: string): ShopArtifactGrantResult {
+        if (user.hasArtifactInBackpack(itemId)) {
+            return { placement: 'backpack' };
+        }
+
+        const characterId = this.findEquippedArtifactCharacterId(user, itemId);
+        return characterId
+            ? { placement: 'equipped', characterId: characterId }
+            : { placement: 'backpack' };
+    }
+
+    private static tryEquipByFallbackPriority(user: User, item: ShopArtifactItemConfig, level: number, excludedCharacterIds: string[] = []): string {
+        const orderedCharacterIds: string[] = [];
+        const currentCharacter = user.getCurrentCharacter();
+        const safeExcludedCharacterIds = excludedCharacterIds || [];
+
+        if (currentCharacter && safeExcludedCharacterIds.indexOf(currentCharacter.id) == -1) {
+            orderedCharacterIds.push(currentCharacter.id);
+        }
+
+        user.getCharacters().forEach(character => {
+            if (safeExcludedCharacterIds.indexOf(character.id) == -1 && orderedCharacterIds.indexOf(character.id) == -1) {
+                orderedCharacterIds.push(character.id);
+            }
+        });
+
+        for (let i = 0; i < orderedCharacterIds.length; i++) {
+            const characterId = this.tryEquipToCharacter(user, orderedCharacterIds[i], item, level);
+            if (characterId) {
+                return characterId;
+            }
+        }
+
+        return null;
+    }
+
+    private static tryEquipToCharacter(user: User, characterId: string, item: ShopArtifactItemConfig, level: number): string {
+        if (!characterId) {
+            return null;
+        }
+
+        const character = user.getCharacterById(characterId);
         if (!character) {
-            return false;
+            return null;
         }
 
         const characterConfig = CharactersConfiguration.getById(character.id);
         if (!characterConfig || !this.hasRequiredTags(characterConfig.tags, item.requiredCharacterTags)) {
-            return false;
+            return null;
         }
 
         const slot = this.findFirstFreeSlot(user, character.id, item.allowedSlots);
         if (!slot) {
-            return false;
+            return null;
         }
 
         user.equipArtifactToCharacter(character.id, slot, item.id, level);
-        return true;
+        return character.id;
     }
 
     private static hasRequiredTags(characterTags: CharacterTagId[], requiredTags: CharacterTagId[]): boolean {
@@ -161,6 +229,22 @@ export default class ShopArtifactService {
             const slot = safeSlots[i];
             if (!user.getCharacterEquippedArtifact(characterId, slot)) {
                 return slot;
+            }
+        }
+
+        return null;
+    }
+
+    private static findEquippedArtifactCharacterId(user: User, artifactId: string): string {
+        const characters = user.getCharacters();
+        for (let i = 0; i < characters.length; i++) {
+            const character = characters[i];
+            for (let j = 0; j < CHARACTER_ARTIFACT_SLOTS.length; j++) {
+                const slot = CHARACTER_ARTIFACT_SLOTS[j];
+                const entry = user.getCharacterEquippedArtifact(character.id, slot);
+                if (entry && entry.id == artifactId) {
+                    return character.id;
+                }
             }
         }
 

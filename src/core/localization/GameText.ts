@@ -63,6 +63,29 @@ export default class GameText {
         return this.text('purchaseReward', 'You receive\n ~{name}~', { name: name });
     }
 
+    public static purchaseRewardBackpack(name: string): string {
+        return this.text(
+            'purchaseRewardBackpack',
+            LocalizationService.isRussian()
+                ? 'Вам достается\n ~{name}~\nПомещено в рюкзак.'
+                : 'You receive\n ~{name}~\nPlaced in backpack.',
+            { name: name }
+        );
+    }
+
+    public static purchaseRewardEquipped(name: string, character: string): string {
+        return this.text(
+            'purchaseRewardEquipped',
+            LocalizationService.isRussian()
+                ? 'Вам достается\n ~{name}~\nНадето: ~{character}~.'
+                : 'You receive\n ~{name}~\nEquipped on ~{character}~.',
+            {
+                name: name,
+                character: character
+            }
+        );
+    }
+
     public static gems(count: number): string {
         return count + ' ' + this.word('gem', count, 'gem', 'gems');
     }

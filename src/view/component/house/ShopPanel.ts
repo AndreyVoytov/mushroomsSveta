@@ -8,6 +8,7 @@ import ShopHeroesSectionPanel from './ShopHeroesSectionPanel';
 import ShopItemsSectionPanel from './ShopItemsSectionPanel';
 import ShopSectionPanel from './ShopSectionPanel';
 import ShopTabButton, { ShopTabId } from './ShopTabButton';
+import UserService from '../../../core/service/UserService';
 
 export default class ShopPanel extends ClosablePanel {
     private screen: Phaser.State;
@@ -19,15 +20,18 @@ export default class ShopPanel extends ClosablePanel {
     private closeButton: Phaser.Button;
     private activeTab: ShopTabId = 'bank';
     private defaultTab: ShopTabId = 'bank';
+    private preferredCharacterId?: string;
+    private openCharacterPanelId: string = null;
     private tabs: { [key: string]: ShopTabButton } = {};
     private sections: { [key: string]: ShopSectionPanel } = {};
 
-    constructor(game: Phaser.Game, screen: Phaser.State, callbackOnBuy?: () => void, defaultTab: ShopTabId = 'bank') {
+    constructor(game: Phaser.Game, screen: Phaser.State, callbackOnBuy?: () => void, defaultTab: ShopTabId = 'bank', preferredCharacterId?: string) {
         super(game, game.width / 2 - 1, game.height / 2 - 45, true, "blank", 1.04);
         this.game = game;
         this.screen = screen;
         this.defaultTab = defaultTab;
         this.activeTab = defaultTab;
+        this.preferredCharacterId = preferredCharacterId;
         this.fixedToCamera = true;
 
         this.createSections(callbackOnBuy);
@@ -62,19 +66,30 @@ export default class ShopPanel extends ClosablePanel {
 
     protected onClose() {
         if (this.screen instanceof HouseScreen) {
-            if (this.screen.startLevelPanel.alpha == 0 || !this.screen.startLevelPanel.visible || this.screen.startLevelPanel.scale.x == 0) {
-                this.screen.showUI(true);
+            const houseScreen = this.screen as HouseScreen;
+
+            if (this.openCharacterPanelId) {
+                const characterId = this.openCharacterPanelId;
+                this.openCharacterPanelId = null;
+                UserService.getUser().setCurrentCharacterId(characterId);
+                this.game.time.events.add(360, () => {
+                    houseScreen.characterPanel.show();
+                });
+            } else if (houseScreen.startLevelPanel.alpha == 0 || !houseScreen.startLevelPanel.visible || houseScreen.startLevelPanel.scale.x == 0) {
+                houseScreen.showUI(true);
             }
-            this.screen.shopShown = false;
+            houseScreen.shopShown = false;
         }
     }
 
     protected onShow() {
+        this.openCharacterPanelId = null;
         this.selectTab(this.defaultTab, false, true);
 
         if (this.screen instanceof HouseScreen) {
-            this.screen.hideUI(0, true);
-            this.screen.shopShown = true;
+            const houseScreen = this.screen as HouseScreen;
+            houseScreen.hideUI(0, true);
+            houseScreen.shopShown = true;
         }
     }
 
@@ -102,7 +117,12 @@ export default class ShopPanel extends ClosablePanel {
                 callbackOnBuy();
             }
         });
-        this.sections.items = new ShopItemsSectionPanel(this.game, () => this.openTab('bank', false, false));
+        this.sections.items = new ShopItemsSectionPanel(
+            this.game,
+            () => this.openTab('bank', false, false),
+            this.preferredCharacterId,
+            this.screen instanceof HouseScreen ? (characterId => this.openCharacterPanel(characterId)) : undefined
+        );
         this.sections.heroes = new ShopHeroesSectionPanel(this.game);
 
         this.addSprite(this.sections.bank);
@@ -199,5 +219,14 @@ export default class ShopPanel extends ClosablePanel {
             ? (tab == 'bank' ? 'Банк' : (tab == 'items' ? 'Предметы' : 'Герои'))
             : (tab == 'bank' ? 'Bank' : (tab == 'items' ? 'Items' : 'Heroes'));
         return LocalizationService.get('ui.shopTab.' + tab, fallback);
+    }
+
+    private openCharacterPanel(characterId: string): void {
+        if (!characterId || this.processing || !(this.screen instanceof HouseScreen)) {
+            return;
+        }
+
+        this.openCharacterPanelId = characterId;
+        this.close();
     }
 }
