@@ -83,7 +83,7 @@ export default class ShopArtifactCardPanel extends BasePanel {
             infoButton.scale.set(1.08);
         });
 
-        const usageLabel = this.attachText("usage", LocalizationService.get(item.usageText), {
+        const usageLabel = this.attachText("usage", ShopArtifactService.getUsageText(item), {
             font: "bold 20px Arial",
             fill: "#7f187e",
             align: "right",

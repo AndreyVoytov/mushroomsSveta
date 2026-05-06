@@ -10,11 +10,11 @@ export default class ShopArtifactItemsConfiguration {
             icon: 'shopItem1',
             price: 79,
             skillIds: ['knowledge', 'friendship'],
-            usageText: 'shop.item.onlyHuman.usage',
+            usageText: 'shop.item.universal.usage',
             currentLevel: 1,
             maxLevel: 10,
             availableFromForest: 1,
-            requiredCharacterTags: ['human'],
+            requiredCharacterTags: [],
             allowedSlots: ['helmet'],
             iconScale: 0.52
         },

@@ -1,8 +1,9 @@
 import ShopArtifactItemsConfiguration from "../configuration/ShopArtifactItemsConfiguration";
 import CharactersConfiguration from "../configuration/CharactersConfiguration";
 import ShopArtifactSkillsConfiguration from "../configuration/ShopArtifactSkillsConfiguration";
+import LocalizationService from "../localization/LocalizationService";
 import { CHARACTER_ARTIFACT_SLOTS, CharacterArtifactSlotId, CharacterTagId } from "../model/character/CharacterModels";
-import { ShopArtifactItemConfig } from "../model/shop/ShopArtifactModels";
+import { ShopArtifactBackpackEntry, ShopArtifactItemConfig } from "../model/shop/ShopArtifactModels";
 import User from "../model/user/User";
 import UserService from "./UserService";
 
@@ -18,6 +19,12 @@ export interface ShopArtifactGrantResult {
 export interface ShopArtifactPurchaseOutcome {
     result: ShopArtifactPurchaseResult;
     grantResult?: ShopArtifactGrantResult;
+}
+
+export interface ShopArtifactEquipTarget {
+    characterId: string;
+    slot: CharacterArtifactSlotId;
+    replacedArtifact?: ShopArtifactBackpackEntry;
 }
 
 export default class ShopArtifactService {
@@ -48,6 +55,85 @@ export default class ShopArtifactService {
         return (item.skillIds || []).reduce((total, skillId) => {
             return total + ShopArtifactSkillsConfiguration.getUpgradePrice(skillId, safeCurrentLevel);
         }, 0);
+    }
+
+    public static getUsageText(item: ShopArtifactItemConfig): string {
+        if (!item) {
+            return "";
+        }
+
+        if (!item.requiredCharacterTags || item.requiredCharacterTags.length == 0) {
+            return LocalizationService.get(item.usageText, "Fits all characters");
+        }
+
+        if (item.usageText == "shop.item.onlyHuman.usage") {
+            return LocalizationService.get(item.usageText, "Only for humans");
+        }
+
+        return LocalizationService.get(item.usageText, item.usageText);
+    }
+
+    public static unequipArtifactFromCharacter(characterId: string, slot: CharacterArtifactSlotId, user?: User): ShopArtifactBackpackEntry {
+        const safeUser = user || UserService.getUser();
+        if (!safeUser || !characterId || !slot) {
+            return null;
+        }
+
+        const removed = safeUser.unequipArtifactToBackpack(characterId, slot);
+        return removed
+            ? { id: removed.id, level: removed.level }
+            : null;
+    }
+
+    public static getEquipTargets(artifactId: string, user?: User): ShopArtifactEquipTarget[] {
+        const safeUser = user || UserService.getUser();
+        const item = ShopArtifactItemsConfiguration.getById(artifactId);
+        if (!safeUser || !item || !safeUser.hasArtifactInBackpack(artifactId)) {
+            return [];
+        }
+
+        const targets: ShopArtifactEquipTarget[] = [];
+        safeUser.getCharacters().forEach(character => {
+            if (!character) {
+                return;
+            }
+
+            const placement = this.findEquipPlacement(safeUser, character.id, item);
+            if (placement) {
+                targets.push({
+                    characterId: character.id,
+                    slot: placement.slot,
+                    replacedArtifact: placement.replacedArtifact
+                });
+            }
+        });
+
+        return targets;
+    }
+
+    public static equipBackpackItemToCharacter(artifactId: string, targetCharacterId: string, user?: User): ShopArtifactEquipTarget {
+        const safeUser = user || UserService.getUser();
+        const item = ShopArtifactItemsConfiguration.getById(artifactId);
+        if (!safeUser || !item || !targetCharacterId) {
+            return null;
+        }
+
+        const backpackEntry = safeUser.getArtifactBackpackEntry(artifactId);
+        if (!backpackEntry) {
+            return null;
+        }
+
+        const placement = this.findEquipPlacement(safeUser, targetCharacterId, item);
+        if (!placement) {
+            return null;
+        }
+
+        safeUser.equipArtifactToCharacterReplacingExisting(targetCharacterId, placement.slot, item.id, backpackEntry.level);
+        return {
+            characterId: targetCharacterId,
+            slot: placement.slot,
+            replacedArtifact: placement.replacedArtifact
+        };
     }
 
     public static buy(item: ShopArtifactItemConfig, callbackOnBought?: () => void, preferredCharacterId?: string): ShopArtifactPurchaseOutcome {
@@ -194,6 +280,30 @@ export default class ShopArtifactService {
             return null;
         }
 
+        const placement = this.findEquipPlacement(user, characterId, item, false);
+        if (!placement) {
+            return null;
+        }
+
+        user.equipArtifactToCharacterReplacingExisting(characterId, placement.slot, item.id, level);
+        return characterId;
+    }
+
+    private static findCompatibleSlot(user: User, characterId: string, item: ShopArtifactItemConfig): CharacterArtifactSlotId {
+        const placement = this.findEquipPlacement(user, characterId, item, false);
+        return placement ? placement.slot : null;
+    }
+
+    private static findEquipPlacement(
+        user: User,
+        characterId: string,
+        item: ShopArtifactItemConfig,
+        allowOccupiedSlots: boolean = true
+    ): ShopArtifactEquipTarget {
+        if (!user || !characterId || !item) {
+            return null;
+        }
+
         const character = user.getCharacterById(characterId);
         if (!character) {
             return null;
@@ -204,13 +314,31 @@ export default class ShopArtifactService {
             return null;
         }
 
-        const slot = this.findFirstFreeSlot(user, character.id, item.allowedSlots);
-        if (!slot) {
+        const freeSlot = this.findFirstFreeSlot(user, character.id, item.allowedSlots);
+        if (freeSlot) {
+            return {
+                characterId: character.id,
+                slot: freeSlot
+            };
+        }
+
+        if (!allowOccupiedSlots) {
             return null;
         }
 
-        user.equipArtifactToCharacter(character.id, slot, item.id, level);
-        return character.id;
+        const occupiedSlot = this.findFirstOccupiedAllowedSlot(user, character.id, item.allowedSlots);
+        if (!occupiedSlot) {
+            return null;
+        }
+
+        const occupiedEntry = user.getCharacterEquippedArtifact(character.id, occupiedSlot);
+        return {
+            characterId: character.id,
+            slot: occupiedSlot,
+            replacedArtifact: occupiedEntry
+                ? { id: occupiedEntry.id, level: Math.max(1, occupiedEntry.level || 1) }
+                : null
+        };
     }
 
     private static hasRequiredTags(characterTags: CharacterTagId[], requiredTags: CharacterTagId[]): boolean {
@@ -228,6 +356,18 @@ export default class ShopArtifactService {
         for (let i = 0; i < safeSlots.length; i++) {
             const slot = safeSlots[i];
             if (!user.getCharacterEquippedArtifact(characterId, slot)) {
+                return slot;
+            }
+        }
+
+        return null;
+    }
+
+    private static findFirstOccupiedAllowedSlot(user: User, characterId: string, allowedSlots: CharacterArtifactSlotId[]): CharacterArtifactSlotId {
+        const safeSlots = allowedSlots || [];
+        for (let i = 0; i < safeSlots.length; i++) {
+            const slot = safeSlots[i];
+            if (user.getCharacterEquippedArtifact(characterId, slot)) {
                 return slot;
             }
         }

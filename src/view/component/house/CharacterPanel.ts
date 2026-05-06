@@ -4,7 +4,7 @@ import ShopArtifactSkillsConfiguration from "../../../core/configuration/ShopArt
 import GameText from "../../../core/localization/GameText";
 import LocalizationService from "../../../core/localization/LocalizationService";
 import { CharacterArtifactSlotId, CharacterConfig } from "../../../core/model/character/CharacterModels";
-import { ShopArtifactBackpackEntry, ShopArtifactItemConfig, ShopArtifactSkillId } from "../../../core/model/shop/ShopArtifactModels";
+import { ShopArtifactItemConfig, ShopArtifactSkillId } from "../../../core/model/shop/ShopArtifactModels";
 import Settings from "../../../core/service/Settings";
 import ShopArtifactService from "../../../core/service/ShopArtifactService";
 import UserService from "../../../core/service/UserService";
@@ -15,6 +15,7 @@ import SpriteUtils from "../../../core/utils/SpriteUtils";
 import HouseScreen from "../../screen/HouseScreen";
 import ClosablePanel from "../panel/ClosablePanel";
 import Label from "../panel/Label";
+import ArtifactBackpackPanel from "./ArtifactBackpackPanel";
 import ConfirmPanel from "./ConfirmPanel";
 import SkillInfoPanel from "./SkillInfoPanel";
 import ShopPanel from "./ShopPanel";
@@ -46,6 +47,7 @@ export default class CharacterPanel extends ClosablePanel {
     private static readonly ACTION_BUTTON_OPEN_DELAY = 220;
     private static readonly ACTION_BUTTON_OPEN_DURATION = 260;
     private static readonly ACTION_BUTTON_CLOSE_DURATION = 120;
+    private static readonly ACTION_LINK_CENTER_Y = 1409;
 
     private static readonly SKILL_ROWS = [
         { iconX: 551, iconY: 410.5, valueX: 663.5, valueY: 409.5, infoX: 774.5, infoY: 408 },
@@ -86,12 +88,17 @@ export default class CharacterPanel extends ClosablePanel {
     private upgradeButton: Phaser.Button;
     private upgradeButtonLabel: Label;
     private upgradeButtonGemIcon: Phaser.Sprite;
+    private transferLinkText: Phaser.Text;
+    private transferLinkUnderline: Phaser.Graphics;
+    private transferLinkHitArea: Phaser.Button;
     private artifactBonusInfoButtons: Phaser.Button[] = [];
     private skillRows: SkillRowView[] = [];
     private slotViews: { [slotId: string]: SlotView } = {};
     private currentCharacterIndex: number = 0;
     private openingShop: boolean = false;
     private openingShopSourceCharacterId: string = null;
+    private openingBackpack: boolean = false;
+    private openingBackpackSourceCharacterId: string = null;
     private selectedArtifactSlot: CharacterArtifactSlotId = null;
     private ambientTweens: Phaser.Tween[] = [];
     private portraitDefaultBaseX: number = 0;
@@ -101,6 +108,8 @@ export default class CharacterPanel extends ClosablePanel {
     private portraitBaseScaleX: number = 1;
     private portraitBaseScaleY: number = 1;
     private skillsBgBaseX: number = 0;
+    private pendingCharacterId: string = null;
+    private pendingArtifactSlot: CharacterArtifactSlotId = null;
 
     constructor(game: Phaser.Game, screen: HouseScreen) {
         super(
@@ -122,10 +131,21 @@ export default class CharacterPanel extends ClosablePanel {
     protected onShow(): void {
         this.openingShop = false;
         this.openingShopSourceCharacterId = null;
+        this.openingBackpack = false;
+        this.openingBackpackSourceCharacterId = null;
         this.prepareBottomActionButtonsForShow();
+        if (this.pendingCharacterId) {
+            UserService.getUser().setCurrentCharacterId(this.pendingCharacterId);
+        }
         this.syncSelectedCharacter();
         this.refreshStaticTexts();
         this.refreshView();
+        if (this.pendingArtifactSlot) {
+            const slotToShow = this.pendingArtifactSlot;
+            this.pendingArtifactSlot = null;
+            this.showArtifactInfo(slotToShow);
+        }
+        this.pendingCharacterId = null;
         this.screen.hideUI(0, true);
         this.bringDetachedActionButtonsToTop();
         this.game.time.events.add(140, () => {
@@ -161,6 +181,30 @@ export default class CharacterPanel extends ClosablePanel {
                 this.blackTransparent.alpha = 0;
                 this.blackTransparent.inputEnabled = false;
                 this.screen.bringShopHudToTop();
+            });
+            return;
+        }
+
+        if (this.openingBackpack) {
+            let backpackPanel = new ArtifactBackpackPanel(this.game, this.screen, this.openingBackpackSourceCharacterId);
+            backpackPanel.blackTransparent.alpha = 0;
+            this.screen.addPanel(backpackPanel);
+            backpackPanel.show();
+            this.game.tweens.removeFrom(backpackPanel.blackTransparent);
+            backpackPanel.blackTransparent.alpha = 0;
+            backpackPanel.blackTransparent.inputEnabled = false;
+
+            this.game.time.events.add(0, () => {
+                this.game.tweens.removeFrom(this.blackTransparent);
+                this.blackTransparent.alpha = 0.5;
+            });
+
+            this.game.time.events.add(300, () => {
+                this.game.tweens.removeFrom(backpackPanel.blackTransparent);
+                backpackPanel.blackTransparent.alpha = 0.5;
+                backpackPanel.blackTransparent.inputEnabled = true;
+                this.blackTransparent.alpha = 0;
+                this.blackTransparent.inputEnabled = false;
             });
             return;
         }
@@ -314,6 +358,30 @@ export default class CharacterPanel extends ClosablePanel {
         this.upgradeButtonGemIcon.alpha = 0;
         this.upgradeButton.addChild(this.upgradeButtonGemIcon);
 
+        this.transferLinkText = new Phaser.Text(this.game, this.psdX(480), this.psdY(CharacterPanel.ACTION_LINK_CENTER_Y), "", {
+            font: "bold 28px Arial",
+            fill: "#3f82ff",
+            align: "center"
+        });
+        this.transferLinkText.name = "transferLinkText";
+        this.transferLinkText.anchor.set(0.5, 0);
+        this.transferLinkText.visible = false;
+        this.addSprite(this.transferLinkText);
+
+        this.transferLinkUnderline = new Phaser.Graphics(this.game, 0, 0);
+        this.transferLinkUnderline.name = "transferLinkUnderline";
+        this.transferLinkUnderline.visible = false;
+        this.addChild(this.transferLinkUnderline);
+
+        this.transferLinkHitArea = this.attachButton("blank", () => this.tryTakeOffSelectedArtifact(), "transferLinkHitArea");
+        this.transferLinkHitArea.anchor.set(0.5, 0);
+        this.transferLinkHitArea.alpha = 0.001;
+        this.transferLinkHitArea.visible = false;
+        this.transferLinkHitArea.inputEnabled = false;
+        if (this.transferLinkHitArea.input) {
+            this.transferLinkHitArea.input.useHandCursor = true;
+        }
+
         CharacterPanel.SLOT_LAYOUT.forEach(layout => {
             const equippedBg = this.attachSprite("characterEquippedBg", layout.slotId + "EquippedBg");
             this.placeAtPsdCenter(equippedBg, layout.x, layout.y);
@@ -349,7 +417,7 @@ export default class CharacterPanel extends ClosablePanel {
             };
         });
 
-        this.backpackButton = this.createDetachedActionButton("characterBackpackButton", () => this.showBackpackInfo(), "backpackButton");
+        this.backpackButton = this.createDetachedActionButton("characterBackpackButton", () => this.openBackpack(), "backpackButton");
         this.placeDetachedActionButtonAtPsdCenter(this.backpackButton, 120.5, 1559);
         this.backpackButtonLabel = this.addButtonText(this.backpackButton, "", {
             font: "bold 30px Gilroy",
@@ -757,6 +825,7 @@ export default class CharacterPanel extends ClosablePanel {
             this.selectedArtifactSlot = null;
             this.setUpgradeButtonVisible(false);
             this.refreshSlotSelectionVisuals();
+            this.hideActionLink();
             return;
         }
 
@@ -799,31 +868,14 @@ export default class CharacterPanel extends ClosablePanel {
                 color: "#855331"
             },
             {
-                text: LocalizationService.get(item.usageText),
+                text: ShopArtifactService.getUsageText(item),
                 color: "#7f187e"
             }
         ];
         this.setContentBodyRich(richLines);
         this.showArtifactBonusLines(bonusSkillIds, bonusLines);
         this.refreshUpgradeButton(item, artifactEntry.level);
-    }
-
-    private showBackpackInfo(): void {
-        const backpack = UserService.getUser().getArtifactBackpack();
-        this.selectedArtifactSlot = null;
-        this.setUpgradeButtonVisible(false);
-        this.refreshSlotSelectionVisuals();
-        this.contentTitle.text = LocalizationService.get("ui.character.backpackTitle", "Backpack");
-
-        if (backpack.length == 0) {
-            this.setContentBodyPlain(LocalizationService.get("ui.character.backpackEmpty", "Backpack is empty for now."));
-            return;
-        }
-
-        this.setContentBodyPlain(backpack
-            .map(entry => this.formatBackpackEntry(entry))
-            .filter(text => !!text)
-            .join("\n"));
+        this.refreshActionLink();
     }
 
     private tryUpgradeSelectedArtifact(): void {
@@ -861,6 +913,36 @@ export default class CharacterPanel extends ClosablePanel {
         if (result == 'notEnoughGems') {
             this.showNotEnoughGems(item, artifactEntry.level);
         }
+    }
+
+    private tryTakeOffSelectedArtifact(): void {
+        if (!this.selectedArtifactSlot) {
+            return;
+        }
+
+        const user = UserService.getUser();
+        const character = user.getCharacters()[this.currentCharacterIndex];
+        if (!character) {
+            return;
+        }
+
+        const artifactEntry = user.getCharacterEquippedArtifact(character.id, this.selectedArtifactSlot);
+        if (!artifactEntry) {
+            this.hideActionLink();
+            return;
+        }
+
+        const removed = ShopArtifactService.unequipArtifactFromCharacter(character.id, this.selectedArtifactSlot, user);
+        if (!removed) {
+            return;
+        }
+
+        SoundUtils.successfulBuy();
+        const removedSlot = this.selectedArtifactSlot;
+        this.refreshView();
+        this.selectedArtifactSlot = null;
+        this.contentTitle.text = this.getSlotName(removedSlot);
+        this.setContentBodyPlain(LocalizationService.get("ui.character.noArtifact", "No artifact equipped."));
     }
 
     private refreshUpgradeButton(item: ShopArtifactItemConfig, currentLevel: number): void {
@@ -933,15 +1015,34 @@ export default class CharacterPanel extends ClosablePanel {
         this.close();
     }
 
-    private formatBackpackEntry(entry: ShopArtifactBackpackEntry): string {
-        const item = ShopArtifactItemsConfiguration.getById(entry.id);
-        if (!item) {
-            return "";
+    private openBackpack(): void {
+        if (this.processing) {
+            return;
         }
 
-        return LocalizationService.get(item.name) + " " + LocalizationService.get("ui.character.levelShort", "Lv. {level}", {
-            level: entry.level
-        });
+        const user = UserService.getUser();
+        const currentCharacter = user.getCharacters()[this.currentCharacterIndex];
+        this.openingBackpackSourceCharacterId = currentCharacter ? currentCharacter.id : user.getCurrentCharacterId();
+        this.openingBackpack = true;
+        this.close();
+    }
+
+    public queueCharacterFocus(characterId: string, slotId?: CharacterArtifactSlotId): void {
+        const safeCharacterId = characterId || UserService.getUser().getCurrentCharacterId();
+        this.pendingCharacterId = safeCharacterId;
+        this.pendingArtifactSlot = slotId || null;
+        UserService.getUser().setCurrentCharacterId(safeCharacterId);
+
+        if (this.visible && this.opened) {
+            this.syncSelectedCharacter();
+            this.refreshView();
+            if (this.pendingArtifactSlot) {
+                const slotToShow = this.pendingArtifactSlot;
+                this.pendingArtifactSlot = null;
+                this.showArtifactInfo(slotToShow);
+            }
+            this.pendingCharacterId = null;
+        }
     }
 
     private openSkillInfoPanel(skillId: ShopArtifactSkillId, currentValue?: number, artifactBonus?: number): void {
@@ -957,6 +1058,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.contentBody.visible = true;
         this.contentBodyRich.visible = false;
         this.hideArtifactBonusDetails();
+        this.hideActionLink();
         this.contentBody.text = text;
         this.contentBodyRich.clearColors();
         this.contentBodyRich.text = "";
@@ -966,6 +1068,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.contentBody.visible = false;
         this.contentBodyRich.visible = true;
         this.hideArtifactBonusDetails();
+        this.hideActionLink();
 
         let text = "";
         let ranges: { start: number, color: string }[] = [];
@@ -1044,6 +1147,44 @@ export default class CharacterPanel extends ClosablePanel {
             button.visible = false;
             button.inputEnabled = false;
         });
+    }
+
+    private refreshActionLink(): void {
+        this.transferLinkText.text = LocalizationService.get("ui.character.takeOff", "Take off");
+        this.transferLinkText.visible = true;
+
+        const textWidth = Math.ceil(this.transferLinkText.width);
+        const textHeight = Math.ceil(this.transferLinkText.height);
+
+        this.transferLinkUnderline.clear();
+        this.transferLinkUnderline.lineStyle(2, 0x3f82ff, 1);
+        this.transferLinkUnderline.moveTo(this.transferLinkText.x - textWidth / 2, this.transferLinkText.y + textHeight + 2);
+        this.transferLinkUnderline.lineTo(this.transferLinkText.x + textWidth / 2, this.transferLinkText.y + textHeight + 2);
+        this.transferLinkUnderline.visible = true;
+
+        this.transferLinkHitArea.x = this.transferLinkText.x;
+        this.transferLinkHitArea.y = this.transferLinkText.y;
+        this.transferLinkHitArea.width = textWidth + 18;
+        this.transferLinkHitArea.height = textHeight + 10;
+        this.transferLinkHitArea.visible = true;
+        this.transferLinkHitArea.inputEnabled = true;
+    }
+
+    private hideActionLink(): void {
+        if (this.transferLinkText) {
+            this.transferLinkText.visible = false;
+            this.transferLinkText.text = "";
+        }
+
+        if (this.transferLinkUnderline) {
+            this.transferLinkUnderline.clear();
+            this.transferLinkUnderline.visible = false;
+        }
+
+        if (this.transferLinkHitArea) {
+            this.transferLinkHitArea.visible = false;
+            this.transferLinkHitArea.inputEnabled = false;
+        }
     }
 
     private showArtifactBonusSkillInfo(index: number): void {

@@ -425,16 +425,41 @@ export default class User {
     }
 
     public equipArtifactToCharacter(characterId: string, slot: CharacterArtifactSlotId, artifactId: string, level?: number): void {
+        this.equipArtifactToCharacterReplacingExisting(characterId, slot, artifactId, level);
+    }
+
+    public equipArtifactToCharacterReplacingExisting(characterId: string, slot: CharacterArtifactSlotId, artifactId: string, level?: number): void {
         const character = this.getCharacterById(characterId);
         if (!character || !artifactId) {
             return;
         }
 
         const safeLevel = Math.max(1, level || 1);
+        const currentEntry = this.getCharacterEquippedArtifact(characterId, slot);
+        if (currentEntry && currentEntry.id != artifactId) {
+            this.putArtifactToBackpackInternal(currentEntry.id, currentEntry.level);
+        }
+
         this.removeArtifactFromBackpackInternal(artifactId);
         this.removeEquippedArtifactInternal(artifactId);
         this.getCharacterEquippedArtifacts(characterId)[slot] = { id: artifactId, level: safeLevel };
         ServerStoreComponent.saveLocalUser(this);
+    }
+
+    public unequipArtifactToBackpack(characterId: string, slot: CharacterArtifactSlotId): CharacterArtifactEntry {
+        const entry = this.getCharacterEquippedArtifact(characterId, slot);
+        if (!entry) {
+            return null;
+        }
+
+        this.putArtifactToBackpackInternal(entry.id, entry.level);
+        delete this.getCharacterEquippedArtifacts(characterId)[slot];
+        ServerStoreComponent.saveLocalUser(this);
+
+        return {
+            id: entry.id,
+            level: entry.level
+        };
     }
 
     public getArtifactBackpack(): ShopArtifactBackpackEntry[] {
@@ -472,15 +497,7 @@ export default class User {
     }
 
     public putArtifactToBackpack(id: string, level?: number): void {
-        let entry = this.getArtifactBackpackEntry(id);
-        let safeLevel = Math.max(1, level || 1);
-
-        if (entry) {
-            entry.level = safeLevel;
-        } else {
-            this.getArtifactBackpack().push({ id: id, level: safeLevel });
-        }
-
+        this.putArtifactToBackpackInternal(id, level);
         ServerStoreComponent.saveLocalUser(this);
     }
 
@@ -869,6 +886,17 @@ export default class User {
         });
 
         return removed;
+    }
+
+    private putArtifactToBackpackInternal(id: string, level?: number): void {
+        let entry = this.getArtifactBackpackEntry(id);
+        let safeLevel = Math.max(1, level || 1);
+
+        if (entry) {
+            entry.level = safeLevel;
+        } else {
+            this.getArtifactBackpack().push({ id: id, level: safeLevel });
+        }
     }
 
 
