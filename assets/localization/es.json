@@ -543,6 +543,7 @@
         "ui.backUpper": "VOLVER",
         "ui.booster.back": "Atrás",
         "ui.booster.use": "uso",
+        "ui.character.about": "About character",
         "ui.character.artifactSlot": "Slot: {slot}",
         "ui.character.backpack": "Backpack",
         "ui.character.backpackEmpty": "Backpack is empty for now.",

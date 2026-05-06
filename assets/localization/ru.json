@@ -543,6 +543,7 @@
         "ui.backUpper": "НАЗАД",
         "ui.booster.back": "Назад",
         "ui.booster.use": "Применить",
+        "ui.character.about": "О персонаже",
         "ui.character.artifactSlot": "Слот: {slot}",
         "ui.character.backpack": "Рюкзак",
         "ui.character.backpackEmpty": "Рюкзак пока пуст.",

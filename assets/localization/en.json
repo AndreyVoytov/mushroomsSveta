@@ -543,6 +543,7 @@
         "ui.backUpper": "BACK",
         "ui.booster.back": "Back",
         "ui.booster.use": "Use",
+        "ui.character.about": "About character",
         "ui.character.artifactSlot": "Slot: {slot}",
         "ui.character.backpack": "Backpack",
         "ui.character.backpackEmpty": "Backpack is empty for now.",

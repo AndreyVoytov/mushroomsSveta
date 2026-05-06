@@ -543,6 +543,7 @@
         "ui.backUpper": "वापस",
         "ui.booster.back": "वापस",
         "ui.booster.use": "उपयोग करें",
+        "ui.character.about": "About character",
         "ui.character.artifactSlot": "Slot: {slot}",
         "ui.character.backpack": "Backpack",
         "ui.character.backpackEmpty": "Backpack is empty for now.",

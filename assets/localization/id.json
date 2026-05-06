@@ -543,6 +543,7 @@
         "ui.backUpper": "KEMBALI",
         "ui.booster.back": "Kembali",
         "ui.booster.use": "Gunakan",
+        "ui.character.about": "About character",
         "ui.character.artifactSlot": "Slot: {slot}",
         "ui.character.backpack": "Backpack",
         "ui.character.backpackEmpty": "Backpack is empty for now.",

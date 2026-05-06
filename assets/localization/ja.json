@@ -543,6 +543,7 @@
         "ui.backUpper": "戻る",
         "ui.booster.back": "戻る",
         "ui.booster.use": "使用する",
+        "ui.character.about": "About character",
         "ui.character.artifactSlot": "Slot: {slot}",
         "ui.character.backpack": "Backpack",
         "ui.character.backpackEmpty": "Backpack is empty for now.",

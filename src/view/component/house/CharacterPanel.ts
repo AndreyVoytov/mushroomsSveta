@@ -71,6 +71,7 @@ export default class CharacterPanel extends ClosablePanel {
     private portrait: Phaser.Sprite;
     private portraitHitArea: Phaser.Button;
     private bannerTitle: Label;
+    private characterNameLabel: Label;
     private contentTitle: Label;
     private contentBody: Label;
     private contentBodyRich: Phaser.Text;
@@ -243,6 +244,7 @@ export default class CharacterPanel extends ClosablePanel {
 
         const banner = this.attachSprite("characterPanelBanner", "banner");
         this.placeAtPsdCenter(banner, 490, 108);
+        banner.visible = false;
 
         this.bannerTitle = this.attachText("bannerTitle", "", {
             font: "bold 42px Bookman Old Style",
@@ -253,6 +255,7 @@ export default class CharacterPanel extends ClosablePanel {
         });
         this.bannerTitle.anchor.set(0.5);
         this.placeAtPsdCenter(this.bannerTitle, 490, 117);
+        this.bannerTitle.visible = false;
 
         this.arrowLeftButton = this.attachButton("characterArrowLeft", () => this.shiftCharacter(-1), "arrowLeftButton");
         this.placeAtPsdCenter(this.arrowLeftButton, 81, 731);
@@ -282,6 +285,16 @@ export default class CharacterPanel extends ClosablePanel {
                 infoButton: infoButton
             });
         });
+
+        this.characterNameLabel = this.attachText("characterNameLabel", "", {
+            font: "bold 46px Gilroy",
+            fill: "#ead7b0",
+            align: "center",
+            wordWrap: true,
+            wordWrapWidth: 280
+        });
+        this.characterNameLabel.anchor.set(0.5);
+        this.placeAtPsdCenter(this.characterNameLabel, 655, 763);
 
         this.contentTitle = this.attachText("contentTitle", "", {
             font: "bold 34px Bookman Old Style",
@@ -582,7 +595,8 @@ export default class CharacterPanel extends ClosablePanel {
         }
 
         user.setCurrentCharacterId(character.id);
-        this.bannerTitle.text = this.getCharacterDisplayName(character.id, config);
+        this.bannerTitle.text = "";
+        this.characterNameLabel.text = this.getCharacterDisplayName(character.id, config);
         const artifactBonuses = this.getArtifactBonusesBySkill(character.id);
 
         if (config.imageKey) {
@@ -775,7 +789,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.selectedArtifactSlot = null;
         this.setUpgradeButtonVisible(false);
         this.refreshSlotSelectionVisuals();
-        this.contentTitle.text = config ? this.getCharacterDisplayName(character.id, config) : LocalizationService.get("ui.character.title", "Character");
+        this.contentTitle.text = LocalizationService.get("ui.character.about", "About character");
         this.setContentBodyPlain(this.getCharacterDescription(character.id, config));
     }
 

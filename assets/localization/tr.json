@@ -543,6 +543,7 @@
         "ui.backUpper": "GERİ",
         "ui.booster.back": "Geri",
         "ui.booster.use": "Kullan",
+        "ui.character.about": "About character",
         "ui.character.artifactSlot": "Slot: {slot}",
         "ui.character.backpack": "Backpack",
         "ui.character.backpackEmpty": "Backpack is empty for now.",

@@ -89,6 +89,7 @@ const manualKeys = [
     'ui.tasks.dailyProgress',
     'ui.tasks.refreshIn',
     'ui.character.title',
+    'ui.character.about',
     'ui.character.backpack',
     'ui.character.backpackTitle',
     'ui.character.backpackEmpty',
