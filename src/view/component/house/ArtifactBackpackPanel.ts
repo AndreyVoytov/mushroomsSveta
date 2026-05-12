@@ -1,16 +1,20 @@
 import ShopArtifactItemsConfiguration from "../../../core/configuration/ShopArtifactItemsConfiguration";
 import ShopArtifactSkillsConfiguration from "../../../core/configuration/ShopArtifactSkillsConfiguration";
+import GameText from "../../../core/localization/GameText";
 import LocalizationService from "../../../core/localization/LocalizationService";
 import { CharacterArtifactSlotId } from "../../../core/model/character/CharacterModels";
 import { ShopArtifactBackpackEntry, ShopArtifactItemConfig, ShopArtifactSkillId } from "../../../core/model/shop/ShopArtifactModels";
 import ShopArtifactService from "../../../core/service/ShopArtifactService";
 import UserService from "../../../core/service/UserService";
+import AnimationUtils from "../../../core/utils/AnimationUtils";
 import SoundUtils from "../../../core/utils/SoundUtils";
 import SpriteUtils from "../../../core/utils/SpriteUtils";
 import HouseScreen from "../../screen/HouseScreen";
 import ClosablePanel from "../panel/ClosablePanel";
 import Label from "../panel/Label";
 import ArtifactEquipPanel from "./ArtifactEquipPanel";
+import ArtifactInfoPanel, { ArtifactInfoLine } from "./ArtifactInfoPanel";
+import ConfirmPanel from "./ConfirmPanel";
 import SkillInfoPanel from "./SkillInfoPanel";
 
 interface BackpackCellView {
@@ -20,15 +24,9 @@ interface BackpackCellView {
     hitArea: Phaser.Button;
 }
 
-interface RichTextLine {
-    text: string;
-    color?: string;
-}
-
 export default class ArtifactBackpackPanel extends ClosablePanel {
     private static readonly PSD_WIDTH = 960;
     private static readonly PSD_HEIGHT = 1669;
-    private static readonly ACTION_LINK_CENTER_Y = 1409;
     private static readonly GRID_POSITIONS: { x: number, y: number }[] = [
         { x: 244, y: 339 },
         { x: 480, y: 339 },
@@ -47,16 +45,9 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
     private openCharacterSlotOnClose: CharacterArtifactSlotId = null;
     private panelHitArea: Phaser.Sprite;
     private bannerTitle: Label;
-    private contentTitle: Label;
-    private contentBody: Label;
-    private contentBodyRich: Phaser.Text;
-    private actionLinkText: Phaser.Text;
-    private actionLinkUnderline: Phaser.Graphics;
-    private actionLinkHitArea: Phaser.Button;
+    private artifactInfoPanel: ArtifactInfoPanel;
     private closeButton: Phaser.Button;
     private closeButtonLabel: Label;
-    private artifactBonusLabels: Label[] = [];
-    private artifactBonusInfoButtons: Phaser.Button[] = [];
     private cells: BackpackCellView[] = [];
     private selectedArtifactId: string = null;
 
@@ -124,87 +115,12 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
         this.bannerTitle.anchor.set(0.5);
         this.placeAtPsdCenter(this.bannerTitle, 490, 117);
 
-        this.contentTitle = this.attachText("contentTitle", "", {
-            font: "bold 34px Bookman Old Style",
-            fill: "#8e5532",
-            align: "center",
-            wordWrap: true,
-            wordWrapWidth: 430
+        this.artifactInfoPanel = new ArtifactInfoPanel(this.game, 0, 0, {
+            onAction: () => this.openEquipPanel(),
+            onUpgrade: () => this.tryUpgradeSelectedArtifact(),
+            onSkillInfo: skillId => this.openSkillInfoPanel(skillId)
         });
-        this.contentTitle.anchor.set(0.5);
-        this.placeAtPsdCenter(this.contentTitle, 480, 885);
-
-        this.contentBody = this.attachText("contentBody", "", {
-            font: "bold 23px Arial",
-            fill: "#855331",
-            align: "center",
-            wordWrap: true,
-            wordWrapWidth: 430
-        });
-        this.contentBody.anchor.set(0.5, 0);
-        this.contentBody.lineSpacing = 10;
-        this.contentBody.x = this.psdX(480);
-        this.contentBody.y = this.psdY(922);
-
-        this.contentBodyRich = new Phaser.Text(this.game, this.psdX(480), this.psdY(922), "", {
-            font: "bold 23px Arial",
-            fill: "#855331",
-            align: "center",
-            wordWrap: true,
-            wordWrapWidth: 430
-        });
-        this.contentBodyRich.name = "contentBodyRich";
-        this.contentBodyRich.anchor.set(0.5, 0);
-        this.contentBodyRich.lineSpacing = 10;
-        this.contentBodyRich.visible = false;
-        this.addSprite(this.contentBodyRich);
-
-        for (let i = 0; i < 2; i++) {
-            const bonusLabel = this.attachText("artifactBonusLabel" + i, "", {
-                font: "bold 23px Arial",
-                fill: "#0b6e22",
-                align: "center",
-                wordWrap: true,
-                wordWrapWidth: 430
-            });
-            bonusLabel.anchor.set(0.5, 0);
-            bonusLabel.visible = false;
-            bonusLabel.x = this.contentBodyRich.x;
-            this.artifactBonusLabels.push(bonusLabel);
-        }
-
-        for (let i = 0; i < 2; i++) {
-            const infoButton = this.attachButton("characterArtifactInfoButton", () => this.showArtifactBonusSkillInfo(i), "artifactBonusInfo" + i);
-            infoButton.visible = false;
-            infoButton.inputEnabled = false;
-            infoButton.scale.set(0.72);
-            infoButton.anchor.set(0.5);
-            this.artifactBonusInfoButtons.push(infoButton);
-        }
-
-        this.actionLinkText = new Phaser.Text(this.game, this.psdX(480), this.psdY(ArtifactBackpackPanel.ACTION_LINK_CENTER_Y), "", {
-            font: "bold 28px Arial",
-            fill: "#3f82ff",
-            align: "center"
-        });
-        this.actionLinkText.name = "actionLinkText";
-        this.actionLinkText.anchor.set(0.5, 0);
-        this.actionLinkText.visible = false;
-        this.addSprite(this.actionLinkText);
-
-        this.actionLinkUnderline = new Phaser.Graphics(this.game, 0, 0);
-        this.actionLinkUnderline.name = "actionLinkUnderline";
-        this.actionLinkUnderline.visible = false;
-        this.addChild(this.actionLinkUnderline);
-
-        this.actionLinkHitArea = this.attachButton("blank", () => this.openEquipPanel(), "actionLinkHitArea");
-        this.actionLinkHitArea.anchor.set(0.5, 0);
-        this.actionLinkHitArea.alpha = 0.001;
-        this.actionLinkHitArea.visible = false;
-        this.actionLinkHitArea.inputEnabled = false;
-        if (this.actionLinkHitArea.input) {
-            this.actionLinkHitArea.input.useHandCursor = true;
-        }
+        this.addSprite(this.artifactInfoPanel);
 
         ArtifactBackpackPanel.GRID_POSITIONS.forEach((position, index) => {
             const bg = this.attachSprite("shopItemBg", "cellBg" + index);
@@ -307,13 +223,15 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
     }
 
     private showEmptyBackpackInfo(): void {
-        this.contentTitle.text = LocalizationService.get("ui.character.backpackTitle", "Backpack");
-        this.setContentBodyPlain(LocalizationService.get("ui.character.backpackEmpty", "Backpack is empty for now."));
+        this.artifactInfoPanel.setUpgradeButtonVisible(false);
+        this.artifactInfoPanel.setTitle(LocalizationService.get("ui.character.backpackTitle", "Backpack"));
+        this.artifactInfoPanel.setBodyPlain(LocalizationService.get("ui.character.backpackEmpty", "Backpack is empty for now."));
     }
 
     private showArtifactInfo(entry: ShopArtifactBackpackEntry): void {
         const item = ShopArtifactItemsConfiguration.getById(entry.id);
         if (!item) {
+            this.artifactInfoPanel.setUpgradeButtonVisible(false);
             this.showEmptyBackpackInfo();
             return;
         }
@@ -321,7 +239,7 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
         const bonusSkillIds = item.skillIds
             .filter(skillId => !!ShopArtifactSkillsConfiguration.getById(skillId));
 
-        const bonusLines = <RichTextLine[]>bonusSkillIds
+        const bonusLines = <ArtifactInfoLine[]>bonusSkillIds
             .map(skillId => {
                 const skillConfig = ShopArtifactSkillsConfiguration.getById(skillId);
                 if (!skillConfig) {
@@ -335,32 +253,50 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
             })
             .filter(line => !!line);
 
-        this.contentTitle.text = LocalizationService.get(item.name);
-        this.setContentBodyRich([
-            {
-                text: LocalizationService.get(item.descriptionText, ""),
-                color: "#855331"
-            },
-            {
-                text: LocalizationService.get("shop.item.level", "Level {level} of {max}", {
-                    level: entry.level,
-                    max: item.maxLevel
-                }),
-                color: "#855331"
-            },
-            {
-                text: LocalizationService.get("ui.character.artifactSlot", "Slot: {slot}", {
-                    slot: this.getAllowedSlotText(item)
-                }),
-                color: "#855331"
-            },
-            {
-                text: ShopArtifactService.getUsageText(item),
-                color: "#7f187e"
-            }
-        ]);
-        this.showArtifactBonusLines(bonusSkillIds, bonusLines);
+        this.artifactInfoPanel.showArtifactDetails({
+            title: LocalizationService.get(item.name),
+            description: LocalizationService.get(item.descriptionText, ""),
+            level: entry.level,
+            maxLevel: item.maxLevel,
+            slotText: this.getAllowedSlotText(item),
+            usageText: ShopArtifactService.getUsageText(item),
+            usageKey: item.usageText,
+            skillIds: bonusSkillIds,
+            bonusLines: bonusLines
+        });
+        this.artifactInfoPanel.refreshUpgradeButton(item, entry.level);
         this.refreshActionLink();
+    }
+
+    private tryUpgradeSelectedArtifact(): void {
+        if (!this.selectedArtifactId) {
+            return;
+        }
+
+        const entry = UserService.getUser().getArtifactBackpackEntry(this.selectedArtifactId);
+        if (!entry) {
+            this.artifactInfoPanel.setUpgradeButtonVisible(false);
+            return;
+        }
+
+        const item = ShopArtifactItemsConfiguration.getById(entry.id);
+        if (!item) {
+            this.artifactInfoPanel.setUpgradeButtonVisible(false);
+            return;
+        }
+
+        const result = ShopArtifactService.upgradeOwnedItem(item.id, UserService.getUser());
+        if (result == 'success') {
+            SoundUtils.successfulBuy();
+            AnimationUtils.highlight(this.game, this.game.width / 2, this.game.height / 2 + 185, "splashY", 0, 1.3, 900);
+            this.artifactInfoPanel.showUpgradeSuccessFeedback();
+            this.refreshGrid();
+            return;
+        }
+
+        if (result == 'notEnoughGems') {
+            this.showNotEnoughGems(item, entry.level);
+        }
     }
 
     private openEquipPanel(): void {
@@ -395,137 +331,22 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
         info.show();
     }
 
-    private setContentBodyPlain(text: string): void {
-        this.contentBody.visible = true;
-        this.contentBodyRich.visible = false;
-        this.hideArtifactBonusDetails();
-        this.hideActionLink();
-        this.contentBody.text = text;
-        this.contentBodyRich.clearColors();
-        this.contentBodyRich.text = "";
-    }
-
-    private setContentBodyRich(lines: RichTextLine[]): void {
-        this.contentBody.visible = false;
-        this.contentBodyRich.visible = true;
-        this.hideArtifactBonusDetails();
-        this.hideActionLink();
-
-        let text = "";
-        let ranges: { start: number, color: string }[] = [];
-
-        lines.forEach(line => {
-            if (!line || !line.text) {
-                return;
-            }
-
-            if (text.length > 0) {
-                text += "\n";
-            }
-
-            if (line.color) {
-                ranges.push({ start: text.length, color: line.color });
-            }
-
-            text += line.text;
-
-            if (line.color) {
-                ranges.push({ start: text.length, color: "#855331" });
-            }
-        });
-
-        this.contentBodyRich.clearColors();
-        this.contentBodyRich.text = text;
-        ranges.forEach(range => this.contentBodyRich.addColor(range.color, range.start));
-    }
-
-    private showArtifactBonusLines(skillIds: ShopArtifactSkillId[], lines: RichTextLine[]): void {
-        this.hideArtifactBonusDetails();
-
-        if (!skillIds || skillIds.length == 0 || !lines || lines.length == 0) {
-            return;
-        }
-
-        const bonusButtonX = this.psdX(632);
-        let nextLabelY = this.contentBodyRich.y + this.contentBodyRich.height + 6;
-
-        skillIds.forEach((skillId, index) => {
-            const line = lines[index];
-            const label = this.artifactBonusLabels[index];
-            const button = this.artifactBonusInfoButtons[index];
-            if (!line || !label || !button) {
-                return;
-            }
-
-            label.text = line.text;
-            label.x = this.contentBodyRich.x;
-            label.y = nextLabelY;
-            label.visible = true;
-            label.updateText();
-
-            (<any>button).skillId = skillId;
-            button.x = bonusButtonX;
-            button.y = label.y + label.height / 2;
-            button.visible = true;
-            button.inputEnabled = true;
-
-            nextLabelY = label.y + label.height + 2;
-        });
-    }
-
-    private hideArtifactBonusDetails(): void {
-        this.artifactBonusLabels.forEach(label => {
-            label.visible = false;
-            label.text = "";
-        });
-
-        this.artifactBonusInfoButtons.forEach(button => {
-            (<any>button).skillId = null;
-            button.visible = false;
-            button.inputEnabled = false;
-        });
-    }
-
-    private showArtifactBonusSkillInfo(index: number): void {
-        const button = this.artifactBonusInfoButtons[index];
-        const skillId = button ? <ShopArtifactSkillId>(<any>button).skillId : null;
-        if (!skillId) {
-            return;
-        }
-
-        this.openSkillInfoPanel(skillId);
+    private showNotEnoughGems(item: ShopArtifactItemConfig, currentLevel: number): void {
+        const missingGems = Math.max(0, ShopArtifactService.getUpgradePrice(item, currentLevel) - UserService.getUser().getSupermoney());
+        let info = new ConfirmPanel(
+            this.game,
+            LocalizationService.get('ui.shop.notEnoughGemsTitle', 'Not enough gems'),
+            LocalizationService.get('ui.ok', 'OK'),
+            LocalizationService.get('ui.shop.notEnoughGemsText', 'You are short of ~{gems}~ for this purchase.', {
+                gems: GameText.gems(missingGems)
+            })
+        );
+        this.game.add.existing(info);
+        info.show();
     }
 
     private refreshActionLink(): void {
-        this.actionLinkText.text = LocalizationService.get("ui.character.wear", "Wear");
-        this.actionLinkText.visible = true;
-
-        const textWidth = Math.ceil(this.actionLinkText.width);
-        const textHeight = Math.ceil(this.actionLinkText.height);
-
-        this.actionLinkUnderline.clear();
-        this.actionLinkUnderline.lineStyle(2, 0x3f82ff, 1);
-        this.actionLinkUnderline.moveTo(this.actionLinkText.x - textWidth / 2, this.actionLinkText.y + textHeight + 2);
-        this.actionLinkUnderline.lineTo(this.actionLinkText.x + textWidth / 2, this.actionLinkText.y + textHeight + 2);
-        this.actionLinkUnderline.visible = true;
-
-        this.actionLinkHitArea.x = this.actionLinkText.x;
-        this.actionLinkHitArea.y = this.actionLinkText.y;
-        this.actionLinkHitArea.width = textWidth + 18;
-        this.actionLinkHitArea.height = textHeight + 10;
-        this.actionLinkHitArea.visible = true;
-        this.actionLinkHitArea.inputEnabled = true;
-    }
-
-    private hideActionLink(): void {
-        this.actionLinkText.visible = false;
-        this.actionLinkText.text = "";
-
-        this.actionLinkUnderline.clear();
-        this.actionLinkUnderline.visible = false;
-
-        this.actionLinkHitArea.visible = false;
-        this.actionLinkHitArea.inputEnabled = false;
+        this.artifactInfoPanel.showActionLink(LocalizationService.get("ui.character.wear", "Wear"));
     }
 
     private getAllowedSlotText(item: ShopArtifactItemConfig): string {

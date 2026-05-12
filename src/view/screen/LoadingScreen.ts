@@ -193,6 +193,7 @@ export default class LoadingScreen extends BaseScreen {
         this.load.bitmapFont('bm_gilroy', 'assets/base/fonts/bitmap/bm_gilroy.png', 'assets/base/fonts/bitmap/bm_gilroy.fnt');
         this.load.bitmapFont('bm_balsamiq', 'assets/base/fonts/bitmap/bm_balsamiq.png', 'assets/base/fonts/bitmap/bm_balsamiq.fnt');
         this.load.bitmapFont('bm_times', 'assets/base/fonts/bitmap/bm_times.png', 'assets/base/fonts/bitmap/bm_times.fnt');
+        this.load.bitmapFont('bm_times_italic', 'assets/base/fonts/bitmap/bm_times_italic.png', 'assets/base/fonts/bitmap/bm_times_italic.fnt');
         this.load.bitmapFont('bm_diary_digits', 'assets/base/fonts/bitmap/bm_diary_digits.png', 'assets/base/fonts/bitmap/bm_diary_digits.fnt');
         this.loadImage('blank', 'assets/base/ui/blank.png');
 
@@ -749,6 +750,11 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('characterArtifactHighlight', 'assets/base/ui/character/highlight.png');
         this.loadImage('characterSkillInfoButton', 'assets/base/ui/character/info_button1.png');
         this.loadImage('characterArtifactInfoButton', 'assets/base/ui/character/info_button_item.png');
+        this.loadImage('characterSlotItemInfoButton', 'assets/base/ui/character/slot_item_info_buttom.png');
+        this.loadImage('characterItemInfoDetailsButton', 'assets/base/ui/character/item_info_panel_details.png');
+        this.loadImage('characterItemSkillsDetailsBg', 'assets/base/ui/character/item_skills_details_bg.png');
+        this.loadImage('characterLevelProgressEmpty', 'assets/base/ui/character/level_progress_empty.png');
+        this.loadImage('characterLevelProgressFull', 'assets/base/ui/character/level_progress_full.png');
         // Fallback for new shop art until it is repacked into base atlases.
         this.load.image('shopHeader', 'assets/base/ui/shop/header.png');
         this.load.image('shopNavBg', 'assets/base/ui/shop/nav_bg.png');
@@ -776,6 +782,11 @@ export default class LoadingScreen extends BaseScreen {
         this.load.image('characterArtifactHighlight', 'assets/base/ui/character/highlight.png');
         this.load.image('characterSkillInfoButton', 'assets/base/ui/character/info_button1.png');
         this.load.image('characterArtifactInfoButton', 'assets/base/ui/character/info_button_item.png');
+        this.load.image('characterSlotItemInfoButton', 'assets/base/ui/character/slot_item_info_buttom.png');
+        this.load.image('characterItemInfoDetailsButton', 'assets/base/ui/character/item_info_panel_details.png');
+        this.load.image('characterItemSkillsDetailsBg', 'assets/base/ui/character/item_skills_details_bg.png');
+        this.load.image('characterLevelProgressEmpty', 'assets/base/ui/character/level_progress_empty.png');
+        this.load.image('characterLevelProgressFull', 'assets/base/ui/character/level_progress_full.png');
 
         this.loadImage('cankerberry', 'assets/base/items/cankerberry.png');
         this.loadImage('witchMushroom', 'assets/base/items/witchMushroom.png');

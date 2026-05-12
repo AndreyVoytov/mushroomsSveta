@@ -175,6 +175,7 @@
         if (lowered.indexOf('bookman') >= 0) return { key: 'bm_bookman', size: size, letterSpacing: -1 };
         if (lowered.indexOf('gilroy') >= 0) return { key: 'bm_gilroy', size: size, letterSpacing: -2 };
         if (lowered.indexOf('balsamiq') >= 0) return { key: 'bm_balsamiq', size: size, letterSpacing: -1 };
+        if (lowered.indexOf('italic') >= 0 && lowered.indexOf('times') >= 0) return { key: 'bm_times_italic', size: size, letterSpacing: -1 };
         if (lowered.indexOf('times') >= 0) return { key: 'bm_times', size: size, letterSpacing: -1 };
         return { key: 'bm_arial', size: size, letterSpacing: -1 };
     }
