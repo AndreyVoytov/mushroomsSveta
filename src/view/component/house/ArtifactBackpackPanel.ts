@@ -18,7 +18,6 @@ import ConfirmPanel from "./ConfirmPanel";
 import SkillInfoPanel from "./SkillInfoPanel";
 
 interface BackpackCellView {
-    bg: Phaser.Sprite;
     highlight: Phaser.Sprite;
     icon: Phaser.Sprite;
     hitArea: Phaser.Button;
@@ -28,15 +27,18 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
     private static readonly PSD_WIDTH = 960;
     private static readonly PSD_HEIGHT = 1669;
     private static readonly GRID_POSITIONS: { x: number, y: number }[] = [
-        { x: 244, y: 339 },
-        { x: 480, y: 339 },
-        { x: 716, y: 339 },
-        { x: 244, y: 530 },
-        { x: 480, y: 530 },
-        { x: 716, y: 530 },
-        { x: 244, y: 721 },
-        { x: 480, y: 721 },
-        { x: 716, y: 721 }
+        { x: 178, y: 373 },
+        { x: 379, y: 373 },
+        { x: 580, y: 373 },
+        { x: 781, y: 373 },
+        { x: 178, y: 573 },
+        { x: 379, y: 573 },
+        { x: 580, y: 573 },
+        { x: 781, y: 573 },
+        { x: 178, y: 773 },
+        { x: 379, y: 773 },
+        { x: 580, y: 773 },
+        { x: 781, y: 773 }
     ];
 
     private screen: HouseScreen;
@@ -94,16 +96,8 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
         this.panelHitArea.alpha = 0.001;
         this.panelHitArea.inputEnabled = true;
 
-        const gridPanel = this.attachSprite("helperPanel", "gridPanel");
-        this.placeAtPsdCenter(gridPanel, 480, 497);
-        gridPanel.scale.set(1.08, 1.28);
-        gridPanel.alpha = 0.98;
-
-        const board = this.attachSprite("characterPanelBg", "board");
-        this.placeAtPsdCenter(board, 480, 1121.5);
-
-        const banner = this.attachSprite("characterPanelBanner", "banner");
-        this.placeAtPsdCenter(banner, 490, 108);
+        const background = this.attachSprite("backpackPanelBg", "backpackPanelBg");
+        this.placeAtPsdCenter(background, 480, 835);
 
         this.bannerTitle = this.attachText("bannerTitle", "", {
             font: "bold 42px Bookman Old Style",
@@ -120,14 +114,10 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
             onUpgrade: () => this.tryUpgradeSelectedArtifact(),
             onSkillInfo: skillId => this.openSkillInfoPanel(skillId)
         });
+        this.artifactInfoPanel.y = 112;
         this.addSprite(this.artifactInfoPanel);
 
         ArtifactBackpackPanel.GRID_POSITIONS.forEach((position, index) => {
-            const bg = this.attachSprite("shopItemBg", "cellBg" + index);
-            this.placeAtPsdCenter(bg, position.x, position.y);
-            bg.scale.set(1.02);
-            bg.alpha = 0.94;
-
             const highlight = this.attachSprite("characterArtifactHighlight", "cellHighlight" + index);
             this.placeAtPsdCenter(highlight, position.x, position.y);
             highlight.visible = false;
@@ -143,7 +133,6 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
             hitArea.alpha = 0.001;
 
             this.cells.push({
-                bg: bg,
                 highlight: highlight,
                 icon: icon,
                 hitArea: hitArea

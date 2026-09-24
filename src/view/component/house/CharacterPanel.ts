@@ -872,9 +872,18 @@ export default class CharacterPanel extends ClosablePanel {
 
         const user = UserService.getUser();
         const currentCharacter = user.getCharacters()[this.currentCharacterIndex];
-        this.openingBackpackSourceCharacterId = currentCharacter ? currentCharacter.id : user.getCurrentCharacterId();
-        this.openingBackpack = true;
-        this.close();
+        const sourceCharacterId = currentCharacter ? currentCharacter.id : user.getCurrentCharacterId();
+        this.processing = true;
+        this.screen.ensureBackpackAssetsLoaded(() => {
+            this.processing = false;
+            if (!this.visible || !this.opened) {
+                return;
+            }
+
+            this.openingBackpackSourceCharacterId = sourceCharacterId;
+            this.openingBackpack = true;
+            this.close();
+        });
     }
 
     public queueCharacterFocus(characterId: string, slotId?: CharacterArtifactSlotId): void {

@@ -24,54 +24,30 @@
                                                                             "y":  0.5
                                                                         }
                                                           },
-                   "base/ui/bushDark.png":  {
-                                                "frame":  {
-                                                              "x":  1092,
-                                                              "y":  1088,
-                                                              "w":  344,
-                                                              "h":  623
-                                                          },
-                                                "rotated":  false,
-                                                "trimmed":  false,
-                                                "spriteSourceSize":  {
-                                                                         "x":  0,
-                                                                         "y":  0,
-                                                                         "w":  344,
-                                                                         "h":  623
-                                                                     },
-                                                "sourceSize":  {
-                                                                   "w":  344,
-                                                                   "h":  623
-                                                               },
-                                                "pivot":  {
-                                                              "x":  0.5,
-                                                              "y":  0.5
-                                                          }
-                                            },
-                   "base/ui/bushes.png":  {
-                                              "frame":  {
-                                                            "x":  752,
-                                                            "y":  1088,
-                                                            "w":  338,
-                                                            "h":  641
-                                                        },
-                                              "rotated":  false,
-                                              "trimmed":  false,
-                                              "spriteSourceSize":  {
-                                                                       "x":  0,
-                                                                       "y":  0,
-                                                                       "w":  338,
-                                                                       "h":  641
-                                                                   },
-                                              "sourceSize":  {
-                                                                 "w":  338,
-                                                                 "h":  641
+                   "base/ui/character/character_panel.png":  {
+                                                                 "frame":  {
+                                                                               "x":  752,
+                                                                               "y":  1088,
+                                                                               "w":  960,
+                                                                               "h":  649
+                                                                           },
+                                                                 "rotated":  false,
+                                                                 "trimmed":  false,
+                                                                 "spriteSourceSize":  {
+                                                                                          "x":  0,
+                                                                                          "y":  0,
+                                                                                          "w":  960,
+                                                                                          "h":  649
+                                                                                      },
+                                                                 "sourceSize":  {
+                                                                                    "w":  960,
+                                                                                    "h":  649
+                                                                                },
+                                                                 "pivot":  {
+                                                                               "x":  0.5,
+                                                                               "y":  0.5
+                                                                           }
                                                              },
-                                              "pivot":  {
-                                                            "x":  0.5,
-                                                            "y":  0.5
-                                                        }
-                                          },
                    "base/ui/diary/bookBg.png":  {
                                                     "frame":  {
                                                                   "x":  1,
@@ -127,7 +103,7 @@
                  "image":  "base-0.png",
                  "format":  "RGBA8888",
                  "size":  {
-                              "w":  1668,
+                              "w":  1713,
                               "h":  1854
                           },
                  "scale":  1

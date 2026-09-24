@@ -53,8 +53,21 @@ import TasksPanel from '../component/house/TasksPanel';
 import CharacterPanel from '../component/house/CharacterPanel';
 import RewardItemsPanel, { RewardItemsShowOptions } from '../component/panel/RewardItemsPanel';
 import TaskService from '../../core/service/TaskService';
+import { getAtlasGroupNames } from '../../generated/atlasManifest';
+
+interface LazyAssetDefinition {
+    key: string;
+    path: string;
+}
+
 export default class HouseScreen extends DialogScreen {
     private static readonly FAKE_TREES_RELEASE_DELAY = 120;
+    private static readonly BACKPACK_ASSETS: LazyAssetDefinition[] = [
+        { key: 'backpackPanelBg', path: 'assets/backpack/panel.png' },
+        { key: 'backpackScrollBar', path: 'assets/backpack/scroll_bar.png' },
+        { key: 'backpackScrollBarHead', path: 'assets/backpack/scroll_bar_head.png' }
+    ];
+
     private layout: BaseLayout;
 
     private keysPanel: KeysPanel;
@@ -104,6 +117,8 @@ export default class HouseScreen extends DialogScreen {
     public progressAnimation: boolean = false;
 
     private fakeTrees: Phaser.Sprite | null = null;
+    private backpackAssetsLoading: boolean = false;
+    private backpackAssetCallbacks: (() => void)[] = [];
 
     private renderedEventKeys: string[] = [];
     private configuredEventOffsetY = 0;
@@ -148,6 +163,83 @@ export default class HouseScreen extends DialogScreen {
         // while (Date.now() - start < 1500) {
         //     // Пустой цикл, ожидаем истечения времени
         //   }
+    }
+
+    public ensureBackpackAssetsLoaded(onComplete?: () => void): void {
+        this.registerBackpackAssets();
+
+        if (this.areBackpackAssetsLoaded()) {
+            if (onComplete) {
+                onComplete();
+            }
+            return;
+        }
+
+        if (onComplete) {
+            this.backpackAssetCallbacks.push(onComplete);
+        }
+
+        if (this.backpackAssetsLoading) {
+            return;
+        }
+
+        if (this.load.isLoading) {
+            this.backpackAssetsLoading = true;
+            this.load.onLoadComplete.addOnce(() => {
+                this.backpackAssetsLoading = false;
+                this.ensureBackpackAssetsLoaded(null);
+            }, this);
+            return;
+        }
+
+        this.backpackAssetsLoading = true;
+
+        if (Settings.isGraphicsFromAtlases()) {
+            this.loadAtlasGroup("backpack");
+        } else {
+            HouseScreen.BACKPACK_ASSETS.forEach(asset => {
+                if (!this.cache.checkImageKey(asset.key)) {
+                    this.load.image(asset.key, asset.path);
+                }
+            });
+        }
+
+        this.load.onLoadComplete.addOnce(() => this.completeBackpackAssetsLoad(), this);
+        this.load.start();
+    }
+
+    private registerBackpackAssets(): void {
+        HouseScreen.BACKPACK_ASSETS.forEach(asset => {
+            if (!SpriteUtils.images.some(image => image.key == asset.key && image.path == asset.path)) {
+                SpriteUtils.images.push({ key: asset.key, path: asset.path });
+            }
+        });
+    }
+
+    private areBackpackAssetsLoaded(): boolean {
+        if (!Settings.isGraphicsFromAtlases()) {
+            return HouseScreen.BACKPACK_ASSETS.every(asset => this.cache.checkImageKey(asset.key));
+        }
+
+        return HouseScreen.BACKPACK_ASSETS.every(asset => {
+            const frameName = asset.path.indexOf("assets/") == 0 ? asset.path.substring(7) : asset.path;
+            return getAtlasGroupNames("backpack").some(atlasName => {
+                const frameData = this.cache.getFrameData(atlasName);
+                return !!frameData && frameData.checkFrameName(frameName);
+            });
+        });
+    }
+
+    private completeBackpackAssetsLoad(): void {
+        this.backpackAssetsLoading = false;
+
+        const callbacks = this.backpackAssetCallbacks.slice();
+        this.backpackAssetCallbacks = [];
+        callbacks.forEach(callback => {
+            if (callback) {
+                callback();
+            }
+        });
     }
 
     public initialize(blackFadeOut?: boolean): void {

@@ -2,12 +2,13 @@
 
 export const ATLAS_GROUPS: { [key: string]: string[] } = {
     'load': ['load'],
-    'base': ['base-0', 'base-1', 'base-2', 'base-3', 'base-4', 'base-5', 'base-6', 'base-7'],
+    'base': ['base-0', 'base-1', 'base-2', 'base-3', 'base-4', 'base-5', 'base-6', 'base-7', 'base-8'],
     'basehq': ['basehq'],
+    'backpack': ['backpack'],
     'additional': ['additional0'],
     'chapter1': ['chapter1_0', 'chapter1_1'],
     'event1': ['event1'],
-    'sideEvent1': ['sideEvent1-0', 'sideEvent1-1'],
+    'sideEvent1': ['sideEvent1'],
     'minigame1': ['minigame1'],
     'minigame2': ['minigame2'],
     'minigame3': ['minigame3'],
