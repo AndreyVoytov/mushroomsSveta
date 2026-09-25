@@ -1,0 +1,87 @@
+{
+    "frames":  {
+                   "load/loader.png":  {
+                                           "frame":  {
+                                                         "x":  963,
+                                                         "y":  1,
+                                                         "w":  655,
+                                                         "h":  143
+                                                     },
+                                           "rotated":  false,
+                                           "trimmed":  false,
+                                           "spriteSourceSize":  {
+                                                                    "x":  0,
+                                                                    "y":  0,
+                                                                    "w":  655,
+                                                                    "h":  143
+                                                                },
+                                           "sourceSize":  {
+                                                              "w":  655,
+                                                              "h":  143
+                                                          },
+                                           "pivot":  {
+                                                         "x":  0.5,
+                                                         "y":  0.5
+                                                     }
+                                       },
+                   "load/loaderBg.png":  {
+                                             "frame":  {
+                                                           "x":  1,
+                                                           "y":  432,
+                                                           "w":  655,
+                                                           "h":  143
+                                                       },
+                                             "rotated":  false,
+                                             "trimmed":  false,
+                                             "spriteSourceSize":  {
+                                                                      "x":  0,
+                                                                      "y":  0,
+                                                                      "w":  655,
+                                                                      "h":  143
+                                                                  },
+                                             "sourceSize":  {
+                                                                "w":  655,
+                                                                "h":  143
+                                                            },
+                                             "pivot":  {
+                                                           "x":  0.5,
+                                                           "y":  0.5
+                                                       }
+                                         },
+                   "load/loaderFooter.png":  {
+                                                 "frame":  {
+                                                               "x":  1,
+                                                               "y":  1,
+                                                               "w":  960,
+                                                               "h":  429
+                                                           },
+                                                 "rotated":  false,
+                                                 "trimmed":  false,
+                                                 "spriteSourceSize":  {
+                                                                          "x":  0,
+                                                                          "y":  0,
+                                                                          "w":  960,
+                                                                          "h":  429
+                                                                      },
+                                                 "sourceSize":  {
+                                                                    "w":  960,
+                                                                    "h":  429
+                                                                },
+                                                 "pivot":  {
+                                                               "x":  0.5,
+                                                               "y":  0.5
+                                                           }
+                                             }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "load.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  1619,
+                              "h":  576
+                          },
+                 "scale":  1
+             }
+}

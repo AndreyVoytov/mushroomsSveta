@@ -1,0 +1,351 @@
+{
+    "frames":  {
+                   "base/characters/cat2.png":  {
+                                                    "frame":  {
+                                                                  "x":  963,
+                                                                  "y":  1522,
+                                                                  "w":  420,
+                                                                  "h":  461
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  420,
+                                                                             "h":  461
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  420,
+                                                                       "h":  461
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "base/characters/cat4.png":  {
+                                                    "frame":  {
+                                                                  "x":  1,
+                                                                  "y":  1,
+                                                                  "w":  492,
+                                                                  "h":  515
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  492,
+                                                                             "h":  515
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  492,
+                                                                       "h":  515
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "base/task/chest.png":  {
+                                               "frame":  {
+                                                             "x":  495,
+                                                             "y":  1,
+                                                             "w":  500,
+                                                             "h":  500
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  500,
+                                                                        "h":  500
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  500,
+                                                                  "h":  500
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "base/task/chest2.png":  {
+                                                "frame":  {
+                                                              "x":  997,
+                                                              "y":  1,
+                                                              "w":  500,
+                                                              "h":  500
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  500,
+                                                                   "h":  500
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "base/task/chest3.png":  {
+                                                "frame":  {
+                                                              "x":  1499,
+                                                              "y":  1,
+                                                              "w":  500,
+                                                              "h":  500
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  500,
+                                                                   "h":  500
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "base/task/chest4.png":  {
+                                                "frame":  {
+                                                              "x":  1,
+                                                              "y":  518,
+                                                              "w":  500,
+                                                              "h":  500
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  500,
+                                                                   "h":  500
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "base/task/chest5.png":  {
+                                                "frame":  {
+                                                              "x":  503,
+                                                              "y":  518,
+                                                              "w":  500,
+                                                              "h":  500
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  500,
+                                                                   "h":  500
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "base/task/chest6.png":  {
+                                                "frame":  {
+                                                              "x":  1005,
+                                                              "y":  518,
+                                                              "w":  500,
+                                                              "h":  500
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  500,
+                                                                   "h":  500
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "base/task/chest7.png":  {
+                                                "frame":  {
+                                                              "x":  1507,
+                                                              "y":  518,
+                                                              "w":  500,
+                                                              "h":  500
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  500,
+                                                                   "h":  500
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "base/task/energy_chest.png":  {
+                                                      "frame":  {
+                                                                    "x":  1,
+                                                                    "y":  1020,
+                                                                    "w":  500,
+                                                                    "h":  500
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  500,
+                                                                               "h":  500
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  500,
+                                                                         "h":  500
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  },
+                   "base/ui/banner1.png":  {
+                                               "frame":  {
+                                                             "x":  1,
+                                                             "y":  1522,
+                                                             "w":  960,
+                                                             "h":  488
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  960,
+                                                                        "h":  488
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  960,
+                                                                  "h":  488
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "base/ui/diary/dForestPic.png":  {
+                                                        "frame":  {
+                                                                      "x":  1507,
+                                                                      "y":  1020,
+                                                                      "w":  526,
+                                                                      "h":  492
+                                                                  },
+                                                        "rotated":  false,
+                                                        "trimmed":  false,
+                                                        "spriteSourceSize":  {
+                                                                                 "x":  0,
+                                                                                 "y":  0,
+                                                                                 "w":  526,
+                                                                                 "h":  492
+                                                                             },
+                                                        "sourceSize":  {
+                                                                           "w":  526,
+                                                                           "h":  492
+                                                                       },
+                                                        "pivot":  {
+                                                                      "x":  0.5,
+                                                                      "y":  0.5
+                                                                  }
+                                                    },
+                   "base/ui/maple.png":  {
+                                             "frame":  {
+                                                           "x":  503,
+                                                           "y":  1020,
+                                                           "w":  500,
+                                                           "h":  500
+                                                       },
+                                             "rotated":  false,
+                                             "trimmed":  false,
+                                             "spriteSourceSize":  {
+                                                                      "x":  0,
+                                                                      "y":  0,
+                                                                      "w":  500,
+                                                                      "h":  500
+                                                                  },
+                                             "sourceSize":  {
+                                                                "w":  500,
+                                                                "h":  500
+                                                            },
+                                             "pivot":  {
+                                                           "x":  0.5,
+                                                           "y":  0.5
+                                                       }
+                                         },
+                   "base/ui/mapleFace.png":  {
+                                                 "frame":  {
+                                                               "x":  1005,
+                                                               "y":  1020,
+                                                               "w":  500,
+                                                               "h":  500
+                                                           },
+                                                 "rotated":  false,
+                                                 "trimmed":  false,
+                                                 "spriteSourceSize":  {
+                                                                          "x":  0,
+                                                                          "y":  0,
+                                                                          "w":  500,
+                                                                          "h":  500
+                                                                      },
+                                                 "sourceSize":  {
+                                                                    "w":  500,
+                                                                    "h":  500
+                                                                },
+                                                 "pivot":  {
+                                                               "x":  0.5,
+                                                               "y":  0.5
+                                                           }
+                                             }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "base-4.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  2034,
+                              "h":  2011
+                          },
+                 "scale":  1
+             }
+}

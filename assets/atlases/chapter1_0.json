@@ -1,0 +1,399 @@
+{
+    "frames":  {
+                   "chapter1/attic/owlVision.png":  {
+                                                        "frame":  {
+                                                                      "x":  1168,
+                                                                      "y":  1145,
+                                                                      "w":  400,
+                                                                      "h":  341
+                                                                  },
+                                                        "rotated":  false,
+                                                        "trimmed":  false,
+                                                        "spriteSourceSize":  {
+                                                                                 "x":  0,
+                                                                                 "y":  0,
+                                                                                 "w":  400,
+                                                                                 "h":  341
+                                                                             },
+                                                        "sourceSize":  {
+                                                                           "w":  400,
+                                                                           "h":  341
+                                                                       },
+                                                        "pivot":  {
+                                                                      "x":  0.5,
+                                                                      "y":  0.5
+                                                                  }
+                                                    },
+                   "chapter1/attic/sphere1.png":  {
+                                                      "frame":  {
+                                                                    "x":  819,
+                                                                    "y":  1518,
+                                                                    "w":  300,
+                                                                    "h":  285
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  300,
+                                                                               "h":  285
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  300,
+                                                                         "h":  285
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  },
+                   "chapter1/attic/sphere2.png":  {
+                                                      "frame":  {
+                                                                    "x":  1121,
+                                                                    "y":  1518,
+                                                                    "w":  300,
+                                                                    "h":  285
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  300,
+                                                                               "h":  285
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  300,
+                                                                         "h":  285
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  },
+                   "chapter1/attic/vision/everest.png":  {
+                                                             "frame":  {
+                                                                           "x":  1,
+                                                                           "y":  1145,
+                                                                           "w":  556,
+                                                                           "h":  371
+                                                                       },
+                                                             "rotated":  false,
+                                                             "trimmed":  false,
+                                                             "spriteSourceSize":  {
+                                                                                      "x":  0,
+                                                                                      "y":  0,
+                                                                                      "w":  556,
+                                                                                      "h":  371
+                                                                                  },
+                                                             "sourceSize":  {
+                                                                                "w":  556,
+                                                                                "h":  371
+                                                                            },
+                                                             "pivot":  {
+                                                                           "x":  0.5,
+                                                                           "y":  0.5
+                                                                       }
+                                                         },
+                   "chapter1/attic/vision/sky.png":  {
+                                                         "frame":  {
+                                                                       "x":  508,
+                                                                       "y":  1,
+                                                                       "w":  660,
+                                                                       "h":  525
+                                                                   },
+                                                         "rotated":  false,
+                                                         "trimmed":  false,
+                                                         "spriteSourceSize":  {
+                                                                                  "x":  0,
+                                                                                  "y":  0,
+                                                                                  "w":  660,
+                                                                                  "h":  525
+                                                                              },
+                                                         "sourceSize":  {
+                                                                            "w":  660,
+                                                                            "h":  525
+                                                                        },
+                                                         "pivot":  {
+                                                                       "x":  0.5,
+                                                                       "y":  0.5
+                                                                   }
+                                                     },
+                   "chapter1/attic/vision/vedmaEverest.png":  {
+                                                                  "frame":  {
+                                                                                "x":  1312,
+                                                                                "y":  639,
+                                                                                "w":  258,
+                                                                                "h":  426
+                                                                            },
+                                                                  "rotated":  false,
+                                                                  "trimmed":  false,
+                                                                  "spriteSourceSize":  {
+                                                                                           "x":  0,
+                                                                                           "y":  0,
+                                                                                           "w":  258,
+                                                                                           "h":  426
+                                                                                       },
+                                                                  "sourceSize":  {
+                                                                                     "w":  258,
+                                                                                     "h":  426
+                                                                                 },
+                                                                  "pivot":  {
+                                                                                "x":  0.5,
+                                                                                "y":  0.5
+                                                                            }
+                                                              },
+                   "chapter1/darkForest/cyclop.png":  {
+                                                          "frame":  {
+                                                                        "x":  1170,
+                                                                        "y":  1,
+                                                                        "w":  546,
+                                                                        "h":  523
+                                                                    },
+                                                          "rotated":  false,
+                                                          "trimmed":  false,
+                                                          "spriteSourceSize":  {
+                                                                                   "x":  0,
+                                                                                   "y":  0,
+                                                                                   "w":  546,
+                                                                                   "h":  523
+                                                                               },
+                                                          "sourceSize":  {
+                                                                             "w":  546,
+                                                                             "h":  523
+                                                                         },
+                                                          "pivot":  {
+                                                                        "x":  0.5,
+                                                                        "y":  0.5
+                                                                    }
+                                                      },
+                   "chapter1/darkForest/strawberryBucket.png":  {
+                                                                    "frame":  {
+                                                                                  "x":  517,
+                                                                                  "y":  1518,
+                                                                                  "w":  300,
+                                                                                  "h":  309
+                                                                              },
+                                                                    "rotated":  false,
+                                                                    "trimmed":  false,
+                                                                    "spriteSourceSize":  {
+                                                                                             "x":  0,
+                                                                                             "y":  0,
+                                                                                             "w":  300,
+                                                                                             "h":  309
+                                                                                         },
+                                                                    "sourceSize":  {
+                                                                                       "w":  300,
+                                                                                       "h":  309
+                                                                                   },
+                                                                    "pivot":  {
+                                                                                  "x":  0.5,
+                                                                                  "y":  0.5
+                                                                              }
+                                                                },
+                   "chapter1/darkForest/unicorn1.png":  {
+                                                            "frame":  {
+                                                                          "x":  453,
+                                                                          "y":  639,
+                                                                          "w":  447,
+                                                                          "h":  494
+                                                                      },
+                                                            "rotated":  false,
+                                                            "trimmed":  false,
+                                                            "spriteSourceSize":  {
+                                                                                     "x":  0,
+                                                                                     "y":  0,
+                                                                                     "w":  447,
+                                                                                     "h":  494
+                                                                                 },
+                                                            "sourceSize":  {
+                                                                               "w":  447,
+                                                                               "h":  494
+                                                                           },
+                                                            "pivot":  {
+                                                                          "x":  0.5,
+                                                                          "y":  0.5
+                                                                      }
+                                                        },
+                   "chapter1/darkForest/unicorn2.png":  {
+                                                            "frame":  {
+                                                                          "x":  1,
+                                                                          "y":  1,
+                                                                          "w":  505,
+                                                                          "h":  636
+                                                                      },
+                                                            "rotated":  false,
+                                                            "trimmed":  false,
+                                                            "spriteSourceSize":  {
+                                                                                     "x":  0,
+                                                                                     "y":  0,
+                                                                                     "w":  505,
+                                                                                     "h":  636
+                                                                                 },
+                                                            "sourceSize":  {
+                                                                               "w":  505,
+                                                                               "h":  636
+                                                                           },
+                                                            "pivot":  {
+                                                                          "x":  0.5,
+                                                                          "y":  0.5
+                                                                      }
+                                                        },
+                   "chapter1/darkForest/voltorna.png":  {
+                                                            "frame":  {
+                                                                          "x":  1572,
+                                                                          "y":  639,
+                                                                          "w":  360,
+                                                                          "h":  381
+                                                                      },
+                                                            "rotated":  false,
+                                                            "trimmed":  false,
+                                                            "spriteSourceSize":  {
+                                                                                     "x":  0,
+                                                                                     "y":  0,
+                                                                                     "w":  360,
+                                                                                     "h":  381
+                                                                                 },
+                                                            "sourceSize":  {
+                                                                               "w":  360,
+                                                                               "h":  381
+                                                                           },
+                                                            "pivot":  {
+                                                                          "x":  0.5,
+                                                                          "y":  0.5
+                                                                      }
+                                                        },
+                   "chapter1/fields/cage.png":  {
+                                                    "frame":  {
+                                                                  "x":  902,
+                                                                  "y":  639,
+                                                                  "w":  408,
+                                                                  "h":  461
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  408,
+                                                                             "h":  461
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  408,
+                                                                       "h":  461
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "chapter1/fields/dwarfs.png":  {
+                                                      "frame":  {
+                                                                    "x":  1,
+                                                                    "y":  639,
+                                                                    "w":  450,
+                                                                    "h":  504
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  450,
+                                                                               "h":  504
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  450,
+                                                                         "h":  504
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  },
+                   "chapter1/forest/sveta2_mushrooms.png":  {
+                                                                "frame":  {
+                                                                              "x":  1,
+                                                                              "y":  1518,
+                                                                              "w":  514,
+                                                                              "h":  336
+                                                                          },
+                                                                "rotated":  false,
+                                                                "trimmed":  false,
+                                                                "spriteSourceSize":  {
+                                                                                         "x":  0,
+                                                                                         "y":  0,
+                                                                                         "w":  514,
+                                                                                         "h":  336
+                                                                                     },
+                                                                "sourceSize":  {
+                                                                                   "w":  514,
+                                                                                   "h":  336
+                                                                               },
+                                                                "pivot":  {
+                                                                              "x":  0.5,
+                                                                              "y":  0.5
+                                                                          }
+                                                            },
+                   "chapter1/forest/tent.png":  {
+                                                    "frame":  {
+                                                                  "x":  1423,
+                                                                  "y":  1518,
+                                                                  "w":  458,
+                                                                  "h":  280
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  458,
+                                                                             "h":  280
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  458,
+                                                                       "h":  280
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "chapter1/forest/watermill.png":  {
+                                                         "frame":  {
+                                                                       "x":  559,
+                                                                       "y":  1145,
+                                                                       "w":  607,
+                                                                       "h":  370
+                                                                   },
+                                                         "rotated":  false,
+                                                         "trimmed":  false,
+                                                         "spriteSourceSize":  {
+                                                                                  "x":  0,
+                                                                                  "y":  0,
+                                                                                  "w":  607,
+                                                                                  "h":  370
+                                                                              },
+                                                         "sourceSize":  {
+                                                                            "w":  607,
+                                                                            "h":  370
+                                                                        },
+                                                         "pivot":  {
+                                                                       "x":  0.5,
+                                                                       "y":  0.5
+                                                                   }
+                                                     }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "chapter1_0.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  1933,
+                              "h":  1855
+                          },
+                 "scale":  1
+             }
+}

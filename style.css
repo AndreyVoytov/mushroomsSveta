@@ -1,0 +1,117 @@
+
+@font-face {
+    font-family: Gilroy; /* Имя шрифта */
+    src: url(assets/other/fonts/Gilroy-ExtraBold.woff); /* Путь к файлу со шрифтом */
+}
+@font-face {
+    font-family: Bookman Old Style; /* Имя шрифта */
+    src: url(assets/other/fonts/bookman.woff); /* Путь к файлу со шрифтом */
+}
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #000 url(assets/other/pc-bg.jpg?) no-repeat fixed 50% 0;
+    background-color:#010b17; margin:0px;
+}
+span {
+    font-style: italic;
+}
+.content > canvas{
+    padding: 0;
+    margin: auto;
+}
+.content{
+    cursor: url(assets/other/cursor.png), default;
+}
+
+.d1{text-align: center;height: 0;}
+.d2{display: inline-block;width: 0;height: 0;position: relative;}
+.hdr{
+    font-weight: bold;
+    font-size: 24px;
+    margin-top: -47px;
+    color: #f4d397;
+    margin-bottom: 20px;
+}
+.hdri{
+    font-size: 18px;margin-top: -37px;margin-bottom: 0px;    
+}
+.d3{height: 132px;
+    width: 300px;
+    background: #cca45c;
+    position: absolute;
+    display: inline-block;
+    left: -165px;
+    border-radius: 20px;
+    padding: 10px;
+    border-width: 38px 8px 8px 8px;
+    border-color: #924f15;
+    border-style: solid;
+    font-size: 20px;
+    text-align: center;
+    z-index: 1;
+}
+.d3l{
+    top: 190px;
+    border-width: 8px;
+    height: 355px;
+    background: #aa8a4f;
+    overflow-y: scroll;
+    z-index: 0;
+    left: -169px;
+}
+.d3i{
+    top: 581px;
+    border-top-width: 20px;
+    left: -173px;
+    height: 73px;
+}
+.lem{
+    position: relative;
+    border-bottom: 1px #a04403 solid;
+    padding-bottom: 6px;
+    padding-left: 54px;
+}
+.inp{ background: #ead588;border: 2px;border-radius: 5px;font-size: 20px;width: 160px;margin-top: 10px;}
+.subm{display: inline-block;width: 135px;background: linear-gradient(0deg, #ef7925, #ffb13c);border: 2px;border-radius: 9px;font-size: 20px;width: 160px;margin-top: 10px;padding: 5px;color: white;}
+.lvlsLnk{display: inline-block;}
+.blck{ width: 100vw;height: 100vh;position: absolute;background: #000000;opacity: 0.7;margin-top: -18px;margin-left: -50vw;}
+.lbl{
+    color: #6e2f2c;font-style: inherit;
+}
+.fontLoader1{
+    font-family: Arial Nova;position: absolute;left: -1000px;visibility: hidden;
+}
+.fontLoader2{
+    font-family: Bookman Old Style;position: absolute;left: -1000px;visibility: hidden;
+}
+.fontLoader3{
+    font-family: Gilroy;position: absolute;left: -1000px;visibility: hidden;
+}
+.closeCont{
+    background: #e18b20;
+    display: block;
+    width: 27px;
+    height: 27px;
+    border-radius: 11px;
+    position: absolute;
+    right: 0px;
+    top: -33px;
+    padding: 1px;
+}
+.close{
+    vertical-align: top;
+    font-family: cursive;
+    font-size: 18px;
+    font-weight: bold;
+    color: #f5e9d3;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+.image-upload > input
+{
+    display: none;
+}
+
+    

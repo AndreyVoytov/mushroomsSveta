@@ -1,0 +1,207 @@
+{
+    "frames":  {
+                   "base/characters/cat1.png":  {
+                                                    "frame":  {
+                                                                  "x":  1,
+                                                                  "y":  1061,
+                                                                  "w":  464,
+                                                                  "h":  522
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  464,
+                                                                             "h":  522
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  464,
+                                                                       "h":  522
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "base/fonts/bitmap/bm_arial.png":  {
+                                                          "frame":  {
+                                                                        "x":  964,
+                                                                        "y":  532,
+                                                                        "w":  1024,
+                                                                        "h":  526
+                                                                    },
+                                                          "rotated":  false,
+                                                          "trimmed":  false,
+                                                          "spriteSourceSize":  {
+                                                                                   "x":  0,
+                                                                                   "y":  0,
+                                                                                   "w":  1024,
+                                                                                   "h":  526
+                                                                               },
+                                                          "sourceSize":  {
+                                                                             "w":  1024,
+                                                                             "h":  526
+                                                                         },
+                                                          "pivot":  {
+                                                                        "x":  0.5,
+                                                                        "y":  0.5
+                                                                    }
+                                                      },
+                   "base/fonts/bitmap/bm_gilroy.png":  {
+                                                           "frame":  {
+                                                                         "x":  963,
+                                                                         "y":  1,
+                                                                         "w":  1024,
+                                                                         "h":  528
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  1024,
+                                                                                    "h":  528
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  1024,
+                                                                              "h":  528
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "base/fonts/bitmap/bm_times.png":  {
+                                                          "frame":  {
+                                                                        "x":  1011,
+                                                                        "y":  1061,
+                                                                        "w":  1024,
+                                                                        "h":  519
+                                                                    },
+                                                          "rotated":  false,
+                                                          "trimmed":  false,
+                                                          "spriteSourceSize":  {
+                                                                                   "x":  0,
+                                                                                   "y":  0,
+                                                                                   "w":  1024,
+                                                                                   "h":  519
+                                                                               },
+                                                          "sourceSize":  {
+                                                                             "w":  1024,
+                                                                             "h":  519
+                                                                         },
+                                                          "pivot":  {
+                                                                        "x":  0.5,
+                                                                        "y":  0.5
+                                                                    }
+                                                      },
+                   "base/ui/diary/circleFlow.png":  {
+                                                        "frame":  {
+                                                                      "x":  1,
+                                                                      "y":  532,
+                                                                      "w":  527,
+                                                                      "h":  527
+                                                                  },
+                                                        "rotated":  false,
+                                                        "trimmed":  false,
+                                                        "spriteSourceSize":  {
+                                                                                 "x":  0,
+                                                                                 "y":  0,
+                                                                                 "w":  527,
+                                                                                 "h":  527
+                                                                             },
+                                                        "sourceSize":  {
+                                                                           "w":  527,
+                                                                           "h":  527
+                                                                       },
+                                                        "pivot":  {
+                                                                      "x":  0.5,
+                                                                      "y":  0.5
+                                                                  }
+                                                    },
+                   "base/ui/diary/fieldsPic.png":  {
+                                                       "frame":  {
+                                                                     "x":  467,
+                                                                     "y":  1061,
+                                                                     "w":  542,
+                                                                     "h":  521
+                                                                 },
+                                                       "rotated":  false,
+                                                       "trimmed":  false,
+                                                       "spriteSourceSize":  {
+                                                                                "x":  0,
+                                                                                "y":  0,
+                                                                                "w":  542,
+                                                                                "h":  521
+                                                                            },
+                                                       "sourceSize":  {
+                                                                          "w":  542,
+                                                                          "h":  521
+                                                                      },
+                                                       "pivot":  {
+                                                                     "x":  0.5,
+                                                                     "y":  0.5
+                                                                 }
+                                                   },
+                   "base/ui/forestHeader1.png":  {
+                                                     "frame":  {
+                                                                   "x":  1,
+                                                                   "y":  1,
+                                                                   "w":  960,
+                                                                   "h":  529
+                                                               },
+                                                     "rotated":  false,
+                                                     "trimmed":  false,
+                                                     "spriteSourceSize":  {
+                                                                              "x":  0,
+                                                                              "y":  0,
+                                                                              "w":  960,
+                                                                              "h":  529
+                                                                          },
+                                                     "sourceSize":  {
+                                                                        "w":  960,
+                                                                        "h":  529
+                                                                    },
+                                                     "pivot":  {
+                                                                   "x":  0.5,
+                                                                   "y":  0.5
+                                                               }
+                                                 },
+                   "base/ui/glint.png":  {
+                                             "frame":  {
+                                                           "x":  530,
+                                                           "y":  532,
+                                                           "w":  432,
+                                                           "h":  527
+                                                       },
+                                             "rotated":  false,
+                                             "trimmed":  false,
+                                             "spriteSourceSize":  {
+                                                                      "x":  0,
+                                                                      "y":  0,
+                                                                      "w":  432,
+                                                                      "h":  527
+                                                                  },
+                                             "sourceSize":  {
+                                                                "w":  432,
+                                                                "h":  527
+                                                            },
+                                             "pivot":  {
+                                                           "x":  0.5,
+                                                           "y":  0.5
+                                                       }
+                                         }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "base-3.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  2036,
+                              "h":  1584
+                          },
+                 "scale":  1
+             }
+}

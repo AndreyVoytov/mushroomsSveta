@@ -1,0 +1,1143 @@
+{
+    "frames":  {
+                   "additional/characters/belka1.png":  {
+                                                            "frame":  {
+                                                                          "x":  997,
+                                                                          "y":  1187,
+                                                                          "w":  394,
+                                                                          "h":  451
+                                                                      },
+                                                            "rotated":  false,
+                                                            "trimmed":  false,
+                                                            "spriteSourceSize":  {
+                                                                                     "x":  0,
+                                                                                     "y":  0,
+                                                                                     "w":  394,
+                                                                                     "h":  451
+                                                                                 },
+                                                            "sourceSize":  {
+                                                                               "w":  394,
+                                                                               "h":  451
+                                                                           },
+                                                            "pivot":  {
+                                                                          "x":  0.5,
+                                                                          "y":  0.5
+                                                                      }
+                                                        },
+                   "additional/characters/belka2.png":  {
+                                                            "frame":  {
+                                                                          "x":  1393,
+                                                                          "y":  1187,
+                                                                          "w":  394,
+                                                                          "h":  451
+                                                                      },
+                                                            "rotated":  false,
+                                                            "trimmed":  false,
+                                                            "spriteSourceSize":  {
+                                                                                     "x":  0,
+                                                                                     "y":  0,
+                                                                                     "w":  394,
+                                                                                     "h":  451
+                                                                                 },
+                                                            "sourceSize":  {
+                                                                               "w":  394,
+                                                                               "h":  451
+                                                                           },
+                                                            "pivot":  {
+                                                                          "x":  0.5,
+                                                                          "y":  0.5
+                                                                      }
+                                                        },
+                   "additional/characters/belka3.png":  {
+                                                            "frame":  {
+                                                                          "x":  997,
+                                                                          "y":  609,
+                                                                          "w":  482,
+                                                                          "h":  550
+                                                                      },
+                                                            "rotated":  false,
+                                                            "trimmed":  false,
+                                                            "spriteSourceSize":  {
+                                                                                     "x":  0,
+                                                                                     "y":  0,
+                                                                                     "w":  482,
+                                                                                     "h":  550
+                                                                                 },
+                                                            "sourceSize":  {
+                                                                               "w":  482,
+                                                                               "h":  550
+                                                                           },
+                                                            "pivot":  {
+                                                                          "x":  0.5,
+                                                                          "y":  0.5
+                                                                      }
+                                                        },
+                   "additional/characters/leshii1.png":  {
+                                                             "frame":  {
+                                                                           "x":  1381,
+                                                                           "y":  1,
+                                                                           "w":  496,
+                                                                           "h":  576
+                                                                       },
+                                                             "rotated":  false,
+                                                             "trimmed":  false,
+                                                             "spriteSourceSize":  {
+                                                                                      "x":  0,
+                                                                                      "y":  0,
+                                                                                      "w":  496,
+                                                                                      "h":  576
+                                                                                  },
+                                                             "sourceSize":  {
+                                                                                "w":  496,
+                                                                                "h":  576
+                                                                            },
+                                                             "pivot":  {
+                                                                           "x":  0.5,
+                                                                           "y":  0.5
+                                                                       }
+                                                         },
+                   "additional/characters/leshii2.png":  {
+                                                             "frame":  {
+                                                                           "x":  1,
+                                                                           "y":  609,
+                                                                           "w":  496,
+                                                                           "h":  576
+                                                                       },
+                                                             "rotated":  false,
+                                                             "trimmed":  false,
+                                                             "spriteSourceSize":  {
+                                                                                      "x":  0,
+                                                                                      "y":  0,
+                                                                                      "w":  496,
+                                                                                      "h":  576
+                                                                                  },
+                                                             "sourceSize":  {
+                                                                                "w":  496,
+                                                                                "h":  576
+                                                                            },
+                                                             "pivot":  {
+                                                                           "x":  0.5,
+                                                                           "y":  0.5
+                                                                       }
+                                                         },
+                   "additional/characters/leshii3.png":  {
+                                                             "frame":  {
+                                                                           "x":  499,
+                                                                           "y":  609,
+                                                                           "w":  496,
+                                                                           "h":  576
+                                                                       },
+                                                             "rotated":  false,
+                                                             "trimmed":  false,
+                                                             "spriteSourceSize":  {
+                                                                                      "x":  0,
+                                                                                      "y":  0,
+                                                                                      "w":  496,
+                                                                                      "h":  576
+                                                                                  },
+                                                             "sourceSize":  {
+                                                                                "w":  496,
+                                                                                "h":  576
+                                                                            },
+                                                             "pivot":  {
+                                                                           "x":  0.5,
+                                                                           "y":  0.5
+                                                                       }
+                                                         },
+                   "additional/characters/sova1.png":  {
+                                                           "frame":  {
+                                                                         "x":  1481,
+                                                                         "y":  609,
+                                                                         "w":  496,
+                                                                         "h":  461
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  496,
+                                                                                    "h":  461
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  496,
+                                                                              "h":  461
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "additional/characters/sova2.png":  {
+                                                           "frame":  {
+                                                                         "x":  1,
+                                                                         "y":  1187,
+                                                                         "w":  496,
+                                                                         "h":  461
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  496,
+                                                                                    "h":  461
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  496,
+                                                                              "h":  461
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "additional/characters/sova3.png":  {
+                                                           "frame":  {
+                                                                         "x":  499,
+                                                                         "y":  1187,
+                                                                         "w":  496,
+                                                                         "h":  461
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  496,
+                                                                                    "h":  461
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  496,
+                                                                              "h":  461
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "additional/characters/yaga1.png":  {
+                                                           "frame":  {
+                                                                         "x":  1,
+                                                                         "y":  1,
+                                                                         "w":  458,
+                                                                         "h":  606
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  458,
+                                                                                    "h":  606
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  458,
+                                                                              "h":  606
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "additional/characters/yaga2.png":  {
+                                                           "frame":  {
+                                                                         "x":  461,
+                                                                         "y":  1,
+                                                                         "w":  458,
+                                                                         "h":  606
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  458,
+                                                                                    "h":  606
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  458,
+                                                                              "h":  606
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "additional/characters/yaga3.png":  {
+                                                           "frame":  {
+                                                                         "x":  921,
+                                                                         "y":  1,
+                                                                         "w":  458,
+                                                                         "h":  606
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  458,
+                                                                                    "h":  606
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  458,
+                                                                              "h":  606
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       },
+                   "additional/items/t1.png":  {
+                                                   "frame":  {
+                                                                 "x":  1789,
+                                                                 "y":  1187,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "additional/items/t10.png":  {
+                                                    "frame":  {
+                                                                  "x":  1911,
+                                                                  "y":  1187,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t11.png":  {
+                                                    "frame":  {
+                                                                  "x":  1,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t12.png":  {
+                                                    "frame":  {
+                                                                  "x":  123,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t13.png":  {
+                                                    "frame":  {
+                                                                  "x":  245,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t14.png":  {
+                                                    "frame":  {
+                                                                  "x":  367,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t15.png":  {
+                                                    "frame":  {
+                                                                  "x":  489,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t16.png":  {
+                                                    "frame":  {
+                                                                  "x":  611,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t17.png":  {
+                                                    "frame":  {
+                                                                  "x":  733,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t18.png":  {
+                                                    "frame":  {
+                                                                  "x":  855,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t19.png":  {
+                                                    "frame":  {
+                                                                  "x":  977,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t2.png":  {
+                                                   "frame":  {
+                                                                 "x":  1099,
+                                                                 "y":  1650,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "additional/items/t20.png":  {
+                                                    "frame":  {
+                                                                  "x":  1221,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t21.png":  {
+                                                    "frame":  {
+                                                                  "x":  1343,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t22.png":  {
+                                                    "frame":  {
+                                                                  "x":  1465,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t23.png":  {
+                                                    "frame":  {
+                                                                  "x":  1587,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t24.png":  {
+                                                    "frame":  {
+                                                                  "x":  1709,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t25.png":  {
+                                                    "frame":  {
+                                                                  "x":  1831,
+                                                                  "y":  1650,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t26.png":  {
+                                                    "frame":  {
+                                                                  "x":  1,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t27.png":  {
+                                                    "frame":  {
+                                                                  "x":  123,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t28.png":  {
+                                                    "frame":  {
+                                                                  "x":  245,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t29.png":  {
+                                                    "frame":  {
+                                                                  "x":  367,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t3.png":  {
+                                                   "frame":  {
+                                                                 "x":  489,
+                                                                 "y":  1779,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "additional/items/t30.png":  {
+                                                    "frame":  {
+                                                                  "x":  611,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t31.png":  {
+                                                    "frame":  {
+                                                                  "x":  733,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t32.png":  {
+                                                    "frame":  {
+                                                                  "x":  855,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t33.png":  {
+                                                    "frame":  {
+                                                                  "x":  977,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t34.png":  {
+                                                    "frame":  {
+                                                                  "x":  1099,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t35.png":  {
+                                                    "frame":  {
+                                                                  "x":  1221,
+                                                                  "y":  1779,
+                                                                  "w":  120,
+                                                                  "h":  127
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  120,
+                                                                             "h":  127
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  120,
+                                                                       "h":  127
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
+                   "additional/items/t4.png":  {
+                                                   "frame":  {
+                                                                 "x":  1343,
+                                                                 "y":  1779,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "additional/items/t5.png":  {
+                                                   "frame":  {
+                                                                 "x":  1465,
+                                                                 "y":  1779,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "additional/items/t6.png":  {
+                                                   "frame":  {
+                                                                 "x":  1587,
+                                                                 "y":  1779,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "additional/items/t7.png":  {
+                                                   "frame":  {
+                                                                 "x":  1709,
+                                                                 "y":  1779,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "additional/items/t8.png":  {
+                                                   "frame":  {
+                                                                 "x":  1831,
+                                                                 "y":  1779,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "additional/items/t9.png":  {
+                                                   "frame":  {
+                                                                 "x":  1,
+                                                                 "y":  1908,
+                                                                 "w":  120,
+                                                                 "h":  127
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  120,
+                                                                            "h":  127
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  120,
+                                                                      "h":  127
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "additional0.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  2032,
+                              "h":  2036
+                          },
+                 "scale":  1
+             }
+}
