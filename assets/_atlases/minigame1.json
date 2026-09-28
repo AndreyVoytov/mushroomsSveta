@@ -1,0 +1,63 @@
+{
+  "frames": {
+    "minigame1/mountinesHeader.png": {
+      "frame": {
+        "x": 1,
+        "y": 1,
+        "w": 960,
+        "h": 590
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 960,
+        "h": 590
+      },
+      "sourceSize": {
+        "w": 960,
+        "h": 590
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "minigame1/bg.jpg": {
+      "frame": {
+        "x": 963,
+        "y": 1,
+        "w": 118,
+        "h": 118
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 118,
+        "h": 118
+      },
+      "sourceSize": {
+        "w": 118,
+        "h": 118
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.6",
+    "image": "minigame1.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1082,
+      "h": 592
+    },
+    "scale": 1
+  }
+}

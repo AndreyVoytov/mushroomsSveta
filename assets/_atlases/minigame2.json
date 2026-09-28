@@ -1,0 +1,76 @@
+{"frames": {
+
+"minigame2/banner2.png":
+{
+	"frame": {"x":1,"y":1,"w":960,"h":488},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":488},
+	"sourceSize": {"w":960,"h":488}
+},
+"minigame2/bgHouse.jpg":
+{
+	"frame": {"x":1,"y":788,"w":308,"h":322},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":308,"h":322},
+	"sourceSize": {"w":308,"h":322}
+},
+"minigame2/carpet.png":
+{
+	"frame": {"x":1,"y":491,"w":747,"h":295},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":747,"h":295},
+	"sourceSize": {"w":747,"h":295}
+},
+"minigame2/crack.png":
+{
+	"frame": {"x":661,"y":867,"w":238,"h":110},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":238,"h":110},
+	"sourceSize": {"w":238,"h":110}
+},
+"minigame2/leafs1.png":
+{
+	"frame": {"x":750,"y":491,"w":188,"h":374},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":9,"y":26,"w":188,"h":374},
+	"sourceSize": {"w":199,"h":400}
+},
+"minigame2/leafs2.png":
+{
+	"frame": {"x":661,"y":979,"w":104,"h":108},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":6,"w":104,"h":108},
+	"sourceSize": {"w":107,"h":118}
+},
+"minigame2/leafs3.png":
+{
+	"frame": {"x":767,"y":979,"w":99,"h":80},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":10,"w":99,"h":80},
+	"sourceSize": {"w":107,"h":95}
+},
+"minigame2/table.png":
+{
+	"frame": {"x":311,"y":788,"w":348,"h":305},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":348,"h":305},
+	"sourceSize": {"w":348,"h":305}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "minigame2.png",
+	"format": "RGBA8888",
+	"size": {"w":962,"h":1111},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:b2e53ced198d798a914141cf59c0e04a:9397f99c3196ebedbadea38ced9dbace:266708ef6c6f77ed013e311770319ed5$"
+}
+}

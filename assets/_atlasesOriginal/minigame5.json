@@ -1,0 +1,36 @@
+{"frames": {
+
+"minigame5/bgLight.jpg":
+{
+	"frame": {"x":148,"y":637,"w":118,"h":118},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":118,"h":118},
+	"sourceSize": {"w":118,"h":118}
+},
+"minigame5/flowersBig.png":
+{
+	"frame": {"x":1,"y":637,"w":145,"h":210},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":5,"y":1,"w":145,"h":210},
+	"sourceSize": {"w":150,"h":213}
+},
+"minigame5/flowersFieldHeader.png":
+{
+	"frame": {"x":1,"y":1,"w":960,"h":634},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":960,"h":634},
+	"sourceSize": {"w":960,"h":634}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "minigame5.png",
+	"format": "RGBA8888",
+	"size": {"w":962,"h":848},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:100b79788570f93101339486958b0899:6e16fbf57e7a14e77e3305b8444e1bcd:887be78b1516011985b1a35baa6fc862$"
+}
+}
