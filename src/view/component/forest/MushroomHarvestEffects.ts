@@ -65,18 +65,21 @@ export default class MushroomHarvestEffects extends Phaser.Group {
         this.game.time.events.add(delay, () => {
             if (!this.game || !this.parent || hole.pendingDestroy || !hole.parent) return;
             AnimationUtils.primeForShow(hole);
-            this.game.add.tween(hole).to({ alpha: 1 }, 120, Phaser.Easing.Linear.None, true);
+            const reveal = this.game.add.tween(hole).to({ alpha: 1 }, 180, Phaser.Easing.Linear.None, true);
             this.game.add.tween(hole.scale).to({ x: sx, y: sy }, 240,
                 Phaser.Easing.Back.Out, true);
-            // The indentation is a quick after-image of the harvest: it
-            // starts settling almost at once and cannot clutter rapid opens.
-            this.game.add.tween(hole).to({ alpha: 0 }, 1050, Phaser.Easing.Sinusoidal.In,
-                true, 380).onComplete.addOnce(() => {
+            // Create the fade only after alpha reaches 1. Phaser captures the
+            // start value when a tween starts, even when it has a delay.
+            reveal.onComplete.addOnce(() => {
+                if (hole.pendingDestroy || !hole.parent) return;
+                this.game.add.tween(hole).to({ alpha: 0 }, 2400, Phaser.Easing.Sinusoidal.In,
+                    true, 200).onComplete.addOnce(() => {
                     if (cell.mushroomHole == hole && !hole.pendingDestroy) {
                         cell.mushroomHole = null;
                         hole.destroy();
                     }
                 });
+            });
             this.emitSoil(x, y);
             // Keep soil below the flying item and the HUD, even in tutorials.
             this.game.world.bringToTop(this);

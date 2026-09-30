@@ -24,3 +24,7 @@ assets_hq
 assets_lq
 /.history
 .atlas-cache.json
+
+# Local source material and generated previews; never publish or commit these.
+.local-workbench/
+.pages-deploy/

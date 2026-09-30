@@ -10,7 +10,7 @@
     {
       "id": "base",
       "sourceDir": "assets/base",
-      "exclude": ["hex/hexFrame_old.png", "items/animals/rabbitEscape.png", "items/animals/butterflyEscape.png"],
+      "exclude": ["hex/hexFrame_old.png", "items/animals/rabbitEscape.png", "items/animals/butterflyEscape.png", "items/animals/batEscape.png"],
       "outputPattern": "base-{index}",
       "maxWidth": 2048,
       "maxHeight": 2048

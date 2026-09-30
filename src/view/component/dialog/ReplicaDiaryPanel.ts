@@ -26,7 +26,8 @@ export default class ReplicaDiaryPanel extends BasePanel {
     private emitterStarted = false;
     private emitterStartEvent: Phaser.TimerEvent;
     private layoutAlphaTween: Phaser.Tween;
-    private diaryShineTween: Phaser.Tween;
+    private diaryShineActive = false;
+    private diaryShinePhase = 0;
     private diaryShine: Phaser.Sprite;
     private idleStartEvent: Phaser.TimerEvent;
     private idleTweens: Phaser.Tween[] = [];
@@ -202,26 +203,26 @@ export default class ReplicaDiaryPanel extends BasePanel {
     }
 
     public update(): void {
+        if (this.diaryShineActive && this.diaryShine && this.diaryShine.exists) {
+            // Continuous phase has no tween repeat boundary or cached alpha.
+            this.diaryShinePhase += Math.min(50, this.game.time.elapsedMS || 16.67) / 1000;
+            this.diaryShine.alpha = 0.76 + 0.18 * Math.sin(this.diaryShinePhase * Math.PI / 2.2);
+        }
         if (this.diaryPreset && this.emitter) {
             this.syncEmitterToDiary();
         }
     }
 
     private startDiaryShine(): void {
-        if (!this.diaryShine || this.diaryShineTween) {
+        if (!this.diaryShine || this.diaryShineActive) {
             return;
         }
-        this.diaryShineTween = this.game.add.tween(this.diaryShine).to(
-            { alpha: [0, 1] }, 3000, Phaser.Easing.Linear.None, true, 0, -1, true
-        );
+        this.diaryShineActive = true;
+        this.diaryShine.alpha = 0.76 + 0.18 * Math.sin(this.diaryShinePhase * Math.PI / 2.2);
     }
 
     private stopDiaryShine(): void {
-        if (!this.diaryShineTween) {
-            return;
-        }
-        this.diaryShineTween.stop(false);
-        this.diaryShineTween = null;
+        this.diaryShineActive = false;
     }
 
     private stopIdleAnimations(): void {

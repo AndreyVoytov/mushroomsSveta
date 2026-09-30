@@ -664,8 +664,8 @@ export default class ForestScreen extends BaseForestScreen {
             })
             cellState.content = ContentType.empty;
 
-            if (contentType == ContentType.rabbit || contentType == ContentType.butterfly || contentType == ContentType.butterfly2) {
-                this.animateAnimalEscape(cellState.sprite, contentType == ContentType.rabbit ? 'rabbit' : 'butterfly');
+            if (contentType == ContentType.rabbit || contentType == ContentType.butterfly || contentType == ContentType.butterfly2 || contentType == ContentType.bet) {
+                this.animateAnimalEscape(cellState.sprite, contentType == ContentType.rabbit ? 'rabbit' : contentType == ContentType.bet ? 'bat' : 'butterfly');
             } else {
                 this.game.add.tween(cellState.sprite).to({ x: cellState.sprite.x, y: cellState.sprite.y - 360 }, 1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, 200, 0, false);
                 this.game.add.tween(cellState.sprite).to({ alpha: [1, 0] }, 1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In, true, 200, 0, false);
@@ -1929,13 +1929,13 @@ export default class ForestScreen extends BaseForestScreen {
 
     /** Plays the video-derived sheets while keeping the old board sprite as
      * the single object that owns depth and cleanup. */
-    private animateAnimalEscape(sprite: Phaser.Sprite, animal: 'rabbit' | 'butterfly'): void {
+    private animateAnimalEscape(sprite: Phaser.Sprite, animal: 'rabbit' | 'butterfly' | 'bat'): void {
         const startX = sprite.x;
         const startY = sprite.y;
-        const moveRight = startX < Game.getWidth() * 0.62;
-        const direction = moveRight ? 1 : -1;
-        const texture = animal == 'rabbit' ? 'rabbitEscape' : 'butterflyEscape';
-        const frameRate = animal == 'rabbit' ? 12 : 14;
+        const texture = animal + 'Escape';
+        const introFrames = animal == 'butterfly' ? 4 : 12;
+        const frameCount = animal == 'butterfly' ? 24 : 32;
+        const frameRate = animal == 'rabbit' ? 24 : 30;
 
         this.game.time.events.add(200, () => {
             if (!sprite.exists) {
@@ -1946,27 +1946,26 @@ export default class ForestScreen extends BaseForestScreen {
             sprite.anchor.set(0.5);
             sprite.width = 120;
             sprite.height = 127;
-            // The generated clips travel to the right. Mirror the sheet for
-            // finds near the right edge so an animal never moonwalks left.
-            sprite.scale.x = moveRight ? Math.abs(sprite.scale.x) : -Math.abs(sprite.scale.x);
+            sprite.scale.x = Math.abs(sprite.scale.x);
             sprite.alpha = 1;
-            sprite.animations.add('escape', Phaser.ArrayUtils.numberArray(0, 15), frameRate, false);
-            sprite.animations.play('escape');
-
-            const xPath = animal == 'rabbit'
-                ? [startX, startX + 24 * direction, startX + 78 * direction, startX + 165 * direction]
-                : [startX, startX + 18 * direction, startX + 72 * direction, startX + 145 * direction];
-            const yPath = animal == 'rabbit'
-                ? [startY, startY - 13, startY + 4, startY - 20]
-                : [startY, startY - 32, startY - 78, startY - 150];
-
-            const travel = this.game.add.tween(sprite).to({ x: xPath, y: yPath }, 1100,
-                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
-                true, 0, 0, false);
-            travel.interpolation(Phaser.Math.bezierInterpolation);
-            this.game.add.tween(sprite).to({ alpha: [1, 1, 0] }, 1100,
-                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In,
-                true);
+            const intro = sprite.animations.add('look', Phaser.ArrayUtils.numberArray(0, introFrames - 1), frameRate, false);
+            sprite.animations.add('escape', Phaser.ArrayUtils.numberArray(introFrames, frameCount - 1), frameRate, true);
+            intro.onComplete.addOnce(() => {
+                if (!sprite.exists) return;
+                sprite.animations.play('escape');
+                const distance = Math.max(520, Game.getWidth() - startX + 130);
+                const duration = animal == 'rabbit' ? 880 : 1050;
+                const travel = this.game.add.tween(sprite).to({
+                    x: [startX + distance * 0.22, startX + distance * 0.6, startX + distance],
+                    y: animal == 'rabbit' ? [startY - 8, startY - 12, startY - 18]
+                        : [startY - 100, startY - 270, startY - 480]
+                }, duration, Phaser.Easing.Quadratic.In, true);
+                travel.interpolation(Phaser.Math.bezierInterpolation);
+                this.game.add.tween(sprite).to({ alpha: 0 }, 220,
+                    Phaser.Easing.Linear.None, true, duration - 220);
+                travel.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
+            });
+            sprite.animations.play('look');
         }, this);
     }
 }

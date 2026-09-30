@@ -39,9 +39,10 @@ const Harvest = exported.default;
 function fixture() {
     const timers = [], tweens = [];
     const game = { time: { elapsedMS: 16.67, events: { add: (delay, fn) => timers.push({ delay, fn }) } },
-        add: { tween: target => ({ to: props => {
-            tweens.push({ target, props });
-            return { onComplete: { addOnce: () => {} } };
+        add: { tween: target => ({ to: (props, duration, easing, auto, delay) => {
+            const record = { target, props, duration, delay, startAlpha: target.alpha };
+            tweens.push(record);
+            return { onComplete: { addOnce: fn => { record.complete = fn; } } };
         } }) } };
     game.world = new Group(game);
     function cell(scale = 1) {
@@ -73,7 +74,12 @@ assert(!Harvest.isMushroom('tree1'));
     assert.strictEqual(fx.children.filter(p => p.visible).length, 8);
     assert.strictEqual(tweens[1].props.x * 180 * c.bg.scale.x, 72);
     assert.strictEqual(tweens[1].props.y * 80 * c.bg.scale.y, 64);
+    assert.strictEqual(tweens.length, 2, 'fade must not capture alpha before reveal completes');
+    c.mushroomHole.alpha = 1;
+    tweens[0].complete();
+    assert.strictEqual(tweens[2].startAlpha, 1, 'fade starts at visible alpha');
     assert.strictEqual(tweens[2].props.alpha, 0, 'hole fades back into the ground');
+    assert(tweens[2].duration >= 2000, 'hole has a visibly gradual fade');
     for (let i = 0; i < 20; i++) fx.reveal(cell(), 0);
     timers.splice(0).forEach(timer => timer.fn());
     assert.strictEqual(fx.children.length, 48, 'rapid collection never expands pool');

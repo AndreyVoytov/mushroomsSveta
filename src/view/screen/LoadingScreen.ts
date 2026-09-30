@@ -32,6 +32,8 @@ export default class LoadingScreen extends BaseScreen {
     private preloadBarFullWidth = 0;
 
     preload() {
+        this.preloadBarRealProgress = 0;
+        this.preloadBarVisibleProgress = 0.14;
 
         this.game.canvas.oncontextmenu = function (e) { e.preventDefault(); }
 
@@ -63,12 +65,10 @@ export default class LoadingScreen extends BaseScreen {
         // makes the whole loader look as if it never appeared.
         this.preloadBarFullWidth = Math.max(preloadBarWidth, this.preloadBar.width);
         this.preloadBar.crop(new Phaser.Rectangle(0, 0,
-            Math.round(this.preloadBarFullWidth * 0.06), preloadBarHeight), false);
+            Math.round(this.preloadBarFullWidth * 0.14), preloadBarHeight), false);
         this.preloadBar.updateCrop();
         this.preloadBarStartedAt = this.game.time.now;
-        this.load.onFileComplete.add((progress: number) => {
-            this.preloadBarRealProgress = Math.max(this.preloadBarRealProgress, Math.max(0, Math.min(1, progress / 100)));
-        }, this);
+        this.load.onFileComplete.add(this.onPreloadFileComplete, this);
 
 
         let preloadBarFooter = SpriteUtils.createSprite(this.game, 0, this.world.height, 'preloadBarFooter');
@@ -141,6 +141,14 @@ export default class LoadingScreen extends BaseScreen {
         this.updatePlatformAndSource();
     }
 
+    private onPreloadFileComplete(progress: number): void {
+        this.preloadBarRealProgress = Math.max(this.preloadBarRealProgress, Math.max(0, Math.min(1, progress / 100)));
+    }
+
+    shutdown(): void {
+        this.load.onFileComplete.remove(this.onPreloadFileComplete, this);
+    }
+
     private updatePlatformAndSource():void{
         let user = UserService.getUser();
         
@@ -156,6 +164,8 @@ export default class LoadingScreen extends BaseScreen {
     }
 
     create() {
+        this.preloadBarRealProgress = 1;
+        this.updatePreloadProgress(true);
         let loop = this.game.time.events.loop(300, () => {
             if (UserService.userLoaded) {
                 let timePortion = 500;
@@ -189,11 +199,20 @@ export default class LoadingScreen extends BaseScreen {
     }
 
     update() {
+        this.updatePreloadProgress();
+    }
+
+    // Phaser does not run State.update until preload has completed.
+    loadUpdate() {
+        this.updatePreloadProgress();
+    }
+
+    private updatePreloadProgress(complete: boolean = false): void {
         if (!this.preloadBar || !this.preloadBar.exists) return;
         const elapsed = Math.max(0, this.game.time.now - this.preloadBarStartedAt);
         const timedProgress = Math.min(2 / 3, elapsed / 4000 * (2 / 3));
-        const target = Math.min(1, timedProgress + this.preloadBarRealProgress / 3);
-        this.preloadBarVisibleProgress = Math.max(0.06, this.preloadBarVisibleProgress, target);
+        const target = complete ? 1 : Math.min(0.98, timedProgress + this.preloadBarRealProgress / 3);
+        this.preloadBarVisibleProgress = Math.max(0.14, this.preloadBarVisibleProgress, target);
         this.preloadBar.crop(new Phaser.Rectangle(0, 0,
             Math.round(this.preloadBarFullWidth * this.preloadBarVisibleProgress), 143), false);
         this.preloadBar.updateCrop();
@@ -412,6 +431,10 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('actionBoiler', 'assets/base/action/actionBoiler.png');
         this.loadImage('loupe', 'assets/base/action/loupe.png');
         this.loadImage('actionHouse', 'assets/base/action/actionHouse.png');
+        this.loadImage('houseGround', 'assets/base/action/houseGround.png');
+        ['rewardBoard', 'rewardHeader', 'rewardCard', 'rewardBadge', 'rewardButton'].forEach(key => {
+            this.loadImage(key, 'assets/base/ui/reward/' + key + '.png');
+        });
         this.loadImage('actionDoor', 'assets/base/action/actionDoor.png');
         // this.loadImage('taskButtonInactive', 'assets/base/ui/taskButtonInactive.png');
         // this.loadImage('taskPnl', 'assets/base/ui/taskPnl2.png');
@@ -734,8 +757,9 @@ export default class LoadingScreen extends BaseScreen {
         // These small sheets are deliberately kept outside the large atlases:
         // they are only decoded when the forest is loaded and avoid expanding
         // the main atlas for a couple of short encounter animations.
-        this.game.load.spritesheet('rabbitEscape', 'assets/base/items/animals/rabbitEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 16);
-        this.game.load.spritesheet('butterflyEscape', 'assets/base/items/animals/butterflyEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 16);
+        this.game.load.spritesheet('rabbitEscape', 'assets/base/items/animals/rabbitEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
+        this.game.load.spritesheet('butterflyEscape', 'assets/base/items/animals/butterflyEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 24);
+        this.game.load.spritesheet('batEscape', 'assets/base/items/animals/batEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
         this.loadImage('bet', 'assets/base/items/bet.png');
         this.loadImage('owl', 'assets/base/items/owl.png');
         this.loadImage('owlPink', 'assets/base/items/owlPink.png');

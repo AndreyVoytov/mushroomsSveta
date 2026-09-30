@@ -352,10 +352,20 @@ export default class EducationPanel extends BasePanel {
     }
     private doShowDialogOnSpecificItem(cellState: CellState) {
         cellState.content = ContentType.specificItem;
+        let openedCell = this.cells.filter(cell => cell.state == cellState).shift();
+        if (ForestsDao.indexOf(this.forestType) == 1) {
+            this.revealDiscoveredHouse(cellState.sprite, openedCell.bg);
+        }
+        this.doShowEducation(null, null, [openedCell], CoverMode.noneVisible, 200, null);
+        this.screen.stopLevelForDialog();
+        this.screen.lockScreenFor(1000);
+        this.screen.dialogPanel.updateReplica(true);
+    }
+
+    private revealDiscoveredHouse(house: Phaser.Sprite, tile: Phaser.Sprite): void {
         // The level-2 house is a reveal rather than a flat replacement. Its
         // wider footprint sits a little lower on the cell, with the light
         // coming from bottom-right and casting a soft shadow up-left.
-        const house = cellState.sprite;
         const targetWidth = house.width * 1.2;
         const targetHeight = house.height * 1.1;
         SpriteUtils.loadTexture(house, "actionHouse");
@@ -363,14 +373,47 @@ export default class EducationPanel extends BasePanel {
         house.width = targetWidth;
         house.height = targetHeight;
         house.y += 13;
-        const houseShadow = new Phaser.Graphics(this.game, house.x - 20, house.y - 10);
-        houseShadow.beginFill(0x152f33, 0.32);
-        houseShadow.drawEllipse(-targetWidth * 0.34, -targetHeight * 0.075,
-            targetWidth * 0.68, targetHeight * 0.15);
-        houseShadow.endFill();
+        const houseShadow = new Phaser.Graphics(this.game, house.x - 12, house.y - 5);
+        // Phaser takes ellipse half-extents, not a bounding rectangle.
+        for (let i = 4; i >= 1; i--) {
+            houseShadow.beginFill(0x152f33, 0.06);
+            houseShadow.drawEllipse(0, 0, targetWidth * (0.30 + i * 0.04),
+                targetHeight * (0.05 + i * 0.018));
+            houseShadow.endFill();
+        }
+        tile.tint = 0xa7b889;
         houseShadow.alpha = 0;
-        this.screen.add.existing(houseShadow);
+        houseShadow.position.set((houseShadow.x - tile.x) / tile.scale.x,
+            (houseShadow.y - tile.y) / tile.scale.y);
+        houseShadow.scale.set(1 / tile.scale.x, 1 / tile.scale.y);
+        tile.addChild(houseShadow);
         house.bringToTop();
+        const ground = SpriteUtils.createSprite(this.game, 0, 7 / house.scale.y, 'houseGround');
+        ground.anchor.set(0.5, 0.5);
+        ground.width = targetWidth * 1.13 / house.scale.x;
+        ground.height = targetHeight * 0.38 / house.scale.y;
+        ground.alpha = 0;
+        house.addChild(ground);
+        this.game.add.tween(ground).to({ alpha: 1 }, 400, Phaser.Easing.Sinusoidal.Out, true);
+        house.inputEnabled = true;
+        house.input.useHandCursor = true;
+        house.events.onInputDown.add(() => {
+            if (this.screen.isLocked()) return;
+            const replica = this.screen.dialogPanel.replicaPanel;
+            if (replica && (!replica.isShown() || replica.isPrinting())) {
+                this.screen.dialogPanel.updateReplica();
+                return;
+            }
+            this.screen.setOnClickAnimations([]);
+            this.screen.dialogPanel.updateReplica();
+            this.screen.lockScreenFor(2000);
+            this.screen.playAnimation('exploreHouse');
+        });
+        // A pause between short rustles makes the discovered house feel alive.
+        this.game.add.tween(house).to({ angle: [0, -1.4, 1.1, -0.5, 0, 0, 0, 0, 0] },
+            4800, Phaser.Easing.Linear.None, true, 1200, -1);
+        this.game.add.tween(ground).to({ angle: [0, 0.8, -0.6, 0, 0, 0, 0, 0, 0] },
+            4800, Phaser.Easing.Linear.None, true, 1200, -1);
         this.game.add.tween(houseShadow).to({ alpha: 1 }, 240, Phaser.Easing.Sinusoidal.Out, true, 80);
         const targetScaleX = house.scale.x;
         const targetScaleY = house.scale.y;
@@ -379,12 +422,6 @@ export default class EducationPanel extends BasePanel {
             { x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX], y: [targetScaleY * 1.12, targetScaleY * 0.95, targetScaleY] },
             520, Phaser.Easing.Back.Out, true, 0, 0, false
         );
-        let openedCell = this.cells.filter(cell => cell.state == cellState).shift();
-        this.doShowEducation(null, null, [openedCell], CoverMode.noneVisible, 200, null);
-
-        this.screen.stopLevelForDialog();
-        this.screen.lockScreenFor(1000);
-        this.screen.dialogPanel.updateReplica(true);
     }
 
     private doHighlightSpecificItem(cellState: CellState) {
