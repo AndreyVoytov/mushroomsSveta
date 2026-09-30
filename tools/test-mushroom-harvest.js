@@ -66,12 +66,14 @@ assert(!Harvest.isMushroom('tree1'));
     assert.strictEqual(c.mushroomHole.parent, c.bg, 'hole follows board, not moving CellState');
     assert.strictEqual(c.mushroomHole.alpha, 0, 'no hole before pluck');
     assert.strictEqual(fx.children.filter(p => p.visible).length, 0);
-    assert(Math.abs(c.mushroomHole.y * c.bg.scale.y - 127 * 0.34) < 0.001);
+    assert(Math.abs(c.mushroomHole.y * c.bg.scale.y - 127 * 0.18) < 0.001,
+        'hole sits under the stem rather than below the cell');
     timers.shift().fn();
     assert.strictEqual(lifted, 1);
     assert.strictEqual(fx.children.filter(p => p.visible).length, 8);
     assert.strictEqual(tweens[1].props.x * 180 * c.bg.scale.x, 72);
     assert.strictEqual(tweens[1].props.y * 80 * c.bg.scale.y, 64);
+    assert.strictEqual(tweens[2].props.alpha, 0, 'hole fades back into the ground');
     for (let i = 0; i < 20; i++) fx.reveal(cell(), 0);
     timers.splice(0).forEach(timer => timer.fn());
     assert.strictEqual(fx.children.length, 48, 'rapid collection never expands pool');
@@ -101,4 +103,4 @@ assert(!Harvest.isMushroom('tree1'));
     timers.shift().fn();
     assert.strictEqual(fx.exists, false, 'scene teardown cancels pending burst');
 }
-console.log('Mushroom harvest: timing, anchoring, scaled tile, pooling, reuse and teardown passed.');
+console.log('Mushroom harvest: quick fade, raised anchoring, scaled tile, pooling, reuse and teardown passed.');

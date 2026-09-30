@@ -222,9 +222,12 @@ export default class TreesTransitionPanel extends BasePanel {
             tweens.push(finalCoverFade);
             tweens.push(AnimationUtils.fadeIn(this.game, tp21, delay + delay2  , 300*k ))
 
+            // Finish this initial dim before the opaque closing cover begins.
+            // Previously it was still running after the final tween and
+            // reset the cover back to 0.35 exactly when loading started.
             tweens.push(game.add.tween(this.overlay).to(
                 { alpha: TreesTransitionPanel.OUTGOING_OVERLAY_TARGET_ALPHA },
-                800,
+                300,
                 Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.In,
                 true,
                 delay +  200,

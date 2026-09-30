@@ -48,7 +48,9 @@ export default class MushroomHarvestEffects extends Phaser.Group {
         // The original mushroom art has transparent padding below its stem.
         // Keep the indentation near the stem base, inside the lower hex edge.
         const x = source.x;
-        const y = source.y + (0.84 - source.anchor.y) * source.height;
+        // The old position sat below the cell rim. Put the opening directly
+        // under the stem, not at the lowest transparent padding of the art.
+        const y = source.y + (0.68 - source.anchor.y) * source.height;
         const hole = SpriteUtils.createSprite(this.game,
             (x - bg.x) / bg.scale.x, (y - bg.y) / bg.scale.y, 'mushroomHole');
         hole.anchor.set(0.5);
@@ -66,10 +68,10 @@ export default class MushroomHarvestEffects extends Phaser.Group {
             this.game.add.tween(hole).to({ alpha: 1 }, 120, Phaser.Easing.Linear.None, true);
             this.game.add.tween(hole.scale).to({ x: sx, y: sy }, 240,
                 Phaser.Easing.Back.Out, true);
-            // Keep the mark long enough to read, then let the ground settle
-            // back naturally instead of accumulating stale holes on a board.
-            this.game.add.tween(hole).to({ alpha: 0 }, 1200, Phaser.Easing.Sinusoidal.In,
-                true, 2200).onComplete.addOnce(() => {
+            // The indentation is a quick after-image of the harvest: it
+            // starts settling almost at once and cannot clutter rapid opens.
+            this.game.add.tween(hole).to({ alpha: 0 }, 1050, Phaser.Easing.Sinusoidal.In,
+                true, 380).onComplete.addOnce(() => {
                     if (cell.mushroomHole == hole && !hole.pendingDestroy) {
                         cell.mushroomHole = null;
                         hole.destroy();

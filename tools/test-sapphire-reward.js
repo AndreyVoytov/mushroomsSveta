@@ -122,7 +122,7 @@ for (const count of [8, 5, 0, 180]) {
     screen.cellsProvider = { getCells: () => cells };
     screen.showWinPanel();
     screen.showWinPanel();
-    assert.strictEqual(screen.sapphireStars.length, Math.max(1, count), 'zero-grey level gets a completion star');
+    assert.strictEqual(screen.sapphireStars.length, count, 'only real grey cells grant sapphire stars');
     assert.strictEqual(timers.length, 1, 'duplicate win checks do not duplicate rewards');
     assert(timers[0].delay <= 1230, 'reveal duration is bounded on long boards');
     timers[0].callback();
@@ -142,4 +142,4 @@ panel.receiveSapphireStar();
 assert.strictEqual(panel.sapphireCountLabel.text, '3');
 assert.strictEqual(panel.continueButton.inputEnabled, true);
 assert.strictEqual(panel.getSapphireStarTarget().x, 480 - 302 * 0.96);
-console.log('PASS: consecutive wins, no-grey fallback, duplicate guard, 1/12/180 curved flights, camera/scale, moving target, counter, cleanup, bounded particles.');
+console.log('PASS: consecutive wins, no false no-grey reward, duplicate guard, 1/12/180 curved flights, camera/scale, moving target, counter, cleanup, bounded particles.');

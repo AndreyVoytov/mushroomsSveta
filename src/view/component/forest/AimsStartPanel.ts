@@ -69,21 +69,6 @@ export default class AimsStartPanel extends BasePanel {
             let label = new Label(this.game, 470 + 70 + 108, 3, info, Label.COMMON_MEDIUM_STYLE);
             label.anchor = new Phaser.Point(0.5, 0.5);
 
-            // A layered translucent ellipse is a renderer-safe soft shadow:
-            // it gives the goal contrast without the hard-edged panel.
-            const goalShadow = new Phaser.Graphics(this.game, label.x, label.y);
-            const shadowLayers = [
-                { width: label.width + 118, height: label.height + 70, alpha: 0.08 },
-                { width: label.width + 82, height: label.height + 52, alpha: 0.12 },
-                { width: label.width + 48, height: label.height + 36, alpha: 0.16 }
-            ];
-            shadowLayers.forEach(layer => {
-                goalShadow.beginFill(0x082f35, layer.alpha);
-                goalShadow.drawEllipse(-layer.width / 2, -layer.height / 2, layer.width, layer.height);
-                goalShadow.endFill();
-            });
-            this.addChild(goalShadow);
-
             // Phaser BitmapText ignores the normal text-stroke API. A small
             // ring of dark glyphs gives the target a clean outline without
             // adding another panel over the scene artwork.

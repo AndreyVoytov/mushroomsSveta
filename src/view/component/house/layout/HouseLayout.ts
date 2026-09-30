@@ -340,10 +340,13 @@ export default class HouseLayout extends BaseLayout {
                 this.chestShiningAnimation.stop();
                 this.chestShiningAnimation = null;
             }
-            // A persistent low-frequency alpha tween still reads as a flash
-            // against the high-contrast chest art. Keep this layer stable;
-            // the dust supplies the motion around it.
-            this.chestShining.alpha = 0.88;
+            // Breathe between a soft and bright glow; never fade out fully,
+            // so the chest cannot look like it is flickering off.
+            this.chestShining.alpha = 0.9;
+            this.chestShiningAnimation = this.game.add.tween(this.chestShining).to(
+                { alpha: [0.9, 0.66, 0.96, 0.73, 1] },
+                5200, Phaser.Easing.Sinusoidal.InOut, true, 0, -1, false
+            );
         });
 
         this.game.time.events.add(delay, () => {

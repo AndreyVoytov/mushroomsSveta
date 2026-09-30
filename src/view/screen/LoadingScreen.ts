@@ -58,8 +58,12 @@ export default class LoadingScreen extends BaseScreen {
         // final third instead.
         // Sprite.width follows its crop in Phaser CE. Keep the source width
         // separately, otherwise the first zero-width crop can never grow.
-        this.preloadBarFullWidth = this.preloadBar.width;
-        this.preloadBar.crop(new Phaser.Rectangle(0, 0, 0, this.preloadBar.height), false);
+        // Keep a small visible head from the very first paint. On mobile the
+        // first atlas can block normal state updates for a moment; a zero crop
+        // makes the whole loader look as if it never appeared.
+        this.preloadBarFullWidth = Math.max(preloadBarWidth, this.preloadBar.width);
+        this.preloadBar.crop(new Phaser.Rectangle(0, 0,
+            Math.round(this.preloadBarFullWidth * 0.06), preloadBarHeight), false);
         this.preloadBar.updateCrop();
         this.preloadBarStartedAt = this.game.time.now;
         this.load.onFileComplete.add((progress: number) => {
@@ -189,9 +193,9 @@ export default class LoadingScreen extends BaseScreen {
         const elapsed = Math.max(0, this.game.time.now - this.preloadBarStartedAt);
         const timedProgress = Math.min(2 / 3, elapsed / 4000 * (2 / 3));
         const target = Math.min(1, timedProgress + this.preloadBarRealProgress / 3);
-        this.preloadBarVisibleProgress = Math.max(this.preloadBarVisibleProgress, target);
+        this.preloadBarVisibleProgress = Math.max(0.06, this.preloadBarVisibleProgress, target);
         this.preloadBar.crop(new Phaser.Rectangle(0, 0,
-            Math.round(this.preloadBarFullWidth * this.preloadBarVisibleProgress), this.preloadBar.height), false);
+            Math.round(this.preloadBarFullWidth * this.preloadBarVisibleProgress), 143), false);
         this.preloadBar.updateCrop();
     }
 

@@ -829,17 +829,6 @@ export default abstract class BaseForestScreen extends DialogScreen {
             if (star) this.sapphireStars.push(star);
         });
 
-        if (!this.sapphireStars.length) {
-            // Even a board with no grey cells gets a completion star.
-            const star = SpriteUtils.createSprite(this.game, this.game.width / 2, this.game.height * 0.6, 'sapphireStar');
-            star.anchor.set(0.5);
-            const size = 84 / star.width;
-            star.scale.set(0);
-            star.fixedToCamera = true;
-            this.add.existing(star);
-            this.game.add.tween(star.scale).to({ x: size, y: size }, 460, Phaser.Easing.Back.Out, true);
-            this.sapphireStars.push(star);
-        }
         const lastDelay = Math.max(0, darkCells.length - 1) * interval;
         this.game.time.events.add(lastDelay + 580, () => this.showWinPanelContents(), this);
     }

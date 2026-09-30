@@ -213,11 +213,13 @@ export default class ForestScreen extends BaseForestScreen {
     protected drawCellBg(cell: ForestCell) {
         let cellBg = SpriteUtils.createSprite(this.game, this.cellsProvider.calculateX(cell), this.cellsProvider.calculateY(cell), ForestUtils.getForestCellBg(this.getForestType(), cell.type));
         cellBg.anchor = new Phaser.Point(0.5, 0.5);
-        // The wood hex has transparent anti-aliased edges. A tiny overlap
-        // removes the hairline seams between its planks on levels 3 and 4.
-        const houseBleed = this.getForestType().environment == Environment.house ? 2 : 0;
-        cellBg.width = BaseCellsProvider.CELL_WIDTH + houseBleed;
-        cellBg.height = BaseCellsProvider.CELL_HEIGHT + houseBleed;
+        // `hexWood` is 180px wide and gets scaled down to a 120px grid. On
+        // high-DPI canvases linear sampling exposes a seam exactly between
+        // neighbouring planks; 2px was not enough once the board is scaled.
+        // Overlap only horizontally, where the visible vertical crack occurs.
+        const isHouseFloor = this.getForestType().environment == Environment.house;
+        cellBg.width = BaseCellsProvider.CELL_WIDTH + (isHouseFloor ? 8 : 0);
+        cellBg.height = BaseCellsProvider.CELL_HEIGHT + (isHouseFloor ? 2 : 0);
         this.add.existing(cellBg);
 
         // console.log("ARROW 1: " + (this.ladybugsProvider.getLadybugs().filter(l => l.isLadybug).length > 0))

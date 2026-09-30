@@ -352,16 +352,26 @@ export default class EducationPanel extends BasePanel {
     }
     private doShowDialogOnSpecificItem(cellState: CellState) {
         cellState.content = ContentType.specificItem;
-        // The level-2 house is a reveal rather than a flat replacement: make
-        // the tall cottage uncoil from the opened cell and settle a little
-        // above its rim. This keeps its shadow visually grounded.
+        // The level-2 house is a reveal rather than a flat replacement. Its
+        // wider footprint sits a little lower on the cell, with the light
+        // coming from bottom-right and casting a soft shadow up-left.
         const house = cellState.sprite;
-        const targetWidth = house.width * 1.04;
-        const targetHeight = house.height * 1.16;
+        const targetWidth = house.width * 1.2;
+        const targetHeight = house.height * 1.1;
         SpriteUtils.loadTexture(house, "actionHouse");
         house.anchor.set(0.5, 0.86);
         house.width = targetWidth;
         house.height = targetHeight;
+        house.y += 13;
+        const houseShadow = new Phaser.Graphics(this.game, house.x - 20, house.y - 10);
+        houseShadow.beginFill(0x152f33, 0.32);
+        houseShadow.drawEllipse(-targetWidth * 0.34, -targetHeight * 0.075,
+            targetWidth * 0.68, targetHeight * 0.15);
+        houseShadow.endFill();
+        houseShadow.alpha = 0;
+        this.screen.add.existing(houseShadow);
+        house.bringToTop();
+        this.game.add.tween(houseShadow).to({ alpha: 1 }, 240, Phaser.Easing.Sinusoidal.Out, true, 80);
         const targetScaleX = house.scale.x;
         const targetScaleY = house.scale.y;
         house.scale.set(targetScaleX * 0.82, targetScaleY * 0.18);
