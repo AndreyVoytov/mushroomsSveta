@@ -308,6 +308,12 @@ export default class BoostersProvider {
                 (<ForestScreen>(this.screen)).moveDragonflies([c], OpeningType.byRocket);
             }
         } else {
+            // A rocket may reach a cell that was already opened by another
+            // branch of the blast. Keep this idempotent so a late callback
+            // cannot leave a stale item sprite (notably lavender) behind.
+            if (c.state.opened || !c.state.cover || c.state.cover.visible === false) {
+                return;
+            }
             c.state.cover.openCellSmoothly(cellDelay || 0, openingType);
 
             if(openingType == OpeningType.byCompass){

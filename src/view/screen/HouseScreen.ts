@@ -51,6 +51,7 @@ import HouseFrameLayout from '../component/house/layout/HouseFrameLayout';
 import HouseLayout from '../component/house/layout/HouseLayout';
 import TasksPanel from '../component/house/TasksPanel';
 import CharacterPanel from '../component/house/CharacterPanel';
+import ShopArtifactItemsConfiguration from '../../core/configuration/ShopArtifactItemsConfiguration';
 import RewardItemsPanel, { RewardItemsShowOptions } from '../component/panel/RewardItemsPanel';
 import TaskService from '../../core/service/TaskService';
 import { getAtlasGroupNames } from '../../generated/atlasManifest';
@@ -117,6 +118,7 @@ export default class HouseScreen extends DialogScreen {
     public progressAnimation: boolean = false;
 
     private fakeTrees: Phaser.Sprite | null = null;
+    private useCloverReturnTransition = false;
     private backpackAssetsLoading: boolean = false;
     private backpackAssetCallbacks: (() => void)[] = [];
 
@@ -137,12 +139,16 @@ export default class HouseScreen extends DialogScreen {
     public init(): void {
         super.init();
 
+        this.useCloverReturnTransition = Game.CLOVER_RETURN_TRANSITION
+            || ForestUtils.isCloverReskin(EventUtils.getActiveEventForestType());
+        Game.CLOVER_RETURN_TRANSITION = false;
+
         if (Game.WHITE_TRANSITION || this.fakeTrees) {
             return;
         }
 
         if (!LocationUtils.isHouseStoryLocation(UserService.getUser())) {
-            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0));
+            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverReturnTransition));
         }
     }
 
@@ -151,7 +157,7 @@ export default class HouseScreen extends DialogScreen {
             if(LocationUtils.isHouseStoryLocation(UserService.getUser())){
                 this.fakeTrees = this.add.existing(new BaseLayout(this.game, "NearHouseLayout", "forestHouseBg"));
             } else {
-                this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0));
+                this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverReturnTransition));
             }
         }
 
@@ -353,13 +359,17 @@ export default class HouseScreen extends DialogScreen {
         this.characterButton.anchor.set(0.5);
         this.characterButton.scale.set(1);
         this.characterButton.name = "characterButton";
-        this.registerSideButton(this.characterButton);
-
-        let characterIcon = SpriteUtils.createSprite(this.game, 0, 0, 'tasks');
+        let characterIcon = SpriteUtils.createSprite(this.game, 0, 0, 'characterMenuIcon');
         characterIcon.anchor.set(0.5);
-        characterIcon.scale.set(0.86 * 0.95);
+        characterIcon.scale.set(0.82);
         this.characterButton.addChild(characterIcon);
-        this.addButton(this.characterButton);
+        if (user.getMarkers().indexOf("catFound") >= 0 && ShopArtifactItemsConfiguration.getAvailableForForest(user.getCurrentForest()).length > 0) {
+            this.registerSideButton(this.characterButton);
+            this.addButton(this.characterButton);
+        } else {
+            this.characterButton.visible = false;
+            this.characterButton.inputEnabled = false;
+        }
 
         let currentRecipe = DiaryConfiguration.getCurrentRecipe(user.getCurrentForest());
         if (currentRecipe) {
@@ -411,7 +421,13 @@ export default class HouseScreen extends DialogScreen {
         });
         this.tasksButton.anchor.set(0.5);
         this.tasksButton.scale.set(1);
-        this.registerSideButton(this.tasksButton);
+        const dailyTasksUnlocked = user.getCurrentForest() >= 10;
+        if (dailyTasksUnlocked) {
+            this.registerSideButton(this.tasksButton);
+        } else {
+            this.tasksButton.visible = false;
+            this.tasksButton.inputEnabled = false;
+        }
 
         let tasksIcon = SpriteUtils.createSprite(this.game, 0, 0, 'tasks');
         tasksIcon.anchor.set(0.5);
@@ -425,7 +441,7 @@ export default class HouseScreen extends DialogScreen {
         this.tasksBadge.visible = false;
         this.tasksButton.addChild(this.tasksBadge);
 
-        this.addButton(this.tasksButton);
+        if (dailyTasksUnlocked) this.addButton(this.tasksButton);
         this.refreshTasksButton();
         this.game.time.events.loop(1000, () => this.refreshTasksButton());
         
@@ -482,7 +498,13 @@ export default class HouseScreen extends DialogScreen {
             this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
             Game.WHITE_TRANSITION = false;
         } else {
-            this.addTopOverlay(new TreesTransitionPanel(this.game, false, transitionTime, transitionDelay));
+            const trees = this.fakeTrees instanceof TreesTransitionPanel
+                ? <TreesTransitionPanel>this.fakeTrees
+                : new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverReturnTransition);
+            this.addTopOverlay(trees);
+            AnimationUtils.primeForShow(trees);
+            trees.reveal();
+            this.fakeTrees = null;
             // let start = Date.now();
             // while (Date.now() - start < 500) {
             //     // Пустой цикл, ожидаем истечения времени
@@ -512,7 +534,7 @@ export default class HouseScreen extends DialogScreen {
                         this.playButton.y - 100, "arrow");
                     this.game.add.existing(this.arrow);
                     this.arrow.anchor.set(0.5, 1);
-                    this.arrow.scale.set(2, 2);
+                    this.arrow.scale.set(1, 1);
                     this.arrow.angle = -20;
                     this.arrow.tint = 0x55ffff;
                     AnimationUtils.jump(this.game, this.arrow, 0)
@@ -822,6 +844,12 @@ export default class HouseScreen extends DialogScreen {
                 this.canNotTouchUI = true;
                 this.game.time.events.add(ReplicaPanel.HIDE_DIALOG_DURATION + StripsPanel.SHOW_DURATION + 500, () => {
                     this.canNotTouchUI = false;
+                    // Closing the level panel before this transition finishes makes
+                    // both its onClose and the dialog strips' showUI calls return
+                    // while input is blocked. Restore the UI once the block lifts.
+                    if (!this.startLevelPanel.opened) {
+                        this.showUI();
+                    }
                 })
                 this.dialogPanel.updateReplica();
                 this.startLevelPanel.show();
@@ -1017,9 +1045,9 @@ export default class HouseScreen extends DialogScreen {
         let time = 500;
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
         this.addTopOverlay(trees);
-        this.game.time.events.add(time*2, () => {
+        trees.onCovered(() => {
             this.startScreen(ForestScreen, true, false);
-        })
+        });
     }
 
     public playStartAnimations(): void {
@@ -1034,7 +1062,7 @@ export default class HouseScreen extends DialogScreen {
             return;
         }
 
-        this.tasksBadge.visible = TaskService.hasClaimableTasks();
+        this.tasksBadge.visible = UserService.getUser().getCurrentForest() >= 10 && TaskService.hasClaimableTasks();
     }
 
     public setTasksPanelBlockedButtonsEnabled(enabled: boolean): void {

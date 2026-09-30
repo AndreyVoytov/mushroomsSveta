@@ -32,10 +32,13 @@ import Settings from '../../core/service/Settings';
 import InGameSettingsPanel from './../component/forest/InGameSettingsPanel';
 import EventUtils from '../../core/utils/EventUtils';
 import EventType from '../../core/model/event/EventType';
+import Environment from '../../core/model/enum/Environment';
 import LocationUtils from '../../core/utils/LocationUtils';
 import GameText from '../../core/localization/GameText';
 import LocalizationService from '../../core/localization/LocalizationService';
 export default class ForestScreen extends BaseForestScreen {
+
+    private static readonly MIN_VALUABLE_HINT_ALPHA = 0.5;
 
     private previousCellClicked: ForestCell;
     private currentCellClicked: ForestCell;
@@ -210,8 +213,11 @@ export default class ForestScreen extends BaseForestScreen {
     protected drawCellBg(cell: ForestCell) {
         let cellBg = SpriteUtils.createSprite(this.game, this.cellsProvider.calculateX(cell), this.cellsProvider.calculateY(cell), ForestUtils.getForestCellBg(this.getForestType(), cell.type));
         cellBg.anchor = new Phaser.Point(0.5, 0.5);
-        cellBg.width = BaseCellsProvider.CELL_WIDTH;
-        cellBg.height = BaseCellsProvider.CELL_HEIGHT;
+        // The wood hex has transparent anti-aliased edges. A tiny overlap
+        // removes the hairline seams between its planks on levels 3 and 4.
+        const houseBleed = this.getForestType().environment == Environment.house ? 2 : 0;
+        cellBg.width = BaseCellsProvider.CELL_WIDTH + houseBleed;
+        cellBg.height = BaseCellsProvider.CELL_HEIGHT + houseBleed;
         this.add.existing(cellBg);
 
         // console.log("ARROW 1: " + (this.ladybugsProvider.getLadybugs().filter(l => l.isLadybug).length > 0))
@@ -481,7 +487,8 @@ export default class ForestScreen extends BaseForestScreen {
 
         let firstRowY = this.cellsProvider.getCells()[0].Y;
         let maxY = firstRowY + this.linesScrolled + CellsProvider.MAX_HEIGHT_WITH_NO_SCROLL - 1;
-        let contentType = cellState.content;
+        const openedContentType = cellState.content;
+        let contentType = openedContentType;
 
         this.justOpenedCells = this.cellsProvider.getCells().filter(cell => cell.state == cellState);
 
@@ -514,6 +521,17 @@ export default class ForestScreen extends BaseForestScreen {
             return;
         }
 
+        // Recheck the count at reveal time: a covered cell may have lost its
+        // last adjacent item since its sprite was created.
+        if (this.justOpenedCells[0] && cellState.content in DecorationsContents) {
+            this.refreshLabelForCell(this.justOpenedCells[0]);
+        }
+        // Remember only a numbered tree actually revealed to the player.
+        // A still-covered cell that opens at zero keeps its original decor.
+        if (cellState.numberedDecoration) {
+            cellState.hadNumberedTree = true;
+        }
+
         if(this.justOpenedCells[0]){
             AnimationUtils.showStable(this.justOpenedCells[0].bg);
    
@@ -524,7 +542,8 @@ export default class ForestScreen extends BaseForestScreen {
                    AnimationUtils.fadeInStable(this.game, this.justOpenedCells[0].state.sprite);
                }
             }
-           if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != "") {
+           if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != ""
+               && !this.justOpenedCells[0].state.numberedDecoration) {
                AnimationUtils.fadeInStable(this.game, this.justOpenedCells[0].state.label);
             }
         }
@@ -620,13 +639,19 @@ export default class ForestScreen extends BaseForestScreen {
         }
 
         this.educationPanel.showEducation(cellState, openedCells.length);
+        // Tutorials may replace the opened content: level 1 moves the
+        // mushroom to reveal a tree, while story levels reveal a special item.
+        // Process the current content, keeping the original for the branch
+        // that leaves a revealed story item on the board.
+        contentType = cellState.content;
 
         if (this.justOpenedCells[0]) {
             console.log("opened cell (" + this.justOpenedCells[0].X + ", " + this.justOpenedCells[0].Y + ")");
         }
 
         if (contentType in AnimalsContents) {
-            SoundUtils.animalFound();
+            SoundUtils.animalFound(contentType == ContentType.rabbit ? 'rabbit' :
+                (contentType == ContentType.butterfly || contentType == ContentType.butterfly2 ? 'butterfly' : undefined));
 
             AnimationUtils.highlight(this.game, cellState.sprite.x, cellState.sprite.y, "splashG", 0, 1)
             this.topPanel.restoreStepsOnAnimalFound(openingType);
@@ -637,8 +662,12 @@ export default class ForestScreen extends BaseForestScreen {
             })
             cellState.content = ContentType.empty;
 
-            this.game.add.tween(cellState.sprite).to({ x: cellState.sprite.x, y: cellState.sprite.y - 360 }, 1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, 200, 0, false);
-            this.game.add.tween(cellState.sprite).to({ alpha: [1, 0] }, 1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In, true, 200, 0, false);
+            if (contentType == ContentType.rabbit || contentType == ContentType.butterfly || contentType == ContentType.butterfly2) {
+                this.animateAnimalEscape(cellState.sprite, contentType == ContentType.rabbit ? 'rabbit' : 'butterfly');
+            } else {
+                this.game.add.tween(cellState.sprite).to({ x: cellState.sprite.x, y: cellState.sprite.y - 360 }, 1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, 200, 0, false);
+                this.game.add.tween(cellState.sprite).to({ alpha: [1, 0] }, 1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In, true, 200, 0, false);
+            }
 
             this.game.time.events.add(200, () => {
                 let x = cellState.sprite.x > Game.getWidth() / 2 ? cellState.sprite.x - 200 : cellState.sprite.x + 200;
@@ -660,6 +689,13 @@ export default class ForestScreen extends BaseForestScreen {
             }, this);
 
 
+        } else if (contentType == ItemContents.specificItem && openedContentType != ItemContents.specificItem) {
+            // A story tutorial replaces the last ordinary item with a house,
+            // key, or diary and starts a dialog. Its visual stays on the cell
+            // until that dialog's own action handles it.
+            SoundUtils.specialItemFound();
+            this.topPanel.restoreStepsOnItemFound(openingType);
+            stepSpend = false;
         } else if (contentType in ItemContents) {
             if (contentType == ItemContents.randomItem) {
                 SoundUtils.houseItemFound()
@@ -684,7 +720,9 @@ export default class ForestScreen extends BaseForestScreen {
                 this.refreshLabelForCell(cell);
 
                 AnimationUtils.fadeInStable(this.game, cell.state.underSprite, 0, 20)
-                AnimationUtils.fadeInStable(this.game, cell.state.label, 500, 20)
+                if (!cell.state.numberedDecoration) {
+                    AnimationUtils.fadeInStable(this.game, cell.state.label, 500, 20)
+                }
             } else {
                 cellState.content = ContentType.empty;
             }
@@ -1182,6 +1220,7 @@ export default class ForestScreen extends BaseForestScreen {
         if(!cell) return;
 
         let adjucentCount = this.cellsProvider.getAdjucentInteractiveCount(this.cellsProvider.getCells(), cell);
+        let numberedDecoration = this.cellsProvider.updateNumberedDecoration(cell, adjucentCount);
         let adjucentClosedCount = this.cellsProvider.getAdjucentClosedCount(this.cellsProvider.getCells(), cell);
         let shouldShowLabel = false;
         if (adjucentCount == 0) {
@@ -1199,6 +1238,10 @@ export default class ForestScreen extends BaseForestScreen {
         }
 
         if (ForestUtils.isCoverFreeNotBoosterItem(cell.type)) {
+            shouldShowLabel = false;
+        }
+
+        if (numberedDecoration) {
             shouldShowLabel = false;
         }
 
@@ -1323,6 +1366,12 @@ export default class ForestScreen extends BaseForestScreen {
 
     public spawnNewCellAt(X: number, Y: number, leaf: string, keepBgDuringSpawn?: boolean): ForestCell {
         let cell = this.cellsProvider.getCells().filter(c => c.X == X && c.Y == Y).shift();
+        if (cell.mushroomHole) {
+            this.game.tweens.removeFrom(cell.mushroomHole);
+            this.game.tweens.removeFrom(cell.mushroomHole.scale);
+            cell.mushroomHole.destroy();
+            cell.mushroomHole = null;
+        }
         Utils.delete(this.cellsProvider.getCells(), cell);
 
         cell.state.label.visible = false;
@@ -1519,10 +1568,8 @@ export default class ForestScreen extends BaseForestScreen {
 
             adjucentOpenedCells.forEach(adjucentOpenedCell => {
                 closedCell.state.valueProbability = Math.max(closedCell.state.valueProbability, adjucentOpenedCell.state.adjucentValueProbability);
-                if(closedCell.state.valueProbability <= 0.5) closedCell.state.valueProbability = 0;
-                let alpha = closedCell.state.valueProbability > 0? closedCell.state.valueProbability * 0.999 + 0: 0;
-                closedCell.state.cover.setFrame(alpha);
             });
+            this.updateValuableCellHint(closedCell);
         })
     }
 
@@ -1552,12 +1599,18 @@ export default class ForestScreen extends BaseForestScreen {
                     let num = cellToCheck.state.label.text? Number(cellToCheck.state.label.text) : 0;
 
                     affectedCell.state.valueProbability = Math.max(affectedCell.state.valueProbability, num/cellsToCheck.length);
-                    if(affectedCell.state.valueProbability <= 0.5) affectedCell.state.valueProbability = 0;
-                    let alpha = affectedCell.state.valueProbability > 0? affectedCell.state.valueProbability * 0.999 + 0: 0;
-                    affectedCell.state.cover.setFrame(alpha);
+                    this.updateValuableCellHint(affectedCell);
                 })
             })
         })
+    }
+
+    private updateValuableCellHint(cell: ForestCell): void {
+        const probability = Math.max(0, Math.min(1, cell.state.valueProbability));
+        const alpha = probability > 0
+            ? Math.max(ForestScreen.MIN_VALUABLE_HINT_ALPHA, probability * 0.999)
+            : 0;
+        cell.state.cover.setFrame(alpha);
     }
 
     private reduceIceOrJelly(cellType: CellType, openedCell: ForestCell): boolean {
@@ -1843,7 +1896,9 @@ export default class ForestScreen extends BaseForestScreen {
 
                 this.refreshLabelForCell(c);
                 AnimationUtils.appear(this.game, c.state.sprite, delay)
-                AnimationUtils.fadeInStable(this.game, c.state.label, delay, 20)
+                if (!c.state.numberedDecoration) {
+                    AnimationUtils.fadeInStable(this.game, c.state.label, delay, 20)
+                }
                 delay += 100;
             }
         })
@@ -1868,5 +1923,48 @@ export default class ForestScreen extends BaseForestScreen {
         UserService.getUser().increaseBoostersCount(BoosterType.rainbow, -1);
         ServerStoreComponent.syncronizeUserWithServer();
         this.bottomPanel.refresh();
+    }
+
+    /** Plays the video-derived sheets while keeping the old board sprite as
+     * the single object that owns depth and cleanup. */
+    private animateAnimalEscape(sprite: Phaser.Sprite, animal: 'rabbit' | 'butterfly'): void {
+        const startX = sprite.x;
+        const startY = sprite.y;
+        const moveRight = startX < Game.getWidth() * 0.62;
+        const direction = moveRight ? 1 : -1;
+        const texture = animal == 'rabbit' ? 'rabbitEscape' : 'butterflyEscape';
+        const frameRate = animal == 'rabbit' ? 12 : 14;
+
+        this.game.time.events.add(200, () => {
+            if (!sprite.exists) {
+                return;
+            }
+
+            sprite.loadTexture(texture, 0);
+            sprite.anchor.set(0.5);
+            sprite.width = 120;
+            sprite.height = 127;
+            // The generated clips travel to the right. Mirror the sheet for
+            // finds near the right edge so an animal never moonwalks left.
+            sprite.scale.x = moveRight ? Math.abs(sprite.scale.x) : -Math.abs(sprite.scale.x);
+            sprite.alpha = 1;
+            sprite.animations.add('escape', Phaser.ArrayUtils.numberArray(0, 15), frameRate, false);
+            sprite.animations.play('escape');
+
+            const xPath = animal == 'rabbit'
+                ? [startX, startX + 24 * direction, startX + 78 * direction, startX + 165 * direction]
+                : [startX, startX + 18 * direction, startX + 72 * direction, startX + 145 * direction];
+            const yPath = animal == 'rabbit'
+                ? [startY, startY - 13, startY + 4, startY - 20]
+                : [startY, startY - 32, startY - 78, startY - 150];
+
+            const travel = this.game.add.tween(sprite).to({ x: xPath, y: yPath }, 1100,
+                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
+                true, 0, 0, false);
+            travel.interpolation(Phaser.Math.bezierInterpolation);
+            this.game.add.tween(sprite).to({ alpha: [1, 1, 0] }, 1100,
+                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In,
+                true);
+        }, this);
     }
 }

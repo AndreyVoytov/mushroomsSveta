@@ -101,12 +101,16 @@ export default abstract class BaseScreen extends DebugScreen {
         let allScreens = ForestUtils.getAllScreenImages();
         let screensToLoad = [ForestUtils.getScreenImage(user.getLocation())];
         screensToLoad = screensToLoad.concat(ReplicaDao.getEntity().getAll().filter(r => r.context.level == user.getCurrentForest() && r.location).map(r => ForestUtils.getScreenImage(r.location)));
+        screensToLoad = screensToLoad.filter(s => !!s);
 
         // console.log(ReplicaDao.getEntity().getAll().filter(r => r.context.level == user.getCurrentForest()))
         // console.log(ReplicaDao.getEntity().getAll().filter(r => r.context.level == user.getCurrentForest() && r.location))
         // console.log(screensToLoad)
 
         allScreens.forEach(s => {
+            if (!s) {
+                return;
+            }
             if (screensToLoad.indexOf(s) != -1 || AdminService.isEditMode()) {
                 this.loadScreenSprite(s);
             } else if (s) {

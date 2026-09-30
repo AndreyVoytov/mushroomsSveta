@@ -1,11 +1,16 @@
 import Label from '../../../view/component/panel/Label';
 import DebugScreen from '../../../view/screen/common/DebugScreen';
-import { ContentType } from '../../model/enum/ContentType';
+import { ContentType, DecorationsContents } from '../../model/enum/ContentType';
+import BiomType from '../../model/enum/BiomType';
+import Environment from '../../model/enum/Environment';
 import OpeningType from '../../model/enum/OpeningType';
 import ForestCell from '../../model/forest/ForestCell';
+import { NumberedTreeParticleCloud } from '../../model/forest/CellState';
 import ForestType from '../../model/forest/ForestType';
 import ForestUtils from '../../utils/ForestUtils';
+import AnimationUtils from '../../utils/AnimationUtils';
 import SpriteUtils from '../../utils/SpriteUtils';
+import SoundUtils from '../../utils/SoundUtils';
 import Utils from '../../utils/Utils';
 import AdminService from './../AdminService';
 import BaseCellsProvider from './BaseCellsProvider';
@@ -16,6 +21,9 @@ import CellsProvider from './CellsProvider';
 export default class CellsPainter extends CellsProvider {
     private static readonly HIVE_HONEY_LABEL_LEGACY = false;
     private static readonly MEGA_HIVE_SCALE = 0.8;
+    private static readonly NUMBERED_TREE_PARTICLE_LIFETIME = 13770;
+    // Set to false to restore the original scenery with separate number labels.
+    public static USE_NUMBERED_TREE_IMAGES = true;
 
     public constructor(forestType: ForestType, game: Phaser.Game) {
         super(forestType, game);
@@ -39,6 +47,15 @@ export default class CellsPainter extends CellsProvider {
         } else if (cell.state.content == ContentType.hive) {
             image = this.getHiveImage(cell);
         }
+
+        const adjucentCount = this.getAdjucentInteractiveCount(this.getCells(), cell);
+        const numberedImage = this.getNumberedDecorationImage(cell, adjucentCount);
+        if (numberedImage) {
+            image = numberedImage;
+        }
+        cell.state.numberedDecoration = !!numberedImage && adjucentCount >= 1 && adjucentCount <= 5;
+        cell.state.renderedAdjucentCount = adjucentCount;
+        cell.state.renderedContentImage = image;
 
         let spritePosition = cell.state.content == ContentType.hive && this.isMegaHiveAnchor(cell) ? this.getMegaHiveCenter(cell) :
             new Phaser.Point(this.calculateX(cell), this.calculateY(cell));
@@ -132,6 +149,300 @@ export default class CellsPainter extends CellsProvider {
             cell.state.sprite.visible = false;
             cell.bg.visible = false;
         }
+    }
+
+    public updateNumberedDecoration(cell: ForestCell, adjucentCount: number): boolean {
+        const previousCount = cell.state.renderedAdjucentCount;
+        const wasNumberedTree = cell.state.numberedDecoration;
+        const numberedImage = this.getNumberedDecorationImage(cell, adjucentCount);
+        const image = numberedImage || ContentType[cell.state.content];
+        cell.state.numberedDecoration = !!numberedImage && adjucentCount >= 1 && adjucentCount <= 5;
+        cell.state.renderedAdjucentCount = adjucentCount;
+
+        if (cell.state.sprite && cell.state.renderedContentImage != image && cell.state.content in DecorationsContents) {
+            this.stopNumberedTreeReaction(cell);
+            SpriteUtils.loadTexture(cell.state.sprite, image);
+            cell.state.sprite.width = BaseCellsProvider.CELL_WIDTH;
+            cell.state.sprite.height = BaseCellsProvider.CELL_HEIGHT;
+            cell.state.baseScaleX = cell.state.sprite.scale.x;
+            cell.state.baseScaleY = cell.state.sprite.scale.y;
+            cell.state.renderedContentImage = image;
+            AnimationUtils.primeForShow(cell.state.sprite);
+        }
+
+        this.updateNumberedTreeEffect(cell);
+        if (cell.state.opened && wasNumberedTree && previousCount != null && adjucentCount < previousCount) {
+            this.emitNumberChangeDust(cell.state.sprite);
+            this.animateNumberedTreeReaction(cell, image);
+        }
+
+        return cell.state.numberedDecoration;
+    }
+
+    private animateNumberedTreeReaction(cell: ForestCell, image: string): void {
+        const state = cell.state;
+        const sprite = state.sprite;
+        if (!sprite) return;
+
+        this.stopNumberedTreeReaction(cell);
+        SoundUtils.treeRustle();
+        state.numberedTreeReactionOrigin = { x: sprite.x, y: sprite.y };
+
+        const smallDecor = image == 'stump' || image == 'log';
+        const duration = smallDecor ? 400 + Utils.random(150) : 620 + Utils.random(220);
+        const direction = Utils.random(2) == 0 ? -1 : 1;
+        const angles = (smallDecor ? [-2, 2, 0] : [-4, 3, -2, 1, 0]).map(angle => angle * direction);
+        const sway = sprite.game.add.tween(sprite).to(
+            { angle: angles }, duration, Phaser.Easing.Sinusoidal.InOut, true
+        );
+        state.numberedTreeSwayTween = sway;
+        sway.onUpdateCallback(() => {
+            const origin = state.numberedTreeReactionOrigin;
+            if (!origin || state.numberedTreeSwayTween != sway) return;
+            // Keep the point near the trunk/base fixed without changing the
+            // Sprite anchor, which can flash at a stale PIXI transform.
+            const distanceToBase = (0.92 - sprite.anchor.y) * sprite.height;
+            const angle = sprite.angle * Math.PI / 180;
+            sprite.x = origin.x + Math.sin(angle) * distanceToBase;
+            sprite.y = origin.y + (1 - Math.cos(angle)) * distanceToBase;
+        });
+        sway.onComplete.addOnce(() => {
+            if (state.numberedTreeSwayTween == sway) {
+                sprite.angle = 0;
+                this.restoreNumberedTreePosition(cell);
+                state.numberedTreeSwayTween = null;
+            }
+        });
+
+        if (smallDecor) {
+            const pulse = sprite.game.add.tween(sprite.scale).to({
+                x: [state.baseScaleX * 1.04, state.baseScaleX],
+                y: [state.baseScaleY * 0.96, state.baseScaleY]
+            }, duration, Phaser.Easing.Sinusoidal.InOut, true);
+            state.numberedTreePulseTween = pulse;
+            pulse.onComplete.addOnce(() => {
+                if (state.numberedTreePulseTween == pulse) {
+                    sprite.scale.set(state.baseScaleX, state.baseScaleY);
+                    state.numberedTreePulseTween = null;
+                }
+            });
+        } else {
+            state.numberedTreePulseTween = null;
+        }
+    }
+
+    private emitNumberChangeDust(sprite: Phaser.Sprite): void {
+        if (!sprite) return;
+        const game = sprite.game;
+        const particles: Phaser.Sprite[] = [];
+        for (let i = 0; i < 8; i++) {
+            const particle = SpriteUtils.createSprite(game, Utils.random(13) - 6, -22 + Utils.random(13) - 6, 'dustYellow');
+            particle.anchor.set(0.5);
+            // Children inherit the tree's ~0.67 scale; keep the dust visible on screen.
+            particle.scale.set(0.72 + Utils.random(25) / 100);
+            particle.alpha = 0;
+            particle.visible = false;
+            sprite.addChild(particle);
+            particles.push(particle);
+        }
+
+        // Prime child transforms before making the burst visible (avoids a flash at 0, 0).
+        AnimationUtils.primeForShow(sprite);
+        game.time.events.add(1, () => {
+            particles.forEach(particle => {
+                if (particle.exists === false || !particle.parent) return;
+                AnimationUtils.primeForShow(particle);
+                particle.visible = true;
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 34 + Utils.random(26);
+                game.add.tween(particle).to({ alpha: 1 }, 120, Phaser.Easing.Linear.None, true)
+                    .onComplete.addOnce(() => {
+                        if (particle.exists !== false) {
+                            game.add.tween(particle).to({ alpha: 0 }, 390, Phaser.Easing.Linear.None, true);
+                        }
+                    });
+                game.add.tween(particle).to({
+                    x: particle.x + Math.cos(angle) * distance,
+                    y: particle.y + Math.sin(angle) * distance + 8
+                }, 750, Phaser.Easing.Quadratic.Out, true).onComplete.addOnce(() => particle.destroy());
+            });
+        });
+    }
+
+    private stopNumberedTreeReaction(cell: ForestCell): void {
+        const state = cell.state;
+        if (!state.numberedTreeSwayTween && !state.numberedTreePulseTween
+            && !state.numberedTreeReactionOrigin) return;
+        if (state.numberedTreeSwayTween) state.numberedTreeSwayTween.stop();
+        if (state.numberedTreePulseTween) state.numberedTreePulseTween.stop();
+        state.numberedTreeSwayTween = null;
+        state.numberedTreePulseTween = null;
+        this.restoreNumberedTreePosition(cell);
+        if (state.sprite) {
+            state.sprite.angle = 0;
+            state.sprite.scale.set(state.baseScaleX, state.baseScaleY);
+        }
+    }
+
+    private restoreNumberedTreePosition(cell: ForestCell): void {
+        const state = cell.state;
+        const origin = state.numberedTreeReactionOrigin;
+        if (!origin || !state.sprite) return;
+
+        state.sprite.x = origin.x;
+        state.sprite.y = origin.y;
+        state.numberedTreeReactionOrigin = null;
+    }
+
+    private updateNumberedTreeEffect(cell: ForestCell): void {
+        const state = cell.state;
+        const game = state.sprite && state.sprite.game;
+        if (state.opened && state.numberedDecoration && state.sprite) {
+            if (state.numberedTreeEffect) return;
+
+            const particles = game.add.group();
+            state.sprite.addChild(particles);
+            const effect = game.add.group();
+            state.sprite.addChild(effect);
+            effect.alpha = 0;
+
+            const shine = SpriteUtils.createSprite(game, 0, -10, 'splashY');
+            shine.anchor.set(0.5);
+            shine.scale.set(0.825);
+            shine.alpha = 0.145;
+            effect.add(shine);
+            game.add.tween(shine).to({ angle: 360 }, 20000, Phaser.Easing.Linear.None, true, 0, -1);
+
+            state.numberedTreeEffect = effect;
+            const cloud: NumberedTreeParticleCloud = { group: particles, timer: null, stopped: false, particles: [] };
+            state.numberedTreeParticles = cloud;
+            this.emitNumberedTreeParticle(game, cloud);
+            cloud.timer = game.time.events.loop(1283, () => {
+                if (!cloud.stopped) this.emitNumberedTreeParticle(game, cloud);
+            });
+            game.add.tween(effect).to({ alpha: 1 }, 500, Phaser.Easing.Linear.None, true);
+        } else if (state.numberedTreeEffect) {
+            const effect = state.numberedTreeEffect;
+            const cloud = state.numberedTreeParticles;
+            cloud.stopped = true;
+            game.time.events.remove(cloud.timer);
+            cloud.timer = null;
+            state.numberedTreeParticles = null;
+            cloud.particles.forEach(entry => {
+                if (!entry.sprite.exists) return;
+                if (entry.alphaTween) entry.alphaTween.stop();
+                if (entry.startedAt == null) {
+                    entry.sprite.destroy();
+                    return;
+                }
+                const remaining = Math.max(0, CellsPainter.NUMBERED_TREE_PARTICLE_LIFETIME
+                    - (game.time.now - entry.startedAt));
+                entry.alphaTween = game.add.tween(entry.sprite).to(
+                    { alpha: 0 }, Math.max(1, remaining / 2), Phaser.Easing.Linear.None, true
+                );
+            });
+            if (cloud.group.children.length == 0) cloud.group.destroy(true);
+            game.tweens.removeFrom(effect);
+            state.numberedTreeEffect = null;
+            game.add.tween(effect).to({ alpha: 0 }, 1800, Phaser.Easing.Linear.None, true)
+                .onComplete.addOnce(() => {
+                    effect.children.forEach(child => game.tweens.removeFrom(child));
+                    effect.destroy(true);
+                });
+        }
+    }
+
+    private emitNumberedTreeParticle(game: Phaser.Game, cloud: NumberedTreeParticleCloud): void {
+        const side = Utils.random(2) == 0 ? -1 : 1;
+        const x = side * (14 + Utils.random(27));
+        const y = -10 + Utils.random(57) - 28;
+        const particle = SpriteUtils.createSprite(game, x, y, 'p1');
+        particle.anchor.set(0.5);
+        particle.scale.set(0.22 + Utils.random(13) / 100);
+        particle.alpha = 0;
+        particle.visible = false;
+        cloud.group.add(particle);
+        const entry = { sprite: particle, alphaTween: null as Phaser.Tween, startedAt: null as number };
+        cloud.particles.push(entry);
+
+        // Two spawn bands flank the number; each particle moves away from it.
+        const spreadAngle = (Math.random() - 0.5) * Math.PI / 3;
+        const distance = 40 + Utils.random(41);
+        const driftX = side * Math.cos(spreadAngle) * distance;
+        const driftY = Math.sin(spreadAngle) * distance;
+        // PIXI may render a newly attached child once with its stale (0, 0)
+        // world transform. Keep it hidden until the parent transform is ready.
+        AnimationUtils.primeForShow(cloud.group);
+        game.time.events.add(1, () => {
+            if (particle.exists === false || !particle.parent) return;
+            if (cloud.stopped) {
+                particle.destroy();
+                return;
+            }
+            AnimationUtils.primeForShow(particle);
+            particle.visible = true;
+            entry.startedAt = game.time.now;
+            entry.alphaTween = game.add.tween(particle).to({ alpha: 1 }, 300, Phaser.Easing.Linear.None, true);
+            entry.alphaTween
+                .onComplete.addOnce(() => {
+                    if (particle.exists !== false && !cloud.stopped) {
+                        entry.alphaTween = game.add.tween(particle).to(
+                            { alpha: 0 }, CellsPainter.NUMBERED_TREE_PARTICLE_LIFETIME - 300,
+                            Phaser.Easing.Linear.None, true
+                        );
+                    }
+                });
+            game.add.tween(particle).to(
+                { x: x + driftX, y: y + driftY, angle: Utils.random(90) - 45 },
+                CellsPainter.NUMBERED_TREE_PARTICLE_LIFETIME, Phaser.Easing.Linear.None, true
+            ).onComplete.addOnce(() => {
+                particle.destroy();
+                cloud.particles.splice(cloud.particles.indexOf(entry), 1);
+                if (cloud.stopped && cloud.group.children.length == 0) {
+                    cloud.group.destroy(true);
+                }
+            });
+        });
+    }
+
+    private getNumberedDecorationImage(cell: ForestCell, adjucentCount: number): string | null {
+        if (!CellsPainter.USE_NUMBERED_TREE_IMAGES || !(cell.state.content in DecorationsContents)
+            || cell.biomType == BiomType.WATER
+            || cell.state.content == ContentType.wlilly1 || cell.state.content == ContentType.wlilly2) {
+            return null;
+        }
+
+        if (adjucentCount >= 1 && adjucentCount <= 5) {
+            if (cell.state.opened) {
+                cell.state.hadNumberedTree = true;
+            }
+            return this.forestType.environment == Environment.house && cell.state.content == ContentType.mirror
+                ? 'mirror_num' + adjucentCount
+                : 'tree_num' + adjucentCount;
+        }
+
+        if (this.forestType.environment == Environment.house && cell.state.content == ContentType.mirror) {
+            return 'mirror';
+        }
+
+        if (cell.state.hadNumberedTree) {
+            // Pick once so repeated label refreshes cannot shuffle the scenery.
+            if (!cell.state.finalTreeImage) {
+                const finalImages = ['tree', 'stump', 'log'];
+                cell.state.finalTreeImage = finalImages[Utils.random(finalImages.length)];
+            }
+            return cell.state.finalTreeImage;
+        }
+
+        // An unnumbered cell may keep its original non-tree scenery, but it
+        // must never reveal a plain tree before showing a number.
+        if (cell.state.content == ContentType.tree) {
+            if (!cell.state.numberlessDecorationImage) {
+                cell.state.numberlessDecorationImage = Utils.random(2) == 0 ? 'stump' : 'log';
+            }
+            return cell.state.numberlessDecorationImage;
+        }
+        return null;
     }
 
     private addHiveHoneyLabel(game: Phaser.Game, cell: ForestCell, x: number, y: number): void {

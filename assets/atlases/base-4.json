@@ -1,29 +1,5 @@
 {
     "frames":  {
-                   "base/characters/cat2.png":  {
-                                                    "frame":  {
-                                                                  "x":  963,
-                                                                  "y":  1522,
-                                                                  "w":  420,
-                                                                  "h":  461
-                                                              },
-                                                    "rotated":  false,
-                                                    "trimmed":  false,
-                                                    "spriteSourceSize":  {
-                                                                             "x":  0,
-                                                                             "y":  0,
-                                                                             "w":  420,
-                                                                             "h":  461
-                                                                         },
-                                                    "sourceSize":  {
-                                                                       "w":  420,
-                                                                       "h":  461
-                                                                   },
-                                                    "pivot":  {
-                                                                  "x":  0.5,
-                                                                  "y":  0.5
-                                                              }
-                                                },
                    "base/characters/cat4.png":  {
                                                     "frame":  {
                                                                   "x":  1,
@@ -48,10 +24,106 @@
                                                                   "y":  0.5
                                                               }
                                                 },
+                   "base/items/animals/butterflyEscape-0.png":  {
+                                                                    "frame":  {
+                                                                                  "x":  495,
+                                                                                  "y":  1,
+                                                                                  "w":  480,
+                                                                                  "h":  508
+                                                                              },
+                                                                    "rotated":  false,
+                                                                    "trimmed":  false,
+                                                                    "spriteSourceSize":  {
+                                                                                             "x":  0,
+                                                                                             "y":  0,
+                                                                                             "w":  480,
+                                                                                             "h":  508
+                                                                                         },
+                                                                    "sourceSize":  {
+                                                                                       "w":  480,
+                                                                                       "h":  508
+                                                                                   },
+                                                                    "pivot":  {
+                                                                                  "x":  0.5,
+                                                                                  "y":  0.5
+                                                                              }
+                                                                },
+                   "base/items/animals/butterflyEscape-1.png":  {
+                                                                    "frame":  {
+                                                                                  "x":  977,
+                                                                                  "y":  1,
+                                                                                  "w":  480,
+                                                                                  "h":  508
+                                                                              },
+                                                                    "rotated":  false,
+                                                                    "trimmed":  false,
+                                                                    "spriteSourceSize":  {
+                                                                                             "x":  0,
+                                                                                             "y":  0,
+                                                                                             "w":  480,
+                                                                                             "h":  508
+                                                                                         },
+                                                                    "sourceSize":  {
+                                                                                       "w":  480,
+                                                                                       "h":  508
+                                                                                   },
+                                                                    "pivot":  {
+                                                                                  "x":  0.5,
+                                                                                  "y":  0.5
+                                                                              }
+                                                                },
+                   "base/items/animals/rabbitEscape-0.png":  {
+                                                                 "frame":  {
+                                                                               "x":  1459,
+                                                                               "y":  1,
+                                                                               "w":  480,
+                                                                               "h":  508
+                                                                           },
+                                                                 "rotated":  false,
+                                                                 "trimmed":  false,
+                                                                 "spriteSourceSize":  {
+                                                                                          "x":  0,
+                                                                                          "y":  0,
+                                                                                          "w":  480,
+                                                                                          "h":  508
+                                                                                      },
+                                                                 "sourceSize":  {
+                                                                                    "w":  480,
+                                                                                    "h":  508
+                                                                                },
+                                                                 "pivot":  {
+                                                                               "x":  0.5,
+                                                                               "y":  0.5
+                                                                           }
+                                                             },
+                   "base/items/animals/rabbitEscape-1.png":  {
+                                                                 "frame":  {
+                                                                               "x":  1,
+                                                                               "y":  518,
+                                                                               "w":  480,
+                                                                               "h":  508
+                                                                           },
+                                                                 "rotated":  false,
+                                                                 "trimmed":  false,
+                                                                 "spriteSourceSize":  {
+                                                                                          "x":  0,
+                                                                                          "y":  0,
+                                                                                          "w":  480,
+                                                                                          "h":  508
+                                                                                      },
+                                                                 "sourceSize":  {
+                                                                                    "w":  480,
+                                                                                    "h":  508
+                                                                                },
+                                                                 "pivot":  {
+                                                                               "x":  0.5,
+                                                                               "y":  0.5
+                                                                           }
+                                                             },
                    "base/task/chest.png":  {
                                                "frame":  {
-                                                             "x":  495,
-                                                             "y":  1,
+                                                             "x":  483,
+                                                             "y":  518,
                                                              "w":  500,
                                                              "h":  500
                                                          },
@@ -74,8 +146,8 @@
                                            },
                    "base/task/chest2.png":  {
                                                 "frame":  {
-                                                              "x":  997,
-                                                              "y":  1,
+                                                              "x":  985,
+                                                              "y":  518,
                                                               "w":  500,
                                                               "h":  500
                                                           },
@@ -98,8 +170,8 @@
                                             },
                    "base/task/chest3.png":  {
                                                 "frame":  {
-                                                              "x":  1499,
-                                                              "y":  1,
+                                                              "x":  1487,
+                                                              "y":  518,
                                                               "w":  500,
                                                               "h":  500
                                                           },
@@ -123,7 +195,7 @@
                    "base/task/chest4.png":  {
                                                 "frame":  {
                                                               "x":  1,
-                                                              "y":  518,
+                                                              "y":  1028,
                                                               "w":  500,
                                                               "h":  500
                                                           },
@@ -147,7 +219,7 @@
                    "base/task/chest5.png":  {
                                                 "frame":  {
                                                               "x":  503,
-                                                              "y":  518,
+                                                              "y":  1028,
                                                               "w":  500,
                                                               "h":  500
                                                           },
@@ -171,7 +243,7 @@
                    "base/task/chest6.png":  {
                                                 "frame":  {
                                                               "x":  1005,
-                                                              "y":  518,
+                                                              "y":  1028,
                                                               "w":  500,
                                                               "h":  500
                                                           },
@@ -195,7 +267,7 @@
                    "base/task/chest7.png":  {
                                                 "frame":  {
                                                               "x":  1507,
-                                                              "y":  518,
+                                                              "y":  1028,
                                                               "w":  500,
                                                               "h":  500
                                                           },
@@ -219,7 +291,7 @@
                    "base/task/energy_chest.png":  {
                                                       "frame":  {
                                                                     "x":  1,
-                                                                    "y":  1020,
+                                                                    "y":  1530,
                                                                     "w":  500,
                                                                     "h":  500
                                                                 },
@@ -240,34 +312,10 @@
                                                                     "y":  0.5
                                                                 }
                                                   },
-                   "base/ui/banner1.png":  {
-                                               "frame":  {
-                                                             "x":  1,
-                                                             "y":  1522,
-                                                             "w":  960,
-                                                             "h":  488
-                                                         },
-                                               "rotated":  false,
-                                               "trimmed":  false,
-                                               "spriteSourceSize":  {
-                                                                        "x":  0,
-                                                                        "y":  0,
-                                                                        "w":  960,
-                                                                        "h":  488
-                                                                    },
-                                               "sourceSize":  {
-                                                                  "w":  960,
-                                                                  "h":  488
-                                                              },
-                                               "pivot":  {
-                                                             "x":  0.5,
-                                                             "y":  0.5
-                                                         }
-                                           },
                    "base/ui/diary/dForestPic.png":  {
                                                         "frame":  {
                                                                       "x":  1507,
-                                                                      "y":  1020,
+                                                                      "y":  1530,
                                                                       "w":  526,
                                                                       "h":  492
                                                                   },
@@ -291,7 +339,7 @@
                    "base/ui/maple.png":  {
                                              "frame":  {
                                                            "x":  503,
-                                                           "y":  1020,
+                                                           "y":  1530,
                                                            "w":  500,
                                                            "h":  500
                                                        },
@@ -315,7 +363,7 @@
                    "base/ui/mapleFace.png":  {
                                                  "frame":  {
                                                                "x":  1005,
-                                                               "y":  1020,
+                                                               "y":  1530,
                                                                "w":  500,
                                                                "h":  500
                                                            },
@@ -344,7 +392,7 @@
                  "format":  "RGBA8888",
                  "size":  {
                               "w":  2034,
-                              "h":  2011
+                              "h":  2031
                           },
                  "scale":  1
              }

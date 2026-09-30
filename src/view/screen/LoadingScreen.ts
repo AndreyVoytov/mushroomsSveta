@@ -26,6 +26,10 @@ export default class LoadingScreen extends BaseScreen {
     private preloadBar: Phaser.Sprite;
     private preloadBarBg: Phaser.Sprite;
     private preloadBarFooter: Phaser.Sprite;
+    private preloadBarRealProgress = 0;
+    private preloadBarStartedAt = 0;
+    private preloadBarVisibleProgress = 0;
+    private preloadBarFullWidth = 0;
 
     preload() {
 
@@ -49,7 +53,18 @@ export default class LoadingScreen extends BaseScreen {
 
         this.preloadBar = SpriteUtils.createSprite(this.game, this.world.centerX - preloadBarWidth / 2, this.world.centerY - preloadBarHeight / 2, 'preloadBar');
         this.game.add.existing(this.preloadBar);
-        this.load.setPreloadSprite(this.preloadBar);
+        // The raw loader can appear stuck behind its first large atlas. Let
+        // the first 2/3 move steadily for four seconds and use IO for the
+        // final third instead.
+        // Sprite.width follows its crop in Phaser CE. Keep the source width
+        // separately, otherwise the first zero-width crop can never grow.
+        this.preloadBarFullWidth = this.preloadBar.width;
+        this.preloadBar.crop(new Phaser.Rectangle(0, 0, 0, this.preloadBar.height), false);
+        this.preloadBar.updateCrop();
+        this.preloadBarStartedAt = this.game.time.now;
+        this.load.onFileComplete.add((progress: number) => {
+            this.preloadBarRealProgress = Math.max(this.preloadBarRealProgress, Math.max(0, Math.min(1, progress / 100)));
+        }, this);
 
 
         let preloadBarFooter = SpriteUtils.createSprite(this.game, 0, this.world.height, 'preloadBarFooter');
@@ -57,16 +72,13 @@ export default class LoadingScreen extends BaseScreen {
         preloadBarFooter.anchor.set(0, 1);
         this.preloadBarFooter = preloadBarFooter;
 
-        bg.alpha = 0;
-        preloadBarBg.alpha = 0;
-        this.preloadBar.alpha = 0;
-        preloadBarFooter.alpha = 0;
-
-        let time = 200;
-        this.game.add.tween(bg).to({ alpha: 1 }, time, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out, true);
-        this.game.add.tween(preloadBarBg).to({ alpha: 1 }, time, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out, true);
-        this.game.add.tween(this.preloadBar).to({ alpha: 1 }, time, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out, true);
-        this.game.add.tween(preloadBarFooter).to({ alpha: 1 }, time, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out, true);
+        // The loader starts before the first regular game tick on some mobile
+        // browsers. Show it immediately instead of waiting for a tween that
+        // may not get that initial tick.
+        bg.alpha = 1;
+        preloadBarBg.alpha = 1;
+        this.preloadBar.alpha = 1;
+        preloadBarFooter.alpha = 1;
 
         //plugins
         // this.game.plugins.add(Fabrique.Plugins.NineSlice);
@@ -172,6 +184,17 @@ export default class LoadingScreen extends BaseScreen {
         })
     }
 
+    update() {
+        if (!this.preloadBar || !this.preloadBar.exists) return;
+        const elapsed = Math.max(0, this.game.time.now - this.preloadBarStartedAt);
+        const timedProgress = Math.min(2 / 3, elapsed / 4000 * (2 / 3));
+        const target = Math.min(1, timedProgress + this.preloadBarRealProgress / 3);
+        this.preloadBarVisibleProgress = Math.max(this.preloadBarVisibleProgress, target);
+        this.preloadBar.crop(new Phaser.Rectangle(0, 0,
+            Math.round(this.preloadBarFullWidth * this.preloadBarVisibleProgress), this.preloadBar.height), false);
+        this.preloadBar.updateCrop();
+    }
+
     private loadAssets(): void {
         //    //nine-slice example
         //    (<IGame> this.game).load.nineSlice('panel2', 'assets/base/ui/buttons/frame11.png', 160, 160, 80, 80);
@@ -253,6 +276,10 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('bushes2', 'assets/base/ui/bushes2.png');
         this.loadImage('bushDark', 'assets/base/ui/bushDark.png');
         this.loadImage('bushDark2', 'assets/base/ui/bushDark2.png');
+        this.loadImage('bushClover', 'assets/base/ui/bushClover.png');
+        this.loadImage('bushClover2', 'assets/base/ui/bushClover2.png');
+        this.loadImage('bushCloverDark', 'assets/base/ui/bushCloverDark.png');
+        this.loadImage('bushCloverDark2', 'assets/base/ui/bushCloverDark2.png');
         this.loadImage('darkStump', 'assets/minigame3/darkStump.png');
 
         this.loadImage('flowersBg', 'assets/base/ui/flowersBg.png');
@@ -299,6 +326,8 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('heart', 'assets/base/ui/heart.png');
         this.loadImage('lightning', 'assets/base/ui/lightnin_draft.png');
         this.loadImage('gems', 'assets/base/ui/gems.png');
+        this.loadImage('sapphireStar', 'assets/base/ui/sapphireStar.png');
+        this.loadImage('sapphireStarBackdrop', 'assets/base/ui/sapphireStarBackdrop.png');
         this.loadImage('gemsCloud', 'assets/base/ui/gemsCloud.png');
         this.loadImage('tasks', 'assets/base/ui/tasks.png');
         this.loadImage('tasksPanelBgTop', 'assets/base/task/bg_top.png');
@@ -612,6 +641,12 @@ export default class LoadingScreen extends BaseScreen {
         //Environment
         this.loadImage('stone', 'assets/base/items/environment/stone.png');
         this.loadImage('tree', 'assets/base/items/environment/tree.png');
+        this.loadImage('mushroomHole', 'assets/base/items/environment/mushroomHole.png');
+        this.loadImage('soilClod', 'assets/base/particles/soilClod.png');
+        for (let number = 1; number <= 5; number++) {
+            this.loadImage('tree_num' + number, 'assets/base/items/environment/tree_num' + number + '.png');
+            this.loadImage('mirror_num' + number, 'assets/base/items/environment/mirror_num' + number + '.png');
+        }
         this.loadImage('beanLeaf', 'assets/base/items/environment/beanLeaf.png');
         this.loadImage('mirror', 'assets/base/items/environment/mirror.png');
         this.loadImage('stump', 'assets/base/items/environment/stump.png');
@@ -692,6 +727,11 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('sheep', 'assets/base/items/ship.png');
         this.loadImage('butterfly', 'assets/base/items/butterfly.png');
         this.loadImage('butterfly2', 'assets/base/items/butterfly2.png');
+        // These small sheets are deliberately kept outside the large atlases:
+        // they are only decoded when the forest is loaded and avoid expanding
+        // the main atlas for a couple of short encounter animations.
+        this.game.load.spritesheet('rabbitEscape', 'assets/base/items/animals/rabbitEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 16);
+        this.game.load.spritesheet('butterflyEscape', 'assets/base/items/animals/butterflyEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 16);
         this.loadImage('bet', 'assets/base/items/bet.png');
         this.loadImage('owl', 'assets/base/items/owl.png');
         this.loadImage('owlPink', 'assets/base/items/owlPink.png');
@@ -739,6 +779,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('shopItem3', 'assets/base/ui/items/item3.png');
         this.loadImage('shopItem4', 'assets/base/ui/items/item4.png');
         this.loadImage('characterPanelBg', 'assets/base/ui/character/character_panel.png');
+        this.loadImage('characterMenuIcon', 'assets/base/ui/character/character_menu_icon.png');
         this.loadImage('characterPanelBanner', 'assets/base/ui/character/banner.png');
         this.loadImage('characterSkillsBg', 'assets/base/ui/character/skills_bg.png');
         this.loadImage('characterArrowLeft', 'assets/base/ui/character/arrow_left.png');
@@ -771,6 +812,7 @@ export default class LoadingScreen extends BaseScreen {
         this.load.image('shopItem3', 'assets/base/ui/items/item3.png');
         this.load.image('shopItem4', 'assets/base/ui/items/item4.png');
         this.load.image('characterPanelBg', 'assets/base/ui/character/character_panel.png');
+        this.load.image('characterMenuIcon', 'assets/base/ui/character/character_menu_icon.png');
         this.load.image('characterPanelBanner', 'assets/base/ui/character/banner.png');
         this.load.image('characterSkillsBg', 'assets/base/ui/character/skills_bg.png');
         this.load.image('characterArrowLeft', 'assets/base/ui/character/arrow_left.png');
@@ -1009,6 +1051,7 @@ export default class LoadingScreen extends BaseScreen {
         //audio
         this.game.load.audio("bushHit2", "assets/other/audio/bushHit2.mp3");
         this.game.load.audio("bushMoving", "assets/other/audio/bushMoving.mp3");
+        this.game.load.audio("treeLeavesRustle", "assets/other/audio/treeLeavesRustle.ogg");
         this.game.load.audio("beeSting", "assets/other/audio/bee_sound.mp3");
         this.game.load.audio("click", "assets/other/audio/click.mp3");
         this.game.load.audio("collect3", "assets/other/audio/collect3.mp3");
@@ -1033,7 +1076,7 @@ export default class LoadingScreen extends BaseScreen {
         this.game.load.audio("trouble2", "assets/other/audio/trouble2.mp3");
         this.game.load.audio("whooshIn", "assets/other/audio/whooshIn.mp3");
         this.game.load.audio("whooshIn2", "assets/other/audio/whooshIn2.mp3");
-        this.game.load.audio("whooshOut", "assets/other/audio/whooshout.mp3");
+        this.game.load.audio("whooshOut", "assets/other/audio/whooshOut.mp3");
         this.game.load.audio("whooshOut2", "assets/other/audio/whooshout2.mp3");
         this.game.load.audio("win", "assets/other/audio/win.ogg");
         this.game.load.audio("win2", "assets/other/audio/win2.mp3");

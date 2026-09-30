@@ -8,7 +8,12 @@ type TintedTarget = PIXI.Sprite | Phaser.BitmapText | Phaser.Text;
 
 export default class AnimationUtils {
 
-    private static primeForStableShow(target: FadeTarget): void {
+    /**
+     * Forces Phaser CE / PIXI to calculate a display object's world transform
+     * before it is made visible. This prevents the first rendered frame from
+     * using its previous (often 0,0) transform.
+     */
+    public static primeForShow(target: FadeTarget): void {
         if (!target) {
             return;
         }
@@ -33,7 +38,7 @@ export default class AnimationUtils {
         const showDelay = delay == null ? 1 : delay;
         const targetAlpha = finalAlpha == null ? 1 : finalAlpha;
 
-        this.primeForStableShow(sprite);
+        this.primeForShow(sprite);
         sprite.visible = false;
         sprite.alpha = 0;
 
@@ -53,7 +58,7 @@ export default class AnimationUtils {
             return;
         }
 
-        this.primeForStableShow(target);
+        this.primeForShow(target);
         target.visible = true;
         target.alpha = finalAlpha == null ? 1 : finalAlpha;
     }
@@ -392,7 +397,7 @@ export default class AnimationUtils {
         splash.anchor.set(0.5)
         splash.visible = false;
         game.add.existing(splash);
-        this.primeForStableShow(splash);
+        this.primeForShow(splash);
 
         const startDelay = delay || 0;
         const totalDuration = duration || 400;
@@ -422,7 +427,7 @@ export default class AnimationUtils {
         splash.anchor.set(0.5)
         splash.visible = false;
         game.add.existing(splash);
-        this.primeForStableShow(splash);
+        this.primeForShow(splash);
 
         const startDelay = delay || 0;
         game.time.events.add(startDelay, () => {

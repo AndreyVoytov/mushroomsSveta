@@ -19,6 +19,11 @@ import Settings from '../Settings';
 import TaskService from '../TaskService';
 export default class LadybugsProvider extends BaseLadybugsProvider {
     private screen: BaseForestScreen;
+    // A move starts after 200ms and its position tween takes 1000ms. Do not
+    // enqueue another move in that window: two simultaneous tweens caused the
+    // occasional "teleporting" stump/acorn after a ladybug moved down.
+    private static readonly MOVE_DELAY = 200;
+    private static readonly MOVE_DURATION = 1000;
 
     public constructor(game: Phaser.Game, screen: BaseForestScreen, cellsProvider: CellsPainter) {
         super(game, screen, cellsProvider);
@@ -83,7 +88,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
 
                 this.game.add.tween(ladybug.sprite).to({
                     x: this.cellsProvider.calculateX(choosen), y: this.cellsProvider.calculateY(choosen),
-                }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 200, 0, false);
+                }, LadybugsProvider.MOVE_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, LadybugsProvider.MOVE_DELAY, 0, false);
                 this.game.add.tween(ladybug.sprite.scale).to({
                     x: 1, y: 1,
                 }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 100, 0, false);
@@ -136,7 +141,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 ladybug.isLadybug? SoundUtils.ladybugMove() : SoundUtils.acornMove();
                 (<ForestScreen>(this.screen)).refreshCovers();
 
-                ladybug.animationEndAt = Date.now() + 400;
+                ladybug.animationEndAt = Date.now() + LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION;
 
                 if (this.cellsProvider.getBottomCells(ladybug.X, ladybug.Y).filter(c => !c.state.cover.isDark()).length == 0) {
                     if (ladybug.isLadybug) {

@@ -12,6 +12,7 @@ export default class ForestCell {
     occupiedByFlower: boolean = false;
     state: CellState;
     bg: Phaser.Sprite;
+    mushroomHole: Phaser.Sprite;
     bgShadow: Phaser.Sprite;
     separators: SeparatorType[] = [];
     hiveAnchor: ForestCell;

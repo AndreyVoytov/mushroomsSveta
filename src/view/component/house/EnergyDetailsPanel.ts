@@ -12,6 +12,7 @@ type EnergyPanelHooks = {
     onShow?: () => void;
     onClose?: () => void;
     onBought?: () => void;
+    onDeclined?: () => void;
 };
 
 export default class EnergyDetailsPanel extends ClosablePanel {
@@ -21,6 +22,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
     private statusLabel: Label;
     private resetLabel: Label;
     private actionLabel: Label;
+    private openingShop: boolean = false;
 
     constructor(game: Phaser.Game, screen: Phaser.State, hooks?: EnergyPanelHooks) {
         super(game, game.width / 2, game.height / 2, true, "blank");
@@ -125,9 +127,14 @@ export default class EnergyDetailsPanel extends ClosablePanel {
     private tryBuyEnergy(): void {
         const user = UserService.getUser();
         if (!user.buyEnergyPack()) {
+            this.openingShop = true;
             this.close();
 
-            const shopPanel = new ShopPanel(this.game, this.screen);
+            const shopPanel = new ShopPanel(this.game, this.screen, undefined, 'bank', undefined, () => {
+                if (this.hooks.onDeclined) {
+                    this.hooks.onDeclined();
+                }
+            });
             shopPanel.show();
             this.game.add.existing(shopPanel);
             return;
@@ -194,6 +201,9 @@ export default class EnergyDetailsPanel extends ClosablePanel {
     protected onClose(): void {
         if (this.hooks.onClose) {
             this.hooks.onClose();
+        }
+        if (!this.openingShop && this.hooks.onDeclined) {
+            this.hooks.onDeclined();
         }
     }
 

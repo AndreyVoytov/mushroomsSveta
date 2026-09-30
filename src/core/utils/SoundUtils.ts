@@ -87,6 +87,12 @@ export default class SoundUtils {
     public static bushMovingOut(){
     }
 
+    public static treeRustle(): void {
+        if (!SoundUtils.haveRecent('treeLeavesRustle')) {
+            SoundUtils.addSound('treeLeavesRustle', 0.03 * this.volumeRatio);
+        }
+    }
+
     public static panelOpen(){
           // this.game.sound.play("whooshOut", 0.2)
           let sound = Game.getInstance().sound.play("whooshOut", 0.15 * this.volumeRatio)
@@ -200,8 +206,18 @@ export default class SoundUtils {
     public static houseItemFound(){
         let sound2 = Game.getInstance().sound.play("collect3", 0.025 * this.volumeRatio);
     }
-    public static animalFound(){
-        let sound = Game.getInstance().sound.play("itemFound", 0.015 * this.volumeRatio);
+    public static animalFound(animal?: string){
+        let game = Game.getInstance();
+        if (animal == 'rabbit') {
+            // A soft leaf-rustle makes the rabbit's first hop feel grounded.
+            game.sound.play("bushHit2", 0.012 * this.volumeRatio);
+        } else if (animal == 'butterfly') {
+            // Barely audible wing hum; it is intentionally much quieter than
+            // a bee so several finds never turn into an aggressive buzz.
+            let wingHum = game.sound.play("beeSting", 0.008 * this.volumeRatio);
+            game.add.tween(wingHum).to({ volume: 0 }, 260, null, true, 120);
+        }
+        game.sound.play("itemFound", 0.015 * this.volumeRatio);
     }
     
     public static cellBushOff(){

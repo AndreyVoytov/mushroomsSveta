@@ -25,7 +25,7 @@ export default class AimsStartPanel extends BasePanel {
 
         let catHelper : boolean = level >= LocationUtils.CAT_FROM_LEVEL;
 
-        let helper = SpriteUtils.createSprite(this.game, 10 -3, background.height / 2 - 69 + (catHelper? 30:0),  catHelper ? 'cat1' : 'sveta1');
+        let helper = SpriteUtils.createSprite(this.game, 10 - 3 - 45, background.height / 2 - 69 + (catHelper? 30:0),  catHelper ? 'cat1' : 'sveta1');
         helper.anchor = new Phaser.Point(0, 1);
         // helper.scale.set(0.8)
         this.addChild(helper);
@@ -67,10 +67,38 @@ export default class AimsStartPanel extends BasePanel {
             let info = ForestAim.getAimsInfo(aims[0]);
 
             let label = new Label(this.game, 470 + 70 + 108, 3, info, Label.COMMON_MEDIUM_STYLE);
-            this.addChild(label);
             label.anchor = new Phaser.Point(0.5, 0.5);
-            label.strokeThickness = 4;
-            label.addStrokeColor("#62321c", 0);
+
+            // A layered translucent ellipse is a renderer-safe soft shadow:
+            // it gives the goal contrast without the hard-edged panel.
+            const goalShadow = new Phaser.Graphics(this.game, label.x, label.y);
+            const shadowLayers = [
+                { width: label.width + 118, height: label.height + 70, alpha: 0.08 },
+                { width: label.width + 82, height: label.height + 52, alpha: 0.12 },
+                { width: label.width + 48, height: label.height + 36, alpha: 0.16 }
+            ];
+            shadowLayers.forEach(layer => {
+                goalShadow.beginFill(0x082f35, layer.alpha);
+                goalShadow.drawEllipse(-layer.width / 2, -layer.height / 2, layer.width, layer.height);
+                goalShadow.endFill();
+            });
+            this.addChild(goalShadow);
+
+            // Phaser BitmapText ignores the normal text-stroke API. A small
+            // ring of dark glyphs gives the target a clean outline without
+            // adding another panel over the scene artwork.
+            const outlineStyle: Phaser.PhaserTextStyle = {
+                font: 'bold 50px Arial',
+                fill: '#194233',
+                wordWrap: true,
+                wordWrapWidth: 600
+            };
+            [[-2, 0], [2, 0], [0, -2], [0, 2], [-1, -1], [-1, 1], [1, -1], [1, 1]].forEach(offset => {
+                const outline = new Label(this.game, label.x + offset[0], label.y + offset[1], info, outlineStyle);
+                outline.anchor = new Phaser.Point(0.5, 0.5);
+                this.addChild(outline);
+            });
+            this.addChild(label);
         }
 
         let treesTime = 500;

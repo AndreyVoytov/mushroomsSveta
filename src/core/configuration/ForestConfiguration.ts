@@ -313,7 +313,12 @@ export default class ForestsConfiguration {
 				"flowers": 0
 			},
 			{
-				"items": [],
+				"items": [
+					{
+						"count": 8,
+						"name": "mushroom3"
+					}
+				],
 				"id": "19",
 				"environment": 0,
 				"leafType": "leaf4",

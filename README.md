@@ -52,6 +52,8 @@ This will optimize and minimize the compiled bundle.
 
 ## Credits
 
+- `assets/other/audio/treeLeavesRustle.ogg` — “moving leaves stereo” by Augmentality (Brandon Morris), [OpenGameArt](https://opengameart.org/content/random-sounds-samples), CC0.
+
 This work is based off of several existing repos:
 
 https://github.com/nkholski/phaser3-es6-webpack

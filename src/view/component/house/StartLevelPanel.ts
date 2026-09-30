@@ -82,8 +82,8 @@ export default class StartLevelPanel extends ClosablePanel {
         let continueLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('play')), { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
         continueLabel.name = 'continueLabel';
         continueLabel.anchor = new Phaser.Point(0.5, 0.5);
-        continueLabel.strokeThickness = 4;
-        continueLabel.addStrokeColor('#61b019', 0);
+        continueLabel.strokeThickness = 6;
+        continueLabel.addStrokeColor('#28590e', 0);
         this.playButton.addChild(continueLabel);
 
         let fastPlayButton;
@@ -275,19 +275,19 @@ export default class StartLevelPanel extends ClosablePanel {
         let time = 500;
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
         this.screen.addTopOverlay(trees);
-        this.game.time.events.add(time * 2, () => {
+        trees.onCovered(() => {
             AnalyticUtils.logLevelStart()
             this.screen.startScreen(ForestScreen, true, false);
-        }, this)
+        });
     }
     public startLevelFast() {
         let time = 500;
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
         this.screen.addTopOverlay(trees);
         ForestScreen.skipNextTime = true;
-        this.game.time.events.add(time*2, function () {
+        trees.onCovered(() => {
             this.screen.startScreen(ForestScreen, true, false);
-        }, this)
+        });
     }
 
     protected onClose() {

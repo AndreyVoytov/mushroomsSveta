@@ -235,6 +235,10 @@ export default class HouseLayout extends BaseLayout {
                 this.game.physics.startSystem(Phaser.Physics.ARCADE);
                 let emitter = this.game.add.emitter(433 + 200, this.game.height / 2 + (563 - 693) - 100, 100);
 
+                if (screen && screen.dialogPanel) {
+                    screen.dialogPanel.addEffectAboveStrips(emitter);
+                }
+
                 emitter.makeParticles(
                     //warning! p2 and p5 have to be on the same atlas!
                     SpriteUtils.getAtlasKeyAndFrame(this.game, "p5").atlasKey,
@@ -331,9 +335,15 @@ export default class HouseLayout extends BaseLayout {
     }
 
     private makeChestDustAnimation(delay: number) {
-        this.chestShining.alpha = 1;
-        this.game.time.events.add(delay + 300, () => {
-            this.chestShiningAnimation = this.game.add.tween(this.chestShining).to({ alpha: [0.9, 0.8, 0.95, 1] }, 1000, Phaser.Easing.Linear.None, true, 0, 1000000, true);
+        this.game.time.events.add(delay, () => {
+            if (this.chestShiningAnimation) {
+                this.chestShiningAnimation.stop();
+                this.chestShiningAnimation = null;
+            }
+            // A persistent low-frequency alpha tween still reads as a flash
+            // against the high-contrast chest art. Keep this layer stable;
+            // the dust supplies the motion around it.
+            this.chestShining.alpha = 0.88;
         });
 
         this.game.time.events.add(delay, () => {
@@ -341,21 +351,21 @@ export default class HouseLayout extends BaseLayout {
             let emitter = this.game.add.emitter(570 + 50, this.game.height / 2 + (643 - 693) - 50, 15);
 
             emitter.makeParticles(SpriteUtils.getAtlasKeyAndFrame(this.game, "dust").atlasKey, SpriteUtils.getAtlasKeyAndFrame(this.game, "dust").frameName);
-            emitter.gravity = new Phaser.Point(0, -1000);
+            emitter.gravity = new Phaser.Point(0, -62);
             // emitter.gravity = -1000;
 
             emitter.maxParticleScale = 8;
             emitter.minParticleScale = 4;
             emitter.maxRotation = 0;
             emitter.minRotation = 0;
-            emitter.maxParticleSpeed = new Phaser.Point(0, -200);
-            emitter.minParticleSpeed = new Phaser.Point(0, -200);
-            emitter.setAlpha(0.35, 0, 1000, Phaser.Easing.Linear.None, false);
+            emitter.maxParticleSpeed = new Phaser.Point(0, -50);
+            emitter.minParticleSpeed = new Phaser.Point(0, -50);
+            emitter.setAlpha(0.35, 0, 4000, Phaser.Easing.Linear.None, false);
             emitter.autoAlpha = true;
             emitter.width = 300 + 50;
             emitter.height = 350 + 50;
 
-            emitter.start(true, 1000, 200, 12);
+            emitter.start(true, 4000, 800, 12);
         })
 
         this.game.time.events.add(delay, () => {
@@ -363,21 +373,21 @@ export default class HouseLayout extends BaseLayout {
             let emitter = this.game.add.emitter(550 + 50, this.game.height / 2 + (643 - 693) - 50);
 
             emitter.makeParticles(SpriteUtils.getAtlasKeyAndFrame(this.game, "dustYellow").atlasKey, SpriteUtils.getAtlasKeyAndFrame(this.game, "dustYellow").frameName);
-            emitter.gravity = new Phaser.Point(0, -100);
+            emitter.gravity = new Phaser.Point(0, -25);
             // emitter.gravity = -100;
 
             emitter.maxParticleScale = 1;
             emitter.minParticleScale = 0.5;
             emitter.maxRotation = 0;
             emitter.minRotation = 0;
-            emitter.maxParticleSpeed = new Phaser.Point(100, -200);
-            emitter.minParticleSpeed = new Phaser.Point(-100, -200);
-            emitter.setAlpha(1, 0, 2000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, false);
+            emitter.maxParticleSpeed = new Phaser.Point(25, -50);
+            emitter.minParticleSpeed = new Phaser.Point(-25, -50);
+            emitter.setAlpha(1, 0, 8000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, false);
             emitter.autoAlpha = true;
             emitter.width = 220 + 50;
             emitter.height = 130 + 50;
 
-            emitter.start(false, 3000, 700);
+            emitter.start(false, 12000, 2800);
         })
     }
 

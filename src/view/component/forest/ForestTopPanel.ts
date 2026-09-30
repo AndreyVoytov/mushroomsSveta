@@ -18,6 +18,9 @@ import Settings from '../../../core/service/Settings';
 import AdminService from './../../../core/service/AdminService';
 import UserService from '../../../core/service/UserService';
 import TaskService from '../../../core/service/TaskService';
+import MushroomHarvestEffects from './MushroomHarvestEffects';
+import Environment from '../../../core/model/enum/Environment';
+import BiomType from '../../../core/model/enum/BiomType';
 export default class ForestTopPanel extends BasePanel {
 
     private energyCount: number;
@@ -28,6 +31,7 @@ export default class ForestTopPanel extends BasePanel {
     private forestType: ForestType;
     private screen: BaseForestScreen;
     private steps: Phaser.Sprite;
+    private mushroomHarvestEffects: MushroomHarvestEffects;
 
     public aims: ForestAim[] = [];
 
@@ -133,10 +137,10 @@ export default class ForestTopPanel extends BasePanel {
         //TODO анимация ломается:
         // AnimationUtils.wiggle(this.game, this.energyLabel, 0, true);
 
-        if(!Settings.isOkApp()){
-            AnimationUtils.tint(this.game, this.energyLabel, 0xFFFFFF, 0x00FF00, 500, 0);
-            AnimationUtils.tint(this.game, this.energyLabel, 0x00FF00, 0xFFFFFF, 500, 500)
-        }
+        // BitmapText tint updates on consecutive restoration events can leave
+        // cached glyphs with a magenta fallback tint. Keep this texture white;
+        // the green particle highlight below remains the restoration feedback.
+        this.energyLabel.tint = 0xffffff;
 
         // AnimationUtils.tint(this.game, this.steps, 0xFFFFFF, 0x00FF00, 500, 0);
         // AnimationUtils.tint(this.game, this.steps, 0x00FF00, 0xFFFFFF, 500, 500)
@@ -254,18 +258,52 @@ export default class ForestTopPanel extends BasePanel {
 
     public collectItem(cellState: CellState) {
         let self = this;
+        let hasMatchingAim = false;
+        const sourceSprite = cellState.sprite;
+        const itemImage = cellState.content == ContentType.randomItem
+            ? cellState.metaValue : ContentType[cellState.content];
+        const harvestCell = MushroomHarvestEffects.isMushroom(itemImage)
+            && this.forestType.environment != Environment.house
+            ? this.screen.cellsProvider.getCells().filter(c => c.state == cellState && c.biomType != BiomType.WATER)[0]
+            : null;
+        if (harvestCell && !this.mushroomHarvestEffects) {
+            this.mushroomHarvestEffects = new MushroomHarvestEffects(this.game);
+        }
         TaskService.recordCollection(ContentType[cellState.content]);
         this.aims.forEach(aim => {
 
             //TODO refactor panel
             if (ContentType[cellState.content] == aim.image || (aim.type == AimType.itemsBunch && cellState.content == ItemContents.randomItem)) {
+                hasMatchingAim = true;
+
+                // The cell sprite is owned by the board and can be touched by
+                // its refresh routines while an item is in flight. Animate a
+                // separate visual copy, and hide the source immediately.
+                // This makes it impossible for a collected mushroom to remain
+                // on its original cell after the flight has finished.
+                const sprite = self.createItemFlightSprite(sourceSprite);
+                sourceSprite.visible = false;
+                sourceSprite.alpha = 0;
+                sourceSprite.inputEnabled = false;
+                self.game.tweens.removeFrom(sourceSprite);
 
                 aim.countLeft--;
                 self.updateAimCounters(700);
 
-                let delay = 200;
+                let delay = harvestCell ? 180 : 200;
                 let animationTime = 700;
-                let sprite = cellState.sprite;
+                // The cell itself must not remain as a stale copy after the
+                // flight tween. Keep the timer as a fallback, but also clean
+                // up from the tween completion: timers can be delayed when a
+                // tab loses focus or another animation changes the timeline.
+                const hideCollectedSprite = () => {
+                    if (!sprite || sprite.pendingDestroy) {
+                        return;
+                    }
+                    sprite.visible = false;
+                    sprite.alpha = 0;
+                    sprite.inputEnabled = false;
+                };
 
                 if (aim.type == AimType.itemsBunch) {
                     delay = 400;
@@ -276,7 +314,7 @@ export default class ForestTopPanel extends BasePanel {
                     self.game.add.tween(sprite).to({ alpha: 0 }, animationTime - 300, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.In,
                         true, delay + 300, 0, false)
                     self.game.time.events.add(delay + animationTime, () => {
-                        sprite.visible = false;
+                        hideCollectedSprite();
                     });
 
                     self.game.add.tween(sprite).to({ width: [w * 2, w * 1.5, w, w], height: [h * 2, h * 1.5, h, h] }, animationTime, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In, true, delay, 0, false)
@@ -285,28 +323,83 @@ export default class ForestTopPanel extends BasePanel {
                         true, delay + animationTime - 100, 0, false);
                         
                     self.game.time.events.add(delay + animationTime, () => {
-                        sprite.visible = false;
+                        hideCollectedSprite();
                     });
 
                 }
 
                 sprite.inputEnabled = false;
 
-                self.game.add.tween(sprite).to(
+                if (harvestCell) {
+                    // Anticipation ends exactly when one continuous curved
+                    // flight starts; no competing position tween or snap.
+                    const sx = sprite.scale.x;
+                    const sy = sprite.scale.y;
+                    this.game.add.tween(sprite.scale).to({ x: sx * 1.06, y: sy * 0.94 },
+                        90, Phaser.Easing.Sinusoidal.InOut, true, delay - 180, 0, true);
+                    this.mushroomHarvestEffects.reveal(harvestCell, delay, () => {
+                        if (!sprite.pendingDestroy) sprite.bringToTop();
+                        this.screen.bringUiToTop();
+                    });
+                }
+
+                const flightTween = self.game.add.tween(sprite).to(
                     {
                         angle: 0, x: [sprite.x, aim.sprite.x],
-                        y: [sprite.y, aim.sprite.y + self.screen.camera.y]
+                        y: [sprite.y - (harvestCell ? 100 : 0), aim.sprite.y + self.screen.camera.y]
                     },
                     animationTime, Phaser.Easing.Linear.None, true, delay, 0, false).interpolation(Phaser.Math.bezierInterpolation).start();
+                flightTween.onComplete.addOnce(hideCollectedSprite);
+
+                // Tutorial cells are repeatedly reordered above the field.
+                // Keep the temporary flight copy above those cells for the
+                // whole trajectory, while returning HUD elements above it.
+                flightTween.onUpdateCallback(() => {
+                    sprite.bringToTop();
+                    self.screen.bringUiToTop();
+                });
 
                 aim.label.bringToTop();
                 self.game.time.events.add(1, () => {
                     sprite.bringToTop();
-                    // this.screen.bringUiToTop();
+                    self.screen.bringUiToTop();
                 })
             }
 
         })
+
+        // An item is removed from CellState immediately after collection. If
+        // its aim is already complete or is absent, it has no destination for
+        // the flight animation; previously its source sprite was left on the
+        // field forever. Fade that source out explicitly.
+        if (!hasMatchingAim && sourceSprite) {
+            if (harvestCell) {
+                this.mushroomHarvestEffects.reveal(harvestCell, 0, () => this.screen.bringUiToTop());
+            }
+            const sprite = sourceSprite;
+            sprite.inputEnabled = false;
+            self.game.tweens.removeFrom(sprite);
+            self.game.add.tween(sprite).to({ alpha: 0 }, 150,
+                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In,
+                true, 0, 0, false).onComplete.addOnce(() => {
+                    if (!sprite.pendingDestroy) {
+                        sprite.visible = false;
+                    }
+                });
+        }
+    }
+
+    private createItemFlightSprite(source: Phaser.Sprite): Phaser.Sprite {
+        const flightSprite = new Phaser.Sprite(this.game, source.x, source.y, source.texture);
+        flightSprite.anchor.set(source.anchor.x, source.anchor.y);
+        flightSprite.scale.set(source.scale.x, source.scale.y);
+        flightSprite.angle = source.angle;
+        flightSprite.alpha = source.alpha;
+        flightSprite.tint = source.tint;
+        flightSprite.inputEnabled = false;
+        this.game.add.existing(flightSprite);
+        AnimationUtils.primeForShow(flightSprite);
+        return flightSprite;
     }
 
     public tryCollectDragonfly(cover: ForestCellCover) {

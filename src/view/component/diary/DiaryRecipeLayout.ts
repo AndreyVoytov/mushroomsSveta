@@ -9,6 +9,7 @@ import LocalizationService from '../../../core/localization/LocalizationService'
 import LocalizationKey from '../../../core/localization/LocalizationKey';
 export default class DiaryRecipeLayout extends BasePanel {
     private particlesEvent: Phaser.TimerEvent;
+    private particleEmitters: Phaser.Particles.Arcade.Emitter[] = [];
 
     constructor(game: Phaser.Game, recipeContent: DiaryContentType, x: number, y: number, animationsDelay?: number, showParticles: boolean = true) {
         super(game, x, y, "diaryLayout", "blank");
@@ -70,6 +71,9 @@ export default class DiaryRecipeLayout extends BasePanel {
         }
 
         if (showParticles) {
+            if (positions.length > 0) {
+                this.game.physics.startSystem(Phaser.Physics.ARCADE);
+            }
             this.particlesEvent = this.game.time.events.add(animationsDelay || 0, () => {
                 this.particlesEvent = null;
                 positions.forEach(p => {
@@ -111,9 +115,8 @@ export default class DiaryRecipeLayout extends BasePanel {
     }
 
     private createParticles(x: number, y: number): void {
-        this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
-        let emitter = this.game.add.emitter(x, y);
+        let emitter = this.game.add.emitter(x, y, 12);
+        this.particleEmitters.push(emitter);
         this.addChild(emitter);
 
         emitter.makeParticles(SpriteUtils.getAtlasKeyAndFrame(this.game, "dustBlue").atlasKey, SpriteUtils.getAtlasKeyAndFrame(this.game, "dustBlue").frameName);
@@ -131,16 +134,30 @@ export default class DiaryRecipeLayout extends BasePanel {
         emitter.width = 170;
         emitter.height = 170;
 
-        emitter.start(false, 2000, 100)
+        emitter.start(false, 2000, 180)
     }
 
     public onKill(): void {
-        if (!this.particlesEvent) {
-            return;
+        if (this.particlesEvent) {
+            this.game.time.events.remove(this.particlesEvent);
+            this.particlesEvent = null;
         }
 
-        this.game.time.events.remove(this.particlesEvent);
-        this.particlesEvent = null;
+        this.particleEmitters.forEach(emitter => {
+            emitter.killAll();
+            emitter.kill();
+            emitter.destroy(true);
+        });
+        this.particleEmitters = [];
+        this.stopTweensRecursively(this);
+    }
+
+    private stopTweensRecursively(target: any): void {
+        if (!target) return;
+        this.game.tweens.removeFrom(target);
+        if (target.children) {
+            target.children.slice().forEach((child: any) => this.stopTweensRecursively(child));
+        }
     }
 
 }

@@ -60,7 +60,7 @@ export default class ReplicaPanel extends BasePanel {
 
     private PERSON_DELTA_X = 750;
 
-    public static FIRST_SHOW_PERSON_DURATION = 400;
+    public static FIRST_SHOW_PERSON_DURATION = 600;
     public static CHANGE_PERSON_DURATION = 200;
     public static LAST_HIDE_PERSON_DURATION = 300;
 
@@ -154,13 +154,15 @@ export default class ReplicaPanel extends BasePanel {
 
     private showIntroPanels(): void {
         if (this.diaryPanel) {
-            this.diaryPanel.visible = true;
             this.diaryPanel.show();
+            AnimationUtils.primeForShow(this.diaryPanel);
+            this.diaryPanel.visible = true;
         }
 
         if (this.mapPartPanel) {
-            this.mapPartPanel.visible = true;
             this.mapPartPanel.show();
+            AnimationUtils.primeForShow(this.mapPartPanel);
+            this.mapPartPanel.visible = true;
         }
     }
 
@@ -354,6 +356,7 @@ export default class ReplicaPanel extends BasePanel {
             this.title.alpha = 0;
             this.title.anchor = new Phaser.Point(0.5, 0.5);
             this.title.inputEnabled = false;
+            this.addNameOutline(this.title);
             this.titlePnl.addChild(this.title);
             // this.addChild(this.title);
             // parentCont.addChild(this.title); this.title.x += this.x; this.title.y += this.y;
@@ -371,6 +374,7 @@ export default class ReplicaPanel extends BasePanel {
             this.title.alpha = 0;
             this.title.anchor = new Phaser.Point(0.5, 0.5);
             this.title.inputEnabled = false;
+            this.addNameOutline(this.title);
             this.titlePnl.addChild(this.title);
             // this.addChild(this.title);
             // parentCont.addChild(this.title); this.title.x += this.x; this.title.y += this.y;
@@ -407,9 +411,18 @@ export default class ReplicaPanel extends BasePanel {
             actionCircle.anchor.set(0.5);
             this.actionButton.addChild(actionCircle);
 
-            let label = new Label(this.game, -13, 0, replicaButtonName, { font: "bold 40px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 800 });
-            label.anchor.set(0.5)
-            this.actionButton.addChild(label)
+            const actionTextStyle: Phaser.PhaserTextStyle = { font: "bold 40px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 800 };
+            let label = new Label(this.game, -13, 0, replicaButtonName, actionTextStyle);
+            label.anchor.set(0.5);
+            // BitmapText does not render Phaser.Text strokes. A thin ring of
+            // dark green glyphs keeps white action text legible on the button.
+            [[-2, 0], [2, 0], [0, -2], [0, 2], [-1, -1], [-1, 1], [1, -1], [1, 1]].forEach(offset => {
+                const outline = new Label(this.game, label.x + offset[0], label.y + offset[1], replicaButtonName,
+                    { font: "bold 40px Arial", fill: "#397619", wordWrap: true, wordWrapWidth: 800 });
+                outline.anchor.set(0.5);
+                this.actionButton.addChild(outline);
+            });
+            this.actionButton.addChild(label);
 
             let image = SpriteUtils.createSprite(this.game, 0, 0, r.buttonImage ? r.buttonImage : "actionMushroom");
             image.anchor.set(0.5);
@@ -452,6 +465,18 @@ export default class ReplicaPanel extends BasePanel {
         // this.dialogPnl.alpha = 0;
     }
 
+    /** BitmapText has no dependable native stroke. Four dark-teal glyph
+     * copies behind the speaker name provide a crisp readable outline. */
+    private addNameOutline(title: Label): void {
+        [[-3, 0], [3, 0], [0, -3], [0, 3]].forEach(offset => {
+            const outline = new Label(this.game, title.x + offset[0], title.y + offset[1], title.text,
+                { font: '45px Arial', fill: '#073f42', wordWrap: true, wordWrapWidth: 880 });
+            outline.anchor.set(0.5, 0.5);
+            outline.inputEnabled = false;
+            this.titlePnl.addChild(outline);
+        });
+    }
+
     public firstShow() {
         const token = ++this.eventToken;
 
@@ -459,6 +484,9 @@ export default class ReplicaPanel extends BasePanel {
         console.log("FIRST REPLICA SHOW: " + this.r.text)
         let timePerson = ReplicaPanel.FIRST_SHOW_PERSON_DURATION;
         let timeText = ReplicaPanel.SHOW_DIALOG_DURATION;
+        let personSlideEasing = Settings.isOnlyLinearAnimations()
+            ? Phaser.Easing.Linear.None
+            : Phaser.Easing.Sinusoidal.InOut;
         this.alpha = 1;
 
         
@@ -512,20 +540,20 @@ export default class ReplicaPanel extends BasePanel {
         this.showIntroPanels();
 
             let showEvent = this.game.time.events.add(this.hasIntroPanel() && screen instanceof ForestScreen? 1500 : 1, () => {
-            this.game.add.tween(this.personImage).to({ x: startX }, timePerson, Phaser.Easing.Linear.None, true, 0, 0, false)
+            this.game.add.tween(this.personImage).to({ x: startX }, timePerson, personSlideEasing, true, 0, 0, false)
 
             if(this.secondPersonImage){
-                this.game.add.tween(this.secondPersonImage).to({ x: secondPersonStartX }, timePerson, Phaser.Easing.Linear.None, true, 0, 0, false)
+                this.game.add.tween(this.secondPersonImage).to({ x: secondPersonStartX }, timePerson, personSlideEasing, true, 0, 0, false)
             }
 
             if (this.decorImage) {
-                this.game.add.tween(this.decorImage).to({ x: decorStartX }, timePerson, Phaser.Easing.Linear.None, true, 0, 0, false)
+                this.game.add.tween(this.decorImage).to({ x: decorStartX }, timePerson, personSlideEasing, true, 0, 0, false)
                 if (this.r.decor.animation) {
                     this.applyAnimationToDecor(this.game, this.decorImage, this.r.decor.animation);
                 }
             }
             if (this.decorImage2) {
-                this.game.add.tween(this.decorImage2).to({ x: decor2StartX }, timePerson, Phaser.Easing.Linear.None, true, 0, 0, false)
+                this.game.add.tween(this.decorImage2).to({ x: decor2StartX }, timePerson, personSlideEasing, true, 0, 0, false)
                 if (this.r.decor2.animation) {
                     this.applyAnimationToDecor(this.game, this.decorImage2, this.r.decor2.animation);
                 }
@@ -822,7 +850,9 @@ export default class ReplicaPanel extends BasePanel {
         this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
         this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
 
-        let portion = 3;
+        // BitmapText rebuilds its glyph batch when its text changes. Reveal a
+        // few more characters per update to cut redraw work during long lines.
+        let portion = 6;
 
         let startPrintEvent = this.game.time.events.add(delay, ()=>{
             if (expectedToken !== this.eventToken) {
@@ -875,9 +905,6 @@ export default class ReplicaPanel extends BasePanel {
                 this.text.setPreparedText(this.textToPrint.substring(0, Math.min(this.textToPrint.length, i + portion)));
                 let holderAny: any = this.textHolder as any;
                 let textAny: any = this.text as any;
-                if (textAny && typeof textAny.updateText === "function") {
-                    textAny.updateText();
-                }
                 if (holderAny && typeof holderAny.updateTransform === "function") {
                     holderAny.updateTransform();
                 }
@@ -1055,6 +1082,7 @@ export default class ReplicaPanel extends BasePanel {
             this.printingEvents.forEach(e => {
                 this.game.time.events.remove(e);
             })
+            this.printingEvents = [];
             this.textHolder.x = this.textHolderTargetX;
             this.textHolder.y = this.textHolderTargetY;
             this.textHolder.visible = true;

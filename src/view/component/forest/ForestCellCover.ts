@@ -13,12 +13,14 @@ import AnimationUtils from './../../../core/utils/AnimationUtils';
 import ForestUtils from './../../../core/utils/ForestUtils';
 import NeverError from './../../../core/utils/NeverError';
 import Utils from './../../../core/utils/Utils';
+import SapphireEffects from './SapphireEffects';
 export default class ForestCellCover extends Phaser.Group {
 
     private environment: Environment;
     // private leafType: string;
 
     public darkCover: Phaser.Sprite;
+    private darkLeaf: Phaser.Sprite;
     public decoration: Phaser.Sprite;
     private decoration2: Phaser.Sprite;
     private decoration3: Phaser.Sprite;
@@ -26,6 +28,8 @@ export default class ForestCellCover extends Phaser.Group {
     private decoration5: Phaser.Sprite;
     private decoration6: Phaser.Sprite;
     private frame: Phaser.Sprite;
+    private frameTween: Phaser.Tween;
+    private frameTargetAlpha: number = 0;
     private locked = false;
 
     private cankerberry: Phaser.Sprite;
@@ -100,13 +104,13 @@ export default class ForestCellCover extends Phaser.Group {
         this.darkCover.inputEnabled = false;
         this.addChild(this.darkCover);
 
-        let darkLeaf = SpriteUtils.createSprite(this.game, 0, 0, (unconditionalLeafType ? unconditionalLeafType : leafType) + "g");
-        darkLeaf.anchor = new Phaser.Point(0.5, 0.5);
-        darkLeaf.width = width;
-        darkLeaf.height = height;
-        darkLeaf.scale = new Phaser.Point(1.5, 1.5);
-        darkLeaf.inputEnabled = false;
-        this.darkCover.addChild(darkLeaf);
+        this.darkLeaf = SpriteUtils.createSprite(this.game, 0, 0, (unconditionalLeafType ? unconditionalLeafType : leafType) + "g");
+        this.darkLeaf.anchor = new Phaser.Point(0.5, 0.5);
+        this.darkLeaf.width = width;
+        this.darkLeaf.height = height;
+        this.darkLeaf.scale = new Phaser.Point(1.5, 1.5);
+        this.darkLeaf.inputEnabled = false;
+        this.darkCover.addChild(this.darkLeaf);
 
         let decorationKey = this.getDecorationKey(cellType);
         if (decorationKey != "") {
@@ -231,13 +235,11 @@ export default class ForestCellCover extends Phaser.Group {
     }
 
     public setFrame(alpha:number){
-        if(this.frame) {
-            this.frame.alpha = alpha;
-        } else { 
-            if (alpha <= 0) {
-                return;
-            }
+        const targetAlpha = Math.max(0, Math.min(1, alpha));
+        if (this.frame && Math.abs(this.frameTargetAlpha - targetAlpha) < 0.001) return;
+        if (!this.frame && targetAlpha <= 0) return;
 
+        if (!this.frame) {
             let frameImage = "hexFrame";
             switch(ForestUtils.getBiom(this.cellType)){
                 case BiomType.SAND:
@@ -259,10 +261,20 @@ export default class ForestCellCover extends Phaser.Group {
             this.frame.width = this.w;
             this.frame.height = this.h;
             this.frame.inputEnabled = false;
-            this.frame.visible = false;
             this.addChild(this.frame);
-            AnimationUtils.fadeInStable(this.game, this.frame, 1, 20, alpha);
+            // The hint must remain dynamic even when the rest of the cover is cached.
+            this.cacheAsBitmap = false;
+            AnimationUtils.primeForShow(this);
+            AnimationUtils.primeForShow(this.frame);
         }
+
+        this.frameTargetAlpha = targetAlpha;
+        if (this.frameTween) this.frameTween.stop();
+        this.frameTween = this.game.add.tween(this.frame).to(
+            { alpha: targetAlpha }, 300,
+            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.InOut,
+            true
+        );
     }
 
     public getCankerBerriesCount() {
@@ -373,11 +385,58 @@ export default class ForestCellCover extends Phaser.Group {
             this.game.add.tween(this.darkCover).to({ alpha: 1 }, 500, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
         }
         
-        if(this.frame){
-            this.frame.alpha = 0;
-        }
+        this.setFrame(0);
 
         this.openableCover.inputEnabled = false;
+    }
+
+    public growSapphireStar(delay: number): Phaser.Sprite {
+        this.cacheAsBitmap = false;
+        this.darkCover.cacheAsBitmap = false;
+        const star = SpriteUtils.createSprite(this.game, 0, 0, 'sapphireStar');
+        star.anchor.set(0.5);
+        // Phaser's width/height setters store the requested size in scale.
+        // Preserve that target before setting scale to zero for the grow-in
+        // animation, otherwise the tween ends at the atlas image's native size.
+        const targetScaleX = this.w * 0.78 / (star.width * Math.abs(this.darkCover.scale.x));
+        const targetScaleY = this.h * 0.78 / (star.height * Math.abs(this.darkCover.scale.y));
+        // This is deliberately a separate, stationary sprite. The sapphire
+        // leaves it behind when it flies to the reward panel, making the
+        // collection feel like an item has been lifted from its slot.
+        const starOutline = SpriteUtils.createSprite(this.game, 0, 0, 'sapphireStarBackdrop');
+        starOutline.anchor.set(0.5);
+        // The PNG is an alpha-expanded copy of sapphireStar: it shares its
+        // 180x191 canvas and center, with a four-pixel in-game spread.
+        starOutline.scale.set(targetScaleX, targetScaleY);
+        starOutline.alpha = 0;
+        starOutline.inputEnabled = false;
+        this.darkCover.addChild(starOutline);
+        star.scale.set(0);
+        star.alpha = 0;
+        star.inputEnabled = false;
+        const glow = SapphireEffects.sprite(this.game, false, this.w / Math.abs(this.darkCover.scale.x));
+        glow.alpha = 0;
+        this.darkCover.addChild(glow);
+        this.darkCover.addChild(star);
+        this.game.add.tween(starOutline).to({ alpha: 0.92 }, 160,
+            Phaser.Easing.Linear.None, true, delay + 100, 0, false);
+        const flash = this.game.add.tween(glow).to({ alpha: 0.65 }, 240,
+            Phaser.Easing.Sinusoidal.InOut, true, delay + 100, 0, true);
+        flash.onComplete.addOnce(() => glow.destroy());
+
+        this.game.add.tween(this.darkLeaf).to(
+            { alpha: 0, angle: -12 }, 280,
+            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In,
+            true, delay, 0, false
+        );
+        this.game.add.tween(star).to({ alpha: 1 }, 220, Phaser.Easing.Linear.None, true, delay + 100, 0, false);
+        this.game.add.tween(star.scale).to(
+            { x: targetScaleX, y: targetScaleY }, 360,
+            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Back.Out,
+            true, delay + 100, 0, false
+        );
+
+        return star;
     }
 
     public tearOffCankerberry(): Phaser.Sprite {

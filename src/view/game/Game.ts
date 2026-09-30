@@ -28,6 +28,8 @@ export default class Game extends Phaser.Game {
     public static SOUND_ENABLED = true;
 
     public static WHITE_TRANSITION = false;
+    // Kept only until HouseScreen builds the reveal half of a level-to-house transition.
+    public static CLOVER_RETURN_TRANSITION = false;
 
     public static LOCAL_USER_ID = null;
     public static LOCAL_USER = null;
@@ -38,7 +40,9 @@ export default class Game extends Phaser.Game {
     }
 
     constructor() {
-        super(Game.getWidth(), Game.getHeight(), Settings.isOkApp() ? Phaser.WEBGL : Phaser.CANVAS, 'content', null);
+        // Prefer GPU rendering where available; Phaser falls back to Canvas on
+        // devices that do not support WebGL.
+        super(Game.getWidth(), Game.getHeight(), Phaser.AUTO, 'content', null);
         console.log("width: " + Game.getWidth() + ", heifth: " + Game.getHeight())
 
         Game.CAN_USE_WEBP = Game.canUseWebP();

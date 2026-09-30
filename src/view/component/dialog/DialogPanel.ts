@@ -49,6 +49,11 @@ export default class DialogPanel extends BasePanel {
         return !!this.replicaPanel || this.stripsPanel.isActive();
     }
 
+    public addEffectAboveStrips(effect: Phaser.Particles.Arcade.Emitter): void {
+        this.addChild(effect);
+        this.setChildIndex(effect, 1);
+    }
+
     public skip() {
         let user = UserService.getUser();
         this.screen.setOnClickAnimations([]); //не сработало

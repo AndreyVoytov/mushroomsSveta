@@ -9,20 +9,36 @@ import AnimationUtils from '../../../core/utils/AnimationUtils';
 import Label from './Label';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import Settings from '../../../core/service/Settings';
+import EventUtils from '../../../core/utils/EventUtils';
+import ForestUtils from '../../../core/utils/ForestUtils';
 export default class TreesTransitionPanel extends BasePanel {
     private static readonly OVERLAY_COLOR = 0x23520d;
     private static readonly OUTGOING_OVERLAY_TARGET_ALPHA = 0.35;
+    private static readonly OPAQUE_COVER_LEAD_TIME = 350;
     private tree1: Phaser.Sprite;
     private tree2: Phaser.Sprite;
     private tree3: Phaser.Sprite;
     private tree4: Phaser.Sprite;
     private overlay: Phaser.Graphics;
+    private branches: TreesPart[];
+    private loadingLabel: Label;
+    private loadingOutlineLabels: Label[] = [];
+    private loadingBaseText: string;
+    private loadingDots = 1;
+    private loadingDotsEvent: Phaser.TimerEvent;
+    private coverCompleteTimer: Phaser.TimerEvent;
+    private coveredCallbacks: (() => void)[] = [];
+    private coverMovementComplete = false;
+    private coverFadeComplete = false;
+    private coverAnimationComplete = false;
+    private revealing = false;
 
-    constructor(game: Phaser.Game, from: boolean, time: number, delay: number) {
+    constructor(game: Phaser.Game, from: boolean, time: number, delay: number, useClover?: boolean) {
         super(game, 0, 0);
         this.game = game;
-
-        if(time != 0) time = 960;
+        const clover = useClover == null
+            ? ForestUtils.isCloverReskin(EventUtils.getActiveEventForestType())
+            : useClover;
 
         this.overlay = new Phaser.Graphics(this.game, 0, 0);
         this.overlay.beginFill(TreesTransitionPanel.OVERLAY_COLOR, 1);
@@ -47,11 +63,11 @@ export default class TreesTransitionPanel extends BasePanel {
         // let tp41 = new Phaser.Sprite(this.game, 0,0, TreesPart.texture);tp41.name="tp41";this.addSprite(tp41);
 
 
-        let tp0 = new TreesPart(game, "tp0", true); tp0.visible = false; this.addChild(tp0);
-        let tp11 = new TreesPart(game, "tp11", true); tp11.visible = false; this.addChild(tp11);
-        let tp21 = new TreesPart(game, "tp21", true); tp21.visible = false; this.addChild(tp21);
-        let tp31 = new TreesPart(game, "tp31", true); tp31.visible = false; this.addChild(tp31);
-        let tp41 = new TreesPart(game, "tp41", true); tp41.visible = false; this.addChild(tp41);
+        let tp0 = new TreesPart(game, "tp0", true, clover); tp0.visible = false; this.addChild(tp0);
+        let tp11 = new TreesPart(game, "tp11", true, clover); tp11.visible = false; this.addChild(tp11);
+        let tp21 = new TreesPart(game, "tp21", true, clover); tp21.visible = false; this.addChild(tp21);
+        let tp31 = new TreesPart(game, "tp31", true, clover); tp31.visible = false; this.addChild(tp31);
+        let tp41 = new TreesPart(game, "tp41", true, clover); tp41.visible = false; this.addChild(tp41);
 
 
         this.applyPreset([         {"spriteId":"tp41","x":116.89655172413796,"y":1502.64152892562,"scaleX":1.1859675127300187,"scaleY":1.161736611853477,"anchorX":0,"anchorY":0,"rotation":-1.9001379310344828},
@@ -66,10 +82,10 @@ export default class TreesTransitionPanel extends BasePanel {
         // let tp3 = new Phaser.Sprite(this.game, 0,0, TreesPart.texture);tp3.name="tp3"; this.addSprite(tp3);
         // let tp4 = new Phaser.Sprite(this.game, 0,0, TreesPart.texture);tp4.name="tp4"; this.addSprite(tp4);
 
-        let tp1 = new TreesPart(game, "tp1"); tp1.visible = false; this.addChild(tp1);
-        let tp2 = new TreesPart(game, "tp2"); tp2.visible = false; this.addChild(tp2);
-        let tp3 = new TreesPart(game, "tp3"); tp3.visible = false; this.addChild(tp3);
-        let tp4 = new TreesPart(game, "tp4"); tp4.visible = false; this.addChild(tp4);
+        let tp1 = new TreesPart(game, "tp1", false, clover); tp1.visible = false; this.addChild(tp1);
+        let tp2 = new TreesPart(game, "tp2", false, clover); tp2.visible = false; this.addChild(tp2);
+        let tp3 = new TreesPart(game, "tp3", false, clover); tp3.visible = false; this.addChild(tp3);
+        let tp4 = new TreesPart(game, "tp4", false, clover); tp4.visible = false; this.addChild(tp4);
 
 
         this.applyPreset([ {"spriteId":"tp2","x":1016.2758620689655,"y":1617.9039256198346,"scaleX":1.1986206896551728,"scaleY":1.149039256198347,"anchorX":0,"anchorY":0,"rotation":2.774068965517242},
@@ -79,6 +95,7 @@ export default class TreesTransitionPanel extends BasePanel {
         ])
 
         let branches = [tp0,tp11,tp21,tp31,tp41,tp1,tp2,tp3,tp4];
+        this.branches = branches;
         branches.forEach(b => {
             b.visible = true;
             // Keep dynamic transforms stable on low FPS devices; cacheAsBitmap can cause one-frame jumps.
@@ -99,13 +116,36 @@ export default class TreesTransitionPanel extends BasePanel {
         }
 
         let showLoadingLabel = from || time == 0;
-        let loading = new Label(this.game, this.game.width/2, this.game.height*4/5, GameText.loading(), { "font": "bold 60px Arial", "fill": "#ffffff" });
-        loading.addStrokeColor("#194c3f", 0)
-        loading.strokeThickness = 6;
+        this.loadingBaseText = GameText.loading().replace(/(?:\.\.\.|…)+\s*$/, '');
+        let loadingText = this.loadingBaseText + '.';
+        let loadingX = this.game.width / 2;
+        let loadingY = this.game.height * 4 / 5;
+        let loadingStyle = { "font": "bold 60px Arial", "fill": "#ffffff" };
+        let loading = new Label(this.game, loadingX, loadingY, loadingText, loadingStyle);
+        loading.anchor.set(0.5, 0.5);
+        // Preserve the centered position of the initial one-dot label, then pin
+        // its left edge so subsequent dots grow to the right without shifting it.
+        const loadingLeft = loadingX - loading.textWidth / 2;
+        loading.x = loadingLeft;
+        loading.anchor.set(0, 0.5);
+
+        const outlineOffsets = [[-3, 0], [3, 0], [0, -3], [0, 3]];
+        outlineOffsets.forEach(offset => {
+            const outline = new Label(this.game, loadingLeft + offset[0], loadingY + offset[1], loadingText,
+                Object.assign({}, loadingStyle, { fill: "#194c3f" }));
+            outline.anchor.set(0, 0.5);
+            outline.visible = showLoadingLabel;
+            outline.alpha = showLoadingLabel ? 1 : 0;
+            this.addChild(outline);
+            this.loadingOutlineLabels.push(outline);
+        });
+
         loading.visible = showLoadingLabel;
         loading.alpha = showLoadingLabel ? 1 : 0;
 
         this.addChild(loading);
+        this.loadingLabel = loading;
+        this.loadingDotsEvent = this.game.time.events.loop(400, this.animateLoadingDots, this);
 
         let tweens:Phaser.Tween[] = [];
 
@@ -154,11 +194,32 @@ export default class TreesTransitionPanel extends BasePanel {
             tweens.push(this.game.add.tween(tp41).from({ x: tp41.x- 250, y: tp41.y+250 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +200 + delay2, 0, false));
             tweens.push(this.game.add.tween(tp21).from({ x: tp21.x+ 250, y: tp21.y+300 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +0 + delay2, 0, false));
 
-            tweens.push(this.game.add.tween(tp0).from({ x: tp0.x- 100, y: tp0.y-100 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 250 + delay2, 0, false));
+            const finalCoverTween = this.game.add.tween(tp0).from(
+                { x: tp0.x - 100, y: tp0.y - 100 },
+                time,
+                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
+                true,
+                delay + 250 + delay2,
+                0,
+                false
+            );
+            finalCoverTween.onComplete.addOnce(this.onCoverMovementComplete, this);
+            tweens.push(finalCoverTween);
+
+            // Seal the tiny central gaps 350ms before the last branch ends,
+            // before expensive screen creation can steal a visible frame.
+            const finalCoverEnd = delay + 250 + delay2 + time;
+            tweens.push(game.add.tween(this.overlay).to(
+                { alpha: 1 }, 200,
+                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In,
+                true, Math.max(delay, finalCoverEnd - TreesTransitionPanel.OPAQUE_COVER_LEAD_TIME), 0, false
+            ));
 
             tweens.push(AnimationUtils.fadeIn(this.game, tp11, delay + delay2 + 50 , 300*k ))
             tweens.push(AnimationUtils.fadeIn(this.game, tp31, delay + delay2  +100 , 300*k ))
-            tweens.push(AnimationUtils.fadeIn(this.game, tp41, delay + delay2 + 200 , 300*k ))
+            const finalCoverFade = AnimationUtils.fadeIn(this.game, tp41, delay + delay2 + 200 , 300*k );
+            finalCoverFade.onComplete.addOnce(this.onCoverFadeComplete, this);
+            tweens.push(finalCoverFade);
             tweens.push(AnimationUtils.fadeIn(this.game, tp21, delay + delay2  , 300*k ))
 
             tweens.push(game.add.tween(this.overlay).to(
@@ -176,92 +237,153 @@ export default class TreesTransitionPanel extends BasePanel {
             loading.visible = true;
             loading.alpha = 0;
             tweens.push(AnimationUtils.fadeIn(this.game, loading, delay + 250 + delay2  ))
-            tweens.forEach(t => t.frameBased = true);
-
+            this.loadingOutlineLabels.forEach(outline => {
+                outline.visible = true;
+                outline.alpha = 0;
+                tweens.push(AnimationUtils.fadeIn(this.game, outline, delay + 250 + delay2));
+            });
         } else if (time != 0 && window.location.href.indexOf("treesStop") == -1 ){
-            time = 960;
-            SoundUtils.bushMovingOut()
-            
-            // Stable start transition: quick start + deterministic movement/fade (no long idle full-screen flash).
-            // The incoming transition now relies on a pre-created static trees cover below it.
-            // Forcing this fullscreen overlay to alpha=1 caused a one-frame flash on some devices.
-            this.overlay.alpha = 0;
-            loading.visible = false;
-            loading.alpha = 0;
-
-            let startDelay = 60;
-            let moveTime = time + 420;
-            let fadeTime = 180;
-            let moveMultiplier = 0.95;
-            let branchesForHide = [tp1,tp3,tp4,tp2,tp11,tp31,tp41,tp21,tp0];
-            let cx = this.game.width / 2;
-            let cy = this.game.height / 2;
-            let branchMetrics = branchesForHide.map(branch => {
-                let vx = branch.x - cx;
-                let vy = branch.y - cy;
-                let len = Math.sqrt(vx * vx + vy * vy);
-                return { branch, vx, vy, len };
-            });
-            let minLen = Math.min.apply(null, branchMetrics.map(m => m.len));
-            let maxLen = Math.max.apply(null, branchMetrics.map(m => m.len));
-            let lenRange = Math.max(1, maxLen - minLen);
-            let delaySpan = 220;
-
-            branchMetrics.forEach((m, i) => {
-                let branch = m.branch;
-                branch.alpha = 1;
-
-                // Move each branch away from the screen center; this matches the "inner flat edge" direction.
-                let vx = m.vx;
-                let vy = m.vy;
-                let len = m.len;
-
-                // Fallback for near-center branch to avoid ambiguous direction.
-                if (len < 1) {
-                    vx = -1;
-                    vy = -1;
-                    len = Math.sqrt(2);
-                }
-
-                let nx = vx / len;
-                let ny = vy / len;
-                let distance = 900 * moveMultiplier;
-                if (branch === tp0) {
-                    // This central piece has the largest footprint; push it farther to fully leave frame.
-                    distance *= 2.0;
-                }
-                // Center branches should leave first; edge branches can start a bit later.
-                let localDelay = startDelay + ((len - minLen) / lenRange) * delaySpan;
-
-                tweens.push(this.game.add.tween(branch).to(
-                    { x: branch.x + nx * distance, y: branch.y + ny * distance },
-                    moveTime,
-                    Settings.isOnlyLinearAnimations()? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
-                    true,
-                    localDelay,
-                    0,
-                    false
-                ));
-
-                let fadeStart = localDelay + moveTime - 220;
-                if (branch === tp0) {
-                    fadeStart -= 120;
-                }
-                tweens.push(AnimationUtils.fadeOut(this.game, branch, fadeStart, fadeTime));
-            });
-
-            tweens.forEach(t => t.frameBased = true);
+            this.reveal();
+        } else {
+            this.markCoverAnimationComplete();
         }
 
         // This panel is transitional and should not survive between level/screen states.
-        if (time > 0) {
+        if (from && time > 0) {
             let disposeDelay = delay + time + 1200;
             this.game.time.events.add(disposeDelay, () => {
                 if (this && this.parent) {
+                    this.stopLoadingDots();
                     this.destroy(true);
                 }
             });
         }
+    }
+
+    private animateLoadingDots(): void {
+        if (!this.loadingLabel || !this.loadingLabel.visible) {
+            return;
+        }
+
+        this.loadingDots = this.loadingDots % 3 + 1;
+        const text = this.loadingBaseText + new Array(this.loadingDots + 1).join('.');
+        this.loadingLabel.text = text;
+        this.loadingOutlineLabels.forEach(label => label.text = text);
+    }
+
+    private stopLoadingDots(): void {
+        if (this.loadingDotsEvent) {
+            this.game.time.events.remove(this.loadingDotsEvent);
+            this.loadingDotsEvent = null;
+        }
+    }
+
+    /** Start expensive screen initialization after the last leaf has closed. */
+    public onCovered(callback: () => void): void {
+        if (this.coverAnimationComplete) {
+            this.game.time.events.add(0, callback, this);
+            return;
+        }
+
+        this.coveredCallbacks.push(callback);
+    }
+
+    private onCoverMovementComplete(): void {
+        this.coverMovementComplete = true;
+        this.tryFinishCoverAnimation();
+    }
+
+    private onCoverFadeComplete(): void {
+        this.coverFadeComplete = true;
+        this.tryFinishCoverAnimation();
+    }
+
+    private tryFinishCoverAnimation(): void {
+        if (!this.coverMovementComplete || !this.coverFadeComplete || this.coverCompleteTimer) {
+            return;
+        }
+
+        // The branches meet with small transparent gaps in the middle. Make the
+        // backing fully opaque before scene creation, so a slow frame can only
+        // show the dark-green cover rather than the old location underneath.
+        // Keep the screen under this opaque layer for one rendered beat before
+        // the state switch starts its potentially expensive initialization.
+        this.coverCompleteTimer = this.game.time.events.add(220, this.markCoverAnimationComplete, this);
+    }
+
+    private markCoverAnimationComplete(): void {
+        if (this.coverAnimationComplete) {
+            return;
+        }
+
+        this.coverCompleteTimer = null;
+        this.coverAnimationComplete = true;
+        this.coveredCallbacks.splice(0).forEach(callback => callback());
+    }
+
+    /** Open the cover that was already visible during the screen load. */
+    public reveal(): void {
+        if (this.revealing || window.location.href.indexOf("treesStop") != -1) {
+            return;
+        }
+        this.revealing = true;
+        this.stopLoadingDots();
+        SoundUtils.bushMovingOut();
+        this.overlay.alpha = 0;
+        this.loadingLabel.visible = false;
+        this.loadingLabel.alpha = 0;
+        this.loadingOutlineLabels.forEach(outline => {
+            outline.visible = false;
+            outline.alpha = 0;
+        });
+
+        const tp0 = this.branches[0];
+        const branchesForHide = [this.branches[5], this.branches[7], this.branches[8], this.branches[6],
+            this.branches[1], this.branches[3], this.branches[4], this.branches[2], tp0];
+        const time = 960;
+        const startDelay = 60;
+        const moveTime = time + 420;
+        const fadeTime = 180;
+        const cx = this.game.width / 2;
+        const cy = this.game.height / 2;
+        const tweens: Phaser.Tween[] = [];
+        const branchMetrics = branchesForHide.map(branch => {
+            const vx = branch.x - cx;
+            const vy = branch.y - cy;
+            return { branch, vx, vy, len: Math.sqrt(vx * vx + vy * vy) };
+        });
+        const minLen = Math.min.apply(null, branchMetrics.map(m => m.len));
+        const maxLen = Math.max.apply(null, branchMetrics.map(m => m.len));
+        const lenRange = Math.max(1, maxLen - minLen);
+
+        branchMetrics.forEach(m => {
+            const branch = m.branch;
+            branch.alpha = 1;
+            let vx = m.vx;
+            let vy = m.vy;
+            let len = m.len;
+            if (len < 1) {
+                vx = -1;
+                vy = -1;
+                len = Math.sqrt(2);
+            }
+
+            const distance = branch === tp0 ? 1710 : 855;
+            const localDelay = startDelay + ((len - minLen) / lenRange) * 220;
+            tweens.push(this.game.add.tween(branch).to(
+                { x: branch.x + vx / len * distance, y: branch.y + vy / len * distance },
+                moveTime,
+                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
+                true, localDelay, 0, false
+            ));
+            tweens.push(AnimationUtils.fadeOut(this.game, branch,
+                localDelay + moveTime - (branch === tp0 ? 340 : 220), fadeTime));
+        });
+        this.game.time.events.add(time + 1200, () => {
+            if (this.parent) {
+                this.destroy(true);
+            }
+        });
     }
 
     public attachSprite(spriteId: string, name?: string): Phaser.Sprite {

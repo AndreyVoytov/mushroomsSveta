@@ -1,32 +1,30 @@
 
-import Game from '../../game/Game';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
-import BasePanel from './BasePanel';
 import DebugScreen from '../../screen/common/DebugScreen';
 import Utils from './../../../core/utils/Utils';
 import Preset from './../../game/Preset';
 export default class TreesPart extends Phaser.Group {
 
-    public static texture:Phaser.RenderTexture;
+    private static textureCache: { [key: string]: { game: Phaser.Game; texture: Phaser.RenderTexture; x: number; y: number } } = {};
 
-    constructor(game: Phaser.Game, name:string, tintHarder?:boolean) {
+    constructor(game: Phaser.Game, name:string, tintHarder?:boolean, useClover?:boolean) {
         super(game);
         this.name = name;
         this.game = game;
         this.visible = false;
 
-        if(TreesPart.texture){
-            let sprite = new Phaser.Sprite(this.game, 0,0, TreesPart.texture);
-            // sprite.anchor.set(1.5);
-            this.addChild(sprite);
+        const textureKey = (useClover ? 'clover' : 'forest') + (tintHarder ? '_hard' : '_soft');
+        const cachedTexture = TreesPart.textureCache[textureKey];
+        if (!DebugScreen.DEBUG_MODE && cachedTexture && cachedTexture.game === game) {
+            this.addTextureSprite(cachedTexture.texture, cachedTexture.x, cachedTexture.y);
             return;
         }
 
-        let b1 = this.attachSprite("bushes", "bushes1")
-        let b2 = this.attachSprite("bushes", "bushes2")
+        let b1 = this.attachSprite(useClover ? "bushClover" : "bushes", "bushes1")
+        let b2 = this.attachSprite(useClover ? "bushClover" : "bushes", "bushes2")
         let lakeHeaderDecor = this.attachSprite("lakeHeaderDecor", "lakeHeaderDecor", 0x114411)
-        let b3 = this.attachSprite("bushes", "bushes3")
-        let b4 = this.attachSprite("bushDark", "bushes4")
+        let b3 = this.attachSprite(useClover ? "bushClover" : "bushes", "bushes3")
+        let b4 = this.attachSprite(useClover ? "bushCloverDark" : "bushDark", "bushes4")
         if(tintHarder){
             let lakeHeaderDecor2 = this.attachSprite("lakeHeaderDecor", "lakeHeaderDecor", 0x114411)
             lakeHeaderDecor2.alpha = 0.5;
@@ -40,11 +38,33 @@ export default class TreesPart extends Phaser.Group {
         {"spriteId":"lakeHeaderDecor2","x":331.6551724137931,"y":311.2159090909091,"scaleX":18.579999999999991,"scaleY":22.379999999999963,"anchorX":0.5,"anchorY":0.5,"rotation":-1.5700000000000012}
     ])
 
-        //TODO оптимизация производительности
-        if(window.location.href.indexOf("treesTest") != -1){
-            TreesPart.texture =  this.generateTexture();
+        if (useClover) {
+            this.attachSprite("bushClover2", "cloverAccent");
+            this.attachSprite("bushCloverDark2", "cloverAccentDark");
+            this.applyPreset([
+                {"spriteId":"cloverAccent","x":370,"y":345,"scaleX":2,"scaleY":2,"anchorX":0.5,"anchorY":0.5,"rotation":0.4},
+                {"spriteId":"cloverAccentDark","x":130,"y":300,"scaleX":2,"scaleY":2,"anchorX":0.5,"anchorY":0.5,"rotation":-0.3}
+            ]);
         }
 
+        //TODO оптимизация производительности
+        if (!DebugScreen.DEBUG_MODE) {
+            const bounds = this.getLocalBounds();
+            this.visible = true;
+            const texture = this.generateTexture(1, Phaser.scaleModes.DEFAULT, this.game.renderer);
+            this.visible = false;
+
+            TreesPart.textureCache[textureKey] = { game: game, texture: texture, x: bounds.x, y: bounds.y };
+            this.removeAll(true);
+            this.addTextureSprite(texture, bounds.x, bounds.y);
+        }
+
+    }
+
+    private addTextureSprite(texture: Phaser.RenderTexture, x: number, y: number): void {
+        const sprite = new Phaser.Sprite(this.game, x, y, texture);
+        sprite.name = 'treePartTexture';
+        this.addChild(sprite);
     }
 
     protected attachSprite(spriteId: string, name?: string, tintColor?:number): Phaser.Sprite {

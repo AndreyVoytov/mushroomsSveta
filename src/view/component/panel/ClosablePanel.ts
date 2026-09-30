@@ -59,14 +59,13 @@ export default class ClosablePanel extends BasePanel {
         this.game.add.tween(this.blackTransparent).to({ alpha: 0.5 }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, instantly ? 0 : 300, 0, false);
         this.blackTransparent.inputEnabled = true;
 
-
-
         this.game.time.events.add(100, () => {
             this.bringToTop();
         })
 
-        this.visible = true;
-
+        // Build the first visual state while the panel is still hidden. In CE,
+        // making a panel visible before resetting alpha/scale may render one
+        // frame with the state left by the previous close animation.
         if (withoutAnimation) {
             this.game.tweens.removeFrom(this.blackTransparent);
             this.game.tweens.removeFrom(this);
@@ -75,6 +74,8 @@ export default class ClosablePanel extends BasePanel {
             this.blackTransparent.alpha = 0.5;
             this.alpha = 1;
             this.scale.set(this.maxScale);
+            AnimationUtils.primeForShow(this);
+            this.visible = true;
             this.bringToTop();
             this.processing = false;
             this.openingWithoutAnimation = false;
@@ -84,11 +85,11 @@ export default class ClosablePanel extends BasePanel {
 
         if (instantly) {
             this.alpha = 0;
-            this.game.add.tween(this).to({ alpha: 1 }, 100, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
-            this.scale = new Phaser.Point(0.9, 0.9);
+            this.scale.set(0.9, 0.9);
             if(!this.fadeTransition){
                 this.game.add.tween(this.scale).to({ x: this.maxScale, y: this.maxScale }, 100, Phaser.Easing.Linear.None, true, 0, 0, false);
             }
+            this.game.add.tween(this).to({ alpha: 1 }, 100, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
         } else {
             // this.alpha = 0;
             // this.game.add.tween(this).to({ alpha: 1 }, 500, Phaser.Easing.Exponential.Out, true, 300, 0, false);
@@ -99,6 +100,9 @@ export default class ClosablePanel extends BasePanel {
                 AnimationUtils.appear2(this.game, this, 200, 1, 1, this.maxScale);
             }
         }
+
+        AnimationUtils.primeForShow(this);
+        this.visible = true;
 
         this.openingWithoutAnimation = false;
         SoundUtils.panelOpen();

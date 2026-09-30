@@ -558,10 +558,10 @@ export default class SideEventPanel extends ClosablePanel {
         let trees = new TreesTransitionPanel(this.game, true, time, 0);
         houseScreen.addTopOverlay(trees);
 
-        this.game.time.events.add(time * 2, () => {
+        trees.onCovered(() => {
             AnalyticUtils.logLevelStart();
             houseScreen.startScreen(ForestScreen, true, false);
-        }, this);
+        });
     }
 
     private onBackgroundPreviewButtonClick(): void {

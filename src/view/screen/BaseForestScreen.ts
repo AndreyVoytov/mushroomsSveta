@@ -32,6 +32,7 @@ import LocationUtils from './../../core/utils/LocationUtils';
 import EducationPanel from './../component/dialog/EducationPanel';
 import AimsStartPanel from './../component/forest/AimsStartPanel';
 import LevelCompletePanel from './../component/forest/CompleteLevelPanel';
+import SapphireFlight from './../component/forest/SapphireFlight';
 import FailPanel from './../component/forest/FailPanel';
 import ForestBottomPanel from './../component/forest/ForestBottomPanel';
 import ForestTopPanel from './../component/forest/ForestTopPanel';
@@ -85,8 +86,12 @@ export default abstract class BaseForestScreen extends DialogScreen {
     protected maple: Phaser.Sprite;
     protected mapleFace: Phaser.Sprite;
     public energyDetailsShown: boolean = false;
+    private energyDetailsPanel: EnergyDetailsPanel | null = null;
     private onDialogEndCallback: () => void;
     private fakeTrees: Phaser.Sprite;
+    private useCloverTransition: boolean = false;
+    private sapphireStars: Phaser.Sprite[] = [];
+    private sapphireStarsPrepared: boolean = false;
 
     protected abstract createCells(): void;
     protected abstract onCellOpen(cellState: CellState, openingType: OpeningType): void;
@@ -103,9 +108,13 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
     init() {
         super.init();
+        // Phaser reuses state instances between levels (including replays).
+        this.sapphireStars = [];
+        this.sapphireStarsPrepared = false;
+        this.useCloverTransition = ForestUtils.isCloverReskin(this.getForestType());
 
         if (!Game.WHITE_TRANSITION) {
-            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0));
+            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverTransition));
         }
     }
 
@@ -146,6 +155,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 user.incrementCurrentForest();
             }
             user.setJustCompletedLevel(true);
+            Game.CLOVER_RETURN_TRANSITION = this.useCloverTransition;
             this.startScreen(HouseScreen, true, false)
             return;
         }
@@ -288,7 +298,13 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.uiHolder.addChild(new ColorTransitionPanel(this.game, 0x000000, treesTime, 0, false));
             Game.WHITE_TRANSITION = false;
         } else {
-            this.addTopOverlay(new TreesTransitionPanel(this.game, false, treesTime, treesTime));
+            const trees = this.fakeTrees instanceof TreesTransitionPanel
+                ? <TreesTransitionPanel>this.fakeTrees
+                : new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverTransition);
+            this.addTopOverlay(trees);
+            AnimationUtils.primeForShow(trees);
+            trees.reveal();
+            this.fakeTrees = null;
         }
 
         this.releaseFakeTrees(Game.WHITE_TRANSITION ? 0 : BaseForestScreen.FAKE_TREES_RELEASE_DELAY);
@@ -555,12 +571,14 @@ export default abstract class BaseForestScreen extends DialogScreen {
     private goToHouse() {
         TaskService.resetPendingLevelCollections();
         YandexGamesHelper.stopGameplay();
+        Game.CLOVER_RETURN_TRANSITION = this.useCloverTransition;
         EventUtils.clearActiveLevelSession();
         let treesTime = 500;
-        this.addTopOverlay(new TreesTransitionPanel(this.game, true, treesTime, 0));
-        this.game.time.events.add(treesTime * 2, function () {
+        const trees = new TreesTransitionPanel(this.game, true, treesTime, 0, this.useCloverTransition);
+        this.addTopOverlay(trees);
+        trees.onCovered(() => {
             this.startScreen(HouseScreen, true, false);
-        }, this)
+        });
     }
 
     private repeatLevel() {
@@ -574,10 +592,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
         ServerStoreComponent.syncronizeUserWithServer();
 
         let treesTime = 500;
-        this.addTopOverlay(new TreesTransitionPanel(this.game, true, treesTime, 0));
-        this.game.time.events.add(treesTime * 2, () => {
+        const trees = new TreesTransitionPanel(this.game, true, treesTime, 0, this.useCloverTransition);
+        this.addTopOverlay(trees);
+        trees.onCovered(() => {
             this.startScreen(ForestScreen, true, false);
-        }, this)
+        });
     }
 
     private onContinueFailPanel() {
@@ -709,6 +728,10 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.giveUpPanel.bringToTop();
         }
 
+        if (this.energyDetailsPanel && this.energyDetailsPanel.opened) {
+            this.energyDetailsPanel.bringToTop();
+        }
+
 
     }
 
@@ -743,10 +766,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
             let treesTime = 500;
             user.setCurrentForest(2);
             YandexGamesHelper.stopGameplay();
-            this.addTopOverlay(new TreesTransitionPanel(this.game, true, treesTime, 0));
-            this.game.time.events.add(treesTime * 2, function () {
+            const trees = new TreesTransitionPanel(this.game, true, treesTime, 0, this.useCloverTransition);
+            this.addTopOverlay(trees);
+            trees.onCovered(() => {
                 this.startScreen(HouseScreen, true, false);
-            }, this)
+            });
             AnalyticUtils.logLevelComplete(this.topPanel.getStepsLeft());
         } else if (animationId && animationId != "") {
             console.log("WARNING! UNKNOWN FOREST ANIMATION ID: " + animationId);
@@ -791,6 +815,36 @@ export default abstract class BaseForestScreen extends DialogScreen {
     }
 
     private showWinPanel(): void {
+        if (this.sapphireStarsPrepared) return;
+        this.sapphireStarsPrepared = true;
+        this.levelStopped = true;
+        YandexGamesHelper.stopGameplay();
+
+        const darkCells = this.cellsProvider.getCells().filter(cell =>
+            !cell.state.opened && cell.state.cover && cell.state.cover.isDark()
+        ).sort((a, b) => a.Y - b.Y || a.X - b.X);
+        const interval = Math.min(32, 650 / Math.max(1, darkCells.length - 1));
+        darkCells.forEach((cell, index) => {
+            const star = cell.state.cover.growSapphireStar(index * interval);
+            if (star) this.sapphireStars.push(star);
+        });
+
+        if (!this.sapphireStars.length) {
+            // Even a board with no grey cells gets a completion star.
+            const star = SpriteUtils.createSprite(this.game, this.game.width / 2, this.game.height * 0.6, 'sapphireStar');
+            star.anchor.set(0.5);
+            const size = 84 / star.width;
+            star.scale.set(0);
+            star.fixedToCamera = true;
+            this.add.existing(star);
+            this.game.add.tween(star.scale).to({ x: size, y: size }, 460, Phaser.Easing.Back.Out, true);
+            this.sapphireStars.push(star);
+        }
+        const lastDelay = Math.max(0, darkCells.length - 1) * interval;
+        this.game.time.events.add(lastDelay + 580, () => this.showWinPanelContents(), this);
+    }
+
+    private showWinPanelContents(): void {
         console.log("WIN!")
 
         SoundUtils.winLevel();
@@ -825,15 +879,22 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 spentEnergy: this.topPanel.getSpentEnergy(),
                 targetSteps: this.topPanel.getTargetSteps(),
                 gemsCount: 0
-            } : null
+            } : null,
+            this.sapphireStars.length
         );
         this.addSprite(completePanel);
 
-        let delay = 1000;
-        let animationTime = 500;
+        let delay = 180;
+        let animationTime = 800;
 
         this.lockScreenFor(delay + animationTime);
         completePanel.show(delay, animationTime);
+        if (this.sapphireStars.length > 0) {
+            this.game.time.events.add(delay + 100, () => {
+                new SapphireFlight(this.game, this.sapphireStars, completePanel);
+                this.sapphireStars = [];
+            }, this);
+        }
 
         AnalyticUtils.logLevelComplete(this.topPanel.getStepsLeft());
 
@@ -906,6 +967,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
             },
             onClose: () => {
                 this.energyDetailsShown = false;
+                this.energyDetailsPanel = null;
                 if (this.topPanel) {
                     this.topPanel.refreshEnergyLabel();
                 }
@@ -917,8 +979,15 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 if (this.bottomPanel) {
                     this.bottomPanel.refresh();
                 }
+            },
+            onDeclined: () => {
+                if (UserService.getUser().getEnergy() <= 0 && !this.levelStopped) {
+                    this.levelStopped = true;
+                    this.goToHouse();
+                }
             }
         });
+        this.energyDetailsPanel = panel;
         this.addPanel(panel);
         panel.show();
     }

@@ -4,6 +4,7 @@ import ReplicaType from '../../../core/model/replica/ReplicaType';
 import ReplicaPanelItemType from '../../../core/model/replica/ReplicaPanelItemType';
 import Settings from '../../../core/service/Settings';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
+import AnimationUtils from '../../../core/utils/AnimationUtils';
 
 export default class ReplicaFloatingItemPanel extends BasePanel {
     private static readonly INITIAL_REVEAL_DELAY_MS = 10;
@@ -79,13 +80,17 @@ export default class ReplicaFloatingItemPanel extends BasePanel {
         this.stopGlowPulse();
         this.destroyEmitter();
 
-        this.itemHolder.visible = true;
+        this.game.tweens.removeFrom(this.blackTransparent);
+        this.blackTransparent.alpha = 0;
+
         this.itemHolder.alpha = 0;
         this.itemHolder.angle = 0;
         this.itemHolder.x = this.getTargetX();
         this.itemHolder.y = this.getTargetY();
         this.itemHolder.scale.set(0);
         this.glowSprite.alpha = 0.75;
+        AnimationUtils.primeForShow(this.itemHolder);
+        this.itemHolder.visible = true;
 
         this.revealAlphaTween = this.game.add.tween(this.itemHolder).to(
             { alpha: 1 },
@@ -408,6 +413,12 @@ export default class ReplicaFloatingItemPanel extends BasePanel {
 
     private bringEmitterToStageTop(): void {
         if (!this.emitter) {
+            return;
+        }
+
+        // Once on the stage, the emitter only needs its position updated.
+        // Reordering the stage child list every frame is unnecessary work.
+        if (this.emitter.parent == this.game.stage) {
             return;
         }
 

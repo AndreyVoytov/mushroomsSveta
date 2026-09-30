@@ -22,6 +22,7 @@ import { Easing } from 'phaser-ce';
 import ComplexAnimationUtils from '../../../core/utils/ComplexAnimationUtils';
 import GameText from '../../../core/localization/GameText';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import CellsPainter from '../../../core/service/provider/CellsPainter';
 export default class EducationPanel extends BasePanel {
 
     public shownWithOkButton: boolean;
@@ -78,11 +79,12 @@ export default class EducationPanel extends BasePanel {
                 this.arrow.alpha = 0;
                 this.game.add.existing(this.arrow);
                 this.arrow.anchor.set(0.5, 1);
+                this.arrow.scale.set(0.5);
                 AnimationUtils.jump(this.game, this.arrow, 0)
                 AnimationUtils.fadeIn(this.game, this.arrow, 200)
 
             } else if (this.centerCell != null) {
-                if (cellState.content == ContentType.tree) {
+                if (!CellsPainter.USE_NUMBERED_TREE_IMAGES && cellState.content == ContentType.tree) {
                     SpriteUtils.loadTexture(cellState.sprite, Utils.getRandomElement([ContentType[ContentType.stone], ContentType[ContentType.log], ContentType[ContentType.stump]]))
                 }
                 let notOpenedMushrooms = this.cells.filter(cell => this.screen.cellsProvider.areAdjucent(this.centerCell, cell) && !cell.state.opened && cell.state.content == ContentType.mushroom).length;
@@ -99,7 +101,7 @@ export default class EducationPanel extends BasePanel {
                         242, "arrow");
                     this.game.add.existing(this.arrow);
                     this.arrow.anchor.set(0.5, 0);
-                    this.arrow.scale.set(1, -1);
+                    this.arrow.scale.set(0.5, -0.5);
                     AnimationUtils.jump(this.game, this.arrow, 0)
                     AnimationUtils.fadeIn(this.game, this.arrow, 900)
                 }
@@ -157,7 +159,7 @@ export default class EducationPanel extends BasePanel {
                     compassCell.state.sprite.y - compassCell.state.sprite.height / 2 + 25, "arrow");
                 this.game.add.existing(this.arrow);
                 this.arrow.anchor.set(0.5, 1);
-                this.arrow.scale.set(1, 1);
+                this.arrow.scale.set(0.5, 0.5);
                 AnimationUtils.jump(this.game, this.arrow, 0)
                 AnimationUtils.fadeIn(this.game, this.arrow, 900)
             } else if (openedCells >= 1) {
@@ -302,7 +304,7 @@ export default class EducationPanel extends BasePanel {
                     compassCell.state.sprite.y - compassCell.state.sprite.height / 2 + 25, "arrow");
                 this.game.add.existing(this.arrow);
                 this.arrow.anchor.set(0.5, 1);
-                this.arrow.scale.set(1, 1);
+                this.arrow.scale.set(0.5, 0.5);
                 AnimationUtils.jump(this.game, this.arrow, 0)
                 AnimationUtils.fadeIn(this.game, this.arrow, 900)
 
@@ -350,6 +352,23 @@ export default class EducationPanel extends BasePanel {
     }
     private doShowDialogOnSpecificItem(cellState: CellState) {
         cellState.content = ContentType.specificItem;
+        // The level-2 house is a reveal rather than a flat replacement: make
+        // the tall cottage uncoil from the opened cell and settle a little
+        // above its rim. This keeps its shadow visually grounded.
+        const house = cellState.sprite;
+        const targetWidth = house.width * 1.04;
+        const targetHeight = house.height * 1.16;
+        SpriteUtils.loadTexture(house, "actionHouse");
+        house.anchor.set(0.5, 0.86);
+        house.width = targetWidth;
+        house.height = targetHeight;
+        const targetScaleX = house.scale.x;
+        const targetScaleY = house.scale.y;
+        house.scale.set(targetScaleX * 0.82, targetScaleY * 0.18);
+        this.game.add.tween(house.scale).to(
+            { x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX], y: [targetScaleY * 1.12, targetScaleY * 0.95, targetScaleY] },
+            520, Phaser.Easing.Back.Out, true, 0, 0, false
+        );
         let openedCell = this.cells.filter(cell => cell.state == cellState).shift();
         this.doShowEducation(null, null, [openedCell], CoverMode.noneVisible, 200, null);
 

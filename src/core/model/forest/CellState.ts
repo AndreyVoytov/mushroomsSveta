@@ -1,6 +1,14 @@
 import Label from '../../../view/component/panel/Label';
 import ForestCellCover from '../../../view/component/forest/ForestCellCover';
 import { ContentType } from '../../model/enum/ContentType';
+
+export interface NumberedTreeParticleCloud {
+    group: Phaser.Group;
+    timer: Phaser.TimerEvent;
+    stopped: boolean;
+    particles: Array<{ sprite: Phaser.Sprite; alphaTween: Phaser.Tween; startedAt: number }>;
+}
+
 export default class CellState {
     opened: boolean;
     leafType: string;
@@ -9,6 +17,17 @@ export default class CellState {
     content: ContentType;
 
     sprite: Phaser.Sprite;
+    renderedContentImage: string;
+    renderedAdjucentCount: number;
+    numberedDecoration: boolean = false;
+    hadNumberedTree: boolean = false;
+    numberlessDecorationImage: string;
+    finalTreeImage: string;
+    numberedTreeEffect: Phaser.Group;
+    numberedTreeParticles: NumberedTreeParticleCloud;
+    numberedTreeSwayTween: Phaser.Tween;
+    numberedTreePulseTween: Phaser.Tween;
+    numberedTreeReactionOrigin: { x: number; y: number };
     cover: ForestCellCover;
     label: Label | null = null;
     
