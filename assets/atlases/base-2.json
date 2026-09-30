@@ -1,32 +1,8 @@
 {
     "frames":  {
-                   "base/characters/cat3.png":  {
-                                                    "frame":  {
-                                                                  "x":  761,
-                                                                  "y":  1121,
-                                                                  "w":  478,
-                                                                  "h":  536
-                                                              },
-                                                    "rotated":  false,
-                                                    "trimmed":  false,
-                                                    "spriteSourceSize":  {
-                                                                             "x":  0,
-                                                                             "y":  0,
-                                                                             "w":  478,
-                                                                             "h":  536
-                                                                         },
-                                                    "sourceSize":  {
-                                                                       "w":  478,
-                                                                       "h":  536
-                                                                   },
-                                                    "pivot":  {
-                                                                  "x":  0.5,
-                                                                  "y":  0.5
-                                                              }
-                                                },
                    "base/characters/sveta1.png":  {
                                                       "frame":  {
-                                                                    "x":  454,
+                                                                    "x":  1308,
                                                                     "y":  1,
                                                                     "w":  510,
                                                                     "h":  553
@@ -50,8 +26,8 @@
                                                   },
                    "base/characters/sveta2.png":  {
                                                       "frame":  {
-                                                                    "x":  966,
-                                                                    "y":  1,
+                                                                    "x":  1,
+                                                                    "y":  577,
                                                                     "w":  510,
                                                                     "h":  553
                                                                 },
@@ -74,8 +50,8 @@
                                                   },
                    "base/characters/sveta3.png":  {
                                                       "frame":  {
-                                                                    "x":  1478,
-                                                                    "y":  1,
+                                                                    "x":  513,
+                                                                    "y":  577,
                                                                     "w":  510,
                                                                     "h":  553
                                                                 },
@@ -98,8 +74,8 @@
                                                   },
                    "base/characters/sveta4.png":  {
                                                       "frame":  {
-                                                                    "x":  1,
-                                                                    "y":  566,
+                                                                    "x":  1025,
+                                                                    "y":  577,
                                                                     "w":  510,
                                                                     "h":  553
                                                                 },
@@ -122,8 +98,8 @@
                                                   },
                    "base/characters/sveta5.png":  {
                                                       "frame":  {
-                                                                    "x":  513,
-                                                                    "y":  566,
+                                                                    "x":  1537,
+                                                                    "y":  577,
                                                                     "w":  510,
                                                                     "h":  553
                                                                 },
@@ -146,8 +122,8 @@
                                                   },
                    "base/characters/sveta6.png":  {
                                                       "frame":  {
-                                                                    "x":  1025,
-                                                                    "y":  566,
+                                                                    "x":  1,
+                                                                    "y":  1132,
                                                                     "w":  510,
                                                                     "h":  553
                                                                 },
@@ -170,8 +146,8 @@
                                                   },
                    "base/characters/Новая папка/sveta1.png":  {
                                                                   "frame":  {
-                                                                                "x":  1537,
-                                                                                "y":  566,
+                                                                                "x":  513,
+                                                                                "y":  1132,
                                                                                 "w":  442,
                                                                                 "h":  553
                                                                             },
@@ -194,8 +170,8 @@
                                                               },
                    "base/characters/Новая папка/sveta2.png":  {
                                                                   "frame":  {
-                                                                                "x":  371,
-                                                                                "y":  1121,
+                                                                                "x":  1327,
+                                                                                "y":  1132,
                                                                                 "w":  388,
                                                                                 "h":  537
                                                                             },
@@ -218,8 +194,8 @@
                                                               },
                    "base/characters/Новая папка/sveta3.png":  {
                                                                   "frame":  {
-                                                                                "x":  1,
-                                                                                "y":  1121,
+                                                                                "x":  957,
+                                                                                "y":  1132,
                                                                                 "w":  368,
                                                                                 "h":  546
                                                                             },
@@ -242,7 +218,7 @@
                                                               },
                    "base/characters/Новая папка/sveta4.png":  {
                                                                   "frame":  {
-                                                                                "x":  1,
+                                                                                "x":  855,
                                                                                 "y":  1,
                                                                                 "w":  451,
                                                                                 "h":  563
@@ -264,30 +240,54 @@
                                                                                 "y":  0.5
                                                                             }
                                                               },
-                   "base/ui/panel2.png":  {
-                                              "frame":  {
-                                                            "x":  1241,
-                                                            "y":  1121,
-                                                            "w":  749,
-                                                            "h":  532
-                                                        },
-                                              "rotated":  false,
-                                              "trimmed":  false,
-                                              "spriteSourceSize":  {
-                                                                       "x":  0,
-                                                                       "y":  0,
-                                                                       "w":  749,
-                                                                       "h":  532
-                                                                   },
-                                              "sourceSize":  {
-                                                                 "w":  749,
-                                                                 "h":  532
-                                                             },
-                                              "pivot":  {
-                                                            "x":  0.5,
-                                                            "y":  0.5
-                                                        }
-                                          }
+                   "base/characters/Новая папка/sveta5.png":  {
+                                                                  "frame":  {
+                                                                                "x":  1,
+                                                                                "y":  1,
+                                                                                "w":  403,
+                                                                                "h":  574
+                                                                            },
+                                                                  "rotated":  false,
+                                                                  "trimmed":  false,
+                                                                  "spriteSourceSize":  {
+                                                                                           "x":  0,
+                                                                                           "y":  0,
+                                                                                           "w":  403,
+                                                                                           "h":  574
+                                                                                       },
+                                                                  "sourceSize":  {
+                                                                                     "w":  403,
+                                                                                     "h":  574
+                                                                                 },
+                                                                  "pivot":  {
+                                                                                "x":  0.5,
+                                                                                "y":  0.5
+                                                                            }
+                                                              },
+                   "base/ui/character/skills_bg.png":  {
+                                                           "frame":  {
+                                                                         "x":  406,
+                                                                         "y":  1,
+                                                                         "w":  447,
+                                                                         "h":  566
+                                                                     },
+                                                           "rotated":  false,
+                                                           "trimmed":  false,
+                                                           "spriteSourceSize":  {
+                                                                                    "x":  0,
+                                                                                    "y":  0,
+                                                                                    "w":  447,
+                                                                                    "h":  566
+                                                                                },
+                                                           "sourceSize":  {
+                                                                              "w":  447,
+                                                                              "h":  566
+                                                                          },
+                                                           "pivot":  {
+                                                                         "x":  0.5,
+                                                                         "y":  0.5
+                                                                     }
+                                                       }
                },
     "meta":  {
                  "app":  "codex-atlas-packer",
@@ -295,8 +295,8 @@
                  "image":  "base-2.png",
                  "format":  "RGBA8888",
                  "size":  {
-                              "w":  1991,
-                              "h":  1668
+                              "w":  2048,
+                              "h":  1686
                           },
                  "scale":  1
              }
