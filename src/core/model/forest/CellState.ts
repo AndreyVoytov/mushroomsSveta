@@ -3,6 +3,7 @@ import ForestCellCover from '../../../view/component/forest/ForestCellCover';
 import { ContentType } from '../../model/enum/ContentType';
 
 export interface NumberedTreeParticleCloud {
+    tint?: number;
     group: Phaser.Group;
     timer: Phaser.TimerEvent;
     stopped: boolean;

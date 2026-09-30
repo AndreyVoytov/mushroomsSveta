@@ -34,6 +34,25 @@ export default class SpriteUtils {
 
     public static createTileSprite(game: Phaser.Game, x:number, y:number, width:number, height:number, key:string):Phaser.TileSprite{
         let keyAndFrame = this.getAtlasKeyAndFrame(game, key);
+        if (key == 'bgHouse') {
+            // Tile the actual floor, not the hexes above it. A reflected pair
+            // has identical edge texels at both joins, including atlas mode.
+            const source = this.createSprite(game, 0, 0, key);
+            const crop = source.texture.crop;
+            const w = Math.round(crop.width), h = Math.round(crop.height);
+            const bitmap = game.make.bitmapData(w * 2, h);
+            bitmap.context.drawImage(source.texture.baseTexture.source, crop.x, crop.y, w, h, 0, 0, w, h);
+            bitmap.context.save();
+            bitmap.context.translate(w * 2, 0);
+            bitmap.context.scale(-1, 1);
+            bitmap.context.drawImage(source.texture.baseTexture.source, crop.x, crop.y, w, h, 0, 0, w, h);
+            bitmap.context.restore();
+            bitmap.dirty = true;
+            source.destroy();
+            const floor = new Phaser.TileSprite(game, x, y, width, height, bitmap);
+            floor.events.onDestroy.addOnce(() => bitmap.destroy());
+            return floor;
+        }
         return new Phaser.TileSprite(game, x, y, width, height, keyAndFrame.atlasKey, keyAndFrame.frameName);
     }
 

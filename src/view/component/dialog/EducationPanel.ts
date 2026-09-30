@@ -388,13 +388,20 @@ export default class EducationPanel extends BasePanel {
         houseShadow.scale.set(1 / tile.scale.x, 1 / tile.scale.y);
         tile.addChild(houseShadow);
         house.bringToTop();
-        const ground = SpriteUtils.createSprite(this.game, 0, 7 / house.scale.y, 'houseGround');
-        ground.anchor.set(0.5, 0.5);
-        ground.width = targetWidth * 1.13 / house.scale.x;
-        ground.height = targetHeight * 0.38 / house.scale.y;
-        ground.alpha = 0;
-        house.addChild(ground);
-        this.game.add.tween(ground).to({ alpha: 1 }, 400, Phaser.Easing.Sinusoidal.Out, true);
+        // Siblings, not house children: the foliage keeps its own ground plane
+        // while the house squashes and stretches above it.
+        const bushes = [-1, 1].map(side => {
+            const bush = SpriteUtils.createSprite(this.game, house.x + side * targetWidth * 0.33,
+                house.y + targetHeight * 0.1, side < 0 ? 'bush' : 'bush2');
+            bush.anchor.set(0.5, 1);
+            bush.width = targetWidth * 0.61;
+            bush.height = targetHeight * 0.31;
+            house.parent.addChild(bush);
+            bush.alpha = 0;
+            this.game.add.tween(bush).to({ alpha: 1 }, 400, Phaser.Easing.Sinusoidal.Out, true);
+            return bush;
+        });
+        house.events.onDestroy.addOnce(() => bushes.forEach(bush => bush.destroy()));
         house.inputEnabled = true;
         house.input.useHandCursor = true;
         house.events.onInputDown.add(() => {
@@ -409,11 +416,6 @@ export default class EducationPanel extends BasePanel {
             this.screen.lockScreenFor(2000);
             this.screen.playAnimation('exploreHouse');
         });
-        // A pause between short rustles makes the discovered house feel alive.
-        this.game.add.tween(house).to({ angle: [0, -1.4, 1.1, -0.5, 0, 0, 0, 0, 0] },
-            4800, Phaser.Easing.Linear.None, true, 1200, -1);
-        this.game.add.tween(ground).to({ angle: [0, 0.8, -0.6, 0, 0, 0, 0, 0, 0] },
-            4800, Phaser.Easing.Linear.None, true, 1200, -1);
         this.game.add.tween(houseShadow).to({ alpha: 1 }, 240, Phaser.Easing.Sinusoidal.Out, true, 80);
         const targetScaleX = house.scale.x;
         const targetScaleY = house.scale.y;
@@ -422,6 +424,16 @@ export default class EducationPanel extends BasePanel {
             { x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX], y: [targetScaleY * 1.12, targetScaleY * 0.95, targetScaleY] },
             520, Phaser.Easing.Back.Out, true, 0, 0, false
         );
+        const rustle = this.game.time.events.loop(4800, () => {
+            if (!house.exists) return;
+            this.game.add.tween(house.scale).to({
+                x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX],
+                y: [targetScaleY * 0.82, targetScaleY * 1.12, targetScaleY]
+            }, 520, Phaser.Easing.Sinusoidal.InOut, true);
+            bushes.forEach((bush, index) => this.game.add.tween(bush).to(
+                { angle: [index ? 3 : -3, 0] }, 420, Phaser.Easing.Sinusoidal.InOut, true, 100));
+        });
+        house.events.onDestroy.addOnce(() => this.game.time.events.remove(rustle));
     }
 
     private doHighlightSpecificItem(cellState: CellState) {

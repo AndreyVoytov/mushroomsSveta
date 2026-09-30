@@ -536,7 +536,7 @@ export default class HouseScreen extends DialogScreen {
                     this.arrow.anchor.set(0.5, 1);
                     this.arrow.scale.set(1, 1);
                     this.arrow.angle = -20;
-                    this.arrow.tint = 0x55ffff;
+                    this.arrow.tint = 0xffffff;
                     AnimationUtils.jump(this.game, this.arrow, 0)
                     AnimationUtils.fadeIn(this.game, this.arrow, 0)
 

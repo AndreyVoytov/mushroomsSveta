@@ -85,6 +85,13 @@ export default class StartLevelPanel extends ClosablePanel {
         continueLabel.strokeThickness = 6;
         continueLabel.addStrokeColor('#28590e', 0);
         this.playButton.addChild(continueLabel);
+        // BitmapText ignores strokeThickness; draw a real glyph outline.
+        [[-3, 0], [3, 0], [0, -3], [0, 3], [-2, -2], [-2, 2], [2, -2], [2, 2]].forEach(offset => {
+            const edge = new Label(this.game, offset[0], offset[1], continueLabel.text,
+                { font: 'bolder 60px Gilroy', fill: '#214b24' });
+            edge.anchor.set(0.5);
+            this.playButton.addChildAt(edge, 0);
+        });
 
         let fastPlayButton;
         if (AdminService.isEditMode()) {
@@ -128,6 +135,12 @@ export default class StartLevelPanel extends ClosablePanel {
         { "spriteId": "fastPlayButton", "x": 0, "y": 474, "scaleX": 0.8, "scaleY": 0.8, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }])
 
         this.playButton.y -= showBoosters?0:233;
+        const buttonEdge = SpriteUtils.createSprite(this.game, this.playButton.x, this.playButton.y, 'pnlButton');
+        buttonEdge.anchor.set(0.5);
+        buttonEdge.width = this.playButton.width + 8;
+        buttonEdge.height = this.playButton.height + 8;
+        buttonEdge.tint = 0x214b24;
+        this.addChildAt(buttonEdge, this.getChildIndex(this.playButton));
         if(fastPlayButton) fastPlayButton.y -= showBoosters?0:233;
 
         if (user.getCurrentForest() > LocationUtils.DIARY_AFTER_LEVEL) {

@@ -1099,6 +1099,8 @@ export default class LoadingScreen extends BaseScreen {
         // this.game.load.audio("loose", "assets/other/audio/loose.wav");
         this.game.load.audio("mushroomTaking", "assets/other/audio/mushroomTaking.mp3");
         this.game.load.audio("plank", "assets/other/audio/plank.mp3");
+        ['rabbit', 'butterfly', 'bat'].forEach(animal =>
+            this.game.load.audio('encounter_' + animal, 'assets/other/audio/encounter_' + animal + '.wav'));
         this.game.load.audio("rocket", "assets/other/audio/rocket.mp3");
         this.game.load.audio("trouble", "assets/other/audio/trouble.ogg");
         this.game.load.audio("trouble2", "assets/other/audio/trouble2.mp3");

@@ -208,14 +208,9 @@ export default class SoundUtils {
     }
     public static animalFound(animal?: string){
         let game = Game.getInstance();
-        if (animal == 'rabbit') {
-            // A soft leaf-rustle makes the rabbit's first hop feel grounded.
-            game.sound.play("bushHit2", 0.012 * this.volumeRatio);
-        } else if (animal == 'butterfly') {
-            // Barely audible wing hum; it is intentionally much quieter than
-            // a bee so several finds never turn into an aggressive buzz.
-            let wingHum = game.sound.play("beeSting", 0.008 * this.volumeRatio);
-            game.add.tween(wingHum).to({ volume: 0 }, 260, null, true, 120);
+        if (animal == 'rabbit' || animal == 'butterfly' || animal == 'bat') {
+            game.sound.play('encounter_' + animal, 0.10 * this.volumeRatio);
+            return;
         }
         game.sound.play("itemFound", 0.015 * this.volumeRatio);
     }

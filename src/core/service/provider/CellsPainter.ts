@@ -172,7 +172,7 @@ export default class CellsPainter extends CellsProvider {
 
         this.updateNumberedTreeEffect(cell);
         if (cell.state.opened && wasNumberedTree && previousCount != null && adjucentCount < previousCount) {
-            this.emitNumberChangeDust(cell.state.sprite);
+            this.emitNumberChangeDust(cell.state.sprite, cell.state.content == ContentType.mirror);
             this.animateNumberedTreeReaction(cell, image);
         }
 
@@ -231,12 +231,13 @@ export default class CellsPainter extends CellsProvider {
         }
     }
 
-    private emitNumberChangeDust(sprite: Phaser.Sprite): void {
+    private emitNumberChangeDust(sprite: Phaser.Sprite, red?: boolean): void {
         if (!sprite) return;
         const game = sprite.game;
         const particles: Phaser.Sprite[] = [];
         for (let i = 0; i < 8; i++) {
             const particle = SpriteUtils.createSprite(game, Utils.random(13) - 6, -22 + Utils.random(13) - 6, 'dustYellow');
+            if (red) particle.tint = 0xff453c;
             particle.anchor.set(0.5);
             // Children inherit the tree's ~0.67 scale; keep the dust visible on screen.
             particle.scale.set(0.72 + Utils.random(25) / 100);
@@ -310,11 +311,13 @@ export default class CellsPainter extends CellsProvider {
             shine.anchor.set(0.5);
             shine.scale.set(0.825);
             shine.alpha = 0.145;
+            if (state.content == ContentType.mirror) shine.tint = 0xff453c;
             effect.add(shine);
             game.add.tween(shine).to({ angle: 360 }, 20000, Phaser.Easing.Linear.None, true, 0, -1);
 
             state.numberedTreeEffect = effect;
-            const cloud: NumberedTreeParticleCloud = { group: particles, timer: null, stopped: false, particles: [] };
+            const cloud: NumberedTreeParticleCloud = { group: particles, timer: null, stopped: false, particles: [],
+                tint: state.content == ContentType.mirror ? 0xff453c : 0xffffff };
             state.numberedTreeParticles = cloud;
             this.emitNumberedTreeParticle(game, cloud);
             cloud.timer = game.time.events.loop(1283, () => {
@@ -357,6 +360,7 @@ export default class CellsPainter extends CellsProvider {
         const x = side * (14 + Utils.random(27));
         const y = -10 + Utils.random(57) - 28;
         const particle = SpriteUtils.createSprite(game, x, y, 'p1');
+        particle.tint = cloud.tint == null ? 0xffffff : cloud.tint;
         particle.anchor.set(0.5);
         particle.scale.set(0.22 + Utils.random(13) / 100);
         particle.alpha = 0;

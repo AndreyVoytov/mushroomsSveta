@@ -67,8 +67,14 @@ export default class AnimationUtils {
         var colorBlend = { step: 0 };
         var colorTween = game.add.tween(colorBlend).to({ step: 100 }, time);
         colorTween.onUpdateCallback(function () {
-            sprite.tint = Phaser.Color.interpolateColor(startColor, endColor, 100, colorBlend.step, 1);
+            // Tint is RGB, not Phaser's packed ARGB. Clamp and round each
+            // channel before packing (fractional channels can wrap in Canvas).
+            const t = Math.max(0, Math.min(1, colorBlend.step / 100));
+            const channel = (shift: number) => Math.round(((startColor >> shift) & 255) * (1 - t)
+                + ((endColor >> shift) & 255) * t);
+            sprite.tint = (channel(16) << 16) | (channel(8) << 8) | channel(0);
         });
+        colorTween.onComplete.addOnce(() => { sprite.tint = endColor & 0xffffff; });
         game.time.events.add(delay, () => {
             sprite.tint = startColor;
             colorTween.start();

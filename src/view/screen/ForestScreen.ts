@@ -653,7 +653,7 @@ export default class ForestScreen extends BaseForestScreen {
 
         if (contentType in AnimalsContents) {
             SoundUtils.animalFound(contentType == ContentType.rabbit ? 'rabbit' :
-                (contentType == ContentType.butterfly || contentType == ContentType.butterfly2 ? 'butterfly' : undefined));
+                (contentType == ContentType.bet ? 'bat' : contentType == ContentType.butterfly || contentType == ContentType.butterfly2 ? 'butterfly' : undefined));
 
             AnimationUtils.highlight(this.game, cellState.sprite.x, cellState.sprite.y, "splashG", 0, 1)
             this.topPanel.restoreStepsOnAnimalFound(openingType);
@@ -1935,7 +1935,8 @@ export default class ForestScreen extends BaseForestScreen {
         const texture = animal + 'Escape';
         const introFrames = animal == 'butterfly' ? 4 : 12;
         const frameCount = animal == 'butterfly' ? 24 : 32;
-        const frameRate = animal == 'rabbit' ? 24 : 30;
+        const frameRate = animal == 'bat' ? 20 : animal == 'rabbit' ? 24 : 30;
+        const direction = this.game.rnd.pick([-1, 1]);
 
         this.game.time.events.add(200, () => {
             if (!sprite.exists) {
@@ -1946,23 +1947,34 @@ export default class ForestScreen extends BaseForestScreen {
             sprite.anchor.set(0.5);
             sprite.width = 120;
             sprite.height = 127;
-            sprite.scale.x = Math.abs(sprite.scale.x);
+            // Butterfly source faces up-left; rabbit source faces right.
+            sprite.scale.x = Math.abs(sprite.scale.x) * direction * (animal == 'butterfly' ? -1 : 1);
             sprite.alpha = 1;
+            if (animal == 'bat') {
+                this.game.add.tween(sprite.scale).to({ x: sprite.scale.x * 1.28, y: sprite.scale.y * 1.28 },
+                    600, Phaser.Easing.Sinusoidal.Out, true);
+            }
             const intro = sprite.animations.add('look', Phaser.ArrayUtils.numberArray(0, introFrames - 1), frameRate, false);
-            sprite.animations.add('escape', Phaser.ArrayUtils.numberArray(introFrames, frameCount - 1), frameRate, true);
+            // Reuse only the upward-facing wingbeat; the tail of the source
+            // clip turns around, which otherwise reads as backward flight.
+            const flightFrames = animal == 'butterfly'
+                ? [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9]
+                : Phaser.ArrayUtils.numberArray(introFrames, frameCount - 1);
+            sprite.animations.add('escape', flightFrames, frameRate, true);
             intro.onComplete.addOnce(() => {
                 if (!sprite.exists) return;
                 sprite.animations.play('escape');
-                const distance = Math.max(520, Game.getWidth() - startX + 130);
-                const duration = animal == 'rabbit' ? 880 : 1050;
+                const distance = (animal == 'rabbit' ? 255 : animal == 'butterfly' ? 105 : 290) * direction;
+                const duration = animal == 'rabbit' ? 1150 : animal == 'butterfly' ? 1550 : 1450;
                 const travel = this.game.add.tween(sprite).to({
-                    x: [startX + distance * 0.22, startX + distance * 0.6, startX + distance],
+                    x: [startX + distance / 3, startX + distance * 2 / 3, startX + distance],
                     y: animal == 'rabbit' ? [startY - 8, startY - 12, startY - 18]
-                        : [startY - 100, startY - 270, startY - 480]
-                }, duration, Phaser.Easing.Quadratic.In, true);
+                        : animal == 'butterfly' ? [startY - 100, startY - 230, startY - 370]
+                        : [startY - 30, startY - 85, startY - 170]
+                }, duration, Phaser.Easing.Linear.None, true);
                 travel.interpolation(Phaser.Math.bezierInterpolation);
-                this.game.add.tween(sprite).to({ alpha: 0 }, 220,
-                    Phaser.Easing.Linear.None, true, duration - 220);
+                this.game.add.tween(sprite).to({ alpha: 0 }, 600,
+                    Phaser.Easing.Sinusoidal.InOut, true, duration - 600);
                 travel.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
             });
             sprite.animations.play('look');

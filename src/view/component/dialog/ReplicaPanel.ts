@@ -1016,8 +1016,8 @@ export default class ReplicaPanel extends BasePanel {
 
     private applyAnimationToDecor(game: Phaser.Game, decor: Phaser.Sprite, animationId: string) {
         if (animationId == "makeBookGreen") {
-            AnimationUtils.tint(game, decor, 0xFFFFFF, 0x00FF00, 2000, 800);
-            AnimationUtils.tint(game, decor, 0x00FF00, 0xFFFFFF, 500, 3500)
+            AnimationUtils.tint(game, decor, 0xFFFFFF, 0x9fff9a, 1600, 800);
+            AnimationUtils.tint(game, decor, 0x9fff9a, 0xFFFFFF, 900, 2800)
         } else if (animationId == "flicker"){
             AnimationUtils.fadeIn(game, decor, 300);
             decor.alpha = 1;
