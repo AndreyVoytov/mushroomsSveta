@@ -168,30 +168,30 @@
                                                                                 "y":  0.5
                                                                             }
                                                               },
-                   "base/fonts/bitmap/bm_gilroy.png":  {
-                                                           "frame":  {
-                                                                         "x":  963,
-                                                                         "y":  1104,
-                                                                         "w":  1024,
-                                                                         "h":  528
-                                                                     },
-                                                           "rotated":  false,
-                                                           "trimmed":  false,
-                                                           "spriteSourceSize":  {
-                                                                                    "x":  0,
-                                                                                    "y":  0,
-                                                                                    "w":  1024,
-                                                                                    "h":  528
-                                                                                },
-                                                           "sourceSize":  {
-                                                                              "w":  1024,
-                                                                              "h":  528
-                                                                          },
-                                                           "pivot":  {
-                                                                         "x":  0.5,
-                                                                         "y":  0.5
-                                                                     }
-                                                       },
+                   "base/items/poleno.png":  {
+                                                 "frame":  {
+                                                               "x":  963,
+                                                               "y":  1104,
+                                                               "w":  529,
+                                                               "h":  529
+                                                           },
+                                                 "rotated":  false,
+                                                 "trimmed":  false,
+                                                 "spriteSourceSize":  {
+                                                                          "x":  0,
+                                                                          "y":  0,
+                                                                          "w":  529,
+                                                                          "h":  529
+                                                                      },
+                                                 "sourceSize":  {
+                                                                    "w":  529,
+                                                                    "h":  529
+                                                                },
+                                                 "pivot":  {
+                                                               "x":  0.5,
+                                                               "y":  0.5
+                                                           }
+                                             },
                    "base/ui/forestHeader1.png":  {
                                                      "frame":  {
                                                                    "x":  1,
