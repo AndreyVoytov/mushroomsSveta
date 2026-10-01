@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="530" viewBox="0 0 1180 530">
+<rect width="100%" height="100%" fill="#fcfaf4"/>
+<text x="590" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="23" font-weight="bold" fill="#243a34">First introductions of mechanics, goals and story locations</text>
+<text x="590" y="60" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" fill="#56645e">New categories by ten-level interval</text>
+<line x1="100" y1="405.0" x2="1138" y2="405.0" stroke="#deddd4"/>
+<text x="86" y="410.0" text-anchor="end" font-family="Arial" font-size="12" fill="#63706a">0</text>
+<line x1="100" y1="342.4" x2="1138" y2="342.4" stroke="#deddd4"/>
+<text x="86" y="347.4" text-anchor="end" font-family="Arial" font-size="12" fill="#63706a">2</text>
+<line x1="100" y1="279.8" x2="1138" y2="279.8" stroke="#deddd4"/>
+<text x="86" y="284.8" text-anchor="end" font-family="Arial" font-size="12" fill="#63706a">4</text>
+<line x1="100" y1="217.2" x2="1138" y2="217.2" stroke="#deddd4"/>
+<text x="86" y="222.2" text-anchor="end" font-family="Arial" font-size="12" fill="#63706a">6</text>
+<line x1="100" y1="154.6" x2="1138" y2="154.6" stroke="#deddd4"/>
+<text x="86" y="159.6" text-anchor="end" font-family="Arial" font-size="12" fill="#63706a">8</text>
+<line x1="100" y1="92.0" x2="1138" y2="92.0" stroke="#deddd4"/>
+<text x="86" y="97.0" text-anchor="end" font-family="Arial" font-size="12" fill="#63706a">10</text>
+<line x1="100" y1="405" x2="1138" y2="405" stroke="#8e968f"/>
+<text x="23" y="250" transform="rotate(-90 23 250)" text-anchor="middle" font-family="Arial" font-size="13" fill="#56645e">new categories</text>
+<rect x="114.4" y="279.8" width="17" height="125.2" rx="3" fill="#397f78"><title>Levels 1-10: 4 new mechanics</title></rect>
+<rect x="135.4" y="311.1" width="17" height="93.9" rx="3" fill="#e3a744"><title>Levels 1-10: 3 new goals</title></rect>
+<polygon points="132.4,304.1 126.4,315.1 138.4,315.1" fill="#ae698d"><title>Levels 1-10: 3 new story locations</title></polygon>
+<text x="132.4" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">1-10</text>
+<rect x="179.3" y="373.7" width="17" height="31.3" rx="3" fill="#397f78"><title>Levels 11-20: 1 new mechanics</title></rect>
+<rect x="200.3" y="373.7" width="17" height="31.3" rx="3" fill="#e3a744"><title>Levels 11-20: 1 new goals</title></rect>
+<polygon points="197.3,366.7 191.3,377.7 203.3,377.7" fill="#ae698d"><title>Levels 11-20: 1 new story locations</title></polygon>
+<text x="197.3" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">11-20</text>
+<rect x="244.2" y="123.3" width="17" height="281.7" rx="3" fill="#397f78"><title>Levels 21-30: 9 new mechanics</title></rect>
+<rect x="265.2" y="373.7" width="17" height="31.3" rx="3" fill="#e3a744"><title>Levels 21-30: 1 new goals</title></rect>
+<text x="262.2" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">21-30</text>
+<rect x="309.1" y="279.8" width="17" height="125.2" rx="3" fill="#397f78"><title>Levels 31-40: 4 new mechanics</title></rect>
+<rect x="330.1" y="373.7" width="17" height="31.3" rx="3" fill="#e3a744"><title>Levels 31-40: 1 new goals</title></rect>
+<polygon points="327.1,335.4 321.1,346.4 333.1,346.4" fill="#ae698d"><title>Levels 31-40: 2 new story locations</title></polygon>
+<text x="327.1" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">31-40</text>
+<rect x="373.9" y="248.5" width="17" height="156.5" rx="3" fill="#397f78"><title>Levels 41-50: 5 new mechanics</title></rect>
+<rect x="394.9" y="373.7" width="17" height="31.3" rx="3" fill="#e3a744"><title>Levels 41-50: 1 new goals</title></rect>
+<polygon points="391.9,335.4 385.9,346.4 397.9,346.4" fill="#ae698d"><title>Levels 41-50: 2 new story locations</title></polygon>
+<text x="391.9" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">41-50</text>
+<rect x="438.8" y="311.1" width="17" height="93.9" rx="3" fill="#397f78"><title>Levels 51-60: 3 new mechanics</title></rect>
+<rect x="459.8" y="405.0" width="17" height="0.0" rx="3" fill="#e3a744"><title>Levels 51-60: 0 new goals</title></rect>
+<text x="456.8" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">51-60</text>
+<rect x="503.7" y="373.7" width="17" height="31.3" rx="3" fill="#397f78"><title>Levels 61-70: 1 new mechanics</title></rect>
+<rect x="524.7" y="405.0" width="17" height="0.0" rx="3" fill="#e3a744"><title>Levels 61-70: 0 new goals</title></rect>
+<polygon points="521.7,366.7 515.7,377.7 527.7,377.7" fill="#ae698d"><title>Levels 61-70: 1 new story locations</title></polygon>
+<text x="521.7" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">61-70</text>
+<rect x="568.6" y="405.0" width="17" height="0.0" rx="3" fill="#397f78"><title>Levels 71-80: 0 new mechanics</title></rect>
+<rect x="589.6" y="248.5" width="17" height="156.5" rx="3" fill="#e3a744"><title>Levels 71-80: 5 new goals</title></rect>
+<text x="586.6" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">71-80</text>
+<rect x="633.4" y="311.1" width="17" height="93.9" rx="3" fill="#397f78"><title>Levels 81-90: 3 new mechanics</title></rect>
+<rect x="654.4" y="373.7" width="17" height="31.3" rx="3" fill="#e3a744"><title>Levels 81-90: 1 new goals</title></rect>
+<text x="651.4" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">81-90</text>
+<rect x="698.3" y="342.4" width="17" height="62.6" rx="3" fill="#397f78"><title>Levels 91-100: 2 new mechanics</title></rect>
+<rect x="719.3" y="248.5" width="17" height="156.5" rx="3" fill="#e3a744"><title>Levels 91-100: 5 new goals</title></rect>
+<text x="716.3" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">91-100</text>
+<rect x="763.2" y="373.7" width="17" height="31.3" rx="3" fill="#397f78"><title>Levels 101-110: 1 new mechanics</title></rect>
+<rect x="784.2" y="405.0" width="17" height="0.0" rx="3" fill="#e3a744"><title>Levels 101-110: 0 new goals</title></rect>
+<text x="781.2" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">101-110</text>
+<rect x="828.1" y="373.7" width="17" height="31.3" rx="3" fill="#397f78"><title>Levels 111-120: 1 new mechanics</title></rect>
+<rect x="849.1" y="373.7" width="17" height="31.3" rx="3" fill="#e3a744"><title>Levels 111-120: 1 new goals</title></rect>
+<polygon points="846.1,366.7 840.1,377.7 852.1,377.7" fill="#ae698d"><title>Levels 111-120: 1 new story locations</title></polygon>
+<text x="846.1" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">111-120</text>
+<rect x="892.9" y="405.0" width="17" height="0.0" rx="3" fill="#397f78"><title>Levels 121-130: 0 new mechanics</title></rect>
+<rect x="913.9" y="405.0" width="17" height="0.0" rx="3" fill="#e3a744"><title>Levels 121-130: 0 new goals</title></rect>
+<text x="910.9" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">121-130</text>
+<rect x="957.8" y="373.7" width="17" height="31.3" rx="3" fill="#397f78"><title>Levels 131-140: 1 new mechanics</title></rect>
+<rect x="978.8" y="405.0" width="17" height="0.0" rx="3" fill="#e3a744"><title>Levels 131-140: 0 new goals</title></rect>
+<polygon points="975.8,366.7 969.8,377.7 981.8,377.7" fill="#ae698d"><title>Levels 131-140: 1 new story locations</title></polygon>
+<text x="975.8" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">131-140</text>
+<rect x="1022.7" y="405.0" width="17" height="0.0" rx="3" fill="#397f78"><title>Levels 141-150: 0 new mechanics</title></rect>
+<rect x="1043.7" y="405.0" width="17" height="0.0" rx="3" fill="#e3a744"><title>Levels 141-150: 0 new goals</title></rect>
+<text x="1040.7" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">141-150</text>
+<rect x="1087.6" y="405.0" width="17" height="0.0" rx="3" fill="#397f78"><title>Levels 151-153: 0 new mechanics</title></rect>
+<rect x="1108.6" y="405.0" width="17" height="0.0" rx="3" fill="#e3a744"><title>Levels 151-153: 0 new goals</title></rect>
+<text x="1105.6" y="429" text-anchor="middle" font-family="Arial" font-size="11" fill="#56645e">151-153</text>
+<rect x="305" y="455" width="15" height="15" rx="3" fill="#397f78"/><text x="327" y="468" font-family="Arial" font-size="13" fill="#35433d">New mechanics</text>
+<rect x="515" y="455" width="15" height="15" rx="3" fill="#e3a744"/><text x="537" y="468" font-family="Arial" font-size="13" fill="#35433d">New goals / collectibles</text>
+<polygon points="732,454 725,468 739,468" fill="#ae698d"/><text x="747" y="468" font-family="Arial" font-size="13" fill="#35433d">New story locations</text>
+<text x="590" y="505" text-anchor="middle" font-family="Arial" font-size="12" fill="#6f766f">Repeated use of an existing category is not counted as a new introduction.</text>
+</svg>
