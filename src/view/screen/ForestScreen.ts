@@ -1951,8 +1951,10 @@ export default class ForestScreen extends BaseForestScreen {
             sprite.scale.x = Math.abs(sprite.scale.x) * direction * (animal == 'butterfly' ? -1 : 1);
             sprite.alpha = 1;
             if (animal == 'bat') {
-                this.game.add.tween(sprite.scale).to({ x: sprite.scale.x * 1.28, y: sprite.scale.y * 1.28 },
-                    600, Phaser.Easing.Sinusoidal.Out, true);
+                // A small approach toward the viewer while it hovers makes
+                // the turn readable before the bat darts away.
+                this.game.add.tween(sprite.scale).to({ x: sprite.scale.x * 1.3, y: sprite.scale.y * 1.3 },
+                    1000, Phaser.Easing.Sinusoidal.Out, true);
             }
             const intro = sprite.animations.add('look', Phaser.ArrayUtils.numberArray(0, introFrames - 1), frameRate, false);
             // Reuse only the upward-facing wingbeat; the tail of the source
@@ -1964,8 +1966,8 @@ export default class ForestScreen extends BaseForestScreen {
             intro.onComplete.addOnce(() => {
                 if (!sprite.exists) return;
                 sprite.animations.play('escape');
-                const distance = (animal == 'rabbit' ? 255 : animal == 'butterfly' ? 105 : 290) * direction;
-                const duration = animal == 'rabbit' ? 1150 : animal == 'butterfly' ? 1550 : 1450;
+                const distance = (animal == 'rabbit' ? 255 : animal == 'butterfly' ? 105 : 350) * direction;
+                const duration = animal == 'rabbit' ? 1150 : animal == 'butterfly' ? 1550 : 900;
                 const travel = this.game.add.tween(sprite).to({
                     x: [startX + distance / 3, startX + distance * 2 / 3, startX + distance],
                     y: animal == 'rabbit' ? [startY - 8, startY - 12, startY - 18]

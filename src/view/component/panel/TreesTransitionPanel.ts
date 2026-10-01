@@ -268,7 +268,8 @@ export default class TreesTransitionPanel extends BasePanel {
             return;
         }
 
-        this.loadingDots = this.loadingDots % 3 + 1;
+        // Include the quiet base state too: 0, 1, 2, 3 dots.
+        this.loadingDots = (this.loadingDots + 1) % 4;
         const text = this.loadingBaseText + new Array(this.loadingDots + 1).join('.');
         this.loadingLabel.text = text;
         this.loadingOutlineLabels.forEach(label => label.text = text);

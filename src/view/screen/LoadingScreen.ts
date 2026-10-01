@@ -351,6 +351,7 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('gems', 'assets/base/ui/gems.png');
         this.loadImage('sapphireStar', 'assets/base/ui/sapphireStar.png');
         this.loadImage('sapphireStarBackdrop', 'assets/base/ui/sapphireStarBackdrop.png');
+        this.loadImage('hexFrameLootYellow', 'assets/base/hex/hexFrameLootYellow.png');
         this.loadImage('gemsCloud', 'assets/base/ui/gemsCloud.png');
         this.loadImage('tasks', 'assets/base/ui/tasks.png');
         this.loadImage('tasksPanelBgTop', 'assets/base/task/bg_top.png');

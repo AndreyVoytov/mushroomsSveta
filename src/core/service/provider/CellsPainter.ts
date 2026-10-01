@@ -73,6 +73,7 @@ export default class CellsPainter extends CellsProvider {
         cell.state.sprite = cellSprite;
         cell.state.baseScaleX = cellSprite.scale.x;
         cell.state.baseScaleY = cellSprite.scale.y;
+        this.updateWaterNumberLabel(cell, adjucentCount);
 
         if (boostersProvider && ForestUtils.isBoosterType(cell.type)) {
             cellSprite.events.onInputDown.add(() => {
@@ -169,6 +170,7 @@ export default class CellsPainter extends CellsProvider {
             cell.state.renderedContentImage = image;
             AnimationUtils.primeForShow(cell.state.sprite);
         }
+        this.updateWaterNumberLabel(cell, adjucentCount);
 
         this.updateNumberedTreeEffect(cell);
         if (cell.state.opened && wasNumberedTree && previousCount != null && adjucentCount < previousCount) {
@@ -312,12 +314,14 @@ export default class CellsPainter extends CellsProvider {
             shine.scale.set(0.825);
             shine.alpha = 0.145;
             if (state.content == ContentType.mirror) shine.tint = 0xff453c;
+            if (state.content == ContentType.wlilly1 || state.content == ContentType.wlilly2) shine.tint = 0xffdc3f;
             effect.add(shine);
             game.add.tween(shine).to({ angle: 360 }, 20000, Phaser.Easing.Linear.None, true, 0, -1);
 
             state.numberedTreeEffect = effect;
             const cloud: NumberedTreeParticleCloud = { group: particles, timer: null, stopped: false, particles: [],
-                tint: state.content == ContentType.mirror ? 0xff453c : 0xffffff };
+                tint: state.content == ContentType.mirror ? 0xff453c :
+                    (state.content == ContentType.wlilly1 || state.content == ContentType.wlilly2) ? 0xffdc3f : 0xffffff };
             state.numberedTreeParticles = cloud;
             this.emitNumberedTreeParticle(game, cloud);
             cloud.timer = game.time.events.loop(1283, () => {
@@ -447,6 +451,33 @@ export default class CellsPainter extends CellsProvider {
             return cell.state.numberlessDecorationImage;
         }
         return null;
+    }
+
+    // Water decorations keep their original leaf/bush art. Their yellow
+    // number is layered on top instead of replacing that artwork with a tree.
+    private updateWaterNumberLabel(cell: ForestCell, count: number): void {
+        if (cell.state.content != ContentType.wlilly1 && cell.state.content != ContentType.wlilly2) return;
+        const current = cell.state.numberedWaterLabel;
+        if (count < 1 || count > 5) {
+            if (current) { current.destroy(); cell.state.numberedWaterLabel = null; }
+            return;
+        }
+        if (!current) {
+            const isBush = cell.state.content == ContentType.wlilly2;
+            const game = cell.state.sprite.game;
+            const label = new Label(game, isBush ? 3 : 1, isBush ? -3 : 4, '' + count,
+                Label.BalsamiqSansBoldBold(isBush ? 57 : 54, '#ffe86b'));
+            label.anchor.set(0.5);
+            label.strokeThickness = 5;
+            label.addStrokeColor('#9c560d', 0);
+            label.inputEnabled = false;
+            cell.state.sprite.addChild(label);
+            cell.state.numberedWaterLabel = label;
+            game.add.tween(label).to({ alpha: [0.72, 1, 0.82, 1] }, 1450,
+                Phaser.Easing.Sinusoidal.InOut, true, 0, -1);
+        }
+        cell.state.numberedWaterLabel.text = '' + count;
+        cell.state.numberedDecoration = true;
     }
 
     private addHiveHoneyLabel(game: Phaser.Game, cell: ForestCell, x: number, y: number): void {

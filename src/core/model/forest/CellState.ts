@@ -29,6 +29,7 @@ export default class CellState {
     numberedTreeSwayTween: Phaser.Tween;
     numberedTreePulseTween: Phaser.Tween;
     numberedTreeReactionOrigin: { x: number; y: number };
+    numberedWaterLabel: Label;
     cover: ForestCellCover;
     label: Label | null = null;
     

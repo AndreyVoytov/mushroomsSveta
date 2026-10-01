@@ -30,6 +30,7 @@ export default class ForestCellCover extends Phaser.Group {
     private frame: Phaser.Sprite;
     private frameTween: Phaser.Tween;
     private frameTargetAlpha: number = 0;
+    private frameHintAlpha: number = 0;
     private locked = false;
 
     private cankerberry: Phaser.Sprite;
@@ -235,7 +236,7 @@ export default class ForestCellCover extends Phaser.Group {
     }
 
     public setFrame(alpha:number){
-        const targetAlpha = Math.max(0, Math.min(1, alpha));
+        let targetAlpha = Math.max(0, Math.min(1, alpha));
         if (this.frame && Math.abs(this.frameTargetAlpha - targetAlpha) < 0.001) return;
         if (!this.frame && targetAlpha <= 0) return;
 
@@ -252,8 +253,11 @@ export default class ForestCellCover extends Phaser.Group {
                     break;
             }
 
-            if (this.environment == Environment.house){
-                frameImage = "hexFrame2";
+            if (this.environment == Environment.house || ForestUtils.getBiom(this.cellType) == BiomType.WATER){
+                // Preserve the pink asset for existing content, but use a
+                // separate yellow copy for water and house loot hints.
+                frameImage = "hexFrameLootYellow";
+                this.frameHintAlpha = 0.5 + Utils.random(501) / 1000;
             }
             this.frame = SpriteUtils.createSprite(this.game, 0, 0, frameImage);
             this.frame.anchor = new Phaser.Point(0.5, 0.5);
@@ -269,6 +273,7 @@ export default class ForestCellCover extends Phaser.Group {
         }
 
         this.frameTargetAlpha = targetAlpha;
+        if (targetAlpha > 0 && this.frameHintAlpha > 0) targetAlpha = this.frameHintAlpha;
         if (this.frameTween) this.frameTween.stop();
         this.frameTween = this.game.add.tween(this.frame).to(
             { alpha: targetAlpha }, 300,
@@ -403,7 +408,7 @@ export default class ForestCellCover extends Phaser.Group {
         // This is deliberately a separate, stationary sprite. The sapphire
         // leaves it behind when it flies to the reward panel, making the
         // collection feel like an item has been lifted from its slot.
-        const starOutline = SpriteUtils.createSprite(this.game, 0, 0, 'sapphireStarBackdrop');
+        const starOutline = SpriteUtils.createSprite(this.game, 0, -1.5, 'sapphireStarBackdrop');
         starOutline.anchor.set(0.5);
         // The PNG is an alpha-expanded copy of sapphireStar: it shares its
         // 180x191 canvas and center, with a four-pixel in-game spread.
@@ -418,7 +423,7 @@ export default class ForestCellCover extends Phaser.Group {
         glow.alpha = 0;
         this.darkCover.addChild(glow);
         this.darkCover.addChild(star);
-        this.game.add.tween(starOutline).to({ alpha: 0.92 }, 160,
+        this.game.add.tween(starOutline).to({ alpha: 0.60 }, 160,
             Phaser.Easing.Linear.None, true, delay + 100, 0, false);
         const flash = this.game.add.tween(glow).to({ alpha: 0.65 }, 240,
             Phaser.Easing.Sinusoidal.InOut, true, delay + 100, 0, true);

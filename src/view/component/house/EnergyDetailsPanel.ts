@@ -23,6 +23,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
     private resetLabel: Label;
     private actionLabel: Label;
     private openingShop: boolean = false;
+    private purchaseInProgress: boolean = false;
 
     constructor(game: Phaser.Game, screen: Phaser.State, hooks?: EnergyPanelHooks) {
         super(game, game.width / 2, game.height / 2, true, "blank");
@@ -125,8 +126,13 @@ export default class EnergyDetailsPanel extends ClosablePanel {
     }
 
     private tryBuyEnergy(): void {
+        if (this.purchaseInProgress) {
+            return;
+        }
+        this.purchaseInProgress = true;
         const user = UserService.getUser();
         if (!user.buyEnergyPack()) {
+            this.purchaseInProgress = false;
             this.openingShop = true;
             this.close();
 
@@ -147,6 +153,9 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         if (this.hooks.onBought) {
             this.hooks.onBought();
         }
+        // One confirmed press equals one pack.  Closing also prevents a
+        // second pointer event from buying several packs behind the panel.
+        this.close();
     }
 
     private refreshTexts(): void {

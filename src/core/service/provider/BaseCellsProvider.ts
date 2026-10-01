@@ -396,17 +396,39 @@ export default abstract class BaseCellsProvider {
             console.log("Can not switch cells: no cells provided!");
             return;
         }
-        let firstState = cells[0].state;
+        // Snapshot the circle before changing any cell.  Reading `next.state`
+        // while updating the same circle made a second cow move inherit a
+        // half-updated state, and items without labels simply snapped later.
+        const states = cells.map(cell => cell.state);
 
         let bugsMoved = false;
 
         cells.forEach((cell, i) => {
-            let lastCell = i == cells.length - 1;
-            let next = lastCell ? cells[0] : cells[i + 1];
+            const nextIndex = (i + 1) % cells.length;
+            const next = cells[nextIndex];
+            cell.state = states[nextIndex];
 
-            cell.state = lastCell ? firstState : next.state;
+            const targetX = this.calculateX(cell);
+            const targetY = this.calculateY(cell);
+            // A fresh cow movement may arrive before a previous tween ends.
+            // Continue from the visible position rather than stacking tweens.
+            if (cell.state.sprite != null && !(this.isInteractive(cell) && cell.state.opened)) {
+                this.game.tweens.removeFrom(cell.state.sprite);
+                this.game.add.tween(cell.state.sprite).to({ x: targetX, y: targetY },
+                    700, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
+            }
+            if (cell.state.label != null) {
+                this.game.tweens.removeFrom(cell.state.label);
+                this.game.add.tween(cell.state.label).to({ x: targetX, y: targetY },
+                    700, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
+            }
+            if (cell.state.cover != null) {
+                this.game.tweens.removeFrom(cell.state.cover);
+                this.game.add.tween(cell.state.cover).to({ x: targetX, y: targetY },
+                    700, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
+            }
 
-            if (cell.state.sprite != null && cell.state.label != null) {
+            {
                 // if((!this.isInteractive(cell) || cell.type == "w") && cell.state.sprite != null && cell.state.label != null){
 
                 // if (cell.state.opened && teleportDecoration) {
@@ -427,21 +449,6 @@ export default abstract class BaseCellsProvider {
                 //         x: 1, y: 1
                 //     }, 1000, Phaser.Easing.Exponential.Out, true, 200, 0, false);
                 // } else {
-                if (!(this.isInteractive(cell) && cell.state.opened)) {
-                    this.game.add.tween(cell.state.sprite).to({
-                        x: this.calculateX(cell), y: this.calculateY(cell),
-                    }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 200, 0, false);
-                }
-                this.game.add.tween(cell.state.label).to({
-                    x: this.calculateX(cell), y: this.calculateY(cell),
-                }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 200, 0, false);
-                // console.log("coverX: " + cell.state.cover.x + "; cellX: " + this.calculateX(cell))
-                // }
-
-                this.game.add.tween(cell.state.cover).to({
-                    x: this.calculateX(cell), y: this.calculateY(cell),
-                }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 200, 0, false);
-
                 if (ladybugsToAdditionalMove) {
                     let ladybug = ladybugsToAdditionalMove.filter(ladybug => ladybug.X == next.X && ladybug.Y == next.Y).shift();
                     if (ForestUtils.getBiom(cell.type) == BiomType.WATER && ladybug != null && !bugsMoved) {
@@ -452,9 +459,9 @@ export default abstract class BaseCellsProvider {
                         ladybug.X = cell.X;
                         ladybug.Y = cell.Y;
 
-                        this.game.add.tween(ladybug.sprite).to({
-                            x: this.calculateX(cell), y: this.calculateY(cell),
-                        }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 200, 0, false);
+                        this.game.tweens.removeFrom(ladybug.sprite);
+                        this.game.add.tween(ladybug.sprite).to({ x: targetX, y: targetY },
+                            700, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
                     }
                 }
             }

@@ -376,32 +376,18 @@ export default class EducationPanel extends BasePanel {
         const houseShadow = new Phaser.Graphics(this.game, house.x - 12, house.y - 5);
         // Phaser takes ellipse half-extents, not a bounding rectangle.
         for (let i = 4; i >= 1; i--) {
-            houseShadow.beginFill(0x152f33, 0.06);
+            houseShadow.beginFill(0x152f33, 0.03);
             houseShadow.drawEllipse(0, 0, targetWidth * (0.30 + i * 0.04),
                 targetHeight * (0.05 + i * 0.018));
             houseShadow.endFill();
         }
-        tile.tint = 0xa7b889;
+        tile.tint = 0xd3dcc4;
         houseShadow.alpha = 0;
         houseShadow.position.set((houseShadow.x - tile.x) / tile.scale.x,
             (houseShadow.y - tile.y) / tile.scale.y);
         houseShadow.scale.set(1 / tile.scale.x, 1 / tile.scale.y);
         tile.addChild(houseShadow);
         house.bringToTop();
-        // Siblings, not house children: the foliage keeps its own ground plane
-        // while the house squashes and stretches above it.
-        const bushes = [-1, 1].map(side => {
-            const bush = SpriteUtils.createSprite(this.game, house.x + side * targetWidth * 0.33,
-                house.y + targetHeight * 0.1, side < 0 ? 'bush' : 'bush2');
-            bush.anchor.set(0.5, 1);
-            bush.width = targetWidth * 0.61;
-            bush.height = targetHeight * 0.31;
-            house.parent.addChild(bush);
-            bush.alpha = 0;
-            this.game.add.tween(bush).to({ alpha: 1 }, 400, Phaser.Easing.Sinusoidal.Out, true);
-            return bush;
-        });
-        house.events.onDestroy.addOnce(() => bushes.forEach(bush => bush.destroy()));
         house.inputEnabled = true;
         house.input.useHandCursor = true;
         house.events.onInputDown.add(() => {
@@ -424,14 +410,12 @@ export default class EducationPanel extends BasePanel {
             { x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX], y: [targetScaleY * 1.12, targetScaleY * 0.95, targetScaleY] },
             520, Phaser.Easing.Back.Out, true, 0, 0, false
         );
-        const rustle = this.game.time.events.loop(4800, () => {
+        const rustle = this.game.time.events.loop(1600, () => {
             if (!house.exists) return;
             this.game.add.tween(house.scale).to({
                 x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX],
                 y: [targetScaleY * 0.82, targetScaleY * 1.12, targetScaleY]
             }, 520, Phaser.Easing.Sinusoidal.InOut, true);
-            bushes.forEach((bush, index) => this.game.add.tween(bush).to(
-                { angle: [index ? 3 : -3, 0] }, 420, Phaser.Easing.Sinusoidal.InOut, true, 100));
         });
         house.events.onDestroy.addOnce(() => this.game.time.events.remove(rustle));
     }

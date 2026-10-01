@@ -19,11 +19,11 @@ import Settings from '../Settings';
 import TaskService from '../TaskService';
 export default class LadybugsProvider extends BaseLadybugsProvider {
     private screen: BaseForestScreen;
-    // A move starts after 200ms and its position tween takes 1000ms. Do not
+    // Short, clear movement: a ladybug falls a cell in roughly half a second.
     // enqueue another move in that window: two simultaneous tweens caused the
     // occasional "teleporting" stump/acorn after a ladybug moved down.
-    private static readonly MOVE_DELAY = 200;
-    private static readonly MOVE_DURATION = 1000;
+    private static readonly MOVE_DELAY = 100;
+    private static readonly MOVE_DURATION = 500;
 
     public constructor(game: Phaser.Game, screen: BaseForestScreen, cellsProvider: CellsPainter) {
         super(game, screen, cellsProvider);
@@ -92,7 +92,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 this.game.add.tween(ladybug.sprite.scale).to({
                     x: 1, y: 1,
                 }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 100, 0, false);
-                this.screen.delayWinOrLooseCheck(1000);
+                this.screen.delayWinOrLooseCheck(LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION);
 
                 ladybug.sprite.bringToTop();
                 this.screen.bringUiToTop();
@@ -117,8 +117,8 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
 
                     // console.log("LADYBUGS CASE 2")
 
-                    this.game.add.tween(choosen.state.sprite).to({ width: 0, height: 0 }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 200, 0, false);
-                    this.game.add.tween(choosen.state.label).to({ width: 0, height: 0 }, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 200, 0, false);
+                    this.game.add.tween(choosen.state.sprite).to({ width: 0, height: 0 }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 100, 0, false);
+                    this.game.add.tween(choosen.state.label).to({ width: 0, height: 0 }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 100, 0, false);
 
                     //При переходе в воду декорации не двигаем
                 } else if (!this.cellsProvider.isInteractive(choosen) && choosen.type == CellType.WATER) {
@@ -145,12 +145,12 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
 
                 if (this.cellsProvider.getBottomCells(ladybug.X, ladybug.Y).filter(c => !c.state.cover.isDark()).length == 0) {
                     if (ladybug.isLadybug) {
-                        this.game.time.events.add(100, () => {
+                        this.game.time.events.add(LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION, () => {
                             this.collectLadybug(ladybug);
                         })
                     } else {
                         this.screen.delayWinOrLooseCheck(1500);
-                        this.game.time.events.add(1000, () => {
+                        this.game.time.events.add(LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION, () => {
                             this.touchAcorn(ladybug);
                             this.game.time.events.add(400, () => {
                                 this.touchAcorn(ladybug);

@@ -26,6 +26,7 @@ export default abstract class BaseScreen extends DebugScreen {
     private lastLockedAt: number;
     private lastLockedFor: number;
     private lastLockTimer: Phaser.TimerEvent;
+    private stateSwitching: boolean = false;
 
     public loadImage(key: string, path: string): void {
         if (!Settings.isGraphicsFromAtlases()) {
@@ -199,6 +200,7 @@ export default abstract class BaseScreen extends DebugScreen {
 
     public init() {
         super.init();
+        this.stateSwitching = false;
         this.ensureDialogOverlayGroup();
         this.ensureTopOverlayGroup();
         let blockerTexture = this.game.make.bitmapData(1, 1);
@@ -240,6 +242,13 @@ export default abstract class BaseScreen extends DebugScreen {
     }
 
     public startScreen(scene: any, clearWorld?: boolean, clearCache?: boolean) {
+        // A double tap or two overlapping scripted callbacks must not start
+        // the next Phaser state twice (the latter leaves the location half
+        // initialized until a page refresh).
+        if (this.stateSwitching) {
+            return;
+        }
+        this.stateSwitching = true;
         (<Game>(this.game)).startScene(scene, clearWorld, clearCache);
     }
 

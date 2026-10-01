@@ -78,7 +78,9 @@ export default class ReplicaPanel extends BasePanel {
         {image:"sveta2", offsetX:20},
         {image:"sveta3", offsetX:20},
         {image:"sveta4", offsetX:0},
-        {image:"sveta5", offsetX:50, offsetY: -15},
+        // Keep all Red Riding Hood poses on the same hood baseline.  The old
+        // special offset made pose 5 visibly drop during dialog changes.
+        {image:"sveta5", offsetX:50},
     ];
 
     public r: ReplicaType;
