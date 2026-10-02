@@ -125,6 +125,15 @@ export default abstract class BaseForestScreen extends DialogScreen {
         }
     }
 
+    public shutdown(): void {
+        // Forest decorations use looping tweens. Phaser keeps those tweens in
+        // the global manager when the old scene's display objects are cleared,
+        // so a later frame can try to update a destroyed target after leaving
+        // the level completion panel.
+        this.game.tweens.removeAll();
+        super.shutdown();
+    }
+
     preload() {
         this.loadBaseAtlases();
         this.loadOptionalAtlases();
