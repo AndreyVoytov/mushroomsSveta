@@ -153,7 +153,7 @@ export default class DiaryConfiguration {
             resultImage: "pot3",
             requiredItems: [
                 { name: "blueberry", count: 15 },
-                { name: "witchMushroom", count: 17 },
+                { name: "amanita", count: 17 },
                 { name: "witchMushroom", count: 6 }
             ]
         },

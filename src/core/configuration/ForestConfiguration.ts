@@ -600,7 +600,7 @@ export default class ForestsConfiguration {
 					},
 					{
 						"count": 5,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 0,
@@ -642,7 +642,7 @@ export default class ForestsConfiguration {
 				"items": [
 					{
 						"count": 0,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 0,
@@ -842,7 +842,7 @@ export default class ForestsConfiguration {
 					},
 					{
 						"count": 0,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 7,
@@ -1528,7 +1528,7 @@ export default class ForestsConfiguration {
 					},
 					{
 						"count": 0,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 11,
@@ -2393,7 +2393,7 @@ export default class ForestsConfiguration {
 					},
 					{
 						"count": 0,
-						"name": "witchMushroom"
+						"name": "amanita"
 					}
 				],
 				"interactiveItems":[
@@ -2422,7 +2422,7 @@ export default class ForestsConfiguration {
 					},
 					{
 						"count": 11,
-						"name": "witchMushroom"
+						"name": "amanita"
 					}
 				],
 				"interactiveItems":[
@@ -2610,7 +2610,7 @@ export default class ForestsConfiguration {
 					},
 					{
 						"count": 0,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 10,
@@ -3102,7 +3102,7 @@ export default class ForestsConfiguration {
 				"items": [
 					{
 						"count": 11,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 10,
@@ -3250,7 +3250,7 @@ export default class ForestsConfiguration {
 					},
 					{
 						"count": 10,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 15,
@@ -3271,7 +3271,7 @@ export default class ForestsConfiguration {
 				"items": [
 					{
 						"count": 0,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 14,
@@ -3454,7 +3454,7 @@ export default class ForestsConfiguration {
 				"items": [
 					{
 						"count": 10,
-						"name": "witchMushroom"
+						"name": "amanita"
 					}
 				],
 				"interactiveItems":[
@@ -3589,7 +3589,7 @@ export default class ForestsConfiguration {
 				"items": [
 					{
 						"count": 18,
-						"name": "witchMushroom"
+						"name": "amanita"
 					},
 					{
 						"count": 17,
@@ -4255,7 +4255,7 @@ export default class ForestsConfiguration {
 			// 		},
 			// 		{
 			// 			"count": 6,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		}
 			// 	],
 			// 	"id": "t19",
@@ -4756,7 +4756,7 @@ export default class ForestsConfiguration {
 			// 	"items": [
 			// 		{
 			// 			"count": 18,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		}
 			// 	],
 			// 	"id": "t101",
@@ -5441,7 +5441,7 @@ export default class ForestsConfiguration {
 			// 	"items": [
 			// 		{
 			// 			"count": 10,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		},
 			// 		{
 			// 			"count": 15,
@@ -5461,7 +5461,7 @@ export default class ForestsConfiguration {
 			// 	"items": [
 			// 		{
 			// 			"count": 7,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		},
 			// 		{
 			// 			"count": 7,
@@ -5503,7 +5503,7 @@ export default class ForestsConfiguration {
 			// 		},
 			// 		{
 			// 			"count": 17,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		}
 			// 	],
 			// 	"id": "t123",
@@ -5639,7 +5639,7 @@ export default class ForestsConfiguration {
 			// 	"items": [
 			// 		{
 			// 			"count": 18,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		}
 			// 	],
 			// 	"id": "t142",
@@ -5848,7 +5848,7 @@ export default class ForestsConfiguration {
 			// 	"items": [
 			// 		{
 			// 			"count": 9,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		},
 			// 		{
 			// 			"count": 8,
@@ -6207,7 +6207,7 @@ export default class ForestsConfiguration {
 			// 	"items": [
 			// 		{
 			// 			"count": 20,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		}
 			// 	],
 			// 	"id": "t151",
@@ -6258,7 +6258,7 @@ export default class ForestsConfiguration {
 			// 	"items": [
 			// 		{
 			// 			"count": 20,
-			// 			"name": "witchMushroom"
+			// 			"name": "amanita"
 			// 		}
 			// 	],
 			// 	"separators": [
