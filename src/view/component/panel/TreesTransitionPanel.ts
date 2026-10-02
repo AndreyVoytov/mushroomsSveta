@@ -259,6 +259,14 @@ export default class TreesTransitionPanel extends BasePanel {
             this.markCoverAnimationComplete();
         }
 
+        // Idle panels are staged during state init, before the screen is ready
+        // to animate them. Keep their preset tree pieces out of the renderer
+        // until reveal() has prepared the exit tweens; otherwise high refresh
+        // rates can expose a frame of the static preset before the transition.
+        if (!from && time === 0) {
+            this.visible = false;
+        }
+
         // This panel is transitional and should not survive between level/screen states.
         if (from && time > 0) {
             let disposeDelay = delay + time + 1200;
@@ -339,6 +347,7 @@ export default class TreesTransitionPanel extends BasePanel {
             return;
         }
         this.revealing = true;
+        this.visible = true;
         this.stopLoadingDots();
         SoundUtils.bushMovingOut();
         this.overlay.alpha = 0;
