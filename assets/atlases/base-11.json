@@ -2,7 +2,7 @@
     "frames":  {
                    "base/items/amanita.png":  {
                                                   "frame":  {
-                                                                "x":  1570,
+                                                                "x":  1285,
                                                                 "y":  1444,
                                                                 "w":  295,
                                                                 "h":  295
@@ -26,7 +26,7 @@
                                               },
                    "base/items/blackberry.png":  {
                                                      "frame":  {
-                                                                   "x":  1648,
+                                                                   "x":  1342,
                                                                    "y":  1127,
                                                                    "w":  301,
                                                                    "h":  301
@@ -98,7 +98,7 @@
                                               },
                    "base/items/feather.png":  {
                                                   "frame":  {
-                                                                "x":  286,
+                                                                "x":  1,
                                                                 "y":  1444,
                                                                 "w":  299,
                                                                 "h":  299
@@ -192,30 +192,6 @@
                                                               "y":  0.5
                                                           }
                                             },
-                   "base/items/mushroom.png":  {
-                                                   "frame":  {
-                                                                 "x":  1342,
-                                                                 "y":  1127,
-                                                                 "w":  304,
-                                                                 "h":  304
-                                                             },
-                                                   "rotated":  false,
-                                                   "trimmed":  false,
-                                                   "spriteSourceSize":  {
-                                                                            "x":  0,
-                                                                            "y":  0,
-                                                                            "w":  304,
-                                                                            "h":  304
-                                                                        },
-                                                   "sourceSize":  {
-                                                                      "w":  304,
-                                                                      "h":  304
-                                                                  },
-                                                   "pivot":  {
-                                                                 "x":  0.5,
-                                                                 "y":  0.5
-                                                             }
-                                               },
                    "base/items/pearl.png":  {
                                                 "frame":  {
                                                               "x":  1,
@@ -362,7 +338,7 @@
                                                           },
                    "base/task/header_ribbon.png":  {
                                                        "frame":  {
-                                                                     "x":  587,
+                                                                     "x":  302,
                                                                      "y":  1444,
                                                                      "w":  981,
                                                                      "h":  297
@@ -458,7 +434,7 @@
                                                   },
                    "base/ui/frameLight.png":  {
                                                   "frame":  {
-                                                                "x":  1867,
+                                                                "x":  1582,
                                                                 "y":  1444,
                                                                 "w":  36,
                                                                 "h":  295
@@ -482,8 +458,8 @@
                                               },
                    "base/ui/gemsCloud.png":  {
                                                  "frame":  {
-                                                               "x":  1,
-                                                               "y":  1444,
+                                                               "x":  1645,
+                                                               "y":  1127,
                                                                "w":  283,
                                                                "h":  300
                                                            },
@@ -555,7 +531,7 @@
                    "base/ui/progressbar/forestHeader.png":  {
                                                                 "frame":  {
                                                                               "x":  1,
-                                                                              "y":  1746,
+                                                                              "y":  1745,
                                                                               "w":  839,
                                                                               "h":  287
                                                                           },
@@ -579,7 +555,7 @@
                    "base/ui/progressbar/potionsHeader.png":  {
                                                                  "frame":  {
                                                                                "x":  842,
-                                                                               "y":  1746,
+                                                                               "y":  1745,
                                                                                "w":  839,
                                                                                "h":  287
                                                                            },
@@ -656,7 +632,7 @@
                  "format":  "RGBA8888",
                  "size":  {
                               "w":  2022,
-                              "h":  2034
+                              "h":  2033
                           },
                  "scale":  1
              }

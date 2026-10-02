@@ -484,7 +484,7 @@ export default class ForestEvent1Configuration {
 					},
 					{
 						"count": 0,
-						"name": "amanita"
+						"name": "witchMushroom"
 					},
 					{
 						"count": 10,
