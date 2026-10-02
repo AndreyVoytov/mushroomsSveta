@@ -121,8 +121,14 @@ export default class LoadingScreen extends BaseScreen {
             }
         })
 
-        ServerStoreComponent.syncronizeUserWithServer();
-        ServerStoreComponent.updateFriendsFromServer()
+        if (Game.ANIMALS_SHOWCASE) {
+            // The public showcase is a self-contained level and must start
+            // even when the profile service is unavailable or slow.
+            UserService.userLoaded = true;
+        } else {
+            ServerStoreComponent.syncronizeUserWithServer();
+            ServerStoreComponent.updateFriendsFromServer()
+        }
 
         let user = UserService.getUser();
         if(user.isInterruptWinRows()){
