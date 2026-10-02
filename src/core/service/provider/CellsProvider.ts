@@ -68,15 +68,17 @@ export default class CellsProvider extends BaseCellsProvider {
             cells = this.generateCellsFromTypes(typesInfo, cellsCount);
 
             //Не должно быть клеток, в которых с самого начала стоит "0"
-            suitableGeneration = true;
-            cells.filter(cell => !cell.state.content).forEach(cell => {
-                let adjucentCount = this.getAdjucentInteractiveCount(cells, cell);
-                if (adjucentCount == 0) {
-                    suitableGeneration = false;
-                    notSuitableGenerationsCount++;
-                    console.log("Not suitable generation!");
-                }
-            });
+            if (!this.forestType.showcaseAnimals) {
+                suitableGeneration = true;
+                cells.filter(cell => !cell.state.content).forEach(cell => {
+                    let adjucentCount = this.getAdjucentInteractiveCount(cells, cell);
+                    if (adjucentCount == 0) {
+                        suitableGeneration = false;
+                        notSuitableGenerationsCount++;
+                        console.log("Not suitable generation!");
+                    }
+                });
+            }
         }
 
         this.configureHiveGroups(cells);
@@ -107,7 +109,9 @@ export default class CellsProvider extends BaseCellsProvider {
             } else if (this.forestType.environment == Environment.house) {
                 cell.state.content = ContentType.mirror;
             } else if (adjucentCount == 0) {
-                console.error("Cell with 0 interactive adjucents detected!")
+                if (!this.forestType.showcaseAnimals) {
+                    console.error("Cell with 0 interactive adjucents detected!");
+                }
                 cell.state.content = this.getTreeContent(cell.type);
             } else if (adjucentCount == 1 || adjucentCount == 2 || adjucentCount == 3) {
                 if (Utils.randomBoolean()) {
@@ -525,6 +529,16 @@ export default class CellsProvider extends BaseCellsProvider {
                         throw new NeverError(cellBiom);
                 }
             }
+        }
+
+        if (forestType.showcaseAnimals && forestType.showcaseAnimals.length > 0) {
+            forestType.showcaseAnimals.forEach((animal, index) => {
+                const cellIndex = Math.floor((index + 0.5) * types.length / forestType.showcaseAnimals.length);
+                if (cellIndex < types.length) {
+                    types[cellIndex] = animal;
+                    delete metaDataByIndex[cellIndex];
+                }
+            });
         }
 
         this.mask.splice(this.mask.length - additionalCellsCount, additionalCellsCount);

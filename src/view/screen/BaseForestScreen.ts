@@ -157,7 +157,9 @@ export default abstract class BaseForestScreen extends DialogScreen {
     initialize() {
 
         SoundUtils.startLevel();
-        TaskService.resetPendingLevelCollections();
+        if (!Game.ANIMALS_SHOWCASE) {
+            TaskService.resetPendingLevelCollections();
+        }
 
         this.scrollToY = 0;
 
@@ -167,9 +169,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
         let user = UserService.getUser();
 
-        user.setJustCompletedLevel(false);
+        if (!Game.ANIMALS_SHOWCASE) {
+            user.setJustCompletedLevel(false);
+        }
 
-        if (AdminService.isSkipMode() || ForestScreen.skipNextTime) {
+        if (!Game.ANIMALS_SHOWCASE && (AdminService.isSkipMode() || ForestScreen.skipNextTime)) {
             ForestScreen.skipNextTime = false;
             if (EventUtils.hasActiveLevelSession()) {
                 EventUtils.completeActiveEventLevel();
@@ -335,13 +339,15 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.unlockScreen();
             YandexGamesHelper.startGameplay();
             this.educationPanel.showEducation(null, 0);
-            let havePreboosters = StartLevelPanel.PREBOOSTERS_TO_SPEND.length > 0;
+            let havePreboosters = !Game.ANIMALS_SHOWCASE && StartLevelPanel.PREBOOSTERS_TO_SPEND.length > 0;
 
             if(havePreboosters){
                 user.setSpendOnLevel(user.getCurrentForest() + 1);
             }
 
-            this.placePreboosters();
+            if (!Game.ANIMALS_SHOWCASE) {
+                this.placePreboosters();
+            }
 
             this.game.time.events.add(havePreboosters? 1000 : 1, ()=>{
 
@@ -357,7 +363,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 }
 
                 this.game.time.events.add(300, ()=>{
-                    let positions = this.placeEventPreboosters();
+                    let positions = Game.ANIMALS_SHOWCASE ? [] : this.placeEventPreboosters();
 
                     if(positions.length > 0 && !this.educationPanel.shown){
                         positions.forEach(p => {
@@ -386,8 +392,10 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 });
             });
 
-            this.scheduleEventLevelStartReplica(havePreboosters ? 1800 : 400);
-        })
+            if (!Game.ANIMALS_SHOWCASE) {
+                this.scheduleEventLevelStartReplica(havePreboosters ? 1800 : 400);
+            }
+        }, Game.ANIMALS_SHOWCASE)
         this.addSprite(this.aimsPanel);
 
         if (AdminService.isLooseMode()) {
@@ -547,8 +555,12 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 return;
             }
             let closedCells = this.cellsProvider.getCells().filter(c => !c.state.opened && !c.state.cover.isDark() && !c.state.cover.isLocked()).length;
-            if (this.topPanel.getAims().filter(aim => aim.countLeft > 0).length == 0 || closedCells == 0) {
-                if (this.tryShowEventLevelEndReplica()) {
+            const animalsRemain = this.cellsProvider.getCells().some(cell => cell.state.content in AnimalsContents);
+            const didWin = Game.ANIMALS_SHOWCASE
+                ? !animalsRemain
+                : this.topPanel.getAims().filter(aim => aim.countLeft > 0).length == 0 || closedCells == 0;
+            if (didWin) {
+                if (!Game.ANIMALS_SHOWCASE && this.tryShowEventLevelEndReplica()) {
                     return;
                 }
 
@@ -853,7 +865,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         this.levelStopped = true;
         YandexGamesHelper.stopGameplay();
 
-        const darkCells = this.cellsProvider.getCells().filter(cell =>
+        const darkCells = Game.ANIMALS_SHOWCASE ? [] : this.cellsProvider.getCells().filter(cell =>
             !cell.state.opened && cell.state.cover && cell.state.cover.isDark() && !cell.state.cover.isLocked()
         ).sort((a, b) => a.Y - b.Y || a.X - b.X);
         const interval = Math.min(20, 360 / Math.max(1, darkCells.length - 1));
@@ -901,13 +913,15 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
         this.levelStopped = true;
         YandexGamesHelper.stopGameplay();
-        TaskService.recordSpentEnergy(this.topPanel.getSpentEnergy());
-        TaskService.recordCompletedLevel(1);
+        if (!Game.ANIMALS_SHOWCASE) {
+            TaskService.recordSpentEnergy(this.topPanel.getSpentEnergy());
+            TaskService.recordCompletedLevel(1);
+        }
 
         let user = UserService.getUser();
         let isEventLevel = EventUtils.hasActiveLevelSession();
         let completedLevelNumber = this.getCurrentLevelNumber();
-        let shouldShowInterstitial = !isEventLevel && user.getCurrentForest() == this.getCurrentLevelIndex() && completedLevelNumber % 3 == 0;
+        let shouldShowInterstitial = !Game.ANIMALS_SHOWCASE && !isEventLevel && user.getCurrentForest() == this.getCurrentLevelIndex() && completedLevelNumber % 3 == 0;
         let forestType = this.getForestType();
         let completePanel = new LevelCompletePanel(
             this.game,
@@ -917,6 +931,10 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.topPanel.getAims(),
             forestType,
             () => {
+                if (Game.ANIMALS_SHOWCASE) {
+                    this.startScreen(ForestScreen, true, false);
+                    return;
+                }
                 user.setJustCompletedLevel(true);
                 if (shouldShowInterstitial) {
                     YandexGamesHelper.showFullscreenAdv(() => this.playAnimation("goHome"));
@@ -925,6 +943,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 }
             },
             isEventLevel ? {
+                aims: this.topPanel.getAims(),
+                spentEnergy: this.topPanel.getSpentEnergy(),
+                targetSteps: this.topPanel.getTargetSteps(),
+                gemsCount: 0
+            } : Game.ANIMALS_SHOWCASE ? {
                 aims: this.topPanel.getAims(),
                 spentEnergy: this.topPanel.getSpentEnergy(),
                 targetSteps: this.topPanel.getTargetSteps(),
@@ -946,9 +969,13 @@ export default abstract class BaseForestScreen extends DialogScreen {
             }, this);
         }
 
-        AnalyticUtils.logLevelComplete(this.topPanel.getStepsLeft());
+        if (!Game.ANIMALS_SHOWCASE) {
+            AnalyticUtils.logLevelComplete(this.topPanel.getStepsLeft());
+        }
 
-        if (isEventLevel) {
+        if (Game.ANIMALS_SHOWCASE) {
+            // The showcase is isolated from player progression and rewards.
+        } else if (isEventLevel) {
             EventUtils.completeActiveEventLevel();
         } else if (user.getCurrentForest() == this.getCurrentLevelIndex()) {
             let hardLevelAddition = forestType.hardLevel ? StartLevelPanel.hardLevelAwardAddition : 0;

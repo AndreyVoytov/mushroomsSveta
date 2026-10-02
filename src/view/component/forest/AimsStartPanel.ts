@@ -12,9 +12,15 @@ export default class AimsStartPanel extends BasePanel {
     private aimsPanelShowed: boolean = false;
     private needSkipAims: boolean = false;
 
-    constructor(game: Phaser.Game, x: number, y: number, aims: ForestAim[], shortInfo: boolean, forestType: ForestType, onHideCallback: () => void) {
+    constructor(game: Phaser.Game, x: number, y: number, aims: ForestAim[], shortInfo: boolean, forestType: ForestType, onHideCallback: () => void, skipIntro: boolean = false) {
         super(game, x, y);
         this.game = game;
+
+        if (skipIntro) {
+            this.visible = false;
+            this.game.time.events.add(1, onHideCallback);
+            return;
+        }
 
         let environment = forestType.environment;
         let level = ForestDao.indexOf(forestType);

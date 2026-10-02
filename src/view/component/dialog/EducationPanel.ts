@@ -370,6 +370,15 @@ export default class EducationPanel extends BasePanel {
         this.screen.stopLevelForDialog();
         this.screen.lockScreenFor(1000);
         this.screen.dialogPanel.updateReplica(true);
+        if (ForestsDao.indexOf(this.forestType) == 1) {
+            const house = cellState.sprite;
+            const replica = this.screen.dialogPanel.replicaPanel;
+            if (replica) {
+                replica.whenFullyShown(() => {
+                    if (house && house.exists) house.inputEnabled = true;
+                });
+            }
+        }
     }
 
     private revealDiscoveredUnicorn(unicorn: Phaser.Sprite, tile: Phaser.Sprite): void {
@@ -406,8 +415,8 @@ export default class EducationPanel extends BasePanel {
         // The level-2 house is a reveal rather than a flat replacement. Its
         // wider footprint sits a little lower on the cell, with the light
         // coming from bottom-right and casting a soft shadow up-left.
-        const targetWidth = house.width * 1.2;
-        const targetHeight = house.height * 1.1;
+        const targetWidth = house.width * 1.5;
+        const targetHeight = house.height * 1.4;
         SpriteUtils.loadTexture(house, "actionHouse");
         house.anchor.set(0.5, 0.86);
         house.width = targetWidth;
@@ -428,7 +437,7 @@ export default class EducationPanel extends BasePanel {
         houseShadow.scale.set(1 / tile.scale.x, 1 / tile.scale.y);
         tile.addChild(houseShadow);
         house.bringToTop();
-        house.inputEnabled = true;
+        house.inputEnabled = false;
         house.input.useHandCursor = true;
         house.events.onInputDown.add(() => {
             if (this.screen.isLocked()) return;

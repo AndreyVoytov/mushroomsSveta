@@ -19,6 +19,8 @@ import HouseScreen from './HouseScreen';
 import Utils from '../../core/utils/Utils';
 import EventUtils from '../../core/utils/EventUtils';
 import LocationUtils from '../../core/utils/LocationUtils';
+import ForestUtils from '../../core/utils/ForestUtils';
+import AnimalsShowcaseConfiguration from '../../core/configuration/AnimalsShowcaseConfiguration';
 import { Easing } from 'phaser-ce';
 
 export default class LoadingScreen extends BaseScreen {
@@ -181,7 +183,10 @@ export default class LoadingScreen extends BaseScreen {
 
                 this.game.time.events.add(200 + timePortion, () => {
                     let user = UserService.getUser();
-                    if (user.getCurrentForest() == 0) {
+                    if (Game.ANIMALS_SHOWCASE) {
+                        ForestUtils.forestTypeToPLay = AnimalsShowcaseConfiguration.createForest();
+                        this.startScreen(ForestScreen, true, false);
+                    } else if (user.getCurrentForest() == 0) {
                         AnalyticUtils.logLevelStart()
                         SoundUtils.birds1()
                         this.startScreen(ForestScreen, true, false);

@@ -51,6 +51,9 @@ export default class ReplicaPanel extends BasePanel {
     private clickToSkipInfo: Label;
 
     private playAnimation : (animation:string)=> void;
+    private entranceFinished = false;
+    private textFinished = false;
+    private readyCallbacks: (() => void)[] = [];
 
     private parentCont: DialogPanel;
 
@@ -478,6 +481,8 @@ export default class ReplicaPanel extends BasePanel {
 
     public firstShow() {
         const token = ++this.eventToken;
+        this.entranceFinished = false;
+        this.textFinished = false;
 
         this.bringToTop();
         console.log("FIRST REPLICA SHOW: " + this.r.text)
@@ -572,6 +577,9 @@ export default class ReplicaPanel extends BasePanel {
             this.game.add.tween(this.title.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
             this.game.add.tween(this.titlePnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
             this.game.add.tween(this.dialogPnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
+                .onComplete.addOnce(() => {
+                    if (token === this.eventToken) this.markEntranceFinished();
+                });
 
             if (token !== this.eventToken) {
                 return;
@@ -836,6 +844,7 @@ export default class ReplicaPanel extends BasePanel {
 
     private printText(delay: number, token?: number): void {
         const expectedToken = token !== undefined ? token : this.eventToken;
+        this.textFinished = false;
         if (!this.textToPrint || this.textToPrint.length == 0) {
             this.textToPrint = this.text.text;
         }
@@ -886,6 +895,8 @@ export default class ReplicaPanel extends BasePanel {
 
         if (this.textToPrint.length === 0) {
             this.printing = false;
+            this.textFinished = true;
+            this.notifyReadyCallbacks();
             return;
         }
 
@@ -918,6 +929,8 @@ export default class ReplicaPanel extends BasePanel {
                 if (this.text.text.length >= this.textToPrint.length){
                     console.log("FINISH PRINTING")
                     this.printing = false;
+                    this.textFinished = true;
+                    this.notifyReadyCallbacks();
                 }
             }, this));
         }
@@ -1073,6 +1086,26 @@ export default class ReplicaPanel extends BasePanel {
     public isShown():boolean{
         return this.printing != undefined ;
     }
+
+    public whenFullyShown(callback: () => void): void {
+        if (this.entranceFinished && this.textFinished) {
+            callback();
+            return;
+        }
+        this.readyCallbacks.push(callback);
+    }
+
+    private markEntranceFinished(): void {
+        this.entranceFinished = true;
+        this.notifyReadyCallbacks();
+    }
+
+    private notifyReadyCallbacks(): void {
+        if (!this.entranceFinished || !this.textFinished) return;
+        const callbacks = this.readyCallbacks.slice();
+        this.readyCallbacks = [];
+        callbacks.forEach(callback => callback());
+    }
     public isPrinting():boolean{
         return this.printing;
     }
@@ -1091,6 +1124,8 @@ export default class ReplicaPanel extends BasePanel {
             this.text.renderable = true;
             this.text.setPreparedText(this.textToPrint);
             this.printing = false;
+            this.textFinished = true;
+            this.notifyReadyCallbacks();
         }
     }
 

@@ -260,6 +260,9 @@ export default class ForestScreen extends BaseForestScreen {
         // if (!AdminService.isAdminUser()) {
         let cellCover = new ForestCellCover(this.getForestType().environment, cell.state.leafType, this.cellsProvider.calculateX(cell), this.cellsProvider.calculateY(cell),
             BaseCellsProvider.CELL_WIDTH, BaseCellsProvider.CELL_HEIGHT, this.game, cell.state, cell.type, this.onCellOpen, this);
+        if (Game.ANIMALS_SHOWCASE) {
+            cellCover.alpha = 0.36;
+        }
         this.add.existing(cellCover);
         // cellCover.cacheAsBitmap = true;
 

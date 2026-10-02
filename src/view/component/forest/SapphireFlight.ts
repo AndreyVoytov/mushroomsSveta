@@ -19,6 +19,7 @@ export default class SapphireFlight extends Phaser.Group {
     private flights: Flight[] = [];
     private sparks: Spark[] = [];
     private elapsed = 0;
+    private startedAt = 0;
     private lastTrail = 0;
     private trailCursor = 0;
     private sparkCursor = 0;
@@ -31,6 +32,7 @@ export default class SapphireFlight extends Phaser.Group {
         super(game, game.world, 'sapphireFlight');
         this.fixedToCamera = true;
         this.panel = panel;
+        this.startedAt = game.time.now;
         // Keep identical textures adjacent for GPU batching instead of
         // alternating a glow and an atlas texture for every flying star.
         const glows = new Phaser.Group(game, this, 'flightGlows');
@@ -72,8 +74,11 @@ export default class SapphireFlight extends Phaser.Group {
     }
 
     public update(): void {
+        // Drive the flight curve from Phaser's absolute clock. Accumulating a
+        // clamped frame delta makes the animation run slow whenever a device
+        // misses frames, even though the intended flight duration is fixed.
         const dt = Math.min(50, this.game.time.elapsedMS || 16.67);
-        this.elapsed += dt;
+        this.elapsed = Math.max(0, this.game.time.now - this.startedAt);
         this.panel.getSapphireStarTarget(this.target);
         let active = 0;
         let unfinished = 0;

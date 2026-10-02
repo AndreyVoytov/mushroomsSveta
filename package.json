@@ -17,7 +17,7 @@
     "dev": "webpack",
     "dev:atlas": "npm run localization:sync && npm run atlases && webpack",
     "predeploy": "npm run localization:sync && npm run atlases",
-    "deploy": "webpack --config webpack.production.config.js",
+    "deploy": "webpack --config webpack.production.config.js && node tools/create-animals-route.js",
     "bitmap-fonts": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/update-bitmap-fonts.ps1",
     "localization:sync": "node tools/sync-localization-entries.js"
   },

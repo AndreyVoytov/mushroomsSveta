@@ -13,6 +13,7 @@ import CustomizationType from './../../core/model/enum/CustomizationType';
 export default class Game extends Phaser.Game {
 
     private static instance: Game;
+    public static ANIMALS_SHOWCASE = false;
 
     public static isSmallDesktopForOk(): boolean {
         return AnalyticUtils.getCustomization() == CustomizationType.odkl && window.innerHeight < 800 + (28 + 48);
@@ -46,6 +47,7 @@ export default class Game extends Phaser.Game {
         console.log("width: " + Game.getWidth() + ", heifth: " + Game.getHeight())
 
         Game.CAN_USE_WEBP = Game.canUseWebP();
+        Game.ANIMALS_SHOWCASE = /(?:^|\/)animals\/?$/.test(window.location.pathname);
 
         AnalyticUtils.init();
 

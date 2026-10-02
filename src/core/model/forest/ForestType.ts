@@ -53,6 +53,7 @@ export default class ForestType {
     cellsToSpawn?: number;
     darkStump?: boolean;
     hardLevel?:boolean;
+    showcaseAnimals?: number[];
 
     waterCenter?: number;
 
@@ -88,6 +89,7 @@ export default class ForestType {
             this.dragonflies = forestType.dragonflies;
             this.cellsToSpawn = forestType.cellsToSpawn;
             this.darkStump = forestType.darkStump;
+            this.showcaseAnimals = forestType.showcaseAnimals;
             
             this.waterCenter = forestType.waterCenter;
 
