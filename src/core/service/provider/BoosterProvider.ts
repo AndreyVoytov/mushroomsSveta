@@ -327,7 +327,17 @@ export default class BoostersProvider {
         if (this.doApplyCurrentBooster(compass, compassCell)) {
             this.game.time.events.add(200, () => {
                 compass.alpha = 1;
-                this.game.add.tween(compass).to({ angle: 360 }, 300, Phaser.Easing.Linear.None, true, 0, 30, false)
+                compass.loadTexture('snailBooster', 0);
+                compass.anchor.set(0.5);
+                compass.width = 144;
+                compass.height = 153;
+                compass.angle = 0;
+                const charge = compass.animations.add('charge', Phaser.ArrayUtils.numberArray(0, 18), 18, false);
+                compass.animations.add('glowing', [14, 15, 16, 17, 18, 17, 16, 15], 16, true);
+                charge.onComplete.addOnce(() => {
+                    if (compass.exists) compass.animations.play('glowing');
+                });
+                compass.animations.play('charge');
                 this.screen.add.existing(compass);
             }, this);
 
@@ -379,6 +389,7 @@ export default class BoostersProvider {
 
                             this.game.add.tween(compass).to({ width: 0, height: 0 }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, 0, 0, false)
                             this.game.time.events.add(300, () => {
+                                compass.animations.stop();
                                 compass.visible = false;
                             })
                         }, this);
@@ -394,6 +405,15 @@ export default class BoostersProvider {
     public activateBooster(cellWithBooster: ForestCell): boolean {
         let cellType = cellWithBooster.type;
         let boosterSprite = cellWithBooster.state.sprite;
+        if (cellType == CellType.COMPASS_FREE || cellType == CellType.COMPASS_IVY
+            || cellType == CellType.ROCKET || cellType == CellType.ROCKET2 || cellType == CellType.ROCKET3
+            || cellType == CellType.ROCKET_IVY || cellType == CellType.ROCKET_IVY2 || cellType == CellType.ROCKET_IVY3) {
+            this.game.tweens.removeFrom(boosterSprite);
+            this.game.tweens.removeFrom(boosterSprite.scale);
+            boosterSprite.angle = 0;
+            boosterSprite.scale.set(cellWithBooster.state.baseScaleX || boosterSprite.scale.x,
+                cellWithBooster.state.baseScaleY || boosterSprite.scale.y);
+        }
         switch (cellType) {
             case CellType.COMPASS_FREE:
             case CellType.COMPASS_IVY:

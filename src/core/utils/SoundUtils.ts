@@ -186,10 +186,13 @@ export default class SoundUtils {
     public static honey(){
         let sound = Game.getInstance().sound.play("mushroomTaking", 0.015 * this.volumeRatio);
     }
-    public static beeSting(){
+    public static beeSting(volume: number = 0.12){
         if(!SoundUtils.haveRecent("beeSting")){
-            SoundUtils.addSound("beeSting", 0.12 * this.volumeRatio);
+            SoundUtils.addSound("beeSting", volume * this.volumeRatio);
         }
+    }
+    public static hiveFarewell(): void {
+        SoundUtils.addSound('encounter_hive', 0.045 * this.volumeRatio);
     }
     public static mushroomFound(){
         // if(Utils.randomBoolean()){
@@ -208,8 +211,11 @@ export default class SoundUtils {
     }
     public static animalFound(animal?: string){
         let game = Game.getInstance();
-        if (animal == 'rabbit' || animal == 'butterfly' || animal == 'bat') {
-            game.sound.play('encounter_' + animal, 0.10 * this.volumeRatio);
+        if (animal == 'rabbit' || animal == 'butterfly' || animal == 'bat' || animal == 'duck' || animal == 'fish' || animal == 'ram') {
+            const volumes = { rabbit: 0.045, butterfly: 0.035, bat: 0.04, duck: 0.045, fish: 0.045, ram: 0.045 };
+            if (!SoundUtils.haveRecent('encounter_' + animal)) {
+                SoundUtils.addSound('encounter_' + animal, volumes[animal] * this.volumeRatio);
+            }
             return;
         }
         game.sound.play("itemFound", 0.015 * this.volumeRatio);
@@ -304,6 +310,12 @@ export default class SoundUtils {
             let sound = SoundUtils.addSound("jellyBlob", 0.02 * this.volumeRatio);
         })
         // let sound = Game.getInstance().sound.play("ladybugMoving", 0.02)
+    }
+
+    public static unicornHooves(): void {
+        const sound = Game.getInstance().sound.play('unicornHooves', 0.12 * this.volumeRatio);
+        Game.getInstance().add.tween(sound).to({ volume: 0 }, 2500,
+            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true, 700);
     }
   
 

@@ -181,7 +181,7 @@ class TaskCardPanel extends BasePanel {
         this.currentTaskId = taskView.task.id;
 
         SpriteUtils.loadTexture(this.icon, taskView.task.icon);
-        this.icon.scale.set(this.getScaleForIcon(taskView.task.icon));
+        SpriteUtils.fitIcon(this.icon, TaskCardPanel.ITEM_WIDTH - 22, TaskCardPanel.ITEM_HEIGHT - 18);
 
         const rewardIcon = taskView.task.reward && taskView.task.reward.boosters && taskView.task.reward.boosters.length > 0
             ? taskView.task.reward.boosters[0].type
@@ -191,7 +191,7 @@ class TaskCardPanel extends BasePanel {
             : ((taskView.task.reward && taskView.task.reward.gems) || 2);
 
         SpriteUtils.loadTexture(this.rewardIcon, rewardIcon);
-        this.rewardIcon.scale.set(this.getRewardScale(rewardIcon));
+        SpriteUtils.fitIcon(this.rewardIcon, 52, 48);
         this.rewardLabel.text = "" + rewardCount;
         this.titleLabel.text = taskView.task.title;
         this.progressLabel.text = taskView.progress + "/" + taskView.task.target;
@@ -242,22 +242,7 @@ class TaskCardPanel extends BasePanel {
         this.onClaim(this.currentTaskId);
     }
 
-    private getScaleForIcon(icon: string): number {
-        switch (icon) {
-            case "lightning": return 0.42;
-            case "playButton": return 0.32;
-            case "acorn": return 0.56;
-            default: return 0.64;
-        }
-    }
 
-    private getRewardScale(icon: string): number {
-        switch (icon) {
-            case "gems": return 0.3;
-            case "actionChest": return 0.38;
-            default: return 0.44;
-        }
-    }
 }
 
 export default class TasksPanel extends ClosablePanel {

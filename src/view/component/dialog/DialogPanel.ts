@@ -94,7 +94,7 @@ export default class DialogPanel extends BasePanel {
         this.playAnimation("winLevel") //for forest
     }
 
-    public updateReplica(ignoreLockedScreen?: boolean, noAnimation?:boolean, notSaveCompletedReplica?: boolean): string {
+    public updateReplica(ignoreLockedScreen?: boolean, noAnimation?:boolean, notSaveCompletedReplica?: boolean, advanceWhilePrinting?: boolean): string {
 
         if(this.replicaPanel && !this.replicaPanel.isShown()){
             return;
@@ -103,7 +103,9 @@ export default class DialogPanel extends BasePanel {
         if(this.replicaPanel && this.replicaPanel.isPrinting()){
             console.log("STOP PRINTING!")
             this.replicaPanel.stopPrinting();
-            return;
+            if (!advanceWhilePrinting) {
+                return;
+            }
         }
 
         let user = UserService.getUser();

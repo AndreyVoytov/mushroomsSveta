@@ -17,7 +17,7 @@ export default class GemsPanel extends BasePanel {
         this.scale.set(0.9)
 
         this.attachSprite('statusPanel')
-        this.attachSprite('gems')
+        this.attachSprite('sapphireStar', 'gems')
         let plusButton = this.attachButton('plusButton', () => {
             if (houseScreen.isTasksPanelBlockingUI()) {
                 return;

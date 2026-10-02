@@ -473,12 +473,17 @@ export default class ForestTopPanel extends BasePanel {
     }
 
     public collectPearl(cell: ForestCell) {
-        let pearl = SpriteUtils.createSprite(this.game, cell.state.sprite.x, cell.state.sprite.y, "pearl")
+        let pearl = SpriteUtils.createSprite(this.game, cell.state.sprite.x, cell.state.sprite.y - 4, "pearl")
         pearl.anchor.set(0.5)
-        pearl.scale.set(0.7)
+        const pearlScale = 0.66 * 120 / Math.max(pearl.width, pearl.height);
+        pearl.scale.set(pearlScale * 0.72)
         this.game.add.existing(pearl);
         pearl.inputEnabled = false;
-        this.game.time.events.add(300, () => {
+        this.game.add.tween(pearl).to({ y: pearl.y - 34, angle: 18 }, 260,
+            Phaser.Easing.Back.Out, true);
+        this.game.add.tween(pearl.scale).to({ x: pearlScale, y: pearlScale }, 260,
+            Phaser.Easing.Back.Out, true);
+        this.game.time.events.add(320, () => {
             this.collectSprite(pearl, AimType.pearl);
         })
 
@@ -615,6 +620,8 @@ export default class ForestTopPanel extends BasePanel {
     private addAimWithLabel(aim: ForestAim, shiftX: number): void {
         let image = SpriteUtils.createSprite(this.game, 370 + shiftX, 57, aim.image);
         image.anchor = new Phaser.Point(0.5, 0.5);
+        let imageScale = 82 / Math.max(image.width, image.height);
+        image.scale.set(imageScale, imageScale);
         // image.scale = new Phaser.Point(1.5, 1.5);
         this.addSprite(image);
 

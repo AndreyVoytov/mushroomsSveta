@@ -4,6 +4,7 @@ import BaseLayout from './BaseLayout';
 import { Easing } from 'phaser-ce';
 import StoryLocation from '../../../../core/model/enum/StoryLocation';
 import DialogScreen from '../../../screen/common/DialogScreen';
+import SoundUtils from '../../../../core/utils/SoundUtils';
 export default class DarkForestLayout extends BaseLayout {
 
     private unicorn: Phaser.Sprite;
@@ -45,6 +46,7 @@ export default class DarkForestLayout extends BaseLayout {
         } else if (animationId == "unicornShow"){
             this.game.add.tween(this.unicorn).to({alpha:1}, 300, Easing.Linear.None, true, 0)
         } else if (animationId == "unicornMove") {
+            SoundUtils.unicornHooves();
             this.unicorn2.visible = true;
             this.unicorn3.visible = true;
             this.unicorn2.alpha = 0

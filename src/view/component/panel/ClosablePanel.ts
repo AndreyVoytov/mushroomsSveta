@@ -10,6 +10,7 @@ export default class ClosablePanel extends BasePanel {
     public processing: boolean = false;
     public opened:boolean = false;
     public fadeTransition:boolean = false;
+    public backdropAlpha:number = 0.5;
     protected openingWithoutAnimation:boolean = false;
 
     private maxScale:number;
@@ -56,7 +57,7 @@ export default class ClosablePanel extends BasePanel {
             this.blackTransparent.events.onInputDown.add(this.close, this);
         }
 
-        this.game.add.tween(this.blackTransparent).to({ alpha: 0.5 }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, instantly ? 0 : 300, 0, false);
+        this.game.add.tween(this.blackTransparent).to({ alpha: this.backdropAlpha }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, instantly ? 0 : 300, 0, false);
         this.blackTransparent.inputEnabled = true;
 
         this.game.time.events.add(100, () => {
@@ -71,7 +72,7 @@ export default class ClosablePanel extends BasePanel {
             this.game.tweens.removeFrom(this);
             this.game.tweens.removeFrom(this.scale);
 
-            this.blackTransparent.alpha = 0.5;
+            this.blackTransparent.alpha = this.backdropAlpha;
             this.alpha = 1;
             this.scale.set(this.maxScale);
             AnimationUtils.primeForShow(this);

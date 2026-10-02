@@ -639,6 +639,15 @@ export default class ReplicasConfiguration {
                 "buttonImage": "tree"
             },
             {
+                "id": "r41level",
+                "personImage": "sveta1",
+                "personName": "replica.r41level.personName",
+                "text": "replica.r41level.text",
+                "context": {
+                    "level": 37
+                }
+            },
+            {
                 "id": "r41",
                 "personImage": "sveta1",
                 "personName": "replica.r41.personName",

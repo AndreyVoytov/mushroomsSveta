@@ -72,7 +72,7 @@ export default class MushroomHarvestEffects extends Phaser.Group {
             // start value when a tween starts, even when it has a delay.
             reveal.onComplete.addOnce(() => {
                 if (hole.pendingDestroy || !hole.parent) return;
-                this.game.add.tween(hole).to({ alpha: 0 }, 2400, Phaser.Easing.Sinusoidal.In,
+                this.game.add.tween(hole).to({ alpha: 0 }, 800, Phaser.Easing.Sinusoidal.In,
                     true, 200).onComplete.addOnce(() => {
                     if (cell.mushroomHole == hole && !hole.pendingDestroy) {
                         cell.mushroomHole = null;

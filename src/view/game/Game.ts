@@ -71,10 +71,18 @@ export default class Game extends Phaser.Game {
         this.startScene("BootSettings", true, false);
     }
 
-    public startScene(state: any, clearWorld?: boolean, clearCache?: boolean) {
+    public startScene(state: any, clearWorld?: boolean, clearCache?: boolean): boolean {
         let stateId = state.toString();
 
+        if (!this.state.checkState(stateId)) {
+            console.error('Cannot start unregistered Phaser state: ' + stateId);
+            return false;
+        }
+
+        // Phaser queues this request for preUpdate; it does not shut down the
+        // current screen inside the event callback that requested the change.
         this.state.start(stateId, clearWorld, clearCache);
+        return true;
     }
 
     public static getWidth(): number {

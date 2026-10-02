@@ -41,7 +41,7 @@ export default class CellsPainter extends CellsProvider {
             cell.state.underSprite = underSprite;
         }
 
-        let image = ContentType[cell.state.content];
+        let image = this.getContentImage(cell);
         if (cell.state.content == ContentType.specificItem || cell.state.content == ContentType.randomItem) {
             image = String(cell.state.metaValue)
         } else if (cell.state.content == ContentType.hive) {
@@ -53,7 +53,7 @@ export default class CellsPainter extends CellsProvider {
         if (numberedImage) {
             image = numberedImage;
         }
-        cell.state.numberedDecoration = !!numberedImage && adjucentCount >= 1 && adjucentCount <= 5;
+        cell.state.numberedDecoration = (this.isDarkForestDecoration(cell) || !!numberedImage) && adjucentCount >= 1 && adjucentCount <= 5;
         cell.state.renderedAdjucentCount = adjucentCount;
         cell.state.renderedContentImage = image;
 
@@ -74,6 +74,7 @@ export default class CellsPainter extends CellsProvider {
         cell.state.baseScaleX = cellSprite.scale.x;
         cell.state.baseScaleY = cellSprite.scale.y;
         this.updateWaterNumberLabel(cell, adjucentCount);
+        this.updateDarkForestNumberLabel(cell, adjucentCount);
 
         if (boostersProvider && ForestUtils.isBoosterType(cell.type)) {
             cellSprite.events.onInputDown.add(() => {
@@ -132,19 +133,26 @@ export default class CellsPainter extends CellsProvider {
             cell.state.metaValue = "" + (Utils.random(3) + 1);
             console.log("META VALUE: " + cell.state.metaValue)
             SpriteUtils.loadTexture(cellSprite, "moonflowerClosed" + cell.state.metaValue)
-            cellSprite.scale.set(1);
+            cellSprite.width = BaseCellsProvider.CELL_WIDTH;
+            cellSprite.height = BaseCellsProvider.CELL_HEIGHT;
         }
 
         if (cell.state.content == ContentType.amber) {
             cell.state.metaValue = "" + (Utils.random(3) + 1);
             console.log("META VALUE: " + cell.state.metaValue)
             SpriteUtils.loadTexture(cellSprite, "amber" + (cell.state.metaValue != "1" ? cell.state.metaValue : ""))
-            cellSprite.scale.set(1);
+            cellSprite.width = BaseCellsProvider.CELL_WIDTH;
+            cellSprite.height = BaseCellsProvider.CELL_HEIGHT;
         }
 
         if (cell.state.content == ContentType.book1) {
-            cell.state.sprite.scale.set(1.15, 1.15)
+            cell.state.sprite.width = BaseCellsProvider.CELL_WIDTH * 1.15;
+            cell.state.sprite.height = BaseCellsProvider.CELL_HEIGHT * 1.15;
         }
+
+        // Variant texture swaps must keep the cell-sized display and animation baseline.
+        cell.state.baseScaleX = cellSprite.scale.x;
+        cell.state.baseScaleY = cellSprite.scale.y;
 
         if (!ForestUtils.isCoverFreeNotBoosterItem(cell.type) && !ForestUtils.isBoosterType(cell.type) && !AdminService.isTransparentMode()) {
             cell.state.sprite.visible = false;
@@ -156,8 +164,8 @@ export default class CellsPainter extends CellsProvider {
         const previousCount = cell.state.renderedAdjucentCount;
         const wasNumberedTree = cell.state.numberedDecoration;
         const numberedImage = this.getNumberedDecorationImage(cell, adjucentCount);
-        const image = numberedImage || ContentType[cell.state.content];
-        cell.state.numberedDecoration = !!numberedImage && adjucentCount >= 1 && adjucentCount <= 5;
+        const image = numberedImage || this.getContentImage(cell);
+        cell.state.numberedDecoration = (this.isDarkForestDecoration(cell) || !!numberedImage) && adjucentCount >= 1 && adjucentCount <= 5;
         cell.state.renderedAdjucentCount = adjucentCount;
 
         if (cell.state.sprite && cell.state.renderedContentImage != image && cell.state.content in DecorationsContents) {
@@ -171,6 +179,7 @@ export default class CellsPainter extends CellsProvider {
             AnimationUtils.primeForShow(cell.state.sprite);
         }
         this.updateWaterNumberLabel(cell, adjucentCount);
+        this.updateDarkForestNumberLabel(cell, adjucentCount);
 
         this.updateNumberedTreeEffect(cell);
         if (cell.state.opened && wasNumberedTree && previousCount != null && adjucentCount < previousCount) {
@@ -190,7 +199,7 @@ export default class CellsPainter extends CellsProvider {
         SoundUtils.treeRustle();
         state.numberedTreeReactionOrigin = { x: sprite.x, y: sprite.y };
 
-        const smallDecor = image == 'stump' || image == 'log';
+        const smallDecor = image == 'stump' || image == 'log' || image == 'rottenStump' || image == 'cobwebDarkLog';
         const duration = smallDecor ? 400 + Utils.random(150) : 620 + Utils.random(220);
         const direction = Utils.random(2) == 0 ? -1 : 1;
         const angles = (smallDecor ? [-2, 2, 0] : [-4, 3, -2, 1, 0]).map(angle => angle * direction);
@@ -420,6 +429,11 @@ export default class CellsPainter extends CellsProvider {
             return null;
         }
 
+        // Dark-forest objects use their own silhouettes; render the neighbour
+        // count as a small live label rather than replacing that artwork with
+        // the generic numbered tree texture.
+        if (this.forestType.environment == Environment.darkForest) return null;
+
         if (adjucentCount >= 1 && adjucentCount <= 5) {
             if (cell.state.opened) {
                 cell.state.hadNumberedTree = true;
@@ -453,8 +467,48 @@ export default class CellsPainter extends CellsProvider {
         return null;
     }
 
-    // Water decorations keep their original leaf/bush art. Their yellow
-    // number is layered on top instead of replacing that artwork with a tree.
+    private isDarkForestDecoration(cell: ForestCell): boolean {
+        return this.forestType.environment == Environment.darkForest
+            && (cell.state.content == ContentType.stone || cell.state.content == ContentType.tree
+                || cell.state.content == ContentType.stump || cell.state.content == ContentType.log);
+    }
+
+    private getContentImage(cell: ForestCell): string {
+        if (cell.state.content == ContentType.specificItem || cell.state.content == ContentType.randomItem) {
+            return String(cell.state.metaValue);
+        }
+        if (cell.state.content == ContentType.hive) return this.getHiveImage(cell);
+        if (this.forestType.environment == Environment.darkForest) {
+            if (cell.state.content == ContentType.stone) return 'mossStone';
+            if (cell.state.content == ContentType.tree) return 'darkTree';
+            if (cell.state.content == ContentType.stump) return 'rottenStump';
+            if (cell.state.content == ContentType.log) return 'cobwebDarkLog';
+        }
+        return ContentType[cell.state.content];
+    }
+
+    private updateDarkForestNumberLabel(cell: ForestCell, count: number): void {
+        if (!this.isDarkForestDecoration(cell)) return;
+        let label = cell.state.numberedDecorationLabel;
+        if (count < 1 || count > 5) {
+            if (label) { label.destroy(); cell.state.numberedDecorationLabel = null; }
+            return;
+        }
+        if (!label) {
+            label = new Label(cell.state.sprite.game, 34, 31, '' + count, {
+                font: 'bold 38px Gilroy', fill: '#fff2bc', stroke: '#34402a', strokeThickness: 6,
+                align: 'center'
+            });
+            label.anchor.set(0.5);
+            label.inputEnabled = false;
+            cell.state.sprite.addChild(label);
+            cell.state.numberedDecorationLabel = label;
+        }
+        label.text = '' + count;
+    }
+
+    // Water decorations keep their artwork, with hand-painted number glyphs
+    // layered on top to match the numbered tree textures.
     private updateWaterNumberLabel(cell: ForestCell, count: number): void {
         if (cell.state.content != ContentType.wlilly1 && cell.state.content != ContentType.wlilly2) return;
         const current = cell.state.numberedWaterLabel;
@@ -463,20 +517,20 @@ export default class CellsPainter extends CellsProvider {
             return;
         }
         if (!current) {
-            const isBush = cell.state.content == ContentType.wlilly2;
             const game = cell.state.sprite.game;
-            const label = new Label(game, isBush ? 3 : 1, isBush ? -3 : 4, '' + count,
-                Label.BalsamiqSansBoldBold(isBush ? 57 : 54, '#ffe86b'));
+            const label = SpriteUtils.createSprite(game, cell.state.content == ContentType.wlilly2 ? 3 : 1,
+                cell.state.content == ContentType.wlilly2 ? -3 : 4, 'water_num' + count);
             label.anchor.set(0.5);
-            label.strokeThickness = 5;
-            label.addStrokeColor('#9c560d', 0);
+            // Keep water digits as readable as the numbers painted into trees.
+            label.width = cell.state.content == ContentType.wlilly2 ? 148 : 142;
+            label.height = label.width;
             label.inputEnabled = false;
             cell.state.sprite.addChild(label);
             cell.state.numberedWaterLabel = label;
-            game.add.tween(label).to({ alpha: [0.72, 1, 0.82, 1] }, 1450,
+            game.add.tween(label).to({ alpha: [0.84, 1, 0.9, 1] }, 1450,
                 Phaser.Easing.Sinusoidal.InOut, true, 0, -1);
         }
-        cell.state.numberedWaterLabel.text = '' + count;
+        SpriteUtils.loadTexture(cell.state.numberedWaterLabel, 'water_num' + count);
         cell.state.numberedDecoration = true;
     }
 
@@ -497,6 +551,45 @@ export default class CellsPainter extends CellsProvider {
         bg.scale.set(scaleCompensation, 0.9 * scaleCompensation);
         cell.state.sprite.addChild(bg);
         cell.state.sprite.addChild(cell.state.honeyLabel);
+
+        const beeCount = Math.min(3, Math.max(0, honeyCount));
+        for (let i = 0; i < beeCount; i++) {
+            const bee = SpriteUtils.createSprite(game, 0, 0, 'bee');
+            bee.anchor.set(0.5);
+            bee.scale.set(0.20, 0.20);
+            bee.inputEnabled = false;
+            cell.state.sprite.addChild(bee);
+            const phase = i / beeCount * Math.PI * 2;
+            const radiusX = this.isMegaHiveAnchor(cell) ? 72 : 43;
+            const radiusY = this.isMegaHiveAnchor(cell) ? 40 : 28;
+            bee.x = Math.cos(phase) * radiusX;
+            bee.y = -36 + Math.sin(phase) * radiusY;
+            game.add.tween(bee).to({
+                x: [Math.cos(phase + 1.6) * radiusX, Math.cos(phase + 3.2) * radiusX, Math.cos(phase + 6.28) * radiusX],
+                y: [-36 + Math.sin(phase + 1.6) * radiusY, -36 + Math.sin(phase + 3.2) * radiusY, -36 + Math.sin(phase + 6.28) * radiusY],
+                angle: [12, -12, 0]
+            }, 2600 + i * 180, Phaser.Easing.Linear.None, true, i * 140, -1, false)
+                .interpolation(Phaser.Math.catmullRomInterpolation);
+            cell.state.hiveBees.push(bee);
+        }
+        if (beeCount > 0) {
+            cell.state.hiveBuzzSound = game.sound.play('hiveBuzz', 0.05, true);
+        }
+    }
+
+    public updateHiveBees(game: Phaser.Game, cell: ForestCell, remainingHoney: number): void {
+        const targetCount = Math.min(3, Math.max(0, remainingHoney));
+        while (cell.state.hiveBees.length > targetCount) {
+            const bee = cell.state.hiveBees.pop();
+            if (!bee) continue;
+            game.tweens.removeFrom(bee);
+            game.add.tween(bee).to({ alpha: 0, width: 0, height: 0 }, 240,
+                Phaser.Easing.Quadratic.In, true).onComplete.addOnce(() => bee.destroy());
+        }
+        if (targetCount == 0 && cell.state.hiveBuzzSound) {
+            cell.state.hiveBuzzSound.stop();
+            cell.state.hiveBuzzSound = null;
+        }
     }
 
     private getMegaHiveCenter(cell: ForestCell): Phaser.Point {

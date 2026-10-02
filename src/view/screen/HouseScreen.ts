@@ -623,10 +623,19 @@ export default class HouseScreen extends DialogScreen {
         let user = UserService.getUser();
         let currentDiaryContent = DiaryConfiguration.getCurrentRecipe(user.getCurrentForest());
         if (currentDiaryContent && RecipeUtils.getRequiredLevel(currentDiaryContent) == user.getCurrentForest()) {
-            this.showProgress(currentDiaryContent, this.uiHidden);
+            this.progressAnimation = this.showProgress(currentDiaryContent, this.uiHidden);
         }
 
         this.tryStartConfiguredEventsAfterReplicas();
+        // A tap can dismiss the opening replica during the newly-revealed
+        // diary-page animation. Recover the home HUD after all blocking panels
+        // have had a chance to open, instead of leaving the player stranded.
+        this.game.time.events.add(450, () => {
+            if (this.uiHidden && !this.progressAnimation && !this.dialogPanel.isDialogActive()
+                && !this.startLevelPanel.opened && !this.isEventPanelBlockingUI()) {
+                this.showUI();
+            }
+        }, this);
     }
 
     private showPendingEventPanel(): void {

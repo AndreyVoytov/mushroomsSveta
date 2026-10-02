@@ -38,7 +38,6 @@ import GameText from '../../core/localization/GameText';
 import LocalizationService from '../../core/localization/LocalizationService';
 export default class ForestScreen extends BaseForestScreen {
 
-    private static readonly MIN_VALUABLE_HINT_ALPHA = 0.5;
 
     private previousCellClicked: ForestCell;
     private currentCellClicked: ForestCell;
@@ -153,9 +152,10 @@ export default class ForestScreen extends BaseForestScreen {
 
         this.ladybugsProvider.generateLadybugsAndAcorns(this.cellsProvider.getCells().filter(c => c.type == CellType.ACORN));
         if (this.ladybugsProvider.getLadybugs().length > 0) {
-            this.game.time.events.repeat(200, 1000000, () => {
-                this.ladybugsProvider.refreshLadybugsAndAcorns();
-                this.refreshLabels();
+            this.game.time.events.repeat(250, 1000000, () => {
+                if (this.ladybugsProvider.refreshLadybugsAndAcorns()) {
+                    this.refreshLabels();
+                }
             }, this);
         }
 
@@ -448,6 +448,18 @@ export default class ForestScreen extends BaseForestScreen {
             // let y = this.cellsProvider.calculateRealY(coordinates.x, coordinates.y);
 
             let cell = this.cellsProvider.getCells().filter(c => c.X == coordinates.x && c.Y == coordinates.y).shift();
+            if (cell && !ForestUtils.isBoosterType(cell.type)) {
+                const adjacentCompassOrRocket = this.cellsProvider.getCells().filter(candidate =>
+                    (candidate.type == CellType.COMPASS_FREE || candidate.type == CellType.COMPASS_IVY
+                        || candidate.type == CellType.ROCKET || candidate.type == CellType.ROCKET2 || candidate.type == CellType.ROCKET3
+                        || candidate.type == CellType.ROCKET_IVY || candidate.type == CellType.ROCKET_IVY2 || candidate.type == CellType.ROCKET_IVY3)
+                    && !candidate.state.opened && !candidate.state.cover.isLocked()
+                    && this.cellsProvider.areAdjucent(cell, candidate)
+                ).shift();
+                if (adjacentCompassOrRocket && this.boostersProvider.activateBooster(adjacentCompassOrRocket)) {
+                    return;
+                }
+            }
             if(cell && cell.state.cover && !cell.state.opened && !cell.state.cover.isLocked() && !cell.state.cover.isDark() &&
                 !this.educationPanel.shownWithOkButton && !this.levelStopped && !InGameSettingsPanel.shown 
                 && !this.isUnderFadeStrip(cell) && !this.hasMobileOccupant(cell)) { 
@@ -653,7 +665,8 @@ export default class ForestScreen extends BaseForestScreen {
 
         if (contentType in AnimalsContents) {
             SoundUtils.animalFound(contentType == ContentType.rabbit ? 'rabbit' :
-                (contentType == ContentType.bet ? 'bat' : contentType == ContentType.butterfly || contentType == ContentType.butterfly2 ? 'butterfly' : undefined));
+                (contentType == ContentType.bet ? 'bat' : contentType == ContentType.butterfly || contentType == ContentType.butterfly2 ? 'butterfly' :
+                    contentType == ContentType.duck ? 'duck' : contentType == ContentType.fish ? 'fish' : contentType == ContentType.sheep ? 'ram' : undefined));
 
             AnimationUtils.highlight(this.game, cellState.sprite.x, cellState.sprite.y, "splashG", 0, 1)
             this.topPanel.restoreStepsOnAnimalFound(openingType);
@@ -664,8 +677,9 @@ export default class ForestScreen extends BaseForestScreen {
             })
             cellState.content = ContentType.empty;
 
-            if (contentType == ContentType.rabbit || contentType == ContentType.butterfly || contentType == ContentType.butterfly2 || contentType == ContentType.bet) {
-                this.animateAnimalEscape(cellState.sprite, contentType == ContentType.rabbit ? 'rabbit' : contentType == ContentType.bet ? 'bat' : 'butterfly');
+            if (contentType == ContentType.rabbit || contentType == ContentType.butterfly || contentType == ContentType.butterfly2 || contentType == ContentType.bet || contentType == ContentType.duck || contentType == ContentType.fish || contentType == ContentType.sheep || contentType == ContentType.crab || contentType == ContentType.bird || contentType == ContentType.owlFlying) {
+                this.animateAnimalEscape(cellState.sprite, contentType == ContentType.rabbit ? 'rabbit' : contentType == ContentType.bet ? 'bat' :
+                    contentType == ContentType.duck ? 'duck' : contentType == ContentType.fish ? 'fish' : contentType == ContentType.sheep ? 'ram' : contentType == ContentType.crab ? 'crab' : contentType == ContentType.bird ? 'bird' : contentType == ContentType.owlFlying ? 'owl' : contentType == ContentType.butterfly2 ? 'butterfly2' : 'butterfly');
             } else {
                 this.game.add.tween(cellState.sprite).to({ x: cellState.sprite.x, y: cellState.sprite.y - 360 }, 1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, 200, 0, false);
                 this.game.add.tween(cellState.sprite).to({ alpha: [1, 0] }, 1000, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In, true, 200, 0, false);
@@ -1533,6 +1547,7 @@ export default class ForestScreen extends BaseForestScreen {
                 let remainingHoney = Math.max(0, currentHoney - 1);
 
                 hiveCell.state.honeyLabel.text = "" + remainingHoney;
+                this.cellsProvider.updateHiveBees(this.game, hiveCell, remainingHoney);
                 this.topPanel.collectHoney(hiveCell);
                 SoundUtils.honey();
 
@@ -1545,11 +1560,17 @@ export default class ForestScreen extends BaseForestScreen {
 
     private hideHive(cell: ForestCell): void {
         let hiveCell = this.cellsProvider.getHiveAnchorCell(cell);
+
         this.game.tweens.removeFrom(hiveCell.state.sprite);
         this.game.tweens.removeFrom(hiveCell.state.sprite.scale);
         this.game.add.tween(hiveCell.state.sprite.scale).to({ x: 0, y: 0 }, 400,
             Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Easing.Quadratic.Out, true, 300);
         this.game.time.events.add(700, () => {
+            if (hiveCell.state.hiveBuzzSound) {
+                hiveCell.state.hiveBuzzSound.stop();
+                hiveCell.state.hiveBuzzSound = null;
+            }
+            SoundUtils.hiveFarewell();
             this.cellsProvider.getHiveGroupCells(hiveCell).forEach(groupCell => {
                 groupCell.state.content = ContentType.empty;
             });
@@ -1559,6 +1580,7 @@ export default class ForestScreen extends BaseForestScreen {
     private markValuableCells(): void {
         let closedCells = this.cellsProvider.getCells().filter(cell =>
             !cell.state.opened && !cell.state.cover.isDark() && cell.type != CellType.COMPASS_FREE
+            && cell.type != CellType.JELLY
         );
 
         closedCells.forEach(closedCell => {
@@ -1609,8 +1631,8 @@ export default class ForestScreen extends BaseForestScreen {
 
     private updateValuableCellHint(cell: ForestCell): void {
         const probability = Math.max(0, Math.min(1, cell.state.valueProbability));
-        const alpha = probability > 0
-            ? Math.max(ForestScreen.MIN_VALUABLE_HINT_ALPHA, probability * 0.999)
+        const alpha = probability > 0 && cell.type != CellType.JELLY
+            ? 1
             : 0;
         cell.state.cover.setFrame(alpha);
     }
@@ -1791,6 +1813,8 @@ export default class ForestScreen extends BaseForestScreen {
 
                         let closed = SpriteUtils.createSprite(this.game, c.state.sprite.x, c.state.sprite.y, "moonflowerClosed" + variation)
                         closed.anchor.set(0.5);
+                        closed.width = BaseCellsProvider.CELL_WIDTH;
+                        closed.height = BaseCellsProvider.CELL_HEIGHT;
                         this.add.existing(closed);
 
                         this.game.tweens.removeFrom(c.state.sprite);
@@ -1798,7 +1822,8 @@ export default class ForestScreen extends BaseForestScreen {
 
                         c.state.sprite.loadTexture(SpriteUtils.key("moonflower" + variation), SpriteUtils.frame("moonflower" + variation));
                         c.state.sprite.alpha = 0;
-                        c.state.sprite.scale.set(1.36, 1.36);
+                        c.state.sprite.width = BaseCellsProvider.CELL_WIDTH * 1.36;
+                        c.state.sprite.height = BaseCellsProvider.CELL_HEIGHT * 1.36;
                         c.state.sprite.bringToTop();
 
                         AnimationUtils.jelly(this.game, c.state.sprite, 0, true)
@@ -1929,14 +1954,44 @@ export default class ForestScreen extends BaseForestScreen {
 
     /** Plays the video-derived sheets while keeping the old board sprite as
      * the single object that owns depth and cleanup. */
-    private animateAnimalEscape(sprite: Phaser.Sprite, animal: 'rabbit' | 'butterfly' | 'bat'): void {
+    private animateAnimalEscape(sprite: Phaser.Sprite, animal: 'rabbit' | 'butterfly' | 'butterfly2' | 'bat' | 'duck' | 'fish' | 'ram' | 'crab' | 'bird' | 'owl'): void {
         const startX = sprite.x;
         const startY = sprite.y;
         const texture = animal + 'Escape';
-        const introFrames = animal == 'butterfly' ? 4 : 12;
+        if (animal == 'butterfly2' || animal == 'crab' || animal == 'bird' || animal == 'owl') {
+            this.game.time.events.add(180, () => {
+                if (!sprite.exists) return;
+                sprite.loadTexture(texture, 0);
+                sprite.anchor.set(0.5);
+                sprite.width = 120;
+                sprite.height = 127;
+                sprite.alpha = 1;
+                const introCount = animal == 'butterfly2' ? 16 : animal == 'crab' ? 20 : 4;
+                const intro = sprite.animations.add('greet', Phaser.ArrayUtils.numberArray(0, introCount - 1), animal == 'butterfly2' ? 16 : 24, false);
+                const frames = Phaser.ArrayUtils.numberArray(introCount, 31);
+                sprite.animations.add('depart', frames.concat(frames.slice(1, -1).reverse()), 24, true);
+                intro.onComplete.addOnce(() => {
+                    if (!sprite.exists) return;
+                    sprite.animations.play('depart');
+                    const sideways = animal == 'crab';
+                    const distance = sideways ? -260 : animal == 'butterfly2' ? 150 : 280;
+                    const duration = sideways ? 1150 : 1450;
+                    const flight = this.game.add.tween(sprite).to({
+                        x: [startX + distance * .25, startX + distance * .7, startX + distance],
+                        y: sideways ? [startY - 8, startY + 7, startY - 4] : [startY - 70, startY - 180, startY - 350]
+                    }, duration, Phaser.Easing.Sinusoidal.InOut, true);
+                    flight.interpolation(Phaser.Math.bezierInterpolation);
+                    this.game.add.tween(sprite).to({ alpha: 0 }, 420, Phaser.Easing.Linear.None, true, duration - 420);
+                    flight.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
+                });
+                sprite.animations.play('greet');
+            });
+            return;
+        }
+        const introFrames = animal == 'butterfly' ? 4 : animal == 'duck' ? 2 : animal == 'fish' ? 8 : animal == 'ram' ? 6 : 12;
         const frameCount = animal == 'butterfly' ? 24 : 32;
-        const frameRate = animal == 'bat' ? 20 : animal == 'rabbit' ? 24 : 30;
-        const direction = this.game.rnd.pick([-1, 1]);
+        const frameRate = animal == 'bat' ? 13 : animal == 'rabbit' ? 24 : animal == 'ram' ? 16 : animal == 'fish' ? 22 : 30;
+        const direction = animal == 'duck' || animal == 'ram' ? -1 : this.game.rnd.pick([-1, 1]);
 
         this.game.time.events.add(200, () => {
             if (!sprite.exists) {
@@ -1947,13 +2002,21 @@ export default class ForestScreen extends BaseForestScreen {
             sprite.anchor.set(0.5);
             sprite.width = 120;
             sprite.height = 127;
+            if (animal == 'ram') {
+                // Compensate for the wide transparent margins in the video sheet.
+                sprite.scale.set(Math.abs(sprite.scale.x) * 1.3, Math.abs(sprite.scale.y) * 1.3);
+            }
             // Butterfly source faces up-left; rabbit source faces right.
-            sprite.scale.x = Math.abs(sprite.scale.x) * direction * (animal == 'butterfly' ? -1 : 1);
+            sprite.scale.x = Math.abs(sprite.scale.x) * ((animal == 'duck' || animal == 'ram')
+                ? 1 : direction * (animal == 'butterfly' ? -1 : 1));
+            if (animal == 'duck') {
+                sprite.scale.set(Math.abs(sprite.scale.x) * 1.2, Math.abs(sprite.scale.y) * 1.2);
+            }
             sprite.alpha = 1;
             if (animal == 'bat') {
                 // A small approach toward the viewer while it hovers makes
                 // the turn readable before the bat darts away.
-                this.game.add.tween(sprite.scale).to({ x: sprite.scale.x * 1.3, y: sprite.scale.y * 1.3 },
+                this.game.add.tween(sprite.scale).to({ x: sprite.scale.x * 1.95, y: sprite.scale.y * 1.95 },
                     1000, Phaser.Easing.Sinusoidal.Out, true);
             }
             const intro = sprite.animations.add('look', Phaser.ArrayUtils.numberArray(0, introFrames - 1), frameRate, false);
@@ -1966,20 +2029,93 @@ export default class ForestScreen extends BaseForestScreen {
             intro.onComplete.addOnce(() => {
                 if (!sprite.exists) return;
                 sprite.animations.play('escape');
-                const distance = (animal == 'rabbit' ? 255 : animal == 'butterfly' ? 105 : 350) * direction;
-                const duration = animal == 'rabbit' ? 1150 : animal == 'butterfly' ? 1550 : 900;
-                const travel = this.game.add.tween(sprite).to({
-                    x: [startX + distance / 3, startX + distance * 2 / 3, startX + distance],
-                    y: animal == 'rabbit' ? [startY - 8, startY - 12, startY - 18]
+                const distance = (animal == 'rabbit' ? 255 : animal == 'butterfly' ? 105 : animal == 'duck' ? 235 : animal == 'fish' ? 65 : animal == 'ram' ? 210 : 350) * direction;
+                const duration = animal == 'rabbit' ? 1150 : animal == 'butterfly' ? 1550 : animal == 'duck' ? 1350 : animal == 'fish' ? 1450 : animal == 'ram' ? 1250 : 900;
+                const takeoffY = animal == 'duck' ? startY - 125 : startY;
+                const travelOut = () => {
+                    const pathY = animal == 'rabbit' ? [startY - 8, startY - 12, startY - 18]
                         : animal == 'butterfly' ? [startY - 100, startY - 230, startY - 370]
-                        : [startY - 30, startY - 85, startY - 170]
-                }, duration, Phaser.Easing.Linear.None, true);
-                travel.interpolation(Phaser.Math.bezierInterpolation);
-                this.game.add.tween(sprite).to({ alpha: 0 }, 600,
-                    Phaser.Easing.Sinusoidal.InOut, true, duration - 600);
-                travel.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
+                        : animal == 'duck' ? [takeoffY - 45, takeoffY - 120, takeoffY - 225]
+                        : animal == 'fish' ? [startY - 15, startY - 45, startY - 80]
+                        : animal == 'ram' ? [startY - 28, startY + 8, startY - 46]
+                        : [startY - 60, startY - 145, startY - 255];
+                    const travel = this.game.add.tween(sprite).to({
+                        x: animal == 'ram'
+                            ? [startX + distance / 3, startX + distance * 2 / 3 - direction * 20, startX + distance]
+                            : [startX + distance / 3, startX + distance * 2 / 3, startX + distance],
+                        y: pathY
+                    }, duration, Phaser.Easing.Linear.None, true);
+                    travel.interpolation(Phaser.Math.bezierInterpolation);
+                    this.game.add.tween(sprite).to({ alpha: 0 }, 600,
+                        Phaser.Easing.Sinusoidal.InOut, true, duration - 600);
+                    travel.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
+                };
+                if (animal == 'ram') {
+                    // Each hop has its own landing, so the sideways turns survive
+                    // interpolation and remain readable on a small board.
+                    const landings = [[-62, -12], [-110, 18], [-176, -20], [-245, 8]];
+                    const hop = (index: number) => {
+                        if (!sprite.exists) return;
+                        if (index >= landings.length) { sprite.kill(); return; }
+                        const targetX = startX + landings[index][0];
+                        const targetY = startY + landings[index][1];
+                        const fromY = sprite.y;
+                        this.game.add.tween(sprite).to({ x: targetX }, 310, Phaser.Easing.Linear.None, true);
+                        const bounce = this.game.add.tween(sprite).to({
+                            y: [fromY - 32, targetY]
+                        }, 310, Phaser.Easing.Linear.None, true);
+                        bounce.interpolation(Phaser.Math.linearInterpolation);
+                        if (index == landings.length - 1) {
+                            this.game.add.tween(sprite).to({ alpha: 0 }, 280, Phaser.Easing.Linear.None, true);
+                        }
+                        bounce.onComplete.addOnce(() => hop(index + 1));
+                    };
+                    hop(0);
+                    return;
+                }
+                if (animal == 'fish') {
+                    const baseScaleX = Math.abs(sprite.scale.x);
+                    const baseScaleY = Math.abs(sprite.scale.y);
+                    // The fish pops up toward the player, hangs briefly while
+                    // rolling over, then dives down with a clear acceleration.
+                    sprite.animations.play('escape');
+                    this.game.add.tween(sprite.scale).to({ x: baseScaleX * 1.28, y: baseScaleY * 1.28 },
+                        420, Phaser.Easing.Sinusoidal.Out, true);
+                    const approach = this.game.add.tween(sprite).to({
+                        x: [startX - 8, startX + 10],
+                        y: [startY - 34, startY - 92],
+                        angle: 68
+                    }, 480, Phaser.Easing.Sinusoidal.Out, true);
+                    approach.interpolation(Phaser.Math.bezierInterpolation);
+                    approach.onComplete.addOnce(() => {
+                        this.game.time.events.add(190, () => {
+                            if (!sprite.exists) return;
+                            const dive = this.game.add.tween(sprite).to({
+                                x: [sprite.x - 12, sprite.x + 16, sprite.x + 22],
+                                y: [startY - 54, startY + 90, startY + 390, startY + 690],
+                                angle: 205
+                            }, 850, Phaser.Easing.Quadratic.In, true);
+                            dive.interpolation(Phaser.Math.bezierInterpolation);
+                            this.game.add.tween(sprite).to({ alpha: 0 }, 260,
+                                Phaser.Easing.Quadratic.In, true, 590);
+                            dive.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
+                        });
+                    });
+                    return;
+                }
+                // The first five duck-sheet frames already show the takeoff.
+                // A second scripted lift made the mallard appear to launch twice.
+                travelOut();
             });
-            sprite.animations.play('look');
+            if (animal == 'ram') {
+                // Hold a genuinely still pose before starting the first hop.
+                sprite.frame = 0;
+                this.game.time.events.add(650, () => {
+                    if (sprite.exists) sprite.animations.play('look');
+                });
+            } else {
+                sprite.animations.play('look');
+            }
         }, this);
     }
 }

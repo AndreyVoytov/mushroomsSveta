@@ -43,17 +43,18 @@ export default class InfoPanel extends BasePanel {
                 icon.x += 30;
                 icon.y += 84;
 
-                if(moveNextImage){
-                    offsetX += icon.width / 2 + 60;
-                }
-
                 if(parts.length == 3){
                     icon.y += Number(parts[2]);
                 }
-                
-                // icon.x += (1 - scale)*icon.width/2;
-                // icon.y += (1 - scale)*icon.height/2;
-                icon.scale.set(scale, scale);
+                // Item artwork is authored at high resolution. Keep tutorial
+                // and help-panel icons at their former ~120px display size,
+                // then apply the optional per-icon multiplier.
+                const resolutionScale = 120 / Math.max(icon.width, icon.height);
+                icon.scale.set(scale * resolutionScale, scale * resolutionScale);
+
+                if(moveNextImage){
+                    offsetX += icon.width / 2 + 60;
+                }
                 
                 this.addChild(icon);
 

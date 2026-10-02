@@ -29,7 +29,8 @@ export default class CellState {
     numberedTreeSwayTween: Phaser.Tween;
     numberedTreePulseTween: Phaser.Tween;
     numberedTreeReactionOrigin: { x: number; y: number };
-    numberedWaterLabel: Label;
+    numberedWaterLabel: Phaser.Sprite;
+    numberedDecorationLabel: Label;
     cover: ForestCellCover;
     label: Label | null = null;
     
@@ -43,6 +44,8 @@ export default class CellState {
     underSprite: Phaser.Sprite;
     berries: Phaser.Sprite[] = [];
     honeyLabel: Label;
+    hiveBees: Phaser.Sprite[] = [];
+    hiveBuzzSound: Phaser.Sound;
 
     constructor(content: ContentType, leafType: string, metaValue?:string) {
         this.leafType = leafType;

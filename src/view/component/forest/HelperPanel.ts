@@ -11,6 +11,7 @@ export default class HelperPanel extends BasePanel {
     private text: Label;
 
     private fromLeft: boolean = false;
+    private canCloseAt: number = 0;
 
     constructor(game: Phaser.Game, x: number, y: number, text: string, character: string, images?: string[],
         fromLeft?: boolean, okButton?: boolean) {
@@ -60,6 +61,7 @@ export default class HelperPanel extends BasePanel {
     }
 
     show(delay: number) {
+        this.canCloseAt = this.game.time.now + (delay || 0) + 500;
         let toX = this.x;
         let toY = this.y;
 
@@ -71,6 +73,10 @@ export default class HelperPanel extends BasePanel {
 
         this.game.add.tween(this).to({ y: toY, x: toX }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out, true, delay, 0, false);
         this.game.add.tween(this).to({alpha:1 }, 50, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out, true, delay, 0, false);
+    }
+
+    public canClose(): boolean {
+        return this.game.time.now >= this.canCloseAt;
     }
 
     hide(delay: number) {

@@ -78,6 +78,7 @@ export default class ComplexAnimationUtils {
 
         scaleRatio = scaleRatio  || 1;
         sprite.scale.set((winLevel? 1 : 1/3) * scaleRatio)
+        SpriteUtils.preserveItemPresetSize(sprite);
         game.add.tween(sprite.scale).to({x:sprite.scale.x * 2.5 * scaleRatio,  y: sprite.scale.y *2.5 * scaleRatio}, faster? 700: 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Quadratic.InOut, true, faster? 0: 500);
         game.add.tween(sprite).to({x: destination.x, y:destination.y+game.camera.y}, faster? 700: 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Quadratic.InOut, true, faster? 0: 500);
         game.time.events.add(faster? 700: 1500, ()=>{

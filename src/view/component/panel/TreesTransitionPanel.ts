@@ -175,6 +175,22 @@ export default class TreesTransitionPanel extends BasePanel {
 
             let k = 2.4;
 
+            // Phaser's tween.from applies its source transform on its first
+            // update, not when a delayed tween is created. On desktop that
+            // left one frame where pieces used their centre preset before the
+            // cover animation began. Set every source position immediately
+            // and animate back to the saved final position.
+            const closeBranch = (branch: TreesPart, dx: number, dy: number, branchDelay: number): Phaser.Tween => {
+                const targetX = branch.x;
+                const targetY = branch.y;
+                branch.position.set(targetX + dx, targetY + dy);
+                return this.game.add.tween(branch).to(
+                    { x: targetX, y: targetY }, time,
+                    Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
+                    true, branchDelay, 0, false
+                );
+            };
+
             SoundUtils.bushMovingIn()
 
             tweens.push(AnimationUtils.fadeIn(this.game, tp1, delay + 50 , 300*k ))
@@ -182,27 +198,19 @@ export default class TreesTransitionPanel extends BasePanel {
             tweens.push(AnimationUtils.fadeIn(this.game, tp3, delay  +  100, 300*k ))
             tweens.push(AnimationUtils.fadeIn(this.game, tp4, delay +  200 , 300*k ))
             
-            tweens.push(this.game.add.tween(tp1).from({ x: tp1.x- 250, y: tp1.y-300 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 50, 0, false));
-            tweens.push(this.game.add.tween(tp3).from({ x: tp3.x+ 200, y: tp3.y-380 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay, 0, false));
-            tweens.push(this.game.add.tween(tp4).from({ x: tp4.x- 350, y: tp4.y+350 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +100, 0, false));
-            tweens.push(this.game.add.tween(tp2).from({ x: tp2.x+ 350, y: tp2.y+400 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +200, 0, false));
+            tweens.push(closeBranch(tp1, -250, -300, delay + 50));
+            tweens.push(closeBranch(tp3, 200, -380, delay));
+            tweens.push(closeBranch(tp4, -350, 350, delay + 100));
+            tweens.push(closeBranch(tp2, 350, 400, delay + 200));
 
             let delay2 = 250;
 
-            tweens.push(this.game.add.tween(tp11).from({ x: tp11.x+ 200, y: tp11.y-200 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 50 + delay2, 0, false));
-            tweens.push(this.game.add.tween(tp31).from({ x: tp31.x- 150, y: tp31.y-280 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay + 100 + delay2, 0, false));
-            tweens.push(this.game.add.tween(tp41).from({ x: tp41.x- 250, y: tp41.y+250 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +200 + delay2, 0, false));
-            tweens.push(this.game.add.tween(tp21).from({ x: tp21.x+ 250, y: tp21.y+300 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, delay +0 + delay2, 0, false));
+            tweens.push(closeBranch(tp11, 200, -200, delay + 50 + delay2));
+            tweens.push(closeBranch(tp31, -150, -280, delay + 100 + delay2));
+            tweens.push(closeBranch(tp41, -250, 250, delay + 200 + delay2));
+            tweens.push(closeBranch(tp21, 250, 300, delay + delay2));
 
-            const finalCoverTween = this.game.add.tween(tp0).from(
-                { x: tp0.x - 100, y: tp0.y - 100 },
-                time,
-                Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.Out,
-                true,
-                delay + 250 + delay2,
-                0,
-                false
-            );
+            const finalCoverTween = closeBranch(tp0, -100, -100, delay + 250 + delay2);
             finalCoverTween.onComplete.addOnce(this.onCoverMovementComplete, this);
             tweens.push(finalCoverTween);
 

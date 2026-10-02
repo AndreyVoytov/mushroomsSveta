@@ -1,0 +1,87 @@
+{
+    "frames":  {
+                   "minigame9/bgClover.png":  {
+                                                  "frame":  {
+                                                                "x":  1260,
+                                                                "y":  1,
+                                                                "w":  118,
+                                                                "h":  118
+                                                            },
+                                                  "rotated":  false,
+                                                  "trimmed":  false,
+                                                  "spriteSourceSize":  {
+                                                                           "x":  0,
+                                                                           "y":  0,
+                                                                           "w":  118,
+                                                                           "h":  118
+                                                                       },
+                                                  "sourceSize":  {
+                                                                     "w":  118,
+                                                                     "h":  118
+                                                                 },
+                                                  "pivot":  {
+                                                                "x":  0.5,
+                                                                "y":  0.5
+                                                            }
+                                              },
+                   "minigame9/bgClover_.png":  {
+                                                   "frame":  {
+                                                                 "x":  963,
+                                                                 "y":  1,
+                                                                 "w":  295,
+                                                                 "h":  295
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  295,
+                                                                            "h":  295
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  295,
+                                                                      "h":  295
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "minigame9/cloverHeader.png":  {
+                                                      "frame":  {
+                                                                    "x":  1,
+                                                                    "y":  1,
+                                                                    "w":  960,
+                                                                    "h":  590
+                                                                },
+                                                      "rotated":  false,
+                                                      "trimmed":  false,
+                                                      "spriteSourceSize":  {
+                                                                               "x":  0,
+                                                                               "y":  0,
+                                                                               "w":  960,
+                                                                               "h":  590
+                                                                           },
+                                                      "sourceSize":  {
+                                                                         "w":  960,
+                                                                         "h":  590
+                                                                     },
+                                                      "pivot":  {
+                                                                    "x":  0.5,
+                                                                    "y":  0.5
+                                                                }
+                                                  }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "minigame9.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  1379,
+                              "h":  592
+                          },
+                 "scale":  1
+             }
+}

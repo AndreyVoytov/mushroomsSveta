@@ -23,9 +23,13 @@ export default class SpecialItemsConfiguration {
             image: "boil",
             usual: true,
         },
-        {   
+        {
             level: "14",
             image: "catHex",
+        },
+        {
+            level: "37",
+            image: "unicorn1",
         },
         {   
             level: "59",

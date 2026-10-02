@@ -118,7 +118,7 @@ for (const count of [8, 5, 0, 180]) {
     assert.strictEqual(screen.sapphireStarsPrepared, false, 'new level resets the reused state');
     assert.strictEqual(screen.sapphireStars.length, 0);
     const cells = Array.from({ length: count }, (_, index) => ({ X: index % 8, Y: Math.floor(index / 8),
-        state: { opened: false, cover: { isDark: () => true, growSapphireStar: () => new Sprite(game) } } }));
+        state: { opened: false, cover: { isDark: () => true, isLocked: () => false, growSapphireStar: () => new Sprite(game) } } }));
     screen.cellsProvider = { getCells: () => cells };
     screen.showWinPanel();
     screen.showWinPanel();

@@ -1,3 +1,4 @@
+import EnergyExitConfirmPanel from '../component/forest/EnergyExitConfirmPanel';
 import ForestDao from '../../core/dao/ForestDao';
 import AimType from '../../core/model/enum/AimType';
 import { AnimalsContents, ContentType } from '../../core/model/enum/ContentType';
@@ -87,11 +88,14 @@ export default abstract class BaseForestScreen extends DialogScreen {
     protected mapleFace: Phaser.Sprite;
     public energyDetailsShown: boolean = false;
     private energyDetailsPanel: EnergyDetailsPanel | null = null;
+    private energyExitPanel: EnergyExitConfirmPanel | null = null;
     private onDialogEndCallback: () => void;
     private fakeTrees: Phaser.Sprite;
     private useCloverTransition: boolean = false;
     private sapphireStars: Phaser.Sprite[] = [];
     private sapphireStarsPrepared: boolean = false;
+    private lastCellActivityAt: number = 0;
+    private lastIdleWaveAt: number = 0;
 
     protected abstract createCells(): void;
     protected abstract onCellOpen(cellState: CellState, openingType: OpeningType): void;
@@ -109,6 +113,9 @@ export default abstract class BaseForestScreen extends DialogScreen {
     init() {
         super.init();
         // Phaser reuses state instances between levels (including replays).
+        this.energyExitPanel = null;
+        this.energyDetailsPanel = null;
+        this.energyDetailsShown = false;
         this.sapphireStars = [];
         this.sapphireStarsPrepared = false;
         this.useCloverTransition = ForestUtils.isCloverReskin(this.getForestType());
@@ -127,7 +134,13 @@ export default abstract class BaseForestScreen extends DialogScreen {
         super.create();
         console.log("Game size: " + this.game.width + " " + this.game.height);
         this.world.setBounds(0, 0, this.game.width, this.game.height);
-        this.game.input.onDown.add((event: MouseEvent) => this.onMouseUp(event));
+        this.lastCellActivityAt = this.game.time.now;
+        this.lastIdleWaveAt = this.game.time.now;
+        this.game.input.onDown.add((event: MouseEvent) => {
+            this.lastCellActivityAt = this.game.time.now;
+            this.onMouseUp(event);
+        });
+        this.game.time.events.loop(500, () => this.showIdleCellWavesIfNeeded(), this);
         this.linesScrolled = 0;
         this.initialize();
     }
@@ -516,6 +529,14 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
         if (!this.levelStopped) {
             this.tryToScroll();
+            // Some tutorials are triggered by the same move that completes
+            // their level. Let the replica/education panel finish first, then
+            // re-check rather than layering the win panel on top of it.
+            if ((this.dialogPanel && this.dialogPanel.isDialogActive())
+                || (this.educationPanel && this.educationPanel.shown)) {
+                this.winOrLooseChecker.delay(250);
+                return;
+            }
             let closedCells = this.cellsProvider.getCells().filter(c => !c.state.opened && !c.state.cover.isDark() && !c.state.cover.isLocked()).length;
             if (this.topPanel.getAims().filter(aim => aim.countLeft > 0).length == 0 || closedCells == 0) {
                 if (this.tryShowEventLevelEndReplica()) {
@@ -728,6 +749,9 @@ export default abstract class BaseForestScreen extends DialogScreen {
             this.giveUpPanel.bringToTop();
         }
 
+        if (this.energyExitPanel && this.energyExitPanel.opened) {
+            this.energyExitPanel.bringToTop();
+        }
         if (this.energyDetailsPanel && this.energyDetailsPanel.opened) {
             this.energyDetailsPanel.bringToTop();
         }
@@ -821,9 +845,9 @@ export default abstract class BaseForestScreen extends DialogScreen {
         YandexGamesHelper.stopGameplay();
 
         const darkCells = this.cellsProvider.getCells().filter(cell =>
-            !cell.state.opened && cell.state.cover && cell.state.cover.isDark()
+            !cell.state.opened && cell.state.cover && cell.state.cover.isDark() && !cell.state.cover.isLocked()
         ).sort((a, b) => a.Y - b.Y || a.X - b.X);
-        const interval = Math.min(32, 650 / Math.max(1, darkCells.length - 1));
+        const interval = Math.min(20, 360 / Math.max(1, darkCells.length - 1));
         darkCells.forEach((cell, index) => {
             const star = cell.state.cover.growSapphireStar(index * interval);
             if (star) this.sapphireStars.push(star);
@@ -831,6 +855,34 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
         const lastDelay = Math.max(0, darkCells.length - 1) * interval;
         this.game.time.events.add(lastDelay + 580, () => this.showWinPanelContents(), this);
+    }
+
+    private showIdleCellWavesIfNeeded(): void {
+        if (!this.cellsProvider || this.levelStopped || this.game.time.now - this.lastCellActivityAt < 3000
+            || this.game.time.now - this.lastIdleWaveAt < 2500) return;
+
+        const top = this.game.camera.y;
+        const bottom = top + this.game.height;
+        const remaining = this.cellsProvider.getCells().filter(cell => !cell.state.opened
+            && cell.state.cover && !cell.state.cover.isDark()
+            && cell.state.sprite.y >= top && cell.state.sprite.y <= bottom);
+        if (remaining.length < 1 || remaining.length > 2) return;
+
+        this.lastIdleWaveAt = this.game.time.now;
+        remaining.forEach((cell, index) => {
+            this.game.time.events.add(index * 260, () => {
+                if (!cell.state.cover || cell.state.opened) return;
+                const wave = this.game.add.graphics(cell.state.sprite.x, cell.state.sprite.y);
+                wave.lineStyle(3, 0xb8eee9, 0.62);
+                wave.drawCircle(0, 0, 78);
+                wave.alpha = 0.42;
+                wave.scale.set(0.45, 0.45);
+                this.game.add.tween(wave.scale).to({ x: 1.55, y: 1.55 }, 1150,
+                    Phaser.Easing.Sinusoidal.Out, true);
+                this.game.add.tween(wave).to({ alpha: 0 }, 1150,
+                    Phaser.Easing.Linear.None, true).onComplete.addOnce(() => wave.destroy());
+            });
+        });
     }
 
     private showWinPanelContents(): void {
@@ -946,7 +998,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     }
 
     public showEnergyPanel(): void {
-        if (this.energyDetailsShown) {
+        if (this.energyDetailsShown || this.energyExitPanel) {
             return;
         }
 
@@ -971,12 +1023,27 @@ export default abstract class BaseForestScreen extends DialogScreen {
             },
             onDeclined: () => {
                 if (UserService.getUser().getEnergy() <= 0 && !this.levelStopped) {
-                    this.levelStopped = true;
-                    this.goToHouse();
+                    this.confirmEnergyExit();
                 }
             }
         });
         this.energyDetailsPanel = panel;
+        this.addPanel(panel);
+        panel.show();
+    }
+
+    private confirmEnergyExit(): void {
+        if (this.energyExitPanel) return;
+        this.levelStopped = true;
+        const panel = new EnergyExitConfirmPanel(this.game, () => {
+            this.energyExitPanel = null;
+            this.levelStopped = false;
+            if (UserService.getUser().getEnergy() <= 0) this.showEnergyPanel();
+        }, () => {
+            this.energyExitPanel = null;
+            this.goToHouse();
+        });
+        this.energyExitPanel = panel;
         this.addPanel(panel);
         panel.show();
     }

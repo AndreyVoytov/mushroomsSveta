@@ -22,8 +22,8 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
     // Short, clear movement: a ladybug falls a cell in roughly half a second.
     // enqueue another move in that window: two simultaneous tweens caused the
     // occasional "teleporting" stump/acorn after a ladybug moved down.
-    private static readonly MOVE_DELAY = 100;
-    private static readonly MOVE_DURATION = 500;
+    private static readonly MOVE_DELAY = 120;
+    private static readonly MOVE_DURATION = 600;
 
     public constructor(game: Phaser.Game, screen: BaseForestScreen, cellsProvider: CellsPainter) {
         super(game, screen, cellsProvider);
@@ -51,7 +51,8 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
         return res;
     }
 
-    public refreshLadybugsAndAcorns(): void {
+    public refreshLadybugsAndAcorns(): boolean {
+        let moved = false;
         //Двигаем сначала коровку, которая ниже (чтобы следующая могла встать на её место)
         this.ladybugsAndAcorns.sort((a, b) => b.Y - a.Y);
 
@@ -104,8 +105,31 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 if (currentCell != null && //currentCell.state.content != ContentType.bush && currentCell.state.content != ContentType.bush2 &&
                      !this.cellsProvider.isInteractive(choosen) 
                     && ForestUtils.getBiom(currentCell.type) != BiomType.WATER && ForestUtils.getBiom(choosen.type) != BiomType.WATER) {
-                    
-                    this.cellsProvider.switchCellsByCircle([currentCell, choosen], null, true);
+                    // Move a decoration away from the incoming acorn before it
+                    // lands. In deep piles several acorns can reach the same
+                    // column in quick succession; tweening both full-size
+                    // sprites through the same cell made them visibly overlap.
+                    const displacedSprite = choosen.state.sprite;
+                    const displacedLabel = choosen.state.label;
+                    const displacedSpriteScale = displacedSprite ? { x: displacedSprite.scale.x, y: displacedSprite.scale.y } : null;
+                    const displacedLabelScale = displacedLabel ? { x: displacedLabel.scale.x, y: displacedLabel.scale.y } : null;
+                    this.cellsProvider.switchCellsByCircle([currentCell, choosen], null, true, LadybugsProvider.MOVE_DELAY, LadybugsProvider.MOVE_DURATION);
+
+                    const tuckAway = (displayObject: any, scale: { x: number, y: number }) => {
+                        if (!displayObject || !scale) return;
+                        this.game.tweens.removeFrom(displayObject.scale);
+                        displayObject.scale.set(scale.x, scale.y);
+                        this.game.add.tween(displayObject.scale).to({ x: 0, y: 0 }, 180,
+                            Phaser.Easing.Quadratic.In, true, LadybugsProvider.MOVE_DELAY + 80);
+                        this.game.time.events.add(LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION + 420, () => {
+                            if (!displayObject.exists) return;
+                            displayObject.scale.set(0, 0);
+                            this.game.add.tween(displayObject.scale).to(scale, 280,
+                                Phaser.Easing.Back.Out, true);
+                        });
+                    };
+                    tuckAway(displacedSprite, displacedSpriteScale);
+                    tuckAway(displacedLabel, displacedLabelScale);
 
                     // console.log("LADYBUGS CASE 1: " + ContentType[choosen.state.content] + " " + this.cellsProvider.isInteractive(choosen))
 
@@ -138,6 +162,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
 
                 ladybug.X = choosen.X;
                 ladybug.Y = choosen.Y;
+                moved = true;
                 ladybug.isLadybug? SoundUtils.ladybugMove() : SoundUtils.acornMove();
                 (<ForestScreen>(this.screen)).refreshCovers();
 
@@ -163,6 +188,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 }
             }
         })
+        return moved;
     }
 
     public touchAcorn(a: Movable) {

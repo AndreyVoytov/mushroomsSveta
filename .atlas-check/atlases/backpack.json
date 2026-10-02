@@ -1,0 +1,87 @@
+{
+    "frames":  {
+                   "backpack/panel.png":  {
+                                              "frame":  {
+                                                            "x":  1,
+                                                            "y":  1,
+                                                            "w":  973,
+                                                            "h":  1413
+                                                        },
+                                              "rotated":  false,
+                                              "trimmed":  false,
+                                              "spriteSourceSize":  {
+                                                                       "x":  0,
+                                                                       "y":  0,
+                                                                       "w":  973,
+                                                                       "h":  1413
+                                                                   },
+                                              "sourceSize":  {
+                                                                 "w":  973,
+                                                                 "h":  1413
+                                                             },
+                                              "pivot":  {
+                                                            "x":  0.5,
+                                                            "y":  0.5
+                                                        }
+                                          },
+                   "backpack/scroll_bar.png":  {
+                                                   "frame":  {
+                                                                 "x":  976,
+                                                                 "y":  1,
+                                                                 "w":  62,
+                                                                 "h":  624
+                                                             },
+                                                   "rotated":  false,
+                                                   "trimmed":  false,
+                                                   "spriteSourceSize":  {
+                                                                            "x":  0,
+                                                                            "y":  0,
+                                                                            "w":  62,
+                                                                            "h":  624
+                                                                        },
+                                                   "sourceSize":  {
+                                                                      "w":  62,
+                                                                      "h":  624
+                                                                  },
+                                                   "pivot":  {
+                                                                 "x":  0.5,
+                                                                 "y":  0.5
+                                                             }
+                                               },
+                   "backpack/scroll_bar_head.png":  {
+                                                        "frame":  {
+                                                                      "x":  1040,
+                                                                      "y":  1,
+                                                                      "w":  62,
+                                                                      "h":  140
+                                                                  },
+                                                        "rotated":  false,
+                                                        "trimmed":  false,
+                                                        "spriteSourceSize":  {
+                                                                                 "x":  0,
+                                                                                 "y":  0,
+                                                                                 "w":  62,
+                                                                                 "h":  140
+                                                                             },
+                                                        "sourceSize":  {
+                                                                           "w":  62,
+                                                                           "h":  140
+                                                                       },
+                                                        "pivot":  {
+                                                                      "x":  0.5,
+                                                                      "y":  0.5
+                                                                  }
+                                                    }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "backpack.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  1103,
+                              "h":  1415
+                          },
+                 "scale":  1
+             }
+}

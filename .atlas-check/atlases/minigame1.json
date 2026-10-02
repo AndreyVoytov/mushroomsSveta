@@ -1,0 +1,39 @@
+{
+    "frames":  {
+                   "minigame1/mountinesHeader.png":  {
+                                                         "frame":  {
+                                                                       "x":  1,
+                                                                       "y":  1,
+                                                                       "w":  960,
+                                                                       "h":  590
+                                                                   },
+                                                         "rotated":  false,
+                                                         "trimmed":  false,
+                                                         "spriteSourceSize":  {
+                                                                                  "x":  0,
+                                                                                  "y":  0,
+                                                                                  "w":  960,
+                                                                                  "h":  590
+                                                                              },
+                                                         "sourceSize":  {
+                                                                            "w":  960,
+                                                                            "h":  590
+                                                                        },
+                                                         "pivot":  {
+                                                                       "x":  0.5,
+                                                                       "y":  0.5
+                                                                   }
+                                                     }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "minigame1.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  962,
+                              "h":  592
+                          },
+                 "scale":  1
+             }
+}

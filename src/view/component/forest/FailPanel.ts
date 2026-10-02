@@ -103,7 +103,8 @@ export default class FailPanel extends ClosablePanel {
             let image = SpriteUtils.createSprite(this.game, shiftX, -160 + 30, aim.image);
             image.anchor = new Phaser.Point(0.5, 0.5);
             // image.scale = new Phaser.Point(2.5, 2.5);
-            image.scale = new Phaser.Point(1.7, 1.7);
+            let imageScale = 170 / Math.max(image.width, image.height);
+            image.scale.set(imageScale, imageScale);
             this.addChild(image);
 
             let statusImage = SpriteUtils.createSprite(this.game, 7 + shiftX, -160+ 30, aim.countLeft <= 0 ? "check" : "cross");

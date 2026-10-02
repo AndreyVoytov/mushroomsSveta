@@ -152,6 +152,7 @@ export default class EducationPanel extends BasePanel {
         } else if (level == 7) {
             if (openedCells == 0) {
                 let compassCell = this.cells.filter(c => c.type == CellType.COMPASS_FREE)[0];
+                this.startBoosterIdleWiggle(compassCell, 3);
                 this.doShowEducation(LocalizationService.get('tutorial.level7.snail'), "sveta1", [compassCell],
                     CoverMode.noneVisible, 200, null);
 
@@ -278,6 +279,9 @@ export default class EducationPanel extends BasePanel {
             }
         } else if (level == 41) {
             if (openedCells == 0) {
+                this.cells.filter(c => c.type == CellType.ROCKET || c.type == CellType.ROCKET2 || c.type == CellType.ROCKET3
+                    || c.type == CellType.ROCKET_IVY || c.type == CellType.ROCKET_IVY2 || c.type == CellType.ROCKET_IVY3)
+                    .forEach(c => this.startBoosterIdleWiggle(c, 2.5));
                 this.doShowEducation(LocalizationService.get('tutorial.level41.rocket'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, ["rocket2", "rocket1", "rocket3"], true);
                 this.screen.setOnClickAnimation("hideEducation")
@@ -294,6 +298,10 @@ export default class EducationPanel extends BasePanel {
                     [], CoverMode.showMessageAtCenter, 200, null, [], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
+        } else if (level == 37) {
+            this.showSpecificCellOnItemAimsLeft(cellState, 0, () => {
+                this.doShowDialogOnSpecificItem(cellState);
+            });
         } else if (level == 83) {
             if (openedCells == 0) {
                 let compassCell = this.cells.filter(c => c.type == CellType.VISION)[0];
@@ -355,11 +363,43 @@ export default class EducationPanel extends BasePanel {
         let openedCell = this.cells.filter(cell => cell.state == cellState).shift();
         if (ForestsDao.indexOf(this.forestType) == 1) {
             this.revealDiscoveredHouse(cellState.sprite, openedCell.bg);
+        } else if (ForestsDao.indexOf(this.forestType) + 1 == 37) {
+            this.revealDiscoveredUnicorn(cellState.sprite, openedCell.bg);
         }
         this.doShowEducation(null, null, [openedCell], CoverMode.noneVisible, 200, null);
         this.screen.stopLevelForDialog();
         this.screen.lockScreenFor(1000);
         this.screen.dialogPanel.updateReplica(true);
+    }
+
+    private revealDiscoveredUnicorn(unicorn: Phaser.Sprite, tile: Phaser.Sprite): void {
+        const targetScaleX = unicorn.scale.x * 1.28;
+        const targetScaleY = unicorn.scale.y * 1.28;
+        unicorn.anchor.set(0.5, 0.88);
+        unicorn.y += 10;
+        tile.tint = 0xe4e4d2;
+        unicorn.bringToTop();
+        unicorn.scale.set(targetScaleX * 0.72, targetScaleY * 0.12);
+        this.game.add.tween(unicorn.scale).to({
+            x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX],
+            y: [targetScaleY * 1.12, targetScaleY * 0.94, targetScaleY]
+        }, 620, Phaser.Easing.Back.Out, true);
+        AnimationUtils.highlight(this.game, unicorn.x, unicorn.y - 16, 'splashY', 60, 1.1, 700);
+    }
+
+    private startBoosterIdleWiggle(cell: ForestCell, angle: number): void {
+        const sprite = cell && cell.state.sprite;
+        if (!sprite || !sprite.exists) return;
+        const baseScaleX = sprite.scale.x;
+        const baseScaleY = sprite.scale.y;
+        cell.state.baseScaleX = baseScaleX;
+        cell.state.baseScaleY = baseScaleY;
+        this.game.add.tween(sprite).to({ angle: [-angle, angle, 0] }, 900,
+            Phaser.Easing.Sinusoidal.InOut, true, 100, -1, false);
+        this.game.add.tween(sprite.scale).to({
+            x: [baseScaleX * 1.035, baseScaleX * 0.99, baseScaleX],
+            y: [baseScaleY * 0.98, baseScaleY * 1.035, baseScaleY]
+        }, 1450, Phaser.Easing.Sinusoidal.InOut, true, 120, -1, false);
     }
 
     private revealDiscoveredHouse(house: Phaser.Sprite, tile: Phaser.Sprite): void {
@@ -469,6 +509,13 @@ export default class EducationPanel extends BasePanel {
     }
 
     public hideEducation(delay?: number) {
+        if (this.helperPanel && !this.helperPanel.canClose()) {
+            // A screen click can land on the exact frame that the tutorial
+            // lock expires. DialogScreen consumes that click, so retry the
+            // dismissal after the panel has finished sliding in.
+            this.game.time.events.add(120, () => this.hideEducation(delay));
+            return;
+        }
         if (this.arrow) {
             this.game.tweens.removeFrom(this.arrow);
             AnimationUtils.disappear(this.game, this.arrow, delay || 0);

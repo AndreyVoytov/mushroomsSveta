@@ -122,6 +122,10 @@ export default class LevelCompletePanel extends BasePanel {
                 this.sapphireStarReward.add(glint);
                 this.sapphireGlints.push(glint);
             }
+            const starBackdrop = SpriteUtils.createSprite(this.game, -65, 0, 'sapphireStarBackdrop');
+            starBackdrop.anchor.set(0.5);
+            starBackdrop.width = starBackdrop.height = 124;
+            this.sapphireStarReward.addChild(starBackdrop);
             const star = SpriteUtils.createSprite(this.game, -65, 0, 'sapphireStar');
             star.anchor.set(0.5);
             star.width = star.height = 116;

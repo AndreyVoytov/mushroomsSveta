@@ -1,0 +1,97 @@
+{
+  "mode": "built-in image generation; reference-based transparent item artwork",
+  "generation_brief_summary": "Preserve each original item silhouette and color palette; bright, readable casual puzzle game artwork on a transparent background.",
+  "installed_canvas": [
+    480,
+    508
+  ],
+  "generated_items": [
+    {
+      "name": "mushroom3",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-f8bf260b-b76e-4158-935b-9908a428615f.png",
+      "installed": "assets/base/items/mushroom3.png"
+    },
+    {
+      "name": "mushroom4",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-5f44e11a-1e85-45f9-9d5f-64589d7cd6b1.png",
+      "installed": "assets/base/items/mushroom4.png"
+    },
+    {
+      "name": "mushroom5",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-64d846a5-bcc5-4d2e-92bc-86ac1e1d3cb7.png",
+      "installed": "assets/base/items/mushroom5.png"
+    },
+    {
+      "name": "witchMushroom",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-bab18e51-92a0-4ed9-8bb3-2864d6aa64f3.png",
+      "installed": "assets/base/items/witchMushroom.png"
+    },
+    {
+      "name": "amanita2",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-787cc53a-e7fa-44ec-a18a-f1cfb87acb16.png",
+      "installed": "assets/base/items/amanita2.png"
+    },
+    {
+      "name": "greenApple",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-eb99212b-0580-4eb0-8ed8-f6b86f94d8f7.png",
+      "installed": "assets/base/items/greenApple.png"
+    },
+    {
+      "name": "candy",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-79ee60a4-ee9f-40c7-a1c3-0b8b0a86ec11.png",
+      "installed": "assets/base/items/candy.png"
+    },
+    {
+      "name": "moonflower",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-eca583eb-5a94-4f89-bcdb-c80b46505265.png",
+      "installed": "assets/base/items/moonflower.png"
+    },
+    {
+      "name": "shell",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-421c3d8c-96a1-410e-909a-370a3ab3c14d.png",
+      "installed": "assets/base/items/shell.png"
+    },
+    {
+      "name": "shell2",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-c28a35d8-9d54-4458-b929-9c87c4f93c5e.png",
+      "installed": "assets/base/items/shell2.png"
+    },
+    {
+      "name": "book1",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-ee0d6bca-3c4c-4c21-a859-f2782f7fe3cf.png",
+      "installed": "assets/base/items/book1.png"
+    },
+    {
+      "name": "book2",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-c800c9fd-3541-4a58-8dc4-07ee8059af76.png",
+      "installed": "assets/base/items/book2.png"
+    },
+    {
+      "name": "book3",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-d39faa64-1d47-4859-9c10-cf7464a5e7e4.png",
+      "installed": "assets/base/items/book3.png"
+    },
+    {
+      "name": "key",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-81a39c13-ada0-4ca4-8f62-66d907fa0fc0.png",
+      "installed": "assets/base/items/key.png"
+    },
+    {
+      "name": "milk",
+      "source": "C:\\Users\\voito\\.codex\\generated_images\\01a0f91c-7c41-70a2-9a2f-785c5f22007d\\exec-70c5112d-64e6-4b85-b458-c86114d5e395.png",
+      "installed": "assets/base/items/milk.png"
+    }
+  ],
+  "original_art_upscaled": [
+    "amber",
+    "amber2",
+    "amber3",
+    "moonflower1",
+    "moonflower2",
+    "moonflower3",
+    "moonflowerClosed1",
+    "moonflowerClosed2",
+    "moonflowerClosed3"
+  ],
+  "upscale_method": "Original repository image, 4x Lanczos; no redesign of amber variants."
+}

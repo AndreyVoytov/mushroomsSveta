@@ -249,7 +249,13 @@ export default abstract class BaseScreen extends DebugScreen {
             return;
         }
         this.stateSwitching = true;
-        (<Game>(this.game)).startScene(scene, clearWorld, clearCache);
+        // Phaser.StateManager.start only queues the target state. It clears the
+        // current scene in the next Phaser preUpdate, after this TimerEvent or
+        // tween callback has returned. Keep the request in Phaser's own queue;
+        // a browser setTimeout here can race the covered-scene transition.
+        if (!(<Game>(this.game)).startScene(scene, clearWorld, clearCache)) {
+            this.stateSwitching = false;
+        }
     }
 
     public shutdown(): void {

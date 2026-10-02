@@ -421,7 +421,8 @@ export default class HouseLayout extends BaseLayout {
 
                 let ingredient = SpriteUtils.createSprite(this.game, startposition.x, startposition.y, image);
                 ingredient.anchor.set(0.5)
-                ingredient.scale.set(1.7 * 2 / 2.5)
+                const ingredientScale = (1.7 * 2 / 2.5) * 120 / Math.max(ingredient.width, ingredient.height);
+                ingredient.scale.set(ingredientScale)
                 this.addSprite(ingredient);
                 
                 if(image == "bootsBroken"){

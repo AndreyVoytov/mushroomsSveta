@@ -5,8 +5,11 @@ import AdminService from "./AdminService";
 export default class Settings {
 
     private static GRAPHICS_FROM_ATLASES = true;
-    public static USE_WEBP_ATLASES = false;
-    public static ATLASES_VERSION = "v12";
+    public static USE_WEBP_ATLASES = true;
+    // Atlas PNG/JSON pairs are cached aggressively by GitHub Pages.  Bump this
+    // whenever they change so a reload cannot combine a new frame map with an
+    // older texture (which leaves part of a level invisible).
+    public static ATLASES_VERSION = "v17";
     public static isGraphicsFromAtlases():boolean{
         return Settings.GRAPHICS_FROM_ATLASES && !AdminService.isEditMode();
     }

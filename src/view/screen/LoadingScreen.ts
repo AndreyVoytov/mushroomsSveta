@@ -348,6 +348,9 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('steps', 'assets/base/ui/steps.png');
         this.loadImage('heart', 'assets/base/ui/heart.png');
         this.loadImage('lightning', 'assets/base/ui/lightnin_draft.png');
+        this.loadImage('energyPanelFrame', 'assets/base/ui/energyPanelFrame.png');
+        this.loadImage('energyPanelBuyButton', 'assets/base/ui/energyPanelBuyButton.png');
+        this.loadImage('energyPanelOrb', 'assets/base/ui/energyPanelOrb.png');
         this.loadImage('gems', 'assets/base/ui/gems.png');
         this.loadImage('sapphireStar', 'assets/base/ui/sapphireStar.png');
         this.loadImage('sapphireStarBackdrop', 'assets/base/ui/sapphireStarBackdrop.png');
@@ -680,7 +683,14 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('stump', 'assets/base/items/environment/stump.png');
         this.loadImage('wlilly1', 'assets/base/items/environment/wlilly1.png');
         this.loadImage('wlilly2', 'assets/base/items/environment/wlilly2.png');
+        for (let number = 1; number <= 5; number++) {
+            this.loadImage('water_num' + number, 'assets/base/items/environment/water_num' + number + '.png');
+        }
         this.loadImage('log', 'assets/base/items/environment/log.png');
+        this.loadImage('mossStone', 'assets/base/items/environment/mossStone.png');
+        this.loadImage('darkTree', 'assets/base/items/environment/darkTree.png');
+        this.loadImage('rottenStump', 'assets/base/items/environment/rottenStump.png');
+        this.loadImage('cobwebDarkLog', 'assets/base/items/environment/cobwebDarkLog.png');
 
         //Items
         this.loadImage('wheat', 'assets/base/items/wheat.png');
@@ -758,9 +768,16 @@ export default class LoadingScreen extends BaseScreen {
         // These small sheets are deliberately kept outside the large atlases:
         // they are only decoded when the forest is loaded and avoid expanding
         // the main atlas for a couple of short encounter animations.
+        ['butterfly2', 'crab', 'bird', 'owl'].forEach(animal => {
+            this.game.load.spritesheet(animal + 'Escape', 'assets/base/items/animals/' + animal + 'Escape.png?' + Settings.ATLASES_VERSION, 160, 170, 32);
+        });
+        this.game.load.spritesheet('snailBooster', 'assets/base/items/animals/snailBooster.png?' + Settings.ATLASES_VERSION, 160, 170, 40);
         this.game.load.spritesheet('rabbitEscape', 'assets/base/items/animals/rabbitEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
         this.game.load.spritesheet('butterflyEscape', 'assets/base/items/animals/butterflyEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 24);
         this.game.load.spritesheet('batEscape', 'assets/base/items/animals/batEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
+        this.game.load.spritesheet('duckEscape', 'assets/base/items/animals/duckEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
+        this.game.load.spritesheet('fishEscape', 'assets/base/items/animals/fishEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
+        this.game.load.spritesheet('ramEscape', 'assets/base/items/animals/ramEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
         this.loadImage('bet', 'assets/base/items/bet.png');
         this.loadImage('owl', 'assets/base/items/owl.png');
         this.loadImage('owlPink', 'assets/base/items/owlPink.png');
@@ -1100,8 +1117,15 @@ export default class LoadingScreen extends BaseScreen {
         // this.game.load.audio("loose", "assets/other/audio/loose.wav");
         this.game.load.audio("mushroomTaking", "assets/other/audio/mushroomTaking.mp3");
         this.game.load.audio("plank", "assets/other/audio/plank.mp3");
-        ['rabbit', 'butterfly', 'bat'].forEach(animal =>
-            this.game.load.audio('encounter_' + animal, 'assets/other/audio/encounter_' + animal + '.wav'));
+        this.game.load.audio('encounter_rabbit', 'assets/other/audio/encounter_rabbit.wav?v3');
+        this.game.load.audio('encounter_butterfly', 'assets/other/audio/encounter_butterfly.wav?v3');
+        this.game.load.audio('encounter_bat', 'assets/other/audio/encounter_bat.wav');
+        this.game.load.audio('encounter_duck', 'assets/other/audio/encounter_duck.wav?v3');
+        this.game.load.audio('encounter_fish', 'assets/other/audio/encounter_fish.wav?v3');
+        this.game.load.audio('encounter_hive', 'assets/other/audio/encounter_hive.wav?v3');
+        this.game.load.audio('encounter_ram', 'assets/other/audio/encounter_ram.wav?v3');
+        this.game.load.audio('hiveBuzz', 'assets/other/audio/hiveBuzz.wav');
+        this.game.load.audio('unicornHooves', 'assets/other/audio/unicorn_hooves.wav');
         this.game.load.audio("rocket", "assets/other/audio/rocket.mp3");
         this.game.load.audio("trouble", "assets/other/audio/trouble.ogg");
         this.game.load.audio("trouble2", "assets/other/audio/trouble2.mp3");

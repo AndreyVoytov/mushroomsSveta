@@ -1,0 +1,207 @@
+{
+    "frames":  {
+                   "minigame2/banner2.png":  {
+                                                 "frame":  {
+                                                               "x":  1,
+                                                               "y":  1,
+                                                               "w":  960,
+                                                               "h":  488
+                                                           },
+                                                 "rotated":  false,
+                                                 "trimmed":  false,
+                                                 "spriteSourceSize":  {
+                                                                          "x":  0,
+                                                                          "y":  0,
+                                                                          "w":  960,
+                                                                          "h":  488
+                                                                      },
+                                                 "sourceSize":  {
+                                                                    "w":  960,
+                                                                    "h":  488
+                                                                },
+                                                 "pivot":  {
+                                                               "x":  0.5,
+                                                               "y":  0.5
+                                                           }
+                                             },
+                   "minigame2/bgHouse.jpg":  {
+                                                 "frame":  {
+                                                               "x":  1164,
+                                                               "y":  1,
+                                                               "w":  308,
+                                                               "h":  322
+                                                           },
+                                                 "rotated":  false,
+                                                 "trimmed":  false,
+                                                 "spriteSourceSize":  {
+                                                                          "x":  0,
+                                                                          "y":  0,
+                                                                          "w":  308,
+                                                                          "h":  322
+                                                                      },
+                                                 "sourceSize":  {
+                                                                    "w":  308,
+                                                                    "h":  322
+                                                                },
+                                                 "pivot":  {
+                                                               "x":  0.5,
+                                                               "y":  0.5
+                                                           }
+                                             },
+                   "minigame2/carpet.png":  {
+                                                "frame":  {
+                                                              "x":  1,
+                                                              "y":  491,
+                                                              "w":  747,
+                                                              "h":  295
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  747,
+                                                                         "h":  295
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  747,
+                                                                   "h":  295
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "minigame2/crack.png":  {
+                                               "frame":  {
+                                                             "x":  859,
+                                                             "y":  491,
+                                                             "w":  238,
+                                                             "h":  110
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  238,
+                                                                        "h":  110
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  238,
+                                                                  "h":  110
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           },
+                   "minigame2/leafs1.png":  {
+                                                "frame":  {
+                                                              "x":  963,
+                                                              "y":  1,
+                                                              "w":  199,
+                                                              "h":  400
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  199,
+                                                                         "h":  400
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  199,
+                                                                   "h":  400
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "minigame2/leafs2.png":  {
+                                                "frame":  {
+                                                              "x":  750,
+                                                              "y":  491,
+                                                              "w":  107,
+                                                              "h":  118
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  107,
+                                                                         "h":  118
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  107,
+                                                                   "h":  118
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "minigame2/leafs3.png":  {
+                                                "frame":  {
+                                                              "x":  1099,
+                                                              "y":  491,
+                                                              "w":  107,
+                                                              "h":  95
+                                                          },
+                                                "rotated":  false,
+                                                "trimmed":  false,
+                                                "spriteSourceSize":  {
+                                                                         "x":  0,
+                                                                         "y":  0,
+                                                                         "w":  107,
+                                                                         "h":  95
+                                                                     },
+                                                "sourceSize":  {
+                                                                   "w":  107,
+                                                                   "h":  95
+                                                               },
+                                                "pivot":  {
+                                                              "x":  0.5,
+                                                              "y":  0.5
+                                                          }
+                                            },
+                   "minigame2/table.png":  {
+                                               "frame":  {
+                                                             "x":  1474,
+                                                             "y":  1,
+                                                             "w":  348,
+                                                             "h":  305
+                                                         },
+                                               "rotated":  false,
+                                               "trimmed":  false,
+                                               "spriteSourceSize":  {
+                                                                        "x":  0,
+                                                                        "y":  0,
+                                                                        "w":  348,
+                                                                        "h":  305
+                                                                    },
+                                               "sourceSize":  {
+                                                                  "w":  348,
+                                                                  "h":  305
+                                                              },
+                                               "pivot":  {
+                                                             "x":  0.5,
+                                                             "y":  0.5
+                                                         }
+                                           }
+               },
+    "meta":  {
+                 "app":  "codex-atlas-packer",
+                 "version":  "1.0",
+                 "image":  "minigame2.png",
+                 "format":  "RGBA8888",
+                 "size":  {
+                              "w":  1823,
+                              "h":  787
+                          },
+                 "scale":  1
+             }
+}

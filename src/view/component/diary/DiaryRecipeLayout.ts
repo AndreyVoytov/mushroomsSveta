@@ -91,6 +91,9 @@ export default class DiaryRecipeLayout extends BasePanel {
             item.anchor.set(0.5)
             // item.scale.set(130 / 80);
             ingredientBg.addChild(item);
+            // Updated item textures are 4x the original canvas size. Recipe
+            // ingredients use the original 120x127 logical footprint.
+            SpriteUtils.preserveItemPresetSize(item);
 
             // let count = new Label(this.game, 40, 10, "" + recipeContent.requiredItems[i].count, { font: "40px Arial", fill: "#571044" })
             let count = new Label(this.game, 40, 10, "" + recipeContent.requiredItems[i].count, { font: "bold 40px DiaryDigits", fill: "#571044" })

@@ -428,10 +428,7 @@ export default class ReplicaPanel extends BasePanel {
 
             let image = SpriteUtils.createSprite(this.game, 0, 0, r.buttonImage ? r.buttonImage : "actionMushroom");
             image.anchor.set(0.5);
-            let toScaleDown = ["tree"];
-            if(toScaleDown.indexOf(r.buttonImage) != -1){
-                image.scale.set(1/1.5)
-            }
+            SpriteUtils.fitIcon(image, actionCircle.width * 0.78, actionCircle.height * 0.78);
             actionCircle.addChild(image);
 
             AnimationUtils.appear(this.game, this.actionButton, 1000)

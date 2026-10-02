@@ -1,3 +1,4 @@
+import { ITEM_ARTWORK_SIZES } from '../../generated/itemArtworkSizes';
 // import CustomizationType from "../model/enum/CustomizationType";
 // import AnalyticUtils from "./AnalyticUtils";
 import LoadingScreen from "../../view/screen/LoadingScreen";
@@ -18,6 +19,28 @@ export default class SpriteUtils {
             res.name = name;
         }
         return res;
+    }
+
+    /** Fit the visible atlas frame while preserving the original aspect ratio. */
+    public static fitIcon(sprite: Phaser.Sprite, width: number, height: number): void {
+        sprite.scale.set(1);
+        const crop = sprite.texture.crop;
+        const visibleWidth = crop ? crop.width : sprite.width;
+        const visibleHeight = crop ? crop.height : sprite.height;
+        const scale = Math.min(width / Math.max(1, visibleWidth), height / Math.max(1, visibleHeight));
+        sprite.scale.set(scale);
+    }
+
+    /** Preset coordinates use the original item canvases, independent of texture resolution. */
+    public static preserveItemPresetSize(sprite: Phaser.Sprite, imageKey?: string): void {
+        const image = this.images.filter(entry => entry.key == (imageKey || sprite.key))[0];
+        const size = image ? ITEM_ARTWORK_SIZES[image.path] : ITEM_ARTWORK_SIZES['assets/' + sprite.frameName];
+        if (!size) return;
+        const width = sprite.texture.frame.width;
+        const height = sprite.texture.frame.height;
+        if (width > 0 && height > 0) {
+            sprite.scale.set(sprite.scale.x * size[0] / width, sprite.scale.y * size[1] / height);
+        }
     }
 
     public static createButton(game: Phaser.Game, x:number, y:number, key:string, callback:()=>void, name?:string):Phaser.Button{

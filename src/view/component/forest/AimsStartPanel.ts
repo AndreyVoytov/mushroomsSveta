@@ -53,7 +53,9 @@ export default class AimsStartPanel extends BasePanel {
                 let image = SpriteUtils.createSprite(this.game, 550 + shiftX, 0, aim.image);
                 image.anchor = new Phaser.Point(0.5, 0.5);
                 // image.scale = new Phaser.Point(2.5, 2.5);
-                image.scale = aims.length > 1? new Phaser.Point(1.35, 1.35) : new Phaser.Point(1.5, 1.5);
+                const targetSize = aims.length > 1 ? 140 : 158;
+                const imageScale = targetSize / Math.max(image.width, image.height);
+                image.scale.set(imageScale, imageScale);
                 
                 if(wideImages.indexOf(aim.image) != -1){
                     image.scale.x = image.scale.x * 0.85;

@@ -79,7 +79,7 @@ assert(!Harvest.isMushroom('tree1'));
     tweens[0].complete();
     assert.strictEqual(tweens[2].startAlpha, 1, 'fade starts at visible alpha');
     assert.strictEqual(tweens[2].props.alpha, 0, 'hole fades back into the ground');
-    assert(tweens[2].duration >= 2000, 'hole has a visibly gradual fade');
+    assert.strictEqual(tweens[2].duration, 800, 'hole fades at one third of its previous 2400ms duration');
     for (let i = 0; i < 20; i++) fx.reveal(cell(), 0);
     timers.splice(0).forEach(timer => timer.fn());
     assert.strictEqual(fx.children.length, 48, 'rapid collection never expands pool');

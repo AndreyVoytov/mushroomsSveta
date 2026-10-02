@@ -95,6 +95,11 @@ export default class DiaryMapLayout extends BasePanel {
         })
 
         this.applyPreset(preset);
+        this.children.forEach(child => {
+            if (child instanceof Phaser.Sprite) {
+                SpriteUtils.preserveItemPresetSize(child, child.name.split('_')[0]);
+            }
+        });
 
         //РґРІРёРіР°РµРј РїРµСЂСЃРѕРЅР°Р¶Р° РїРѕ РєР°СЂС‚Рµ
         let characterMap = preset.filter(p => p.spriteId == "character").shift();

@@ -28,9 +28,7 @@ export default class ForestCellCover extends Phaser.Group {
     private decoration5: Phaser.Sprite;
     private decoration6: Phaser.Sprite;
     private frame: Phaser.Sprite;
-    private frameTween: Phaser.Tween;
     private frameTargetAlpha: number = 0;
-    private frameHintAlpha: number = 0;
     private locked = false;
 
     private cankerberry: Phaser.Sprite;
@@ -236,30 +234,12 @@ export default class ForestCellCover extends Phaser.Group {
     }
 
     public setFrame(alpha:number){
-        let targetAlpha = Math.max(0, Math.min(1, alpha));
+        const targetAlpha = alpha > 0 ? 1 : 0;
         if (this.frame && Math.abs(this.frameTargetAlpha - targetAlpha) < 0.001) return;
         if (!this.frame && targetAlpha <= 0) return;
 
         if (!this.frame) {
-            let frameImage = "hexFrame";
-            switch(ForestUtils.getBiom(this.cellType)){
-                case BiomType.SAND:
-                case BiomType.WATER:
-                    frameImage = "hexFrame2";
-                    break;    
-                case BiomType.BERRY_FIELD:
-                case BiomType.FOREST:
-                case BiomType.MOUNTAIN:
-                    break;
-            }
-
-            if (this.environment == Environment.house || ForestUtils.getBiom(this.cellType) == BiomType.WATER){
-                // Preserve the pink asset for existing content, but use a
-                // separate yellow copy for water and house loot hints.
-                frameImage = "hexFrameLootYellow";
-                this.frameHintAlpha = 0.5 + Utils.random(501) / 1000;
-            }
-            this.frame = SpriteUtils.createSprite(this.game, 0, 0, frameImage);
+            this.frame = SpriteUtils.createSprite(this.game, 0, 0, "hexFrame");
             this.frame.anchor = new Phaser.Point(0.5, 0.5);
             this.frame.alpha = 0;
             this.frame.width = this.w;
@@ -273,13 +253,7 @@ export default class ForestCellCover extends Phaser.Group {
         }
 
         this.frameTargetAlpha = targetAlpha;
-        if (targetAlpha > 0 && this.frameHintAlpha > 0) targetAlpha = this.frameHintAlpha;
-        if (this.frameTween) this.frameTween.stop();
-        this.frameTween = this.game.add.tween(this.frame).to(
-            { alpha: targetAlpha }, 300,
-            Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.InOut,
-            true
-        );
+        this.frame.alpha = targetAlpha;
     }
 
     public getCankerBerriesCount() {
@@ -398,7 +372,7 @@ export default class ForestCellCover extends Phaser.Group {
     public growSapphireStar(delay: number): Phaser.Sprite {
         this.cacheAsBitmap = false;
         this.darkCover.cacheAsBitmap = false;
-        const star = SpriteUtils.createSprite(this.game, 0, 0, 'sapphireStar');
+        const star = SpriteUtils.createSprite(this.game, -2, -2, 'sapphireStar');
         star.anchor.set(0.5);
         // Phaser's width/height setters store the requested size in scale.
         // Preserve that target before setting scale to zero for the grow-in
@@ -408,7 +382,7 @@ export default class ForestCellCover extends Phaser.Group {
         // This is deliberately a separate, stationary sprite. The sapphire
         // leaves it behind when it flies to the reward panel, making the
         // collection feel like an item has been lifted from its slot.
-        const starOutline = SpriteUtils.createSprite(this.game, 0, -1.5, 'sapphireStarBackdrop');
+        const starOutline = SpriteUtils.createSprite(this.game, -2, -3.5, 'sapphireStarBackdrop');
         starOutline.anchor.set(0.5);
         // The PNG is an alpha-expanded copy of sapphireStar: it shares its
         // 180x191 canvas and center, with a four-pixel in-game spread.

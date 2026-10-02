@@ -37,14 +37,17 @@ export default abstract class DialogScreen extends BaseScreen {
     }
 
     protected onMouseUp(event: MouseEvent): void {
-        this.dialogPanel.updateReplica();
-
-        if (this.onClickAnimations && !this.isLocked()) {
-
-            this.onClickAnimations.forEach(a => {
-                this.playAnimation(a);
-            })
+        const clickAnimations = this.onClickAnimations;
+        if (clickAnimations && clickAnimations.length > 0) {
+            // Replica action buttons can appear just before their short input
+            // lock expires. Advance the replica for this explicit click even
+            // while locked, otherwise the button disables itself and the
+            // location transition never runs.
+            this.dialogPanel.updateReplica(true, false, false, true);
+            clickAnimations.forEach(animation => this.playAnimation(animation));
             this.onClickAnimations = [];
+        } else {
+            this.dialogPanel.updateReplica();
         }
     }
 

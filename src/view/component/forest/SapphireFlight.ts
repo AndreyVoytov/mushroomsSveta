@@ -25,7 +25,7 @@ export default class SapphireFlight extends Phaser.Group {
     private finishedAt = -1;
     private panel: LevelCompletePanel;
     private target = new Phaser.Point();
-    private static DURATION = 1250;
+    private static DURATION = 700;
 
     constructor(game: Phaser.Game, stars: Phaser.Sprite[], panel: LevelCompletePanel) {
         super(game, game.world, 'sapphireFlight');
@@ -43,7 +43,7 @@ export default class SapphireFlight extends Phaser.Group {
             particles.add(sprite);
             this.sparks.push({ sprite: sprite, age: 1, life: 0, vx: 0, vy: 0, size: 18 });
         }
-        const interval = Math.min(85, 900 / Math.max(1, stars.length - 1));
+        const interval = Math.min(45, 420 / Math.max(1, stars.length - 1));
         stars.forEach((star, index) => {
             if (!star || star.pendingDestroy || !star.parent) {
                 // A late board animation may already have removed a cover.

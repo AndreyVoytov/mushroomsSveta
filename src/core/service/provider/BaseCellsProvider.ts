@@ -391,7 +391,8 @@ export default abstract class BaseCellsProvider {
         return this.cells.filter(cell => cell.X == x && cell.Y == y).shift();
     }
 
-    public switchCellsByCircle(cells: ForestCell[], ladybugsToAdditionalMove?: Movable[], teleportDecoration?: boolean): void {
+    public switchCellsByCircle(cells: ForestCell[], ladybugsToAdditionalMove?: Movable[], teleportDecoration?: boolean,
+        movementDelay: number = 0, movementDuration: number = 700): void {
         if (cells.length == 0) {
             console.log("Can not switch cells: no cells provided!");
             return;
@@ -412,21 +413,33 @@ export default abstract class BaseCellsProvider {
             const targetY = this.calculateY(cell);
             // A fresh cow movement may arrive before a previous tween ends.
             // Continue from the visible position rather than stacking tweens.
-            if (cell.state.sprite != null && !(this.isInteractive(cell) && cell.state.opened)) {
+            // The cell state moves as a unit, including opened interactive objects.
+            // Skipping those sprites left them behind while the acorn moved over them.
+            if (cell.state.sprite != null) {
                 this.game.tweens.removeFrom(cell.state.sprite);
                 this.game.add.tween(cell.state.sprite).to({ x: targetX, y: targetY },
-                    700, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
+                    movementDuration, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, movementDelay, 0, false);
             }
             if (cell.state.label != null) {
                 this.game.tweens.removeFrom(cell.state.label);
                 this.game.add.tween(cell.state.label).to({ x: targetX, y: targetY },
-                    700, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
+                    movementDuration, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, movementDelay, 0, false);
             }
             if (cell.state.cover != null) {
                 this.game.tweens.removeFrom(cell.state.cover);
                 this.game.add.tween(cell.state.cover).to({ x: targetX, y: targetY },
-                    700, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
+                    movementDuration, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, movementDelay, 0, false);
             }
+            const moveAuxiliary = (displayObject: any) => {
+                if (!displayObject) return;
+                this.game.tweens.removeFrom(displayObject);
+                this.game.add.tween(displayObject).to({ x: targetX, y: targetY }, movementDuration,
+                    Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out,
+                    true, movementDelay, 0, false);
+            };
+            moveAuxiliary(cell.state.underSprite);
+            if (cell.state.berries) cell.state.berries.forEach(berry => moveAuxiliary(berry));
+            moveAuxiliary(cell.state.honeyLabel);
 
             {
                 // if((!this.isInteractive(cell) || cell.type == "w") && cell.state.sprite != null && cell.state.label != null){
