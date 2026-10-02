@@ -67,9 +67,12 @@ export default class CellsProvider extends BaseCellsProvider {
             // console.log(typesInfo)
             cells = this.generateCellsFromTypes(typesInfo, cellsCount);
 
+            // The showcase accepts its fixed animal layout immediately. Only
+            // regular levels reject layouts with empty, zero-neighbour cells.
+            suitableGeneration = true;
+
             //Не должно быть клеток, в которых с самого начала стоит "0"
             if (!this.forestType.showcaseAnimals) {
-                suitableGeneration = true;
                 cells.filter(cell => !cell.state.content).forEach(cell => {
                     let adjucentCount = this.getAdjucentInteractiveCount(cells, cell);
                     if (adjucentCount == 0) {
