@@ -1,0 +1,79 @@
+{
+  "tool": "Built-in imagegen",
+  "purpose": "Concept illustrations based on project artwork; not captured gameplay.",
+  "illustrations": [
+    {
+      "file": "01-keys-in-ivy.png",
+      "references": [
+        "assets/base/hex/hex.png",
+        "assets/base/hex/leaf1.png",
+        "assets/base/hex/liana2.png",
+        "assets/base/items/key.png",
+        "assets/base/ui/shop/chest3.png"
+      ],
+      "prompt": "Create a precise game design illustration for the existing Russian hex cell uncovering puzzle. This is a concept mockup, not a new game. Use the supplied project sprites as the visual foundation: glossy green pointed-top hex tiles, large single leaf covers, brown ivy with green leaves, tree with glowing numeral 2, gold key, red/gold chest. Preserve their recognizable silhouette, color and casual 2D art. Boards must resemble these sprites assembled into a playable 5-column, 5-row staggered hex field. A few uncovered mushrooms and tree clues may be visible, most cells covered by leaves. Landscape 1536x1024. Two equally large panels side by side, dark muted forest-green background, small cream Russian panel captions only. Big readable cells, restrained yellow instructional arrows and outline highlights, no people, no world map, no inventories dominating the image, no decorative writing, no fake match-3 pieces. Keep board geometry identical across the two panels. Mechanic: colored key mounted on top of an ivy cell, and two optional chests consuming the same key. LEFT caption exact «ДО»: an ivy-covered hex at the board center has a SMALL gold key embedded into its vines, an emerald-green gem in key bow. An adjacent leaf hex at its lower left has one yellow tap ring. Two modest chests sit on revealed cells, one top-right and one lower-right, each with a green-gem lock. RIGHT caption exact «ПОСЛЕ»: only the indicated adjacent leaf has been opened; ivy on the key cell is removed, but that cell's normal leaf cover remains. The released green key floats just above it, with a small arrow pointing to the two still-closed green-lock chests, visually a choice fork. Both chests still closed, key not duplicated, no chest opening shown. Mark key cell and both chests with thin gold rings. Overall looks like an authentic cropped game board, compact and comprehensible.",
+      "refinement": null
+    },
+    {
+      "file": "02-water-wheel.png",
+      "references": [
+        "assets/base/hex/hex.png",
+        "assets/base/hex/leaf1.png",
+        "assets/base/hex/hexWater.png",
+        "assets/chapter1/forest/watermill.png",
+        "assets/base/hex/liana2.png"
+      ],
+      "prompt": "Create a landscape 1536x1024 concept illustration of a CELL MECHANIC for this existing Russian casual hex-cell uncovering puzzle. Use supplied original project art as the foundation, preserve recognizable glossy pointed-top green hex tiles with big single green leaf covers, cozy casual painted 2D rendering, brown ivy, a few revealed mushrooms and tree clues. Show actual close cropped hex fields, each 5-6 columns and 5 rows, dark forest-green background. Two equally sized panels side by side, matching same cell layout before and after, cream headings exactly «ДО» and «ПОСЛЕ». Restrained thin gold arrows show cause and effect. Large readable objects firmly sitting in hex cells, no match-3, no world map, no game menus, no full-screen HUD. Additional new props must match project style. Mechanic: connected water channel drives a small wheel that unwinds ivy on TWO marked cells. Mill building reference is only for the design of its wooden waterwheel, do NOT draw a house. LEFT: a chain of five blue water hex cells zigzags from bottom-left to a small wooden wheel in central hex. First two water cells glow as already revealed. Third water cell is still covered by a single water lily leaf, highlighted with tap ring. Remaining two water cells already exposed but isolated. Counter near wheel exactly «2/3». Two other nearby green cells covered with ivy, visibly joined to wheel by thin rope. RIGHT: third water cover is gone, ripples travel through connected channel to wheel, wheel spins, counter exactly «3/3». TWO linked ivy cells lose only their vines, their normal green leaf covers stay. Thin gold arrows from turning wheel to those two released cells. Preserve all other cells. No collecting water currency, this acts within one board.",
+      "refinement": null
+    },
+    {
+      "file": "03-butterfly-choice.png",
+      "references": [
+        "assets/base/hex/hex.png",
+        "assets/base/hex/leaf1.png",
+        "assets/base/items/butterfly.png",
+        "assets/base/items/moonflowerClosed1.png",
+        "assets/base/items/moonflower1.png"
+      ],
+      "prompt": "Create a landscape 1536x1024 concept illustration of a CELL MECHANIC for this existing Russian casual hex-cell uncovering puzzle. Use supplied original project art as the foundation, preserve recognizable glossy pointed-top green hex tiles with big single green leaf covers, cozy casual painted 2D rendering, brown ivy, a few revealed mushrooms and tree clues. Show actual close cropped hex fields, each 5-6 columns and 5 rows, dark forest-green background. Two equally sized panels side by side, matching same cell layout before and after, cream headings exactly «ДО» and «ПОСЛЕ». Restrained thin gold arrows show cause and effect. Large readable objects firmly sitting in hex cells, no match-3, no world map, no game menus, no full-screen HUD. Additional new props must match project style. Mechanic: player chooses which flower attracts a butterfly by opening the cell beside the chosen bud. LEFT: one butterfly waits on an open flower lower middle, two closed BLUE flower buds on different cells above-left and above-right, two dotted gold curved possible routes from butterfly to buds. One leaf adjacent to LEFT bud has gold tap ring. RIGHT: only that tapped leaf is open, LEFT bud blooms bright blue; butterfly moves to that LEFT blooming flower. From this chosen flower three small light sparks point to THREE neighboring ordinary leaf cells and open them, revealing mushrooms/empty dirt; RIGHT flower remains closed, its neighboring cells unchanged. ONE butterfly total in each panel. The outcome emphasizes chosen local three-cell area rather than random whole-board shots. Do not add new labels except panel headings.",
+      "refinement": "Edit only the RIGHT «ПОСЛЕ» panel of this game concept. The leaf-covered hex immediately LEFT of the blue blooming flower (same row as the flower, leftmost hex) must be uncovered, showing plain brown forest ground. This is the third opened cell: one manual reveal below-left plus two cells opened by the flower. Keep the two already revealed brown cells below the flower. Everything else, layout, all remaining leaves, headings, butterfly, flower, colors must stay unchanged. No new text."
+    },
+    {
+      "file": "04-field-repair.png",
+      "references": [
+        "assets/base/hex/hex.png",
+        "assets/base/hex/leaf1.png",
+        "assets/chapter1/forest/watermill.png",
+        "assets/base/items/poleno.png",
+        "assets/base/hex/liana2.png"
+      ],
+      "prompt": "Create a landscape 1536x1024 concept illustration of a CELL MECHANIC for this existing Russian casual hex-cell uncovering puzzle. Use supplied original project art as the foundation, preserve recognizable glossy pointed-top green hex tiles with big single green leaf covers, cozy casual painted 2D rendering, brown ivy, a few revealed mushrooms and tree clues. Show actual close cropped hex fields, each 5-6 columns and 5 rows, dark forest-green background. Two equally sized panels side by side, matching same cell layout before and after, cream headings exactly «ДО» and «ПОСЛЕ». Restrained thin gold arrows show cause and effect. Large readable objects firmly sitting in hex cells, no match-3, no world map, no game menus, no full-screen HUD. Additional new props must match project style. Mechanic: repair a broken waterwheel ON ONE HEX CELL using wood collected from a nearby ivy-covered log. No bridge, no avatar movement, no city. LEFT: broken wooden wheel at edge of a four-cell blue pond, missing two conspicuous wooden spokes. Small wood requirement badge exactly «1/2». A collectible log partly caught in ivy sits two cells below wheel, with a tap ring on its neighboring green leaf cell. Two remote ivy-covered hex cells connected to wheel by thin ropes. RIGHT: log has been collected, wheel has complete repaired wooden spokes and wood badge exactly «2/2». A new small counter near wheel reads exactly «0/3», indicating it is repaired but still needs water activations to run. Two remote ivy covers are STILL PRESENT, unchanged. Thin gold arrow shows log contributing to the repair. The original mill reference is ONLY for the visual design of a miniature standalone wheel, do NOT draw the entire mill house. Large readable wheel and log, exact same board geometry before and after.",
+      "refinement": "Edit only the RIGHT «ПОСЛЕ» panel. The bottom-row rightmost green hex, directly to the RIGHT of the already-empty brown cell where the log was, was manually tapped. Remove only its big green leaf and show ordinary bare brown forest floor. Do not alter the log's already-empty cell, repaired wheel, any other covers, counter labels, ropes, layout, headings or colors. The left panel stays identical.",
+      "additional_refinement": "Correct only the water cover state in BOTH panels of this image. There are three blue water hex cells immediately below the wheel in each panel: upper-left pond hex with a white lily, upper-right pond hex directly under the wheel, and the lower middle pond hex. Place one LARGE glossy single green LEAF COVER (matching the normal leaf sprite on the green cells) over EACH of those three water hexes in both panels. Keep BLUE water tile backgrounds visible at their edges. This means all three water cells are still CLOSED before and after repair, matching the right panel 0/3 counter. Remove small water lilies/lily pads only where needed under those large leaf covers. Preserve identical board geometry, wheel repair states, all ropes, vines, brown revealed bottom-row cells, wood 1/2 and 2/2 counters, water 0/3 counter, arrows, headings, and everything else. The only edit is adding the six leaf covers, three per panel."
+    },
+    {
+      "file": "05-event-door.png",
+      "references": [
+        "assets/base/hex/hex.png",
+        "assets/base/hex/leaf1.png",
+        "assets/base/items/key.png",
+        "assets/base/hex/liana2.png",
+        "assets/base/items/moonflower1.png"
+      ],
+      "prompt": "Create a landscape 1536x1024 concept illustration of a CELL MECHANIC for this existing Russian casual hex-cell uncovering puzzle. Use supplied original project art as the foundation, preserve recognizable glossy pointed-top green hex tiles with big single green leaf covers, cozy casual painted 2D rendering, brown ivy, a few revealed mushrooms and tree clues. Show actual close cropped hex fields, each 5-6 columns and 5 rows, dark forest-green background. Two equally sized panels side by side, matching same cell layout before and after, cream headings exactly «ДО» and «ПОСЛЕ». Restrained thin gold arrows show cause and effect. Large readable objects firmly sitting in hex cells, no match-3, no world map, no game menus, no full-screen HUD. Additional new props must match project style. Mechanic: a rare portal door occupies one visible hex in an ordinary story puzzle, two LOCAL requirements are shown as sockets ON its frame. LEFT: small rounded mossy wooden door with stone frame, centered near top of hex board. GREEN GEM KEY socket on left jamb is already filled and glowing green; water-drop socket on right jamb is dark, a tiny counter directly beside it exactly «2/3». Three water cells are nearby on this SAME board: two revealed blue water tiles and one still covered by a lily leaf, highlighted gold tap ring. Thin blue engraved conduit connects this pond to door. Other board cells normal green leaves, ivy and mushrooms. RIGHT: only the last marked water cell has been revealed, water-drop socket glows blue and counter exactly «3/3», central door opens into soft violet spiral light. Green key socket remains green. A small unobtrusive cream tab above door reads exactly «ИВЕНТ». This is a local puzzle object unlocking a side event; do not show maps, world hubs, building menus or a big separate portal landscape. Keep all other board cells and positions identical.",
+      "refinement": "Edit only the LEFT «ДО» panel of this game concept. Correct the two already-open water cells so the 2/3 counter is visually accurate: on the blue hex immediately to the right of the left white-waterlily hex, REMOVE the large bright green leaf cover, show open blue water with a small lily pad. The gold outlined tapped hex diagonally below-right of it must have BLUE water underneath its one large GREEN leaf cover, not a green land background. Keep that large leaf and yellow outline. This yields two uncovered water hexes and one covered water hex before the action. Keep the entire RIGHT panel and every other object, arrow, label, and cell position identical."
+    },
+    {
+      "file": "06-combination.png",
+      "references": [
+        "assets/base/hex/hex.png",
+        "assets/base/hex/leaf1.png",
+        "assets/base/hex/liana2.png",
+        "assets/base/items/key.png",
+        "assets/base/ui/shop/chest3.png"
+      ],
+      "prompt": "Create landscape 1536x1024 coherent concept illustration of an emergent CELL interaction chain in the existing Russian casual hex uncovering puzzle using supplied exact original sprite style: glossy bright green pointed-top hex cells, big single leaf covers, brown ivy, gold key and red/gold chest. ONE LARGE 7-column staggered hex game board on dark forest floor, 6 rows maximum. No before/after panels, no headers, no paragraphs, no inventory, no maps. In lower-left region three blue water hexes, two already open and one remaining lily-covered cell with a yellow tap ring and small circled numeral 1. At center-left a miniature wooden waterwheel with counter «2/3», circled numeral 2. A rope from wheel to center-right an ivy-wrapped leaf hex containing a tiny gold key with green gemstone, circled numeral 3. At upper-right a RED GOLD CHEST with green gem lock. At lower-right a small mossy wooden dungeon DOOR with green gem lock and violet light through cracks, it must remain closed. Fine gold arrows show 1 water cell → 2 wheel → 3 ivy releases key, then ONE forked dashed choice arrow from key toward chest OR door. Circled numeral 4 next to this choice fork, one label exactly «КУДА ПОТРАТИТЬ КЛЮЧ?». Surrounding cells include a few normal uncovered red mushrooms and trees with glowing clues, most stay leaf covered. All objects occupy clear individual cells, no duplicated keys. Purpose: one normal reveal has consequences via existing cover-removal rules, then player decides which optional object to open. Graphic looks like close-up gameplay concept, source art recognizable and largest emphasis is the CELL BOARD.",
+      "refinement": null
+    }
+  ]
+}
