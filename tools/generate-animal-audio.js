@@ -42,3 +42,6 @@ render('ram', 1.25, [[.05,.72,'bleat',.48,185],[.87,.15,'hop',.13,130]]);
 render('duck', 1.1, [[0,.32,'quack',.5,255],[.40,.29,'quack',.35,230],[.73,.2,'wing',.15,0]]);
 render('fish', 1.0, [[0,.20,'bubble',.4,420],[.20,.22,'bubble',.3,570],[.49,.38,'wing',.2,0]]);
 render('hive', .65, [[.04,.48,'buzz',.4,180]]);
+
+// Restore the melodic cues after rendering to preserve the other cues' noise seed.
+require('./generate-melodic-animal-audio');
