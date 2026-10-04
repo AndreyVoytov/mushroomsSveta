@@ -1972,20 +1972,23 @@ export default class ForestScreen extends BaseForestScreen {
                     sprite.scale.set(sprite.scale.x * 1.25, sprite.scale.y * 1.25);
                 }
                 sprite.alpha = 1;
-                const introCount = animal == 'butterfly2' ? 16 : animal == 'crab' ? 20 : 4;
-                const intro = sprite.animations.add('greet', Phaser.ArrayUtils.numberArray(0, introCount - 1), animal == 'butterfly2' ? 16 : 24, false);
+                const introCount = animal == 'butterfly2' ? 16 : animal == 'crab' ? 24 : 4;
+                const intro = sprite.animations.add('greet', Phaser.ArrayUtils.numberArray(0, introCount - 1), animal == 'butterfly2' || animal == 'crab' ? 16 : 24, false);
                 const frames = Phaser.ArrayUtils.numberArray(introCount, 31);
-                sprite.animations.add('depart', frames.concat(frames.slice(1, -1).reverse()), 24, true);
+                sprite.animations.add('depart', animal == 'crab' || animal == 'bird' ? frames : frames.concat(frames.slice(1, -1).reverse()), animal == 'crab' ? 20 : 24, true);
                 intro.onComplete.addOnce(() => {
                     if (!sprite.exists) return;
                     sprite.animations.play('depart');
                     const sideways = animal == 'crab';
-                    const distance = sideways ? -260 : animal == 'butterfly2' ? 150 : 280;
-                    const duration = sideways ? 1150 : 1450;
+                    const distance = sideways ? -150 : animal == 'butterfly2' ? 150 : 280;
+                    const duration = sideways ? 1900 : animal == 'bird' ? 1800 : 1450;
                     const flight = this.game.add.tween(sprite).to({
-                        x: [startX + distance * .25, startX + distance * .7, startX + distance],
-                        y: sideways ? [startY - 8, startY + 7, startY - 4] : [startY - 70, startY - 180, startY - 350]
-                    }, duration, Phaser.Easing.Sinusoidal.InOut, true);
+                        // Bird: nearly vertical takeoff, then flatten the curve into flight.
+                        x: animal == 'bird' ? [startX + 10, startX + 70, startX + distance]
+                            : sideways ? [startX + distance * .1, startX + distance * .55, startX + distance]
+                            : [startX + distance * .25, startX + distance * .7, startX + distance],
+                        y: sideways ? [startY, startY - 2, startY - 4] : animal == 'bird' ? [startY - 170, startY - 225, startY - 235] : [startY - 70, startY - 180, startY - 350]
+                    }, duration, sideways ? Phaser.Easing.Quadratic.In : Phaser.Easing.Sinusoidal.InOut, true);
                     flight.interpolation(Phaser.Math.bezierInterpolation);
                     this.game.add.tween(sprite).to({ alpha: 0 }, 420, Phaser.Easing.Linear.None, true, duration - 420);
                     flight.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
@@ -1994,9 +1997,9 @@ export default class ForestScreen extends BaseForestScreen {
             });
             return;
         }
-        const introFrames = animal == 'butterfly' ? 4 : animal == 'duck' ? 16 : animal == 'fish' ? 8 : animal == 'ram' ? 14 : 12;
+        const introFrames = animal == 'butterfly' ? 4 : animal == 'duck' ? 16 : 12;
         const frameCount = animal == 'butterfly' ? 24 : 32;
-        const frameRate = animal == 'bat' ? 13 : animal == 'rabbit' ? 24 : animal == 'ram' ? 16 : animal == 'fish' ? 22 : 30;
+        const frameRate = animal == 'bat' ? 13 : animal == 'rabbit' ? 24 : 30;
         const direction = animal == 'duck' || animal == 'ram' ? -1 : this.game.rnd.pick([-1, 1]);
 
         this.game.time.events.add(200, () => {
@@ -2014,19 +2017,22 @@ export default class ForestScreen extends BaseForestScreen {
             }
             // Butterfly source faces up-left; rabbit source faces right.
             sprite.scale.x = Math.abs(sprite.scale.x) * ((animal == 'duck' || animal == 'ram')
-                ? 1 : direction * (animal == 'butterfly' ? -1 : 1));
+                ? 1 : direction * (animal == 'butterfly' || animal == 'fish' ? -1 : 1));
             if (animal == 'duck') {
                 sprite.scale.set(Math.abs(sprite.scale.x) * 1.2, Math.abs(sprite.scale.y) * 1.2);
             }
             sprite.alpha = 1;
+            if (animal == 'ram' || animal == 'fish') {
+                this.animateAnimalVideoArc(sprite, animal, startX, startY, direction);
+                return;
+            }
             if (animal == 'bat') {
                 // A small approach toward the viewer while it hovers makes
                 // the turn readable before the bat darts away.
                 this.game.add.tween(sprite.scale).to({ x: sprite.scale.x * 1.95, y: sprite.scale.y * 1.95 },
                     1000, Phaser.Easing.Sinusoidal.Out, true);
             }
-            // Ram frames 0–13 look around on the spot for one full second.
-            const introRate = animal == 'ram' ? 14 : animal == 'duck' ? 16 : frameRate;
+            const introRate = animal == 'duck' ? 16 : frameRate;
             const intro = sprite.animations.add('look', Phaser.ArrayUtils.numberArray(0, introFrames - 1), introRate, false);
             // Reuse only the upward-facing wingbeat; the tail of the source
             // clip turns around, which otherwise reads as backward flight.
@@ -2037,20 +2043,16 @@ export default class ForestScreen extends BaseForestScreen {
             intro.onComplete.addOnce(() => {
                 if (!sprite.exists) return;
                 sprite.animations.play('escape');
-                const distance = (animal == 'rabbit' ? 255 : animal == 'butterfly' ? 105 : animal == 'duck' ? 235 : animal == 'fish' ? 65 : animal == 'ram' ? 210 : 350) * direction;
-                const duration = animal == 'rabbit' ? 1150 : animal == 'butterfly' ? 1550 : animal == 'duck' ? 1350 : animal == 'fish' ? 1450 : animal == 'ram' ? 1250 : 900;
+                const distance = (animal == 'rabbit' ? 255 : animal == 'butterfly' ? 105 : animal == 'duck' ? 235 : 350) * direction;
+                const duration = animal == 'rabbit' ? 1150 : animal == 'butterfly' ? 1550 : animal == 'duck' ? 1350 : 900;
                 const takeoffY = animal == 'duck' ? startY - 125 : startY;
                 const travelOut = () => {
                     const pathY = animal == 'rabbit' ? [startY - 8, startY - 12, startY - 18]
                         : animal == 'butterfly' ? [startY - 100, startY - 230, startY - 370]
                         : animal == 'duck' ? [takeoffY - 45, takeoffY - 120, takeoffY - 225]
-                        : animal == 'fish' ? [startY - 15, startY - 45, startY - 80]
-                        : animal == 'ram' ? [startY - 28, startY + 8, startY - 46]
                         : [startY - 60, startY - 145, startY - 255];
                     const travel = this.game.add.tween(sprite).to({
-                        x: animal == 'ram'
-                            ? [startX + distance / 3, startX + distance * 2 / 3 - direction * 20, startX + distance]
-                            : [startX + distance / 3, startX + distance * 2 / 3, startX + distance],
+                        x: [startX + distance / 3, startX + distance * 2 / 3, startX + distance],
                         y: pathY
                     }, duration, Phaser.Easing.Linear.None, true);
                     travel.interpolation(Phaser.Math.bezierInterpolation);
@@ -2058,63 +2060,41 @@ export default class ForestScreen extends BaseForestScreen {
                         Phaser.Easing.Sinusoidal.InOut, true, duration - 600);
                     travel.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
                 };
-                if (animal == 'ram') {
-                    // Each hop has its own landing, so the sideways turns survive
-                    // interpolation and remain readable on a small board.
-                    const landings = [[-62, -12], [-110, 18], [-176, -20], [-245, 8]];
-                    const hop = (index: number) => {
-                        if (!sprite.exists) return;
-                        if (index >= landings.length) { sprite.kill(); return; }
-                        const targetX = startX + landings[index][0];
-                        const targetY = startY + landings[index][1];
-                        const fromY = sprite.y;
-                        this.game.add.tween(sprite).to({ x: targetX }, 310, Phaser.Easing.Linear.None, true);
-                        const bounce = this.game.add.tween(sprite).to({
-                            y: [fromY - 32, targetY]
-                        }, 310, Phaser.Easing.Linear.None, true);
-                        bounce.interpolation(Phaser.Math.linearInterpolation);
-                        if (index == landings.length - 1) {
-                            this.game.add.tween(sprite).to({ alpha: 0 }, 280, Phaser.Easing.Linear.None, true);
-                        }
-                        bounce.onComplete.addOnce(() => hop(index + 1));
-                    };
-                    hop(0);
-                    return;
-                }
-                if (animal == 'fish') {
-                    const baseScaleX = Math.abs(sprite.scale.x);
-                    const baseScaleY = Math.abs(sprite.scale.y);
-                    // The fish pops up toward the player, hangs briefly while
-                    // rolling over, then dives down with a clear acceleration.
-                    sprite.animations.play('escape');
-                    this.game.add.tween(sprite.scale).to({ x: baseScaleX * 1.28, y: baseScaleY * 1.28 },
-                        420, Phaser.Easing.Sinusoidal.Out, true);
-                    const approach = this.game.add.tween(sprite).to({
-                        x: [startX - 8, startX + 10],
-                        y: [startY - 34, startY - 92],
-                        angle: 68
-                    }, 480, Phaser.Easing.Sinusoidal.Out, true);
-                    approach.interpolation(Phaser.Math.bezierInterpolation);
-                    approach.onComplete.addOnce(() => {
-                        this.game.time.events.add(190, () => {
-                            if (!sprite.exists) return;
-                            const dive = this.game.add.tween(sprite).to({
-                                x: [sprite.x - 12, sprite.x + 16, sprite.x + 22],
-                                y: [startY - 54, startY + 90, startY + 390, startY + 690],
-                                angle: 205
-                            }, 850, Phaser.Easing.Quadratic.In, true);
-                            dive.interpolation(Phaser.Math.bezierInterpolation);
-                            this.game.add.tween(sprite).to({ alpha: 0 }, 260,
-                                Phaser.Easing.Quadratic.In, true, 590);
-                            dive.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
-                        });
-                    });
-                    return;
-                }
                 // Duck takeoff plays once in the intro; escape loops airborne frames only.
                 travelOut();
             });
             sprite.animations.play('look');
         }, this);
     }
+
+    private animateAnimalVideoArc(sprite: Phaser.Sprite, animal: 'ram' | 'fish', startX: number, startY: number, direction: number): void {
+        const timeline = { progress: 0 };
+        const duration = animal == 'ram' ? 4400 : 2220;
+        const frameCount = animal == 'ram' ? 132 : 32;
+        const scaleX = sprite.scale.x;
+        const scaleY = sprite.scale.y;
+        sprite.angle = 0;
+        // One elapsed-time clock owns both the source frame and the trajectory.
+        const motion = this.game.add.tween(timeline).to({ progress: 1 }, duration, Phaser.Easing.Linear.None, true);
+        motion.onUpdateCallback(() => {
+            if (!sprite.exists) { motion.stop(); return; }
+            const t = timeline.progress;
+            sprite.frame = Math.min(frameCount - 1, Math.floor(t * frameCount));
+            if (animal == 'ram') {
+                // The fixed-crop source already contains the backstep and hops.
+                // Preserve their exact direction, amplitude and landing times.
+                sprite.alpha = 1 - Math.max(0, (t - .88) / .12);
+            } else {
+                sprite.x = startX + direction * 180 * t;
+                sprite.y = startY - 600 * t * (1 - t) + 100 * t * t;
+                // Dive only after the apex; the video supplies the body rotation.
+                const dive = Math.max(0, (t - .58) / .42);
+                const shrink = 1 - .78 * dive * dive;
+                sprite.scale.set(scaleX * shrink, scaleY * shrink);
+                sprite.alpha = 1 - dive * dive;
+            }
+        }, this);
+        motion.onComplete.addOnce(() => { sprite.animations.stop(); sprite.kill(); });
+    }
+
 }

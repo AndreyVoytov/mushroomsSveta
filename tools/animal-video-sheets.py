@@ -43,7 +43,8 @@ def compile_sheets(only=None):
         # The new clips are short; keep the full readable action and avoid
         # the fish's final tiny, distant frames.
         'fish': np.linspace(0.0, 2.22, 32),
-        'ram': np.linspace(0.0, 4.35, 32),
+        # Preserve the ear flick, backward step and every landing at 30 fps.
+        'ram': np.arange(132) / 30.0,
         # Play the water takeoff once, then loop only the airborne wingbeat.
         'duck': np.r_[np.linspace(0.0, 0.46, 5), np.linspace(0.85, 2.25, 11),
                       np.linspace(2.48, 2.94, 16)],

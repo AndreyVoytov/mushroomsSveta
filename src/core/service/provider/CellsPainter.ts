@@ -69,6 +69,12 @@ export default class CellsPainter extends CellsProvider {
             cellSprite.height = BaseCellsProvider.CELL_HEIGHT;
         }
 
+        if (cell.state.content == ContentType.bird) {
+            // Use the same pose and size on the board and at animation start.
+            cellSprite.loadTexture('birdEscape', 0);
+            cellSprite.width = 150;
+            cellSprite.height = 158.75;
+        }
         screen.add.existing(cellSprite);
         cell.state.sprite = cellSprite;
         cell.state.baseScaleX = cellSprite.scale.x;

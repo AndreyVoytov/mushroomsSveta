@@ -788,7 +788,7 @@ export default class LoadingScreen extends BaseScreen {
         this.game.load.spritesheet('batEscape', 'assets/base/items/animals/batEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
         this.game.load.spritesheet('duckEscape', 'assets/base/items/animals/duckEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
         this.game.load.spritesheet('fishEscape', 'assets/base/items/animals/fishEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
-        this.game.load.spritesheet('ramEscape', 'assets/base/items/animals/ramEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 32);
+        this.game.load.spritesheet('ramEscape', 'assets/base/items/animals/ramEscape.png?' + Settings.ATLASES_VERSION, 120, 127, 132);
         this.loadImage('bet', 'assets/base/items/bet.png');
         this.loadImage('owl', 'assets/base/items/owl.png');
         this.loadImage('owlPink', 'assets/base/items/owlPink.png');
