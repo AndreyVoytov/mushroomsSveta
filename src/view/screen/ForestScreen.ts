@@ -1964,7 +1964,7 @@ export default class ForestScreen extends BaseForestScreen {
         if (animal == 'butterfly2' || animal == 'crab' || animal == 'bird' || animal == 'owl') {
             this.game.time.events.add(180, () => {
                 if (!sprite.exists) return;
-                sprite.loadTexture(texture, 0);
+                sprite.loadTexture(texture, animal == 'owl' ? 16 : 0);
                 sprite.anchor.set(0.5);
                 sprite.width = 120;
                 sprite.height = 127;
@@ -1973,15 +1973,16 @@ export default class ForestScreen extends BaseForestScreen {
                 }
                 sprite.alpha = 1;
                 const introCount = animal == 'butterfly2' ? 16 : animal == 'crab' ? 24 : 4;
-                const intro = sprite.animations.add('greet', Phaser.ArrayUtils.numberArray(0, introCount - 1), animal == 'butterfly2' || animal == 'crab' ? 16 : 24, false);
+                const intro = sprite.animations.add('greet', animal == 'owl' ? [16, 17, 18] : Phaser.ArrayUtils.numberArray(0, introCount - 1), animal == 'butterfly2' ? 16 : 24, false);
                 const frames = Phaser.ArrayUtils.numberArray(introCount, 31);
-                sprite.animations.add('depart', animal == 'crab' || animal == 'bird' ? frames : frames.concat(frames.slice(1, -1).reverse()), animal == 'crab' ? 20 : 24, true);
+                sprite.animations.add('depart', animal == 'owl' ? [19, 20, 21, 20, 19, 18, 17, 16, 17, 18] : animal == 'crab' || animal == 'bird' ? frames : frames.concat(frames.slice(1, -1).reverse()), animal == 'crab' ? 30 : 24, true);
                 intro.onComplete.addOnce(() => {
                     if (!sprite.exists) return;
                     sprite.animations.play('depart');
                     const sideways = animal == 'crab';
-                    const distance = sideways ? -150 : animal == 'butterfly2' ? 150 : 280;
-                    const duration = sideways ? 1900 : animal == 'bird' ? 1800 : 1450;
+                    // Crab: 1000 ms greeting + 2400 ms travel retains the old 3400 ms total.
+                    const distance = sideways ? -150 * 1.5 * (2400 / 1900) : animal == 'butterfly2' ? 150 : 280;
+                    const duration = sideways ? 2400 : animal == 'bird' ? 1800 : 1450;
                     const flight = this.game.add.tween(sprite).to({
                         // Bird: nearly vertical takeoff, then flatten the curve into flight.
                         x: animal == 'bird' ? [startX + 10, startX + 70, startX + distance]
@@ -2018,9 +2019,6 @@ export default class ForestScreen extends BaseForestScreen {
             // Butterfly source faces up-left; rabbit source faces right.
             sprite.scale.x = Math.abs(sprite.scale.x) * ((animal == 'duck' || animal == 'ram')
                 ? 1 : direction * (animal == 'butterfly' || animal == 'fish' ? -1 : 1));
-            if (animal == 'duck') {
-                sprite.scale.set(Math.abs(sprite.scale.x) * 1.2, Math.abs(sprite.scale.y) * 1.2);
-            }
             sprite.alpha = 1;
             if (animal == 'ram' || animal == 'fish') {
                 this.animateAnimalVideoArc(sprite, animal, startX, startY, direction);
@@ -2039,7 +2037,23 @@ export default class ForestScreen extends BaseForestScreen {
             const flightFrames = animal == 'butterfly'
                 ? [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 16, 15, 14, 13, 12, 11, 10, 9]
                 : Phaser.ArrayUtils.numberArray(introFrames, frameCount - 1);
-            sprite.animations.add('escape', flightFrames, frameRate, true);
+            const escape = sprite.animations.add('escape', flightFrames, frameRate, true);
+            if (animal == 'duck') {
+                const baseX = sprite.scale.x;
+                const baseY = sprite.scale.y;
+                const compensateSize = () => {
+                    // The source bird gets smaller during takeoff. Keep its body
+                    // size stable without counteracting the wingbeat silhouette.
+                    const phase = Math.max(0, Math.min(1, (Number(sprite.frame) - 4) / 12));
+                    const scale = 1 + .55 * phase * phase * (3 - 2 * phase);
+                    sprite.scale.set(baseX * scale, baseY * scale);
+                };
+                [intro, escape].forEach(animation => {
+                    animation.enableUpdate = true;
+                    animation.onUpdate.add(compensateSize);
+                });
+                compensateSize();
+            }
             intro.onComplete.addOnce(() => {
                 if (!sprite.exists) return;
                 sprite.animations.play('escape');
@@ -2074,19 +2088,25 @@ export default class ForestScreen extends BaseForestScreen {
         const scaleX = sprite.scale.x;
         const scaleY = sprite.scale.y;
         sprite.angle = 0;
-        // One elapsed-time clock owns both the source frame and the trajectory.
+        // Measured foot lift in sheet pixels, from the first landing after
+        // the backward hop (frame 72) through the final forward landing (108).
+        const ramHopLift = [0, 0.17, 0.33, 2.5, 3.67, 13.83, 14.0, 7.17, 1.33, 0, 0, 0, 0, 0, 2.5, 2.75, 3.0, 5.25, 14.5, 5.75, 1.0, 1.25, 0, 0, 0, 0.08, 0.17, 4.25, 4.33, 9.42, 17.5, 17.58, 12.67, 2.75, 0, 0, 0];
+        // Movement can run faster while fade/scale retain their original clock.
         const motion = this.game.add.tween(timeline).to({ progress: 1 }, duration, Phaser.Easing.Linear.None, true);
         motion.onUpdateCallback(() => {
             if (!sprite.exists) { motion.stop(); return; }
             const t = timeline.progress;
-            sprite.frame = Math.min(frameCount - 1, Math.floor(t * frameCount));
+            const movementTime = animal == 'fish' ? t * 1.7 : t;
+            sprite.frame = Math.min(frameCount - 1, Math.floor(movementTime * frameCount));
             if (animal == 'ram') {
-                // The fixed-crop source already contains the backstep and hops.
-                // Preserve their exact direction, amplitude and landing times.
+                // Add the same lift again: twice the original hop height,
+                // on the original frames, without changing the backward hop.
+                const lift = ramHopLift[sprite.frame - 72] || 0;
+                sprite.y = startY - lift * Math.abs(scaleY);
                 sprite.alpha = 1 - Math.max(0, (t - .88) / .12);
             } else {
-                sprite.x = startX + direction * 180 * t;
-                sprite.y = startY - 600 * t * (1 - t) + 100 * t * t;
+                sprite.x = startX + direction * 180 * movementTime;
+                sprite.y = startY - 600 * movementTime * (1 - movementTime) + 100 * movementTime * movementTime;
                 // Dive only after the apex; the video supplies the body rotation.
                 const dive = Math.max(0, (t - .58) / .42);
                 const shrink = 1 - .78 * dive * dive;
