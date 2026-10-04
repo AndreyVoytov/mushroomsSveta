@@ -9,7 +9,7 @@ export default class Settings {
     // Atlas PNG/JSON pairs are cached aggressively by GitHub Pages.  Bump this
     // whenever they change so a reload cannot combine a new frame map with an
     // older texture (which leaves part of a level invisible).
-    public static ATLASES_VERSION = "v18";
+    public static ATLASES_VERSION = "v19";
     public static isGraphicsFromAtlases():boolean{
         return Settings.GRAPHICS_FROM_ATLASES && !AdminService.isEditMode();
     }

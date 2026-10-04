@@ -44,8 +44,9 @@ def compile_sheets(only=None):
         # the fish's final tiny, distant frames.
         'fish': np.linspace(0.0, 2.22, 32),
         'ram': np.linspace(0.0, 4.35, 32),
-        # Keep a few calm water frames, then the complete takeoff and splash.
-        'duck': np.r_[np.linspace(0.0, 0.46, 5), np.linspace(0.85, 2.20, 27)],
+        # Play the water takeoff once, then loop only the airborne wingbeat.
+        'duck': np.r_[np.linspace(0.0, 0.46, 5), np.linspace(0.85, 2.25, 11),
+                      np.linspace(2.48, 2.94, 16)],
     }
     for name, times in specs.items():
         if only and name != only:
@@ -96,6 +97,15 @@ def compile_sheets(only=None):
                         if np.any(labels[warm] == label) or dx*dx + dy*dy < (w*.29)**2:
                             kept[label] = 1
                     mask = kept[labels]
+                if t >= 2.48:
+                    # In flight the lake rings are separate from the bird.
+                    # Keep the component containing its green head, not water.
+                    head_labels = labels[green_head & (mask > 0)]
+                    head_labels = head_labels[head_labels != 0]
+                    if not len(head_labels):
+                        raise RuntimeError(f'Cannot isolate airborne duck at {t}')
+                    bird_label = np.bincount(head_labels).argmax()
+                    mask = (labels == bird_label).astype(np.uint8)
             # Source clips have a small creator watermark at the lower right.
             # Clear just that margin, outside the character's usable bounds.
             mask[int(mask.shape[0]*.89):, int(mask.shape[1]*.58):] = 0

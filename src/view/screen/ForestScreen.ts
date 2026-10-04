@@ -1968,6 +1968,9 @@ export default class ForestScreen extends BaseForestScreen {
                 sprite.anchor.set(0.5);
                 sprite.width = 120;
                 sprite.height = 127;
+                if (animal == 'crab' || animal == 'bird') {
+                    sprite.scale.set(sprite.scale.x * 1.25, sprite.scale.y * 1.25);
+                }
                 sprite.alpha = 1;
                 const introCount = animal == 'butterfly2' ? 16 : animal == 'crab' ? 20 : 4;
                 const intro = sprite.animations.add('greet', Phaser.ArrayUtils.numberArray(0, introCount - 1), animal == 'butterfly2' ? 16 : 24, false);
@@ -1991,7 +1994,7 @@ export default class ForestScreen extends BaseForestScreen {
             });
             return;
         }
-        const introFrames = animal == 'butterfly' ? 4 : animal == 'duck' ? 2 : animal == 'fish' ? 8 : animal == 'ram' ? 6 : 12;
+        const introFrames = animal == 'butterfly' ? 4 : animal == 'duck' ? 16 : animal == 'fish' ? 8 : animal == 'ram' ? 14 : 12;
         const frameCount = animal == 'butterfly' ? 24 : 32;
         const frameRate = animal == 'bat' ? 13 : animal == 'rabbit' ? 24 : animal == 'ram' ? 16 : animal == 'fish' ? 22 : 30;
         const direction = animal == 'duck' || animal == 'ram' ? -1 : this.game.rnd.pick([-1, 1]);
@@ -2022,7 +2025,9 @@ export default class ForestScreen extends BaseForestScreen {
                 this.game.add.tween(sprite.scale).to({ x: sprite.scale.x * 1.95, y: sprite.scale.y * 1.95 },
                     1000, Phaser.Easing.Sinusoidal.Out, true);
             }
-            const intro = sprite.animations.add('look', Phaser.ArrayUtils.numberArray(0, introFrames - 1), frameRate, false);
+            // Ram frames 0–13 look around on the spot for one full second.
+            const introRate = animal == 'ram' ? 14 : animal == 'duck' ? 16 : frameRate;
+            const intro = sprite.animations.add('look', Phaser.ArrayUtils.numberArray(0, introFrames - 1), introRate, false);
             // Reuse only the upward-facing wingbeat; the tail of the source
             // clip turns around, which otherwise reads as backward flight.
             const flightFrames = animal == 'butterfly'
@@ -2106,19 +2111,10 @@ export default class ForestScreen extends BaseForestScreen {
                     });
                     return;
                 }
-                // The first five duck-sheet frames already show the takeoff.
-                // A second scripted lift made the mallard appear to launch twice.
+                // Duck takeoff plays once in the intro; escape loops airborne frames only.
                 travelOut();
             });
-            if (animal == 'ram') {
-                // Hold a genuinely still pose before starting the first hop.
-                sprite.frame = 0;
-                this.game.time.events.add(650, () => {
-                    if (sprite.exists) sprite.animations.play('look');
-                });
-            } else {
-                sprite.animations.play('look');
-            }
+            sprite.animations.play('look');
         }, this);
     }
 }
