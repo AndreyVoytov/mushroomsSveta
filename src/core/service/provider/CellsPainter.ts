@@ -69,11 +69,13 @@ export default class CellsPainter extends CellsProvider {
             cellSprite.height = BaseCellsProvider.CELL_HEIGHT;
         }
 
-        if (cell.state.content == ContentType.bird) {
+        if (cell.state.content == ContentType.bird || cell.state.content == ContentType.sheep || cell.state.content == ContentType.duck) {
             // Use the same pose and size on the board and at animation start.
-            cellSprite.loadTexture('birdEscape', 0);
-            cellSprite.width = 150;
-            cellSprite.height = 158.75;
+            const animal = cell.state.content == ContentType.bird ? 'bird' : cell.state.content == ContentType.sheep ? 'ram' : 'duck';
+            const size = animal == 'bird' ? 1.25 : animal == 'ram' ? 1.3 : 1;
+            cellSprite.loadTexture(animal + 'Escape', 0);
+            cellSprite.width = 120 * size;
+            cellSprite.height = 127 * size;
         }
         screen.add.existing(cellSprite);
         cell.state.sprite = cellSprite;
