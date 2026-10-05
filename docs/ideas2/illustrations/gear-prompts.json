@@ -1,0 +1,59 @@
+{
+  "tool": "Built-in imagegen",
+  "purpose": "Six repairable gear devices on hex puzzle levels. Concept illustrations, not gameplay screenshots.",
+  "common_prompt": "Use case: stylized-concept. Create a NEW 1536x1024 landscape game design illustration matching the provided before/after hex puzzle reference. Reference is STYLE ONLY, do not duplicate the pump. Use exactly this project's bright glossy pointed green hex tiles with single leaf covers, chunky brass gear tokens tangled in leafy brown ivy, approachable painted casual-game machinery, dark soft woodland background. Two equal panels with exact Russian headings «ДО» and «ПОСЛЕ». A compact 5x5 staggered HEX-CELL UNCOVERING level in each panel, same board geometry and object positions before and after. No match3, no avatars, no full HUD. Keep cells BIG. One gold central arrow. A clearly broken mechanical device on a revealed cell with empty gear sockets and a short counter LEFT; the same device repaired and functioning with gears installed RIGHT. Every consumed gear and its ivy bindings must be GONE from its source cell on right, and that cell's ordinary green LEAF COVER remains. Repaired objects must remain visibly whole and working after benefit: fresh wood, polished metal, water/light/healthy foliage, without excessive glowing particles. Show exact count of gear tokens equal repair price. Only words are panel headings and specified counter fractions; use pictograms instead of extra writing. Do not put gears in inventory; show them caught in actual ivy-covered cells on the playable board. Do not introduce extra mechanisms or unrelated rewards. ",
+  "prompt_assembly": "Concatenate common_prompt and prompt_detail; apply listed refinements in order.",
+  "illustrations": [
+    {
+      "file": "20-gear-winch.png",
+      "references": [
+        "docs/ideas2/illustrations/08-gear-pump.png"
+      ],
+      "prompt_detail": "DEVICE: a compact wooden and brass WINCH with two meshed empty gear sockets. Cost TWO gears, counter 0/2 -> 2/2. LEFT two brass gears caught in ivy at upper-left and bottom-left hexes. Winch is center-left, its rope visibly runs via small pulley to a rusty heavy PORTCULLIS over a cave arch on an upper-right revealed cell. A flat ticket pictogram embossed on lintel signals bonus level. Gate down, empty gear sockets, timber frame cracked. RIGHT both gears installed, winch wood repaired, rope taut, gate raised vertically above same arch. Behind it a warm lantern-lit short cave passage with a ticket emblem, NO huge portal covering tiles. Overgrown threshold now neat stone with flowers. Both former gear cells covered by normal leaves. Clearly show the gate moving up and mechanism transmitting force through rope. Gate remains up, no extra locks and no extra required item.",
+      "refinements": []
+    },
+    {
+      "file": "21-gear-sprinkler.png",
+      "references": [
+        "docs/ideas2/illustrations/08-gear-pump.png"
+      ],
+      "prompt_detail": "DEVICE: a small ROTATING GARDEN SPRINKLER on center cell, made of old copper watering pipes and a wind-up brass gearbox with TWO gear sockets. Cost TWO brass gears in two separate ivy cells at left, counter 0/2 -> 2/2. A short blue inlet already connected to visible open water cell supplies water, do not require water charge. LEFT sprinkler rusted, two small pairs of DRIED FLOWERS at upper right and lower right sectors, each sector contains exactly TWO flower hexes. Two tiny fixed direction handles with arrow pictograms indicate select one sector. RIGHT repaired sprinkler lever points to UPPER pair only and sprays a clear soft blue arc onto exactly those TWO upper flower cells. Upper flowers now bloom blue/pink; one drops a single pearl reward, other a little green key reward. Lower pair MUST remain visibly wilted and dry. Show flowers as reward flowers sitting on OPEN hexes, not regular leaf covers. Both collected gear tiles still leaf-covered without ivy. Key idea one repaired device, one selectable watering sector, visible alternative forgone, sprinkler remains restored.",
+      "refinements": [
+        "Edit the flower layout ONLY in this sprinkler BEFORE/AFTER illustration for exact positional consistency. Preserve the machine, gears, source ivy cells, water, all texts and scene. There must be FOUR flower cells in each panel, TWO upper target cells and TWO lower target cells. RIGHT panel: keep the current blue blooming flower at uppermost right and pink blooming flower one row lower far right; these are correct upper target pair. Keep the current wilted lower flower, and ADD a second wilted dry flower on the immediately lower-right neighboring leaf hex beneath it (the rightmost hex of the next row), replacing that leaf only. LEFT panel: put two wilted dry flowers at EXACT corresponding two upper target coordinates of right panel (the uppermost right tile and the next row FAR RIGHT tile). The currently wilted flower one hex LEFT of that far-right tile must become ordinary green leaf, since this is not target. Keep existing lower wilted flower, and add another wilted flower at matching next row far-right tile. End result same four flower coordinates in each panel: left all FOUR wilted, right upper TWO blooming and lower TWO still wilted. No other changes.",
+        "Make exactly ONE tile change in the LEFT half of this image. The RIGHT half is correct, do not change it. LEFT panel: at the FAR RIGHT end of the fourth horizontal hex row, directly below/right of the existing lowest wilted flower, there is an ordinary green LEAF TILE centered approximately x=665, y=580 in the 1536x1024 image. Replace that ONE leaf tile with a DRIED FLOWER ON CRACKED BROWN SOIL, matching exactly the wilted flower tile at the equivalent position in the RIGHT panel. This supplies the missing fourth flower before repair. Keep all other pixels unchanged. Do not add or remove any cells, move flowers, change counters, or change any right panel art."
+      ]
+    },
+    {
+      "file": "22-gear-windblower.png",
+      "references": [
+        "docs/ideas2/illustrations/08-gear-pump.png"
+      ],
+      "prompt_detail": "DEVICE: a cute low wooden/brass WIND BLOWER with large cage fan and gearbox, on a beach-themed edge hex. Cost ONE brass gear caught in ivy on left-middle leaf cell, counter 0/1 -> 1/1. LEFT fan frame tilted and broken, empty gear socket visible. To its right three connected hexes form a short WEDGE of sand-covered cells, thin dotted airflow wedge outline. Middle sand cell shows a red crab claw poking from sand, other two plain sandy. RIGHT fan repaired upright, ONE gear installed, spinning fan sends broad soft pale wind streaks over SAME three-cell sand wedge. All sand lifted off those three cells into small offboard sand drift. Two of the target cells now normal green leaf COVERS, middle target also green leaf COVER with cheerful red crab freed from its sand and perched on top, ready to scuttle off. Do not reveal earth or hidden mushrooms under these leaves; removing sand does not open leaf. Fan remains working gently, restored flowers around its base. Source gear ivy removed with ordinary leaf retained.",
+      "refinements": []
+    },
+    {
+      "file": "23-gear-mirror.png",
+      "references": [
+        "docs/ideas2/illustrations/08-gear-pump.png"
+      ],
+      "prompt_detail": "DEVICE: a round adjustable MIRROR on a brass gear-driven pedestal occupying a central uncovered hex. Cost ONE gear tangled in ivy at lower-left, counter 0/1 -> 1/1. LEFT an ALREADY RESTORED small lighthouse at upper-left sends a visible narrow warm ray to the mirror, but mirror hinge is broken and slumps downward, light stops there. Two valid output directions indicated by subtle dotted lines: toward exactly TWO fog-covered hexes at upper-right, or toward a closed small side-event door lower-right with a circular light-seal emblem. RIGHT one gear installed in mirror hinge, pedestal and mirror polished and upright. Mirror points toward UPPER-RIGHT fog sector: incoming lighthouse ray visibly reflects at mirror then goes to two target hexes, fog gone revealing two still-covered green leaf hexes, one with treasure medallion overlay. The alternate door lower-right stays CLOSED and its circular light-seal dark. Source gear leaf still closed and ivy absent. Mirror is a reflector not a second lamp, show incoming AND reflected ray meeting on mirror face. Don't turn the mirror into telescope. Meaningful choice: reveal sector OR activate door seal, only first chosen output active.",
+      "refinements": []
+    },
+    {
+      "file": "24-gear-lift.png",
+      "references": [
+        "docs/ideas2/illustrations/08-gear-pump.png"
+      ],
+      "prompt_detail": "DEVICE: a small mining-style ELEVATOR WINDLASS beside a wide old stone well taking a THREE-HEX missing patch near edge of board. Cost THREE brass gears on THREE distinct ivy leaf hexes at left/top-left/bottom-left, counter 0/3 -> 3/3; mechanism has three empty sockets left, filled right. LEFT ropes descend into dark well shaft, a lowered timber lift platform visible far below, THREE faint ghost outlines aligned over the shaft advertise the future bonus patch. No existing green cells in shaft: a clear reserved void. RIGHT fully repaired hoist timber, three brass gears meshed, taut ropes raise SAME wooden platform FLUSH to normal board height. Platform holds exactly THREE green leaf-covered bonus HEXES in triangular arrangement, one with small gold chest medallion. These three new cells fill the former shaft positions without moving any original cells. Neat safe wooden rails outside tile borders, vines now healthy around masonry. Clearly a functioning lift and newly accessible optional patch, not a character walking puzzle. Source gear ivy gone, source leaves remain.",
+      "refinements": []
+    },
+    {
+      "file": "25-gear-trellis.png",
+      "references": [
+        "docs/ideas2/illustrations/08-gear-pump.png"
+      ],
+      "prompt_detail": "DEVICE: a garden TRELLIS with brass crank/winding drum and TWO missing gear sockets, one tall wooden lattice frame at upper-right edge. Cost TWO brass gears in separate ivy-covered hexes on left; counter 0/2 -> 2/2. LEFT crank broken, lattice leaning and bare. Exactly THREE target hexes on right-middle/bottom-right are connected by thick tangled flowering vine strands, covering their ordinary leaf tiles; a small gold key is visibly caught in one of these target vines. A rope/pulling line connects vine ends to trellis drum. RIGHT crank repaired and both gears installed, lattice straight and tidy. Drum has gently wound all THREE targeted vine overlays UP onto the trellis, which is now lush with healthy green leaves and small purple flowers arranged vertically. Exactly those three target cells now have intact ordinary green LEAF covers, no vine overlay, and the freed single golden key floats just above former key tile as collectible. Two source gear tiles also normal leaves. Do not chop/burn or destroy vines: visibly retrain SAME plants onto restored lattice, leaving uncovered leaf tops. No additional opened cells. Rope and coil at drum make mechanical action understandable.",
+      "refinements": []
+    }
+  ]
+}
