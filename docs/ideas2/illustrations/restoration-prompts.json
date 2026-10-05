@@ -1,0 +1,149 @@
+{
+  "tool": "Built-in imagegen",
+  "purpose": "13 new concept illustrations of optional cell mechanics and visible restoration. Not gameplay screenshots.",
+  "common_prompt": "Use case: stylized-concept. Create a NEW landscape 1536x1024 game-design illustration for this existing Russian hex-cell uncovering puzzle. Image 1 is a visual style/reference board only: reuse its bright glossy green pointed hex cells, single leaf covers, casual painted sprites and forest palette, NOT its exact scene. Other supplied images are project sprite references to preserve recognizability. This is not match-3, no avatar. Two equally large panels side by side: left heading exactly «ДО», right heading exactly «ПОСЛЕ». Each panel shows the SAME compact staggered hex level of about 5 columns and 5 rows, big legible cells, background unobtrusive dark forest. Most ordinary cells retain their leaf covers; a few are already revealed. Strong clear causal story embedded INSIDE THE LEVEL. One slim central arrow from left to right. Main object at same coordinates and scale in both panels. AFTER must show a repaired, living, welcoming place with an enduring visual transformation, not merely a looted empty hole. Gold instructional outlines sparingly; no fake full HUD, no inventory panel, no paragraphs, no English. Only the two headings and explicitly requested short counter labels. Precise object states matter more than decorative detail. ",
+  "prompt_assembly": "The final generation prompt is common_prompt followed by each illustration's prompt_detail. Refinements were applied in listed order.",
+  "illustrations": [
+    {
+      "file": "07-ruby-hatch.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/items/key.png",
+        "assets/base/items/boosters/compass.png"
+      ],
+      "prompt_detail": "Mechanic: a newly uncovered cell reveals a large round metal hatch. LEFT board: rusty dark metal hatch is flush with a bare uncovered earthy hex at center-right, NOT sitting on a leaf. Its lid has a clearly visible SIMPLE FLAT SNAIL SILHOUETTE STAMP embossed into the metal, same metal color, no real snail sitting there. A small padlock set with a vivid RUBY RED gemstone locks the lid. Above it a compact badge with a ruby key pictogram and «0/1». At upper-left another leaf-covered hex has ivy wrapped around it and a small gold key with red ruby inset caught in the ivy, thin dotted link toward hatch. RIGHT: ivy removed from key tile, underlying leaf still intact; key consumed, no floating spare key. Hatch lid propped upright, SNAIL STAMP clearly readable on its metal surface, lock released, badge «1/1». Its metal rim is cleaned and polished, moss gives way to tiny fresh flowers, warm lit safe steps descend into a small blue-green portal, snail symbol glows subtly. One tiny standalone snail emblem at entrance hints snail-themed SIDE EVENT. Keep the portal as a single-cell hatch, no giant door. Focus on flat snail stamp, ruby requirement, and restored inviting entrance.",
+      "refinements": []
+    },
+    {
+      "file": "08-gear-pump.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/hex/liana2.png",
+        "assets/base/ui/shop/chest3.png",
+        "assets/base/hex/hexWater.png"
+      ],
+      "prompt_detail": "Mechanic: repair a small rusty drainage pump with TWO brass gears visibly caught in two separate ivy-covered hexes. LEFT: pump on center-left cell has two clearly empty gear sockets and badge with gear icon «0/2». Two gears sit caught in ivy on top-left and bottom-left covered cells, gold outlines identify them. Pipe from pump reaches exactly THREE muddy swamp hexes on the right; one muddy hex has a red/gold chest half sunk in mud. RIGHT: both ivy bindings removed but normal leaf covers under them stay; both brass gears installed in cleaned working pump, counter «2/2», subtle spinning motion. The same three muddy cells have become dry fertile grass-covered OPEN hexes with reeds and little flowers, chest is clean and lifted on its original cell, ready to collect. A short ribbon of clear water flows through pipe into a tiny side ditch, outside game cells. Pump remains restored and useful in the scene. Show exactly the linked three-cell transformation and two gear sources, don't add other machines.",
+      "refinements": []
+    },
+    {
+      "file": "09-maple-spring.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/ui/maple.png",
+        "assets/base/items/moonflower.png",
+        "assets/base/hex/hexWater.png"
+      ],
+      "prompt_detail": "Mechanic: a restored spring awakens a DRIED MAPLE and the maple scatters seeds onto a previously hidden small bonus extension of the level. Maple uses recognizable face and broad trunk of supplied sprite. LEFT: small dry stone spring on a center hex, three droplet sockets beneath it showing «0/3», linked to three blue-rim leaf-covered water source hexes. A compact maple tree at upper right edge has bare twig branches, brown shrivelled leaves and a sleepy tired face (friendly, not frightening). Immediately beyond right edge are exactly THREE faint dashed EMPTY hex outlines, a preannounced secret patch. RIGHT: the three marked water sources opened as blue water tiles, spring flowing with clear water and «3/3», a thin stream reaches the same maple. Tree is awake and smiling, full lush rounded green canopy matches project art. Three small winged maple seeds arc from tree toward those same three reserved outlines; now there are exactly THREE solid new bright green leaf-covered bonus hexes attached to board edge, one bears small sparkling gold reward mark. One seed still in flight shows cause. Tree must not obscure original board. Restoration and addition of three cells are the key readable result.",
+      "refinements": [
+        "Edit this concept illustration with ONE consistency correction. Preserve all art, boards, tree, spring, water source cells and Russian headings. The spring counter MUST have exactly THREE droplet icons in each panel (currently four), left gray 0/3 and right blue 3/3. The new secret patch at right edge must consist of exactly THREE cells on each panel at corresponding positions: left THREE dashed ghost hexes, right THREE solid green leaf hexes. Currently the left has FOUR dashed ghost hexes: remove the excess bottom one so there are exactly three. Keep background where removed. Do not change anything else, no additional text.",
+        "Make only a tiny correction to the LEFT PANEL spring status plaque: above 0/3 there are FOUR gray water droplets. Replace these four icons with exactly THREE evenly spaced gray droplets. Right panel already has correct THREE blue droplets above 3/3, leave it entirely unchanged. Preserve all other pixels/composition/trees/tiles/three ghost outlines and words. No new objects."
+      ]
+    },
+    {
+      "file": "10-crab-glass.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/items/crab.png",
+        "assets/base/hex/sand.png"
+      ],
+      "prompt_detail": "Mechanic: optional secret under a small glass conservatory embedded in a sandy beach level, unlocked by finding a PAIR OF RED CRABS. Keep same green leaf hex base, some sand overlays. LEFT: a dirty glass cloche with brass rim sits centered over one sand hex, inside a drooping tiny plant and a visible pearl treasure, not a chest. Beside the dome two shallow crab-shaped brass pads empty, badge crab icon «0/2». Two separate nearby sand-covered hexes have distinct red crab claw hints peeking from sand. RIGHT: those two sand hexes uncovered, two cheerful red crabs from supplied sprite now each on one of the two brass pads, badge «2/2». Glass dome is CLEAN and lifted intact on a hinge, never broken. Plant inside now upright and flourishing, fresh clear tiny pool and flowers replace sand around same cell. Single large pearl hovers above lush plant as reward. The crabs remain resting happily beside the restored miniature oasis. Glass must look transparent, secret/reward visible before completion.",
+      "refinements": []
+    },
+    {
+      "file": "11-watered-flower.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/items/moonflower.png",
+        "assets/base/hex/hexWater.png"
+      ],
+      "prompt_detail": "Mechanic: water a wilted REWARD FLOWER, it blooms and gives one valuable gem. LEFT: a drooping gray-violet flower with recognizable pointed petals of supplied moonflower sits on a cracked dry soil hex at center. Beside it a small stone cistern has three empty droplet marks and label «0/3». Three surrounding special water source hexes have blue edges but green leaf covers, thin root/irrigation grooves visibly connect them to flower. RIGHT: exactly these three source covers are removed revealing clear blue water hexes, irrigation grooves run with clear water, cistern «3/3». Flower remains same place but is bright, upright, full iridescent blue-violet luminous petals, its cell now fresh green with small blooms. ONE valuable warm golden crystal floats out of flower center as reward, gold circle highlights it. Never replace flower with chest, never erase flower after reward. Reward crystal is separate from plant; do not make entire board open. Keep the original hex level geometry unchanged.",
+      "refinements": []
+    },
+    {
+      "file": "12-airship-kite.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/hex/liana2.png"
+      ],
+      "prompt_detail": "Mechanic: recover the lost PROPELLER for a small moored AIRSHIP using a torn grounded KITE. LEFT: tiny cozy green/gold airship occupies an upper edge docking hex and extends above board, its brass motor has empty propeller axle and a propeller pictogram «0/1». Middle-left cell has a kite tangled in ivy, its string tied to the brass propeller caught among the vines on SAME cell. The kite itself looks crumpled, tethered; visibly a recoverable component, not a second quest. Adjacent leaf cell outlined for action. RIGHT: ivy removed from kite tile (normal leaf remains), the kite flies neatly above that tile with its tether visible; recovered brass propeller installed spinning on polished airship, badge «1/1». Airship now upright and ready but still moored to restored docking post; cabin door glows as an entrance to side content, a small ticket pictogram beside doorway. Dock wood cleaned and tiny flowers at base. This is an optional entrance ON the puzzle level, not an overworld navigation map. Clearly depict both kite and airship.",
+      "refinements": []
+    },
+    {
+      "file": "13-balloon-lookout.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/items/environment/tree.png"
+      ],
+      "prompt_detail": "Mechanic: a deflated HOT AIR BALLOON raises a fallen TELESCOPE back onto a TREE OBSERVATION PLATFORM, revealing a small hidden group of cells. LEFT: large edge tree has shabby wooden lookout platform with empty telescope mounting bracket; at its base in one uncovered hex a basket holds a brass telescope, attached to a sagging orange-yellow hot air balloon envelope. Beside basket two fan-shaped activation sockets, «0/2». Two nearby ivy-bound small brass fan blades are visible on separate hexes, but DO NOT draw player or animal. Exactly three faint hex outlines under fog at outer upper right of board. RIGHT: two fan blades installed into basket's magical brass blower, «2/2»; inflated orange-yellow balloon has lifted the basket exactly to tree platform, telescope remounted on lookout points toward right. Restored platform has sturdy rails, little leafy garland. Telescope projects a subtle viewing cone (not laser) toward the three preoutlined outer cells, now SOLID green leaf-covered bonus tiles with fog removed. Basket remains tethered beside platform. Keep entire compact board and balloon in frame.",
+      "refinements": []
+    },
+    {
+      "file": "14-ruins-compass.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/items/environment/ruin.png",
+        "assets/base/ui/map/compassMap.png",
+        "assets/base/hex/liana2.png"
+      ],
+      "prompt_detail": "Mechanic: repair an ancient COMPASS pedestal in RUINS; its initially visible LEVER then materializes secret cells. LEFT: small pale stone broken-column shrine on central revealed hex, bronze compass rose in base with center needle MISSING. Lever beside shrine is clearly visible but tilted with empty lock socket, badge needle pictogram «0/1». A shiny gold compass needle lies tangled in ivy on upper-left leaf hex. Exactly THREE ghostly dashed hex positions form a triangular missing patch inside center-right of otherwise continuous board; a faint carved line links shrine to patch, preannouncing result. RIGHT: needle removed from ivy (leaf intact), compass restored with needle centered and aligned, lever upright activated, badge «1/1». Cracked columns neatly reassemble into low elegant ruin arch, moss healthy, subtle gold runes; THREE previously ghost hexes materialize as solid bright green covered cells, one has small treasure medallion on its leaf. No extra mystery symbols or floating entire world, no text besides panels/counters. Shrine stays restored.",
+      "refinements": []
+    },
+    {
+      "file": "15-snail-shelter.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/items/boosters/compass.png",
+        "assets/chapter1/forest/tent.png",
+        "assets/base/hex/liana2.png"
+      ],
+      "prompt_detail": "Mechanic: repair a leafy SHELTER to wake a SLEEPING MEGA-SNAIL which vacates three hex cells. LEFT: very cute oversized golden snail with expressive round eyes closed and spiral shell, recognizably like supplied single snail sprite, sleeps curled across EXACTLY THREE hexes in center. Its three-cell footprint visibly outlined around base. At right board edge one hex has a broken little yellow canvas woodland shelter with leafy roof, two torn support poles, badge wood/plank icon «0/2». Two small wooden repair sticks caught in ivy on two other leaf-covered hexes. RIGHT: both bindings removed, ordinary leaves remain; shelter repaired with both supports and fresh leafy arch, badge «2/2». Same happy golden mega-snail is now awake and safely resting INSIDE/alongside shelter at edge, body not on its old footprint. EXACTLY THREE original occupied cells now visible: two green covered hexes and one uncovered small lantern-lit cave entrance with tiny snail spiral carving. On snail's vacated route fresh little clover/flowers, no slime damage, no violence or pushing. Clear same animal before/after, only one snail per panel.",
+      "refinements": [
+        "Edit ONLY the right AFTER panel for consistent repair completion. Preserve left panel entirely. RIGHT: remove both piles of repair sticks and their vine bindings from the upper-right and bottom-right hexes, replacing each with the normal intact glossy green single-leaf covered hex used elsewhere. Both sticks have been consumed to repair shelter. Make the shelter look COMPLETELY REPAIRED: whole neat yellow canvas roof with NO holes, NO tears, two straight sturdy support poles, nice leafy trim. Keep its cute awake golden snail in same position and keep 2/2 counter. Keep the newly revealed snail cave in same place. Everything else unchanged, same geometry, no extra rewards or text."
+      ]
+    },
+    {
+      "file": "16-lighthouse.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/hex/hexWater.png",
+        "assets/base/hex/liana2.png"
+      ],
+      "prompt_detail": "Mechanic: restore an unlit small LIGHTHOUSE on a coastal/swamp level by installing a missing lens caught in ivy, then its broad light reveals THREE mist-hidden existing cell covers. LEFT: tiny round stone lighthouse on a single edge hex, broken empty round lens holder at top; lens pictogram «0/1». A brass-rimmed blue glass lens caught in ivy on a central leaf-covered hex. At right a broad cone outlined from tower encompasses exactly three dim FOGGY hex silhouettes, no visible contents. RIGHT: ivy removed leaving leaf, lens installed, «1/1», tower restored with clean white walls and red cap, warm lamp shining. Broad wedge of light reaches those same THREE cells, fog gone, two are still leaf-covered green hexes and third has a clearly visible ivy-bound closed gold/red chest. Do NOT open these cells automatically. Show lighthouse as area reveal/support mechanism not horizontal rocket destruction. A small ring of reeds and flowers thrives around tower. Keep board dimensions unchanged.",
+      "refinements": [
+        "Edit only the right AFTER panel's single source tile formerly holding lens, center-left under mushroom tile. It currently still has a thick tangle of vines despite lens being collected. Remove all these vines and replace with one ordinary green single-leaf COVERED hex matching nearby cells, because extracting the lens removes the ivy only and leaves the leaf. Keep left BEFORE lens in ivy unchanged. Keep lighthouse, counters, beam, fog reveal, chest, all other tiles, palette and composition unchanged."
+      ]
+    },
+    {
+      "file": "17-swamp-chest.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/ui/shop/chest3.png",
+        "assets/base/hex/liana2.png"
+      ],
+      "prompt_detail": "Mechanic: use an AXE to remove a FALLEN DEAD LOG across a blocked drainage channel, restoring a bog crossing and exposing a submerged chest. LEFT: three muddy connected hexes cross center of green board; one big dead dry log lies across the outlet of this three-cell channel. On left ivy cell, small blue-steel axe with wooden handle caught in vines; thin gold arrow points axe toward DEAD log only. On bank stands a tiny stylized friendly old SKELETON propped like a whimsical archaeological relic in a battered explorer hat, no gore, not frightening; one bony hand points down at a partly submerged red/gold chest under middle muddy cell. RIGHT: ivy freed, axe now resting safely beside neatly split dead log pieces, outlet clear, swamp water lowered across same three hexes. Pieces of dead log form a little repaired wooden walkway, surrounding reeds perk up. Middle chest is dry and accessible on original cell, small green gem lock remains CLOSED. Skeleton still respectfully in same bank position, now a small flower at feet. No chopped living trees, no combat, no extra labels beyond ДО and ПОСЛЕ. Show restoring drainage and crossing, not just treasure excavation.",
+      "refinements": []
+    },
+    {
+      "file": "18-giant-jelly.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/hex/jelly.png",
+        "assets/base/items/moonflower.png"
+      ],
+      "prompt_detail": "Mechanic: awaken two nectar buds to lure a GIANT JELLY from its three-cell footprint into a dry basin, restoring a jelly garden and exposing bonus cells. LEFT: huge friendly translucent pink jelly like supplied glossy pink hex jelly covers EXACTLY THREE level hexes at center. It has a tiny cute face, lower edges follow three-cell footprint; under its translucent body faint leaf silhouettes and a single gold key are visible. At right edge a dry stone hex basin with two wilted small pink/blue nectar buds on adjacent two cells; bud counter «0/2». Two leaf neighbors beside those buds get gold action rings. RIGHT: those two highlighted leaf cells opened, both nectar buds now blooming and counter «2/2»; jelly has gently slid off original footprint and settled as a beautiful pink shimmering jelly pool INSIDE the right basin with flowers around rim. Jelly still friendly and alive. Original footprint fully exposed: TWO still-covered leaf hexes and ONE bare hex with gold key ready to take. Faint curved arrow from old footprint to basin. Do not show jelly smashed, eaten, killed or disappearing. Board geometry identical.",
+      "refinements": [
+        "Edit only the AFTER/right panel to show that two player actions have opened cells. In LEFT panel there are two gold-ring marked green leaf tiles, one upper-right above the pink wilted bud and one lower-right beneath the blue wilted bud. Their EXACT corresponding positions in RIGHT panel must now be UNCOVERED plain pale-earth hexes with NO leaf, because these two openings awakened the buds. Specifically replace the far-right leaf hex immediately right of the blooming pink flower, and the far-right leaf hex immediately below/right of the blooming blue flower, with plain open pale-earth hex cells. Preserve the rest of the right board and all of left panel; keep happy jelly pool, both flowers, 2/2, key, released two leaf cells, and arrow. No new text."
+      ]
+    },
+    {
+      "file": "19-layered-ladder.png",
+      "references": [
+        "docs/ideas2/illustrations/06-combination.png",
+        "assets/base/items/plank1.png",
+        "assets/base/hex/liana2.png"
+      ],
+      "prompt_detail": "Mechanic: repair a LADDER and reveal an UPPER HEX LAYER like mahjong tiles stacked over an existing puzzle. LEFT: small foreground board 5x5 of big glossy green hexes. At center, EXACTLY THREE lower support hex cells are clearly uncovered, pale earth; above these positions faint semitransparent gray upper-hex silhouettes hover one tile thickness up, alignment makes stacked footprint obvious. A broken short wooden ladder along side connects lower field to these ghost upper tiles, two missing rungs, badge rung icon «0/2». On two ordinary leaf tiles at left, one wooden rung each is caught in ivy. RIGHT: both ivy released leaving leaves; ladder has two new sturdy rungs, «2/2», clean rails with growing ivy decorating OUTER rail only. Exactly THREE solid new upper green leaf-covered hex tiles now occupy those elevated ghost positions, wooden side supports and drop shadows clearly indicate layer ABOVE existing board. Lower support tiles still visible as thin pale offset rims under upper layer, no removed cells. One small gold reward seal on upper tile. Mild oblique view just enough to explain height, same in both panels. Do not build giant staircase or separate island: strictly three stacked hex cells, analogous Mahjong stack.",
+      "refinements": []
+    }
+  ]
+}
