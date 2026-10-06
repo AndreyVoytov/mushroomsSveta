@@ -168,6 +168,7 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
 .detail-source { display: grid; gap: 3px; padding-top: 11px; border-top: 1px solid var(--line); color: #979183; font-size: 10px; }
 .detail-source strong { color: #777262; font-weight: 600; }
 .dialog-actions { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 20px; border-top: 1px solid var(--line); }
+.edit-access-note { margin: 14px 0 0; padding: 10px 12px; border: 1px solid #d9c8a8; border-radius: 8px; color: #6d583c; background: #f7eedf; font-size: 12px; line-height: 1.5; }
 .dialog-actions .spacer { flex: 1; }
 .editor-form { display: grid; gap: 13px; }
 .editor-form label { display: grid; gap: 5px; color: #777163; font-size: 10px; font-weight: 700; letter-spacing: .04em; }

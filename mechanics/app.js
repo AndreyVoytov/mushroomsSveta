@@ -1005,11 +1005,18 @@
       editItem(id);
       return;
     }
-    if (!state.cloudReady) {
-      toast("Общая база ещё загружается. Попробуй нажать «Редактировать» через секунду.");
-      return;
+    const note = $("#editAccessNote", elements.dialogContent) || document.createElement("p");
+    note.id = "editAccessNote";
+    note.className = "edit-access-note";
+    note.setAttribute("role", "status");
+    note.textContent = state.cloudReady
+      ? "Нужен вход в общий каталог через кнопку «Войти». Вход в ChatGPT не авторизует правки механик."
+      : "Общая база ещё загружается. Попробуй нажать «Редактировать» через секунду.";
+    if (!note.isConnected) {
+      const actions = $(".dialog-actions", elements.dialogContent);
+      if (actions) actions.before(note);
+      else elements.dialogContent.append(note);
     }
-    toast("Нужен вход в общий каталог через кнопку «Войти». Вход в ChatGPT не авторизует правки механик.");
   }
 
   function editItem(id) {
