@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4eee3">
+  <meta name="description" content="Каталог игровых механик с поиском, фильтрами, приоритетами и изображениями.">
+  <title>Механики · Полевая тетрадь</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="seed.js" defer></script>
+  <script src="batch-seed.js" defer></script>
+  <script src="cloud-config.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="floating-actions" role="group" aria-label="Действия с каталогом">
+    <button class="button button-quiet cloud-login-button" id="cloudLoginButton" type="button" hidden>Войти для правок</button>
+    <button class="button button-quiet" id="importButton" type="button" title="Загрузить резервную копию карточек">Загрузить копию</button>
+    <button class="button button-quiet" id="exportButton" type="button" title="Сохранить резервную копию карточек и загруженных изображений">Выгрузить данные</button>
+    <button class="button button-primary" id="newItemButton" type="button"><span aria-hidden="true">＋</span> Новая механика</button>
+  </div>
+  <input class="sr-only" id="importFile" type="file" accept="application/json,.json">
+  <div class="page-shell">
+    <main>
+      <section class="catalog" aria-label="Каталог механик">
+
+        <div class="filter-panel">
+          <div class="filter-toolbar">
+            <label class="search-field">
+              <span class="search-icon" aria-hidden="true">⌕</span>
+              <span class="sr-only">Поиск по механикам</span>
+              <input id="searchInput" type="search" placeholder="Найти механику, объект или тег…" autocomplete="off">
+              <kbd>Ctrl K</kbd>
+            </label>
+            <label class="toolbar-sort">
+              <span class="sr-only">Сортировка</span>
+              <select id="sortFilter" aria-label="Сортировка">
+                <option value="priority">По приоритету</option><option value="status">По статусу</option><option value="appearance">По уровню появления</option><option value="recent">Сначала недавние</option><option value="title">По названию</option>
+              </select>
+            </label>
+            <button class="filter-toggle" id="filterToggleButton" type="button" aria-controls="filterFields" aria-expanded="false">
+              <span class="filter-icon" aria-hidden="true">☷</span>Фильтр<span class="filter-chevron" aria-hidden="true">⌄</span>
+            </button>
+            <button class="clear-filters" id="clearFilters" type="button">Сбросить</button>
+          </div>
+          <div class="filter-fields" id="filterFields" aria-hidden="true" inert>
+            <div class="filter-fields-inner filters">
+              <label><span>Статус</span><select id="statusFilter"><option value="">Все статусы</option></select></label>
+              <label><span>Приоритет</span><select id="priorityFilter"><option value="">Любой приоритет</option><option>Высокий</option><option>Средний</option><option>Низкий</option></select></label>
+              <label><span>Тег</span><select id="tagFilter"><option value="">Все теги</option></select></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="list-meta">
+          <p id="resultSummary">Загружаем каталог…</p>
+          <span class="list-hint">Выбери карточку, чтобы открыть описание и изображения</span>
+        </div>
+        <div class="mechanic-list" id="mechanicList" aria-live="polite"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <span aria-hidden="true">⌕</span>
+          <h3>Ничего не нашлось</h3>
+          <p>Попробуй изменить фильтры или добавить новую механику.</p>
+          <button class="button button-soft" id="emptyReset" type="button">Сбросить фильтры</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>ПОЛЕВАЯ ТЕТРАДЬ · 2026</span>
+      <span>Добавляй изображения, заметки и теги к каждой карточке.</span>
+    </footer>
+  </div>
+
+  <dialog class="detail-dialog" id="detailDialog" aria-labelledby="dialogTitle">
+    <div class="dialog-frame">
+      <button class="icon-button dialog-close" type="button" data-close-dialog aria-label="Закрыть">×</button>
+      <div id="dialogContent"></div>
+    </div>
+  </dialog>
+
+  <dialog class="image-dialog" id="imageDialog" aria-label="Просмотр изображения">
+    <div class="image-dialog-frame">
+      <button class="icon-button image-close" type="button" data-close-image aria-label="Закрыть изображение">×</button>
+      <img id="largeImage" alt="">
+      <div class="image-caption"><span id="imageCaption"></span><button class="button button-light" id="copyImageButton" type="button">Скопировать изображение</button></div>
+    </div>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
