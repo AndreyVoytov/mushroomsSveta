@@ -8,6 +8,7 @@
   const PRIORITY_ORDER = { "Высокий": 0, "Средний": 1, "Низкий": 2 };
   const STATUS_ORDER = { "В работе": 0, "На тестировании": 1, "На рассмотрении": 2, "Идея": 3, "Готово": 4, "В игре": 5 };
   const SEED_TIMESTAMP = "2000-01-01T00:00:00.000Z";
+  const DEFAULT_TAG_COLOR = "#a6815b";
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const elements = {
@@ -23,7 +24,7 @@
   const state = {
     items: [], deletedIds: new Set(), selectedId: null, dialogMode: "view", draft: null, draftIsNew: false,
     imageToCopy: null, cloudClient: null, cloudConfigured: false, cloudReady: false, cloudSession: null,
-    cloudOwner: false, cloudSaveTimer: null
+    cloudOwner: false, cloudSaveTimer: null, tagColors: {}
   };
   const imageUrls = new Map();
   const temporaryUrls = new Set();
@@ -44,6 +45,40 @@
     const focus = value && typeof value === "object" ? value : {};
     const coordinate = number => Math.max(0, Math.min(100, Number.isFinite(Number(number)) ? Number(number) : 50));
     return { x: coordinate(focus.x), y: coordinate(focus.y) };
+  }
+
+  function normalizeTagColors(value) {
+    if (!value || typeof value !== "object" || Array.isArray(value)) return {};
+    return Object.entries(value).reduce((colors, [name, color]) => {
+      const tag = String(name).trim();
+      const shade = String(color || "").trim();
+      if (tag && /^#[0-9a-f]{6}$/i.test(shade)) colors[tag] = shade.toLowerCase();
+      return colors;
+    }, {});
+  }
+
+  function tagColor(tag) {
+    return normalizeTagColors(state.tagColors)[tag] || DEFAULT_TAG_COLOR;
+  }
+
+  function tagColorStyle(tag) {
+    const color = tagColor(tag);
+    const hex = color.slice(1);
+    const red = parseInt(hex.slice(0, 2), 16);
+    const green = parseInt(hex.slice(2, 4), 16);
+    const blue = parseInt(hex.slice(4, 6), 16);
+    return `--tag-color:${color};--tag-tint:rgba(${red},${green},${blue},.13)`;
+  }
+
+  function mergeTagColors(items) {
+    return (items || []).reduce((colors, item) => Object.assign(colors, normalizeTagColors(item.tagColors)), {});
+  }
+
+  function updateTagColors() {
+    state.items.forEach(item => { item.tagColors = copy(state.tagColors); });
+    saveItems();
+    renderList();
+    renderTagPicker();
   }
 
   function seedFor(id) {
@@ -78,6 +113,7 @@
       description,
       shortDescription: String(item.shortDescription || makeShortDescription(description)),
       tags: Array.isArray(item.tags) ? item.tags.map(String) : [],
+      tagColors: { ...normalizeTagColors(item.tagColors), ...normalizeTagColors(state.tagColors) },
       images: Array.isArray(item.images) ? item.images.map(image => ({ ...image })) : [],
       priority: PRIORITIES.includes(item.priority) ? item.priority : "Средний",
       status: String(item.status || "На рассмотрении"),
@@ -195,6 +231,8 @@
     (window.MECHANIC_SEED || []).forEach(seed => {
       if (!knownIds.has(seed.id) && !state.deletedIds.has(seed.id)) items.push(cleanStoredItem({ ...copy(seed), seedAssetsVersion: 3, updatedAt: seed.updatedAt || SEED_TIMESTAMP }));
     });
+    state.tagColors = mergeTagColors(items);
+    items.forEach(item => { item.tagColors = copy(state.tagColors); });
     state.items = items;
     saveItems();
   }
@@ -234,6 +272,7 @@
         cloudItems.set(item.id, item);
       }
     });
+    const cloudTagColors = mergeTagColors((data || []).filter(record => !record.is_deleted && record.payload).map(record => record.payload));
 
     previousItems.forEach(localItem => {
       if (deleted.has(localItem.id)) return;
@@ -249,6 +288,8 @@
     state.cloudReady = false;
     state.deletedIds = deleted;
     state.items = Array.from(cloudItems.values()).filter(item => !deleted.has(item.id));
+    state.tagColors = Object.keys(cloudTagColors).length ? cloudTagColors : mergeTagColors(previousItems);
+    state.items.forEach(item => { item.tagColors = copy(state.tagColors); });
     saveItems();
     saveDeletedIds();
     state.cloudReady = true;
@@ -510,7 +551,7 @@
     elements.empty.hidden = items.length > 0;
     elements.list.hidden = items.length === 0;
     elements.list.innerHTML = items.map((item, index) => {
-      const tags = item.tags.slice(0, 4).map(tag => `<button class="tag-chip tag-filter-chip" type="button" data-filter-tag="${escapeHtml(tag)}">${escapeHtml(tag)}</button>`).join("");
+      const tags = item.tags.slice(0, 4).map(tag => `<button class="tag-chip tag-filter-chip" type="button" data-filter-tag="${escapeHtml(tag)}" style="${escapeHtml(tagColorStyle(tag))}">${escapeHtml(tag)}</button>`).join("");
       const extra = item.tags.length > 4 ? `<span class="tag-chip extra">+${item.tags.length - 4}</span>` : "";
       const level = normalizeLevel(item.appearanceLevel);
       return `<article class="mechanic-card${item.id === state.selectedId ? " is-selected" : ""}" data-item-id="${escapeHtml(item.id)}">
@@ -567,8 +608,79 @@
     window.setTimeout(() => $("#editTitle")?.focus(), 50);
   }
 
+  function allTags() {
+    return Array.from(new Set([
+      ...state.items.flatMap(item => item.tags),
+      ...Object.keys(state.tagColors),
+      ...(state.draft?.tags || [])
+    ].map(tag => String(tag).trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b, "ru"));
+  }
+
   function tagMarkup(tags) {
-    return tags.length ? tags.map(tag => `<span class="tag-chip">${escapeHtml(tag)}</span>`).join("") : "";
+    return tags.length ? tags.map(tag => `<span class="tag-chip" style="${escapeHtml(tagColorStyle(tag))}">${escapeHtml(tag)}</span>`).join("") : "";
+  }
+
+  function renderSelectedTags() {
+    const selected = $("#selectedTagList", elements.dialogContent);
+    if (!selected || !state.draft) return;
+    selected.innerHTML = state.draft.tags.length
+      ? state.draft.tags.map(tag => `<button class="tag-chip tag-selected-chip" type="button" data-remove-tag="${escapeHtml(tag)}" style="${escapeHtml(tagColorStyle(tag))}" aria-label="Убрать тег ${escapeHtml(tag)}">${escapeHtml(tag)} <span aria-hidden="true">×</span></button>`).join("")
+      : `<span class="editor-hint">К этой карточке пока не привязаны теги.</span>`;
+  }
+
+  function renderAvailableTags() {
+    const available = $("#availableTagList", elements.dialogContent);
+    if (!available || !state.draft) return;
+    const query = $("#editTagSearch", elements.dialogContent)?.value.trim().toLocaleLowerCase("ru") || "";
+    const tags = allTags().filter(tag => !query || tag.toLocaleLowerCase("ru").includes(query));
+    available.innerHTML = tags.length ? tags.map(tag => {
+      const selected = state.draft.tags.includes(tag);
+      return `<div class="tag-option">
+        <button class="tag-option-toggle${selected ? " is-selected" : ""}" type="button" data-toggle-tag="${escapeHtml(tag)}" aria-pressed="${selected}" style="${escapeHtml(tagColorStyle(tag))}">${escapeHtml(tag)}</button>
+        <input class="tag-color-input" type="color" data-tag-color="${escapeHtml(tag)}" value="${escapeHtml(tagColor(tag))}" aria-label="Цвет тега ${escapeHtml(tag)}" title="Выбрать цвет тега">
+      </div>`;
+    }).join("") : `<span class="editor-hint">Подходящих тегов пока нет.</span>`;
+  }
+
+  function renderTagPicker() {
+    if (!state.draft || !elements.dialogContent) return;
+    renderSelectedTags();
+    renderAvailableTags();
+  }
+
+  function toggleDraftTag(tag) {
+    if (!state.draft) return;
+    syncDraftFromForm();
+    if (state.draft.tags.includes(tag)) state.draft.tags = state.draft.tags.filter(value => value !== tag);
+    else state.draft.tags.push(tag);
+    renderTagPicker();
+  }
+
+  function createTagFromEditor() {
+    if (!state.draft) return;
+    syncDraftFromForm();
+    const nameInput = $("#newTagName", elements.dialogContent);
+    const colorInput = $("#newTagColor", elements.dialogContent);
+    const rawName = nameInput?.value.trim();
+    if (!rawName) {
+      nameInput?.focus();
+      toast("Введи название нового тега.");
+      return;
+    }
+    const tag = allTags().find(value => value.toLocaleLowerCase("ru") === rawName.toLocaleLowerCase("ru")) || rawName;
+    state.tagColors[tag] = normalizeTagColors({ [tag]: colorInput?.value })[tag] || DEFAULT_TAG_COLOR;
+    if (!state.draft.tags.includes(tag)) state.draft.tags.push(tag);
+    updateTagColors();
+    if (nameInput) nameInput.value = "";
+    $("#editTagSearch", elements.dialogContent)?.focus();
+    toast(`Тег «${tag}» создан и добавлен к карточке.`);
+  }
+
+  function changeTagColor(tag, color) {
+    const normalized = normalizeTagColors({ [tag]: color })[tag];
+    if (!normalized) return;
+    state.tagColors[tag] = normalized;
+    updateTagColors();
   }
 
   function renderFocusPreview() {
@@ -590,6 +702,7 @@
 
   function renderDetail(item) {
     const editDisabled = canEditCatalog() ? "" : ' disabled title="Войдите в аккаунт владельца, чтобы редактировать каталог"';
+    const editTitle = canEditCatalog() ? "" : ' title="Нажмите, чтобы узнать, как включить редактирование"';
     const images = item.images.map((image, index) => {
       const src = imageSrc(image);
       if (!src) return "";
@@ -605,7 +718,7 @@
     ${images ? `<div class="detail-images">${images}</div>` : ""}
     ${item.images.length ? `<div class="detail-source">${item.images.length} ${item.images.length === 1 ? "изображение" : "изображения"}</div>` : ""}
     <div class="dialog-actions">
-      <button class="button button-quiet" type="button" data-edit-item${editDisabled}>Редактировать</button>
+      <button class="button button-quiet" type="button" data-edit-item${editTitle}>Редактировать</button>
       <button class="button button-quiet" type="button" data-duplicate-item${editDisabled}>Дублировать</button>
       <button class="button button-quiet" type="button" data-copy-link>Скопировать ссылку</button>
       <span class="spacer"></span>
@@ -614,7 +727,7 @@
     $$('[data-view-image]', elements.dialogContent).forEach(button => {
       button.addEventListener("click", () => showImage(item, Number(button.dataset.viewImage)));
     });
-    $$("[data-edit-item]", elements.dialogContent).forEach(button => button.addEventListener("click", () => editItem(item.id)));
+    $$("[data-edit-item]", elements.dialogContent).forEach(button => button.addEventListener("click", () => requestEditItem(item.id)));
     $$("[data-duplicate-item]", elements.dialogContent).forEach(button => button.addEventListener("click", () => duplicateItem(item.id)));
     $$("[data-delete-item]", elements.dialogContent).forEach(button => button.addEventListener("click", () => deleteItem(item.id)));
     $$("[data-copy-link]", elements.dialogContent).forEach(button => button.addEventListener("click", copyItemLink));
@@ -654,7 +767,18 @@
       <label>Заголовок<input id="editTitle" name="title" type="text" maxlength="140" placeholder="Например, водяное колесо" value="${escapeHtml(draft.title)}" required></label>
       <label>Краткое описание для списка<input id="editShortDescription" name="shortDescription" type="text" maxlength="180" placeholder="Коротко: что делает механика" value="${escapeHtml(draft.shortDescription || "")}"></label>
       <label>Описание<textarea id="editDescription" name="description" maxlength="5000" placeholder="Как работает механика и какой выбор она даёт игроку…">${escapeHtml(draft.description)}</textarea></label>
-      <label>Теги<input id="editTags" name="tags" type="text" placeholder="вода, маршрут, награда" value="${escapeHtml(draft.tags.join(", "))}"><span class="editor-hint">Разделяй теги запятыми.</span></label>
+      <div class="tag-editor">
+        <div class="image-edit-heading"><span>Теги карточки</span><small>выбери готовые или создай новый</small></div>
+        <div class="selected-tag-list" id="selectedTagList"></div>
+        <label class="tag-search-label">Найти существующий тег<input id="editTagSearch" type="search" placeholder="Начни вводить название"></label>
+        <div class="available-tag-list" id="availableTagList"></div>
+        <div class="tag-create-row">
+          <input id="newTagName" type="text" maxlength="50" placeholder="Название нового тега" aria-label="Название нового тега">
+          <input id="newTagColor" class="tag-color-input tag-new-color" type="color" value="${DEFAULT_TAG_COLOR}" aria-label="Цвет нового тега" title="Выбрать цвет нового тега">
+          <button class="button button-quiet" id="createTagButton" type="button">Создать тег</button>
+        </div>
+        <p class="editor-hint">Цвет задаётся для тега во всём каталоге. Теги и цвета сохраняются в общей базе.</p>
+      </div>
       <div class="editor-row">
         <label>Статус<select id="editStatus" name="status">${statusOptions}</select></label>
         <label>Приоритет<select id="editPriority" name="priority">${priorityOptions}</select></label>
@@ -684,11 +808,26 @@
       </div>
     </form>`;
     editorImageGrid();
+    renderTagPicker();
     const form = $("#editorForm", elements.dialogContent);
     form.addEventListener("input", () => { syncDraftFromForm(); renderFocusPreview(); });
     form.addEventListener("change", () => { syncDraftFromForm(); renderFocusPreview(); });
     form.addEventListener("submit", event => { event.preventDefault(); saveDraft(); });
     $("#cancelEdit", elements.dialogContent).addEventListener("click", cancelEdit);
+    $("#editTagSearch", elements.dialogContent).addEventListener("input", renderAvailableTags);
+    $("#availableTagList", elements.dialogContent).addEventListener("click", event => {
+      const button = event.target.closest("[data-toggle-tag]");
+      if (button) toggleDraftTag(button.dataset.toggleTag);
+    });
+    $("#availableTagList", elements.dialogContent).addEventListener("change", event => {
+      const input = event.target.closest("[data-tag-color]");
+      if (input) changeTagColor(input.dataset.tagColor, input.value);
+    });
+    $("#selectedTagList", elements.dialogContent).addEventListener("click", event => {
+      const button = event.target.closest("[data-remove-tag]");
+      if (button) toggleDraftTag(button.dataset.removeTag);
+    });
+    $("#createTagButton", elements.dialogContent).addEventListener("click", createTagFromEditor);
     $("#chooseImages", elements.dialogContent).addEventListener("click", () => $("#imageFiles", elements.dialogContent).click());
     $("#imageFiles", elements.dialogContent).addEventListener("change", event => {
       addFilesToDraft(Array.from(event.target.files || []));
@@ -719,7 +858,6 @@
     state.draft.title = $("#editTitle", elements.dialogContent).value;
     state.draft.shortDescription = $("#editShortDescription", elements.dialogContent).value;
     state.draft.description = $("#editDescription", elements.dialogContent).value;
-    state.draft.tags = parseTags($("#editTags", elements.dialogContent).value);
     state.draft.status = $("#editStatus", elements.dialogContent).value;
     state.draft.priority = $("#editPriority", elements.dialogContent).value;
     state.draft.appearanceLevel = normalizeLevel($("#editAppearanceLevel", elements.dialogContent).value);
@@ -860,6 +998,18 @@
       submit.textContent = "Сохранить";
       toast(error.message || "Не удалось сохранить вложения.");
     }
+  }
+
+  function requestEditItem(id) {
+    if (canEditCatalog()) {
+      editItem(id);
+      return;
+    }
+    if (!state.cloudReady) {
+      toast("Общая база ещё загружается. Попробуй нажать «Редактировать» через секунду.");
+      return;
+    }
+    toast("Нужен вход в общий каталог через кнопку «Войти». Вход в ChatGPT не авторизует правки механик.");
   }
 
   function editItem(id) {
@@ -1198,7 +1348,9 @@
         merged.set(item.id, item);
       });
       (Array.isArray(backup.deletedIds) ? backup.deletedIds : []).forEach(id => state.deletedIds.add(String(id)));
+      state.tagColors = { ...state.tagColors, ...mergeTagColors(storedItems) };
       state.items = Array.from(merged.values()).filter(item => !state.deletedIds.has(item.id));
+      state.items.forEach(item => { item.tagColors = copy(state.tagColors); });
       if (!saveDeletedIds() || !saveItems()) throw new Error("Не удалось сохранить импортированные данные в браузере.");
 
       if (state.cloudReady && state.cloudOwner) {
