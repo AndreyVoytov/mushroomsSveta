@@ -13,7 +13,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Соседние открытия постепенно снимают слои лианы",
     focus: { x: 50, y: 50 },
     images: [{ id: "level-005", src: "images/level-005.webp" }],
-    id: "game-ivy", title: "Лианы и несколько слоёв покрытия", icon: "🌱",
+    id: "game-ivy", legacyTitle: "Лианы и несколько слоёв покрытия", title: "Слои лиан", icon: "🌱",
     description: "Лианы закрывают клетки в один, два или три слоя. Соседние открытия постепенно снимают слои; под лианой может оставаться обычный закрытый лист.",
     tags: ["препятствие", "слои", "лианы"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/core/model/enum/CellType.ts"
   },
@@ -31,7 +31,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Компас открывает цепочку доступных клеток",
     focus: { x: 50, y: 50 },
     images: [{ id: "level-007", src: "images/level-007.webp" }],
-    id: "game-compass", title: "Компас открывает путь по полю", icon: "🧭",
+    id: "game-compass", legacyTitle: "Компас открывает путь по полю", title: "Полевой компас", icon: "🧭",
     description: "Компас перемещается от клетки к ближайшей доступной закрытой клетке и открывает цепочку до четырёх клеток. Порядок открытия определяется расстоянием на текущем поле.",
     tags: ["бустер", "открытие", "компас"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/core/service/provider/BoosterProvider.ts"
   },
@@ -58,7 +58,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Вода задаёт маршрут лодки по полю",
     focus: { x: 50, y: 50 },
     images: [{ id: "level-097", src: "images/level-097.webp" }],
-    id: "game-water-boat", title: "Вода и маршрут лодки", icon: "⛵",
+    id: "game-water-boat", legacyTitle: "Вода и маршрут лодки", title: "Маршрут лодки", icon: "⛵",
     description: "Водные клетки образуют маршрут для лодки. Открытия и границы между клетками влияют на то, куда она может переместиться и в каком кармане её получится поймать.",
     tags: ["вода", "движение", "лодка"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/view/screen/ForestScreen.ts"
   },
@@ -85,7 +85,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Улей выдаёт мёд при действиях на поле",
     focus: { x: 32, y: 34 },
     images: [{ id: "level-057", src: "images/level-057.webp" }],
-    id: "game-hive-honey", title: "Улей и накопление мёда", icon: "🍯",
+    id: "game-hive-honey", legacyTitle: "Улей и накопление мёда", title: "Мёд в улье", icon: "🍯",
     description: "Улей показывает оставшийся запас мёда и выдаёт его порциями при взаимодействии с клетками. Уровень задаёт общее количество мёда и вклад каждого улья.",
     tags: ["животные", "сбор", "улей"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/view/screen/ForestScreen.ts"
   },
@@ -94,7 +94,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Жёлуди задают путь божьим коровкам",
     focus: { x: 50, y: 50 },
     images: [{ id: "level-009", src: "images/level-009.webp" }, { id: "level-038", src: "images/level-038.webp" }],
-    id: "game-acorns-ladybugs", title: "Жёлуди и божьи коровки", icon: "🐞",
+    id: "game-acorns-ladybugs", legacyTitle: "Жёлуди и божьи коровки", title: "Жёлуди и коровки", icon: "🐞",
     description: "Жёлуди задают клетки и маршрут для божьих коровок. Игрок открывает путь и подготавливает соседние клетки, чтобы провести коровку к нужной цели.",
     tags: ["животные", "маршрут", "жёлуди"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/core/service/provider/LadybugsProvider.ts"
   },
@@ -121,7 +121,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Желе снимается и распространяется по клеткам",
     focus: { x: 50, y: 50 },
     images: [{ id: "level-035", src: "images/level-035.webp" }],
-    id: "game-jelly", title: "Желе как распространяющееся покрытие", icon: "🫧",
+    id: "game-jelly", legacyTitle: "Желе как распространяющееся покрытие", title: "Распространение желе", icon: "🫧",
     description: "Желе блокирует клетку и снимается от соседних открытий. На некоторых уровнях оно может переходить на соседнюю клетку, поэтому распространение нужно учитывать при выборе следующего хода.",
     tags: ["препятствие", "распространение", "желе"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/view/screen/ForestScreen.ts"
   },
@@ -130,7 +130,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Лёд удерживает покрытие и блокирует клетки",
     focus: { x: 50, y: 50 },
     images: [{ id: "level-120", src: "images/level-120.webp" }],
-    id: "game-ice", title: "Лёд и замёрзшие клетки", icon: "❄️",
+    id: "game-ice", legacyTitle: "Лёд и замёрзшие клетки", title: "Замёрзшие клетки", icon: "❄️",
     description: "Замёрзшие клетки удерживают покрытие и требуют отдельных соседних действий для освобождения. Лёд учитывается как самостоятельный тип блокировки поля.",
     tags: ["препятствие", "лёд", "слои"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/view/component/forest/ForestCellCover.ts"
   },
@@ -139,7 +139,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Ягоды снимаются вместе со слоями покрытия",
     focus: { x: 50, y: 50 },
     images: [{ id: "level-024", src: "images/level-024.webp" }],
-    id: "game-cankerberries", title: "Ягоды на слоях покрытия", icon: "🍓",
+    id: "game-cankerberries", legacyTitle: "Ягоды на слоях покрытия", title: "Слои с ягодами", icon: "🍓",
     description: "Некоторые покрытия удерживают ягоды, которые снимаются вместе с открытием слоя. Игра считает их отдельно и показывает прогресс сбора.",
     tags: ["сбор", "покрытие", "ягоды"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/view/component/forest/ForestCellCover.ts"
   },
@@ -148,7 +148,7 @@ window.MECHANIC_SEED = [
     shortDescription: "Числа помогают оценивать скрытые клетки и предметы",
     focus: { x: 50, y: 50 },
     images: [{ id: "level-001-numeric", src: "images/level-001-numeric.webp" }],
-    id: "game-numeric-clues", title: "Числовые подсказки на поле", icon: "🔢",
+    id: "game-numeric-clues", legacyTitle: "Числовые подсказки на поле", title: "Числовые подсказки", icon: "🔢",
     description: "Числа на клетках и предметах помогают оценивать ближайшие скрытые клетки и оставшиеся взаимодействия. Подсказки формируются с учётом типа поля и специальных объектов.",
     tags: ["подсказка", "числа", "поле"], priority: "Средний", status: "В игре", source: "Существующие механики", origin: "src/core/configuration/ForestConfiguration.ts"
   },

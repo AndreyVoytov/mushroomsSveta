@@ -70,10 +70,11 @@
     const storedFields = { ...item };
     delete storedFields.legacyTitle;
     const description = String(item.description || "");
+    const storedTitle = String(item.title || "");
     const hasAppearanceLevel = Object.prototype.hasOwnProperty.call(item, "appearanceLevel");
     return {
       ...storedFields,
-      title: String(item.title || ""),
+      title: seed && seed.legacyTitle === storedTitle ? seed.title : storedTitle,
       description,
       shortDescription: String(item.shortDescription || makeShortDescription(description)),
       tags: Array.isArray(item.tags) ? item.tags.map(String) : [],

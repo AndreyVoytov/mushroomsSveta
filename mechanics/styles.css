@@ -105,17 +105,17 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
 .mechanic-card { position: relative; display: flex; min-width: 0; min-height: 280px; flex-direction: column; gap: 0; padding: 7px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease; }
 .mechanic-card:hover { transform: translateY(-1px); border-color: #c9c0ac; box-shadow: 0 8px 21px #50452b10; }
 .mechanic-card.is-selected { border-color: #8f9a7a; box-shadow: 0 0 0 2px #84936e24; }
-.card-cover { position: relative; display: block; flex: 0 0 auto; width: 100%; height: auto; aspect-ratio: 1; overflow: hidden; padding: 0; border: 0; border-radius: 5px; background: #eae3d4; cursor: pointer; }
+.card-cover { position: relative; display: block; flex: 0 0 auto; align-self: center; width: 83.333%; height: auto; aspect-ratio: 1; overflow: hidden; padding: 0; border: 0; border-radius: 5px; background: #eae3d4; cursor: pointer; }
 .card-cover img { position: absolute; display: block; width: auto; height: auto; max-width: none; object-fit: fill; }
-.cover-level { position: absolute; z-index: 1; top: 7px; left: 7px; display: inline-flex; min-width: 40px; height: 34px; align-items: center; justify-content: center; padding: 0 11px; border: 0; border-radius: 999px; color: #302d25; background: #fffdf0c9; font-size: 16px; font-weight: 700; line-height: 1; pointer-events: none; }
+.cover-level { position: absolute; z-index: 1; top: 7px; left: 7px; display: inline-flex; min-width: 60px; height: 51px; align-items: center; justify-content: center; padding: 0 16px; border: 0; border-radius: 999px; color: #302d25; background: #fffdf0c9; font-size: 24px; font-weight: 700; line-height: 1; pointer-events: none; }
 .cover-placeholder { display: grid; place-items: center; width: 100%; height: 100%; color: #7a806d; background: radial-gradient(ellipse at 72% 22%, #ffffff9c 0 2%, transparent 2.5%), radial-gradient(ellipse at 20% 88%, #c8b78c45 0 10%, transparent 11%), linear-gradient(140deg,#e5e8d9,#eee3cc 67%,#d7c7a7); font-size: 37px; }
-.card-main { position: relative; display: flex; min-width: 0; flex: 1; flex-direction: column; justify-content: flex-start; padding: 8px 2px 3px; }
-.card-topline { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-bottom: 6px; }
-.source-label { color: #8d887b; font-size: 9px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.card-main { position: relative; display: flex; min-width: 0; flex: 1; flex-direction: column; justify-content: flex-start; padding: 12px 3px 5px; }
+.card-topline { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-bottom: 9px; }
+.source-label { color: #8d887b; font-size: 13.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .dot-sep { width: 3px; height: 3px; border-radius: 50%; background: #c3bba9; }
-.status-pill, .priority-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 6px; border-radius: 999px; font-size: 8px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.status-pill, .priority-pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border-radius: 999px; font-size: 16px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
 .status-pill { color: #fffaf0; background: #a58548; }
-.status-pill::before { width: auto; height: auto; border-radius: 0; color: #fff4dc; background: none; content: "◆"; font-size: 7px; }
+.status-pill::before { width: auto; height: auto; border-radius: 0; color: #fff4dc; background: none; content: "◆"; font-size: 14px; }
 .status-idea { color: #fffaf0; background: #c88729; }
 .status-idea::before { color: #fff0c9; }
 .status-work { color: #fff; background: #506fbd; }
@@ -127,17 +127,17 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
 .status-live { color: #fff; background: #297f7a; }
 .status-live::before { color: #def5f2; }
 .priority-pill { color: #80632e; background: #f3e6c8; }
-.priority-pill::before { width: 5px; height: 5px; border-radius: 50%; color: inherit; background: #c09343; content: ""; }
+.priority-pill::before { width: 10px; height: 10px; border-radius: 50%; color: inherit; background: #c09343; content: ""; }
 .priority-high { color: #983a31; background: #f3d9d4; }
 .priority-high::before { background: #b7473b; }
 .priority-low { color: #59664c; background: #e3e9db; }
 .priority-low::before { background: #778469; }
-.level-label { display: inline-flex; align-items: center; padding: 4px 8px; border: 1px solid #59674b; border-radius: 999px; color: #fffaf0; background: #59674b; font-size: 9px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
-.card-title { display: -webkit-box; margin-bottom: 0; overflow: hidden; color: var(--ink); font: 500 15px/1.25 Georgia, "Times New Roman", serif; letter-spacing: -.012em; text-decoration: none; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.level-label { display: inline-flex; align-items: center; padding: 6px 12px; border: 1px solid #59674b; border-radius: 999px; color: #fffaf0; background: #59674b; font-size: 13.5px; font-weight: 700; line-height: 1.2; white-space: nowrap; }
+.card-title { display: -webkit-box; margin-bottom: 0; overflow: hidden; color: var(--ink); font: 500 22.5px/1.25 Georgia, "Times New Roman", serif; letter-spacing: -.012em; text-decoration: none; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .card-title:hover { color: var(--moss); }
-.card-short-description { display: -webkit-box; margin: 0; overflow: hidden; color: #777264; font-size: 9px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
-.card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; padding: 0 20px 1px 0; }
-.tag-chip { display: inline-block; max-width: 100%; overflow: hidden; padding: 2px 7px; border: 1px solid #a6815b; border-radius: 999px; color: #78583a; background: transparent; appearance: none; font-size: 8px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
+.card-short-description { display: -webkit-box; margin: 0; overflow: hidden; color: #777264; font-size: 13.5px; line-height: 1.5; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; padding: 0 30px 1px 0; }
+.tag-chip { display: inline-block; max-width: 100%; overflow: hidden; padding: 3px 10.5px; border: 1px solid #a6815b; border-radius: 999px; color: #78583a; background: transparent; appearance: none; font-size: 12px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; }
 .tag-filter-chip { cursor: pointer; }
 .tag-filter-chip:hover { background: #f3eadb; }
 .tag-chip.extra { color: #8b725a; background: #fffaf1; }
@@ -219,7 +219,7 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
   .intro-aside { width: 195px; padding-left: 17px; }
   .toolbar-sort { flex-basis: 165px; }
   .card-cover { height: auto; aspect-ratio: 1; }
-  .card-title { font-size: 14px; }
+  .card-title { font-size: 21px; }
 }
 @media (max-width: 620px) {
   .page-shell { width: calc(100% - 28px); }
@@ -250,13 +250,15 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
   .mechanic-list { gap: 8px; }
   .mechanic-card { min-height: 240px; padding: 6px; }
   .card-cover { height: auto; aspect-ratio: 1; }
-  .card-main { padding: 7px 1px 3px; }
-  .card-topline { gap: 4px; margin-bottom: 5px; }
-  .status-pill, .priority-pill { padding: 3px 5px; font-size: 7px; }
-  .card-title { margin-bottom: 0; font-size: 13px; }
-  .card-short-description { font-size: 8px; -webkit-line-clamp: 2; }
-  .card-tags { gap: 4px; margin-top: 4px; padding-top: 0; }
-  .tag-chip { max-width: 105px; padding: 2px 5px; font-size: 7px; }
+  .card-main { padding: 10px 2px 4px; }
+  .card-topline { gap: 6px; margin-bottom: 7px; }
+  .status-pill, .priority-pill { gap: 7px; padding: 6px 10px; font-size: 14px; }
+  .status-pill::before { font-size: 14px; }
+  .priority-pill::before { width: 9px; height: 9px; }
+  .card-title { margin-bottom: 0; font-size: 19.5px; }
+  .card-short-description { font-size: 12px; -webkit-line-clamp: 2; }
+  .card-tags { gap: 6px; margin-top: 6px; padding-top: 0; }
+  .tag-chip { max-width: 135px; padding: 3px 7.5px; font-size: 10.5px; }
   .card-open { right: 6px; bottom: 7px; width: 18px; height: 18px; font-size: 12px; }
   .footer { flex-direction: column; gap: 4px; }
   .dialog-frame { padding: 25px 19px 22px; }
