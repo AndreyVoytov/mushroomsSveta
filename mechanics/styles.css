@@ -168,6 +168,7 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
 .detail-source { display: grid; gap: 3px; padding-top: 11px; border-top: 1px solid var(--line); color: #979183; font-size: 10px; }
 .detail-source strong { color: #777262; font-weight: 600; }
 .dialog-actions { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 20px; border-top: 1px solid var(--line); }
+.editor-form .dialog-actions { position: sticky; bottom: 0; z-index: 4; margin: 0 -38px -34px; padding: 14px 38px 18px; background: var(--paper); box-shadow: 0 -10px 20px #38332612; }
 .edit-access-note { margin: 14px 0 0; padding: 10px 12px; border: 1px solid #d9c8a8; border-radius: 8px; color: #6d583c; background: #f7eedf; font-size: 12px; line-height: 1.5; }
 .dialog-actions .spacer { flex: 1; }
 .editor-form { display: grid; gap: 13px; }
@@ -285,6 +286,7 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
   .card-open { right: 6px; bottom: 7px; width: 18px; height: 18px; font-size: 12px; }
   .footer { flex-direction: column; gap: 4px; }
   .dialog-frame { padding: 25px 19px 22px; }
+  .editor-form .dialog-actions { margin-right: -19px; margin-bottom: -22px; margin-left: -19px; padding-right: 19px; padding-bottom: max(14px, env(safe-area-inset-bottom)); padding-left: 19px; }
   .dialog-close { margin: -11px -8px 0 8px; }
   .detail-title { font-size: 27px; }
   .detail-description { font-size: 13px; }

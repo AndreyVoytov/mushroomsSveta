@@ -590,7 +590,8 @@
     elements.empty.hidden = items.length > 0;
     elements.list.hidden = items.length === 0;
     elements.list.innerHTML = items.map((item, index) => {
-      const tags = item.tags.slice(0, 4).map(tag => `<button class="tag-chip tag-filter-chip" type="button" data-filter-tag="${escapeHtml(tag)}" style="${escapeHtml(tagColorStyle(tag))}">${escapeHtml(tag)}</button>`).join("");
+      const previewTags = sortTagNames(item.tags);
+      const tags = previewTags.slice(0, 4).map(tag => `<button class="tag-chip tag-filter-chip" type="button" data-filter-tag="${escapeHtml(tag)}" style="${escapeHtml(tagColorStyle(tag))}">${escapeHtml(tag)}</button>`).join("");
       const extra = item.tags.length > 4 ? `<span class="tag-chip extra">+${item.tags.length - 4}</span>` : "";
       const level = normalizeLevel(item.appearanceLevel);
       return `<article class="mechanic-card${item.id === state.selectedId ? " is-selected" : ""}" data-item-id="${escapeHtml(item.id)}">
