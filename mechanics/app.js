@@ -3,12 +3,14 @@
 
   const STORAGE_KEY = "mushroomsSveta.mechanics.v1";
   const DELETED_KEY = `${STORAGE_KEY}.deleted`;
+  const SORT_STORAGE_KEY = `${STORAGE_KEY}.sort`;
   const STATUSES = ["Идея", "На рассмотрении", "В работе", "На тестировании", "Готово", "В игре"];
   const PRIORITIES = ["Высокий", "Средний", "Низкий"];
   const PRIORITY_ORDER = { "Высокий": 0, "Средний": 1, "Низкий": 2 };
   const STATUS_ORDER = { "В работе": 0, "На тестировании": 1, "На рассмотрении": 2, "Идея": 3, "Готово": 4, "В игре": 5 };
   const SEED_TIMESTAMP = "2000-01-01T00:00:00.000Z";
   const DEFAULT_TAG_COLOR = "#a6815b";
+  const SORT_OPTIONS = new Set(["appearance", "priority", "status", "recent", "title"]);
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
   const elements = {
@@ -33,6 +35,22 @@
 
   function copy(value) {
     return JSON.parse(JSON.stringify(value));
+  }
+
+  function loadSortPreference() {
+    try {
+      const saved = localStorage.getItem(SORT_STORAGE_KEY);
+      return SORT_OPTIONS.has(saved) ? saved : "appearance";
+    } catch (_) {
+      return "appearance";
+    }
+  }
+
+  function saveSortPreference(value) {
+    if (!SORT_OPTIONS.has(value)) return;
+    try {
+      localStorage.setItem(SORT_STORAGE_KEY, value);
+    } catch (_) {}
   }
 
   function normalizeLevel(value) {
@@ -76,9 +94,28 @@
 
   function updateTagColors() {
     state.items.forEach(item => { item.tagColors = copy(state.tagColors); });
-    saveItems();
+    const saved = saveItems();
     renderList();
     renderTagPicker();
+    return saved;
+  }
+
+  async function persistTagColors() {
+    if (!updateTagColors()) return false;
+    return flushCloudSave();
+  }
+
+  async function flushCloudSave() {
+    if (!state.cloudConfigured) return true;
+    if (!state.cloudReady || !state.cloudOwner || !state.cloudClient) return false;
+    window.clearTimeout(state.cloudSaveTimer);
+    try {
+      await syncCloudCatalog();
+      return true;
+    } catch (error) {
+      scheduleCloudSave();
+      throw error;
+    }
   }
 
   function seedFor(id) {
@@ -656,7 +693,7 @@
     renderTagPicker();
   }
 
-  function createTagFromEditor() {
+  async function createTagFromEditor() {
     if (!state.draft) return;
     syncDraftFromForm();
     const nameInput = $("#newTagName", elements.dialogContent);
@@ -670,17 +707,28 @@
     const tag = allTags().find(value => value.toLocaleLowerCase("ru") === rawName.toLocaleLowerCase("ru")) || rawName;
     state.tagColors[tag] = normalizeTagColors({ [tag]: colorInput?.value })[tag] || DEFAULT_TAG_COLOR;
     if (!state.draft.tags.includes(tag)) state.draft.tags.push(tag);
-    updateTagColors();
     if (nameInput) nameInput.value = "";
     $("#editTagSearch", elements.dialogContent)?.focus();
-    toast(`Тег «${tag}» создан и добавлен к карточке.`);
+    try {
+      if (!await persistTagColors()) {
+        toast("Не удалось сохранить тег в браузере. Проверь свободное место для данных.");
+        return;
+      }
+      toast(`Тег «${tag}» сохранён. Нажми «Сохранить», чтобы закрепить его за карточкой.`);
+    } catch (error) {
+      console.error("Не удалось сохранить тег в общей базе", error);
+      toast("Тег сохранён в этом браузере и добавлен к карточке, но общая база не подтвердила сохранение.");
+    }
   }
 
   function changeTagColor(tag, color) {
     const normalized = normalizeTagColors({ [tag]: color })[tag];
     if (!normalized) return;
     state.tagColors[tag] = normalized;
-    updateTagColors();
+    persistTagColors().catch(error => {
+      console.error("Не удалось сохранить цвет тега в общей базе", error);
+      toast("Цвет тега сохранён в этом браузере, но общая база не подтвердила сохранение.");
+    });
   }
 
   function renderFocusPreview() {
@@ -981,6 +1029,13 @@
         await Promise.all(addedKeys.map(removeImage));
         return;
       }
+      let cloudSaved = true;
+      try {
+        cloudSaved = await flushCloudSave();
+      } catch (error) {
+        cloudSaved = false;
+        console.error("Карточка сохранена локально, но не синхронизировалась с общей базой", error);
+      }
       const retained = new Set(currentUploadKeys(next));
       await Promise.all(currentUploadKeys(original).filter(key => !retained.has(key)).map(removeImage));
       releaseTemporaryUrls();
@@ -990,7 +1045,7 @@
       state.selectedId = next.id;
       renderList();
       renderDialog();
-      toast("Механика сохранена.");
+      toast(cloudSaved ? "Механика сохранена." : "Механика сохранена в браузере, но общая база пока не подтвердила сохранение.");
     } catch (error) {
       console.error("Не удалось сохранить карточку", error);
       await Promise.all(addedKeys.map(removeImage));
@@ -1208,7 +1263,6 @@
     elements.status.value = "";
     elements.priority.value = "";
     elements.tag.value = "";
-    elements.sort.value = "priority";
     renderList();
   }
 
@@ -1410,8 +1464,13 @@
   }
 
   function setupEvents() {
-    [elements.search, elements.status, elements.priority, elements.tag, elements.sort].forEach(element => {
+    elements.sort.value = loadSortPreference();
+    [elements.search, elements.status, elements.priority, elements.tag].forEach(element => {
       element.addEventListener(element === elements.search ? "input" : "change", renderList);
+    });
+    elements.sort.addEventListener("change", () => {
+      saveSortPreference(elements.sort.value);
+      renderList();
     });
     elements.list.addEventListener("click", handleListClick);
     $("#newItemButton").addEventListener("click", newItem);
