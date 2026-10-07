@@ -185,7 +185,7 @@
 .quiet-level img{width:42px;height:38px;filter:drop-shadow(0 2px 3px #26382455)}
 .first-items{margin-top:0;padding-right:12px}
 .new-ribbon{position:absolute;top:8px;right:-22px;width:80px;padding:3px 0;transform:rotate(45deg);background:#c9483f;color:#fff8e7;font:750 9px/1.1 "Segoe UI",Arial,sans-serif;letter-spacing:.8px;text-align:center;box-shadow:0 1px 3px #70251e33;pointer-events:none}
-.story-event{position:absolute;top:100px}
+.story-event{position:absolute;top:100px;container-type:inline-size}
 .stage-band{pointer-events:none}
 .stage-card,.stage-card:hover{min-height:0}
 .stage-hook{font-size:22.5px!important;line-height:1.35!important;margin-bottom:18px!important}
@@ -200,4 +200,38 @@
 @media(max-width:700px){
   .stage-hook{font-size:21px!important;line-height:1.35!important}
   .overview-track{height:28px}.overview-track:before{inset:5px 0}.overview-thumb{height:18px;top:5px}
+}
+
+/* Portraits sit beside the dialogue, overlapping each other and its edge. */
+.stage-card,.stage-card:hover{--portrait-size:112px;--portrait-step:76px;display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:0;width:calc(100% - 28px);max-width:650px;margin:0 14px 20px;padding:0;border:0;background:transparent;box-shadow:none;overflow:visible;border-radius:20px}
+.stage-card.has-characters{grid-template-columns:calc(var(--portrait-size) + (var(--portrait-count) - 1)*var(--portrait-step) - 22px) minmax(0,1fr)}
+.stage-bubble{position:relative;z-index:1;display:grid;grid-template-columns:64px minmax(0,1fr) 14px;column-gap:12px;row-gap:16px;align-items:center;min-width:0;min-height:200px;padding:24px 24px 26px 30px;border:1px solid #b6a07d;border-radius:22px;background:#f0e3ca;box-shadow:0 5px 16px #28342126,inset 0 1px #fbf0d8}
+.stage-card:hover .stage-bubble{border-color:#8d795b}
+.has-characters .stage-bubble:before{content:"";position:absolute;left:-8px;top:55%;width:18px;height:18px;border-left:1px solid #b6a07d;border-bottom:1px solid #b6a07d;transform:rotate(45deg);background:#f0e3ca}
+.stage-image{width:64px;height:82px;margin:0;align-self:center}
+.stage-info{padding:0}.stage-info h3{font-size:23px;overflow-wrap:anywhere}.stage-info p:empty{display:none}
+.stage-arrow{align-self:start}
+.stage-hook{align-self:center;border:0;padding:0;margin:0!important}
+.intro-card .stage-bubble{min-height:200px}
+.stage-characters{grid-column:1;grid-row:1;position:relative;z-index:2;display:flex;align-items:flex-end;gap:0;width:max-content;margin:0 -22px 0 0;padding:0;border:0;background:transparent;pointer-events:none}
+.character{position:relative;flex:0 0 var(--portrait-size);width:var(--portrait-size);min-width:0;max-width:none;margin:0}
+.character+.character{margin-left:calc(var(--portrait-step) - var(--portrait-size))}
+.character:nth-child(even){transform:translateY(10px)}
+.character img{width:var(--portrait-size);max-width:none;height:156px;object-fit:contain;object-position:center bottom;filter:drop-shadow(0 5px 4px #3c311d40)}
+@media(max-width:700px){
+  .stage-card,.stage-card:hover{max-width:calc(100vw - 28px)}
+  .stage-card.has-characters{grid-template-columns:80px minmax(0,1fr)}
+  .stage-bubble{grid-template-columns:42px minmax(0,1fr) 10px;column-gap:8px;row-gap:16px;min-height:210px;padding:20px 16px 22px 24px;border-radius:18px}
+  .stage-image{width:42px;height:58px}.stage-info h3{font-size:20px}.stage-info p{font-size:13px}
+  .stage-characters{flex-direction:column;align-items:flex-start;margin-right:-28px;--portrait-size:94px}
+  .character{flex:0 0 auto}.character+.character{margin: -42px 0 0}.character:nth-child(even){transform:translateX(14px)}
+  .character img{height:128px}
+}
+@container(max-width:620px){
+  .stage-card.has-characters{grid-template-columns:80px minmax(0,1fr)}
+  .stage-bubble{grid-template-columns:42px minmax(0,1fr) 10px;column-gap:8px;row-gap:16px;min-height:210px;padding:20px 16px 22px 24px;border-radius:18px}
+  .stage-image{width:42px;height:58px}.stage-info h3{font-size:20px}.stage-info p{font-size:13px}
+  .stage-characters{flex-direction:column;align-items:flex-start;margin-right:-28px;--portrait-size:94px}
+  .character{flex:0 0 auto}.character+.character{margin:-42px 0 0}.character:nth-child(even){transform:translateX(14px)}
+  .character img{height:128px}
 }

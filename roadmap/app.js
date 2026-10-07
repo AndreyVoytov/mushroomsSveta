@@ -91,15 +91,20 @@
       (firsts.length?`<button class="first-card" data-level="${l.number}" style="left:${x}px" aria-label="Первые появления уровня ${l.number}"><span class="new-ribbon" aria-hidden="true">NEW</span><div class="first-items">${firsts.slice(0,unit<220?3:5).map(f=>`<span class="first-item">${image(f.image)}<span>${esc(f.name)}</span></span>`).join('')}</div>${firsts.length>(unit<220?3:5)?`<div class="first-overflow">+ ${firsts.length-(unit<220?3:5)} открытия →</div>`:''}</button>`:
       l.objects.length?'':`<span class="quiet-level" style="left:${x}px" title="Находки уровня ${l.number}">${image(l.randomItems?'hexChest':l.items?.find(i=>i.count>0)?.name)}<b>${(l.items||[]).reduce((sum,i)=>sum+i.count,0)+(l.randomItems||0)}</b></span>`);
     }).join('');
-    const portraits=rows=>rows.length?`<div class="stage-characters">${rows.slice(0,4).map(c=>`<span class="character" title="${esc(c.name)}">${image(c.image,'',c.name)}</span>`).join('')}</div>`:'';
+    const storyCard=(s,hook,characters,intro=false)=>{
+      const cast=characters.slice(0,4);
+      const portraits=cast.length?`<div class="stage-characters">${cast.map(c=>`<span class="character" title="${esc(c.name)}">${image(c.image,'',c.name)}</span>`).join('')}</div>`:'';
+      const heading=intro?'':`${image(s.image,'stage-image')}<div class="stage-info"><h3>${esc(s.title)}</h3><p>${esc(s.description||s.notes[0]||'')}</p></div><span class="stage-arrow">↗</span>`;
+      return `<button class="stage-card ${intro?'intro-card':''} ${cast.length?'has-characters':''}" data-stage="${s.index}" style="--portrait-count:${cast.length}">${portraits}<div class="stage-bubble">${heading}${hook?`<p class="stage-hook">«${esc(hook.text)}»</p>`:''}</div></button>`;
+    };
     const intro=D.stages[0],introHook=intro.dialogues.find(d=>d.text);
     // Goals mark the end of their progress segment. Boundary dialogue stays at
     // its original level, beside the goal that has just been completed.
-    $('story-content').innerHTML=(introHook?`<div class="story-event" style="left:${X(intro.start)}px;width:${stageWidth(intro)}px"><button class="stage-card intro-card" data-stage="0"><p class="stage-hook">«${esc(introHook.text)}»</p>${portraits(intro.characters)}</button></div>`:'')+D.stages.map(s=>{
+    $('story-content').innerHTML=(introHook?`<div class="story-event" style="left:${X(intro.start)}px;width:${stageWidth(intro)}px">${storyCard(intro,introHook,intro.characters,true)}</div>`:'')+D.stages.map(s=>{
       const next=D.stages[s.index+1],finish=goalLevel(s),rows=completionDialogues(s),hook=rows.find(d=>d.text);
       const eventWidth=next?stageWidth(next):unit*3;
       const label=s.title+(s.continuation?' · продолжение':' · после уровня '+s.end);
-      return `<div class="stage-band" data-stage-band="${s.index}" style="left:${X(s.start)}px;width:${stageWidth(s)}px"><div class="stage-progress" aria-hidden="true">${Array.from({length:s.continuation?2:s.end-s.start-1},()=>'<i></i>').join('')}</div></div><button class="stage-tick" data-stage="${s.index}" style="left:${X(finish)}px" title="${esc(label)}" aria-label="${esc(label)}">${image(s.image)}</button><div class="story-event" style="left:${X(finish)}px;width:${eventWidth}px"><button class="stage-card" data-stage="${s.index}">${image(s.image,'stage-image')}<div class="stage-info"><h3>${esc(s.title)}</h3><p>${esc(s.description||s.notes[0]||'')}</p></div><span class="stage-arrow">↗</span>${hook?`<p class="stage-hook">«${esc(hook.text)}»</p>`:''}${portraits(charactersFor(rows))}</button></div>`;
+      return `<div class="stage-band" data-stage-band="${s.index}" style="left:${X(s.start)}px;width:${stageWidth(s)}px"><div class="stage-progress" aria-hidden="true">${Array.from({length:s.continuation?2:s.end-s.start-1},()=>'<i></i>').join('')}</div></div><button class="stage-tick" data-stage="${s.index}" style="left:${X(finish)}px" title="${esc(label)}" aria-label="${esc(label)}">${image(s.image)}</button><div class="story-event" style="left:${X(finish)}px;width:${eventWidth}px">${storyCard(s,hook,charactersFor(rows))}</div>`;
     }).join('');
     fitStoryHeight();
     updateViewport();
