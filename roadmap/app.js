@@ -84,12 +84,13 @@
     $('level-content').innerHTML='<span class="energy-caption">Энергия</span>'+D.levels.map(l=>{
       const x=X(l.number),y=Y(l.number),firsts=l.firsts.filter(f=>f.category!=='story');
       const primary=l.tutorials[0];
+      const goals=P.goals(l);
       return `<span class="energy-value" style="left:${x}px;top:${energyY(l.steps)}px" title="Базовая энергия уровня ${l.number}: ${l.steps}">${energyIcon()}${l.steps}</span>`+
       (primary?`<button class="tutorial-card" data-level="${l.number}" style="left:${x}px" aria-label="Обучение на уровне ${l.number}"><span class="eyebrow">Обучение</span><p>${esc(primary.text)}</p>${l.tutorials.length>1?`<span class="tutorial-more">Ещё подсказок: ${l.tutorials.length-1}</span>`:''}${image(primary.image)}</button>`:'')+
       (l.objects.length?`<button class="story-object" data-level="${l.number}" style="left:${x}px" aria-label="Сюжетные находки уровня ${l.number}: ${esc(l.objects.map(o=>o.name).join(', '))}">${l.objects.slice(0,2).map(o=>image(o.image)).join('')}</button>`:'')+
       `<button class="level-node ${l.hardLevel?'hard':''} ${l.firsts.length?'has-first':''} ${selected===l.number?'selected':''}" data-level="${l.number}" data-hover="${l.number}" style="left:${x}px;top:${y}px" aria-label="Уровень ${l.number}, ${D.environments[l.environment].name}, энергия ${l.steps}${l.hardLevel?', сложный':''}">${l.number}</button>`+
       (firsts.length?`<button class="first-card" data-level="${l.number}" style="left:${x}px" aria-label="Первые появления уровня ${l.number}"><span class="new-ribbon" aria-hidden="true">NEW</span><div class="first-items">${firsts.slice(0,unit<220?3:5).map(f=>`<span class="first-item">${image(f.image)}<span>${esc(f.name)}</span></span>`).join('')}</div>${firsts.length>(unit<220?3:5)?`<div class="first-overflow">+ ${firsts.length-(unit<220?3:5)} открытия →</div>`:''}</button>`:
-      l.objects.length?'':`<span class="quiet-level" style="left:${x}px" title="Находки уровня ${l.number}">${image(l.randomItems?'hexChest':l.items?.find(i=>i.count>0)?.name)}<b>${(l.items||[]).reduce((sum,i)=>sum+i.count,0)+(l.randomItems||0)}</b></span>`);
+      goals.length?`<span class="quiet-level" style="left:${x}px" aria-label="Цели уровня ${l.number}">${goals.map(goal=>`<span class="route-goal" title="${esc(goal.name)}: ${goal.count}">${image(goal.image==='smth'?'hexChest':goal.image,'',goal.name)}<b>${goal.count}</b></span>`).join('')}</span>`:'');
     }).join('');
     const storyCard=(s,hook,characters,intro=false)=>{
       const cast=characters.slice(0,4);

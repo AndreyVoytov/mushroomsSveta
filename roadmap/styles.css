@@ -180,7 +180,8 @@
 }
 
 /* Compact finds, endpoint goals and a conventional draggable scroll thumb. */
-.quiet-level{flex-direction:row;gap:8px;min-width:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;color:#fff8e7;text-shadow:0 2px 3px #263824,0 0 4px #263824}
+.quiet-level{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:10px 14px;width:calc(var(--unit) - 28px);max-width:330px;min-width:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;color:#fff8e7;text-shadow:0 2px 3px #263824,0 0 4px #263824}
+.route-goal{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
 .quiet-level b{font-size:21px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
 .quiet-level img{width:42px;height:38px;filter:drop-shadow(0 2px 3px #26382455)}
 .first-items{margin-top:0;padding-right:12px}
