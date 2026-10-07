@@ -155,7 +155,8 @@
   }
   const splitter=$('splitter');
   function setSplit(value){const v=clamp(value,25,78);document.documentElement.style.setProperty('--upper',v+'%');splitter.setAttribute('aria-valuenow',Math.round(v));store.set('split',v);}
-  setSplit(Number(store.get('split',65))||65);
+  const defaultSplit=innerWidth<=700?65:61;
+  setSplit(Number(store.get('split',defaultSplit))||defaultSplit);
   splitter.onpointerdown=e=>{splitter.setPointerCapture(e.pointerId);splitter.classList.add('resizing');};
   splitter.onpointermove=e=>{if(splitter.hasPointerCapture(e.pointerId)){const rect=$('workspace').getBoundingClientRect();setSplit((e.clientY-rect.top)/rect.height*100);hideHover();}};
   splitter.onpointerup=e=>{splitter.releasePointerCapture(e.pointerId);splitter.classList.remove('resizing');};
