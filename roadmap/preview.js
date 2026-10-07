@@ -197,7 +197,13 @@
     for(const c of cells){
       sprite(ground(level,c),c.x,c.y);
       if(mode==='contents'||fixed[c.token])sprite(c.content,c.x,c.y,114,121,false);
-      if(mode!=='contents'&&!fixed[c.token]){sprite(cover(level,c),c.x,c.y);sprite(leaf(level,c),c.x,c.y);}
+      if(mode!=='contents'&&!fixed[c.token]){
+        sprite(cover(level,c),c.x,c.y);
+        const key=leaf(level,c);
+        // The chest sits inside the house tile; it does not fill the entire hex.
+        if(/^hexChest/i.test(key))sprite(key,c.x,c.y,90,84,false);
+        else sprite(key,c.x,c.y);
+      }
       overlays(c).forEach(key=>sprite(key,c.x,c.y,120,127));
     }
     // Hex edges, same six directions as SeparatorType.

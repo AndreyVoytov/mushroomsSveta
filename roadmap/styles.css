@@ -134,3 +134,47 @@
   .stage-characters{gap:8px;justify-content:flex-start;margin-inline:-15px;padding:12px 12px 14px}
   .character{flex:0 1 76px;min-width:0;font-size:11px;gap:5px}.character img{width:60px;height:70px;max-width:100%}
 }
+
+/* Quiet chrome and the game's blue progression track. */
+:root{font-family:"Segoe UI",Arial,sans-serif;--paper:#eee2cb;--ink:#35382d;--muted:#655c4a}
+.timeline-scroll,.drawer-body,.search-results{scrollbar-width:none;-ms-overflow-style:none}
+.timeline-scroll::-webkit-scrollbar,.drawer-body::-webkit-scrollbar,.search-results::-webkit-scrollbar{display:none;width:0;height:0}
+#workspace{grid-template-rows:minmax(180px,var(--upper)) 12px minmax(135px,1fr)}
+#splitter{border-top:1px solid #a08c66;border-bottom:1px solid #514737;background:linear-gradient(#887656,#625743 55%,#75654a);box-shadow:inset 0 1px #c1ac822b,0 2px 5px #2d2a1f33}
+#splitter:after{top:3px;width:60px;height:4px;left:calc(50% - 30px);border-radius:4px;background:#cbb68f;box-shadow:0 1px 1px #31291f7a}
+#splitter:hover,#splitter.resizing{background:linear-gradient(#9a8560,#746047 55%,#87704e)}
+.field-scenery{mask-image:linear-gradient(90deg,transparent,#000 130px,#000 calc(100% - 130px),transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 130px,#000 calc(100% - 130px),transparent)}
+.field-header{overflow:hidden;background:none}
+.header-tile{position:absolute;top:0;bottom:0;background-size:cover;background-position:center bottom;background-repeat:no-repeat;mask-image:linear-gradient(90deg,transparent,#000 120px,#000 calc(100% - 120px),transparent);-webkit-mask-image:linear-gradient(90deg,transparent,#000 120px,#000 calc(100% - 120px),transparent)}
+.header-tile.reflected{transform:scaleX(-1)}
+.house-header .header-tile{background-size:auto 100%}
+.story-axis{top:40px;height:24px;border-top:3px solid #d9b562;border-bottom:3px solid #997234;background:#39a9e4 var(--progress-body) left center / auto 100% repeat-x;box-shadow:0 2px 5px #2b536543,inset 0 1px #d9f9ff}
+.stage-tick,.stage-tick:hover{top:16px;width:72px;height:72px;padding:9px;border:3px solid #dcba6c;border-radius:50%;background:radial-gradient(circle at 37% 25%,#b5ebff 0,#5bbfe9 44%,#2188c6 77%,#1c648f 100%);box-shadow:inset 0 2px 3px #edfcffb3,inset 0 -2px 3px #154a7173,0 0 0 1px #84612d,0 3px 7px #22485a4d;display:grid;place-items:center;z-index:4}
+.stage-tick img{width:46px;height:49px;object-fit:contain;filter:drop-shadow(0 2px 2px #1e416a55)}
+.stage-band{top:100px;border-left-color:#5586a052}
+.stage-progress{top:-64px;height:32px;align-items:center}
+.stage-progress i{width:9px;height:29px;background:var(--progress-scale) center / 100% 100% no-repeat}
+.stage-card,.stage-card:hover{margin-top:0;max-width:920px;background:#f0e3ca;border-color:#b6a07d;box-shadow:0 5px 16px #28342126,inset 0 1px #fbf0d8}
+.stage-info h3{font:650 25px/1.25 "Segoe UI",Arial,sans-serif;letter-spacing:-.3px;margin:0 0 9px;color:#353d2e}
+.stage-info p{font-size:15px;line-height:1.5;color:#514936}
+.stage-hook{grid-column:1 / -1;display:block;margin:0 0 23px!important;padding:0 0 0 18px;border-left:4px solid #6ca5bf;font:500 45px/1.2 "Segoe UI",Arial,sans-serif!important;color:#24648b!important;text-align:left;overflow:visible;overflow-wrap:anywhere;-webkit-line-clamp:unset}
+.stage-characters{background:#e4d5b9;border-color:#c8b795}
+.first-card,.first-card:hover{background:#f0e4cb;border-color:#bca680}
+.first-card .eyebrow{text-transform:none;letter-spacing:0;font-size:14px;font-weight:700;color:#435437}
+.first-item{font-size:14px;line-height:1.4;color:#343b2c}
+.quiet-level{background:#eee0c4;color:#45442f;border-color:#b6a17a;font-size:13px}
+.energy-value{background:#f1e4c8;border-color:#a78349}
+.toolbar,.layers,.search-results,.hover-preview{background:#f1e6cf;border-color:#beaa85}
+.search,button,select{background-color:#f2e7d2}
+.drawer,dialog{background:#f0e4ce}.feature-chip,.location-link{background:#eadebf;border-color:#bead8a}
+.drawer-header h2,.detail-section h3,.preview-heading b,.brand{font-family:"Segoe UI",Arial,sans-serif;font-weight:650}
+.detail-description,.dialogue p{font-family:"Segoe UI",Arial,sans-serif;font-size:18px;line-height:1.55}
+.dialogue p{color:#24648b}
+.overview{background:#e9dcc3;color:#5b503b}
+.overview input{height:7px;accent-color:#348fc2}
+@media(max-width:700px){
+  #workspace{grid-template-rows:minmax(155px,var(--upper)) 12px minmax(110px,1fr)}
+  .stage-card,.stage-card:hover{max-width:calc(100vw - 36px)}
+  .stage-info h3{font-size:22px;line-height:1.25}.stage-info p{font-size:14px}
+  .stage-hook{font-size:42px!important;line-height:1.2!important;padding-left:12px}
+}

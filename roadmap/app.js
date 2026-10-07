@@ -21,6 +21,8 @@
   const getStage=number=>[...D.stages].reverse().find(s=>s.start<=number)||D.stages[0];
   const energyIcon=()=>image('lightning','energy-icon');
   document.documentElement.style.setProperty('--tutorial-panel',`url("${P.url('helperPanel2')}")`);
+  document.documentElement.style.setProperty('--progress-body',`url("${P.url('progressBody')}")`);
+  document.documentElement.style.setProperty('--progress-scale',`url("${P.url('scale')}")`);
   $('total-levels').textContent=D.levels.length;
   $('overview').max=D.levels.length;
   $('chapter').innerHTML+='<option value="1">Начало игры</option>'+D.stages.map(s=>`<option value="${s.start}">${s.start} · ${esc(s.title)}</option>`).join('');
@@ -41,7 +43,15 @@
     else storyRuns.push({start:stage.start,end:stage.end,key:stage.background});
   }
   function backgroundHTML(runs,story=false){
-    const segment=(r,left,width)=>`<div class="background-segment ${story?'story-scenery':'field-scenery'}" data-bg="${esc(r.key)}" data-left="${left}" data-width="${width}" style="left:${left}px;width:${width}px">${r.header?`<div class="field-header ${r.header==='carpet'?'house-header':''}" data-header="${esc(r.header)}"></div>`:''}</div>`;
+    const segment=(r,left,width)=>{
+      let header='';
+      if(r.header){
+        const count=Math.max(1,Math.ceil(width/540)),step=width/count;
+        // Alternate reflected views and overlap their edges, avoiding hard repeat seams.
+        header=`<div class="field-header ${r.header==='carpet'?'house-header':''}">${Array.from({length:count},(_,i)=>`<div class="header-tile ${i%2?'reflected':''}" data-header="${esc(r.header)}" style="left:${i*step-60}px;width:${step+120}px"></div>`).join('')}</div>`;
+      }
+      return `<div class="background-segment ${story?'story-scenery':'field-scenery'}" data-bg="${esc(r.key)}" data-left="${left}" data-width="${width}" style="left:${left}px;width:${width}px">${header}</div>`;
+    };
     return runs.map(r=>{
       const left=X(r.start)-unit*.7,right=X(r.end)+unit*.3;
       if(!story)return segment(r,left,right-left);
@@ -75,15 +85,21 @@
       (primary?`<button class="tutorial-card" data-level="${l.number}" style="left:${x}px" aria-label="Обучение на уровне ${l.number}"><span class="eyebrow">Обучение</span><p>${esc(primary.text)}</p>${l.tutorials.length>1?`<span class="tutorial-more">Ещё подсказок: ${l.tutorials.length-1}</span>`:''}${image(primary.image)}</button>`:'')+
       (l.objects.length?`<button class="story-object" data-level="${l.number}" style="left:${x}px" aria-label="Сюжетные находки уровня ${l.number}: ${esc(l.objects.map(o=>o.name).join(', '))}">${l.objects.slice(0,2).map(o=>image(o.image)).join('')}</button>`:'')+
       `<button class="level-node ${l.hardLevel?'hard':''} ${l.firsts.length?'has-first':''} ${selected===l.number?'selected':''}" data-level="${l.number}" data-hover="${l.number}" style="left:${x}px;top:${y}px" aria-label="Уровень ${l.number}, ${D.environments[l.environment].name}, энергия ${l.steps}${l.hardLevel?', сложный':''}">${l.number}</button>`+
-      (firsts.length?`<button class="first-card" data-level="${l.number}" style="left:${x}px" aria-label="Первые появления уровня ${l.number}"><span class="eyebrow">Впервые · ${firsts.length}</span><div class="first-items">${firsts.slice(0,unit<220?3:5).map(f=>`<span class="first-item">${image(f.image)}<span>${esc(f.name)}</span></span>`).join('')}</div>${firsts.length>(unit<220?3:5)?`<div class="first-overflow">+ ${firsts.length-(unit<220?3:5)} открытия →</div>`:''}</button>`:
+      (firsts.length?`<button class="first-card" data-level="${l.number}" style="left:${x}px" aria-label="Первые появления уровня ${l.number}"><span class="eyebrow">Впервые</span><div class="first-items">${firsts.slice(0,unit<220?3:5).map(f=>`<span class="first-item">${image(f.image)}<span>${esc(f.name)}</span></span>`).join('')}</div>${firsts.length>(unit<220?3:5)?`<div class="first-overflow">+ ${firsts.length-(unit<220?3:5)} открытия →</div>`:''}</button>`:
       l.objects.length?'':`<span class="quiet-level" style="left:${x}px">${image(l.randomItems?'hexChest':l.items?.find(i=>i.count>0)?.name)}Находки: ${(l.items||[]).reduce((sum,i)=>sum+i.count,0)+(l.randomItems||0)}</span>`);
     }).join('');
     $('story-content').innerHTML=D.stages.map(s=>{
       const width=stageWidth(s);
       const hook=s.dialogues.find(d=>d.text);
-      return `<span class="stage-tick" style="left:${X(s.start)}px" title="После уровня ${s.start}"></span><div class="stage-band" data-stage-band="${s.index}" style="left:${X(s.start)}px;width:${width}px"><span class="stage-range">${s.continuation?'Продолжение после ур. '+s.start:'После ур. '+s.start+' → '+(s.end<=D.levels.length?s.end:'дальше')}</span><div class="stage-progress">${Array.from({length:s.end-s.start-1},()=>'<i></i>').join('')}</div><button class="stage-card" data-stage="${s.index}">${image(s.image,'stage-image')}<div class="stage-info"><span class="eyebrow">${esc(s.location)} · ${s.map?'Маршрут':'Цель'}</span><h3>${esc(s.title)}</h3><p>${esc(s.description||s.notes[0]||'Продолжение путешествия')}</p>${hook?`<p class="stage-hook">«${esc(hook.text)}»</p>`:''}</div><span class="stage-arrow">↗</span>${s.characters.length?`<div class="stage-characters">${s.characters.slice(0,4).map(c=>`<span class="character">${image(c.image)}<span>${esc(c.name)}</span></span>`).join('')}</div>`:''}</button></div>`;
+      return `<button class="stage-tick" data-stage="${s.index}" style="left:${X(s.start)}px" title="${esc(s.title)} · уровень ${s.start}" aria-label="${esc(s.title)}, уровень ${s.start}">${image(s.image)}</button><div class="stage-band" data-stage-band="${s.index}" style="left:${X(s.start)}px;width:${width}px"><div class="stage-progress" aria-hidden="true">${Array.from({length:s.end-s.start-1},()=>'<i></i>').join('')}</div><button class="stage-card" data-stage="${s.index}">${image(s.image,'stage-image')}<div class="stage-info"><h3>${esc(s.title)}</h3><p>${esc(s.description||s.notes[0]||'Продолжение путешествия')}</p></div><span class="stage-arrow">↗</span>${hook?`<p class="stage-hook">«${esc(hook.text)}»</p>`:''}${s.characters.length?`<div class="stage-characters">${s.characters.slice(0,4).map(c=>`<span class="character">${image(c.image)}<span>${esc(c.name)}</span></span>`).join('')}</div>`:''}</button></div>`;
     }).join('');
+    fitStoryHeight();
     updateViewport();
+  }
+  function fitStoryHeight(){
+    // Measure only on layout changes, never while scrolling.
+    const height=Math.max(260,...[...document.querySelectorAll('.stage-card')].map(card=>card.offsetHeight));
+    $('story-scene').style.minHeight=(height+130)+'px';
   }
   let scrollFrame=0;
   function updateViewport(){
@@ -95,8 +111,7 @@
         const visible=x+w+unit>scroll.scrollLeft&&x-unit<scroll.scrollLeft+scroll.clientWidth;
         if(visible&&!element.style.backgroundImage){
           element.style.backgroundImage=`url("${P.url(element.dataset.bg)}")`;
-          const header=element.querySelector('[data-header]');
-          if(header)header.style.backgroundImage=`url("${P.url(header.dataset.header)}")`;
+          element.querySelectorAll('[data-header]').forEach(header=>header.style.backgroundImage=`url("${P.url(header.dataset.header)}")`);
         }
       });
     }
@@ -298,7 +313,7 @@
   results.onclick=e=>{const button=e.target.closest('[data-search-level]');if(!button)return;jump(+button.dataset.searchLevel);results.hidden=true;search.blur();if(button.dataset.searchStage!==undefined)openStage(+button.dataset.searchStage);else openLevel(+button.dataset.searchLevel);};
   results.onkeydown=e=>{if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();const buttons=[...results.querySelectorAll('button')],i=buttons.indexOf(document.activeElement);buttons[clamp(i+(e.key==='ArrowDown'?1:-1),0,buttons.length-1)]?.focus();}};
   document.addEventListener('click',e=>{if(!e.target.closest('.search'))results.hidden=true;});
-  addEventListener('resize',()=>{hideHover();scheduleViewport();});
+  addEventListener('resize',()=>{hideHover();fitStoryHeight();scheduleViewport();});
   new ResizeObserver(scheduleViewport).observe($('workspace'));
   render();jump(store.get('position',1),false);
   const levelMatch=location.hash.match(/^#level-(\d+)$/),stageMatch=location.hash.match(/^#stage-(.+)$/);
