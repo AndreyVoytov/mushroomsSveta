@@ -534,7 +534,9 @@
   }
 
   function renderOptions(select, values, firstLabel, selectedValue = "") {
-    const distinct = Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b, "ru"));
+    const distinct = select === elements.tag
+      ? sortTagNames(values)
+      : Array.from(new Set(values.filter(Boolean))).sort((a, b) => a.localeCompare(b, "ru"));
     select.innerHTML = `<option value="">${escapeHtml(firstLabel)}</option>` + distinct.map(value =>
       `<option value="${escapeHtml(value)}"${value === selectedValue ? " selected" : ""}>${escapeHtml(value)}</option>`
     ).join("");
@@ -646,11 +648,39 @@
   }
 
   function allTags() {
-    return Array.from(new Set([
+    return sortTagNames([
       ...state.items.flatMap(item => item.tags),
       ...Object.keys(state.tagColors),
       ...(state.draft?.tags || [])
-    ].map(tag => String(tag).trim()).filter(Boolean))).sort((a, b) => a.localeCompare(b, "ru"));
+    ]);
+  }
+
+  function sortTagNames(values) {
+    return Array.from(new Set(values.map(tag => String(tag ?? "").trim()).filter(Boolean))).sort((a, b) => {
+      const aBrown = isBrownTagColor(tagColor(a)) ? 1 : 0;
+      const bBrown = isBrownTagColor(tagColor(b)) ? 1 : 0;
+      return aBrown - bBrown || a.localeCompare(b, "ru");
+    });
+  }
+
+  function isBrownTagColor(color) {
+    if (color === DEFAULT_TAG_COLOR) return true;
+    const hex = color.slice(1);
+    const red = parseInt(hex.slice(0, 2), 16) / 255;
+    const green = parseInt(hex.slice(2, 4), 16) / 255;
+    const blue = parseInt(hex.slice(4, 6), 16) / 255;
+    const maximum = Math.max(red, green, blue);
+    const minimum = Math.min(red, green, blue);
+    const delta = maximum - minimum;
+    if (!delta) return false;
+    const lightness = (maximum + minimum) / 2;
+    const saturation = delta / (1 - Math.abs(2 * lightness - 1));
+    let hue;
+    if (maximum === red) hue = ((green - blue) / delta) % 6;
+    else if (maximum === green) hue = (blue - red) / delta + 2;
+    else hue = (red - green) / delta + 4;
+    hue = (hue * 60 + 360) % 360;
+    return hue >= 10 && hue <= 45 && saturation >= 0.2 && lightness <= 0.62;
   }
 
   function tagMarkup(tags) {
@@ -675,6 +705,7 @@
       return `<div class="tag-option">
         <button class="tag-option-toggle${selected ? " is-selected" : ""}" type="button" data-toggle-tag="${escapeHtml(tag)}" aria-pressed="${selected}" style="${escapeHtml(tagColorStyle(tag))}">${escapeHtml(tag)}</button>
         <input class="tag-color-input" type="color" data-tag-color="${escapeHtml(tag)}" value="${escapeHtml(tagColor(tag))}" aria-label="Цвет тега ${escapeHtml(tag)}" title="Выбрать цвет тега">
+        <button class="tag-delete-button" type="button" data-delete-tag="${escapeHtml(tag)}" aria-label="Удалить тег ${escapeHtml(tag)} из пула и всех карточек" title="Удалить тег из пула и всех карточек">×</button>
       </div>`;
     }).join("") : `<span class="editor-hint">Подходящих тегов пока нет.</span>`;
   }
@@ -711,7 +742,7 @@
     $("#editTagSearch", elements.dialogContent)?.focus();
     try {
       if (!await persistTagColors()) {
-        toast("Не удалось сохранить тег в браузере. Проверь свободное место для данных.");
+        toast("Не удалось подтвердить сохранение тега. Проверь подключение и свободное место для данных.");
         return;
       }
       toast(`Тег «${tag}» сохранён. Нажми «Сохранить», чтобы закрепить его за карточкой.`);
@@ -729,6 +760,29 @@
       console.error("Не удалось сохранить цвет тега в общей базе", error);
       toast("Цвет тега сохранён в этом браузере, но общая база не подтвердила сохранение.");
     });
+  }
+
+  async function deleteTagFromPool(tag) {
+    if (!allTags().includes(tag)) return;
+    if (!window.confirm(`Удалить тег «${tag}» из пула и со всех карточек? Это действие нельзя отменить.`)) return;
+
+    delete state.tagColors[tag];
+    state.items.forEach(item => {
+      item.tags = item.tags.filter(value => value !== tag);
+      if (item.tagColors) delete item.tagColors[tag];
+    });
+    if (state.draft) state.draft.tags = state.draft.tags.filter(value => value !== tag);
+
+    try {
+      if (!await persistTagColors()) {
+        toast("Не удалось подтвердить сохранение удаления тега. Проверь подключение и повтори действие.");
+        return;
+      }
+      toast(`Тег «${tag}» удалён из пула и со всех карточек.`);
+    } catch (error) {
+      console.error("Не удалось удалить тег из общей базы", error);
+      toast("Тег удалён в этом браузере, но общая база не подтвердила сохранение.");
+    }
   }
 
   function renderFocusPreview() {
@@ -864,6 +918,11 @@
     $("#cancelEdit", elements.dialogContent).addEventListener("click", cancelEdit);
     $("#editTagSearch", elements.dialogContent).addEventListener("input", renderAvailableTags);
     $("#availableTagList", elements.dialogContent).addEventListener("click", event => {
+      const deleteButton = event.target.closest("[data-delete-tag]");
+      if (deleteButton) {
+        deleteTagFromPool(deleteButton.dataset.deleteTag);
+        return;
+      }
       const button = event.target.closest("[data-toggle-tag]");
       if (button) toggleDraftTag(button.dataset.toggleTag);
     });

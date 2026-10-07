@@ -191,6 +191,9 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
 .tag-color-input { width: 28px !important; height: 28px !important; padding: 3px !important; border: 1px solid var(--line-strong) !important; border-radius: 50% !important; background: #fffefa !important; cursor: pointer; }
 .tag-color-input::-webkit-color-swatch-wrapper { padding: 0; }
 .tag-color-input::-webkit-color-swatch { border: 0; border-radius: 50%; }
+.tag-delete-button { display: grid; flex: 0 0 26px; place-items: center; width: 26px; height: 26px; padding: 0 0 2px; border: 1px solid #e8c9be; border-radius: 50%; color: #9b5747; background: #fff8f4; font-size: 18px; line-height: 1; cursor: pointer; }
+.tag-delete-button:hover { border-color: #c98a76; color: #7d3e31; background: #f9e9e2; }
+.tag-delete-button:focus-visible { outline: 2px solid #9b5747; outline-offset: 2px; }
 .tag-create-row { display: grid; grid-template-columns: minmax(0,1fr) 36px auto; align-items: center; gap: 7px; }
 .tag-create-row #newTagColor { width: 32px !important; height: 32px !important; }
 .tag-create-row .button { height: 36px; padding: 7px 11px; white-space: nowrap; }
