@@ -100,34 +100,48 @@
         }
       });
     }
-    // Keep each long-running goal readable as its band passes under the viewport.
-    document.querySelectorAll('.stage-band').forEach(el=>{
-      const stage=D.stages[+el.dataset.stageBand],card=el.querySelector('.stage-card');
-      const offset=clamp(scrollStory.scrollLeft-X(stage.start)+16,14,stageWidth(stage)-card.offsetWidth-14);
-      card.style.marginLeft=Math.max(14,offset)+'px';
-    });
   }
   function scheduleViewport(){if(!scrollFrame)scrollFrame=requestAnimationFrame(()=>{scrollFrame=0;updateViewport();});}
+  // A mirrored scroll must never become a new source and move the first pane back.
+  const mirroredPositions=new WeakMap();
+  const lastPositions=new WeakMap();
+  let scrollingUntil=0;
+  function setScrollLeft(scroller,left){
+    const value=clamp(left,0,Math.max(0,scroller.scrollWidth-scroller.clientWidth));
+    if(Math.abs(scroller.scrollLeft-value)<1)return;
+    mirroredPositions.set(scroller,value);
+    scroller.scrollLeft=value;
+  }
+  function quietPreview(){scrollingUntil=performance.now()+220;hideHover();}
   function syncFrom(source,target){
-    hideHover();
-    if(linked&&Math.abs(source.scrollLeft-target.scrollLeft)>1)target.scrollLeft=source.scrollLeft;
+    const left=source.scrollLeft,expected=mirroredPositions.get(source);
+    mirroredPositions.delete(source);
+    quietPreview();
     scheduleViewport();
+    const previous=lastPositions.get(source);
+    lastPositions.set(source,left);
+    if(expected!==undefined&&Math.abs(left-expected)<1)return;
+    if(previous!==undefined&&Math.abs(left-previous)<1)return;
+    if(linked)setScrollLeft(target,left);
     clearTimeout(timer);timer=setTimeout(()=>store.set('position',levelForX(scrollTop.scrollLeft+Math.min(210,scrollTop.clientWidth*.28))),220);
   }
   scrollTop.addEventListener('scroll',()=>syncFrom(scrollTop,scrollStory),{passive:true});
   scrollStory.addEventListener('scroll',()=>syncFrom(scrollStory,scrollTop),{passive:true});
   function jump(number){
     const n=clamp(Number(number)||1,1,D.levels.length),left=Math.max(0,X(n)-Math.min(210,scrollTop.clientWidth*.28));
-    // Both panels scroll together without competing smooth-scroll animations.
-    scrollTop.scrollLeft=left;if(linked)scrollStory.scrollLeft=left;
+    quietPreview();
+    setScrollLeft(scrollTop,left);if(linked)setScrollLeft(scrollStory,left);
+    store.set('position',n);
     $('announcement').textContent='Уровень '+Math.round(n);
     scheduleViewport();
   }
   function changeZoom(delta){
     const center=levelForX(scrollTop.scrollLeft+scrollTop.clientWidth/2);
     unit=clamp(unit+delta,160,420);store.set('unit',unit);render();
-    scrollTop.scrollLeft=Math.max(0,X(center)-scrollTop.clientWidth/2);
-    if(linked)scrollStory.scrollLeft=scrollTop.scrollLeft;
+    quietPreview();
+    setScrollLeft(scrollTop,Math.max(0,X(center)-scrollTop.clientWidth/2));
+    if(linked)setScrollLeft(scrollStory,scrollTop.scrollLeft);
+    scheduleViewport();
   }
   $('zoom-in').onclick=()=>changeZoom(40);$('zoom-out').onclick=()=>changeZoom(-40);
   $('overview').addEventListener('input',e=>jump(e.target.value,false));
@@ -144,7 +158,7 @@
   }
   toolbarToggle.onclick=()=>setToolbar($('toolbar').hidden);
   function setLinked(){ $('sync-toggle').classList.toggle('active',linked);$('sync-toggle').setAttribute('aria-pressed',String(linked));$('sync-toggle').textContent=linked?'↔ Общая шкала':'↔ Раздельно'; }
-  $('sync-toggle').onclick=()=>{linked=!linked;store.set('linked',linked);setLinked();if(linked)scrollStory.scrollLeft=scrollTop.scrollLeft;};setLinked();
+  $('sync-toggle').onclick=()=>{linked=!linked;store.set('linked',linked);setLinked();if(linked)setScrollLeft(scrollStory,scrollTop.scrollLeft);};setLinked();
   $('layers-toggle').onclick=()=>{const open=$('layers').hidden;$('layers').hidden=!open;$('layers-toggle').setAttribute('aria-expanded',String(open));};
   document.querySelectorAll('[data-layer]').forEach(input=>{
     const key=input.dataset.layer;input.checked=store.get('layer:'+key,true);
@@ -185,10 +199,10 @@
   const preview=$('hover-preview');let hoverTimer;
   function hideHover(){clearTimeout(hoverTimer);hovering=null;preview.hidden=true;}
   function showHover(node){
-    if(!matchMedia('(hover:hover)').matches||!$('drawer').hidden)return;
+    if(!matchMedia('(hover:hover)').matches||!$('drawer').hidden||performance.now()<scrollingUntil||scrollTop.classList.contains('dragging'))return;
     const number=+node.dataset.hover,level=D.levels[number-1];hovering=number;
     clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{
-      if(hovering!==number)return;
+      if(hovering!==number||performance.now()<scrollingUntil||scrollTop.classList.contains('dragging'))return;
       const rect=node.getBoundingClientRect();
       $('hover-title').textContent='Уровень '+number;$('hover-energy').innerHTML=energyIcon()+level.steps;
       preview.hidden=false;

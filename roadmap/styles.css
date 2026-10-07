@@ -13,7 +13,7 @@
 .story-object{top:174px}
 .first-card{top:310px}
 .quiet-level{top:336px}
-.stage-card{position:relative;left:0}
+.stage-card{position:static;backdrop-filter:none;-webkit-backdrop-filter:none}
 @media(max-width:700px){.levels-scene{min-height:420px}.stage-info .eyebrow{font-size:8px;letter-spacing:1px}}
 
 /* The atlas fills the screen; controls float above it only when requested. */
@@ -55,7 +55,9 @@
 .first-item img{height:27px;width:31px;flex-shrink:0;filter:drop-shadow(0 1px 1px #725a2826)}
 .first-overflow{border-top:1px solid #d8ccad66;margin-top:6px;padding-top:7px;text-align:right;font-size:9px}
 .quiet-level{color:#f5f0cf;text-shadow:0 1px 3px #344c25}.quiet-level img{opacity:1}
-.stage-card{background:#fffbf0ed;border-color:#e7d9b3;box-shadow:0 6px 25px #28351d2e}
+.stage-card{background:#fffbf0;border-color:#e7d9b3;box-shadow:0 6px 25px #28351d2e}
+.stage-card:hover{background:#fff9ec}
+.timeline-scroll{overflow-anchor:none;scroll-behavior:auto}
 .hover-preview{width:350px}.hover-preview canvas{display:block;height:auto;aspect-ratio:9 / 10}
 .preview-shell canvas{height:auto;aspect-ratio:10 / 11}
 .preview-modes{position:static;justify-content:center;border-radius:0;background:#f3e8cf;border-top:1px solid #b9a17166;padding:7px}
