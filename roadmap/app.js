@@ -19,9 +19,8 @@
   const stageWidth=s=>(s.continuation?3:s.end-s.start)*unit;
   const energyY=steps=>57-clamp(steps,0,30)*.9;
   const getStage=number=>[...D.stages].reverse().find(s=>s.start<=number)||D.stages[0];
-  const firstCount=D.levels.reduce((sum,l)=>sum+l.firsts.length,0);
-  $('level-count').textContent=`${D.levels.length} уровня · ${firstCount} открытий`;
-  $('stage-count').textContent=`${D.stages.length} этап`;
+  const energyIcon=()=>image('lightning','energy-icon');
+  document.documentElement.style.setProperty('--tutorial-panel',`url("${P.url('helperPanel2')}")`);
   $('total-levels').textContent=D.levels.length;
   $('overview').max=D.levels.length;
   $('chapter').innerHTML+='<option value="1">Начало игры</option>'+D.stages.map(s=>`<option value="${s.start}">${s.start} · ${esc(s.title)}</option>`).join('');
@@ -30,9 +29,10 @@
   const backgroundRuns=[];
   for(const level of D.levels){
     const key=D.environments[level.environment].field;
+    const header=P.headerKey(level);
     const last=backgroundRuns[backgroundRuns.length-1];
-    if(last?.key===key)last.end=level.number+1;
-    else backgroundRuns.push({start:level.number,end:level.number+1,key});
+    if(last?.key===key&&last.header===header)last.end=level.number+1;
+    else backgroundRuns.push({start:level.number,end:level.number+1,key,header});
   }
   const storyRuns=[];
   for(const stage of D.storyLocations){
@@ -40,7 +40,16 @@
     if(last?.key===stage.background)last.end=stage.end;
     else storyRuns.push({start:stage.start,end:stage.end,key:stage.background});
   }
-  function backgroundHTML(runs){return runs.map(r=>`<div class="background-segment" data-bg="${esc(r.key)}" data-start="${r.start}" data-end="${r.end}" style="left:${X(r.start)-unit*.8}px;width:${(r.end-r.start+1.1)*unit}px"></div>`).join('');}
+  function backgroundHTML(runs,story=false){
+    const segment=(r,left,width)=>`<div class="background-segment ${story?'story-scenery':'field-scenery'}" data-bg="${esc(r.key)}" data-left="${left}" data-width="${width}" style="left:${left}px;width:${width}px">${r.header?`<div class="field-header ${r.header==='carpet'?'house-header':''}" data-header="${esc(r.header)}"></div>`:''}</div>`;
+    return runs.map(r=>{
+      const left=X(r.start)-unit*.7,right=X(r.end)+unit*.3;
+      if(!story)return segment(r,left,right-left);
+      // Repeat short, proportionate views rather than stretching a portrait across a chapter.
+      const count=Math.max(1,Math.ceil((right-left)/400)),step=(right-left)/count;
+      return Array.from({length:count},(_,i)=>segment(r,left+i*step-40,step+80)).join('');
+    }).join('');
+  }
   function render(){
     const width=totalWidth();
     document.documentElement.style.setProperty('--unit',unit+'px');
@@ -48,7 +57,7 @@
     $('zoom-out').disabled=unit<=160;$('zoom-in').disabled=unit>=420;
     for(const id of ['levels-scene','story-scene'])$(id).style.width=width+'px';
     $('level-backgrounds').innerHTML=backgroundHTML(backgroundRuns);
-    $('story-backgrounds').innerHTML=backgroundHTML(storyRuns);
+    $('story-backgrounds').innerHTML=backgroundHTML(storyRuns,true);
     const svg=$('path-svg');svg.setAttribute('viewBox',`0 0 ${width} 470`);svg.setAttribute('preserveAspectRatio','none');
     // Coordinates stay fixed vertically, even when the pane is taller.
     svg.style.height='470px';
@@ -62,11 +71,10 @@
     $('level-content').innerHTML='<span class="energy-caption">Энергия</span>'+D.levels.map(l=>{
       const x=X(l.number),y=Y(l.number),firsts=l.firsts.filter(f=>f.category!=='story');
       const primary=l.tutorials[0];
-      return `<span class="energy-value" style="left:${x}px;top:${energyY(l.steps)}px" title="Базовая энергия уровня ${l.number}: ${l.steps}">${l.steps}</span>`+
+      return `<span class="energy-value" style="left:${x}px;top:${energyY(l.steps)}px" title="Базовая энергия уровня ${l.number}: ${l.steps}">${energyIcon()}${l.steps}</span>`+
       (primary?`<button class="tutorial-card" data-level="${l.number}" style="left:${x}px" aria-label="Обучение на уровне ${l.number}"><span class="eyebrow">Обучение</span><p>${esc(primary.text)}</p>${l.tutorials.length>1?`<span class="tutorial-more">Ещё подсказок: ${l.tutorials.length-1}</span>`:''}${image(primary.image)}</button>`:'')+
-      (l.objects.length?`<button class="story-object" data-level="${l.number}" style="left:${x}px" aria-label="Сюжетные находки уровня ${l.number}">${l.objects.slice(0,2).map(o=>image(o.image)).join('')}<span>${esc(l.objects.map(o=>o.name).join(' · '))}</span></button>`:'')+
+      (l.objects.length?`<button class="story-object" data-level="${l.number}" style="left:${x}px" aria-label="Сюжетные находки уровня ${l.number}: ${esc(l.objects.map(o=>o.name).join(', '))}">${l.objects.slice(0,2).map(o=>image(o.image)).join('')}</button>`:'')+
       `<button class="level-node ${l.hardLevel?'hard':''} ${l.firsts.length?'has-first':''} ${selected===l.number?'selected':''}" data-level="${l.number}" data-hover="${l.number}" style="left:${x}px;top:${y}px" aria-label="Уровень ${l.number}, ${D.environments[l.environment].name}, энергия ${l.steps}${l.hardLevel?', сложный':''}">${l.number}</button>`+
-      `<span class="node-subtitle" style="left:${x}px;top:${y+33}px">${l.hardLevel?'Сложный · ':''}${esc(D.environments[l.environment].name)}</span>`+
       (firsts.length?`<button class="first-card" data-level="${l.number}" style="left:${x}px" aria-label="Первые появления уровня ${l.number}"><span class="eyebrow">Впервые · ${firsts.length}</span><div class="first-items">${firsts.slice(0,unit<220?3:5).map(f=>`<span class="first-item">${image(f.image)}<span>${esc(f.name)}</span></span>`).join('')}</div>${firsts.length>(unit<220?3:5)?`<div class="first-overflow">+ ${firsts.length-(unit<220?3:5)} открытия →</div>`:''}</button>`:
       l.objects.length?'':`<span class="quiet-level" style="left:${x}px">${image(l.randomItems?'hexChest':l.items?.find(i=>i.count>0)?.name)}Находки: ${(l.items||[]).reduce((sum,i)=>sum+i.count,0)+(l.randomItems||0)}</span>`);
     }).join('');
@@ -80,14 +88,16 @@
   let scrollFrame=0;
   function updateViewport(){
     const left=scrollTop.scrollLeft, visible=scrollTop.clientWidth;
-    const from=Math.floor(levelForX(left)),to=Math.ceil(levelForX(left+visible));
-    $('visible-range').textContent=`Ур. ${from}–${to} / ${D.levels.length}`;
     $('overview').value=levelForX(left+visible*.25);
-    for(const [container,scroll,runs] of [[$('level-backgrounds'),scrollTop,backgroundRuns],[$('story-backgrounds'),scrollStory,storyRuns]]){
-      [...container.children].forEach((element,i)=>{
-        const r=runs[i];
-        const visible=X(r.end)+unit>scroll.scrollLeft && X(r.start)-unit<scroll.scrollLeft+scroll.clientWidth;
-        if(visible&&!element.style.backgroundImage)element.style.backgroundImage=`url("${P.url(r.key)}")`;
+    for(const [container,scroll] of [[$('level-backgrounds'),scrollTop],[$('story-backgrounds'),scrollStory]]){
+      [...container.children].forEach(element=>{
+        const x=+element.dataset.left,w=+element.dataset.width;
+        const visible=x+w+unit>scroll.scrollLeft&&x-unit<scroll.scrollLeft+scroll.clientWidth;
+        if(visible&&!element.style.backgroundImage){
+          element.style.backgroundImage=`url("${P.url(element.dataset.bg)}")`;
+          const header=element.querySelector('[data-header]');
+          if(header)header.style.backgroundImage=`url("${P.url(header.dataset.header)}")`;
+        }
       });
     }
     // Keep each long-running goal readable as its band passes under the viewport.
@@ -123,6 +133,16 @@
   $('overview').addEventListener('input',e=>jump(e.target.value,false));
   $('home').onclick=()=>jump(1);
   $('chapter').onchange=e=>{if(e.target.value)jump(+e.target.value);};
+  const toolbarToggle=$('toolbar-toggle');
+  function setToolbar(open){
+    $('toolbar').hidden=!open;
+    toolbarToggle.setAttribute('aria-expanded',String(open));
+    toolbarToggle.setAttribute('aria-label',open?'Свернуть панель':'Развернуть панель');
+    toolbarToggle.title=open?'Свернуть панель':'Развернуть панель';
+    toolbarToggle.classList.toggle('expanded',open);
+    if(!open){$('layers').hidden=true;$('search-results').hidden=true;$('layers-toggle').setAttribute('aria-expanded','false');}
+  }
+  toolbarToggle.onclick=()=>setToolbar($('toolbar').hidden);
   function setLinked(){ $('sync-toggle').classList.toggle('active',linked);$('sync-toggle').setAttribute('aria-pressed',String(linked));$('sync-toggle').textContent=linked?'↔ Общая шкала':'↔ Раздельно'; }
   $('sync-toggle').onclick=()=>{linked=!linked;store.set('linked',linked);setLinked();if(linked)scrollStory.scrollLeft=scrollTop.scrollLeft;};setLinked();
   $('layers-toggle').onclick=()=>{const open=$('layers').hidden;$('layers').hidden=!open;$('layers-toggle').setAttribute('aria-expanded',String(open));};
@@ -170,10 +190,12 @@
     clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{
       if(hovering!==number)return;
       const rect=node.getBoundingClientRect();
-      $('hover-title').textContent='Уровень '+number;$('hover-energy').textContent='ϟ '+level.steps;
-      preview.style.left=clamp(rect.left+rect.width/2-155,10,innerWidth-320)+'px';
-      preview.style.top=clamp(rect.top>360?rect.top-325:rect.bottom+14,10,innerHeight-335)+'px';
-      preview.hidden=false;P.draw($('hover-canvas'),level,'covered');
+      $('hover-title').textContent='Уровень '+number;$('hover-energy').innerHTML=energyIcon()+level.steps;
+      preview.hidden=false;
+      const bounds=preview.getBoundingClientRect();
+      preview.style.left=clamp(rect.left+rect.width/2-bounds.width/2,10,Math.max(10,innerWidth-bounds.width-10))+'px';
+      preview.style.top=clamp(rect.top>bounds.height+14?rect.top-bounds.height-12:rect.bottom+14,10,Math.max(10,innerHeight-bounds.height-10))+'px';
+      P.draw($('hover-canvas'),level,'covered');
     },160);
   }
   $('level-content').addEventListener('pointerover',e=>{const node=e.target.closest('[data-hover]');if(node)showHover(node);});
@@ -188,16 +210,15 @@
     hideHover();if($('drawer').hidden)oldFocus=document.activeElement;
     $('drawer-title').textContent=title;$('drawer-eyebrow').textContent=eyebrow;$('drawer-body').innerHTML=html;
     $('drawer-body').scrollTop=0;$('drawer').hidden=false;$('drawer-backdrop').hidden=false;
-    for(const el of [$('workspace'),document.querySelector('.toolbar'),document.querySelector('.overview')])el.inert=true;
+    for(const el of [$('workspace'),$('toolbar'),toolbarToggle,document.querySelector('.overview')])el.inert=true;
     $('drawer-close').focus({preventScroll:true});
   }
   function openLevel(number){
     const l=D.levels[number-1];if(!l)return;selected=number;activeStage=null;
     const stage=getStage(Math.max(1,number-1));
-    const targets=(l.items||[]).concat(l.interactiveItems||[]).filter(i=>i.count>0).map(i=>chip({name:(D.names[i.name]||i.name)+' × '+i.count,image:i.name,category:'Цель'})).join('');
-    const extraTargets=[['randomItems','Случайные находки'],['flowers','Цветы'],['cankerberries','Шиповник'],['jellyMushrooms','Желейные грибы'],['honey','Мёд'],['acorns','Жёлуди']].filter(([key])=>l[key]).map(([key,name])=>`<span>${name} × ${l[key]}</span>`).join('');
-    const html=`<div class="detail-meta"><span>${esc(D.environments[l.environment].name)}</span><span>ϟ Энергия ${l.steps}</span><span>${[...l.mask].filter(c=>c!=='0').length} клеток</span>${l.hardLevel?'<span>Сложный уровень</span>':''}${l.bonuses?`<span>Зверей: ${l.bonuses}</span>`:''}</div><div class="preview-shell"><canvas id="detail-canvas" width="1000" height="780" aria-label="Поле уровня ${number}"></canvas><div class="preview-modes"><button data-mode="covered" class="active">Под листьями</button><button data-mode="contents">Открыть поле</button></div></div><p class="preview-note">Форма и типы клеток — из уровня. Расположение случайных находок — пример; динамические события не проигрываются.</p><button class="location-link" data-open-stage="${stage.index}"><small>ТЕКУЩАЯ ДОЛГАЯ ЦЕЛЬ</small>${esc(stage.title)} ↗</button>`+
-    `<section class="detail-section"><h3>Задачи поля</h3>${targets?`<div class="detail-grid">${targets}</div>`:''}${extraTargets?`<div class="detail-meta" style="margin-top:10px">${extraTargets}</div>`:''}${!(targets||extraTargets)?'<p class="empty-state">Отдельные цели в конфигурации не заданы.</p>':''}</section>`+
+    const targets=P.goals(l).map(i=>chip({name:i.name+' × '+i.count,image:i.image,category:'Цель'})).join('');
+    const html=`<div class="detail-meta"><span>${esc(D.environments[l.environment].name)}</span><span>${energyIcon()} Энергия ${l.steps}</span><span>${[...l.mask].filter(c=>c!=='0').length} клеток</span>${l.hardLevel?'<span>Сложный уровень</span>':''}${l.bonuses?`<span>Зверей: ${l.bonuses}</span>`:''}</div><div class="preview-shell"><canvas id="detail-canvas" width="1000" height="1100" aria-label="Поле уровня ${number}"></canvas><div class="preview-modes"><button data-mode="covered" class="active">Под листьями</button><button data-mode="contents">Открыть поле</button></div></div><p class="preview-note">Форма и типы клеток — из уровня. Заданные находки и их количество сохранены; расположение случайное. Динамические события не проигрываются.</p><button class="location-link" data-open-stage="${stage.index}"><small>ТЕКУЩАЯ ДОЛГАЯ ЦЕЛЬ</small>${esc(stage.title)} ↗</button>`+
+    `<section class="detail-section"><h3>Задачи поля</h3>${targets?`<div class="detail-grid">${targets}</div>`:'<p class="empty-state">Отдельные цели в конфигурации не заданы.</p>'}</section>`+
     (l.tutorials.length?`<section class="detail-section"><h3>Обучение</h3>${l.tutorials.map(t=>`<div class="detail-tutorial">${image(t.image)}<p>${esc(t.text)}</p></div>`).join('')}</section>`:'')+
     (l.firsts.length?`<section class="detail-section"><h3>Впервые на этом уровне</h3><div class="detail-grid">${l.firsts.map(chip).join('')}</div></section>`:'')+
     (l.objects.length?`<section class="detail-section"><h3>Сюжетные находки</h3><div class="detail-grid">${l.objects.map(o=>chip({name:o.name,image:o.image,category:'story'})).join('')}</div></section>`:'')+
@@ -227,7 +248,7 @@
   }
   function closeDrawer(){
     $('drawer').hidden=true;$('drawer-backdrop').hidden=true;
-    for(const el of [$('workspace'),document.querySelector('.toolbar'),document.querySelector('.overview')])el.inert=false;
+    for(const el of [$('workspace'),$('toolbar'),toolbarToggle,document.querySelector('.overview')])el.inert=false;
     history.replaceState(null,'',location.pathname+location.search);
     if(oldFocus?.isConnected)oldFocus.focus({preventScroll:true});
   }

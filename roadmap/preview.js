@@ -7,6 +7,24 @@
   const boards = new Map();
   const requests = new WeakMap();
   const alias = { bush: 'blueberryBush', moonflowerClosed: 'moonflowerClosed1', flowers: 'chamomileSmall' };
+  function headerKey(level) {
+    return level.header || (level.environment===2?'carpet':{1:'forestHeader2',3:'flowersFieldHeader',4:'lakeHeader'}[level.environment] || 'forestHeader1');
+  }
+  // Same goal counters as ForestUtils.getAims; no game runtime is loaded.
+  function goals(level) {
+    const result=[];
+    const add=(image,count,name)=>{if(count>0)result.push({image,count,name:name||data.names[image]||image});};
+    add('smth',level.randomItems,'Случайные находки');
+    (level.items||[]).forEach(i=>add(i.name,i.count));
+    add(level.environment===1?'bug3':'ladybug',level.ladybugs?.length,'Божьи коровки');
+    add('chamomileSmall',level.flowers,'Цветы');
+    add('cankerberry',level.cankerberries,'Шиповник');
+    const interactive={bush2:['blueberry',4,'Черника'],bush:['redberry',4,'Красные ягоды'],book1:['book3',1,'Книги'],moonflowerClosed:['moonflower',1,'Лунные цветы'],shell:['pearl',1,'Жемчужины']};
+    (level.interactiveItems||[]).forEach(i=>{const target=interactive[i.name];if(target)add(target[0],i.count*target[1],target[2]);});
+    [['jellyMushrooms','jellyMushroom','Желейные грибы'],['acorns','acorn','Жёлуди'],['dragonflies','dragonfly','Стрекозы'],['bees','bumblebee','Шмели'],['honey','honey','Мёд']].forEach(([key,image,name])=>add(image,level[key],name));
+    add('boat',[...level.mask].filter(c=>c==='b').length,'Лодки');
+    return result;
+  }
   function url(key) { return data.assets[key] ? new URL(data.assets[key], root).href : ''; }
   function load(key) {
     if (!data.assets[key] && alias[key]) key = alias[key];
@@ -131,7 +149,8 @@
     const ticket={}; requests.set(canvas,ticket);
     const {cells}=board(level);
     const bg=data.environments[level.environment].field;
-    const keys=new Set([bg,'ladybug']);
+    const header=headerKey(level),aims=goals(level);
+    const keys=new Set([bg,header,'ladybug','topPanel','topPanelFrame','lightning',...aims.map(a=>a.image)]);
     cells.forEach(c=>[ground(level,c),cover(level,c),leaf(level,c),c.content,...overlays(c)].forEach(k=>keys.add(k)));
     const images=new Map(await Promise.all([...keys].map(async key=>[key,await load(key)])));
     if (requests.get(canvas)!==ticket) return;
@@ -139,15 +158,36 @@
     const width=canvas.width, height=canvas.height;
     ctx.clearRect(0,0,width,height);
     const bgImage=images.get(bg);
-    if(bgImage){const s=Math.max(width/bgImage.width,height/bgImage.height);ctx.drawImage(bgImage,(width-bgImage.width*s)/2,(height-bgImage.height*s)/2,bgImage.width*s,bgImage.height*s);}
+    if(bgImage){const size=118*width/960;for(let y=0;y<height;y+=size)for(let x=0;x<width;x+=size)ctx.drawImage(bgImage,x,y,size,size);}
     else{ctx.fillStyle='#4e6342';ctx.fillRect(0,0,width,height);}
-    ctx.fillStyle='#203c2638';ctx.fillRect(0,0,width,height);
+    const headerImage=images.get(header),headerHeight=Math.min(height*.32,width*.37);
+    if(headerImage){
+      if(header==='carpet'){
+        const w=width*.8,h=w*headerImage.height/headerImage.width;
+        ctx.drawImage(headerImage,(width-w)/2,width*.11,w,h);
+      }else{
+        const h=headerImage.height*width/headerImage.width;
+        ctx.drawImage(headerImage,0,headerHeight-h,width,h);
+      }
+    }
+    // The game HUD artwork, drawn at its native 960 px design scale.
+    ctx.save();ctx.scale(width/960,width/960);
+    const panel=images.get('topPanel'),frame=images.get('topPanelFrame');
+    if(panel)ctx.drawImage(panel,0,0,960,155);
+    if(frame)ctx.drawImage(frame,265,3,482,106);
+    const icon=(key,x,y,size)=>{const img=images.get(key);if(!img)return;const s=size/Math.max(img.width,img.height);ctx.drawImage(img,x-img.width*s/2,y-img.height*s/2,img.width*s,img.height*s);};
+    const count=(value,x,y,size=43)=>{ctx.font=`bold ${size}px Arial`;ctx.textBaseline='middle';ctx.textAlign='center';ctx.lineJoin='round';ctx.lineWidth=5;ctx.strokeStyle='#75401c';ctx.fillStyle='#fff4cf';ctx.strokeText(String(value),x,y);ctx.fillText(String(value),x,y);};
+    icon('lightning',87,57,155);count(level.steps,176,61,48);
+    const step=Math.min(165,420/Math.max(1,aims.length)),start=505-(aims.length-1)*step/2;
+    aims.forEach((aim,i)=>{const x=start+i*step;icon(aim.image,x-19,55,aims.length>4?60:80);count(aim.count,x+28,63,aims.length>4?32:40);});
+    ctx.restore();
     if(!cells.length)return;
     const minX=Math.min(...cells.map(c=>c.x))-66, maxX=Math.max(...cells.map(c=>c.x))+66;
     const minY=Math.min(...cells.map(c=>c.y))-72, maxY=Math.max(...cells.map(c=>c.y))+74;
-    const scale=Math.min((width-32)/(maxX-minX),(height-66)/(maxY-minY));
+    const fieldTop=headerHeight+20,fieldHeight=height-fieldTop-25;
+    const scale=Math.min((width-32)/(maxX-minX),fieldHeight/(maxY-minY));
     const ox=(width-(maxX-minX)*scale)/2-minX*scale;
-    const oy=42+(height-54-(maxY-minY)*scale)/2-minY*scale;
+    const oy=fieldTop+(fieldHeight-(maxY-minY)*scale)/2-minY*scale;
     ctx.save();ctx.translate(ox,oy);ctx.scale(scale,scale);
     function sprite(key,x,y,w=120,h=127,stretch=true) {
       const image=images.get(key);if(!image)return;
@@ -175,5 +215,5 @@
     });
     ctx.restore();
   }
-  window.RoadmapPreview={draw,url,board};
+  window.RoadmapPreview={draw,url,board,headerKey,goals};
 })();
