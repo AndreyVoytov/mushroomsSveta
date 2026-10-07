@@ -154,7 +154,11 @@ kbd { padding: 3px 6px; border: 1px solid #e9e1d5; border-radius: 4px; color: #9
 .detail-dialog::backdrop { background: #24251e8c; backdrop-filter: blur(4px); }
 .dialog-frame { position: relative; max-height: min(94vh, 1080px); overflow: auto; padding: 30px 38px 34px; }
 .dialog-close { position: sticky; top: 0; z-index: 3; float: right; margin: -12px -17px 0 8px; }
-.detail-header { padding-right: 34px; }
+.detail-header { position: relative; padding-right: 84px; }
+.detail-edit-icon { position: absolute; top: -12px; right: 42px; z-index: 2; border-color: var(--line-strong); color: var(--moss-dark); background: #fffdf8; box-shadow: 0 3px 10px #2a2b2015; }
+.detail-edit-icon:hover { border-color: var(--moss); color: #fffdf8; background: var(--moss); }
+.detail-edit-icon:focus-visible { outline: 2px solid var(--moss); outline-offset: 2px; }
+.detail-edit-icon svg { display: block; width: 17px; height: 17px; }
 .detail-eyebrow { margin: 0 0 9px; color: var(--moss); font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
 .detail-title { margin: 0 0 13px; font: 500 32px/1.16 Georgia, "Times New Roman", serif; letter-spacing: -.025em; }
 .detail-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }

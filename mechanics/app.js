@@ -824,6 +824,9 @@
       return `<button class="detail-image" type="button" data-view-image="${index}" aria-label="Просмотреть изображение ${index + 1}"><img src="${escapeHtml(src)}" alt="${escapeHtml(item.title)} · изображение ${index + 1}" loading="lazy"></button>`;
     }).join("");
     elements.dialogContent.innerHTML = `<div class="detail-header">
+      <button class="icon-button detail-edit-icon" type="button" data-edit-item${editTitle} aria-label="Редактировать">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L8 18l-4 1 1-4Z"/></svg>
+      </button>
       <p class="detail-eyebrow">КАРТОЧКА МЕХАНИКИ</p>
       <h2 class="detail-title" id="dialogTitle">${escapeHtml(item.title || "Без названия")}</h2>
       <div class="detail-pills"><span class="status-pill ${statusClass(item.status)}">${escapeHtml(item.status)}</span><span class="priority-pill ${priorityClass(item.priority)}">${escapeHtml(item.priority)}</span><span class="level-label">ур. ${normalizeLevel(item.appearanceLevel) === null ? "—" : normalizeLevel(item.appearanceLevel)}</span></div>
