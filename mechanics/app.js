@@ -616,9 +616,21 @@
     if (window.location.hash !== wanted) window.location.hash = wanted;
   }
 
+  function isTouchInterface() {
+    return Number(navigator.maxTouchPoints) > 0 || window.matchMedia("(hover: none) and (pointer: coarse)").matches;
+  }
+
+  function focusEditorTitleOnDesktop() {
+    if (!isTouchInterface()) $("#editTitle", elements.dialogContent)?.focus();
+  }
+
   function openItem(id, writeHash = true) {
     const item = findItem(id);
     if (!item) return;
+    if (isTouchInterface()) {
+      const active = document.activeElement;
+      if (active && /^(INPUT|TEXTAREA|SELECT)$/.test(active.tagName)) active.blur();
+    }
     state.selectedId = id;
     state.dialogMode = "view";
     state.draft = null;
@@ -644,7 +656,7 @@
     renderDialog();
     if (!elements.dialog.open) elements.dialog.showModal();
     setHash(item.id);
-    window.setTimeout(() => $("#editTitle")?.focus(), 50);
+    window.setTimeout(focusEditorTitleOnDesktop, 50);
   }
 
   function allTags() {
@@ -1142,7 +1154,7 @@
     state.draftIsNew = false;
     state.dialogMode = "edit";
     renderDialog();
-    $("#editTitle", elements.dialogContent)?.focus();
+    focusEditorTitleOnDesktop();
   }
 
   function releaseTemporaryUrls() {
