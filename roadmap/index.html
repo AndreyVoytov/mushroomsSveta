@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f4efe4">
+  <title>Атлас игры — маршрут уровней и истории</title>
+  <link rel="stylesheet" href="styles.css?v=20261007-01">
+  <script defer src="data.js?v=20261007-01"></script>
+  <script defer src="preview.js?v=20261007-01"></script>
+  <script defer src="app.js?v=20261007-01"></script>
+</head>
+<body>
+  <header class="toolbar">
+    <a class="brand" href="./"><span class="brand-mark">↝</span><span>Атлас игры<small>МАРШРУТ И ИСТОРИЯ</small></span></a>
+    <div class="toolbar-controls">
+      <label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="Уровень, механика, персонаж…" autocomplete="off" aria-label="Поиск по карте"><div id="search-results" class="search-results" hidden></div></label>
+      <label class="chapter-select"><span class="sr-only">Сюжетный этап</span><select id="chapter"><option value="">К сюжетному этапу</option></select></label>
+      <div class="zoom-controls"><button id="zoom-out" aria-label="Отдалить">−</button><output id="zoom-value">100%</output><button id="zoom-in" aria-label="Приблизить">+</button></div>
+      <button id="layers-toggle" class="quiet" aria-expanded="false" aria-controls="layers">Слои</button>
+      <a class="tool-link" id="mechanics-link" href="../mechanics/">Механики ↗</a>
+    </div>
+  </header>
+  <div id="layers" class="layers" hidden>
+    <label><input type="checkbox" data-layer="tutorials" checked> Обучение</label>
+    <label><input type="checkbox" data-layer="firsts" checked> Первые появления</label>
+    <label><input type="checkbox" data-layer="objects" checked> Сюжетные находки</label>
+    <label><input type="checkbox" data-layer="backgrounds" checked> Фоны</label>
+    <button id="about-open" class="quiet">О данных и превью</button>
+  </div>
+  <main id="workspace">
+    <section id="level-pane" class="pane level-pane" aria-label="Маршрут уровней">
+      <div class="pane-heading"><div><span class="section-number">01</span><h1>Путь по уровням</h1><span id="level-count" class="count"></span></div><div class="pane-hint">Наведение — поле · нажатие — подробности</div></div>
+      <div id="levels-scroll" class="timeline-scroll" tabindex="0" aria-label="Горизонтальный маршрут уровней. Прокрутите вправо.">
+        <div id="levels-scene" class="scene levels-scene"><div id="level-backgrounds" class="backgrounds"></div><svg id="energy-svg" class="energy-svg" aria-hidden="true"></svg><svg id="path-svg" class="path-svg" aria-hidden="true"></svg><div id="level-content"></div></div>
+      </div>
+      <div class="pane-footer"><span><i class="legend-dot energy-dot"></i>Базовая энергия</span><span><i class="legend-dot tutorial-dot"></i>Обучение</span><span><i class="legend-dot first-dot"></i>Впервые</span><span id="visible-range" class="range"></span></div>
+    </section>
+    <div id="splitter" role="separator" aria-label="Изменить высоту маршрутов" aria-orientation="horizontal" aria-valuemin="25" aria-valuemax="78" aria-valuenow="60" tabindex="0"><span></span><small>УРОВНИ / ИСТОРИЯ</small><span></span></div>
+    <section id="story-pane" class="pane story-pane" aria-label="Маршрут локаций и целей">
+      <div class="pane-heading"><div><span class="section-number">02</span><h2>Локации и большая история</h2><span id="stage-count" class="count"></span></div><button id="sync-toggle" class="sync active" aria-pressed="true">↔ Общая шкала</button></div>
+      <div id="story-scroll" class="timeline-scroll" tabindex="0" aria-label="Горизонтальный маршрут сюжетных этапов">
+        <div id="story-scene" class="scene story-scene"><div id="story-backgrounds" class="backgrounds"></div><div class="story-axis"></div><div id="story-content"></div></div>
+      </div>
+    </section>
+  </main>
+  <footer class="overview"><span>1</span><input id="overview" type="range" min="1" max="153" value="1" aria-label="Перейти к уровню"><span id="total-levels">153</span><button id="home" class="quiet" title="В начало маршрута">↤ В начало</button></footer>
+  <div id="hover-preview" class="hover-preview" hidden><div class="preview-heading"><b id="hover-title"></b><span id="hover-energy"></span></div><canvas id="hover-canvas" width="480" height="420" aria-label="Превью поля"></canvas><small>Маска уровня · нажмите для подробностей</small></div>
+  <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
+  <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>
+    <header class="drawer-header"><div><span id="drawer-eyebrow" class="eyebrow"></span><h2 id="drawer-title"></h2></div><button id="drawer-close" class="circle-button" aria-label="Закрыть подробности">×</button></header>
+    <div id="drawer-body" class="drawer-body"></div>
+  </aside>
+  <dialog id="about"><button id="about-close" class="circle-button" aria-label="Закрыть">×</button><span class="eyebrow">ОБ АТЛАСЕ</span><h2>Вся игра на одной шкале</h2><p>Уровни, обучение, сюжетные находки и реплики взяты из конфигураций игры. Нижние деления соответствуют смене целей в дневнике и на игровом прогресс-баре.</p><p><b>Превью:</b> форма поля, типы клеток и закреплённые объекты берутся из маски. Случайные находки и звери расположены по примерной воспроизводимой раскладке с учётом биомов. Анимации и игровая симуляция не запускаются.</p><p><b>Энергия:</b> показан параметр <code>steps</code> — базовое значение уровня. Это не остаток энергии у игрока и не фактический расход на прохождение.</p><p>Первое появление случайного зверя означает первый уровень, на котором он <em>может</em> встретиться. Завязки диалогов привязаны к уровню их события; границы сюжетных этапов — к числу пройденных уровней.</p><p class="muted">Данные обновляются в проекте командой <code>npm run roadmap:data</code>.</p></dialog>
+  <div id="announcement" class="sr-only" aria-live="polite"></div>
+</body>
+</html>
