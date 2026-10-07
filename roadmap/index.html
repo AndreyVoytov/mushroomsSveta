@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#f4efe4">
   <title>Атлас игры — маршрут уровней и истории</title>
-  <link rel="stylesheet" href="styles.css?v=20261007-06">
-  <script defer src="data.js?v=20261007-06"></script>
-  <script defer src="preview.js?v=20261007-06"></script>
-  <script defer src="app.js?v=20261007-06"></script>
+  <link rel="stylesheet" href="styles.css?v=20261007-07">
+  <script defer src="data.js?v=20261007-07"></script>
+  <script defer src="preview.js?v=20261007-07"></script>
+  <script defer src="app.js?v=20261007-07"></script>
 </head>
 <body>
   <button id="toolbar-toggle" class="toolbar-toggle" aria-label="Развернуть панель" title="Развернуть панель" aria-expanded="false" aria-controls="toolbar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M9 4H4v5M15 20h5v-5M4 4l6 6m10 10-6-6M15 4h5v5M9 20H4v-5"/></svg></button>
@@ -43,7 +43,7 @@
       </div>
     </section>
   </main>
-  <footer class="overview"><span>1</span><input id="overview" type="range" min="1" max="153" value="1" aria-label="Перейти к уровню"><span id="total-levels">153</span><button id="home" class="quiet" title="В начало маршрута">↤ В начало</button></footer>
+  <footer class="overview"><span>1</span><div id="overview" class="overview-track" role="scrollbar" tabindex="0" aria-label="Прокрутка маршрута" aria-orientation="horizontal" aria-controls="levels-scroll story-scroll" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div id="overview-thumb" class="overview-thumb" aria-hidden="true"></div></div><span id="total-levels">153</span><button id="home" class="quiet" title="В начало маршрута">↤ В начало</button></footer>
   <div id="hover-preview" class="hover-preview" hidden><div class="preview-heading"><b id="hover-title"></b><span id="hover-energy"></span></div><canvas id="hover-canvas" width="720" height="800" aria-label="Превью поля"></canvas><small>Маска уровня · нажмите для подробностей</small></div>
   <div id="drawer-backdrop" class="drawer-backdrop" hidden></div>
   <aside id="drawer" class="drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title" hidden>

@@ -15,8 +15,12 @@
   const X=n=>origin()+(n-1)*unit;
   const Y=n=>249+Math.sin((n-1)*.9)*12;
   const levelForX=x=>clamp((x-origin())/unit+1,1,D.levels.length);
-  const totalWidth=()=>X(D.levels.length)+unit*3+100;
+  const totalWidth=()=>X(D.levels.length)+unit*6+100;
   const stageWidth=s=>(s.continuation?3:s.end-s.start)*unit;
+  const goalLevel=s=>s.continuation?s.start+3:s.end;
+  const stageNavigationLevel=s=>s.continuation?s.start:s.end;
+  const completionDialogues=s=>s.continuation?[]:(D.stages[s.index+1]?.dialogues||[]).filter(d=>d.level===s.end);
+  const charactersFor=rows=>[...new Map(rows.filter(d=>d.image).map(d=>[d.name,{name:d.name,image:d.image}])).values()];
   const energyY=steps=>57-clamp(steps,0,30)*.9;
   const getStage=number=>[...D.stages].reverse().find(s=>s.start<=number)||D.stages[0];
   const energyIcon=()=>image('lightning','energy-icon');
@@ -24,8 +28,7 @@
   document.documentElement.style.setProperty('--progress-body',`url("${P.url('progressBody')}")`);
   document.documentElement.style.setProperty('--progress-scale',`url("${P.url('scale')}")`);
   $('total-levels').textContent=D.levels.length;
-  $('overview').max=D.levels.length;
-  $('chapter').innerHTML+='<option value="1">Начало игры</option>'+D.stages.map(s=>`<option value="${s.start}">${s.start} · ${esc(s.title)}</option>`).join('');
+  $('chapter').innerHTML+='<option value="1">Начало игры</option>'+D.stages.map(s=>`<option value="${stageNavigationLevel(s)}">${stageNavigationLevel(s)} · ${esc(s.title)}</option>`).join('');
   const rootURL=new URL(location.pathname.includes('/docs/roadmap')?'../../':'../',location.href);
   $('mechanics-link').href=new URL(location.pathname.includes('/docs/roadmap')?'docs/mechanics/':'mechanics/',rootURL).href;
   const backgroundRuns=[];
@@ -85,13 +88,18 @@
       (primary?`<button class="tutorial-card" data-level="${l.number}" style="left:${x}px" aria-label="Обучение на уровне ${l.number}"><span class="eyebrow">Обучение</span><p>${esc(primary.text)}</p>${l.tutorials.length>1?`<span class="tutorial-more">Ещё подсказок: ${l.tutorials.length-1}</span>`:''}${image(primary.image)}</button>`:'')+
       (l.objects.length?`<button class="story-object" data-level="${l.number}" style="left:${x}px" aria-label="Сюжетные находки уровня ${l.number}: ${esc(l.objects.map(o=>o.name).join(', '))}">${l.objects.slice(0,2).map(o=>image(o.image)).join('')}</button>`:'')+
       `<button class="level-node ${l.hardLevel?'hard':''} ${l.firsts.length?'has-first':''} ${selected===l.number?'selected':''}" data-level="${l.number}" data-hover="${l.number}" style="left:${x}px;top:${y}px" aria-label="Уровень ${l.number}, ${D.environments[l.environment].name}, энергия ${l.steps}${l.hardLevel?', сложный':''}">${l.number}</button>`+
-      (firsts.length?`<button class="first-card" data-level="${l.number}" style="left:${x}px" aria-label="Первые появления уровня ${l.number}"><span class="eyebrow">Впервые</span><div class="first-items">${firsts.slice(0,unit<220?3:5).map(f=>`<span class="first-item">${image(f.image)}<span>${esc(f.name)}</span></span>`).join('')}</div>${firsts.length>(unit<220?3:5)?`<div class="first-overflow">+ ${firsts.length-(unit<220?3:5)} открытия →</div>`:''}</button>`:
-      l.objects.length?'':`<span class="quiet-level" style="left:${x}px">${image(l.randomItems?'hexChest':l.items?.find(i=>i.count>0)?.name)}Находки: ${(l.items||[]).reduce((sum,i)=>sum+i.count,0)+(l.randomItems||0)}</span>`);
+      (firsts.length?`<button class="first-card" data-level="${l.number}" style="left:${x}px" aria-label="Первые появления уровня ${l.number}"><span class="new-ribbon" aria-hidden="true">NEW</span><div class="first-items">${firsts.slice(0,unit<220?3:5).map(f=>`<span class="first-item">${image(f.image)}<span>${esc(f.name)}</span></span>`).join('')}</div>${firsts.length>(unit<220?3:5)?`<div class="first-overflow">+ ${firsts.length-(unit<220?3:5)} открытия →</div>`:''}</button>`:
+      l.objects.length?'':`<span class="quiet-level" style="left:${x}px" title="Находки уровня ${l.number}">${image(l.randomItems?'hexChest':l.items?.find(i=>i.count>0)?.name)}<b>${(l.items||[]).reduce((sum,i)=>sum+i.count,0)+(l.randomItems||0)}</b></span>`);
     }).join('');
-    $('story-content').innerHTML=D.stages.map(s=>{
-      const width=stageWidth(s);
-      const hook=s.dialogues.find(d=>d.text);
-      return `<button class="stage-tick" data-stage="${s.index}" style="left:${X(s.start)}px" title="${esc(s.title)} · уровень ${s.start}" aria-label="${esc(s.title)}, уровень ${s.start}">${image(s.image)}</button><div class="stage-band" data-stage-band="${s.index}" style="left:${X(s.start)}px;width:${width}px"><div class="stage-progress" aria-hidden="true">${Array.from({length:s.end-s.start-1},()=>'<i></i>').join('')}</div><button class="stage-card" data-stage="${s.index}">${image(s.image,'stage-image')}<div class="stage-info"><h3>${esc(s.title)}</h3><p>${esc(s.description||s.notes[0]||'Продолжение путешествия')}</p></div><span class="stage-arrow">↗</span>${hook?`<p class="stage-hook">«${esc(hook.text)}»</p>`:''}${s.characters.length?`<div class="stage-characters">${s.characters.slice(0,4).map(c=>`<span class="character">${image(c.image)}<span>${esc(c.name)}</span></span>`).join('')}</div>`:''}</button></div>`;
+    const portraits=rows=>rows.length?`<div class="stage-characters">${rows.slice(0,4).map(c=>`<span class="character" title="${esc(c.name)}">${image(c.image,'',c.name)}</span>`).join('')}</div>`:'';
+    const intro=D.stages[0],introHook=intro.dialogues.find(d=>d.text);
+    // Goals mark the end of their progress segment. Boundary dialogue stays at
+    // its original level, beside the goal that has just been completed.
+    $('story-content').innerHTML=(introHook?`<div class="story-event" style="left:${X(intro.start)}px;width:${stageWidth(intro)}px"><button class="stage-card intro-card" data-stage="0"><p class="stage-hook">«${esc(introHook.text)}»</p>${portraits(intro.characters)}</button></div>`:'')+D.stages.map(s=>{
+      const next=D.stages[s.index+1],finish=goalLevel(s),rows=completionDialogues(s),hook=rows.find(d=>d.text);
+      const eventWidth=next?stageWidth(next):unit*3;
+      const label=s.title+(s.continuation?' · продолжение':' · после уровня '+s.end);
+      return `<div class="stage-band" data-stage-band="${s.index}" style="left:${X(s.start)}px;width:${stageWidth(s)}px"><div class="stage-progress" aria-hidden="true">${Array.from({length:s.continuation?2:s.end-s.start-1},()=>'<i></i>').join('')}</div></div><button class="stage-tick" data-stage="${s.index}" style="left:${X(finish)}px" title="${esc(label)}" aria-label="${esc(label)}">${image(s.image)}</button><div class="story-event" style="left:${X(finish)}px;width:${eventWidth}px"><button class="stage-card" data-stage="${s.index}">${image(s.image,'stage-image')}<div class="stage-info"><h3>${esc(s.title)}</h3><p>${esc(s.description||s.notes[0]||'')}</p></div><span class="stage-arrow">↗</span>${hook?`<p class="stage-hook">«${esc(hook.text)}»</p>`:''}${portraits(charactersFor(rows))}</button></div>`;
     }).join('');
     fitStoryHeight();
     updateViewport();
@@ -104,7 +112,12 @@
   let scrollFrame=0;
   function updateViewport(){
     const left=scrollTop.scrollLeft, visible=scrollTop.clientWidth;
-    $('overview').value=levelForX(left+visible*.25);
+    const {thumb,travel,max}=overviewMetrics();
+    $('overview-thumb').style.width=thumb+'px';
+    $('overview-thumb').style.transform=`translateX(${max?left/max*travel:0}px)`;
+    $('overview').setAttribute('aria-valuemax',Math.round(max));
+    $('overview').setAttribute('aria-valuenow',Math.round(left));
+    $('overview').setAttribute('aria-valuetext',`Уровни ${Math.floor(levelForX(left))}–${Math.ceil(levelForX(left+visible))}`);
     for(const [container,scroll] of [[$('level-backgrounds'),scrollTop],[$('story-backgrounds'),scrollStory]]){
       [...container.children].forEach(element=>{
         const x=+element.dataset.left,w=+element.dataset.width;
@@ -159,7 +172,47 @@
     scheduleViewport();
   }
   $('zoom-in').onclick=()=>changeZoom(40);$('zoom-out').onclick=()=>changeZoom(-40);
-  $('overview').addEventListener('input',e=>jump(e.target.value,false));
+  const overview=$('overview');
+  function overviewMetrics(){
+    const width=overview.clientWidth,total=scrollTop.scrollWidth;
+    const thumb=Math.min(width,Math.max(64,width*scrollTop.clientWidth/total));
+    return {width,thumb,travel:width-thumb,max:Math.max(0,total-scrollTop.clientWidth)};
+  }
+  function scrollOverview(left){
+    quietPreview();setScrollLeft(scrollTop,left);
+    if(linked)setScrollLeft(scrollStory,scrollTop.scrollLeft);
+    store.set('position',levelForX(scrollTop.scrollLeft+Math.min(210,scrollTop.clientWidth*.28)));
+    scheduleViewport();
+  }
+  let overviewDrag=null;
+  overview.addEventListener('pointerdown',e=>{
+    if(e.button!==0)return;
+    e.preventDefault();overview.focus({preventScroll:true});
+    const metrics=overviewMetrics(),left=overview.getBoundingClientRect().left;
+    const offset=e.target.closest('#overview-thumb')?e.clientX-left-(metrics.max?scrollTop.scrollLeft/metrics.max*metrics.travel:0):metrics.thumb/2;
+    overviewDrag={id:e.pointerId,offset};
+    overview.setPointerCapture(e.pointerId);overview.classList.add('dragging');
+    scrollOverview(metrics.travel?(e.clientX-left-offset)/metrics.travel*metrics.max:0);
+  });
+  overview.addEventListener('pointermove',e=>{
+    if(overviewDrag?.id!==e.pointerId)return;
+    const {travel,max}=overviewMetrics();
+    scrollOverview(travel?(e.clientX-overview.getBoundingClientRect().left-overviewDrag.offset)/travel*max:0);
+  });
+  const stopOverview=()=>{overviewDrag=null;overview.classList.remove('dragging');};
+  overview.addEventListener('pointerup',stopOverview);
+  overview.addEventListener('pointercancel',stopOverview);
+  overview.addEventListener('lostpointercapture',stopOverview);
+  overview.addEventListener('keydown',e=>{
+    const max=overviewMetrics().max,page=scrollTop.clientWidth*.9;
+    const values={ArrowLeft:scrollTop.scrollLeft-80,ArrowRight:scrollTop.scrollLeft+80,ArrowUp:scrollTop.scrollLeft-80,ArrowDown:scrollTop.scrollLeft+80,PageUp:scrollTop.scrollLeft-page,PageDown:scrollTop.scrollLeft+page,Home:0,End:max};
+    if(Object.hasOwn(values,e.key)){e.preventDefault();scrollOverview(values[e.key]);}
+  });
+  function wheelDistance(e,scroller){
+    const delta=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
+    return delta*(e.deltaMode===1?32:e.deltaMode===2?scroller.clientWidth:1);
+  }
+  overview.addEventListener('wheel',e=>{if(e.ctrlKey)return;e.preventDefault();scrollOverview(scrollTop.scrollLeft+wheelDistance(e,scrollTop));},{passive:false});
   $('home').onclick=()=>jump(1);
   $('chapter').onchange=e=>{if(e.target.value)jump(+e.target.value);};
   const toolbarToggle=$('toolbar-toggle');
@@ -199,7 +252,7 @@
     scroller.addEventListener('click',e=>{if(suppress){e.preventDefault();e.stopImmediatePropagation();}},true);
     scroller.addEventListener('wheel',e=>{
       if(e.ctrlKey)return;
-      if(Math.abs(e.deltaX)<1 && scroller.scrollHeight<=scroller.clientHeight+2){e.preventDefault();scroller.scrollLeft+=e.deltaY;}
+      e.preventDefault();quietPreview();scroller.scrollLeft+=wheelDistance(e,scroller);
     },{passive:false});
   }
   const splitter=$('splitter');
@@ -265,14 +318,18 @@
   }
   function openStage(index){
     const s=D.stages[index];if(!s)return;activeStage=index;
-    const html=`<div class="detail-meta"><span>${esc(s.location)}</span><span>После уровня ${s.start}</span><span>${s.continuation?'Продолжение':s.end-s.start+' уровней до следующей цели'}</span></div><div class="detail-banner" style="background-image:linear-gradient(#18392c18,#17352a4d),url('${esc(P.url(s.background))}')">${image(s.image)}</div>${s.description?`<p class="detail-description">${esc(s.description)}</p>`:''}${s.notes.map(note=>`<p class="detail-description">${esc(note)}</p>`).join('')}`+
-    (s.characters.length?`<section class="detail-section"><h3>Персонажи этапа</h3><div class="detail-grid">${s.characters.map(c=>chip({name:c.name,image:c.image,category:'Участник истории'})).join('')}</div></section>`:'')+
+    const completed=completionDialogues(s),characters=charactersFor([...s.dialogues,...completed]);
+    const mapLevel=stageNavigationLevel(s);
+    const html=`<div class="detail-meta"><span>${esc(s.location)}</span><span>Начало: после ур. ${s.start}</span><span>${s.continuation?'Продолжение':'Завершение: после ур. '+s.end}</span></div><div class="detail-banner" style="background-image:linear-gradient(#18392c18,#17352a4d),url('${esc(P.url(s.background))}')">${image(s.image)}</div>${s.description?`<p class="detail-description">${esc(s.description)}</p>`:''}${s.notes.map(note=>`<p class="detail-description">${esc(note)}</p>`).join('')}`+
+    (characters.length?`<section class="detail-section"><h3>Персонажи этапа</h3><div class="detail-grid">${characters.map(c=>chip({name:c.name,image:c.image,category:'Участник истории'})).join('')}</div></section>`:'')+
     (s.requiredItems.length?`<section class="detail-section"><h3>Долговременная цель · собрать</h3><div class="detail-grid">${s.requiredItems.map(i=>chip({name:(D.names[i.name]||i.name)+' × '+i.count,image:i.name,category:'Для дневника'})).join('')}</div></section>`:'')+
-    (s.dialogues.length?`<section class="detail-section"><h3>Завязки и диалоги</h3>${dialogueHTML(s.dialogues)}</section>`:'<p class="empty-state">Для этого отрезка пока нет новых реплик.</p>')+
-    `<div class="detail-navigation"><button data-to-map>К уровню ${s.start} на карте ↗</button><button data-stage-next ${index===D.stages.length-1?'disabled':''}>Следующий этап →</button></div>`;
+    (s.dialogues.length?`<section class="detail-section"><h3>В ходе этапа</h3>${dialogueHTML(s.dialogues)}</section>`:'')+
+    (completed.length?`<section class="detail-section"><h3>Завершение цели</h3>${dialogueHTML(completed)}</section>`:'')+
+    (!s.dialogues.length&&!completed.length?'<p class="empty-state">Для этого отрезка пока нет новых реплик.</p>':'')+
+    `<div class="detail-navigation"><button data-to-map>К уровню ${mapLevel} на карте ↗</button><button data-stage-next ${index===D.stages.length-1?'disabled':''}>Следующий этап →</button></div>`;
     openDrawer(s.title,`ИСТОРИЯ · ЭТАП ${index+1} / ${D.stages.length}`,html);
-    $('drawer-body').querySelector('[data-to-map]').onclick=()=>{closeDrawer();jump(s.start);};
-    $('drawer-body').querySelector('[data-stage-next]').onclick=()=>{jump(D.stages[index+1].start);openStage(index+1);};
+    $('drawer-body').querySelector('[data-to-map]').onclick=()=>{closeDrawer();jump(mapLevel);};
+    $('drawer-body').querySelector('[data-stage-next]').onclick=()=>{jump(stageNavigationLevel(D.stages[index+1]));openStage(index+1);};
     history.replaceState(null,'','#stage-'+s.id);
   }
   function closeDrawer(){
@@ -303,7 +360,7 @@
       else if(l.tutorials.some(t=>t.text.toLocaleLowerCase('ru').includes(query)))matches.push({level:l.number,title:l.tutorials.find(t=>t.text.toLocaleLowerCase('ru').includes(query)).text,detail:'Обучение'});
     }
     for(const s of D.stages){
-      if([s.title,s.description,s.location,...s.characters.map(c=>c.name)].join(' ').toLocaleLowerCase('ru').includes(query))matches.push({level:s.start,stage:s.index,title:s.title,detail:'Сюжетный этап'});
+      if([s.title,s.description,s.location,...s.characters.map(c=>c.name)].join(' ').toLocaleLowerCase('ru').includes(query))matches.push({level:stageNavigationLevel(s),stage:s.index,title:s.title,detail:'Сюжетный этап'});
     }
     results.innerHTML=matches.slice(0,16).map(m=>`<button class="search-result" data-search-level="${m.level}" ${m.stage!==undefined?`data-search-stage="${m.stage}"`:''}><b>${m.level}</b><span>${esc(m.title)}<small>${esc(m.detail)}</small></span></button>`).join('')||'<div class="search-empty">На карте ничего не найдено</div>';
     results.hidden=false;
@@ -318,5 +375,5 @@
   render();jump(store.get('position',1),false);
   const levelMatch=location.hash.match(/^#level-(\d+)$/),stageMatch=location.hash.match(/^#stage-(.+)$/);
   if(levelMatch){const number=+levelMatch[1];if(D.levels[number-1]){jump(number,false);openLevel(number);}}
-  else if(stageMatch){const stage=D.stages.find(s=>s.id===stageMatch[1]);if(stage){jump(stage.start,false);openStage(stage.index);}}
+  else if(stageMatch){const stage=D.stages.find(s=>s.id===stageMatch[1]);if(stage){jump(stageNavigationLevel(stage),false);openStage(stage.index);}}
 })();
