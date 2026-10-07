@@ -184,7 +184,7 @@
 .quiet-level b{font-size:21px;line-height:1;font-weight:800;font-variant-numeric:tabular-nums}
 .quiet-level img{width:42px;height:38px;filter:drop-shadow(0 2px 3px #26382455)}
 .first-items{margin-top:0;padding-right:12px}
-.new-ribbon{position:absolute;top:8px;right:-22px;width:80px;padding:3px 0;transform:rotate(45deg);background:#5e7547;color:#fff8e7;font:750 9px/1.1 "Segoe UI",Arial,sans-serif;letter-spacing:.8px;text-align:center;box-shadow:0 1px 3px #30422429;pointer-events:none}
+.new-ribbon{position:absolute;top:8px;right:-22px;width:80px;padding:3px 0;transform:rotate(45deg);background:#c9483f;color:#fff8e7;font:750 9px/1.1 "Segoe UI",Arial,sans-serif;letter-spacing:.8px;text-align:center;box-shadow:0 1px 3px #70251e33;pointer-events:none}
 .story-event{position:absolute;top:100px}
 .stage-band{pointer-events:none}
 .stage-card,.stage-card:hover{min-height:0}
