@@ -27,7 +27,6 @@ button:disabled { cursor: wait; opacity: .6; }
 a { color: inherit; text-underline-offset: 3px; }
 .page-shell { width: min(1180px, calc(100% - 64px)); margin: 0 auto; padding-bottom: 94px; }
 .floating-actions { position: fixed; z-index: 30; right: 22px; bottom: 22px; display: flex; align-items: center; gap: 8px; padding: 6px; border: 1px solid #d8cfbd; border-radius: 11px; background: #f8f3e9eF; box-shadow: 0 8px 28px #38312324; backdrop-filter: blur(12px); }
-.cloud-login-button[hidden] { display: none; }
 .brand { display: inline-flex; gap: 12px; align-items: center; color: var(--ink); text-decoration: none; }
 .brand-mark { display: grid; place-items: center; width: 39px; height: 39px; border-radius: 50%; color: #f6f0e4; background: var(--moss); font-size: 22px; }
 .brand strong { display: block; font-family: Georgia, "Times New Roman", serif; font-weight: 600; font-size: 17px; letter-spacing: -.02em; }

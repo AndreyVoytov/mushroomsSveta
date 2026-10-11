@@ -17,7 +17,6 @@
     list: $("#mechanicList"), search: $("#searchInput"), status: $("#statusFilter"),
     priority: $("#priorityFilter"), tag: $("#tagFilter"), sort: $("#sortFilter"), visible: $("#visibleCount"),
     filterToggle: $("#filterToggleButton"), filterFields: $("#filterFields"),
-    cloudLogin: $("#cloudLoginButton"),
     importButton: $("#importButton"), importFile: $("#importFile"),
     total: $("#totalCount"), ideas: $("#ideaCount"), summary: $("#resultSummary"), empty: $("#emptyState"),
     dialog: $("#detailDialog"), dialogContent: $("#dialogContent"), imageDialog: $("#imageDialog"), largeImage: $("#largeImage"),
@@ -177,16 +176,10 @@
   }
 
   function updateCloudControls() {
-    if (elements.cloudLogin) {
-      elements.cloudLogin.hidden = !state.cloudConfigured;
-      elements.cloudLogin.textContent = state.cloudOwner ? "Выйти" : "Войти";
-      elements.cloudLogin.title = state.cloudOwner ? "Выйти из общей базы" : "Войти, чтобы редактировать общий каталог";
-      elements.cloudLogin.disabled = state.cloudConfigured && !state.cloudClient;
-    }
     const addButton = $("#newItemButton");
     if (addButton) {
       addButton.disabled = !canEditCatalog();
-      addButton.title = canEditCatalog() ? "" : "Войдите в аккаунт владельца, чтобы редактировать каталог";
+      addButton.title = canEditCatalog() ? "" : "Изменения доступны владельцу каталога";
     }
     if (elements.importButton) elements.importButton.disabled = !canEditCatalog();
   }
@@ -388,27 +381,6 @@
     const { data, error } = await state.cloudClient.rpc("is_mechanics_owner");
     if (error) throw error;
     return data === true;
-  }
-
-  async function handleCloudLogin() {
-    if (!state.cloudClient) {
-      toast("Сначала настройте подключение Supabase.");
-      return;
-    }
-    if (state.cloudOwner) {
-      const { error } = await state.cloudClient.auth.signOut();
-      if (error) toast(error.message || "Не удалось выйти из общей базы.");
-      return;
-    }
-    const email = window.prompt("Введите email владельца каталога:");
-    if (!email) return;
-    const redirectTo = `${window.location.origin}${window.location.pathname}`;
-    const { error } = await state.cloudClient.auth.signInWithOtp({
-      email: email.trim(),
-      options: { emailRedirectTo: redirectTo, shouldCreateUser: true }
-    });
-    if (error) toast(error.message || "Не удалось отправить ссылку для входа.");
-    else toast("Ссылка для входа отправлена на почту.");
   }
 
   function openImageDb() {
@@ -816,8 +788,8 @@
   }
 
   function renderDetail(item) {
-    const editDisabled = canEditCatalog() ? "" : ' disabled title="Войдите в аккаунт владельца, чтобы редактировать каталог"';
-    const editTitle = canEditCatalog() ? "" : ' title="Нажмите, чтобы узнать, как включить редактирование"';
+    const editDisabled = canEditCatalog() ? "" : ' disabled title="Изменения доступны владельцу каталога"';
+    const editTitle = canEditCatalog() ? "" : ' title="Изменения доступны владельцу каталога"';
     const images = item.images.map((image, index) => {
       const src = imageSrc(image);
       if (!src) return "";
@@ -1140,7 +1112,7 @@
     note.className = "edit-access-note";
     note.setAttribute("role", "status");
     note.textContent = state.cloudReady
-      ? "Нужен вход в общий каталог через кнопку «Войти». Вход в ChatGPT не авторизует правки механик."
+      ? "Каталог механик доступен здесь для просмотра. Карточки проектов и задачи редактируются в Studio Board."
       : "Общая база ещё загружается. Попробуй нажать «Редактировать» через секунду.";
     if (!note.isConnected) {
       const actions = $(".dialog-actions", elements.dialogContent);
@@ -1555,7 +1527,6 @@
       const [file] = elements.importFile.files || [];
       importCatalogBackup(file).finally(() => { elements.importFile.value = ""; });
     });
-    elements.cloudLogin.addEventListener("click", handleCloudLogin);
     elements.filterToggle.addEventListener("click", toggleFilterFields);
     $("#emptyReset").addEventListener("click", resetFilters);
     $("#clearFilters").addEventListener("click", resetFilters);
