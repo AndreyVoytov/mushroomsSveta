@@ -377,6 +377,10 @@ export default class EducationPanel extends BasePanel {
                 replica.whenFullyShown(() => {
                     if (house && house.exists) house.inputEnabled = true;
                 });
+            } else {
+                // Returning players may already have completed the house
+                // replica. Keep the discovered house interactive in that case.
+                if (house && house.exists) house.inputEnabled = true;
             }
         }
     }

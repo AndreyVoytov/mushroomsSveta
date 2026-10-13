@@ -1,0 +1,1 @@
+window.MECHANIC_CLOUD_CONFIG = {};
