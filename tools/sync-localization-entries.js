@@ -255,7 +255,7 @@ function sortObject(input) {
 }
 
 function containsCyrillic(value) {
-    return typeof value === 'string' && /[?-??-???]/.test(value);
+    return typeof value === 'string' && /[\u0400-\u04ff]/.test(value);
 }
 
 function addKeys(target, keys) {
@@ -326,6 +326,23 @@ function collectReplicaKeys(filePath) {
             }
         });
     });
+    return keys;
+}
+
+function collectEventDialogueKeys(filePath, argumentIndexes) {
+    const source = ts.createSourceFile(filePath, fs.readFileSync(filePath, 'utf8'), ts.ScriptTarget.Latest, true);
+    const keys = new Set();
+    function visit(node) {
+        if (ts.isCallExpression(node)) {
+            const indexes = argumentIndexes[node.expression.getText(source)];
+            (indexes || []).forEach(index => {
+                const value = getStringValue(node.arguments[index]);
+                if (value) keys.add(value);
+            });
+        }
+        ts.forEachChild(node, visit);
+    }
+    visit(source);
     return keys;
 }
 
@@ -402,6 +419,10 @@ function buildExpectedKeys() {
     [
         collectReplicaKeys(path.join(rootDir, 'src', 'core', 'configuration', 'ReplicasConfiguration.ts')),
         collectReplicaKeys(path.join(rootDir, 'src', 'core', 'configuration', 'ForestReplicasConfiguration.ts')),
+        collectEventDialogueKeys(path.join(rootDir, 'src', 'core', 'configuration', 'EventReplicasConfiguration.ts'), { createReplica: [2, 3] }),
+        collectEventDialogueKeys(path.join(rootDir, 'src', 'core', 'configuration', 'JourneyReplicasConfiguration.ts'), { line: [2, 3], mushroom: [1, 2], pirate: [1], slime: [1] }),
+        collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'EventsConfiguration.ts'), 'allEvents', ['name', 'description']),
+        collectStringArrayPropertyValues(path.join(rootDir, 'src', 'core', 'configuration', 'EventsConfiguration.ts'), 'routeNames'),
         collectDiaryKeys(path.join(rootDir, 'src', 'core', 'configuration', 'DiaryConfiguration.ts')),
         collectBuyKeys(path.join(rootDir, 'src', 'core', 'service', 'Settings.ts')),
         collectStaticArrayStringFields(path.join(rootDir, 'src', 'core', 'configuration', 'ShopArtifactSkillsConfiguration.ts'), 'allSkills', ['name', 'descriptionText']),
@@ -416,9 +437,11 @@ function buildExpectedKeys() {
 }
 
 function resolveEntryValue(bundle, englishBundle, russianBundle, key) {
-    const russianValue = russianBundle.entries && Object.prototype.hasOwnProperty.call(russianBundle.entries, key)
+    const storedRussianValue = russianBundle.entries && Object.prototype.hasOwnProperty.call(russianBundle.entries, key)
         ? russianBundle.entries[key]
         : null;
+    // Literal Russian source strings are their own fallback until translated.
+    const russianValue = storedRussianValue || (/[\u0400-\u04ff]/.test(key) || key === '...' ? key : null);
 
     if (bundle.entries && Object.prototype.hasOwnProperty.call(bundle.entries, key)) {
         const value = bundle.entries[key];
@@ -427,12 +450,12 @@ function resolveEntryValue(bundle, englishBundle, russianBundle, key) {
             && value === russianValue
             && containsCyrillic(value);
 
-        if (!isStaleRussianFallback) {
+        if (value !== '' && !isStaleRussianFallback) {
             return value;
         }
     }
 
-    if (bundle.language !== 'ru' && englishBundle.entries && Object.prototype.hasOwnProperty.call(englishBundle.entries, key)) {
+    if (bundle.language !== 'ru' && englishBundle.entries && englishBundle.entries[key]) {
         return englishBundle.entries[key];
     }
 

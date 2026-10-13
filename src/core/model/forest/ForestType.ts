@@ -22,6 +22,7 @@ export default class ForestType {
     leafType: string;
     header?: string;
     name?:string;
+    sceneImage?: string;
 
     steps: number;
     maxSteps?: number;
@@ -62,6 +63,7 @@ export default class ForestType {
 
     constructor(forestType:ForestType){
             this.name = forestType.name;
+            this.sceneImage = forestType.sceneImage;
             this.randomItems = forestType.randomItems;
             this.id = forestType.id;
             this.header = forestType.header;

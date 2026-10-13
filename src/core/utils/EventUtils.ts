@@ -59,7 +59,7 @@ export default class EventUtils {
             const isFinished = eventState && (eventState.completedAt || eventState.expiredAt);
             const existingEvent = this.getEventById(eventConfig.eventId);
 
-            if (levelsCount == 0 || isFinished || existingEvent || this.hasPendingStoryReplica(user)) {
+            if (levelsCount == 0 || isFinished || existingEvent || !this.isPreviousEventFinished(user, eventConfig.eventId) || this.hasPendingStoryReplica(user)) {
                 return;
             }
 
@@ -200,6 +200,16 @@ export default class EventUtils {
             const eventState = user.getEventState(eventConfig.eventId);
             if (eventState && eventState.pendingOpenPanel) {
                 pushEventId(eventConfig.eventId);
+            }
+
+            // Finished events disappear from the active list before their final
+            // dialogue is consumed. Keep its portraits available after reload.
+            if (eventState) {
+                const lastReplicaId = eventState.completedAt ? eventConfig.finalReplicaId
+                    : eventState.expiredAt ? eventConfig.expiredReplicaId : null;
+                if (lastReplicaId && user.getCompletedReplicas().indexOf(lastReplicaId) == -1) {
+                    pushEventId(eventConfig.eventId);
+                }
             }
 
             if (includeAwaitingActivation && this.shouldPreloadConfiguredEventAssetsBeforeActivation(user, eventConfig.eventId)) {
@@ -746,7 +756,15 @@ export default class EventUtils {
             return false;
         }
 
-        return user.getCurrentForest() >= eventConfig.startsatLevel;
+        return user.getCurrentForest() >= eventConfig.startsatLevel && this.isPreviousEventFinished(user, eventId);
+    }
+
+    private static isPreviousEventFinished(user: User, eventId: string): boolean {
+        const config = EventsConfiguration.getById(eventId);
+        if (!config || !config.previousEventId) return true;
+        const previous = user.getEventState(config.previousEventId);
+        // A timed-out expedition must not block the rest of the adventures.
+        return !!previous && !!(previous.completedAt || previous.expiredAt);
     }
 
     private static getUniqueAssets(assets: EventAssetConfiguration[]): EventAssetConfiguration[] {

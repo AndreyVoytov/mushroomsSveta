@@ -141,6 +141,23 @@ export default class LocationUtils {
         let environment = forestType.environment;
 
         let res: (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text)[] = [];
+        if (forestType.sceneImage) {
+            const background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, this.getBg(environment, forestType));
+            background.inputEnabled = true;
+            res.push(background);
+            const source = SpriteUtils.createSprite(game, 0, 0, forestType.sceneImage);
+            const crop = source.texture.crop;
+            const height = this.getVisibleHeaderHeight(game, forestType);
+            const bitmap = game.make.bitmapData(game.width, height);
+            const sourceHeight = Math.min(crop.height, crop.width * height / game.width);
+            bitmap.context.drawImage(source.texture.baseTexture.source, crop.x, crop.y + (crop.height - sourceHeight) * 0.25, crop.width, sourceHeight, 0, 0, game.width, height);
+            bitmap.dirty = true;
+            source.destroy();
+            const header = new Phaser.Sprite(game, 0, 0, bitmap);
+            header.events.onDestroy.addOnce(() => bitmap.destroy());
+            res.push(header);
+            return res;
+        }
         switch (environment) {
             case Environment.lake:
                 let background = SpriteUtils.createTileSprite(game, 0, 0, game.width, game.height * EditorScreen.MAX_LEVEL_SIZE_MULTIPLIER, "bgLake");

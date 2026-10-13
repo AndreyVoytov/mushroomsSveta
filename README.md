@@ -1,4 +1,15 @@
 # Phaser 2 Typescript Webpack Boilerplate
+
+Development and publication use the single `main` branch. Each push to `main` runs
+the game checks, builds the site and deploys it to
+https://andreyvoytov.github.io/mushroomsSveta/ through GitHub Actions.
+
+For a local publication build, run `npm ci --legacy-peer-deps` and
+`npm run pages:build`. The complete static site is placed in `.pages-dist/`,
+including `/animals/`, `/mechanics/`, `/roadmap/`, `/ideas/`, `/ideas2/` and
+the existing `/reports/` and downloadable archives. `public/` contains static
+publication files that do not have another source in the project.
+
 ![screenshot](https://i.imgur.com/XXyX8KO.png)
 ![screenshot](https://i.imgur.com/YuzMdYi.png)
 ![screenshot](https://i.imgur.com/GIdIa5q.png)

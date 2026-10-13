@@ -20,7 +20,6 @@ dump/
 *.old*
 higherVolume/
 yarn.lock
-package-lock.json
 assets_hq
 assets_lq
 /.history
@@ -29,3 +28,5 @@ assets_lq
 # Local source material and generated previews; never publish or commit these.
 .local-workbench/
 .pages-deploy/
+.pages-dist/
+!public/ideas2/downloads/*.zip

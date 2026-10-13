@@ -27,6 +27,11 @@ export type EventConfiguration = {
     mainImageScale?: number;
     mainImageOverrides?: EventMainImageOverrideConfiguration[];
     assets?: EventAssetConfiguration[];
+    previousEventId?: string;
+    routeNames?: string[];
+    routeColor?: number;
+    finalReplicaId?: string;
+    expiredReplicaId?: string;
 };
 
 export default class EventsConfiguration {
@@ -34,6 +39,7 @@ export default class EventsConfiguration {
     public static allEvents: EventConfiguration[] = [
         {
             eventId: "event1",
+            finalReplicaId: "event1_complete_8",
             name: "Гудящая долина",
             description: "15 особых лесных и горных уровней с медом и пчелами.",
             duration: 1000 * 60 * 60 * 24 * 3,
@@ -96,6 +102,77 @@ export default class EventsConfiguration {
                 { key: "sova2", path: "assets/additional/characters/sova2.png", atlasGroup: "additional" },
                 { key: "sova3", path: "assets/additional/characters/sova3.png", atlasGroup: "additional" }
             ]
+        },
+        {
+            eventId: "event2",
+            finalReplicaId: "event2_complete_5",
+            expiredReplicaId: "event2_expired",
+            name: "Пираты Тихой речки",
+            description: "На плоту по карте Совёнка — к пиратскому кладу!",
+            duration: 1000 * 60 * 60 * 24 * 3,
+            startsatLevel: 12,
+            previousEventId: "event1",
+            levelsCount: 25,
+            icon: "boat",
+            iconScale: 1.8,
+            mainImage: "riverJourneyScene",
+            mainImagePath: "assets/journeys/river.png",
+            assets: [{ key: "pirateSveta", path: "assets/journeys/pirate.png" }],
+            routeColor: 0x63d9ee,
+            routeNames: ["Пиратская пристань","Верёвки для плота","Первый речной поворот","Камышовый рукав","Кувшинковый пролив","Письмо под корягой","Бутылочная почта","Заводь старого мельника","Запруда у колеса","Старая мельница","Песчаный причал","Жемчужная отмель","Речной тайник","Ивовая протока","Мост из корней","Швартовка у корней","Тихий водоворот","Карта течений","Светлячковый рукав","Остров фонарей","Ночной причал","Пиратские вехи","Последний крестик","Ключ от капитанского сундука","Сундук капитана"]
+        },
+        {
+            eventId: "event3",
+            finalReplicaId: "event3_complete_4",
+            expiredReplicaId: "event3_expired",
+            name: "Лес шепчущих шляп",
+            description: "Пять говорящих грибов и тайна тёмного леса.",
+            duration: 1000 * 60 * 60 * 24 * 3,
+            startsatLevel: 20,
+            previousEventId: "event2",
+            levelsCount: 25,
+            icon: "witchMushroom",
+            iconScale: 0.24,
+            mainImage: "mushroomJourneyScene",
+            mainImagePath: "assets/journeys/forest.png",
+            assets: [{ key: "talkingMushroom", path: "assets/journeys/mushroom.png" }],
+            routeColor: 0xc9a5ff,
+            routeNames: ["Синяя шляпа","Листья с росой","Ручей под синей шляпой","Капли на мху","Роса для Синего","Рыжий ворчун","Шуршащие корни","Упрямые коряги","Рыжая просека","Корни Рыжего","Зелёный садовник","Моховые ступени","Сад под землёй","Свет по грибнице","Сад Зелёного","Лиловый соня","Сонные кувшинки","Лиловый туман","Лунные указатели","Луна для Лилового","Золотой хранитель","Пять корневых нитей","Золотая тропа","Песня под шляпой","Сердце грибницы"]
+        },
+        {
+            eventId: "event4",
+            finalReplicaId: "event4_complete_4",
+            expiredReplicaId: "event4_expired",
+            name: "Корона под горой",
+            description: "Древний клад и слизень с короной внутри!",
+            duration: 1000 * 60 * 60 * 24 * 3,
+            startsatLevel: 30,
+            previousEventId: "event3",
+            levelsCount: 25,
+            icon: "key",
+            iconScale: 0.24,
+            mainImage: "dungeonJourneyScene",
+            mainImagePath: "assets/journeys/dungeon.png",
+            assets: [{ key: "slimeKeeper", path: "assets/journeys/slime.png" }],
+            routeColor: 0xffce77,
+            routeNames: ["Лестница под пнём","Пыльные ступени","Первый огонёк","Зал забытых фонарей","Кладовая фонарей","Сломанный подъёмник","Каменные затворы","Каменный лабиринт","Отражения в шахте","Шахта кристаллов","Кристальный мост","Подземная река","Переправа в темноте","Страж книжных полок","Архив короля","Забытый указ короля","Королевская печать","След из желе","Липкая галерея","Эхо Булька","Дверь сокровищницы","Преддверие сокровищницы","Золотой блик в желе","Хранитель Бульк","Корона в желе"]
+        },
+        {
+            eventId: "event5",
+            finalReplicaId: "event5_complete_4",
+            expiredReplicaId: "event5_expired",
+            name: "Луга под облаками",
+            description: "На воздушном шаре — от поляны к поляне!",
+            duration: 1000 * 60 * 60 * 24 * 3,
+            startsatLevel: 40,
+            previousEventId: "event4",
+            levelsCount: 25,
+            icon: "feather",
+            iconScale: 0.55,
+            mainImage: "balloonJourneyScene",
+            mainImagePath: "assets/journeys/balloon.png",
+            routeColor: 0xffa6c2,
+            routeNames: ["Взлётная поляна","Запасы для корзины","Канаты и стропы","Ромашковый маяк","Ромашковая посадка","Новый порыв ветра","Попутный ветер","Тропа к лавандовому склону","Лавандовые террасы","Лавандовая посадка","Высота облаков","Облачный пролив","Ягодный ориентир","Корзина для пикника","Ягодная посадка","Вечерний поток","Сумеречный перелёт","Огоньки под облаками","К ночной поляне","Лунная посадка","Высота над колокольчиками","Попутный звон","Звонкий перевал","Последний букет","Праздник на лугу"]
         }
     ];
 
@@ -105,7 +182,14 @@ export default class EventsConfiguration {
 
     public static getAssetsById(eventId: string): EventAssetConfiguration[] {
         const event = this.getById(eventId);
-        return event && event.assets ? event.assets : [];
+        const assets = event && event.assets ? event.assets.slice() : [];
+        // Journey panels share the existing event frame and story decorations.
+        if (event && event.routeNames) {
+            (this.allEvents[0].assets || []).forEach(asset => {
+                if (!assets.some(existing => existing.key == asset.key)) assets.push(asset);
+            });
+        }
+        return assets;
     }
 
     public static getOptionalAtlasGroups(): string[] {

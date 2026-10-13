@@ -22,7 +22,9 @@
     "predeploy": "npm run localization:sync && npm run atlases",
     "deploy": "webpack --config webpack.production.config.js && node tools/create-animals-route.js",
     "bitmap-fonts": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/update-bitmap-fonts.ps1",
-    "localization:sync": "node tools/sync-localization-entries.js"
+    "localization:sync": "node tools/sync-localization-entries.js",
+    "pages:prepare": "node tools/prepare-pages.js",
+    "pages:build": "npm run build && node tools/create-animals-route.js && npm run pages:prepare"
   },
   "license": "Private",
   "devDependencies": {

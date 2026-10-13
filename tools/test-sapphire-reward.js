@@ -43,7 +43,7 @@ const Phaser = { Group, Sprite, Point, Easing: {
 } };
 function gameFixture() {
     const timers = [];
-    const game = { width: 960, height: 1440, time: { elapsedMS: 1000 / 60,
+    const game = { width: 960, height: 1440, time: { now: 0, elapsedMS: 1000 / 60,
         events: { add: (delay, callback) => { timers.push({ delay, callback }); } } },
         add: { existing: sprite => game.world.add(sprite), tween: () => ({ to: function () { return this; } }) }
     };
@@ -84,10 +84,11 @@ for (const count of [1, 12, 180]) {
     assert.strictEqual(stars[0].scale.x, 0.07, 'reparenting preserves inherited scale');
     assert.strictEqual(stars[0].y, sourceY, 'reparenting preserves camera-relative position');
     for (let frame = 0; frame < 240 && !flight.destroyed; frame++) {
+        game.time.now += game.time.elapsedMS;
         target.y = 850 - Math.min(frame, 40) * 0.5; // panel is entering while stars fly
         flight.update();
         stars.forEach(star => assert(Number.isFinite(star.x) && Number.isFinite(star.y)));
-        if (frame === 35 && count === 1) {
+        if (frame === 15 && count === 1) {
             assert(stars[0].y < sourceY - 20, 'flight lifts into an arc');
         }
     }

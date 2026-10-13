@@ -5,6 +5,7 @@ import EventInfo from '../../../core/model/event/EventInfo';
 import EventStage from '../../../core/model/event/EventStage';
 import EventType from '../../../core/model/event/EventType';
 import EventUtils from '../../../core/utils/EventUtils';
+import EventsConfiguration from '../../../core/configuration/EventsConfiguration';
 import ForestScreen from '../../screen/ForestScreen';
 import HouseScreen from './../../screen/HouseScreen';
 import BasePanel from '../panel/BasePanel';
@@ -111,7 +112,7 @@ export default class SideEventPanel extends ClosablePanel {
         this.blackTransparent.events.onInputDown.add(() => this.onBackdropTap(), this);
 
         const eventState = this.getEventState();
-        if (eventInfo.eventType == EventType.configured && eventInfo.eventId == "event1") {
+        if (eventInfo.eventType == EventType.configured && (eventInfo.eventId == "event1" || this.isJourney())) {
             this.buildEvent1Layout(eventState);
         } else {
             this.buildDefaultLayout(eventState);
@@ -152,14 +153,18 @@ export default class SideEventPanel extends ClosablePanel {
         this.attachStretchedPsdSprite('sideEvent1FrameMiddle', 'frameMiddle', -4, -65.5, 696, 693);
         this.attachPsdSprite('sideEvent1FrameBottom', 'frameBottom', -4, 345.5);
 
-        this.attachPsdSprite('sideEvent1MapBg', 'mapBg', 2, 148.5);
-        const map3 = this.attachPsdSprite('sideEvent1Map3', 'map3', 5, 157);
-        map3.visible = eventState.progress >= SideEventPanel.EVENT1_MAP3_UNLOCK_PROGRESS;
-        const map2 = this.attachPsdSprite('sideEvent1Map2', 'map2', -105.5, 290);
-        map2.visible = eventState.progress >= SideEventPanel.EVENT1_MAP2_UNLOCK_PROGRESS;
-        this.preparePendingMapReveal(map2, map3);
-        this.attachPsdSprite('sideEvent1Map1', 'map1', -139.5, 36);
-        this.createEvent1Character();
+        if (this.isJourney()) {
+            this.buildJourneyRoute(eventState);
+        } else {
+            this.attachPsdSprite('sideEvent1MapBg', 'mapBg', 2, 148.5);
+            const map3 = this.attachPsdSprite('sideEvent1Map3', 'map3', 5, 157);
+            map3.visible = eventState.progress >= SideEventPanel.EVENT1_MAP3_UNLOCK_PROGRESS;
+            const map2 = this.attachPsdSprite('sideEvent1Map2', 'map2', -105.5, 290);
+            map2.visible = eventState.progress >= SideEventPanel.EVENT1_MAP2_UNLOCK_PROGRESS;
+            this.preparePendingMapReveal(map2, map3);
+            this.attachPsdSprite('sideEvent1Map1', 'map1', -139.5, 36);
+            this.createEvent1Character();
+        }
 
         this.attachPsdSprite('sideEvent1PanelRibbon', 'panelRibbon', -6.5, -491);
         let timer = this.attachPsdSprite('sideEvent1Timer', 'timerBg', -19, -464);
@@ -197,11 +202,11 @@ export default class SideEventPanel extends ClosablePanel {
         });
 
         const descriptionLabel = this.attachText('descriptionLabel', EventUtils.getDesc(this.eventInfo.eventType, this.eventInfo.eventId), {
-            font: 'bold 31px Gilroy',
+            font: this.isJourney() ? 'bold 28px Gilroy' : 'bold 31px Gilroy',
             fill: '#ffffff',
             align: 'center',
             wordWrap: true,
-            wordWrapWidth: 470
+            wordWrapWidth: this.isJourney() ? 590 : 470
         });
         descriptionLabel.x = -4;
         descriptionLabel.y = 473;
@@ -238,6 +243,59 @@ export default class SideEventPanel extends ClosablePanel {
         this.characterSprite.scale.set(1.44, 1.4);
         this.characterSprite.anchor.set(0.5);
         this.characterSprite.visible = false;
+    }
+
+    private isJourney(): boolean {
+        const config = EventsConfiguration.getById(this.eventInfo.eventId);
+        return !!config && !!config.routeNames;
+    }
+
+    private buildJourneyRoute(state: SideEventState): void {
+        const config = EventsConfiguration.getById(this.eventInfo.eventId);
+        const color = config.routeColor || 0xffffff;
+        const route = new Phaser.Graphics(this.game, 0, 0);
+        this.addChild(route);
+        route.beginFill(0x171b2c, 0.82);
+        route.drawRoundedRect(-305, 76, 610, 320, 22);
+        route.endFill();
+        this.eventPointPositions = this.createJourneyPointPositions(config.routeNames.length);
+        route.lineStyle(3, color, 0.5);
+        this.eventPointPositions.forEach((point, index) => {
+            if (index == 0) route.moveTo(point.x, point.y);
+            else route.lineTo(point.x, point.y);
+        });
+        this.eventPointPositions.forEach((point, index) => {
+            const complete = index < state.progress;
+            const current = index == state.progress;
+            route.lineStyle(current ? 3 : 2, current ? 0xffffff : color, complete || current ? 1 : 0.5);
+            route.beginFill(complete ? color : 0x252a42, 1);
+            route.drawCircle(point.x, point.y, current ? 40 : 32);
+            route.endFill();
+            const number = this.attachText('routeStop' + index, '' + (index + 1), {
+                font: 'bold 21px Gilroy', fill: complete ? '#171b2c' : '#ffffff', align: 'center'
+            });
+            number.x = point.x;
+            number.y = point.y;
+        });
+        const stopName = LocalizationService.get(config.routeNames[Math.min(state.progress, config.routeNames.length - 1)]);
+        const nextStop = this.attachText('journeyStopName', stopName, {
+            font: 'bold 31px Gilroy', fill: '#ffffff', align: 'center', wordWrap: true, wordWrapWidth: 570
+        });
+        nextStop.y = 108;
+        const progress = this.attachText('journeyProgress', state.progress + ' / ' + state.totalLevels, {
+            font: 'bold 27px Gilroy', fill: '#ffffff', align: 'center'
+        });
+        progress.y = 372;
+    }
+
+    private createJourneyPointPositions(count: number): Phaser.Point[] {
+        const points: Phaser.Point[] = [];
+        for (let index = 0; index < count; index++) {
+            const row = Math.floor(index / 5);
+            const column = row % 2 == 0 ? index % 5 : 4 - index % 5;
+            points.push(new Phaser.Point(-230 + column * 115, 160 + row * 42));
+        }
+        return points;
     }
 
     private buildDefaultLayout(eventState: SideEventState): void {
@@ -441,7 +499,7 @@ export default class SideEventPanel extends ClosablePanel {
             SideEventPanel.EVENT1_MAIN_IMAGE_MASK_HEIGHT / eventImage.height
         );
         eventImage.scale.set(coverScale * Math.max(1, imageScale || 1));
-        eventImage.y = maskY + SideEventPanel.EVENT1_MAIN_IMAGE_FOCUS_OFFSET_Y;
+        eventImage.y = maskY + (this.isJourney() ? 0 : SideEventPanel.EVENT1_MAIN_IMAGE_FOCUS_OFFSET_Y);
 
         this.mainImageMask = new Phaser.Graphics(this.game, maskX, maskY);
         this.mainImageMask.beginFill(0xffffff, 1);

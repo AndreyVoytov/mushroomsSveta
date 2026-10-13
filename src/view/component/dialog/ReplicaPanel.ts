@@ -245,6 +245,12 @@ export default class ReplicaPanel extends BasePanel {
         }
 
         //TODO use images from previous replicas?
+        if (r.personHeight) {
+            const scale = r.personHeight / this.personImage.height;
+            this.personImage.scale.x *= scale;
+            this.personImage.scale.y *= scale;
+        }
+        if (r.personTint != null) this.personImage.tint = r.personTint;
         if(r.secondPersonImage){
             if (r.rightSide) {
                 this.secondPersonImage = SpriteUtils.createSprite(this.game, 0, 65, r.secondPersonImage);
@@ -705,8 +711,8 @@ export default class ReplicaPanel extends BasePanel {
 
             let scaleRatio = this.r.rightSide? -1 : 1;
             if(sideSwitched && this.secondPersonImage){
-                this.game.add.tween(this.personImage.scale).from({ x: ReplicaPanel.SECOND_PERSON_SCALE * scaleRatio, y: ReplicaPanel.SECOND_PERSON_SCALE}, ReplicaPanel.CHANGE_PERSON_DURATION, Phaser.Easing.Quadratic.Out, true, 200, 0, false)
-                AnimationUtils.tint(this.game, this.personImage, ReplicaPanel.SECOND_PERSON_TINT, ReplicaPanel.NO_TINT, 500, 0);
+                this.game.add.tween(this.personImage.scale).from({ x: Math.abs(this.personImage.scale.x) * ReplicaPanel.SECOND_PERSON_SCALE * scaleRatio, y: this.personImage.scale.y * ReplicaPanel.SECOND_PERSON_SCALE}, ReplicaPanel.CHANGE_PERSON_DURATION, Phaser.Easing.Quadratic.Out, true, 200, 0, false)
+                AnimationUtils.tint(this.game, this.personImage, ReplicaPanel.SECOND_PERSON_TINT, this.r.personTint == null ? ReplicaPanel.NO_TINT : this.r.personTint, 500, 0);
             }
             this.game.add.tween(this.personImage).to({ alpha: 1 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false)
 

@@ -5,6 +5,7 @@ import User from '../model/user/User';
 import UserEventState from '../model/event/UserEventState';
 import EventUtils from '../utils/EventUtils';
 import EventsConfiguration from './EventsConfiguration';
+import JourneyReplicasConfiguration from './JourneyReplicasConfiguration';
 
 type EventReplicaSet = {
     forest: ReplicaType[];
@@ -217,7 +218,7 @@ export default class EventReplicasConfiguration {
             case 'event1':
                 return this.event1Replicas;
             default:
-                return {
+                return JourneyReplicasConfiguration.all[eventId] || {
                     forest: [],
                     houseAfterLevel: [],
                     complete: [],

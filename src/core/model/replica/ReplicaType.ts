@@ -7,6 +7,8 @@ export default class ReplicaType {
     id: string;
     personName: string;
     personImage: string;
+    personHeight?: number;
+    personTint?: number;
     secondPersonImage?: string;
     text: string;
 

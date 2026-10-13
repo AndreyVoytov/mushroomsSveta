@@ -1,0 +1,40 @@
+{
+  "tool": "image_gen.imagegen (built-in)",
+  "assets": [
+    {
+      "file": "river.png",
+      "prompt": "Create a single polished game event background illustration, portrait format 1024x1536. Whimsical hand painted storybook casual adventure game, richly detailed friendly fantasy style, soft edges and saturated readable colors. A wooden raft floating down a winding turquoise river, a small owl in a pirate hat holding a parchment map, a red hooded young adventurer girl and a fluffy orange kitten aboard. Green willow banks, reeds, a tiny abandoned watermill and treasure island in the distance. Warm golden late afternoon light. Compose the raft and heroes in the upper-middle of the image, lower third calm river with room for overlay route UI. No text, no lettering, no UI, no frame. This is an asset for an existing Russian casual forest puzzle game.",
+      "editPrompt": "Edit target Image 1: the river raft scene. Image 2 is supporting reference for the girl's identity and pirate costume only. Preserve river scene, raft, composition, warm light, owl holding map in pirate hat and orange kitten. Change ONLY the girl on the raft: she must be the SAME young adult blonde woman with green eyes and two blonde braids shown in Image 2, wearing that navy tricorne with red ribbon, white blouse and navy vest, red sash; she is paddling the raft in the same seated pose as the original scene. Remove the red hood. Match the scene rendering style and scale. Keep everything else as-is, no additional characters, no text, no UI. Portrait format same as original.",
+      "editReferences": ["river.png (initial generation)", "pirate.png"]
+    },
+    {
+      "file": "forest.png",
+      "prompt": "Single portrait game event background illustration 1024x1536. Whimsical hand painted storybook casual fantasy adventure, richly detailed soft painted edges. A winding trail through an enchanting dark twilight forest, roots and moss and tiny luminous spore lights, one single enormous friendly talking mushroom with a cream white cap with soft gray spots, cream stem with expressive friendly face, tall as a tree, upper middle center. NO other giant mushrooms in this scene. Purple and teal atmospheric background, little ferns, quiet puddles. Warm gentle facial expression, mystical but not scary. Lower third is mossy trail with room for a route map overlay. No words, no letters, no text, no interface, no borders."
+    },
+    {
+      "file": "dungeon.png",
+      "prompt": "Single portrait game event background illustration 1024x1536. Whimsical hand painted storybook casual fantasy adventure, richly detailed soft painted edges, vivid but harmonious colors. Inside a vast underground cavern with sapphire and amber crystals, stone steps descending to ancient round treasure door, huge friendly translucent jade green slime creature in the UPPER MIDDLE, smiling face, a single clearly visible golden crown floating INSIDE its transparent jelly body at its center. Crown recognizable as gold circlet with points and red jewel. Tiny luminous cave fungi and soft lantern light. No girl, no other characters. Lower third stone pathway clear for UI route overlay. Child friendly magical mood. No words, no letters, no interface, no borders."
+    },
+    {
+      "file": "balloon.png",
+      "prompt": "Single portrait game event background illustration 1024x1536. Whimsical hand painted storybook casual fantasy adventure, richly detailed soft painted edges. A colorful warm yellow and coral striped hot air balloon floating over vast rolling flower meadows with a red hooded young adventurer girl, fluffy orange kitten, and tiny owl peeking from a wicker basket. Balloon and basket occupy UPPER MIDDLE third. Below distant landing clearings in lavender field, white daisy meadow, poppy garden and hillside bell flowers, winding paths connecting them. Warm cheerful sunny light, pale turquoise sky, airy clouds. Lower third distant meadow with room for overlay route map. No letters, no words, no text, no interface, no borders.",
+      "editPrompt": "Edit this game event illustration's composition. Preserve the same painted storybook style, palette, landscape, flower meadow landing clearings, three characters (red hooded girl, orange kitten, owl) and balloon design. The ENTIRE inflated yellow/coral balloon envelope must be fully visible, including rounded TOP: no cropping at any image edge. Reduce scale of whole balloon plus basket group and reposition it into the upper middle of the portrait image, approximately from y=220 to y=850 in a 1536px-high image: envelope y=220..630, basket y=680..850. Leave a clearly visible strip of open sky above the balloon, at least 180 pixels high. Keep lower half meadows spacious for route UI overlays. Show balloon actually flying. No text, no border, no UI."
+    },
+    {
+      "file": "mushroom.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Asset: single character portrait sprite for a whimsical hand painted storybook adventure game. One single enormous talking mushroom, full body, large rounded neutral ivory cream mushroom cap with gentle beige spots, thick cream stem with two expressive dark eyes, raised eyebrows and friendly smiling mouth. Tiny feet and expressive small root arms. Rich softly shaded hand painted detailed casual game style, friendly magical woodland elder. Mostly pale cream neutral tones so the game can tint this sprite blue, orange, green, purple and gold. Character faces front, silhouette fits entirely inside canvas with small margin, 700px tall approx, no scene, no floor shadow, no text, no UI. Transparent background."
+    },
+    {
+      "file": "slime.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept. Asset: single character portrait sprite for a whimsical hand painted storybook adventure game. A single enormous friendly transparent jelly slime monster, turquoise jade green, blobby rounded body, friendly expressive face with two big eyes and small apologetic smile, very obviously a golden royal crown INSIDE the middle of its translucent gelatinous body. Crown is gold with five points and one red gemstone, refracted slightly by jelly but clearly legible. Crown must not be on its head. Full body only, no scene, no floor shadow, hand painted richly shaded detailed casual game art, character entirely in frame with margins, no text no interface. Transparent background."
+    },
+    {
+      "file": "pirate.png",
+      "transparent": true,
+      "reference": "assets/base/characters/sveta2.png",
+      "prompt": "Edit this game character portrait costume only. Preserve the SAME young adult woman, face, age, green eyes, blonde hair and braids, expression, hand pose, illustrated highly polished casual game art style and chest-up framing, keep transparent background. Dress her as a friendly river pirate captain: dark navy pirate tricorne with red ribbon in place of hood, white blouse, dark blue leather waistcoat with gold trims, red sash and belt, small parchment river map tucked into belt. Remove hood and cape. Do not change identity, facial proportions or pose, no weapon, no text, no background. Frame exactly like original with bottom crop at hips. This is an alternate outfit sprite for the SAME character, not a new character."
+    }
+  ]
+}

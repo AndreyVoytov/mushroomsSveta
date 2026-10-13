@@ -8,6 +8,7 @@ import PreboosterPanel from './../house/PreboosterPanel';
 import ShopPanel from './../house/ShopPanel';
 import InGameSettingsPanel from './InGameSettingsPanel';
 import ForestDao from '../../../core/dao/ForestDao';
+import EventUtils from '../../../core/utils/EventUtils';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import BoosterType from '../../../core/model/enum/BoosterType';
 import InGameBoostersPanel from '../house/InGameBoostersPanel';
@@ -34,7 +35,9 @@ export default class ForestBottomPanel extends BasePanel {
         this.addSprite(this.boosterpanel = new InGameBoostersPanel(game, <ForestScreen>screen));
 
         let forestsTotal = ForestDao.getAllForests().length;
-        let currentForest = Math.min(ForestDao.indexOf(forestType) + 1, forestsTotal);
+        let currentForest = EventUtils.hasActiveLevelSession()
+            ? Number(EventUtils.getActiveLevelOrder())
+            : Math.min(ForestDao.indexOf(forestType) + 1, forestsTotal);
         let levelLabel = new Label(this.game, 155, this.game.height + 3 , "" + currentForest, { font: "bold 45px Arial", fill: "#fff5bc"});
         levelLabel.strokeThickness = 4;
         levelLabel.addStrokeColor("#924d1d", 0);
