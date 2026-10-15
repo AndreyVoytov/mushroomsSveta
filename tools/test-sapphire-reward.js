@@ -103,6 +103,7 @@ for (const count of [1, 12, 180]) {
 
 const ForestScreen = load('src/view/screen/BaseForestScreen.ts', {
     Game: { WHITE_TRANSITION: true },
+    TreesTransitionPanel: { takeClosedCover: () => null },
     ForestUtils: { isCloverReskin: () => false },
     YandexGamesHelper: { stopGameplay: () => {} },
     SpriteUtils: { createSprite: game => new Sprite(game) }

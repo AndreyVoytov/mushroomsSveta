@@ -1136,6 +1136,8 @@ export default class LoadingScreen extends BaseScreen {
         this.game.load.audio('encounter_hive', 'assets/other/audio/encounter_hive.wav?v3');
         this.game.load.audio('encounter_ram', 'assets/other/audio/encounter_ram.wav?v3');
         this.game.load.audio('hiveBuzz', 'assets/other/audio/hiveBuzz.wav');
+        this.game.load.audio('mirrorGlass', 'assets/other/audio/mirrorGlass.wav?v2');
+        this.game.load.audio('waterLilySway', 'assets/other/audio/waterLilySway.wav');
         this.game.load.audio('unicornHooves', 'assets/other/audio/unicorn_hooves.wav');
         this.game.load.audio("rocket", "assets/other/audio/rocket.mp3");
         this.game.load.audio("trouble", "assets/other/audio/trouble.ogg");

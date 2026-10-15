@@ -1,0 +1,31 @@
+{
+  "tool": "Built-in imagegen",
+  "normalization": "Transparent alpha retained; artwork fitted within 154 x 172 on the existing 170 x 180 canvas.",
+  "images": [
+    {
+      "number": 1,
+      "prompt": "Use case: precise-object-edit. Edit target: the supplied transparent game sprite of a gold oval mirror bearing the numeral 1. Change ONLY the glowing numeral 1 and its sparks/glow: a saturated royal PURPLE outer contour (#7729d9), smoothly blending inward through violet into an intensely bright ACID LIME GREEN center (#c0ff24). The green must fill the center of each stroke, with a clearly purple rim, readable at small game size. Replace ALL red, orange and gold colors belonging to the numeral or its sparks with this purple-to-lime palette. Keep the mirror's GOLD ornamental frame, turquoise reflective glass, exact silhouette, composition, size and proportions unchanged. Keep the numeral's shape and exact text \"1\". One centered complete mirror, transparent background with real alpha, no other objects, no text labels or watermark.",
+      "target": "assets/base/items/environment/mirror_num1.png"
+    },
+    {
+      "number": 2,
+      "prompt": "Use case: precise-object-edit. Edit target: the supplied transparent game sprite of a gold oval mirror bearing the numeral 2. Change ONLY the glowing numeral 2 and its sparks/glow: a saturated royal PURPLE outer contour (#7729d9), smoothly blending inward through violet into an intensely bright ACID LIME GREEN center (#c0ff24). The green must fill the center of each stroke, with a clearly purple rim, readable at small game size. Replace ALL red, orange and gold colors belonging to the numeral or its sparks with this purple-to-lime palette. Keep the mirror's GOLD ornamental frame, turquoise reflective glass, exact silhouette, composition, size and proportions unchanged. Keep the numeral's shape and exact text \"2\". One centered complete mirror, transparent background with real alpha, no other objects, no text labels or watermark.",
+      "target": "assets/base/items/environment/mirror_num2.png"
+    },
+    {
+      "number": 3,
+      "prompt": "Use case: precise-object-edit. Edit target: the supplied transparent game sprite of a gold oval mirror bearing the numeral 3. Change ONLY the glowing numeral 3 and its sparks/glow: a saturated royal PURPLE outer contour (#7729d9), smoothly blending inward through violet into an intensely bright ACID LIME GREEN center (#c0ff24). The green must fill the center of each stroke, with a clearly purple rim, readable at small game size. Replace ALL red, orange and gold colors belonging to the numeral or its sparks with this purple-to-lime palette. Keep the mirror's GOLD ornamental frame, turquoise reflective glass, exact silhouette, composition, size and proportions unchanged. Keep the numeral's shape and exact text \"3\". One centered complete mirror, transparent background with real alpha, no other objects, no text labels or watermark.",
+      "target": "assets/base/items/environment/mirror_num3.png"
+    },
+    {
+      "number": 4,
+      "prompt": "Use case: precise-object-edit. Edit target: the supplied transparent game sprite of a gold oval mirror bearing the numeral 4. Change ONLY the glowing numeral 4 and its sparks/glow: a saturated royal PURPLE outer contour (#7729d9), smoothly blending inward through violet into an intensely bright ACID LIME GREEN center (#c0ff24). The green must fill the center of each stroke, with a clearly purple rim, readable at small game size. Replace ALL red, orange and gold colors belonging to the numeral or its sparks with this purple-to-lime palette. Keep the mirror's GOLD ornamental frame, turquoise reflective glass, exact silhouette, composition, size and proportions unchanged. Keep the numeral's shape and exact text \"4\". One centered complete mirror, transparent background with real alpha, no other objects, no text labels or watermark.",
+      "target": "assets/base/items/environment/mirror_num4.png"
+    },
+    {
+      "number": 5,
+      "prompt": "Use case: precise-object-edit. Edit target: the supplied transparent game sprite of a gold oval mirror bearing the numeral 5. Change ONLY the glowing numeral 5 and its sparks/glow: a saturated royal PURPLE outer contour (#7729d9), smoothly blending inward through violet into an intensely bright ACID LIME GREEN center (#c0ff24). The green must fill the center of each stroke, with a clearly purple rim, readable at small game size. Replace ALL red, orange and gold colors belonging to the numeral or its sparks with this purple-to-lime palette. Keep the mirror's GOLD ornamental frame, turquoise reflective glass, exact silhouette, composition, size and proportions unchanged. Keep the numeral's shape and exact text \"5\". One centered complete mirror, transparent background with real alpha, no other objects, no text labels or watermark.",
+      "target": "assets/base/items/environment/mirror_num5.png"
+    }
+  ]
+}

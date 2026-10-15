@@ -35,11 +35,12 @@ export default class BaseLadybugsProvider {
             sprite.anchor = new Phaser.Point(0.5, 0.5);
             sprite.width = BaseCellsProvider.CELL_WIDTH;
             sprite.height = BaseCellsProvider.CELL_HEIGHT;
+            const movable = new Movable(position.x, position.y, sprite, true);
             if(forestType.darkStump){
                 sprite.scale.set(0)
             }
             this._screen.add.existing(sprite);
-            this.ladybugsAndAcorns.push(new Movable(position.x, position.y, sprite, true));
+            this.ladybugsAndAcorns.push(movable);
         });
 
         if (acorns) {

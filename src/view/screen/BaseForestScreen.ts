@@ -128,8 +128,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
         this.rewardsCommitted=false;
         this.useCloverTransition = ForestUtils.isCloverReskin(this.getForestType());
 
-        if (!Game.WHITE_TRANSITION) {
-            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverTransition));
+        this.fakeTrees = TreesTransitionPanel.takeClosedCover(this.game);
+        if (this.fakeTrees) Game.WHITE_TRANSITION = false;
+        if (this.fakeTrees || !Game.WHITE_TRANSITION) {
+            this.fakeTrees = this.addTopOverlay(this.fakeTrees ||
+                new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverTransition));
         }
     }
 
@@ -563,6 +566,8 @@ export default abstract class BaseForestScreen extends DialogScreen {
         this.winOrLooseChecker.delay(time);
     }
 
+    public onEnergySpent(_amount: number): void { }
+
     private doCheckWinOrLooseConditions() {
         console.log("CHECK WIN OR LOOSE: this.levelStopped = " + this.levelStopped)
 
@@ -633,6 +638,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     }
 
     private goToHouse() {
+        this.levelStopped=true;
         if(WorldService.activeAdventure||WorldService.expedition)WorldService.houseAfterWorld=true;
         WorldService.activeAdventure=null;
         WorldService.expedition=false;
@@ -924,7 +930,9 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 if (!cell.state.cover || cell.state.opened) return;
                 const wave = this.game.add.graphics(cell.state.sprite.x, cell.state.sprite.y);
                 wave.lineStyle(3, 0xb8eee9, 0.62);
-                wave.drawCircle(0, 0, 78);
+                const w = BaseCellsProvider.CELL_WIDTH * 0.42;
+                const h = BaseCellsProvider.CELL_HEIGHT * 0.42;
+                wave.drawPolygon([0, -h, w, -h / 2, w, h / 2, 0, h, -w, h / 2, -w, -h / 2, 0, -h]);
                 wave.alpha = 0.42;
                 wave.scale.set(0.45, 0.45);
                 this.game.add.tween(wave.scale).to({ x: 1.55, y: 1.55 }, 1150,

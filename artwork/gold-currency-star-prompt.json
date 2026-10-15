@@ -1,0 +1,9 @@
+{
+  "tool": "built-in image_gen",
+  "intent": "precise-object-edit",
+  "source": "assets/base/ui/sapphireStar.png",
+  "asset": "assets/base/ui/sapphireStar.png",
+  "backdrop": "assets/base/ui/sapphireStarBackdrop.png",
+  "backdropProvenance": "Original dark blue-star imprint restored at the user's request.",
+  "prompt": "Use case: precise-object-edit. Asset type: transparent raster currency sprite for a polished mobile puzzle game. Input image is the current blue crystalline star, the edit target. Replace it with one beautiful, friendly GOLDEN YELLOW five-point star, with softly rounded tips, a plump convex body, smooth warm golden edges, rich sunny yellow center, subtle amber shading at lower right, a broad creamy highlight at upper left and one tiny tasteful sparkle on the star itself. Similar appeal and clarity to Gardenscapes-style currency stars, original artwork. Keep the single centered upright five-point silhouette and roughly the same proportions and occupied area as the input, fitting its narrow portrait canvas with safe transparent margin. Smooth cartoon 3D render, readable at 32 pixels, no crystalline facets, no blue, no face, no letters, no text, no extra objects, no surrounding particles, no cast ground shadow. Fully transparent background, crisp anti-aliased alpha edges, no checkerboard."
+}

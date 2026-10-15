@@ -2,26 +2,22 @@ import BaseForestScreen from '../../screen/BaseForestScreen';
 import UserService from '../../../core/service/UserService';
 import ForestType from '../../../core/model/forest/ForestType';
 import Label from './../../component/panel/Label';
-import BoostersProvider from '../../../core/service/provider/BoosterProvider';
 import BasePanel from '../../component/panel/BasePanel';
-import PreboosterPanel from './../house/PreboosterPanel';
-import ShopPanel from './../house/ShopPanel';
 import InGameSettingsPanel from './InGameSettingsPanel';
 import ForestDao from '../../../core/dao/ForestDao';
 import EventUtils from '../../../core/utils/EventUtils';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import BoosterType from '../../../core/model/enum/BoosterType';
-import InGameBoostersPanel from '../house/InGameBoostersPanel';
-import ForestScreen from '../../screen/ForestScreen';
 import { Easing } from 'phaser-ce';
 import Settings from '../../../core/service/Settings';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
 import WorldService from '../../../core/service/WorldService';
 import WorldPanel from '../house/WorldPanel';
+import HeroTeamPanel from './HeroTeamPanel';
 export default class ForestBottomPanel extends BasePanel {
     private bottomPanel: Phaser.Sprite;
-    private boosterpanel:InGameBoostersPanel;
+    public heroes: HeroTeamPanel;
     public settingsPanel:InGameSettingsPanel;
 
     constructor(game: Phaser.Game, forestType: ForestType, screen: BaseForestScreen) {
@@ -33,8 +29,7 @@ export default class ForestBottomPanel extends BasePanel {
         this.bottomPanel.scale = new Phaser.Point(1, -1);
         this.addSprite(this.bottomPanel);
 
-        // if (UserService.getUser().getCurrentForest() > PreboosterPanel.LEVEL_WITH_PRIZE_COMPASSES) {
-        this.addSprite(this.boosterpanel = new InGameBoostersPanel(game, <ForestScreen>screen));
+        this.addChild(this.heroes = new HeroTeamPanel(game,game.width/2,game.height-72,true));
 
         let forestsTotal = ForestDao.getAllForests().length;
         const user=UserService.getUser(),adventure=WorldService.activeAdventure;
@@ -86,10 +81,10 @@ export default class ForestBottomPanel extends BasePanel {
     public spendCompass(): void {
         let user = UserService.getUser();
         user.increaseBoostersCount(BoosterType.compass, - 1);
-        this.boosterpanel.refresh();
+        this.heroes.refresh();
     }
 
     public refresh():void{
-        this.boosterpanel.refresh();
+        this.heroes.refresh();
     }
 }

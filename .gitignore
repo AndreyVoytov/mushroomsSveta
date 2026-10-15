@@ -11,6 +11,10 @@ phaserTilemapfix
 *.xcf
 *.wav
 !assets/other/audio/encounter_*.wav
+!assets/other/audio/mirrorGlass.wav
+!assets/other/audio/waterLilySway.wav
+!assets/other/audio/hiveBuzz.wav
+!assets/other/audio/unicorn_hooves.wav
 legacy*
 *.txt
 dump/

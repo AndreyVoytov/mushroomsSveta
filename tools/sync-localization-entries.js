@@ -9,6 +9,7 @@ const localizationDir = path.join(rootDir, 'assets', 'localization');
 
 const manualKeys = [
     'ui.gameTitle',
+    'ui.heroParty',
     'ui.ok',
     'ui.skip',
     'ui.full',
@@ -146,7 +147,6 @@ const tutorialKeys = [
     'tutorial.level9.ladybugContinue',
     'tutorial.level15.lilies',
     'tutorial.level18.scrollDown',
-    'tutorial.level19.blueberryBush',
     'tutorial.level22.lavender',
     'tutorial.level24.rosehip',
     'tutorial.level35.jelly',

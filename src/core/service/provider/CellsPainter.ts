@@ -1,6 +1,6 @@
 import Label from '../../../view/component/panel/Label';
 import DebugScreen from '../../../view/screen/common/DebugScreen';
-import { ContentType, DecorationsContents } from '../../model/enum/ContentType';
+import { ContentType, DecorationsContents, ItemContents } from '../../model/enum/ContentType';
 import BiomType from '../../model/enum/BiomType';
 import Environment from '../../model/enum/Environment';
 import OpeningType from '../../model/enum/OpeningType';
@@ -67,6 +67,14 @@ export default class CellsPainter extends CellsProvider {
         } else {
             cellSprite.width = BaseCellsProvider.CELL_WIDTH;
             cellSprite.height = BaseCellsProvider.CELL_HEIGHT;
+        }
+
+        if (this.forestType.environment == Environment.house && cell.state.content in ItemContents
+            && cell.state.content != ContentType.specificItem) {
+            // A shared inset keeps feathers, apples, mushrooms and later
+            // house collectibles inside the sloping edges of the hex.
+            SpriteUtils.fitIcon(cellSprite, BaseCellsProvider.CELL_WIDTH * 0.78,
+                BaseCellsProvider.CELL_HEIGHT * 0.72);
         }
 
         if (cell.state.content == ContentType.bird || cell.state.content == ContentType.sheep || cell.state.content == ContentType.duck) {
@@ -190,7 +198,8 @@ export default class CellsPainter extends CellsProvider {
         this.updateDarkForestNumberLabel(cell, adjucentCount);
 
         this.updateNumberedTreeEffect(cell);
-        if (cell.state.opened && wasNumberedTree && previousCount != null && adjucentCount < previousCount) {
+        if (cell.state.opened && wasNumberedTree && previousCount != null && adjucentCount < previousCount
+            && !(cell.state.sprite && cell.state.sprite.game.time.now < cell.state.movementEndAt)) {
             this.emitNumberChangeDust(cell.state.sprite, cell.state.content == ContentType.mirror);
             this.animateNumberedTreeReaction(cell, image);
         }
@@ -204,7 +213,9 @@ export default class CellsPainter extends CellsProvider {
         if (!sprite) return;
 
         this.stopNumberedTreeReaction(cell);
-        SoundUtils.treeRustle();
+        if (state.content == ContentType.mirror) SoundUtils.mirrorGlass();
+        else if (state.content == ContentType.wlilly1 || state.content == ContentType.wlilly2) SoundUtils.waterLilySway();
+        else SoundUtils.treeRustle();
         state.numberedTreeReactionOrigin = { x: sprite.x, y: sprite.y };
 
         const smallDecor = image == 'stump' || image == 'log' || image == 'rottenStump' || image == 'cobwebDarkLog';
@@ -250,13 +261,13 @@ export default class CellsPainter extends CellsProvider {
         }
     }
 
-    private emitNumberChangeDust(sprite: Phaser.Sprite, red?: boolean): void {
+    private emitNumberChangeDust(sprite: Phaser.Sprite, violet?: boolean): void {
         if (!sprite) return;
         const game = sprite.game;
         const particles: Phaser.Sprite[] = [];
         for (let i = 0; i < 8; i++) {
-            const particle = SpriteUtils.createSprite(game, Utils.random(13) - 6, -22 + Utils.random(13) - 6, 'dustYellow');
-            if (red) particle.tint = 0xff453c;
+            const particle = SpriteUtils.createSprite(game, Utils.random(13) - 6, -22 + Utils.random(13) - 6,
+                violet ? 'dustViolet' : 'dustYellow');
             particle.anchor.set(0.5);
             // Children inherit the tree's ~0.67 scale; keep the dust visible on screen.
             particle.scale.set(0.72 + Utils.random(25) / 100);
@@ -289,7 +300,11 @@ export default class CellsPainter extends CellsProvider {
         });
     }
 
-    private stopNumberedTreeReaction(cell: ForestCell): void {
+    protected prepareCellForMovement(cell: ForestCell): void {
+        this.stopNumberedTreeReaction(cell);
+    }
+
+    public stopNumberedTreeReaction(cell: ForestCell): void {
         const state = cell.state;
         if (!state.numberedTreeSwayTween && !state.numberedTreePulseTween
             && !state.numberedTreeReactionOrigin) return;
@@ -326,18 +341,18 @@ export default class CellsPainter extends CellsProvider {
             state.sprite.addChild(effect);
             effect.alpha = 0;
 
-            const shine = SpriteUtils.createSprite(game, 0, -10, 'splashY');
+            const shine = SpriteUtils.createSprite(game, 0, -10,
+                state.content == ContentType.mirror ? 'splashV' : 'splashY');
             shine.anchor.set(0.5);
             shine.scale.set(0.825);
             shine.alpha = 0.145;
-            if (state.content == ContentType.mirror) shine.tint = 0xff453c;
             if (state.content == ContentType.wlilly1 || state.content == ContentType.wlilly2) shine.tint = 0xffdc3f;
             effect.add(shine);
             game.add.tween(shine).to({ angle: 360 }, 20000, Phaser.Easing.Linear.None, true, 0, -1);
 
             state.numberedTreeEffect = effect;
             const cloud: NumberedTreeParticleCloud = { group: particles, timer: null, stopped: false, particles: [],
-                tint: state.content == ContentType.mirror ? 0xff453c :
+                tint: state.content == ContentType.mirror ? 0xb868ff :
                     (state.content == ContentType.wlilly1 || state.content == ContentType.wlilly2) ? 0xffdc3f : 0xffffff };
             state.numberedTreeParticles = cloud;
             this.emitNumberedTreeParticle(game, cloud);

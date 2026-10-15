@@ -93,6 +93,18 @@ export default class SoundUtils {
         }
     }
 
+    public static mirrorGlass(): void {
+        if (!SoundUtils.haveRecent('mirrorGlass')) {
+            SoundUtils.addSound('mirrorGlass', 0.028 * this.volumeRatio);
+        }
+    }
+
+    public static waterLilySway(): void {
+        if (!SoundUtils.haveRecent('waterLilySway')) {
+            SoundUtils.addSound('waterLilySway', 0.032 * this.volumeRatio);
+        }
+    }
+
     public static panelOpen(){
           // this.game.sound.play("whooshOut", 0.2)
           let sound = Game.getInstance().sound.play("whooshOut", 0.15 * this.volumeRatio)

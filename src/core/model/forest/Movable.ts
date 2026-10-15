@@ -5,6 +5,8 @@ export default class Movable {
     sprite: Phaser.Sprite;
     animationEndAt: number;
     isLadybug: boolean;
+    baseScaleX: number;
+    baseScaleY: number;
 
     touchedTimes: number = 0;
 
@@ -12,9 +14,11 @@ export default class Movable {
         this.X = X;
         this.Y = Y;
         this.sprite = sprite;
+        this.baseScaleX = sprite.scale.x;
+        this.baseScaleY = sprite.scale.y;
         this.collected = false;
         this.isLadybug = isLadybug;
-        this.animationEndAt = Date.now()
+        this.animationEndAt = 0;
     }
 
 }

@@ -12,6 +12,7 @@ import Settings from '../../../core/service/Settings';
 import EventUtils from '../../../core/utils/EventUtils';
 import ForestUtils from '../../../core/utils/ForestUtils';
 export default class TreesTransitionPanel extends BasePanel {
+    private static closedCover: TreesTransitionPanel = null;
     private static readonly OVERLAY_COLOR = 0x23520d;
     private static readonly OUTGOING_OVERLAY_TARGET_ALPHA = 0.35;
     private static readonly OPAQUE_COVER_LEAD_TIME = 350;
@@ -259,24 +260,14 @@ export default class TreesTransitionPanel extends BasePanel {
             this.markCoverAnimationComplete();
         }
 
-        // Idle panels are staged during state init, before the screen is ready
-        // to animate them. Keep their preset tree pieces out of the renderer
-        // until reveal() has prepared the exit tweens; otherwise high refresh
-        // rates can expose a frame of the static preset before the transition.
+        // The loading scene must remain covered for the whole preload. Prime
+        // every branch before the first paint so cached textures never flash
+        // at a previous transform or at the origin.
         if (!from && time === 0) {
-            this.visible = false;
+            this.overlay.alpha = 1;
+            this.branches.forEach(branch => branch.alpha = 1);
         }
-
-        // This panel is transitional and should not survive between level/screen states.
-        if (from && time > 0) {
-            let disposeDelay = delay + time + 1200;
-            this.game.time.events.add(disposeDelay, () => {
-                if (this && this.parent) {
-                    this.stopLoadingDots();
-                    this.destroy(true);
-                }
-            });
-        }
+        AnimationUtils.primeForShow(this);
     }
 
     private animateLoadingDots(): void {
@@ -301,6 +292,7 @@ export default class TreesTransitionPanel extends BasePanel {
     /** Start expensive screen initialization after the last leaf has closed. */
     public onCovered(callback: () => void): void {
         if (this.coverAnimationComplete) {
+            this.preserveClosedCover();
             this.game.time.events.add(0, callback, this);
             return;
         }
@@ -338,7 +330,29 @@ export default class TreesTransitionPanel extends BasePanel {
 
         this.coverCompleteTimer = null;
         this.coverAnimationComplete = true;
+        if (this.coveredCallbacks.length > 0) this.preserveClosedCover();
         this.coveredCallbacks.splice(0).forEach(callback => callback());
+    }
+
+    private preserveClosedCover(): void {
+        const previous = TreesTransitionPanel.closedCover;
+        if (previous && previous != this && previous.exists) previous.destroy(true);
+        TreesTransitionPanel.closedCover = this;
+        // Stage children survive StateManager's world clear. Detach from the
+        // outgoing screen's overlay group before that group is destroyed.
+        this.game.stage.addChild(this);
+        AnimationUtils.primeForShow(this);
+    }
+
+    public static takeClosedCover(game: Phaser.Game): TreesTransitionPanel {
+        const cover = this.closedCover;
+        this.closedCover = null;
+        if (!cover || !cover.exists || cover.game != game) return null;
+        // StateManager removes scene timers, so resume just the loading dots.
+        cover.stopLoadingDots();
+        cover.loadingDotsEvent = game.time.events.loop(400, cover.animateLoadingDots, cover);
+        AnimationUtils.primeForShow(cover);
+        return cover;
     }
 
     /** Open the cover that was already visible during the screen load. */
@@ -400,6 +414,7 @@ export default class TreesTransitionPanel extends BasePanel {
             tweens.push(AnimationUtils.fadeOut(this.game, branch,
                 localDelay + moveTime - (branch === tp0 ? 340 : 220), fadeTime));
         });
+        AnimationUtils.primeForShow(this);
         this.game.time.events.add(time + 1200, () => {
             if (this.parent) {
                 this.destroy(true);

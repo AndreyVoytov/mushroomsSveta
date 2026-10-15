@@ -147,12 +147,19 @@ export default class HouseScreen extends DialogScreen {
             || ForestUtils.isCloverReskin(EventUtils.getActiveEventForestType());
         Game.CLOVER_RETURN_TRANSITION = false;
 
+        this.fakeTrees = TreesTransitionPanel.takeClosedCover(this.game);
+        if (this.fakeTrees) {
+            Game.WHITE_TRANSITION = false;
+            this.addTopOverlay(this.fakeTrees);
+            return;
+        }
+
         if (Game.WHITE_TRANSITION || this.fakeTrees) {
             return;
         }
 
         if (!LocationUtils.isHouseStoryLocation(UserService.getUser())) {
-            this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverReturnTransition));
+            this.fakeTrees = this.addTopOverlay(new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverReturnTransition));
         }
     }
 
@@ -161,7 +168,7 @@ export default class HouseScreen extends DialogScreen {
             if(LocationUtils.isHouseStoryLocation(UserService.getUser())){
                 this.fakeTrees = this.add.existing(new BaseLayout(this.game, "NearHouseLayout", "forestHouseBg"));
             } else {
-                this.fakeTrees = this.add.existing(new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverReturnTransition));
+                this.fakeTrees = this.addTopOverlay(new TreesTransitionPanel(this.game, false, 0, 0, this.useCloverReturnTransition));
             }
         }
 
@@ -357,7 +364,7 @@ export default class HouseScreen extends DialogScreen {
 
         this.characterButton = SpriteUtils.createButton(this.game, 90, this.game.height - 200 - 75 - 145, 'actionCircle', () => {
             if (!this.isLocked()) {
-                WorldPanel.show('heroes');
+                this.characterPanel.show();
             }
         });
         this.characterButton.anchor.set(0.5);
@@ -502,7 +509,7 @@ export default class HouseScreen extends DialogScreen {
         let transitionTime = 2000;
         let transitionDelay = 500;
 
-        if (blackFadeOut) {
+        if (blackFadeOut && !(this.fakeTrees instanceof TreesTransitionPanel)) {
             if(!LocationUtils.isHouseStoryLocation(user)){
                 this.add.existing(new ColorTransitionPanel(this.game, 0x000000, transitionTime, 0, false));
                 this.dialogPanel.bringToTop();

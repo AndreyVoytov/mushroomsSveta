@@ -19,9 +19,7 @@ import Settings from '../Settings';
 import TaskService from '../TaskService';
 export default class LadybugsProvider extends BaseLadybugsProvider {
     private screen: BaseForestScreen;
-    // Short, clear movement: a ladybug falls a cell in roughly half a second.
-    // enqueue another move in that window: two simultaneous tweens caused the
-    // occasional "teleporting" stump/acorn after a ladybug moved down.
+    // Both halves of an exchange share the delay, duration and easing.
     private static readonly MOVE_DELAY = 120;
     private static readonly MOVE_DURATION = 600;
 
@@ -58,7 +56,10 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
 
         this.ladybugsAndAcorns.forEach(ladybug => {
 
-            if (Date.now() < ladybug.animationEndAt) {
+            const now = this.game.time.now;
+            const currentCell = this.cellsProvider.getCellByCoordinates(ladybug.X, ladybug.Y);
+            if (ladybug.collected || now < ladybug.animationEndAt
+                || (currentCell && now < currentCell.state.movementEndAt)) {
                 return;
             }
 
@@ -69,7 +70,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 let otherLadyBugOnCell = this.ladybugsAndAcorns.filter(otherLadybug => cell.X == otherLadybug.X &&
                     cell.Y == otherLadybug.Y).shift();
 
-                return otherLadyBugOnCell == null;
+                return otherLadyBugOnCell == null && !(now < cell.state.movementEndAt);
             });
 
             // //Убираем ячейку, в которой коровка тонет, если есть альтернативы
@@ -85,14 +86,14 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 // ladybug.sprite.bringToTop();
 
                 let choosen: ForestCell = openedAdjucentCells[Utils.random(openedAdjucentCells.length)];
-                let currentCell = this.cellsProvider.getCellByCoordinates(ladybug.X, ladybug.Y);
-
+                this.game.tweens.removeFrom(ladybug.sprite);
                 this.game.add.tween(ladybug.sprite).to({
                     x: this.cellsProvider.calculateX(choosen), y: this.cellsProvider.calculateY(choosen),
                 }, LadybugsProvider.MOVE_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, LadybugsProvider.MOVE_DELAY, 0, false);
+                this.game.tweens.removeFrom(ladybug.sprite.scale);
                 this.game.add.tween(ladybug.sprite.scale).to({
-                    x: 1, y: 1,
-                }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 100, 0, false);
+                    x: ladybug.baseScaleX, y: ladybug.baseScaleY,
+                }, LadybugsProvider.MOVE_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, LadybugsProvider.MOVE_DELAY, 0, false);
                 this.screen.delayWinOrLooseCheck(LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION);
 
                 ladybug.sprite.bringToTop();
@@ -105,44 +106,26 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 if (currentCell != null && //currentCell.state.content != ContentType.bush && currentCell.state.content != ContentType.bush2 &&
                      !this.cellsProvider.isInteractive(choosen) 
                     && ForestUtils.getBiom(currentCell.type) != BiomType.WATER && ForestUtils.getBiom(choosen.type) != BiomType.WATER) {
-                    // Move a decoration away from the incoming acorn before it
-                    // lands. In deep piles several acorns can reach the same
-                    // column in quick succession; tweening both full-size
-                    // sprites through the same cell made them visibly overlap.
-                    const displacedSprite = choosen.state.sprite;
-                    const displacedLabel = choosen.state.label;
-                    const displacedSpriteScale = displacedSprite ? { x: displacedSprite.scale.x, y: displacedSprite.scale.y } : null;
-                    const displacedLabelScale = displacedLabel ? { x: displacedLabel.scale.x, y: displacedLabel.scale.y } : null;
                     this.cellsProvider.switchCellsByCircle([currentCell, choosen], null, true, LadybugsProvider.MOVE_DELAY, LadybugsProvider.MOVE_DURATION);
-
-                    const tuckAway = (displayObject: any, scale: { x: number, y: number }) => {
-                        if (!displayObject || !scale) return;
-                        this.game.tweens.removeFrom(displayObject.scale);
-                        displayObject.scale.set(scale.x, scale.y);
-                        this.game.add.tween(displayObject.scale).to({ x: 0, y: 0 }, 180,
-                            Phaser.Easing.Quadratic.In, true, LadybugsProvider.MOVE_DELAY + 80);
-                        this.game.time.events.add(LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION + 420, () => {
-                            if (!displayObject.exists) return;
-                            displayObject.scale.set(0, 0);
-                            this.game.add.tween(displayObject.scale).to(scale, 280,
-                                Phaser.Easing.Back.Out, true);
-                        });
-                    };
-                    tuckAway(displacedSprite, displacedSpriteScale);
-                    tuckAway(displacedLabel, displacedLabelScale);
 
                     // console.log("LADYBUGS CASE 1: " + ContentType[choosen.state.content] + " " + this.cellsProvider.isInteractive(choosen))
 
 
                     //На первом шаге коровки не в воду (либо когда выходим из воды) просто выкидываем декорацию
                 } else if (!this.cellsProvider.isInteractive(choosen) &&
-                    ((currentCell == null && choosen.type != CellType.WATER) ||
-                        (choosen.type != CellType.WATER && currentCell.type == CellType.WATER))) {
-
-                    // console.log("LADYBUGS CASE 2")
-
-                    this.game.add.tween(choosen.state.sprite).to({ width: 0, height: 0 }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 100, 0, false);
-                    this.game.add.tween(choosen.state.label).to({ width: 0, height: 0 }, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Exponential.Out, true, 100, 0, false);
+                    ForestUtils.getBiom(choosen.type) != BiomType.WATER &&
+                    (currentCell == null || ForestUtils.getBiom(currentCell.type) == BiomType.WATER)) {
+                    // There is no previous land tile to receive this decoration.
+                    // Clear its state as well as its visual, so a later exchange
+                    // cannot bring the disappearing object back.
+                    this.cellsProvider.stopNumberedTreeReaction(choosen);
+                    [choosen.state.sprite, choosen.state.label].forEach(sprite => {
+                        if (!sprite) return;
+                        this.game.add.tween(sprite).to({ alpha: 0 }, 220, Phaser.Easing.Linear.None,
+                            true, LadybugsProvider.MOVE_DELAY);
+                    });
+                    choosen.state.content = ContentType.empty;
+                    choosen.state.numberedDecoration = false;
 
                     //При переходе в воду декорации не двигаем
                 } else if (!this.cellsProvider.isInteractive(choosen) && choosen.type == CellType.WATER) {
@@ -166,7 +149,7 @@ export default class LadybugsProvider extends BaseLadybugsProvider {
                 ladybug.isLadybug? SoundUtils.ladybugMove() : SoundUtils.acornMove();
                 (<ForestScreen>(this.screen)).refreshCovers();
 
-                ladybug.animationEndAt = Date.now() + LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION;
+                ladybug.animationEndAt = now + LadybugsProvider.MOVE_DELAY + LadybugsProvider.MOVE_DURATION;
 
                 if (this.cellsProvider.getBottomCells(ladybug.X, ladybug.Y).filter(c => !c.state.cover.isDark()).length == 0) {
                     if (ladybug.isLadybug) {

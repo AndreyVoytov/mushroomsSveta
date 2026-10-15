@@ -16,6 +16,7 @@ import InfoPanel from './../component/panel/InfoPanel';
 import ForestCellCover from './../component/forest/ForestCellCover';
 import OpeningType from '../../core/model/enum/OpeningType';
 import BaseForestScreen from './BaseForestScreen';
+import HeroAbilitiesProvider from '../../core/service/provider/HeroAbilitiesProvider';
 import BaseCellsProvider from '../../core/service/provider/BaseCellsProvider';
 import { ItemContents, ContentType, AnimalsContents, InteractiveContents, DecorationsContents } from '../../core/model/enum/ContentType';
 import ComplexAnimationUtils from '../../core/utils/ComplexAnimationUtils';
@@ -37,6 +38,62 @@ import LocationUtils from '../../core/utils/LocationUtils';
 import GameText from '../../core/localization/GameText';
 import LocalizationService from '../../core/localization/LocalizationService';
 export default class ForestScreen extends BaseForestScreen {
+    public heroAbilities: HeroAbilitiesProvider;
+
+    public shutdown(): void {
+        if(this.heroAbilities){this.heroAbilities.dispose();this.heroAbilities=null;}
+        super.shutdown();
+    }
+
+    public onEnergySpent(amount: number): void {
+        if(this.heroAbilities)this.heroAbilities.recordEnergySpent(amount);
+    }
+
+    public canUseHeroAbilities(): boolean {
+        return this.game.state.getCurrentState()==this && !this.levelStopped && !this.isLocked()
+            && !InGameSettingsPanel.shown && !this.dialogPanel.isDialogActive() && !this.educationPanel.shown
+            && this.topPanel.getAims().some(aim=>aim.countLeft>0);
+    }
+
+    /** Place on an empty revealed land tile, favoring unexplored neighbors. */
+    public placeHeroBooster(hero: string, origin: Phaser.Point, onLanded: () => void): boolean {
+        const cp=this.cellsProvider;
+        const candidates=cp.getCells().filter(cell=>cell.state.opened&&cell.state.content==ContentType.empty
+            && !this.hasMobileOccupant(cell)&&!cell.occupiedByFlower&&ForestUtils.getBiom(cell.type)!=BiomType.WATER
+            && !(this.game.time.now<cell.state.movementEndAt)
+            && (!cell.state.sprite||!cell.state.sprite.exists||!cell.state.sprite.visible||cell.state.sprite.alpha<.01));
+        if(!candidates.length)return false;
+        const neighbors=(cell: ForestCell)=>cp.getCells().filter(c=>!c.state.opened&&!c.state.cover.isDark()&&cp.areAdjucent(c,cell)).length;
+        const visible=(cell: ForestCell)=>{const y=cp.calculateY(cell)-(this.game.camera?this.game.camera.y:0);return y>=250&&y<=this.game.height-170?1:0;};
+        candidates.sort((a,b)=>visible(b)-visible(a)||neighbors(b)-neighbors(a));
+        const cell=candidates[0],state=cell.state;
+        cp.stopNumberedTreeReaction(cell);
+        if(state.sprite)state.sprite.kill();
+        if(hero=='sveta'){cell.type=CellType.COMPASS_FREE;state.content=ContentType.compass;}
+        else {
+            const rocket=Utils.random(3);
+            cell.type=[CellType.ROCKET,CellType.ROCKET2,CellType.ROCKET3][rocket];
+            state.content=[ContentType.rocket1,ContentType.rocket2,ContentType.rocket3][rocket];
+        }
+        state.opened=false;state.boosterLanding=true;state.numberedDecoration=false;
+        state.label.text='';state.label.visible=false;cell.bg.visible=true;
+        state.cover.visible=false;
+        cp.addCellSprite(this.game,this,cell,this.boostersProvider);
+        const sprite=state.sprite,targetX=cp.calculateX(cell),targetY=cp.calculateY(cell),sx=sprite.scale.x,sy=sprite.scale.y;
+        sprite.inputEnabled=false;sprite.position.set(origin.x,origin.y);sprite.scale.set(sx*.25,sy*.25);
+        const flight=this.game.add.tween(sprite).to({x:[origin.x+(targetX-origin.x)*.6,targetX],
+            y:[Math.min(origin.y,targetY)-170,targetY],angle:[-18,12,0]},650,Phaser.Easing.Sinusoidal.Out,true)
+            .interpolation(Phaser.Math.bezierInterpolation);
+        this.game.add.tween(sprite.scale).to({x:sx,y:sy},650,Phaser.Easing.Sinusoidal.Out,true);
+        flight.onComplete.addOnce(()=>{
+            if(!sprite.exists)return;
+            state.boosterLanding=false;sprite.inputEnabled=true;sprite.angle=0;
+            AnimationUtils.highlight(this.game,targetX,targetY,'splashY',0,.65,350);
+            onLanded();
+        });
+        this.delayWinOrLooseCheck(900);
+        return true;
+    }
 
 
     private previousCellClicked: ForestCell;
@@ -200,6 +257,8 @@ export default class ForestScreen extends BaseForestScreen {
                 }
             })
         }
+        if(this.heroAbilities)this.heroAbilities.dispose();
+        if(!Game.ANIMALS_SHOWCASE)this.heroAbilities=new HeroAbilitiesProvider(this.game,this,this.bottomPanel.heroes);
     }
 
     protected drawCellBgShadow(cell: ForestCell) {
@@ -453,8 +512,7 @@ export default class ForestScreen extends BaseForestScreen {
             let cell = this.cellsProvider.getCells().filter(c => c.X == coordinates.x && c.Y == coordinates.y).shift();
             if (cell && !ForestUtils.isBoosterType(cell.type)) {
                 const adjacentCompassOrRocket = this.cellsProvider.getCells().filter(candidate =>
-                    (candidate.type == CellType.COMPASS_FREE || candidate.type == CellType.COMPASS_IVY
-                        || candidate.type == CellType.ROCKET || candidate.type == CellType.ROCKET2 || candidate.type == CellType.ROCKET3
+                    (candidate.type == CellType.ROCKET || candidate.type == CellType.ROCKET2 || candidate.type == CellType.ROCKET3
                         || candidate.type == CellType.ROCKET_IVY || candidate.type == CellType.ROCKET_IVY2 || candidate.type == CellType.ROCKET_IVY3)
                     && !candidate.state.opened && !candidate.state.cover.isLocked()
                     && this.cellsProvider.areAdjucent(cell, candidate)
@@ -834,6 +892,7 @@ export default class ForestScreen extends BaseForestScreen {
 
         this.delayWinOrLooseCheck(500);
         this.tryToScroll();
+        this.boostersProvider.activateAdjacentSnails(this.justOpenedCells[0]);
     }
 
     private hasMobileOccupant(cell: ForestCell): boolean {

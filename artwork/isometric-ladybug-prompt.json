@@ -1,0 +1,7 @@
+{
+  "tool": "built-in image_gen",
+  "asset": "assets/base/items/ladybug.png",
+  "width": 120,
+  "height": 127,
+  "prompt": "Use case: precise-object-edit. Asset type: transparent game sprite, a ladybug for a polished casual mobile puzzle game. Edit target is the supplied current ladybug image. Replace the illustration with a beautifully rendered red ladybug in a clear three-quarter isometric view from above, with its small black head directed diagonally down-right, domed glossy red elytra, a subtle center seam, tidy black spots, six small natural black legs, two short antennae, soft warm highlights and restrained ambient shading. Playrix-like premium casual-game 3D illustration quality, plump clean readable shape. No cartoon eyes, no big eyes, no human face, no smile; only tiny natural dark insect eyes if visible. Keep it a single centered insect with roughly the same occupied area and safe transparent margin as the original sprite, made to be readable at the original tiny game resolution. Transparent background, clean alpha edges. No text, no background, no extra objects, no sparkle particles."
+}

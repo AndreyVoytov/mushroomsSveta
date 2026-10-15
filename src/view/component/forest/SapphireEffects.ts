@@ -9,9 +9,9 @@ export default class SapphireEffects {
             const ctx = bitmap.ctx;
             const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
             gradient.addColorStop(0, 'rgba(255,255,255,1)');
-            gradient.addColorStop(0.18, 'rgba(202,245,255,0.9)');
-            gradient.addColorStop(0.5, 'rgba(79,171,255,0.35)');
-            gradient.addColorStop(1, 'rgba(38,112,255,0)');
+            gradient.addColorStop(0.18, 'rgba(255,246,181,0.9)');
+            gradient.addColorStop(0.5, 'rgba(255,193,43,0.35)');
+            gradient.addColorStop(1, 'rgba(255,154,24,0)');
             ctx.fillStyle = gradient;
             ctx.fillRect(0, 0, 64, 64);
             if (glint) {
@@ -25,7 +25,7 @@ export default class SapphireEffects {
                 ctx.lineTo(2, 32);
                 ctx.lineTo(28, 27);
                 ctx.closePath();
-                ctx.fillStyle = '#e7fbff';
+                ctx.fillStyle = '#fff6ce';
                 ctx.fill();
             }
             bitmap.dirty = true;

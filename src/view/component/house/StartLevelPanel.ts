@@ -9,7 +9,6 @@ import ForestScreen from './../../screen/ForestScreen';
 import HouseScreen from './../../screen/HouseScreen';
 import ClosablePanel from './../panel/ClosablePanel';
 import TreesTransitionPanel from './../panel/TreesTransitionPanel';
-import PreboosterPanel from './PreboosterPanel';
 import Utils from '../../../core/utils/Utils';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import BoosterType from '../../../core/model/enum/BoosterType';
@@ -24,6 +23,7 @@ import GameText from '../../../core/localization/GameText';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
 import DiaryContentType from '../../../core/model/diary/DiaryContentType';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import HeroTeamPanel from '../forest/HeroTeamPanel';
 
 export default class StartLevelPanel extends ClosablePanel {
     public static hardLevelAwardAddition = 25;
@@ -37,7 +37,7 @@ export default class StartLevelPanel extends ClosablePanel {
     private header: Phaser.Sprite;
     private headerText: Label;
 
-    private preboosterPanel: PreboosterPanel;
+    public heroTeamPanel: HeroTeamPanel;
 
     constructor(game: Phaser.Game, screen: HouseScreen, x: number, y: number, aims: ForestAim[], level: number) {
         super(game, x, y, true, "blank");
@@ -46,12 +46,10 @@ export default class StartLevelPanel extends ClosablePanel {
 
         StartLevelPanel.PREBOOSTERS_TO_SPEND = [];
 
-        let showBoosters = UserService.getUser().getCurrentForest() > PreboosterPanel.LEVEL_WITH_PRIZE_COMPASSES;
-
         let currentForest = ForestDao.getForestType(UserService.getUser().getCurrentForest());
         let isHard = currentForest ? currentForest.hardLevel : false;
 
-        let panel = this.attachSprite(showBoosters? 'panel' : 'panel2', 'panel');
+        let panel = this.attachSprite('panel', 'panel');
         panel.inputEnabled = true;
 
         let helperPanel = this.attachSprite("helperPanel")
@@ -135,19 +133,15 @@ export default class StartLevelPanel extends ClosablePanel {
         { "spriteId": "playButton", "x": 0, "y": 344, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
         { "spriteId": "fastPlayButton", "x": 0, "y": 474, "scaleX": 0.8, "scaleY": 0.8, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }])
 
-        this.playButton.y -= showBoosters?0:233;
-        if(fastPlayButton) fastPlayButton.y -= showBoosters?0:233;
-
         if (user.getCurrentForest() > LocationUtils.DIARY_AFTER_LEVEL) {
             this.applyPreset([{ "spriteId": "panel", "x": 0, "y": -36 -765*1.1/2, "scaleX": 1, "scaleY": 1.1, "anchorX": 0.5, "anchorY": 0, "rotation": 0 }]);
             this.y += 100;
         }
 
-        if (showBoosters) {
-            this.addSprite(this.preboosterPanel = new PreboosterPanel(this.game, screen, -194, 184))
+        {
+            this.addChild(this.heroTeamPanel = new HeroTeamPanel(this.game,0,184,false));
 
-            let chooseBostersLabel = this.attachText("chooseBostersLabel", GameText.chooseBoosters(), isHard? { font: "bold 45px Gilroy", fill: "#fbac7a" } : { font: "bold 45px Gilroy", fill: "#e8c38f" })
-            // let chooseBostersLabel = this.attachText("chooseBostersLabel", "Выберите бустеры:", isHard? { font: "bold 45px Gilroy", fill: "#e39cf7" } : { font: "bold 45px Gilroy", fill: "#e8c38f" })
+            let chooseBostersLabel = this.attachText("chooseBostersLabel", LocalizationService.get('ui.heroParty','Отряд'), isHard? { font: "bold 45px Gilroy", fill: "#fbac7a" } : { font: "bold 45px Gilroy", fill: "#e8c38f" })
             chooseBostersLabel.strokeThickness = 4;
             chooseBostersLabel.addStrokeColor(isHard? "#7b037c" : "#b6691b", 0);
 
@@ -155,7 +149,7 @@ export default class StartLevelPanel extends ClosablePanel {
         }
 
         if(isHard){
-            let panel2 = this.attachSprite(showBoosters? 'panel' : 'panel2', 'panelColor');
+            let panel2 = this.attachSprite('panel', 'panelColor');
             panel2.anchor.set(panel.anchor.x, panel.anchor.y)
             panel.addChild(panel2);
             panel2.tint = 0xAA00FF;
@@ -164,9 +158,6 @@ export default class StartLevelPanel extends ClosablePanel {
 
 
             helperPanel.alpha = 0.7;
-            if(this.preboosterPanel){
-                this.preboosterPanel.alpha = 0.85
-            }
 
             this.playButton.tint = 0xAADDAA;
 
@@ -311,9 +302,7 @@ export default class StartLevelPanel extends ClosablePanel {
     }
 
     public show() {
-        if(this.preboosterPanel){
-            this.preboosterPanel.refresh();
-        }
+        this.heroTeamPanel.refresh();
         if (this.header) {
             let currentTask = DiaryConfiguration.getCurrentRecipe(UserService.getUser().getCurrentForest());
             if (currentTask) {

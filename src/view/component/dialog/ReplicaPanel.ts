@@ -670,6 +670,8 @@ export default class ReplicaPanel extends BasePanel {
 
     private show(sideSwitched: boolean): void {
         const token = ++this.eventToken;
+        this.entranceFinished = false;
+        this.textFinished = false;
         // this.personImage.alpha = 1
         // if (this.decorImage) {
         //     this.decorImage.alpha = 1
@@ -715,6 +717,12 @@ export default class ReplicaPanel extends BasePanel {
                 AnimationUtils.tint(this.game, this.personImage, ReplicaPanel.SECOND_PERSON_TINT, this.r.personTint == null ? ReplicaPanel.NO_TINT : this.r.personTint, 500, 0);
             }
             this.game.add.tween(this.personImage).to({ alpha: 1 }, ReplicaPanel.CHANGE_PERSON_DURATION, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.Out, true, 0, 0, false)
+
+            const entranceTime = Math.max(160, ReplicaPanel.CHANGE_PERSON_DURATION
+                + (sideSwitched && this.secondPersonImage ? 200 : 0));
+            this.delayedEvents.push(this.game.time.events.add(entranceTime, () => {
+                if (token === this.eventToken) this.markEntranceFinished();
+            }));
 
             if(this.secondPersonImage){
                 if(sideSwitched){
@@ -1094,11 +1102,15 @@ export default class ReplicaPanel extends BasePanel {
     }
 
     public whenFullyShown(callback: () => void): void {
-        if (this.entranceFinished && this.textFinished) {
+        if (this.isFullyShown()) {
             callback();
             return;
         }
         this.readyCallbacks.push(callback);
+    }
+
+    public isFullyShown(): boolean {
+        return this.entranceFinished && this.textFinished;
     }
 
     private markEntranceFinished(): void {

@@ -33,6 +33,12 @@ jobs:
           node tools/test-journey-events.js
           node tools/test-animals-generation.js
           node tools/test-mushroom-harvest.js
+          node tools/test-ladybug-movement.js
+          node tools/test-hero-abilities.js
+          node tools/test-house-discovery.js
+          node tools/test-item-ground-shadow.js
+          node tools/test-forest-presentation.js
+          node tools/test-snail-sparks.js
           node tools/test-sapphire-reward.js
           node tools/test-tint-interpolation.js
       - run: npm run pages:build

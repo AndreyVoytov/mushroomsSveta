@@ -10,7 +10,7 @@ import Movable from '../../model/forest/Movable';
 import StripsPanel from '../../../view/component/dialog/StripsPanel';
 import BaseScreen from "../../../view/screen/common/BaseScreen";
 import SeparatorType from '../../model/enum/SeparatorType';
-import { ContentType, ItemContents, InteractiveContents, AnimalsContents } from '../../model/enum/ContentType';
+import { ContentType, ItemContents, InteractiveContents, AnimalsContents, BoostersContents } from '../../model/enum/ContentType';
 import LocationUtils from '../../utils/LocationUtils';
 import Separator from '../../model/forest/Separator';
 import Settings from '../Settings';
@@ -402,20 +402,24 @@ export default abstract class BaseCellsProvider {
         // half-updated state, and items without labels simply snapped later.
         const states = cells.map(cell => cell.state);
 
-        let bugsMoved = false;
+        const movablePositions = (ladybugsToAdditionalMove || []).filter(m => !m.collected)
+            .map(m => ({ movable: m, x: m.X, y: m.Y }));
+        const movementEndAt = this.game.time.now + movementDelay + movementDuration;
 
         cells.forEach((cell, i) => {
             const nextIndex = (i + 1) % cells.length;
             const next = cells[nextIndex];
             cell.state = states[nextIndex];
+            this.prepareCellForMovement(cell);
+            cell.state.movementEndAt = movementEndAt;
 
             const targetX = this.calculateX(cell);
             const targetY = this.calculateY(cell);
-            // A fresh cow movement may arrive before a previous tween ends.
-            // Continue from the visible position rather than stacking tweens.
-            // The cell state moves as a unit, including opened interactive objects.
-            // Skipping those sprites left them behind while the acorn moved over them.
-            if (cell.state.sprite != null) {
+            // A collected animal/item or an activated booster owns its escape
+            // animation. Only the logical empty tile moves underneath it.
+            const detachedAnimation = cell.state.opened && (cell.state.content == ContentType.empty
+                || cell.state.content in BoostersContents);
+            if (cell.state.sprite != null && !detachedAnimation) {
                 this.game.tweens.removeFrom(cell.state.sprite);
                 this.game.add.tween(cell.state.sprite).to({ x: targetX, y: targetY },
                     movementDuration, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, movementDelay, 0, false);
@@ -463,21 +467,24 @@ export default abstract class BaseCellsProvider {
                 //     }, 1000, Phaser.Easing.Exponential.Out, true, 200, 0, false);
                 // } else {
                 if (ladybugsToAdditionalMove) {
-                    let ladybug = ladybugsToAdditionalMove.filter(ladybug => ladybug.X == next.X && ladybug.Y == next.Y).shift();
-                    if (ForestUtils.getBiom(cell.type) == BiomType.WATER && ladybug != null && !bugsMoved) {
+                    const source = movablePositions.filter(position => position.x == next.X && position.y == next.Y)[0];
+                    const ladybug = source && source.movable;
+                    if (ForestUtils.getBiom(cell.type) == BiomType.WATER && ladybug != null) {
                         if (ladybug.Y != cell.Y) {
                             console.log("water Y: " + ladybug.Y + " => " + cell.Y)
                         }
-                        bugsMoved = true;
                         ladybug.X = cell.X;
                         ladybug.Y = cell.Y;
+                        ladybug.animationEndAt = movementEndAt;
 
                         this.game.tweens.removeFrom(ladybug.sprite);
                         this.game.add.tween(ladybug.sprite).to({ x: targetX, y: targetY },
-                            700, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, 0, 0, false);
+                            movementDuration, Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Exponential.Out, true, movementDelay, 0, false);
                     }
                 }
             }
         });
     }
+
+    protected prepareCellForMovement(_cell: ForestCell): void { }
 }

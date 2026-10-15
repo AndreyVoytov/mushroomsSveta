@@ -23,6 +23,8 @@ import ComplexAnimationUtils from '../../../core/utils/ComplexAnimationUtils';
 import GameText from '../../../core/localization/GameText';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import CellsPainter from '../../../core/service/provider/CellsPainter';
+import ForestReplicasConfiguration from '../../../core/configuration/ForestReplicasConfiguration';
+import BaseCellsProvider from '../../../core/service/provider/BaseCellsProvider';
 export default class EducationPanel extends BasePanel {
 
     public shownWithOkButton: boolean;
@@ -42,6 +44,7 @@ export default class EducationPanel extends BasePanel {
     private lastOpenedCount: number;
 
     private fieldStartY: number;
+    private houseDiscovered = false;
 
     constructor(game: Phaser.Game, screen: BaseForestScreen, cells: ForestCell[], ladybugs: Movable[], aims: ForestAim[], forestType: ForestType, fieldStartY: number) {
         super(game, 0, 0);
@@ -116,11 +119,15 @@ export default class EducationPanel extends BasePanel {
                 this.screen.setOnClickAnimation("hideEducation")
             }
 
-            this.showSpecificCellOnItemAimsLeft(cellState, /*"homeHex",*/ 0, () => {
-                UserService.getUser().addMarker("homeFound")
-                this.doShowDialogOnSpecificItem(cellState);
-                // this.screen.setOnClickAnimation("exploreHouse");
-            })
+            if (!this.houseDiscovered) {
+                // Education runs before collecting this cell: one remaining
+                // mushroom is the mushroom being replaced by the house.
+                this.showSpecificCellOnItemAimsLeft(cellState, 0, () => {
+                    this.houseDiscovered = true;
+                    UserService.getUser().addMarker("homeFound");
+                    this.doShowDialogOnSpecificItem(cellState);
+                });
+            }
         } else if (level == 3) {
             this.showSpecificCellOnItemAimsLeft(cellState, 0, () => {
                 this.doHighlightSpecificItem(cellState);
@@ -206,13 +213,6 @@ export default class EducationPanel extends BasePanel {
             if (openedCells == 0) {
                 this.doShowEducation(LocalizationService.get('tutorial.level18.scrollDown'), "sveta1",
                     [], CoverMode.showMessageAtCenter, 200, null, [], true);
-                this.screen.setOnClickAnimation("hideEducation")
-            }
-        } else if (level == 19) {
-
-            if (openedCells == 0) {
-                this.doShowEducation(LocalizationService.get('tutorial.level19.blueberryBush'), "sveta1",
-                    [], CoverMode.showMessageAtCenter, 200, null, ["bushberry"], true);
                 this.screen.setOnClickAnimation("hideEducation")
             }
         } else if (level == 22) {
@@ -369,18 +369,24 @@ export default class EducationPanel extends BasePanel {
         this.doShowEducation(null, null, [openedCell], CoverMode.noneVisible, 200, null);
         this.screen.stopLevelForDialog();
         this.screen.lockScreenFor(1000);
-        this.screen.dialogPanel.updateReplica(true);
+        // Show the discovery again when replaying level 2, even if this story
+        // replica was completed in an earlier playthrough.
+        const houseReplica = ForestsDao.indexOf(this.forestType) == 1
+            ? ForestReplicasConfiguration.allReplicas.filter(replica => replica.id == 'fr1')[0] : null;
+        this.screen.dialogPanel.updateReplica(true, false, false, false, houseReplica);
         if (ForestsDao.indexOf(this.forestType) == 1) {
             const house = cellState.sprite;
             const replica = this.screen.dialogPanel.replicaPanel;
             if (replica) {
                 replica.whenFullyShown(() => {
-                    if (house && house.exists) house.inputEnabled = true;
+                    if (house && house.exists && this.screen.dialogPanel.replicaPanel == replica) {
+                        house.inputEnabled = true;
+                        house.input.useHandCursor = true;
+                    }
                 });
             } else {
-                // Returning players may already have completed the house
-                // replica. Keep the discovered house interactive in that case.
-                if (house && house.exists) house.inputEnabled = true;
+                // No input until the discovery dialog has actually appeared.
+                house.inputEnabled = false;
             }
         }
     }
@@ -416,16 +422,20 @@ export default class EducationPanel extends BasePanel {
     }
 
     private revealDiscoveredHouse(house: Phaser.Sprite, tile: Phaser.Sprite): void {
-        // The level-2 house is a reveal rather than a flat replacement. Its
-        // wider footprint sits a little lower on the cell, with the light
-        // coming from bottom-right and casting a soft shadow up-left.
-        const targetWidth = house.width * 1.5;
-        const targetHeight = house.height * 1.4;
+        this.game.tweens.removeFrom(house);
+        this.game.tweens.removeFrom(house.scale);
         SpriteUtils.loadTexture(house, "actionHouse");
-        house.anchor.set(0.5, 0.86);
-        house.width = targetWidth;
-        house.height = targetHeight;
-        house.y += 13;
+        // Fit the visible art, independent of the previous cell's texture.
+        // The foundation stays inside the hex; only the roof rises above it.
+        // actionHouse has a 130px canvas with 100px of visible artwork.
+        // Account for that transparent inset so the building fills the tile.
+        SpriteUtils.fitIcon(house, tile.width * 0.96 * 130 / 100, tile.height * 1.35);
+        house.anchor.set(0.5, 0.94);
+        house.x = tile.x;
+        house.y = tile.y + tile.height * 0.18;
+        AnimationUtils.showStable(house);
+        const targetWidth = house.width;
+        const targetHeight = house.height;
         const houseShadow = new Phaser.Graphics(this.game, house.x - 12, house.y - 5);
         // Phaser takes ellipse half-extents, not a bounding rectangle.
         for (let i = 4; i >= 1; i--) {
@@ -441,15 +451,16 @@ export default class EducationPanel extends BasePanel {
         houseShadow.scale.set(1 / tile.scale.x, 1 / tile.scale.y);
         tile.addChild(houseShadow);
         house.bringToTop();
-        house.inputEnabled = false;
+        house.inputEnabled = true;
         house.input.useHandCursor = true;
+        house.inputEnabled = false;
+        let entered = false;
         house.events.onInputDown.add(() => {
-            if (this.screen.isLocked()) return;
+            if (entered || !house.inputEnabled || this.screen.isLocked()) return;
             const replica = this.screen.dialogPanel.replicaPanel;
-            if (replica && (!replica.isShown() || replica.isPrinting())) {
-                this.screen.dialogPanel.updateReplica();
-                return;
-            }
+            if (!replica || !replica.isFullyShown()) return;
+            entered = true;
+            house.inputEnabled = false;
             this.screen.setOnClickAnimations([]);
             this.screen.dialogPanel.updateReplica();
             this.screen.lockScreenFor(2000);
@@ -460,17 +471,20 @@ export default class EducationPanel extends BasePanel {
         const targetScaleY = house.scale.y;
         house.scale.set(targetScaleX * 0.82, targetScaleY * 0.18);
         this.game.add.tween(house.scale).to(
-            { x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX], y: [targetScaleY * 1.12, targetScaleY * 0.95, targetScaleY] },
-            520, Phaser.Easing.Back.Out, true, 0, 0, false
+            { x: [targetScaleX * 1.02, targetScaleX * 0.99, targetScaleX], y: [targetScaleY * 1.07, targetScaleY * 0.98, targetScaleY] },
+            520, Phaser.Easing.Sinusoidal.Out, true, 0, 0, false
         );
         const rustle = this.game.time.events.loop(1600, () => {
             if (!house.exists) return;
             this.game.add.tween(house.scale).to({
-                x: [targetScaleX * 1.08, targetScaleX * 0.96, targetScaleX],
-                y: [targetScaleY * 0.82, targetScaleY * 1.12, targetScaleY]
+                x: [targetScaleX * 1.015, targetScaleX * 0.995, targetScaleX],
+                y: [targetScaleY * 0.98, targetScaleY * 1.025, targetScaleY]
             }, 520, Phaser.Easing.Sinusoidal.InOut, true);
         });
-        house.events.onDestroy.addOnce(() => this.game.time.events.remove(rustle));
+        // The education panel may be destroyed before the house during a
+        // scene switch; its .game reference is cleared by Phaser.destroy().
+        const game = this.game;
+        house.events.onDestroy.addOnce(() => game.time.events.remove(rustle));
     }
 
     private doHighlightSpecificItem(cellState: CellState) {
@@ -613,6 +627,10 @@ export default class EducationPanel extends BasePanel {
 
         if (specificItem && count == onAimsLeft + 1 && cellState != null && cellState.content in ItemContents) {
             SpriteUtils.loadTexture(cellState.sprite, specificItem.image);
+            // The replacement has its own cell-sized canvas. Do not inherit
+            // the inset scale of a high-resolution collectible (e.g. an apple).
+            cellState.sprite.width = BaseCellsProvider.CELL_WIDTH;
+            cellState.sprite.height = BaseCellsProvider.CELL_HEIGHT;
             if (onItemShow) onItemShow();
         }
     }

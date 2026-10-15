@@ -15,6 +15,7 @@ import BoosterType from '../../model/enum/BoosterType';
 import { ContentType } from '../../model/enum/ContentType';
 import SoundUtils from '../../utils/SoundUtils';
 import Settings from '../Settings';
+import SnailSpinEffects from '../../../view/component/forest/SnailSpinEffects';
 export default class BoostersProvider {
     private game: Phaser.Game;
     private screen: BaseForestScreen;
@@ -30,6 +31,7 @@ export default class BoostersProvider {
 
     public applyCurrentVision(compass: Phaser.Sprite, compassCell: ForestCell): boolean {
         if (this.doApplyCurrentBooster(compass, compassCell)) {
+            const compassState = compassCell.state;
             // this.screen.topPanel.restoreStepsOnVisionUse();
             this.game.time.events.add(200, () => {
                 let firstDuration = 1500;
@@ -50,7 +52,7 @@ export default class BoostersProvider {
                 })
 
                 this.game.time.events.add(firstDuration + secondDuration + 100, () => {
-                    compassCell.state.content = ContentType.empty;
+                    compassState.content = ContentType.empty;
                 }, this);
                 this.screen.delayWinOrLooseCheck(firstDuration + secondDuration + 100);
 
@@ -323,8 +325,9 @@ export default class BoostersProvider {
     }
 
 
-    public applyCurrentCompass(compass: Phaser.Sprite, compassCell: ForestCell): boolean {
-        if (this.doApplyCurrentBooster(compass, compassCell)) {
+    public applyCurrentCompass(compass: Phaser.Sprite, compassCell: ForestCell, fromNeighbor: boolean = false): boolean {
+        if (this.doApplyCurrentBooster(compass, compassCell, fromNeighbor)) {
+            const compassState = compassCell.state;
             this.game.time.events.add(200, () => {
                 compass.alpha = 1;
                 compass.loadTexture('snailBooster', 0);
@@ -332,10 +335,21 @@ export default class BoostersProvider {
                 compass.width = 144;
                 compass.height = 153;
                 compass.angle = 0;
-                const charge = compass.animations.add('charge', Phaser.ArrayUtils.numberArray(0, 18), 18, false);
-                compass.animations.add('glowing', [14, 15, 16, 17, 18, 17, 16, 15], 16, true);
+                const charge = compass.animations.add('charge', Phaser.ArrayUtils.numberArray(0, 19), 24, false);
+                const chargeGrowth = this.game.add.tween(compass.scale).to({
+                    x: compass.scale.x * 1.3, y: compass.scale.y * 1.3
+                }, 20 / 24 * 1000, Phaser.Easing.Sinusoidal.InOut, true);
+                // The turn is in the second half of the supplied video.
+                compass.animations.add('spin', Phaser.ArrayUtils.numberArray(20, 39), 20, true);
                 charge.onComplete.addOnce(() => {
-                    if (compass.exists) compass.animations.play('glowing');
+                    if (compass.exists && compass.visible) {
+                        chargeGrowth.stop();
+                        compass.width = 144;
+                        compass.height = 153;
+                        compass.animations.play('spin');
+                        new SnailSpinEffects(this.game, compass);
+                        this.screen.bringUiToTop();
+                    }
                 });
                 compass.animations.play('charge');
                 this.screen.add.existing(compass);
@@ -385,7 +399,7 @@ export default class BoostersProvider {
 
                     if (i == cellsToOpenWithCompass - 1) {
                         this.game.time.events.add(750, () => {
-                            compassCell.state.content = ContentType.empty;
+                            compassState.content = ContentType.empty;
 
                             this.game.add.tween(compass).to({ width: 0, height: 0 }, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Phaser.Easing.Sinusoidal.In, true, 0, 0, false)
                             this.game.time.events.add(300, () => {
@@ -402,7 +416,16 @@ export default class BoostersProvider {
         return false;
     }
 
-    public activateBooster(cellWithBooster: ForestCell): boolean {
+    public activateAdjacentSnails(openedCell: ForestCell): void {
+        if (!openedCell || !openedCell.state.opened) return;
+        this.cellsProvider.getCells().filter(cell => cell != openedCell
+            && (cell.type == CellType.COMPASS_FREE || cell.type == CellType.COMPASS_IVY)
+            && !cell.state.opened && !cell.state.boosterLanding && !cell.state.cover.isLocked()
+            && this.cellsProvider.areAdjucent(cell, openedCell))
+            .forEach(cell => this.activateBooster(cell, true));
+    }
+
+    public activateBooster(cellWithBooster: ForestCell, fromNeighbor: boolean = false): boolean {
         let cellType = cellWithBooster.type;
         let boosterSprite = cellWithBooster.state.sprite;
         if (cellType == CellType.COMPASS_FREE || cellType == CellType.COMPASS_IVY
@@ -417,7 +440,7 @@ export default class BoostersProvider {
         switch (cellType) {
             case CellType.COMPASS_FREE:
             case CellType.COMPASS_IVY:
-                return this.applyCurrentCompass(boosterSprite, cellWithBooster);
+                return this.applyCurrentCompass(boosterSprite, cellWithBooster, fromNeighbor);
             case CellType.VISION:
             case CellType.VISION_IVY:
                 return this.applyCurrentVision(boosterSprite, cellWithBooster);
@@ -465,9 +488,10 @@ export default class BoostersProvider {
         return false;
     }
 
-    private doApplyCurrentBooster(booster: Phaser.Sprite, boosterCell: ForestCell): boolean {
+    private doApplyCurrentBooster(booster: Phaser.Sprite, boosterCell: ForestCell, fromNeighbor: boolean = false): boolean {
         //Для ячейки с компасом в opened записываем взят ли бустер
-        if (boosterCell.state.opened || boosterCell.state.cover.isLocked() || !this.screen.topPanel.tryOpenCell(OpeningType.usual)) {
+        if (boosterCell.state.opened || boosterCell.state.boosterLanding || boosterCell.state.cover.isLocked()
+            || (!fromNeighbor && !this.screen.topPanel.tryOpenCell(OpeningType.usual))) {
             return false;
         }
 
@@ -502,7 +526,8 @@ export default class BoostersProvider {
 
          // emitter.makeParticles(SpriteUtils.getAtlasKeyAndFrame(game, "dustYellow").atlasKey, SpriteUtils.getAtlasKeyAndFrame(game, "dustYellow").frameName);
         // emitter.makeParticles(SpriteUtils.getAtlasKeyAndFrame(this.game, "dustGreen").atlasKey, SpriteUtils.getAtlasKeyAndFrame(this.game, "dustGreen").frameName);
-        emitter.makeParticles(SpriteUtils.getAtlasKeyAndFrame(this.game, "p1").atlasKey, SpriteUtils.getAtlasKeyAndFrame(this.game, "p1").frameName);
+        const particle=SpriteUtils.getAtlasKeyAndFrame(this.game,SnailSpinEffects.PARTICLE_IMAGE);
+        emitter.makeParticles(particle.atlasKey,particle.frameName);
         emitter.gravity = new Phaser.Point(0, 0);
         emitter.maxRotation = 100;
         emitter.minRotation = -100;

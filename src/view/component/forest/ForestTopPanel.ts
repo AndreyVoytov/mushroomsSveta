@@ -19,6 +19,7 @@ import AdminService from './../../../core/service/AdminService';
 import UserService from '../../../core/service/UserService';
 import TaskService from '../../../core/service/TaskService';
 import MushroomHarvestEffects from './MushroomHarvestEffects';
+import ItemGroundShadow from './ItemGroundShadow';
 import Environment from '../../../core/model/enum/Environment';
 import BiomType from '../../../core/model/enum/BiomType';
 export default class ForestTopPanel extends BasePanel {
@@ -214,6 +215,7 @@ export default class ForestTopPanel extends BasePanel {
                 return false;
             }
             this.levelEnergySpent++;
+            if(this.screen.onEnergySpent)this.screen.onEnergySpent(1);
         }
 
         this.refreshEnergyLabel();
@@ -222,10 +224,10 @@ export default class ForestTopPanel extends BasePanel {
 
     public spendAdditionalEnergy(amount: number): boolean {
         const user = UserService.getUser();
-        const energyBefore = user.getEnergy();
         const spent = user.spendEnergy(amount);
-
-        this.levelEnergySpent += Math.max(0, energyBefore - user.getEnergy());
+        const expenditure=spent?Math.max(0,amount):0;
+        this.levelEnergySpent += expenditure;
+        if(expenditure>0&&this.screen.onEnergySpent)this.screen.onEnergySpent(expenditure);
         this.refreshEnergyLabel();
         return spent;
     }
@@ -262,10 +264,14 @@ export default class ForestTopPanel extends BasePanel {
         const sourceSprite = cellState.sprite;
         const itemImage = cellState.content == ContentType.randomItem
             ? cellState.metaValue : ContentType[cellState.content];
+        const groundCell = this.screen.cellsProvider.getCells().filter(c => c.state == cellState
+            && c.biomType != BiomType.WATER)[0];
         const harvestCell = MushroomHarvestEffects.isMushroom(itemImage)
             && this.forestType.environment != Environment.house
-            ? this.screen.cellsProvider.getCells().filter(c => c.state == cellState && c.biomType != BiomType.WATER)[0]
+            ? groundCell
             : null;
+        const groundShadow = groundCell && groundCell.bg && sourceSprite
+            ? new ItemGroundShadow(this.game, groundCell, sourceSprite) : null;
         if (harvestCell && !this.mushroomHarvestEffects) {
             this.mushroomHarvestEffects = new MushroomHarvestEffects(this.game);
         }
@@ -297,6 +303,7 @@ export default class ForestTopPanel extends BasePanel {
                 // up from the tween completion: timers can be delayed when a
                 // tab loses focus or another animation changes the timeline.
                 const hideCollectedSprite = () => {
+                    if (groundShadow) groundShadow.destroy();
                     if (!sprite || sprite.pendingDestroy) {
                         return;
                     }
@@ -355,6 +362,7 @@ export default class ForestTopPanel extends BasePanel {
                 // Keep the temporary flight copy above those cells for the
                 // whole trajectory, while returning HUD elements above it.
                 flightTween.onUpdateCallback(() => {
+                    if (groundShadow) groundShadow.update(sprite);
                     sprite.bringToTop();
                     self.screen.bringUiToTop();
                 });
@@ -379,9 +387,14 @@ export default class ForestTopPanel extends BasePanel {
             const sprite = sourceSprite;
             sprite.inputEnabled = false;
             self.game.tweens.removeFrom(sprite);
-            self.game.add.tween(sprite).to({ alpha: 0 }, 150,
+            const fade = self.game.add.tween(sprite).to({ alpha: 0 }, 150,
                 Settings.isOnlyLinearAnimations() ? Phaser.Easing.Linear.None : Phaser.Easing.Quadratic.In,
-                true, 0, 0, false).onComplete.addOnce(() => {
+                true, 0, 0, false);
+            fade.onUpdateCallback(() => {
+                if (groundShadow) groundShadow.update(sprite);
+            });
+            fade.onComplete.addOnce(() => {
+                    if (groundShadow) groundShadow.destroy();
                     if (!sprite.pendingDestroy) {
                         sprite.visible = false;
                     }

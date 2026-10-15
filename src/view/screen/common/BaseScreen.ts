@@ -86,6 +86,7 @@ export default abstract class BaseScreen extends DebugScreen {
     protected loadOptionalAtlases(): void {
 
         let user = UserService.getUser()
+        if(user.hasCharacter('owl')||user.hasCharacter('leshy'))this.loadAtlasGroup('additional');
 
         if (!AdminService.isEditMode() &&  user.getCurrentForest() >= ReplicaDao.getEntity().getById("r41").context.level || AdminService.isEditMode()) {
             this.loadAtlasGroup("chapter1");

@@ -12,6 +12,8 @@ export interface NumberedTreeParticleCloud {
 
 export default class CellState {
     opened: boolean;
+    movementEndAt: number = 0;
+    boosterLanding: boolean = false;
     leafType: string;
 
     // content: string;

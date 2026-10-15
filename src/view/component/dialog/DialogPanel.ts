@@ -94,7 +94,7 @@ export default class DialogPanel extends BasePanel {
         this.playAnimation("winLevel") //for forest
     }
 
-    public updateReplica(ignoreLockedScreen?: boolean, noAnimation?:boolean, notSaveCompletedReplica?: boolean, advanceWhilePrinting?: boolean): string {
+    public updateReplica(ignoreLockedScreen?: boolean, noAnimation?:boolean, notSaveCompletedReplica?: boolean, advanceWhilePrinting?: boolean, initialReplica?: ReplicaType): string {
 
         if(this.replicaPanel && !this.replicaPanel.isShown()){
             return;
@@ -121,7 +121,7 @@ export default class DialogPanel extends BasePanel {
         this.bringToTop();
 
         let previousReplicaPanel = this.replicaPanel;
-        let currentReplica = this.getNextReplica();
+        let currentReplica = initialReplica || this.getNextReplica();
 
         let lockTime = 0;
         if (!ignoreLockedScreen && currentReplica != null) {
@@ -244,9 +244,12 @@ export default class DialogPanel extends BasePanel {
             this.addChild(this.replicaPanel);
 
             if (nextReplica.afterAnimation && !noAnimation) {
-                this.game.time.events.add(100, () => {
-                    this.screen.setOnClickAnimation(nextReplica.afterAnimation);
-                }, this)
+                const replica = this.replicaPanel;
+                replica.whenFullyShown(() => {
+                    if (this.replicaPanel == replica) {
+                        this.screen.setOnClickAnimation(nextReplica.afterAnimation);
+                    }
+                });
             }
 
             if (previousReplicaPanel) {

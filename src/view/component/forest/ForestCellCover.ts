@@ -384,8 +384,8 @@ export default class ForestCellCover extends Phaser.Group {
         // collection feel like an item has been lifted from its slot.
         const starOutline = SpriteUtils.createSprite(this.game, -2, -3.5, 'sapphireStarBackdrop');
         starOutline.anchor.set(0.5);
-        // The PNG is an alpha-expanded copy of sapphireStar: it shares its
-        // 180x191 canvas and center, with a four-pixel in-game spread.
+        // Keep the original dark imprint on the shaded hex. Its shared
+        // 180x191 canvas centers it beneath the new gold currency sprite.
         starOutline.scale.set(targetScaleX, targetScaleY);
         starOutline.alpha = 0;
         starOutline.inputEnabled = false;
