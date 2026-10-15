@@ -1,16 +1,18 @@
 
 @font-face {
     font-family: Gilroy; /* Имя шрифта */
-    src: url(assets/other/fonts/Gilroy-ExtraBold.woff); /* Путь к файлу со шрифтом */
+    src: url(assets/other/fonts/arcane/Manrope.ttf) format('truetype');
+    font-weight: 100 900;
 }
 @font-face {
     font-family: Bookman Old Style; /* Имя шрифта */
-    src: url(assets/other/fonts/bookman.woff); /* Путь к файлу со шрифтом */
+    src: url(assets/other/fonts/arcane/Lora.ttf) format('truetype');
+    font-weight: 400 700;
 }
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #000 url(assets/other/pc-bg.jpg?) no-repeat fixed 50% 0;
-    background-color:#010b17; margin:0px;
+    font-family: Gilroy, 'Segoe UI', sans-serif;
+    background: linear-gradient(120deg, #f3ead9, #c3d0bf 52%, #d6ddcf) fixed;
+    background-color:#eae3d1; margin:0px;
 }
 span {
     font-style: italic;
@@ -33,7 +35,7 @@ span {
     margin-bottom: 20px;
 }
 .hdri{
-    font-size: 18px;margin-top: -37px;margin-bottom: 0px;    
+    font-size: 18px;margin-top: -37px;margin-bottom: 0px;
 }
 .d3{height: 132px;
     width: 300px;
@@ -114,4 +116,4 @@ span {
     display: none;
 }
 
-    
+

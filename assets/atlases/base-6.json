@@ -1,9 +1,33 @@
 {
     "frames":  {
+                   "base/characters/cat1.png":  {
+                                                    "frame":  {
+                                                                  "x":  435,
+                                                                  "y":  1070,
+                                                                  "w":  464,
+                                                                  "h":  522
+                                                              },
+                                                    "rotated":  false,
+                                                    "trimmed":  false,
+                                                    "spriteSourceSize":  {
+                                                                             "x":  0,
+                                                                             "y":  0,
+                                                                             "w":  464,
+                                                                             "h":  522
+                                                                         },
+                                                    "sourceSize":  {
+                                                                       "w":  464,
+                                                                       "h":  522
+                                                                   },
+                                                    "pivot":  {
+                                                                  "x":  0.5,
+                                                                  "y":  0.5
+                                                              }
+                                                },
                    "base/characters/cat3.png":  {
                                                     "frame":  {
-                                                                  "x":  761,
-                                                                  "y":  556,
+                                                                  "x":  1,
+                                                                  "y":  1,
                                                                   "w":  478,
                                                                   "h":  536
                                                               },
@@ -24,154 +48,34 @@
                                                                   "y":  0.5
                                                               }
                                                 },
-                   "base/characters/sveta4.png":  {
-                                                      "frame":  {
-                                                                    "x":  1,
-                                                                    "y":  1,
-                                                                    "w":  510,
-                                                                    "h":  553
+                   "base/items/environment/cobwebDarkLog.png":  {
+                                                                    "frame":  {
+                                                                                  "x":  1445,
+                                                                                  "y":  1070,
+                                                                                  "w":  512,
+                                                                                  "h":  512
+                                                                              },
+                                                                    "rotated":  false,
+                                                                    "trimmed":  false,
+                                                                    "spriteSourceSize":  {
+                                                                                             "x":  0,
+                                                                                             "y":  0,
+                                                                                             "w":  512,
+                                                                                             "h":  512
+                                                                                         },
+                                                                    "sourceSize":  {
+                                                                                       "w":  512,
+                                                                                       "h":  512
+                                                                                   },
+                                                                    "pivot":  {
+                                                                                  "x":  0.5,
+                                                                                  "y":  0.5
+                                                                              }
                                                                 },
-                                                      "rotated":  false,
-                                                      "trimmed":  false,
-                                                      "spriteSourceSize":  {
-                                                                               "x":  0,
-                                                                               "y":  0,
-                                                                               "w":  510,
-                                                                               "h":  553
-                                                                           },
-                                                      "sourceSize":  {
-                                                                         "w":  510,
-                                                                         "h":  553
-                                                                     },
-                                                      "pivot":  {
-                                                                    "x":  0.5,
-                                                                    "y":  0.5
-                                                                }
-                                                  },
-                   "base/characters/sveta5.png":  {
-                                                      "frame":  {
-                                                                    "x":  513,
-                                                                    "y":  1,
-                                                                    "w":  510,
-                                                                    "h":  553
-                                                                },
-                                                      "rotated":  false,
-                                                      "trimmed":  false,
-                                                      "spriteSourceSize":  {
-                                                                               "x":  0,
-                                                                               "y":  0,
-                                                                               "w":  510,
-                                                                               "h":  553
-                                                                           },
-                                                      "sourceSize":  {
-                                                                         "w":  510,
-                                                                         "h":  553
-                                                                     },
-                                                      "pivot":  {
-                                                                    "x":  0.5,
-                                                                    "y":  0.5
-                                                                }
-                                                  },
-                   "base/characters/sveta6.png":  {
-                                                      "frame":  {
-                                                                    "x":  1025,
-                                                                    "y":  1,
-                                                                    "w":  510,
-                                                                    "h":  553
-                                                                },
-                                                      "rotated":  false,
-                                                      "trimmed":  false,
-                                                      "spriteSourceSize":  {
-                                                                               "x":  0,
-                                                                               "y":  0,
-                                                                               "w":  510,
-                                                                               "h":  553
-                                                                           },
-                                                      "sourceSize":  {
-                                                                         "w":  510,
-                                                                         "h":  553
-                                                                     },
-                                                      "pivot":  {
-                                                                    "x":  0.5,
-                                                                    "y":  0.5
-                                                                }
-                                                  },
-                   "base/characters/Новая папка/sveta1.png":  {
-                                                                  "frame":  {
-                                                                                "x":  1537,
-                                                                                "y":  1,
-                                                                                "w":  442,
-                                                                                "h":  553
-                                                                            },
-                                                                  "rotated":  false,
-                                                                  "trimmed":  false,
-                                                                  "spriteSourceSize":  {
-                                                                                           "x":  0,
-                                                                                           "y":  0,
-                                                                                           "w":  442,
-                                                                                           "h":  553
-                                                                                       },
-                                                                  "sourceSize":  {
-                                                                                     "w":  442,
-                                                                                     "h":  553
-                                                                                 },
-                                                                  "pivot":  {
-                                                                                "x":  0.5,
-                                                                                "y":  0.5
-                                                                            }
-                                                              },
-                   "base/characters/Новая папка/sveta2.png":  {
-                                                                  "frame":  {
-                                                                                "x":  371,
-                                                                                "y":  556,
-                                                                                "w":  388,
-                                                                                "h":  537
-                                                                            },
-                                                                  "rotated":  false,
-                                                                  "trimmed":  false,
-                                                                  "spriteSourceSize":  {
-                                                                                           "x":  0,
-                                                                                           "y":  0,
-                                                                                           "w":  388,
-                                                                                           "h":  537
-                                                                                       },
-                                                                  "sourceSize":  {
-                                                                                     "w":  388,
-                                                                                     "h":  537
-                                                                                 },
-                                                                  "pivot":  {
-                                                                                "x":  0.5,
-                                                                                "y":  0.5
-                                                                            }
-                                                              },
-                   "base/characters/Новая папка/sveta3.png":  {
-                                                                  "frame":  {
-                                                                                "x":  1,
-                                                                                "y":  556,
-                                                                                "w":  368,
-                                                                                "h":  546
-                                                                            },
-                                                                  "rotated":  false,
-                                                                  "trimmed":  false,
-                                                                  "spriteSourceSize":  {
-                                                                                           "x":  0,
-                                                                                           "y":  0,
-                                                                                           "w":  368,
-                                                                                           "h":  546
-                                                                                       },
-                                                                  "sourceSize":  {
-                                                                                     "w":  368,
-                                                                                     "h":  546
-                                                                                 },
-                                                                  "pivot":  {
-                                                                                "x":  0.5,
-                                                                                "y":  0.5
-                                                                            }
-                                                              },
                    "base/items/poleno.png":  {
                                                  "frame":  {
                                                                "x":  963,
-                                                               "y":  1104,
+                                                               "y":  539,
                                                                "w":  529,
                                                                "h":  529
                                                            },
@@ -192,10 +96,58 @@
                                                                "y":  0.5
                                                            }
                                              },
+                   "base/ui/diary/circleFlow.png":  {
+                                                        "frame":  {
+                                                                      "x":  1494,
+                                                                      "y":  539,
+                                                                      "w":  527,
+                                                                      "h":  527
+                                                                  },
+                                                        "rotated":  false,
+                                                        "trimmed":  false,
+                                                        "spriteSourceSize":  {
+                                                                                 "x":  0,
+                                                                                 "y":  0,
+                                                                                 "w":  527,
+                                                                                 "h":  527
+                                                                             },
+                                                        "sourceSize":  {
+                                                                           "w":  527,
+                                                                           "h":  527
+                                                                       },
+                                                        "pivot":  {
+                                                                      "x":  0.5,
+                                                                      "y":  0.5
+                                                                  }
+                                                    },
+                   "base/ui/diary/fieldsPic.png":  {
+                                                       "frame":  {
+                                                                     "x":  901,
+                                                                     "y":  1070,
+                                                                     "w":  542,
+                                                                     "h":  521
+                                                                 },
+                                                       "rotated":  false,
+                                                       "trimmed":  false,
+                                                       "spriteSourceSize":  {
+                                                                                "x":  0,
+                                                                                "y":  0,
+                                                                                "w":  542,
+                                                                                "h":  521
+                                                                            },
+                                                       "sourceSize":  {
+                                                                          "w":  542,
+                                                                          "h":  521
+                                                                      },
+                                                       "pivot":  {
+                                                                     "x":  0.5,
+                                                                     "y":  0.5
+                                                                 }
+                                                   },
                    "base/ui/forestHeader1.png":  {
                                                      "frame":  {
                                                                    "x":  1,
-                                                                   "y":  1104,
+                                                                   "y":  539,
                                                                    "w":  960,
                                                                    "h":  529
                                                                },
@@ -216,10 +168,34 @@
                                                                    "y":  0.5
                                                                }
                                                  },
+                   "base/ui/glint.png":  {
+                                             "frame":  {
+                                                           "x":  1,
+                                                           "y":  1070,
+                                                           "w":  432,
+                                                           "h":  527
+                                                       },
+                                             "rotated":  false,
+                                             "trimmed":  false,
+                                             "spriteSourceSize":  {
+                                                                      "x":  0,
+                                                                      "y":  0,
+                                                                      "w":  432,
+                                                                      "h":  527
+                                                                  },
+                                             "sourceSize":  {
+                                                                "w":  432,
+                                                                "h":  527
+                                                            },
+                                             "pivot":  {
+                                                           "x":  0.5,
+                                                           "y":  0.5
+                                                       }
+                                         },
                    "base/ui/panel2.png":  {
                                               "frame":  {
-                                                            "x":  1241,
-                                                            "y":  556,
+                                                            "x":  481,
+                                                            "y":  1,
                                                             "w":  749,
                                                             "h":  532
                                                         },
@@ -247,8 +223,8 @@
                  "image":  "base-6.png",
                  "format":  "RGBA8888",
                  "size":  {
-                              "w":  1991,
-                              "h":  1634
+                              "w":  2022,
+                              "h":  1598
                           },
                  "scale":  1
              }

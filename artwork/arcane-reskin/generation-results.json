@@ -1,0 +1,443 @@
+[
+  {
+    "id": "cat1",
+    "file": "assets/base/characters/cat1.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nInput1 is the existing cat1 sprite EDIT TARGET: preserve the complete seated pose, paws, tail silhouette and front-facing orientation. Input2 is the user's FAVORITE APPROVED BORIS DESIGN: the orange cat at lower right in the Arcane room screen. Recreate that exact cat's expressive face, warm orange stripe pattern, sculpted cheek tufts, cream muzzle/chest and turquoise-blue eyes as a clean stand-alone sprite. More angular painted fur masses and luminous rim highlights as in the favorite image, no glossy airbrushed fluff, no individual-hair noise. Friendly alert open-mouth smile, all four paws and curled tail from the original pose. Full single cat, centered, generous transparent margin, complete ears/whiskers/paws/tail visible. Genuine transparent alpha background. Absolutely no room, cauldron, dialogue UI, floor, pedestal or baked shadow.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/cat1.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/02-cat-interior.png"
+    ]
+  },
+  {
+    "id": "cat2",
+    "file": "assets/base/characters/cat2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-37c822be-9062-4268-8a04-893c5cd62009.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game character sprite. Input1 EDIT TARGET gives exact pose, framing, identity, facing and occupied shape. Input2 APPROVED NEW CHARACTER MODEL gives exact face, body proportions, materials, palette and clothing to match consistently in ALL poses. Create this SAME new orange striped Boris cat, turquoise-blue eyes, cream muzzle/chest, painterly angular fur masses and warm rim lighting. Pose/expression for this version: slightly folded ears, thoughtful mildly uncertain sideways glance and closed-mouth smile. Preserve the gesture from image1 while transferring the exact new character design from image2; no mixing old glossy face with new clothing. Entire character sprite visible, hood/ears/whiskers/elbows/paws/tail never cropped, transparent margins, no background, no frame, no UI, no baked floor shadow. Genuine transparent alpha. A single character only.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/cat2.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "cat3",
+    "file": "assets/base/characters/cat3.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d03d91e0-7e5d-4b92-86d3-9825421758f9.png",
+    "prompt": "Use case: background-extraction. Repair THIS exact generated cat sprite for use in a game atlas. Keep the cat itself absolutely unchanged: same surprised turquoise-blue eyes, painted orange fur, pose, tail, paws, whiskers and entire silhouette. Remove ALL brown/gold/gray hazy halo and every background color around the cat, remove glow aura and all floor/shadow under the paws. The final image must contain ONLY the isolated cat with natural fine alpha edges on a genuinely transparent background, perfectly clear transparent gaps around whiskers and between limbs/tail. No backdrop, no vignette, no colored rectangle, no checkerboard, no new shadow. Do not redraw the cat or add anything. Single clean cutout.",
+    "references": [
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-5eeee622-c7a7-48e8-8825-5518efab1eaf.png"
+    ]
+  },
+  {
+    "id": "cat4",
+    "file": "assets/base/characters/cat4.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-87505949-70c1-44a1-a8eb-d874c2800fb4.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game character sprite. Input1 EDIT TARGET gives exact pose, framing, identity, facing and occupied shape. Input2 APPROVED NEW CHARACTER MODEL gives exact face, body proportions, materials, palette and clothing to match consistently in ALL poses. Create this SAME new orange striped Boris cat, turquoise-blue eyes, cream muzzle/chest, painterly angular fur masses and warm rim lighting. Pose/expression for this version: joyful victory pose, BOTH FRONT PAWS RAISED, eyes happily closed, pink paw pads visible. Preserve the gesture from image1 while transferring the exact new character design from image2; no mixing old glossy face with new clothing. Entire character sprite visible, hood/ears/whiskers/elbows/paws/tail never cropped, transparent margins, no background, no frame, no UI, no baked floor shadow. Genuine transparent alpha. A single character only.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/cat4.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "sveta1",
+    "file": "assets/base/characters/sveta1.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nInput1 is existing Red Hood sprite EDIT TARGET. Keep this same ADULT blonde green-eyed woman, waist-up, arms crossed, two braids, red hood, same pose and facing. Strengthen the ARCANE character treatment substantially: sculpted angular cheekbones/nose/eyelids, expressive asymmetrical brows, subtle freckles and believable facial planes, rough visible painterly facets, sophisticated proportioned eyes; face reads as cinematic Arcane, never glossy casual doll. Keep her warm and approachable. Add a restrained Balenciaga-like couture accent to clothing: an architectural oversized red hood, asymmetric structured cape shoulders, cream rib-knit sleeves and a clean burnished brass clasp, tasteful rather than costume clutter. Not Jinx or Vi, no blue hair, no armor, no weapons. Strong warm red/sunlit ivory/soft muted teal palette. Single full waist-up character cutout with uncropped hood, elbows and torso baseline, generous transparent margin, no background, no UI, no floor/shadow.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/sveta1.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "sveta2",
+    "file": "assets/base/characters/sveta2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-fbc3bc47-c4a6-4c9a-9819-f12b0910a369.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game character sprite. Input1 EDIT TARGET gives exact pose, framing, identity, facing and occupied shape. Input2 APPROVED NEW CHARACTER MODEL gives exact face, body proportions, materials, palette and clothing to match consistently in ALL poses. Create this SAME new ADULT blonde green-eyed Red Hood, sculpted Arcane facial planes, subtle freckles, two braids, architectural red hood/cape, ivory knit sleeves, clean brass clasp. Pose/expression for this version: one hand at her chin, thoughtful expression. Preserve the gesture from image1 while transferring the exact new character design from image2; no mixing old glossy face with new clothing. Entire character sprite visible, hood/ears/whiskers/elbows/paws/tail never cropped, transparent margins, no background, no frame, no UI, no baked floor shadow. Genuine transparent alpha. A single character only.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/sveta2.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png"
+    ]
+  },
+  {
+    "id": "sveta3",
+    "file": "assets/base/characters/sveta3.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-3ab87886-08b4-438e-97c2-66050a45f8bc.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game character sprite. Input1 EDIT TARGET gives exact pose, framing, identity, facing and occupied shape. Input2 APPROVED NEW CHARACTER MODEL gives exact face, body proportions, materials, palette and clothing to match consistently in ALL poses. Create this SAME new ADULT blonde green-eyed Red Hood, sculpted Arcane facial planes, subtle freckles, two braids, architectural red hood/cape, ivory knit sleeves, clean brass clasp. Pose/expression for this version: both hands against her cheeks, affectionate delighted expression. Preserve the gesture from image1 while transferring the exact new character design from image2; no mixing old glossy face with new clothing. Entire character sprite visible, hood/ears/whiskers/elbows/paws/tail never cropped, transparent margins, no background, no frame, no UI, no baked floor shadow. Genuine transparent alpha. A single character only.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/sveta3.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png"
+    ]
+  },
+  {
+    "id": "sveta4",
+    "file": "assets/base/characters/sveta4.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-c5dda9f2-2ad7-4f88-af9c-5020c4a297e3.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game character sprite. Input1 EDIT TARGET gives exact pose, framing, identity, facing and occupied shape. Input2 APPROVED NEW CHARACTER MODEL gives exact face, body proportions, materials, palette and clothing to match consistently in ALL poses. Create this SAME new ADULT blonde green-eyed Red Hood, sculpted Arcane facial planes, subtle freckles, two braids, architectural red hood/cape, ivory knit sleeves, clean brass clasp. Pose/expression for this version: arms crossed, surprised open-mouth expression and raised eyebrows. Preserve the gesture from image1 while transferring the exact new character design from image2; no mixing old glossy face with new clothing. Entire character sprite visible, hood/ears/whiskers/elbows/paws/tail never cropped, transparent margins, no background, no frame, no UI, no baked floor shadow. Genuine transparent alpha. A single character only.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/sveta4.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png"
+    ]
+  },
+  {
+    "id": "sveta5",
+    "file": "assets/base/characters/sveta5.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-98d6e769-ba4a-45cd-b95f-e3b19d4385f0.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game character sprite. Input1 EDIT TARGET gives exact pose, framing, identity, facing and occupied shape. Input2 APPROVED NEW CHARACTER MODEL gives exact face, body proportions, materials, palette and clothing to match consistently in ALL poses. Create this SAME new ADULT blonde green-eyed Red Hood, sculpted Arcane facial planes, subtle freckles, two braids, architectural red hood/cape, ivory knit sleeves, clean brass clasp. Pose/expression for this version: one hand giving a thumbs-up, other hand at waist, encouraging smile. Preserve the gesture from image1 while transferring the exact new character design from image2; no mixing old glossy face with new clothing. Entire character sprite visible, hood/ears/whiskers/elbows/paws/tail never cropped, transparent margins, no background, no frame, no UI, no baked floor shadow. Genuine transparent alpha. A single character only.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/sveta5.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png"
+    ]
+  },
+  {
+    "id": "sveta6",
+    "file": "assets/base/characters/sveta6.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-318f4e95-f615-45f7-8242-488af6078b5f.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game character sprite. Input1 EDIT TARGET gives exact pose, framing, identity, facing and occupied shape. Input2 APPROVED NEW CHARACTER MODEL gives exact face, body proportions, materials, palette and clothing to match consistently in ALL poses. Create this SAME new ADULT blonde green-eyed Red Hood, sculpted Arcane facial planes, subtle freckles, two braids, architectural red hood/cape, ivory knit sleeves, clean brass clasp. Pose/expression for this version: both hands forming a HEART gesture in front of chest, gentle delighted smile. Preserve the gesture from image1 while transferring the exact new character design from image2; no mixing old glossy face with new clothing. Entire character sprite visible, hood/ears/whiskers/elbows/paws/tail never cropped, transparent margins, no background, no frame, no UI, no baked floor shadow. Genuine transparent alpha. A single character only.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/characters/sveta6.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png"
+    ]
+  },
+  {
+    "id": "belka1",
+    "file": "assets/additional/characters/belka1.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ad6e1d82-9c0a-4472-ac84-ecd401af4ced.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same orange squirrel with huge curled tail, purple beret and existing source clothing, bright warm expressive eyes, natural squirrel proportions; preserve this version's acorn or magician cloak/hand gestures exactly. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/belka1.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "belka2",
+    "file": "assets/additional/characters/belka2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-3cd6006e-3a6a-4e83-972f-dcd5c4282ba3.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same orange squirrel with huge curled tail, purple beret and existing source clothing, bright warm expressive eyes, natural squirrel proportions; preserve this version's acorn or magician cloak/hand gestures exactly. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/belka2.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "belka3",
+    "file": "assets/additional/characters/belka3.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-e8bf8491-9042-40bf-9f69-0fe2dad61b9f.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same orange squirrel with huge curled tail, purple beret and existing source clothing, bright warm expressive eyes, natural squirrel proportions; preserve this version's acorn or magician cloak/hand gestures exactly. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/belka3.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "leshii1",
+    "file": "assets/additional/characters/leshii1.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ec329e90-2d95-428a-9f27-3de0ee797304.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same elderly kind forest keeper, silver hair and long silver beard, olive hat with a tiny bird and leaves, sage shirt, textured natural brown vest; sculpted Arcane facial planes and intentional beard paint groups, preserve wrinkles, age, gesture and calm humorous character. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/leshii1.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "leshii2",
+    "file": "assets/additional/characters/leshii2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ae919b04-d21b-4034-837a-49e15330e259.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same elderly kind forest keeper, silver hair and long silver beard, olive hat with a tiny bird and leaves, sage shirt, textured natural brown vest; sculpted Arcane facial planes and intentional beard paint groups, preserve wrinkles, age, gesture and calm humorous character. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/leshii2.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "leshii3",
+    "file": "assets/additional/characters/leshii3.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ebc61876-15d4-48b5-832f-d227c9363520.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same elderly kind forest keeper, silver hair and long silver beard, olive hat with a tiny bird and leaves, sage shirt, textured natural brown vest; sculpted Arcane facial planes and intentional beard paint groups, preserve wrinkles, age, gesture and calm humorous character. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/leshii3.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "sova1",
+    "file": "assets/additional/characters/sova1.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-441bb3ba-2a83-47dc-ba8c-17e24a79f1b7.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same small brown/gold OWLET with oversized round purple spectacles and orange striped necktie, natural owl body, broad painterly feather masses, expressive readable eyes; preserve this version's wing gesture and head tilt exactly. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/sova1.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "sova2",
+    "file": "assets/additional/characters/sova2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-6740a521-8117-4120-8d00-c3da729266c4.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same small brown/gold OWLET with oversized round purple spectacles and orange striped necktie, natural owl body, broad painterly feather masses, expressive readable eyes; preserve this version's wing gesture and head tilt exactly. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/sova2.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "sova3",
+    "file": "assets/additional/characters/sova3.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-2adeea0c-62fc-433c-a44d-3d9aad3e38e1.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same small brown/gold OWLET with oversized round purple spectacles and orange striped necktie, natural owl body, broad painterly feather masses, expressive readable eyes; preserve this version's wing gesture and head tilt exactly. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/sova3.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "yaga1",
+    "file": "assets/additional/characters/yaga1.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-cf89a05d-4455-4ad0-8452-5ccf50d9cc67.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same lively OLDER woodland witch, expressive mature face with fine wrinkles, lavender head scarf, long wavy silver-blonde hair, purple dress and cream sleeves; cinematic Arcane facial planes, a restrained couture scarf fold and clean brooch, retain age, warmth, eye color and this exact hand gesture, not a young fashion model or horror witch. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/yaga1.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "yaga2",
+    "file": "assets/additional/characters/yaga2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-1f9de009-5d20-49dd-a825-c63b6e653677.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same lively OLDER woodland witch, expressive mature face with fine wrinkles, lavender head scarf, long wavy silver-blonde hair, purple dress and cream sleeves; cinematic Arcane facial planes, a restrained couture scarf fold and clean brooch, retain age, warmth, eye color and this exact hand gesture, not a young fashion model or horror witch. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/yaga2.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "yaga3",
+    "file": "assets/additional/characters/yaga3.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-cfa0fa8c-4e83-4a9a-8b35-8dc5c4f05c73.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction character sprite with transparent alpha. Input1 is the ORIGINAL POSE/IDENTITY edit target; input2 (new Red Hood) and input3 (new Boris) are the APPROVED rendering/world style, not identities to copy. Repaint the same lively OLDER woodland witch, expressive mature face with fine wrinkles, lavender head scarf, long wavy silver-blonde hair, purple dress and cream sleeves; cinematic Arcane facial planes, a restrained couture scarf fold and clean brooch, retain age, warmth, eye color and this exact hand gesture, not a young fashion model or horror witch. Keep pose, facing, silhouette, source body crop, source gesture and accessories, but replace glossy cartoon rendering with expressive painterly Arcane sculptural forms, warm/cool edge lighting and clear large shapes. Restrained handmade gouache plane changes, no repetitive tiny hair/feather noise. All three expressions of this character should clearly be the same person/animal. Entire head/ears/tail/hands/wings visible, generous transparent margins, a single sprite only, no background, floor, pedestal, text, panels or extra objects.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/additional/characters/yaga3.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ef78a88e-9a16-41de-89af-41e489d38bc9.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d5bbb062-29f4-44b8-823a-3dc2e5eebf87.png"
+    ]
+  },
+  {
+    "id": "scene-atticBg",
+    "file": "assets/screens/atticBg.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-2da579d3-976f-4d61-935a-ec187c2a0d79.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nAsset: full portrait mobile game LOCATION BACKGROUND, no interface or characters. Repaint image1 as a painterly cinematic Arcane fairy-tale environment, retaining the large source composition, perspective, object positions and open staging. Image2 is the approved look/lighting reference ONLY; never copy its UI or characters. A cozy cottage attic: sloping timber roof, large round-topped window center, stored toys, books, trunks, low chair and lantern. Preserve each large source object and free center; architectural seams and cloth get a subtle sculptural couture touch. Amber daylight and muted lavender fabrics.\nUse soft ordered light and quiet surfaces, controlled broad brushwork, painterly shape design, no procedural noise or repeated texture motifs, no identical pine boughs, no over-sharpening. Broad readable silhouette hierarchy. No writing, no UI, no framing bars. Fill full 8:15 portrait canvas, designed to normalize to960x1800.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/screens/atticBg.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/02-cat-interior.png"
+    ]
+  },
+  {
+    "id": "scene-darkForestBg",
+    "file": "assets/screens/darkForestBg.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-604da858-3c86-4b5e-8123-1e8ed31db34f.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nAsset: full portrait mobile game LOCATION BACKGROUND, no interface or characters. Repaint image1 as a painterly cinematic Arcane fairy-tale environment, retaining the large source composition, perspective, object positions and open staging. Image2 is the approved look/lighting reference ONLY; never copy its UI or characters. Enchanted dark forest, winding footpath, gnarled trees, a small owl on branch at upper left, restrained violet firefly accents. Moody moonlit teal-blue with readable bark silhouettes and a few warmer shafts, never near-black. Foliage in large clean irregular masses, no endlessly repeated needle patterns.\nUse soft ordered light and quiet surfaces, controlled broad brushwork, painterly shape design, no procedural noise or repeated texture motifs, no identical pine boughs, no over-sharpening. Broad readable silhouette hierarchy. No writing, no UI, no framing bars. Fill full 8:15 portrait canvas, designed to normalize to960x1800.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/screens/darkForestBg.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "scene-fieldsBg",
+    "file": "assets/screens/fieldsBg.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-e9071b9b-5179-4a56-865e-91a50aa6e463.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nAsset: full portrait mobile game LOCATION BACKGROUND, no interface or characters. Repaint image1 as a painterly cinematic Arcane fairy-tale environment, retaining the large source composition, perspective, object positions and open staging. Image2 is the approved look/lighting reference ONLY; never copy its UI or characters. Luminous broad meadow of pink, yellow, white and blue flowers with central winding footpath and distant mountains. Group flowers into broad painted color masses with selective foreground detail; airy watercolor light, no speckled noisy carpet, no repeated flower stamps.\nUse soft ordered light and quiet surfaces, controlled broad brushwork, painterly shape design, no procedural noise or repeated texture motifs, no identical pine boughs, no over-sharpening. Broad readable silhouette hierarchy. No writing, no UI, no framing bars. Fill full 8:15 portrait canvas, designed to normalize to960x1800.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/screens/fieldsBg.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "scene-forestBg",
+    "file": "assets/screens/forestBg.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-6af71577-2147-4631-b578-d2f68471b41b.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nAsset: full portrait mobile game LOCATION BACKGROUND, no interface or characters. Repaint image1 as a painterly cinematic Arcane fairy-tale environment, retaining the large source composition, perspective, object positions and open staging. Image2 is the approved look/lighting reference ONLY; never copy its UI or characters. Ordinary peaceful forest hub, large framing tree trunks, winding open central path, loosely grouped conifers, a distant mountain through canopy. Prioritize clean natural tree silhouettes, irregular branch rhythms and broad painterly foliage planes. Do NOT reproduce the repetitive pine-needle zigzag patterns of the old third Arcane reference. Warm diffused sunlight, sage and teal greens, ivory sky, gentle amber path.\nUse soft ordered light and quiet surfaces, controlled broad brushwork, painterly shape design, no procedural noise or repeated texture motifs, no identical pine boughs, no over-sharpening. Broad readable silhouette hierarchy. No writing, no UI, no framing bars. Fill full 8:15 portrait canvas, designed to normalize to960x1800.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/screens/forestBg.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "scene-forestHouseBg",
+    "file": "assets/screens/forestHouseBg.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d3841797-07b9-4dd9-8f5a-bcca4e8c34a2.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nAsset: full portrait mobile game LOCATION BACKGROUND, no interface or characters. Repaint image1 as a painterly cinematic Arcane fairy-tale environment, retaining the large source composition, perspective, object positions and open staging. Image2 is the approved look/lighting reference ONLY; never copy its UI or characters. Forest cottage exterior, source stone house with curved purple slate roof, blue door, lit windows, path and framing trees. Recognizable silhouette, softly sculptural couture-like roof lines and restrained elegant brass door detail, no luxury mansion conversion. Hand-painted stone and large natural foliage groups; bright warm woodland daylight.\nUse soft ordered light and quiet surfaces, controlled broad brushwork, painterly shape design, no procedural noise or repeated texture motifs, no identical pine boughs, no over-sharpening. Broad readable silhouette hierarchy. No writing, no UI, no framing bars. Fill full 8:15 portrait canvas, designed to normalize to960x1800.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/screens/forestHouseBg.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "scene-houseBg",
+    "file": "assets/screens/houseBg.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-c0e2e74e-d24b-4407-8ff8-3d898398198a.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nAsset: full portrait mobile game LOCATION BACKGROUND, no interface or characters. Repaint image1 as a painterly cinematic Arcane fairy-tale environment, retaining the large source composition, perspective, object positions and open staging. Image2 is the approved look/lighting reference ONLY; never copy its UI or characters. The exact empty cozy cottage interior from input1: arched timber structure, curtained window with a cushioned bench, mounted decorative wolf head, books and crystals, cabinet, candle, large EMPTY foreground wooden table, stool and rug. NO CAT OR RED HOOD and NO CAULDRON on table: those are separate animated game sprites. Match the approved favorite Arcane room in input2: painterly wood planes, warm window/candle light, teal/amber balance, restrained lavender/red textile shapes with a tiny couture touch. Preserve table placement and clear staging for runtime objects.\nUse soft ordered light and quiet surfaces, controlled broad brushwork, painterly shape design, no procedural noise or repeated texture motifs, no identical pine boughs, no over-sharpening. Broad readable silhouette hierarchy. No writing, no UI, no framing bars. Fill full 8:15 portrait canvas, designed to normalize to960x1800.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/screens/houseBg.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/02-cat-interior.png"
+    ]
+  },
+  {
+    "id": "header-forestHeader1",
+    "file": "assets/base/ui/forestHeader1.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-f7ac26d9-542a-4fc2-ba63-d05a1ea39429.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. peaceful clearing between grouped fir trees, distant pale sky, a few small mushrooms; bright ordinary woodland. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/ui/forestHeader1.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-mountinesHeader",
+    "file": "assets/minigame1/mountinesHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-7dd6ccd6-9c4e-41f4-a0c0-24261a9e13b1.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. broad mountain vista framed by irregular conifer silhouettes, distant blue peaks, soft light, a few flowers in foreground. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame1/mountinesHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-forestHeader2",
+    "file": "assets/minigame3/forestHeader2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-6aa49f98-994f-45ef-8a89-f785735b142e.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. mysterious moonlit forest gateway, gnarled tree silhouettes, gentle blue/teal haze and a small warm eye-like light in a hollow; readable values, not black. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame3/forestHeader2.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-lakeHeader",
+    "file": "assets/minigame4/lakeHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d2db1eb8-fa70-42e0-85ac-21c9a5b43b80.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. quiet turquoise lake with a small wooden pier extending from foreground center, distant pines and cloudlit sky; large clean water shapes. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame4/lakeHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-flowersFieldHeader",
+    "file": "assets/minigame5/flowersFieldHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d9e65b33-5f94-48ad-a5e4-e1a25970ecd7.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. rolling flower meadow and distant pale mountain, broad pink/yellow/ivory flower masses and an airy sage-green valley. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame5/flowersFieldHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-junglesHeader",
+    "file": "assets/minigame6/junglesHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d3badf87-e7ee-4538-aa22-fca48a0ee0b1.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. warm sunlit enchanted jungle, broad leaves, long elegant trunks and vines framing a quiet golden shaft of light. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame6/junglesHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-bugForestHeader",
+    "file": "assets/minigame7/bugForestHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-8eee6e16-bb09-4b4e-93fc-7b59ab012627.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. one large friendly orange-and-black ladybug resting under a curved dew-covered leaf, in a lush woodland vignette, same source insect placement. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame7/bugForestHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-snailForestHeader",
+    "file": "assets/minigame8/snailForestHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d4f61e83-354d-4523-b838-1b1d0683a28a.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. one large friendly GOLDEN SNAIL, luminous spiral shell, expressive eye stalks, in an enchanted woodland. Keep the recognizable snail silhouette and central source placement, painterly sculpted shell and large quiet foliage groups; do not turn it into a realistic slimy slug. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame8/snailForestHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-cloverHeader",
+    "file": "assets/minigame9/cloverHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-83fbe1c1-180e-4ce9-ac2a-6ece0e47da35.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. wide green clover meadow descending toward a mountain valley, selective white clover flowers and broad irregular foreground leaf groups, soft clear sunlight. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame9/cloverHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "header-hiveheader",
+    "file": "assets/minigame10/hiveheader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-15cf841d-c4ac-42ac-8732-b9b41ab4e27f.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction level-scene HEADER landscape stripe, wide approximately16:9, preserving exact source scene subject, framing and major object positions. Image1 is the header EDIT TARGET. Image2 is an Arcane world style reference only. forest glade with three hanging golden beehives between framing trees, warm dappled light and distant mountains; preserve hive count and major source placement. Repaint with cinematic faceted gouache forms, restrained brushwork and gentle watercolor-like light. Crucial: foliage consists of a FEW irregular natural clumps and intentional visible branches, never repeated chevron needles, repetitive pine pattern, speckled noise, stippled texture, cloned boughs or over-detailed edge-to-edge vegetation. No interface, text, characters, symbols or borders. Complete opaque illustrated sky and environment in upper95% of canvas, only the very bottom edge softly fades to transparent for compositing above the original game field. Preserve this lower alpha transition. Bright or softly moody as subject requires, never muddy.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/minigame10/hiveheader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/01-redhood-house.png"
+    ]
+  },
+  {
+    "id": "boiler",
+    "file": "assets/base/room/boiler/boiler.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-e7bf86c4-007e-44de-8e36-2de21814e971.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game prop/UI illustration. Input1 is the exact object/shape/layout edit target. Input2 is the approved world look only. Repaint a large rounded blackened bronze witch cauldron on its existing circular stand, two brass side-ring handles, green bubbling potion seen through the oval open top, original wooden spoon angled out; preserve exact mouth angle and ring/stand/handle positions for existing liquid animation. Broad dark teal/charcoal painted metal planes with warm amber reflected light and thin brass seam accents, never glossy smooth plastic. Single isolated prop, no floor, room, cat, particles or extra table.\nMaintain the source object arrangement and relative occupied shape so it fits existing animation/layout. Entire object visible with clean transparent alpha margins. No backdrop, no UI mockup, no text, no black rectangle or checkerboard baked into pixels.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/room/boiler/boiler.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/02-cat-interior.png"
+    ]
+  },
+  {
+    "id": "forestHeader",
+    "file": "assets/base/ui/progressbar/forestHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-2c8df920-05f3-4050-8283-6dd8f0659fbd.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game prop/UI illustration. Input1 is the exact object/shape/layout edit target. Input2 is the approved world look only. Repaint a compact horizontal decorative still life: the same small fairy-tale cottage with violet roof, one or two grouped fir silhouettes and a rolled cream map on its right. Painted Arcane architectural forms, pale honey stone, restrained couture roof curve; low clean horizontal layout, no UI frame, no lettering.\nMaintain the source object arrangement and relative occupied shape so it fits existing animation/layout. Entire object visible with clean transparent alpha margins. No backdrop, no UI mockup, no text, no black rectangle or checkerboard baked into pixels.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/ui/progressbar/forestHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/02-cat-interior.png"
+    ]
+  },
+  {
+    "id": "potionsHeader",
+    "file": "assets/base/ui/progressbar/potionsHeader.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-58599823-2e53-4492-8f47-4817107b1a44.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game prop/UI illustration. Input1 is the exact object/shape/layout edit target. Input2 is the approved world look only. Repaint a compact low horizontal still life of the same worn sorcerer's hat on left, an open recipe book center, quill, pink potion vial, red-spotted mushroom and broom straw on right. Hand-painted sculptural planes, ivory book pages, sage hat band, bronze hardware, lavender-pink glass; a restrained couture fold in the hat, quiet readable shapes. No UI frame or writing on pages.\nMaintain the source object arrangement and relative occupied shape so it fits existing animation/layout. Entire object visible with clean transparent alpha margins. No backdrop, no UI mockup, no text, no black rectangle or checkerboard baked into pixels.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/ui/progressbar/potionsHeader.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/02-cat-interior.png"
+    ]
+  },
+  {
+    "id": "diary",
+    "file": "assets/base/ui/diary.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-874e0337-96a0-4bea-a6ea-543114ab894e.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game prop/UI illustration. Input1 is the exact object/shape/layout edit target. Input2 is the approved world look only. Repaint the same closed thick diary BOOK icon, three-quarter view, cobalt/teal-blue leather, cream page edges, red ribbon bookmark, two fine brass bands and a simple inset botanical four-petal emblem. Painterly Arcane material planes, restrained elegant couture bookbinding hardware, softly lit, clear at small scale. No letters, words or logo.\nMaintain the source object arrangement and relative occupied shape so it fits existing animation/layout. Entire object visible with clean transparent alpha margins. No backdrop, no UI mockup, no text, no black rectangle or checkerboard baked into pixels.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/ui/diary.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/02-cat-interior.png"
+    ]
+  },
+  {
+    "id": "tasks",
+    "file": "assets/base/ui/tasks.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-0901c74d-f526-4e7f-bd53-6f6f5a35cd46.png",
+    "prompt": "Use case: style-transfer. Production raster asset for an existing casual fairy-tale game reskin. Arcane / Fortiche painterly 3D with visible controlled 2D paint planes, sculpted shapes, intentional warm/cool lighting and restrained texture. Premium welcoming fairy-tale tone, readable at small game scale. No logos, no lettering, no watermark. No noisy stippling, no repeated stamps, no dense microdetail.\nProduction transparent game prop/UI illustration. Input1 is the exact object/shape/layout edit target. Input2 is the approved world look only. Repaint the same circular ADVENTURE MAP button icon, rolled ivory parchment with a large magnifying glass on it, muted sage handle, lavender-blue glass, pale honey wood inset and thin burnished-brass outer circular frame. Crisp painterly Arcane shapes with light watercolor UI palette. Preserve round silhouette and recognizable map-plus-magnifier symbol. No letters, text or extra icon.\nMaintain the source object arrangement and relative occupied shape so it fits existing animation/layout. Entire object visible with clean transparent alpha margins. No backdrop, no UI mockup, no text, no black rectangle or checkerboard baked into pixels.",
+    "references": [
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/assets/base/ui/tasks.png",
+      "C:/Users/voito/.codex/worktrees/arcane-reskin/mushroomsSveta/.local-workbench/arcane-references/02-cat-interior.png"
+    ]
+  }
+]

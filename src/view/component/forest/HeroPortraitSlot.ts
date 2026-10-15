@@ -16,10 +16,10 @@ export default class HeroPortraitSlot extends Phaser.Group {
         this.diameter = diameter;
         this.hero = hero;
         const frame = new Phaser.Graphics(game, 0, 0);
-        frame.beginFill(0x241a15, .7); frame.drawCircle(0, 5, diameter + 7); frame.endFill();
-        frame.lineStyle(3, hero ? 0xe0ad50 : 0x806c50, 1);
-        frame.beginFill(hero ? 0x375144 : 0x493e32); frame.drawCircle(0, 0, diameter); frame.endFill();
-        frame.lineStyle(1, 0xf9d888, hero ? .8 : .2); frame.drawCircle(0, 0, diameter - 11);
+        frame.beginFill(0x685c43, .23); frame.drawCircle(0, 4, diameter + 5); frame.endFill();
+        frame.lineStyle(3, hero ? 0xb28e53 : 0xbaa77b, 1);
+        frame.beginFill(hero ? 0xd4d5b8 : 0xe5ddc7); frame.drawCircle(0, 0, diameter); frame.endFill();
+        frame.lineStyle(1, 0xfff3cb, hero ? .9 : .5); frame.drawCircle(0, 0, diameter - 11);
         this.add(frame);
         if (hero) {
             this.portrait = new Phaser.Sprite(game, 0, 0, this.portraitTexture(game, hero));
@@ -36,7 +36,7 @@ export default class HeroPortraitSlot extends Phaser.Group {
         if (progress && hero) {
             this.ring = new Phaser.Graphics(game, 0, 0);this.add(this.ring);
             const badge = new Phaser.Graphics(game, 0, 0);
-            badge.lineStyle(1, 0xc5a56b, .9);badge.beginFill(0x293d2a);
+            badge.lineStyle(1, 0xad8c56, .9);badge.beginFill(0xf4ead2);
             badge.drawRoundedRect(-37, diameter * .35, 74, 25, 10);badge.endFill();this.add(badge);
             this.counter = new Label(game, 0, diameter * .35 + 12, '0/' + hero.energy, {font:'bold 20px Arial',fill:'#fff1c4'});
             this.counter.anchor.set(.5);this.add(this.counter);
@@ -52,7 +52,7 @@ export default class HeroPortraitSlot extends Phaser.Group {
         const ctx = bitmap.ctx;
         ctx.save();ctx.beginPath();ctx.arc(64,64,64,0,Math.PI*2);ctx.clip();
         const gradient = ctx.createLinearGradient(0,0,0,128);
-        gradient.addColorStop(0,'#8a9d77');gradient.addColorStop(1,'#263b32');ctx.fillStyle=gradient;ctx.fillRect(0,0,128,128);
+        gradient.addColorStop(0,'#d9dfc0');gradient.addColorStop(1,'#9cac8d');ctx.fillStyle=gradient;ctx.fillRect(0,0,128,128);
         const source = SpriteUtils.createSprite(game,0,0,hero.image),crop=source.texture.crop;
         const scale=128/(crop.width*hero.faceWidth);
         ctx.drawImage(source.texture.baseTexture.source,crop.x,crop.y,crop.width,crop.height,
@@ -65,7 +65,7 @@ export default class HeroPortraitSlot extends Phaser.Group {
         if (!this.ring || !this.hero || this.value == charge) return;
         this.value=charge;
         const progress=Math.max(0,Math.min(1,charge/this.hero.energy)),radius=this.diameter/2-3;
-        this.ring.clear();this.ring.lineStyle(7,0x17261b,.75);this.ring.drawCircle(0,0,radius*2);
+        this.ring.clear();this.ring.lineStyle(6,0xc2c6a7,.9);this.ring.drawCircle(0,0,radius*2);
         if(progress>0){
             this.ring.lineStyle(7,this.hero.color,1);
             this.ring.arc(0,0,radius,-Math.PI/2,-Math.PI/2+Math.PI*2*progress,false);

@@ -243,15 +243,8 @@ export default class LoadingScreen extends BaseScreen {
         //TODO СЂР°СЃРїСЂРµРґРµР»РёС‚СЊ РєР°СЂС‚РёРЅРєРё РІ СЃРѕРѕС‚РІРµС‚СЃС‚РІРёРё СЃ Р°С‚Р»Р°СЃР°РјРё
 
         //UI
-        this.load.bitmapFont('bm_arial', 'assets/base/fonts/bitmap/bm_arial.png', 'assets/base/fonts/bitmap/bm_arial.fnt');
-        this.load.bitmapFont('bm_panel_digits_brown', 'assets/base/fonts/bitmap/bm_panel_digits_brown.png', 'assets/base/fonts/bitmap/bm_panel_digits_brown.fnt');
-        this.load.bitmapFont('bm_hive_digits_legacy', 'assets/base/fonts/bitmap/bm_hive_digits_legacy.png', 'assets/base/fonts/bitmap/bm_hive_digits_legacy.fnt');
-        this.load.bitmapFont('bm_bookman', 'assets/base/fonts/bitmap/bm_bookman.png', 'assets/base/fonts/bitmap/bm_bookman.fnt');
-        this.load.bitmapFont('bm_gilroy', 'assets/base/fonts/bitmap/bm_gilroy.png', 'assets/base/fonts/bitmap/bm_gilroy.fnt');
-        this.load.bitmapFont('bm_balsamiq', 'assets/base/fonts/bitmap/bm_balsamiq.png', 'assets/base/fonts/bitmap/bm_balsamiq.fnt');
-        this.load.bitmapFont('bm_times', 'assets/base/fonts/bitmap/bm_times.png', 'assets/base/fonts/bitmap/bm_times.fnt');
-        this.load.bitmapFont('bm_times_italic', 'assets/base/fonts/bitmap/bm_times_italic.png', 'assets/base/fonts/bitmap/bm_times_italic.fnt');
-        this.load.bitmapFont('bm_diary_digits', 'assets/base/fonts/bitmap/bm_diary_digits.png', 'assets/base/fonts/bitmap/bm_diary_digits.fnt');
+        this.load.bitmapFont('bm_arcane_ui', 'assets/base/fonts/bitmap/bm_arcane_ui.png', 'assets/base/fonts/bitmap/bm_arcane_ui.fnt');
+        this.load.bitmapFont('bm_arcane_title', 'assets/base/fonts/bitmap/bm_arcane_title.png', 'assets/base/fonts/bitmap/bm_arcane_title.fnt');
         this.loadImage('blank', 'assets/base/ui/blank.png');
 
         // this.loadImage('houseFrame', 'assets/screens/houseFrame.png');

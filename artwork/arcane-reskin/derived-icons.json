@@ -1,0 +1,32 @@
+[
+  {
+    "file": "assets/base/ui/character/character_menu_icon.png",
+    "source": "assets/base/characters/sveta1.png",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "file": "assets/base/action/cat.png",
+    "source": "assets/base/characters/cat1.png",
+    "width": 124,
+    "height": 124
+  },
+  {
+    "file": "assets/base/ui/map/cat.png",
+    "source": "assets/base/characters/cat1.png",
+    "width": 124,
+    "height": 124
+  },
+  {
+    "file": "assets/base/ui/map/catSad.png",
+    "source": "assets/base/characters/cat2.png",
+    "width": 96,
+    "height": 163
+  },
+  {
+    "file": "assets/base/items/catHex.png",
+    "source": "assets/base/characters/cat1.png",
+    "width": 120,
+    "height": 127
+  }
+]

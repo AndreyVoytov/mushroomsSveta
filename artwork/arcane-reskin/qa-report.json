@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-15T23:24:51.499Z",
+  "branch": "reskin/arcane-watercolor",
+  "generatedImages": 43,
+  "uiAssets": 68,
+  "fonts": [
+    "Manrope",
+    "Lora"
+  ],
+  "geometry": "All generated images and native UI canvases preserve original dimensions",
+  "transparency": "Character sprites, props and scenic header fades retain alpha; full-screen locations are opaque",
+  "puzzleArt": "Unchanged except scenic level headers",
+  "behaviorChecks": 17,
+  "seededBoardChecks": 960,
+  "browserChecks": [
+    "six presentation states",
+    "one hero and two empty slots",
+    "three owned heroes",
+    "30/35/40 gross energy thresholds",
+    "automatic snail/rocket summons",
+    "ranked sequential owl reveals",
+    "bonus energy does not charge heroes",
+    "restart cleanup"
+  ],
+  "runtimeErrors": 0
+}

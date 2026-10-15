@@ -1,0 +1,478 @@
+[
+  {
+    "file": "assets/base/ui/panel.png",
+    "type": "panel",
+    "width": 749,
+    "height": 765,
+    "source": "artwork/arcane-reskin/ui/base-ui-panel.svg"
+  },
+  {
+    "file": "assets/base/ui/panel2.png",
+    "type": "panel",
+    "width": 749,
+    "height": 532,
+    "source": "artwork/arcane-reskin/ui/base-ui-panel2.svg"
+  },
+  {
+    "file": "assets/base/ui/helperPanel.png",
+    "type": "inset",
+    "width": 656,
+    "height": 268,
+    "source": "artwork/arcane-reskin/ui/base-ui-helperPanel.svg"
+  },
+  {
+    "file": "assets/base/ui/helperPanel2.png",
+    "type": "inset",
+    "width": 656,
+    "height": 268,
+    "source": "artwork/arcane-reskin/ui/base-ui-helperPanel2.svg"
+  },
+  {
+    "file": "assets/base/ui/dialogPnl.png",
+    "type": "dialog",
+    "width": 960,
+    "height": 259,
+    "source": "artwork/arcane-reskin/ui/base-ui-dialogPnl.svg"
+  },
+  {
+    "file": "assets/base/ui/topPanel.png",
+    "type": "hud",
+    "width": 960,
+    "height": 155,
+    "source": "artwork/arcane-reskin/ui/base-ui-topPanel.svg"
+  },
+  {
+    "file": "assets/base/ui/topPanelFrame.png",
+    "type": "inset",
+    "width": 482,
+    "height": 106,
+    "source": "artwork/arcane-reskin/ui/base-ui-topPanelFrame.svg"
+  },
+  {
+    "file": "assets/base/ui/statusPanel.png",
+    "type": "resource",
+    "width": 285,
+    "height": 98,
+    "source": "artwork/arcane-reskin/ui/base-ui-statusPanel.svg"
+  },
+  {
+    "file": "assets/base/ui/titlePnl.png",
+    "type": "name",
+    "width": 286,
+    "height": 75,
+    "source": "artwork/arcane-reskin/ui/base-ui-titlePnl.svg"
+  },
+  {
+    "file": "assets/base/ui/pnlButton.png",
+    "type": "button",
+    "width": 467,
+    "height": 120,
+    "source": "artwork/arcane-reskin/ui/base-ui-pnlButton.svg"
+  },
+  {
+    "file": "assets/base/ui/energyPanelBuyButton.png",
+    "type": "button",
+    "width": 1900,
+    "height": 678,
+    "source": "artwork/arcane-reskin/ui/base-ui-energyPanelBuyButton.svg"
+  },
+  {
+    "file": "assets/base/ui/playButton.png",
+    "type": "play",
+    "width": 165,
+    "height": 179,
+    "source": "artwork/arcane-reskin/ui/base-ui-playButton.svg"
+  },
+  {
+    "file": "assets/base/ui/playButtonOld.png",
+    "type": "play",
+    "width": 165,
+    "height": 179,
+    "source": "artwork/arcane-reskin/ui/base-ui-playButtonOld.svg"
+  },
+  {
+    "file": "assets/base/ui/plusButton.png",
+    "type": "plus",
+    "width": 73,
+    "height": 73,
+    "source": "artwork/arcane-reskin/ui/base-ui-plusButton.svg"
+  },
+  {
+    "file": "assets/base/ui/closeButton.png",
+    "type": "close",
+    "width": 70,
+    "height": 70,
+    "source": "artwork/arcane-reskin/ui/base-ui-closeButton.svg"
+  },
+  {
+    "file": "assets/base/ui/closeButtonViolet.png",
+    "type": "close",
+    "width": 70,
+    "height": 70,
+    "source": "artwork/arcane-reskin/ui/base-ui-closeButtonViolet.svg"
+  },
+  {
+    "file": "assets/base/ui/settingsButton.png",
+    "type": "gear",
+    "width": 83,
+    "height": 83,
+    "source": "artwork/arcane-reskin/ui/base-ui-settingsButton.svg"
+  },
+  {
+    "file": "assets/basehq/settingsMain.png",
+    "type": "gear",
+    "width": 73,
+    "height": 73,
+    "source": "artwork/arcane-reskin/ui/basehq-settingsMain.svg"
+  },
+  {
+    "file": "assets/base/ui/skipButton.png",
+    "type": "quiet",
+    "width": 218,
+    "height": 55,
+    "source": "artwork/arcane-reskin/ui/base-ui-skipButton.svg"
+  },
+  {
+    "file": "assets/base/ui/circle.png",
+    "type": "circle",
+    "width": 110,
+    "height": 110,
+    "source": "artwork/arcane-reskin/ui/base-ui-circle.svg"
+  },
+  {
+    "file": "assets/base/ui/circleB.png",
+    "type": "circle",
+    "width": 110,
+    "height": 110,
+    "source": "artwork/arcane-reskin/ui/base-ui-circleB.svg"
+  },
+  {
+    "file": "assets/base/ui/circleOrange.png",
+    "type": "circle",
+    "width": 110,
+    "height": 110,
+    "source": "artwork/arcane-reskin/ui/base-ui-circleOrange.svg"
+  },
+  {
+    "file": "assets/base/ui/circleGray.png",
+    "type": "mutedCircle",
+    "width": 110,
+    "height": 110,
+    "source": "artwork/arcane-reskin/ui/base-ui-circleGray.svg"
+  },
+  {
+    "file": "assets/base/action/actionCircle.png",
+    "type": "circle",
+    "width": 150,
+    "height": 147,
+    "source": "artwork/arcane-reskin/ui/base-action-actionCircle.svg"
+  },
+  {
+    "file": "assets/base/ui/progressCircle.png",
+    "type": "circle",
+    "width": 150,
+    "height": 150,
+    "source": "artwork/arcane-reskin/ui/base-ui-progressCircle.svg"
+  },
+  {
+    "file": "assets/base/ui/reward/rewardBoard.png",
+    "type": "panel",
+    "width": 820,
+    "height": 614,
+    "source": "artwork/arcane-reskin/ui/base-ui-reward-rewardBoard.svg"
+  },
+  {
+    "file": "assets/base/ui/reward/rewardCard.png",
+    "type": "inset",
+    "width": 392,
+    "height": 320,
+    "source": "artwork/arcane-reskin/ui/base-ui-reward-rewardCard.svg"
+  },
+  {
+    "file": "assets/base/ui/reward/rewardHeader.png",
+    "type": "ribbon",
+    "width": 680,
+    "height": 150,
+    "source": "artwork/arcane-reskin/ui/base-ui-reward-rewardHeader.svg"
+  },
+  {
+    "file": "assets/base/ui/reward/rewardBadge.png",
+    "type": "name",
+    "width": 300,
+    "height": 122,
+    "source": "artwork/arcane-reskin/ui/base-ui-reward-rewardBadge.svg"
+  },
+  {
+    "file": "assets/base/ui/reward/rewardButton.png",
+    "type": "button",
+    "width": 480,
+    "height": 112,
+    "source": "artwork/arcane-reskin/ui/base-ui-reward-rewardButton.svg"
+  },
+  {
+    "file": "assets/base/ui/progressbar/ribbon.png",
+    "type": "ribbon",
+    "width": 772,
+    "height": 125,
+    "source": "artwork/arcane-reskin/ui/base-ui-progressbar-ribbon.svg"
+  },
+  {
+    "file": "assets/base/ui/progressbar/ribbon2.png",
+    "type": "ribbon",
+    "width": 300,
+    "height": 78,
+    "source": "artwork/arcane-reskin/ui/base-ui-progressbar-ribbon2.svg"
+  },
+  {
+    "file": "assets/base/ui/progressbar/progressLineBg.png",
+    "type": "track",
+    "width": 696,
+    "height": 82,
+    "source": "artwork/arcane-reskin/ui/base-ui-progressbar-progressLineBg.svg"
+  },
+  {
+    "file": "assets/base/ui/progressbar/body.jpg",
+    "type": "progress",
+    "width": 47,
+    "height": 41,
+    "source": "artwork/arcane-reskin/ui/base-ui-progressbar-body.svg"
+  },
+  {
+    "file": "assets/base/ui/progressbar/tail.png",
+    "type": "progress",
+    "width": 18,
+    "height": 31,
+    "source": "artwork/arcane-reskin/ui/base-ui-progressbar-tail.svg"
+  },
+  {
+    "file": "assets/base/ui/wooden_tab.png",
+    "type": "ribbon",
+    "width": 356,
+    "height": 60,
+    "source": "artwork/arcane-reskin/ui/base-ui-wooden_tab.svg"
+  },
+  {
+    "file": "assets/base/task/header_ribbon.png",
+    "type": "ribbon",
+    "width": 981,
+    "height": 297,
+    "source": "artwork/arcane-reskin/ui/base-task-header_ribbon.svg"
+  },
+  {
+    "file": "assets/base/ui/character/equipped_bg.png",
+    "type": "inset",
+    "width": 209,
+    "height": 183,
+    "source": "artwork/arcane-reskin/ui/base-ui-character-equipped_bg.svg"
+  },
+  {
+    "file": "assets/base/ui/character/skills_bg.png",
+    "type": "panel",
+    "width": 447,
+    "height": 566,
+    "source": "artwork/arcane-reskin/ui/base-ui-character-skills_bg.svg"
+  },
+  {
+    "file": "assets/base/ui/character/item_skills_details_bg.png",
+    "type": "panel",
+    "width": 329,
+    "height": 117,
+    "source": "artwork/arcane-reskin/ui/base-ui-character-item_skills_details_bg.svg"
+  },
+  {
+    "file": "assets/base/ui/shop/itemBg.png",
+    "type": "inset",
+    "width": 150,
+    "height": 150,
+    "source": "artwork/arcane-reskin/ui/base-ui-shop-itemBg.svg"
+  },
+  {
+    "file": "assets/base/ui/shop/nav_bg.png",
+    "type": "panel",
+    "width": 911,
+    "height": 106,
+    "source": "artwork/arcane-reskin/ui/base-ui-shop-nav_bg.svg"
+  },
+  {
+    "file": "assets/base/ui/shop/nav_selected.png",
+    "type": "name",
+    "width": 335,
+    "height": 89,
+    "source": "artwork/arcane-reskin/ui/base-ui-shop-nav_selected.svg"
+  },
+  {
+    "file": "assets/base/ui/shop/buy_item_button.png",
+    "type": "button",
+    "width": 218,
+    "height": 85,
+    "source": "artwork/arcane-reskin/ui/base-ui-shop-buy_item_button.svg"
+  },
+  {
+    "file": "assets/base/task/task_bg.png",
+    "type": "panel",
+    "width": 727,
+    "height": 147,
+    "source": "artwork/arcane-reskin/ui/base-task-task_bg.svg"
+  },
+  {
+    "file": "assets/base/task/task_item_bg.png",
+    "type": "inset",
+    "width": 117,
+    "height": 100,
+    "source": "artwork/arcane-reskin/ui/base-task-task_item_bg.svg"
+  },
+  {
+    "file": "assets/base/task/task_reward_bg.png",
+    "type": "inset",
+    "width": 194,
+    "height": 125,
+    "source": "artwork/arcane-reskin/ui/base-task-task_reward_bg.svg"
+  },
+  {
+    "file": "assets/basehq/sound1.png",
+    "type": "sound",
+    "width": 120,
+    "height": 113,
+    "source": "artwork/arcane-reskin/ui/basehq-sound1.svg"
+  },
+  {
+    "file": "assets/basehq/sound2.png",
+    "type": "mute",
+    "width": 120,
+    "height": 113,
+    "source": "artwork/arcane-reskin/ui/basehq-sound2.svg"
+  },
+  {
+    "file": "assets/basehq/support.png",
+    "type": "support",
+    "width": 120,
+    "height": 113,
+    "source": "artwork/arcane-reskin/ui/basehq-support.svg"
+  },
+  {
+    "file": "assets/basehq/turnOff.png",
+    "type": "exit",
+    "width": 120,
+    "height": 113,
+    "source": "artwork/arcane-reskin/ui/basehq-turnOff.svg"
+  },
+  {
+    "file": "assets/base/ui/progressbar/circle.png",
+    "type": "circle",
+    "width": 164,
+    "height": 164,
+    "source": "artwork/arcane-reskin/ui/base-ui-progressbar-circle.svg"
+  },
+  {
+    "file": "assets/base/ui/progressbar/circleSmall.png",
+    "type": "circle",
+    "width": 100,
+    "height": 100,
+    "source": "artwork/arcane-reskin/ui/base-ui-progressbar-circleSmall.svg"
+  },
+  {
+    "file": "assets/base/task/bg_top.png",
+    "type": "panel",
+    "width": 897,
+    "height": 103,
+    "source": "artwork/arcane-reskin/ui/base-task-bg_top.svg"
+  },
+  {
+    "file": "assets/base/task/bg_center.png",
+    "type": "panel",
+    "width": 837,
+    "height": 16,
+    "source": "artwork/arcane-reskin/ui/base-task-bg_center.svg"
+  },
+  {
+    "file": "assets/base/task/bg_bottom.png",
+    "type": "panel",
+    "width": 840,
+    "height": 138,
+    "source": "artwork/arcane-reskin/ui/base-task-bg_bottom.svg"
+  },
+  {
+    "file": "assets/base/task/tab_active.png",
+    "type": "name",
+    "width": 346,
+    "height": 76,
+    "source": "artwork/arcane-reskin/ui/base-task-tab_active.svg"
+  },
+  {
+    "file": "assets/base/task/tab_inactive.png",
+    "type": "inset",
+    "width": 346,
+    "height": 76,
+    "source": "artwork/arcane-reskin/ui/base-task-tab_inactive.svg"
+  },
+  {
+    "file": "assets/base/task/taks_list_bg_top.png",
+    "type": "inset",
+    "width": 810,
+    "height": 78,
+    "source": "artwork/arcane-reskin/ui/base-task-taks_list_bg_top.svg"
+  },
+  {
+    "file": "assets/base/task/taks_list_bg_center.png",
+    "type": "inset",
+    "width": 810,
+    "height": 38,
+    "source": "artwork/arcane-reskin/ui/base-task-taks_list_bg_center.svg"
+  },
+  {
+    "file": "assets/base/task/taks_list_bg_bottom.png",
+    "type": "inset",
+    "width": 810,
+    "height": 93,
+    "source": "artwork/arcane-reskin/ui/base-task-taks_list_bg_bottom.svg"
+  },
+  {
+    "file": "assets/base/task/progress_empty.png",
+    "type": "track",
+    "width": 766,
+    "height": 174,
+    "source": "artwork/arcane-reskin/ui/base-task-progress_empty.svg"
+  },
+  {
+    "file": "assets/base/task/progress_full.png",
+    "type": "progress",
+    "width": 766,
+    "height": 174,
+    "source": "artwork/arcane-reskin/ui/base-task-progress_full.svg"
+  },
+  {
+    "file": "assets/base/task/task_progress_empty.png",
+    "type": "track",
+    "width": 362,
+    "height": 50,
+    "source": "artwork/arcane-reskin/ui/base-task-task_progress_empty.svg"
+  },
+  {
+    "file": "assets/base/task/task_progress_full.png",
+    "type": "progress",
+    "width": 362,
+    "height": 52,
+    "source": "artwork/arcane-reskin/ui/base-task-task_progress_full.svg"
+  },
+  {
+    "file": "assets/base/task/task_panel_close.png",
+    "type": "close",
+    "width": 60,
+    "height": 65,
+    "source": "artwork/arcane-reskin/ui/base-task-task_panel_close.svg"
+  },
+  {
+    "file": "assets/base/ui/diary/ingredientBg.png",
+    "type": "inset",
+    "width": 150,
+    "height": 151,
+    "source": "artwork/arcane-reskin/ui/base-ui-diary-ingredientBg.svg"
+  },
+  {
+    "file": "assets/base/ui/diary/diaryArrowsBg.png",
+    "type": "ribbon",
+    "width": 225,
+    "height": 69,
+    "source": "artwork/arcane-reskin/ui/base-ui-diary-diaryArrowsBg.svg"
+  }
+]

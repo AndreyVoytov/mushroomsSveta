@@ -26,7 +26,7 @@ export default class StripsPanel extends BasePanel {
         this.addChild(stripsHolder);
 
         this.stripTop = new Phaser.Graphics(this.game, 0, 0);
-        this.stripTop.beginFill(0x000000, 1);
+        this.stripTop.beginFill(0xf3ead7, 0);
         this.stripTop.drawRect(0, 0, this.game.width, this.TOP_STRIP_HEIGHT);
         this.stripTop.endFill();
         this.stripTop.alpha = 1;
@@ -34,7 +34,7 @@ export default class StripsPanel extends BasePanel {
         this.stripTop.y = -this.TOP_STRIP_HEIGHT;
 
         this.stripBottom = new Phaser.Graphics(this.game, 0, 0);
-        this.stripBottom.beginFill(0x000000, 1);
+        this.stripBottom.beginFill(0xeee3c9, .9);
         this.stripBottom.drawRect(0, 0, this.game.width, StripsPanel.BOTTOM_STRIP_HEIGHT);
         this.stripBottom.endFill();
         this.stripBottom.alpha = 1;

@@ -367,7 +367,6 @@ export default class ReplicaPanel extends BasePanel {
             this.title.alpha = 0;
             this.title.anchor = new Phaser.Point(0.5, 0.5);
             this.title.inputEnabled = false;
-            this.addNameOutline(this.title);
             this.titlePnl.addChild(this.title);
             // this.addChild(this.title);
             // parentCont.addChild(this.title); this.title.x += this.x; this.title.y += this.y;
@@ -385,7 +384,6 @@ export default class ReplicaPanel extends BasePanel {
             this.title.alpha = 0;
             this.title.anchor = new Phaser.Point(0.5, 0.5);
             this.title.inputEnabled = false;
-            this.addNameOutline(this.title);
             this.titlePnl.addChild(this.title);
             // this.addChild(this.title);
             // parentCont.addChild(this.title); this.title.x += this.x; this.title.y += this.y;
@@ -422,17 +420,9 @@ export default class ReplicaPanel extends BasePanel {
             actionCircle.anchor.set(0.5);
             this.actionButton.addChild(actionCircle);
 
-            const actionTextStyle: Phaser.PhaserTextStyle = { font: "bold 40px Arial", fill: "#ffffff", wordWrap: true, wordWrapWidth: 800 };
+            const actionTextStyle: Phaser.PhaserTextStyle = { font: "bold 40px Manrope", fill: "#344333", wordWrap: true, wordWrapWidth: 800 };
             let label = new Label(this.game, -13, 0, replicaButtonName, actionTextStyle);
             label.anchor.set(0.5);
-            // BitmapText does not render Phaser.Text strokes. A thin ring of
-            // dark green glyphs keeps white action text legible on the button.
-            [[-2, 0], [2, 0], [0, -2], [0, 2], [-1, -1], [-1, 1], [1, -1], [1, 1]].forEach(offset => {
-                const outline = new Label(this.game, label.x + offset[0], label.y + offset[1], replicaButtonName,
-                    { font: "bold 40px Arial", fill: "#397619", wordWrap: true, wordWrapWidth: 800 });
-                outline.anchor.set(0.5);
-                this.actionButton.addChild(outline);
-            });
             this.actionButton.addChild(label);
 
             let image = SpriteUtils.createSprite(this.game, 0, 0, r.buttonImage ? r.buttonImage : "actionMushroom");
@@ -471,18 +461,6 @@ export default class ReplicaPanel extends BasePanel {
         // this.title.alpha = 0;
         // this.titlePnl.alpha = 0;
         // this.dialogPnl.alpha = 0;
-    }
-
-    /** BitmapText has no dependable native stroke. Four dark-teal glyph
-     * copies behind the speaker name provide a crisp readable outline. */
-    private addNameOutline(title: Label): void {
-        [[-3, 0], [3, 0], [0, -3], [0, 3]].forEach(offset => {
-            const outline = new Label(this.game, title.x + offset[0], title.y + offset[1], title.text,
-                { font: '45px Arial', fill: '#073f42', wordWrap: true, wordWrapWidth: 880 });
-            outline.anchor.set(0.5, 0.5);
-            outline.inputEnabled = false;
-            this.titlePnl.addChild(outline);
-        });
     }
 
     public firstShow() {

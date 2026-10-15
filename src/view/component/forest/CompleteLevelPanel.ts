@@ -87,13 +87,13 @@ export default class LevelCompletePanel extends BasePanel {
         titleBg.position.set(0, -258);
 
         const cat = this.attachSprite('cat4', 'cat');
-        cat.scale.set(0.68);
-        cat.position.set(-237, 20);
+        SpriteUtils.fitIcon(cat, 330, 410);
+        cat.position.set(-237, -12);
 
         this.createResultText('title', LocalizationService.get('ui.energy.winTitle', 'Level Complete'), {
-            font: 'bold 46px Gilroy',
-            fill: '#fff3c6'
-        }, { x: 0, y: -254, width: 478, height: 64 }, '#12482b');
+            font: '46px Lora',
+            fill: '#514739'
+        }, { x: 0, y: -254, width: 478, height: 64 });
 
         this.createResultText('spentLabel', LocalizationService.get('ui.energy.spent', 'Energy spent'), {
             font: 'bold 26px Arial',
@@ -102,7 +102,7 @@ export default class LevelCompletePanel extends BasePanel {
 
         if (sapphireStarCount > 0) {
             this.sapphireTotal = sapphireStarCount;
-            cat.scale.set(0.43);
+            SpriteUtils.fitIcon(cat, 260, 260);
             cat.position.set(-237, -83);
             this.sapphireStarReward = new Phaser.Group(this.game, this, 'sapphireStarReward');
             this.sapphireStarReward.position.set(-237, 106);
@@ -174,7 +174,7 @@ export default class LevelCompletePanel extends BasePanel {
         this.createResultText('aimsLabel', ForestAim.getCompleteInfo(resolvedAims), {
             font: 'bold 34px Gilroy',
             fill: '#fff5ce'
-        }, { x: resultsX, y: 180, width: 360, height: 80, wrap: true }, '#89501f');
+        }, { x: resultsX, y: 180, width: 360, height: 80, wrap: true });
 
         this.continueButton = this.attachButton('rewardButton', () => this.onContinue(), 'continueButton');
         this.continueButton.position.set(0, sapphireStarCount > 0 ? 318 : 282);
@@ -182,8 +182,8 @@ export default class LevelCompletePanel extends BasePanel {
 
         const continueLabel = this.createResultText('continueLabel', LocalizationService.get('ui.ok', 'OK'), {
             font: 'bold 46px Gilroy',
-            fill: '#fffbea'
-        }, { x: 0, y: -3, width: 390, height: 62 }, '#548a14');
+            fill: '#344333'
+        }, { x: 0, y: -3, width: 390, height: 62 });
         this.continueButton.addChild(continueLabel);
 
         const previewGemsCount = previewData && previewData.gemsCount != null ? previewData.gemsCount : null;
@@ -196,8 +196,8 @@ export default class LevelCompletePanel extends BasePanel {
                 ? previewGemsCount
                 : ForestUtils.getPrizeGemsCount(screen.topPanel.getStepsLeft()) + hardLevelAddition;
             if (!this.sapphireStarReward) {
-                cat.scale.set(0.6);
-                cat.y = -15;
+                SpriteUtils.fitIcon(cat, 330, 410);
+                cat.y = -12;
             }
 
             // Reserve a reward row below the cat instead of covering its face
@@ -217,14 +217,14 @@ export default class LevelCompletePanel extends BasePanel {
 
             const gemsLabel = this.createResultText('gemsLabel', '+' + gemsCount, {
                 font: 'bold 40px Gilroy',
-                fill: '#fff3d8'
-            }, { x: 31, y: -2, width: 112, height: 54 }, '#79421e');
+                fill: '#514739'
+            }, { x: 31, y: -2, width: 112, height: 54 });
             this.gemsReward.addChild(gemsLabel);
             this.gemsReward.alpha = 0;
         }
     }
 
-    private createResultText(name: string, text: string, style: Phaser.PhaserTextStyle, box: ResultTextBox, outlineColor?: string): Phaser.Group {
+    private createResultText(name: string, text: string, style: Phaser.PhaserTextStyle, box: ResultTextBox): Phaser.Group {
         const group = new Phaser.Group(this.game, this, name);
         group.position.set(box.x, box.y);
         const textStyle = Object.assign({}, style, { align: 'center', wordWrap: false });
@@ -238,20 +238,6 @@ export default class LevelCompletePanel extends BasePanel {
         label.maxWidth = box.wrap ? box.width : 0;
         label.text = text;
         group.scale.set(Math.min(1, box.width / Math.max(1, label.textWidth), box.height / Math.max(1, label.textHeight)));
-
-        if (outlineColor) {
-            // Label is BitmapText, so strokeThickness/addStrokeColor are no-ops.
-            // Four cardinal copies preserve a readable outline while avoiding
-            // the extra bitmap-text rebuilds and draw work from diagonal copies.
-            const offsets = [[-2, 0], [2, 0], [0, -2], [0, 2]];
-            offsets.forEach(offset => {
-                const outline = new Label(this.game, offset[0], offset[1], '', Object.assign({}, textStyle, { fill: outlineColor }));
-                outline.anchor.set(0.5);
-                outline.maxWidth = label.maxWidth;
-                outline.text = text;
-                group.add(outline);
-            });
-        }
 
         group.add(label);
         return group;

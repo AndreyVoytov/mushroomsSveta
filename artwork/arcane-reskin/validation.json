@@ -1,0 +1,432 @@
+[
+  {
+    "id": "cat1",
+    "file": "assets/base/characters/cat1.png",
+    "width": 464,
+    "height": 522,
+    "originalSha256": "ca1e7ce5b78f4bb2cc123bf0f2b601e1d4a59c52f93676347e3d2df89e4d8b43",
+    "sha256": "4b63be2dbe775406ee094647b0185c99d72bef5379ba6bfd0e4ba0f38008fc2b",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "cat2",
+    "file": "assets/base/characters/cat2.png",
+    "width": 420,
+    "height": 461,
+    "originalSha256": "261033673e846be7a7d24bf32956d9bc3aacf464885b6c8261932dadb7e32863",
+    "sha256": "8828bb7734a512703fa2b23ae3471faaad997fb1c4ead9d663c5bb66e0341789",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "cat3",
+    "file": "assets/base/characters/cat3.png",
+    "width": 478,
+    "height": 536,
+    "originalSha256": "33abbff37628864d76f9467e2ec7109982c23751cd132c748d15ae2d8f26281a",
+    "sha256": "1d7bb262d7fe8c92658d96d0754f63f09fcfbc8c97fe2265a6f1a519ffc41f0d",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "cat4",
+    "file": "assets/base/characters/cat4.png",
+    "width": 1254,
+    "height": 1254,
+    "originalSha256": "122d0d614d699937a5944e954ef0f2e279f0dfc5952cb99c0adbd21cad860b45",
+    "sha256": "6a42534bb00deb1ed780de76eba507d3df2dfa03674368d2bf25ce2a5bd2bbbf",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sveta1",
+    "file": "assets/base/characters/sveta1.png",
+    "width": 510,
+    "height": 553,
+    "originalSha256": "abbbab4eafc3d78a46752fde26dfde39bdb307373fbd9836037675f97503473f",
+    "sha256": "3bcd09c7e3fd1e443a7352c25b1983329ec050af0bb07189f88daa4e38b1044a",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sveta2",
+    "file": "assets/base/characters/sveta2.png",
+    "width": 510,
+    "height": 553,
+    "originalSha256": "fa8a3f6c09c11aa99e5b9edca8477eb7326acd7aa4501aa422f6ef4d83d7c323",
+    "sha256": "adbf1f9c24fa5647f5d33703bd4a1ec81bcfe843c97c0aaa9958d9d2319a2398",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sveta3",
+    "file": "assets/base/characters/sveta3.png",
+    "width": 510,
+    "height": 553,
+    "originalSha256": "ceb600010b7afea04ea7c5715f32c683dcc3be6d61bd900bb492fc9ad326ddc1",
+    "sha256": "92ab64785f2a5f0f669e5ba736208ed2213139951cb725f2fdaad61af8cce417",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sveta4",
+    "file": "assets/base/characters/sveta4.png",
+    "width": 510,
+    "height": 553,
+    "originalSha256": "69de682d3df637fb3320f2b896cb87933ac1264bae99076c4034f92d0724c78e",
+    "sha256": "848eed334a196451b4ccb1c7af89e3d67b37cdc3d10562a39c7d5265d9529a5e",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sveta5",
+    "file": "assets/base/characters/sveta5.png",
+    "width": 510,
+    "height": 553,
+    "originalSha256": "c4ae6c373058209786ef6145703f233f73b5afa1985f77c57c49a03de5bc6bd7",
+    "sha256": "fc176008e1aa2a7e3bb642c800296901d237384765abc3fb1038fec3da7b7068",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sveta6",
+    "file": "assets/base/characters/sveta6.png",
+    "width": 510,
+    "height": 553,
+    "originalSha256": "eb3b936eb65db7f0e7a17b2e2aa08868109c324512beaaf348646156fdf5c6bb",
+    "sha256": "88c3023dfa13dc13e73db2e8d9ceca8668a6f0dbd42bcb01629e702809015645",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "belka1",
+    "file": "assets/additional/characters/belka1.png",
+    "width": 394,
+    "height": 451,
+    "originalSha256": "6813a8784c8e0aa8aa589dfca1f2bc5a4ca36e81abda07c2ac59728cc04d0d14",
+    "sha256": "8e7263f267f1e4767d7c717daab922fc1aca286963d3a070f390b6a968b98a6d",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "belka2",
+    "file": "assets/additional/characters/belka2.png",
+    "width": 394,
+    "height": 451,
+    "originalSha256": "eefbdc9e7daf84e09f2dba00e834fcad24efda90dc7cb14ddcead5e4bd38e88f",
+    "sha256": "af0379068932bb186cbc05155cd83b9019286bd585a0afe0be456c448b1ecb53",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "belka3",
+    "file": "assets/additional/characters/belka3.png",
+    "width": 482,
+    "height": 550,
+    "originalSha256": "58675b01a6347706ef11f59254ed18ce91628aca98d032a93713f38d504098d3",
+    "sha256": "d1bf8701338197674ba1fc949dde9b209208955b8ebc9c88a6edafa6cdfbb2bf",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "leshii1",
+    "file": "assets/additional/characters/leshii1.png",
+    "width": 496,
+    "height": 576,
+    "originalSha256": "0143a3710394cfcbe1804bb1edff08da06e2984a96a9b0176add030eca164cfd",
+    "sha256": "b8df08cfd56550d151b2652621bcac9b08a383c7e701aa1b1c250dc2602b2199",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "leshii2",
+    "file": "assets/additional/characters/leshii2.png",
+    "width": 496,
+    "height": 576,
+    "originalSha256": "e0ed07ea67faffc6f3391ac6902bf33a3dbb938c7a040bb6fa952b109851c0ce",
+    "sha256": "25df01285facdf0eb49e499f42869052f581992ad417ed53e24c7b174461b353",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "leshii3",
+    "file": "assets/additional/characters/leshii3.png",
+    "width": 496,
+    "height": 576,
+    "originalSha256": "e45031c81cb84688eac69017565abcc406acac29602cb064868eeba7e14bf5b5",
+    "sha256": "90ac76eb066e81a400af2b81a4caecea14a6940ecd8e22bdba3b19fb409349be",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sova1",
+    "file": "assets/additional/characters/sova1.png",
+    "width": 496,
+    "height": 461,
+    "originalSha256": "6d659a0b27af85d5e16a5390660157b3229f781dd05be1b9cd9e4cbf84ff8f2b",
+    "sha256": "15312701cb85d4da6dc20e548081061f6cfddb13cee75298836628cb67a4c5e4",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sova2",
+    "file": "assets/additional/characters/sova2.png",
+    "width": 496,
+    "height": 461,
+    "originalSha256": "fcf75f9a949d6e2f0e356f8aebaf677e09b2b65fcd5b29b7943eebd9ea027f5b",
+    "sha256": "afcd36a67c785371ac0f40133f8786cbb388a2111846fdbe3c3844fac9b4cfb3",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "sova3",
+    "file": "assets/additional/characters/sova3.png",
+    "width": 496,
+    "height": 461,
+    "originalSha256": "501d9d275ec9aa2f5802ceaba3f3230a494a3872b4c360fe8e65bd94640199c2",
+    "sha256": "103416f4d257e11fd6fb4396066e5badb14a16371507228baefa1d15b6f71ebd",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "yaga1",
+    "file": "assets/additional/characters/yaga1.png",
+    "width": 458,
+    "height": 606,
+    "originalSha256": "bf1ef74f791a7be593acaa9e93b956e1f586bd29e61383130808f94b5e5455c1",
+    "sha256": "2546de83a5968dd71fd981215feb9c640e776779ac8081941e43fc03e3f3e77f",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "yaga2",
+    "file": "assets/additional/characters/yaga2.png",
+    "width": 458,
+    "height": 606,
+    "originalSha256": "56f869531f7c355b80575a11a87423115b155d5870fb9227fb273459c1587bc9",
+    "sha256": "73255cea49eafce3b3027b03da4dcc2c0ccd874f2649d813b1beec5fe560eb03",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "yaga3",
+    "file": "assets/additional/characters/yaga3.png",
+    "width": 458,
+    "height": 606,
+    "originalSha256": "5b511e67d21973d78715180f26394b3d268df68723bf556e1352509772b3f0fa",
+    "sha256": "d19e87a4ed687ea16f4179b902ebfcb532ca328958664b139d17aa5c27fef6f5",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "scene-atticBg",
+    "file": "assets/screens/atticBg.png",
+    "width": 960,
+    "height": 1800,
+    "originalSha256": "c694a730a20e55b604f9646effdee1fad2f4cfa6ee6bf881f38b4226d6d919a6",
+    "sha256": "1714d5c3f20331a027f4567f6d84c338e119642eeb39f26f887dbb7810b05592",
+    "tool": "built-in image_gen",
+    "alpha": false
+  },
+  {
+    "id": "scene-darkForestBg",
+    "file": "assets/screens/darkForestBg.png",
+    "width": 960,
+    "height": 1800,
+    "originalSha256": "d8824a130167c6c969ae1220fa65c64e11aa98491cd84ccd8bbfd8afb13d0c1f",
+    "sha256": "85913079a8c0d9fd3646d7af8f88c213bda88e7035e3e7d13a5ed777362646e3",
+    "tool": "built-in image_gen",
+    "alpha": false
+  },
+  {
+    "id": "scene-fieldsBg",
+    "file": "assets/screens/fieldsBg.png",
+    "width": 960,
+    "height": 1800,
+    "originalSha256": "e561a6b22365c4d35011c9608ab0edebce49cf8386c9e95ec94fd02a17cb466a",
+    "sha256": "0a758cd9e75a201388c97ef62ca8219fe00bfaf9eacaf3729c7a9ca44f6e6a7e",
+    "tool": "built-in image_gen",
+    "alpha": false
+  },
+  {
+    "id": "scene-forestBg",
+    "file": "assets/screens/forestBg.png",
+    "width": 960,
+    "height": 1800,
+    "originalSha256": "1c337dc083dc09e804a1978414924f068cfc4ba81a0cd110d3bd4dbf995a5546",
+    "sha256": "b323606bc8b9a3eb8253527e69d7afa6cc9c8a00ac49e39179ed9fee11c28b69",
+    "tool": "built-in image_gen",
+    "alpha": false
+  },
+  {
+    "id": "scene-forestHouseBg",
+    "file": "assets/screens/forestHouseBg.png",
+    "width": 960,
+    "height": 1800,
+    "originalSha256": "b93675ee9b71d17744bd7e35cbe56fdf47e911976a55b8226dfce162dc910c15",
+    "sha256": "a7fd743bd9a1107151210c31704a9ebd68e1c98c2fa1d9d28f87fbe3c92f082f",
+    "tool": "built-in image_gen",
+    "alpha": false
+  },
+  {
+    "id": "scene-houseBg",
+    "file": "assets/screens/houseBg.png",
+    "width": 960,
+    "height": 1800,
+    "originalSha256": "3ccb50840300a6df35c85488e583d61fa7cafd41f8868c8bea1274aaae57ff16",
+    "sha256": "4bde0b74d652a06c55f2b47774d39914d1dd18dd6fe8e5696b7903874fa570f7",
+    "tool": "built-in image_gen",
+    "alpha": false
+  },
+  {
+    "id": "header-forestHeader1",
+    "file": "assets/base/ui/forestHeader1.png",
+    "width": 960,
+    "height": 529,
+    "originalSha256": "2fa45a79f47036100a008cfd50f3d7369a5be376294c6a19aa26733a7e780232",
+    "sha256": "3991f1ce1f2d2170117f80e7d8abb58b9109376015c39e91231fe0136ec211da",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-mountinesHeader",
+    "file": "assets/minigame1/mountinesHeader.png",
+    "width": 960,
+    "height": 590,
+    "originalSha256": "44f36cce44dcd140eac2d3c47f70d6a8674a4ca2af03b61ac9fb3e107463f01d",
+    "sha256": "ab5b8868234fd6610d9159a9d5ce82f5274fad0057332d43e75e8c176e33f6de",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-forestHeader2",
+    "file": "assets/minigame3/forestHeader2.png",
+    "width": 960,
+    "height": 546,
+    "originalSha256": "482c22d0381e4769dd4bd7edf3f483e5295d8441086f033bbacad46a81919f5d",
+    "sha256": "e134a33b3596ecde2357a054524834e8ebab2f32030ca47e48cc39d014fb67b8",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-lakeHeader",
+    "file": "assets/minigame4/lakeHeader.png",
+    "width": 960,
+    "height": 680,
+    "originalSha256": "f2170a03a384987060034ccf19bc67783abf056d6c9bddac7ba79a8cb5d0b0e2",
+    "sha256": "f9cea80548b3c51bc93f6770cf2439861e1d957638e84c551288d552676fb036",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-flowersFieldHeader",
+    "file": "assets/minigame5/flowersFieldHeader.png",
+    "width": 960,
+    "height": 634,
+    "originalSha256": "2ed330b07645b4fcec22a87910c4271504b0d675b72a9a706ef36dc92269beba",
+    "sha256": "b5b40987a5bf4c085b85f51a05de1080d4baa0199cfacb412482dc4e2f283a2f",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-junglesHeader",
+    "file": "assets/minigame6/junglesHeader.png",
+    "width": 960,
+    "height": 590,
+    "originalSha256": "e97f6bd75dc1c3fb3074bae435fe571b0a220f2e1f690243c85ba7d988ecc801",
+    "sha256": "349cdc9348335021ea3e1d51774416298c4a05c349f4e3a376257fc34beec2c6",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-bugForestHeader",
+    "file": "assets/minigame7/bugForestHeader.png",
+    "width": 960,
+    "height": 590,
+    "originalSha256": "a34a2a3300747c14120a0719b962ca188fe1145012d94a608e910c091e5ec3eb",
+    "sha256": "c5791fc3104edce0551b26a39c4164fa39789d408af482100e035986654be776",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-snailForestHeader",
+    "file": "assets/minigame8/snailForestHeader.png",
+    "width": 960,
+    "height": 590,
+    "originalSha256": "defebf741223f027b5f60d070ba163e6e2ef9c6f2951a38c6ced2ecb0a67bb69",
+    "sha256": "0d00178069c7723196ab6aa69d5cb546413cbbdca7c1620a5fa9dde35272ac6b",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-cloverHeader",
+    "file": "assets/minigame9/cloverHeader.png",
+    "width": 960,
+    "height": 590,
+    "originalSha256": "8e59a08c56a5ec953f4ae81e3e32802bb4d8cafad452edb827855ec3ff13eee4",
+    "sha256": "7307a00027ec14e0ea56131f8e602ad443a51d37249c520dc8a62c323add0a58",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "header-hiveheader",
+    "file": "assets/minigame10/hiveheader.png",
+    "width": 960,
+    "height": 590,
+    "originalSha256": "faa5153d248d23c4aca6e8c7b3da1e5889dd43e9e6b8e96254b7ee46994f53d9",
+    "sha256": "435ad75f0a1d73f6b43d71894c8e66a6e2b60a7d22d8d6355af6cb99c66f8459",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "boiler",
+    "file": "assets/base/room/boiler/boiler.png",
+    "width": 619,
+    "height": 610,
+    "originalSha256": "d1dad1d623935a2237f8d7f90eaa23195920c6db6cfaf37e1621896da3e9ec46",
+    "sha256": "6206e008b465246b2746bfb3b6b2528be1d6117ee357bb74a046b3885a4fdc51",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "forestHeader",
+    "file": "assets/base/ui/progressbar/forestHeader.png",
+    "width": 839,
+    "height": 287,
+    "originalSha256": "11ae6ecd6d8ceb1f86f961765fc017e6e3cf5062c1e4ddfed6081a600fe86b8a",
+    "sha256": "f29b09552ff90598ea137b90d5e36276af246166c388b77e3371cc815eebaa46",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "potionsHeader",
+    "file": "assets/base/ui/progressbar/potionsHeader.png",
+    "width": 839,
+    "height": 287,
+    "originalSha256": "115987f713a88195b8dc2f791b751cef99be46921d4493d6ddcd6cd858755581",
+    "sha256": "921efb7b7186b3eeab542173ca682d69d84557b322e68f9c850e9a4393844bc7",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "diary",
+    "file": "assets/base/ui/diary.png",
+    "width": 225,
+    "height": 237,
+    "originalSha256": "a4312b8d2a2f11440c1ac12d91da31ed0f85eea115bbc138f46be8685bc8bfdd",
+    "sha256": "6759d85749eb0d5c520ab79c4e8f0ff28b023e84fefa8f5f525f763e13d91baa",
+    "tool": "built-in image_gen",
+    "alpha": true
+  },
+  {
+    "id": "tasks",
+    "file": "assets/base/ui/tasks.png",
+    "width": 225,
+    "height": 237,
+    "originalSha256": "cf5825a3c345d9bd672d883a2082d65ed10bf4989e6f31cb4ecac4fbe8d18f49",
+    "sha256": "21f11a46f0209b1e01b8ab7fc878b9bbeb7dca218a54ed86b07c32ba7cce7da5",
+    "tool": "built-in image_gen",
+    "alpha": true
+  }
+]

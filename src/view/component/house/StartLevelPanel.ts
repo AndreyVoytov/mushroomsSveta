@@ -77,19 +77,10 @@ export default class StartLevelPanel extends ClosablePanel {
 
         this.playButton = this.attachButton("pnlButton", () => this.startLevel(), "playButton");
 
-        let continueLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('play')), { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
+        let continueLabel = new Label(this.game, 0, 0, LocalizationService.get(LocalizationKey.ui('play')), { font: "bold 55px Manrope", fill: "#344333" });
         continueLabel.name = 'continueLabel';
         continueLabel.anchor = new Phaser.Point(0.5, 0.5);
-        continueLabel.strokeThickness = 6;
-        continueLabel.addStrokeColor('#28590e', 0);
         this.playButton.addChild(continueLabel);
-        // BitmapText ignores strokeThickness; draw a real glyph outline.
-        [[-3, 0], [3, 0], [0, -3], [0, 3], [-2, -2], [-2, 2], [2, -2], [2, 2]].forEach(offset => {
-            const edge = new Label(this.game, offset[0], offset[1], continueLabel.text,
-                { font: 'bolder 60px Gilroy', fill: '#214b24' });
-            edge.anchor.set(0.5);
-            this.playButton.addChildAt(edge, 0);
-        });
 
         let fastPlayButton;
         if (AdminService.isEditMode()) {

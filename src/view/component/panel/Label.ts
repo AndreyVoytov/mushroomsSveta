@@ -21,7 +21,7 @@
     public static TASK_TITLE_STYLE: Phaser.PhaserTextStyle = { font: 'bold 45px Bookman Old Style', fill: '#000000', fontStyle: 'italic', align: 'center', wordWrap: true, wordWrapWidth: 430 };
     public static TASK_STYLE: Phaser.PhaserTextStyle = { font: '35px Bookman Old Style', fill: '#000000', fontStyle: 'italic', align: 'center', wordWrap: true, wordWrapWidth: 510 };
     public static DIALOG_STYLE: Phaser.PhaserTextStyle = { font: 'bold 40px Arial', fill: '#734f3f' };
-    public static DIALOG_TITLE_STYLE: Phaser.PhaserTextStyle = { font: '45px Arial', fill: '#FFFFFF', wordWrap: true, wordWrapWidth: 880 };
+    public static DIALOG_TITLE_STYLE: Phaser.PhaserTextStyle = { font: '45px Lora', fill: '#514739', wordWrap: true, wordWrapWidth: 880 };
 
     private static DEFAULT_STYLE: Phaser.PhaserTextStyle = { font: '40px Arial', fill: '#ffffff', wordWrap: true, wordWrapWidth: 800 };
 
@@ -169,15 +169,8 @@
         }
 
         const lowered = fontSpec.toLowerCase();
-        if (lowered.indexOf('hivedigitslegacy') >= 0) return { key: 'bm_hive_digits_legacy', size: size, letterSpacing: -1 };
-        if (lowered.indexOf('paneldigitsbrown') >= 0) return { key: 'bm_panel_digits_brown', size: size, letterSpacing: -1 };
-        if (lowered.indexOf('diarydigits') >= 0) return { key: 'bm_diary_digits', size: size, letterSpacing: -1 };
-        if (lowered.indexOf('bookman') >= 0) return { key: 'bm_bookman', size: size, letterSpacing: -1 };
-        if (lowered.indexOf('gilroy') >= 0) return { key: 'bm_gilroy', size: size, letterSpacing: -2 };
-        if (lowered.indexOf('balsamiq') >= 0) return { key: 'bm_balsamiq', size: size, letterSpacing: -1 };
-        if (lowered.indexOf('italic') >= 0 && lowered.indexOf('times') >= 0) return { key: 'bm_times_italic', size: size, letterSpacing: -1 };
-        if (lowered.indexOf('times') >= 0) return { key: 'bm_times', size: size, letterSpacing: -1 };
-        return { key: 'bm_arial', size: size, letterSpacing: -1 };
+        const title = lowered.indexOf('bookman') >= 0 || lowered.indexOf('times') >= 0 || lowered.indexOf('lora') >= 0;
+        return { key: title ? 'bm_arcane_title' : 'bm_arcane_ui', size: size, letterSpacing: 0 };
     }
 
     private static prepareText(text: string, style: Phaser.PhaserTextStyle, ignoreVioletHighlight?: boolean, symbolsInRow?: number, size?: number): string {
@@ -225,6 +218,11 @@
         }
         if (normalized.length === 3) {
             normalized = normalized[0] + normalized[0] + normalized[1] + normalized[1] + normalized[2] + normalized[2];
+        }
+
+        // These legacy light labels sat on dark wood. The reskin uses light parchment.
+        if (['ffffff', 'fff5bc', 'fff0ab', 'fff1c4', 'fff3c6', 'fff5ce', 'f0f1ec', 'e8c38f', 'fff7dc', 'fff7d6'].indexOf(normalized.toLowerCase()) >= 0) {
+            return 0x514739;
         }
 
         const parsed = parseInt(normalized, 16);

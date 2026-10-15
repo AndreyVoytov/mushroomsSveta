@@ -1,4 +1,4 @@
-// Package the game and companion pages from main; no publishing branch/worktree.
+// Package the current game branch and its companion pages.
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
@@ -42,7 +42,7 @@ copy(path.join(root, 'build/animals/index.html'), 'animals/index.html');
 copyTree(path.join(root, 'build/js'), 'js');
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
 fs.writeFileSync(path.join(output, 'deployment.json'), JSON.stringify({
-    branch: 'main',
+    branch: execFileSync('git', ['branch', '--show-current'], { cwd: root, encoding: 'utf8' }).trim(),
     commit: execFileSync('git', ['rev-parse', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(),
     journeyLevels: 25
 }, null, 2) + '\n');

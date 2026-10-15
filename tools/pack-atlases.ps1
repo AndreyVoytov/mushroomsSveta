@@ -499,10 +499,13 @@ function Save-Webp([string]$PngPath, [string]$WebpPath) {
         return
     }
 
-    & $magickExe $PngPath '-define' 'webp:lossless=true' $WebpPath | Out-Null
-    if ($LASTEXITCODE -ne 0) {
-        throw "magick.exe failed while generating $WebpPath."
+    # Workspace image previews can briefly hold the existing WebP open on Windows.
+    for ($attempt = 0; $attempt -lt 6; $attempt++) {
+        & $magickExe $PngPath '-define' 'webp:lossless=true' $WebpPath | Out-Null
+        if ($LASTEXITCODE -eq 0) { return }
+        if ($attempt -lt 5) { Start-Sleep -Milliseconds (250 * ($attempt + 1)) }
     }
+    throw "magick.exe failed while generating $WebpPath."
 }
 
 function Save-AtlasJson([object]$Page, [string]$AtlasName, [string]$JsonPath) {
