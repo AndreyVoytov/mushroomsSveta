@@ -7,6 +7,7 @@ import ShopPanel from './ShopPanel';
 import BaseScreen from '../../screen/common/BaseScreen';
 import HouseScreen from '../../screen/HouseScreen';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import WorldPanel from './WorldPanel';
 
 export default class AllLevelsCompletePanel extends ClosablePanel {
 
@@ -48,10 +49,10 @@ export default class AllLevelsCompletePanel extends ClosablePanel {
 
         // this.actionButton = this.attachSprite("titlePnl");
         this.actionButton = this.attachButton("titlePnl", () => {
-            //TODO
             this.close();
+            WorldPanel.show('journey');
         });
-        let enlagreLabel = new Label(game, 0, 0, LocalizationService.get('ui.good'), { font: "30px Gilroy", fill: "#ffffff" });
+        let enlagreLabel = new Label(game, 0, 0, 'Лесные экспедиции', { font: "30px Gilroy", fill: "#ffffff" });
         enlagreLabel.anchor.set(0.5);
         this.actionButton.addChild(enlagreLabel);
         

@@ -9,6 +9,10 @@ import EventInfo from './../event/EventInfo';
 import UserEventState from './../event/UserEventState';
 import Utils from './../../utils/Utils';
 import EnergyUtils from '../../utils/EnergyUtils';
+import GameClock from '../../service/GameClock';
+import Telemetry from '../../service/Telemetry';
+import TaskService from '../../service/TaskService';
+import { WorldState, emptyWorldState } from '../world/WorldState';
 import { createEmptyUserTasksState, UserTasksState } from '../task/TaskModels';
 import { ShopArtifactBackpackEntry, ShopArtifactSkillId } from '../shop/ShopArtifactModels';
 import CharactersConfiguration from '../../configuration/CharactersConfiguration';
@@ -21,6 +25,13 @@ export default class User {
     public supermoneyTakenAt: number = Date.now();
     public events: EventInfo[] = [];
     public eventStates: UserEventState[] = [];
+    public schemaVersion = 2;
+    public updatedAt = GameClock.now();
+    public world: WorldState = emptyWorldState();
+    public processedPurchaseTokens: string[] = [];
+    public rewardedAttemptIds: string[] = [];
+    public economyJournal: any[] = [];
+    public dailyGiftDayId = GameClock.day(this.supermoneyTakenAt);
 
     private spendOnLevel: number = 0;
 
@@ -62,6 +73,12 @@ export default class User {
 
     constructor(user?: User) {
         if (user) {
+            this.updatedAt=user.updatedAt||0;
+            this.world = Object.assign(emptyWorldState(), user.world || {});
+            this.processedPurchaseTokens = (user.processedPurchaseTokens || []).slice();
+            this.rewardedAttemptIds = (user.rewardedAttemptIds || []).slice(-200);
+            this.economyJournal = (user.economyJournal || []).slice(-200);
+            this.dailyGiftDayId = user.dailyGiftDayId || GameClock.day(user.supermoneyTakenAt || GameClock.now());
             this.spendOnLevel = user.spendOnLevel || 0;
             this.events = user.events || [];
             this.eventStates = (user.eventStates || []).map(state => new UserEventState(state));
@@ -81,7 +98,7 @@ export default class User {
             this.energy = user.energy == null ? EnergyUtils.START_ENERGY : user.energy;
             this.lastRegenerationAt = user.lastRegenerationAt;
             this.lastEnergyRegenerationAt = user.lastEnergyRegenerationAt || Date.now();
-            this.energyPurchaseDayId = user.energyPurchaseDayId || EnergyUtils.getMoscowDayId();
+            this.energyPurchaseDayId = user.energyPurchaseDayId ? user.energyPurchaseDayId.split('-').map((p,i)=>i===0?p:('0'+Number(p)).slice(-2)).join('-') : EnergyUtils.getMoscowDayId();
             this.energyPurchasesToday = user.energyPurchasesToday || 0;
             this.currentReplica = user.currentReplica;
             this.markers = user.markers || [];
@@ -108,6 +125,10 @@ export default class User {
 
         this.ensureStartCharacter();
         this.ensureCurrentCharacterId();
+        if(!this.economyJournal.length){
+            this.recordEconomy('gems',this.supermoney,'opening_balance',this.supermoney);
+            this.recordEconomy('energy',this.energy,'opening_balance',this.energy);
+        }
     }
 
     public getEvents():EventInfo[]{
@@ -174,8 +195,10 @@ export default class User {
         return this.supermoney;
     }
 
-    public setSupermoney(value: number): void {
+    public setSupermoney(value: number, reason: string = 'legacy_balance_change'): void {
+        const before = this.supermoney;
         this.supermoney = value;
+        this.recordEconomy('gems', value - before, reason, value);
         ServerStoreComponent.saveLocalUser(this);
     }
 
@@ -567,14 +590,16 @@ export default class User {
         return EnergyUtils.getEnergyPurchasePrice(this.getEnergyPurchasesToday());
     }
 
-    public addEnergy(amount: number, allowOverflow?: boolean): void {
+    public addEnergy(amount: number, allowOverflow?: boolean, reason: string = 'field_refund'): void {
         this.updateEnergy();
 
         const nextEnergy = Math.max(0, this.energy + amount);
-        this.energy = allowOverflow === false ? Math.min(EnergyUtils.MAX_ENERGY, nextEnergy) : nextEnergy;
+        const before = this.energy;
+        this.energy = allowOverflow === false ? Math.max(this.energy, Math.min(EnergyUtils.MAX_ENERGY, nextEnergy)) : nextEnergy;
+        this.recordEconomy('energy', this.energy - before, reason, this.energy);
 
         if (this.energy >= EnergyUtils.MAX_ENERGY) {
-            this.lastEnergyRegenerationAt = Date.now();
+            this.lastEnergyRegenerationAt = GameClock.now();
         }
 
         ServerStoreComponent.saveLocalUser(this);
@@ -594,15 +619,22 @@ export default class User {
 
         const nextEnergy = this.energy - energyToSpend;
         if (this.energy >= EnergyUtils.MAX_ENERGY && nextEnergy < EnergyUtils.MAX_ENERGY) {
-            this.lastEnergyRegenerationAt = Date.now();
+            this.lastEnergyRegenerationAt = GameClock.now();
         }
 
         this.energy = nextEnergy;
+        this.recordEconomy('energy', -energyToSpend, 'open_cell', this.energy);
+        TaskService.recordSpentEnergy(energyToSpend,this);
         ServerStoreComponent.saveLocalUser(this);
         return true;
     }
 
     public buyEnergyPack(): boolean {
+        return ServerStoreComponent.atomic(this, () => this.applyEnergyPack());
+    }
+
+    private applyEnergyPack(): boolean {
+        this.updateEnergy();
         this.resetDailyEnergyPurchasesIfNeeded();
 
         const price = this.getCurrentEnergyPurchasePrice();
@@ -612,8 +644,10 @@ export default class User {
 
         this.supermoney -= price;
         this.energy += EnergyUtils.ENERGY_PER_PURCHASE;
+        this.recordEconomy('gems', -price, 'energy_pack', this.supermoney);
+        this.recordEconomy('energy', EnergyUtils.ENERGY_PER_PURCHASE, 'energy_pack', this.energy);
         this.energyPurchasesToday++;
-        this.lastEnergyRegenerationAt = Date.now();
+        this.lastEnergyRegenerationAt = GameClock.now();
 
         ServerStoreComponent.saveLocalUser(this);
         return true;
@@ -626,13 +660,14 @@ export default class User {
             return;
         }
 
-        let energyToRegenerate = Math.floor((Date.now() - this.lastEnergyRegenerationAt) / EnergyUtils.MILLIS_FOR_ENERGY);
+        let energyToRegenerate = Math.floor((GameClock.now() - this.lastEnergyRegenerationAt) / EnergyUtils.MILLIS_FOR_ENERGY);
         if (energyToRegenerate <= 0) {
             return;
         }
 
         energyToRegenerate = Math.min(EnergyUtils.MAX_ENERGY - this.energy, energyToRegenerate);
         this.energy += energyToRegenerate;
+        this.recordEconomy('energy', energyToRegenerate, 'regeneration', this.energy);
         this.lastEnergyRegenerationAt += EnergyUtils.MILLIS_FOR_ENERGY * energyToRegenerate;
 
         ServerStoreComponent.saveLocalUser(this);
@@ -640,7 +675,7 @@ export default class User {
 
     private resetDailyEnergyPurchasesIfNeeded(): void {
         const currentDayId = EnergyUtils.getMoscowDayId();
-        if (this.energyPurchaseDayId == currentDayId) {
+        if (this.energyPurchaseDayId >= currentDayId) {
             return;
         }
 
@@ -691,16 +726,35 @@ export default class User {
 
     public tryGiveEverydayGems(game: Phaser.Game):void{
         if(this.haveEverydayGemsToTake()){
+            ServerStoreComponent.atomic(this, () => {
+                this.dailyGiftDayId = GameClock.day();
+                this.supermoneyTakenAt = GameClock.now();
+                this.setSupermoney(this.supermoney + EverydayRubyPanel.RUBIES_COUNT, 'daily_gift');
+            });
             SoundUtils.successfulEverydayGems();
-            this.supermoney += EverydayRubyPanel.RUBIES_COUNT;
-            this.supermoneyTakenAt = Date.now();
+            Telemetry.track('daily_gift_claim', {dayId:this.dailyGiftDayId});
         }
     }
 
     public haveEverydayGemsToTake():boolean{
-        let dayStart = new Date();
-        dayStart.setUTCHours(3,0,0,0);
-        return dayStart.getTime() > this.supermoneyTakenAt;
+        return GameClock.day() > this.dailyGiftDayId;
+    }
+
+    public recordEconomy(currency: string, amount: number, reason: string, balanceAfter: number): void {
+        if (!amount || !isFinite(amount)) return;
+        const id=Utils.UUID();
+        this.economyJournal.push({id, operationId:id, at:GameClock.now(), currency, amount, reason, balanceAfter});
+        if (this.economyJournal.length > 200) this.economyJournal.shift();
+    }
+
+    public saveWorld(): void { ServerStoreComponent.saveLocalUser(this); }
+
+    public claimFieldSapphires(attemptId:string,amount:number):boolean {
+        if(!attemptId||!isFinite(amount)||amount<=0||Math.floor(amount)!==amount||this.rewardedAttemptIds.indexOf(attemptId)>=0)return false;
+        ServerStoreComponent.atomic(this,()=>{
+            this.rewardedAttemptIds.push(attemptId);this.rewardedAttemptIds=this.rewardedAttemptIds.slice(-200);
+            this.setSupermoney(this.supermoney+amount,'field_sapphires');
+        });return true;
     }
 
     public setLifes(value: number): void {

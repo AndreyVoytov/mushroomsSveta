@@ -21,7 +21,7 @@ export default class ShopBankSectionPanel extends ShopSectionPanel {
     constructor(game: Phaser.Game, callbackOnBuy?: () => void) {
         super(game, "bankSection");
 
-        Settings.BUYS.filter(buy => !buy.artifactId).forEach((buy, index) => {
+        Settings.BUYS.filter(buy => !buy.artifactId && !buy.seasonPass).forEach((buy, index) => {
             let panel: BasePanel;
             const callback = () => callbackOnBuy && callbackOnBuy();
 

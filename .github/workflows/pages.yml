@@ -24,6 +24,12 @@ jobs:
       - run: npm ci --legacy-peer-deps
       - name: Check game behavior
         run: |
+          node tools/test-world.js
+          node tools/test-serverless.mjs
+          node tools/test-cloud-client.js
+          node tools/test-world-fields.js
+          node tools/test-telemetry.js
+          node tools/test-ad-callbacks.js
           node tools/test-journey-events.js
           node tools/test-animals-generation.js
           node tools/test-mushroom-harvest.js

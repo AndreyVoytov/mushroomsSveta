@@ -1,0 +1,11 @@
+{
+  "ghostDoor": {
+    "file": "ghost-door.png",
+    "width": 1536,
+    "height": 1024,
+    "generatedBy": "built-in ImageGen",
+    "date": "2026-10-14",
+    "role": "Optional ghost-door encounter illustration",
+    "prompt": "Landscape illustration for a richly painted casual fairy-tale forest game. A mysterious spectral door in an ancient oak tree, frontal symmetrical composition, glowing turquoise runes around an arched wooden door, crossed delicate chains and a gold padlock, soft enchanted forest framing. Similar subject and mood to the user ghost-door references; no UI, typography, people or watermarks. Hand-painted polished casual game art, readable at 500px, lush deep teal forest, subtle warm gold accents. Landscape 3:2; one centered, fully visible door."
+  }
+}

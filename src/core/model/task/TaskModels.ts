@@ -44,6 +44,8 @@ export interface TasksConfigurationData {
 
 export interface UserTasksState {
     dailyDayId: string;
+    dailyTaskIds?: string[];
+    dailyRerolls?: number;
     dailyProgress: { [taskId: string]: number };
     claimedDailyTaskIds: string[];
     claimedDailyRewardIds: string[];

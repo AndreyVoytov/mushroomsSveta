@@ -4,7 +4,6 @@ import ForestAim from '../../../core/model/forest/ForestAim';
 import ForestType from '../../../core/model/forest/ForestType';
 import UserService from '../../../core/service/UserService';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
-import EnergyUtils from '../../../core/utils/EnergyUtils';
 import ForestUtils from '../../../core/utils/ForestUtils';
 import LocationUtils from '../../../core/utils/LocationUtils';
 import SoundUtils from '../../../core/utils/SoundUtils';
@@ -58,7 +57,6 @@ export default class LevelCompletePanel extends BasePanel {
 
         const resolvedAims = previewData ? previewData.aims : aims;
         const spentEnergy = previewData ? previewData.spentEnergy : screen.topPanel.getSpentEnergy();
-        const targetSteps = previewData ? previewData.targetSteps : screen.topPanel.getTargetSteps();
 
         const inputBlocker = new Phaser.Graphics(this.game, 0, 0);
         inputBlocker.beginFill(0x061627, 0.24);
@@ -69,7 +67,6 @@ export default class LevelCompletePanel extends BasePanel {
         inputBlocker.inputEnabled = true;
         this.addChild(inputBlocker);
 
-        const supportPercent = EnergyUtils.getSupportPercent(targetSteps, spentEnergy);
         const panel = this.attachSprite('rewardBoard', 'panel');
         panel.width = 820;
         panel.height = sapphireStarCount > 0 ? 614 : 574;
@@ -166,7 +163,7 @@ export default class LevelCompletePanel extends BasePanel {
 
         this.createResultText(
             'betterLabel',
-            LocalizationService.get('ui.energy.better', 'Better than {percent}% of players').replace('{percent}', '' + supportPercent),
+            LocalizationService.get('ui.energy.fieldTip', 'Finds help conserve energy'),
             {
                 font: 'bold 30px Arial',
                 fill: '#87552b'

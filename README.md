@@ -10,6 +10,20 @@ including `/animals/`, `/mechanics/`, `/roadmap/`, `/ideas/`, `/ideas2/` and
 the existing `/reports/` and downloadable archives. `public/` contains static
 publication files that do not have another source in the project.
 
+The local world-system implementation and the remaining work for all 27 selected
+issues are documented in [the implementation report](docs/implementation/index.html).
+It includes optional encounters, permanent wardrobe bonuses, relationships,
+personal adventures, seasons and expeditions. A Supabase serverless adapter for
+both Yandex Games and the ordinary web version is prepared in `supabase/`.
+See [the serverless setup and validation guide](docs/implementation/serverless.html).
+It is not connected to a live game project. Web checkout awaits a provider;
+full clothing rendering and gameplay-wide server authority remain unfinished.
+
+After `npm run build`, run `node tools/serve-game-preview.js` and open
+`http://127.0.0.1:8893/`. The local analytics dashboard is at
+`http://127.0.0.1:8893/docs/operations/`. Use a separate preview origin for debug
+fixtures, since `?level=21` changes campaign progress in that browser profile.
+
 ![screenshot](https://i.imgur.com/XXyX8KO.png)
 ![screenshot](https://i.imgur.com/YuzMdYi.png)
 ![screenshot](https://i.imgur.com/GIdIa5q.png)

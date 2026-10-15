@@ -28,7 +28,7 @@ function copyTree(source, relative) {
         else if (entry.isFile()) copy(path.join(source, entry.name), path.join(relative, entry.name));
     }
 }
-const tracked = execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
+const tracked = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', '-z'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean);
 for (const file of tracked) {
     if (file.startsWith('assets/') && !/\.psd$/i.test(file) && !file.startsWith('assets/_atlasesOriginal/')) {
         copy(path.join(root, file), file);

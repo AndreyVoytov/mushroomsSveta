@@ -1,3 +1,4 @@
+import GameClock from '../service/GameClock';
 export default class EnergyUtils {
     public static START_ENERGY = 120;
     public static MAX_ENERGY = 120;
@@ -6,13 +7,7 @@ export default class EnergyUtils {
     public static BASE_PURCHASE_PRICE = 10;
 
     public static getMoscowDayId(timestamp?: number): string {
-        const utcPlus3Millis = (timestamp == null ? Date.now() : timestamp) + 3 * 60 * 60 * 1000;
-        const moscowDate = new Date(utcPlus3Millis);
-        const year = moscowDate.getUTCFullYear();
-        const month = moscowDate.getUTCMonth() + 1;
-        const day = moscowDate.getUTCDate();
-
-        return year + "-" + month + "-" + day;
+        return GameClock.day(timestamp == null ? GameClock.now() : timestamp);
     }
 
     public static getEnergyPurchasePrice(purchasesToday: number): number {
@@ -20,7 +15,7 @@ export default class EnergyUtils {
     }
 
     public static getMillisToNextMoscowMidnight(timestamp?: number): number {
-        const baseTimestamp = timestamp == null ? Date.now() : timestamp;
+        const baseTimestamp = timestamp == null ? GameClock.now() : timestamp;
         const utcPlus3Millis = baseTimestamp + 3 * 60 * 60 * 1000;
         const moscowDate = new Date(utcPlus3Millis);
         moscowDate.setUTCHours(24, 0, 0, 0);

@@ -1,0 +1,6 @@
+project_id = "mushrooms-game"
+
+[functions.game-api]
+# Auth is checked inside the handler with auth.getUser. The signed Yandex auth
+# action must also be reachable before a Supabase session exists.
+verify_jwt = false

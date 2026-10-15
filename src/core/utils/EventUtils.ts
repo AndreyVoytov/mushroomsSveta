@@ -9,6 +9,8 @@ import EventStage from '../model/event/EventStage';
 import EventType from '../model/event/EventType';
 import User from '../model/user/User';
 import UserService from '../service/UserService';
+import GameClock from '../service/GameClock';
+import LiveConfig from '../service/LiveConfig';
 import Settings from '../service/Settings';
 import NeverError from './NeverError';
 import { getAtlasGroupNames } from '../../generated/atlasManifest';
@@ -63,11 +65,11 @@ export default class EventUtils {
                 return;
             }
 
-            if (user.getCurrentForest() >= eventConfig.startsatLevel) {
+            if (user.getCurrentForest() >= Math.max(eventConfig.startsatLevel,eventConfig.eventId==='event1'?LiveConfig.get('firstEventLevel'):0)) {
                 user.addEvent(new EventInfo(
                     EventType.configured,
-                    Date.now(),
-                    Date.now() + eventConfig.duration,
+                    GameClock.now(),
+                    GameClock.now() + eventConfig.duration,
                     null,
                     eventConfig.eventId
                 ));
@@ -77,7 +79,7 @@ export default class EventUtils {
 
         if (this.canStartFirstLukoshkoEvent(user)) {
             user.addMarker('firstLukoshko');
-            const event = new EventInfo(EventType.lukoshko, Date.now(), Date.now() + 1000 * 60 * 60 * 24);
+            const event = new EventInfo(EventType.lukoshko, GameClock.now(), GameClock.now() + 1000 * 60 * 60 * 24);
             user.addEvent(event);
             result.push(this.getEventKey(event));
             user.setWinsInRow(0);
@@ -103,7 +105,7 @@ export default class EventUtils {
     }
 
     public static getStage(event: EventInfo): EventStage {
-        const now = Date.now();
+        const now = GameClock.now();
 
         if (event.prizeTakingEndAt && event.eventEndAt <= now && event.prizeTakingEndAt > now) {
             return EventStage.prizeTaking;
@@ -375,7 +377,7 @@ export default class EventUtils {
         eventState.pendingMapRevealProgress = this.getPendingMapRevealProgress(eventId, previousProgress, eventState.progress);
 
         if (totalLevels > 0 && eventState.progress >= totalLevels) {
-            eventState.completedAt = Date.now();
+            eventState.completedAt = GameClock.now();
             if (activeEvent) {
                 user.deleteEvent(activeEvent);
             }
@@ -418,7 +420,7 @@ export default class EventUtils {
         const user = UserService.getUser();
         const eventState = user.getOrCreateEventState(eventId);
         if (!eventState.completedAt && !eventState.expiredAt) {
-            eventState.expiredAt = Date.now();
+            eventState.expiredAt = GameClock.now();
         }
         eventState.pendingMainScreenLevelId = null;
         eventState.pendingCharacterTravel = false;
@@ -459,8 +461,8 @@ export default class EventUtils {
 
         user.addEvent(new EventInfo(
             EventType.configured,
-            Date.now(),
-            Date.now() + eventConfig.duration,
+            GameClock.now(),
+            GameClock.now() + eventConfig.duration,
             null,
             eventId
         ));
@@ -483,7 +485,7 @@ export default class EventUtils {
 
         const eventState = user.getOrCreateEventState(eventId);
         eventState.progress = this.getEventLevelsCount(eventId);
-        eventState.completedAt = Date.now();
+        eventState.completedAt = GameClock.now();
         eventState.expiredAt = null;
         eventState.pendingMainScreenLevelId = null;
         eventState.pendingCharacterTravel = false;
@@ -590,7 +592,7 @@ export default class EventUtils {
             eventState.progress = totalLevels;
         }
         if (!eventState.completedAt) {
-            eventState.completedAt = Date.now();
+            eventState.completedAt = GameClock.now();
         }
         eventState.pendingMainScreenLevelId = null;
         eventState.pendingCharacterTravel = false;
@@ -730,7 +732,7 @@ export default class EventUtils {
         }
 
         const eventConfig = EventsConfiguration.getById(eventId);
-        const eventEndAt = fallbackEventEndAt || Date.now();
+        const eventEndAt = fallbackEventEndAt || GameClock.now();
         const eventStartAt = eventConfig ? eventEndAt - eventConfig.duration : eventEndAt - 1;
 
         return new EventInfo(EventType.configured, eventStartAt, eventEndAt, null, eventId);

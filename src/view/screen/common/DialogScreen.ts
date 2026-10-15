@@ -7,6 +7,7 @@ import ForestScreen from './../ForestScreen';
 import BaseScreen from "./BaseScreen";
 import ReplicaDao from '../../../core/dao/ReplicaDao';
 import EventUtils from '../../../core/utils/EventUtils';
+import WorldService from '../../../core/service/WorldService';
 
 export default abstract class DialogScreen extends BaseScreen {
 
@@ -18,6 +19,7 @@ export default abstract class DialogScreen extends BaseScreen {
         if (this instanceof ForestScreen) {
             this.dialogPanel = new DialogPanel(this.game, this, (animation:string) => this.playAnimation(animation),
              () => {
+                 if(WorldService.activeAdventure||WorldService.expedition)return null;
                  if (EventUtils.hasActiveLevelSession()) {
                      return EventReplicasConfiguration.getForestReplica(UserService.getUser());
                  }
@@ -26,6 +28,7 @@ export default abstract class DialogScreen extends BaseScreen {
         } else {
             this.dialogPanel = new DialogPanel(this.game, this, (animation:string) => this.playAnimation(animation),
              () => {
+                 if(WorldService.houseAfterWorld)return null;
                  return EventReplicasConfiguration.getHouseReplica(UserService.getUser())
                      || ReplicaDao.getEntity().getReplica(UserService.getUser());
              });

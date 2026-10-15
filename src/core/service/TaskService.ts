@@ -13,6 +13,10 @@ import {
 import User from "../model/user/User";
 import EnergyUtils from "../utils/EnergyUtils";
 import UserService from "./UserService";
+import ForestConfiguration from '../configuration/ForestConfiguration';
+import LiveConfig from './LiveConfig';
+import Telemetry from './Telemetry';
+import ServerStoreComponent from './store/ServerStoreComponent';
 
 export default class TaskService {
 
@@ -24,8 +28,10 @@ export default class TaskService {
         let safeUser = user || UserService.getUser();
         this.ensureDailyState(safeUser);
 
-        let dayId = this.getState(safeUser).dailyDayId || EnergyUtils.getMoscowDayId();
-        return TasksConfiguration.dailyPool
+        let state = this.getState(safeUser);
+        let dayId = state.dailyDayId || EnergyUtils.getMoscowDayId();
+        if (state.dailyTaskIds && state.dailyTaskIds.length) return state.dailyTaskIds.map(id=>TasksConfiguration.dailyPool.filter(t=>t.id===id).shift()).filter(t=>!!t);
+        const tasks = this.availableDailyTasks(safeUser)
             .slice()
             .sort((left, right) => {
                 let delta = this.hashString(dayId + "|" + left.id) - this.hashString(dayId + "|" + right.id);
@@ -35,6 +41,27 @@ export default class TaskService {
                 return left.id.localeCompare(right.id);
             })
             .slice(0, Math.min(TasksConfiguration.dailySelectionCount, TasksConfiguration.dailyPool.length));
+        state.dailyTaskIds = tasks.map(t=>t.id);
+        safeUser.saveTasksState();
+        return tasks;
+    }
+
+    private static availableDailyTasks(user:User):TaskDefinition[] {
+        const all=ForestConfiguration.allForests;
+        const maps=user.getCurrentForest()>=all.length?all:all.slice(user.getCurrentForest(),user.getCurrentForest()+8);
+        return TasksConfiguration.dailyPool.filter(task=>task.kind!=='collect'||maps.some(map=>{
+            return (map.items||[]).concat(map.interactiveItems||[]).some(item=>item.name===task.targetId)||(task.targetId==='acorn'&&!!map.acorns)||(task.targetId==='chamomileSmall'&&!!map.flowers);
+        }));
+    }
+
+    public static rerollDailyTask(user:User):boolean {
+        const current=this.getDailyTasks(user),state=this.getState(user);
+        if((state.dailyRerolls||0)>=LiveConfig.get('dailyRerolls'))return false;
+        const old=current.filter(t=>state.claimedDailyTaskIds.indexOf(t.id)<0&&!(state.dailyProgress[t.id]>0))[0];
+        const next=this.availableDailyTasks(user).filter(t=>state.dailyTaskIds.indexOf(t.id)<0)[0];
+        if(!old||!next)return false;
+        state.dailyTaskIds[state.dailyTaskIds.indexOf(old.id)]=next.id;state.dailyRerolls=(state.dailyRerolls||0)+1;
+        user.saveTasksState();Telemetry.track('daily_task_reroll',{oldId:old.id,newId:next.id});return true;
     }
 
     public static getDailyTaskViews(user?: User): TaskProgressView[] {
@@ -133,12 +160,12 @@ export default class TaskService {
         return currentIndex;
     }
 
-    public static recordSpentEnergy(amount: number): void {
+    public static recordSpentEnergy(amount: number, targetUser?:User): void {
         if (!amount || amount <= 0) {
             return;
         }
 
-        let user = UserService.getUser();
+        let user = targetUser || UserService.getUser();
         this.ensureDailyState(user);
         let state = this.getState(user);
         let changed = false;
@@ -198,9 +225,12 @@ export default class TaskService {
             return null;
         }
 
-        state.claimedDailyTaskIds.push(task.id);
-        this.applyRewardToUser(safeUser, task.reward);
-        safeUser.saveTasksState();
+        ServerStoreComponent.atomic(safeUser,()=>{
+            state.claimedDailyTaskIds.push(task.id);
+            this.applyRewardToUser(safeUser, task.reward);
+            safeUser.saveTasksState();
+        });
+        Telemetry.track('task_claim',{taskId:task.id,kind:'daily'});
 
         return this.toRewardGrant(task.title, task.reward, true);
     }
@@ -222,9 +252,12 @@ export default class TaskService {
             return null;
         }
 
-        state.claimedCampaignTaskIds.push(task.id);
-        this.applyRewardToUser(safeUser, task.reward);
-        safeUser.saveTasksState();
+        ServerStoreComponent.atomic(safeUser,()=>{
+            state.claimedCampaignTaskIds.push(task.id);
+            this.applyRewardToUser(safeUser, task.reward);
+            safeUser.saveTasksState();
+        });
+        Telemetry.track('task_claim',{taskId:task.id,kind:'campaign'});
 
         return this.toRewardGrant(task.title, task.reward, true);
     }
@@ -390,11 +423,11 @@ export default class TaskService {
         }
 
         if (reward.energy) {
-            user.addEnergy(reward.energy);
+            user.addEnergy(reward.energy, true, 'task_reward');
         }
 
         if (reward.gems) {
-            user.setSupermoney(user.getSupermoney() + reward.gems);
+            user.setSupermoney(user.getSupermoney() + reward.gems, 'task_reward');
         }
 
         if (reward.boosters) {
@@ -441,7 +474,7 @@ export default class TaskService {
         let state = this.getState(user);
         let currentDayId = EnergyUtils.getMoscowDayId();
 
-        if (state.dailyDayId == currentDayId) {
+        if (state.dailyDayId >= currentDayId) {
             return;
         }
 
@@ -449,6 +482,8 @@ export default class TaskService {
         state.dailyProgress = {};
         state.claimedDailyTaskIds = [];
         state.claimedDailyRewardIds = [];
+        state.dailyTaskIds = [];
+        state.dailyRerolls = 0;
         user.saveTasksState();
     }
 

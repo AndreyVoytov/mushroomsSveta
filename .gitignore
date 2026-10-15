@@ -29,4 +29,9 @@ assets_lq
 .local-workbench/
 .pages-deploy/
 .pages-dist/
+supabase/.temp/
+supabase/.branches/
+.env
+.env.*
+!.env.example
 !public/ideas2/downloads/*.zip

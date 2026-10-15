@@ -5,6 +5,10 @@ import User from '../../model/user/User';
 import LocalStoreComponent from './LocalStoreComponent';
 import UserService from '../UserService';
 import Utils from '../../utils/Utils';
+import YandexGamesHelper from '../integration/YandexGamesHelper';
+import AnalyticUtils from '../../utils/AnalyticUtils';
+import CustomizationType from '../../model/enum/CustomizationType';
+import CloudProfileService from '../CloudProfileService';
 export default class ServerStoreComponent extends LocalStoreComponent {
 
     private static USER_PATH = "/../user";
@@ -40,6 +44,24 @@ export default class ServerStoreComponent extends LocalStoreComponent {
     }
 
     public static syncronizeUserWithServer():void{
+        const platform=AnalyticUtils.getCustomization();
+        if(CloudProfileService.isConfigured()){
+            if(UserService.userLoaded){CloudProfileService.queueProfile(UserService.getUser());return;}
+            this.initializeCloud(platform===CustomizationType.yandexGames);return;
+        }
+        if(platform===CustomizationType.webDev){UserService.userLoaded=true;return;}
+        if(platform===CustomizationType.yandexGames){
+            if(UserService.userLoaded){YandexGamesHelper.queueProfile(UserService.getUser());return;}
+            const baselineUpdatedAt=UserService.getUser().updatedAt;
+            YandexGamesHelper.loadProfile().then(data=>{
+                const local=UserService.getUser();
+                if(data&&(data.updatedAt||0)>baselineUpdatedAt){
+                    const loaded=new User(data);UserService.setUser(loaded);this.saveLocalUser(loaded);
+                }
+                UserService.userLoaded=true;
+            }).catch(error=>{console.warn('Cloud profile unavailable',error.message);UserService.userLoaded=true;});
+            return;
+        }
         
         let localUser = UserService.getUser();
 
@@ -113,6 +135,33 @@ export default class ServerStoreComponent extends LocalStoreComponent {
         })
     } 
 
+    private static cloudLoading:Promise<any>;
+    public static reconnectCloud():Promise<any>{return this.initializeCloud(AnalyticUtils.getCustomization()===CustomizationType.yandexGames);}
+    private static initializeCloud(yandex:boolean):Promise<any> {
+        if(this.cloudLoading)return this.cloudLoading;
+        const local=UserService.getUser(),previous=CloudProfileService.previous(),baseline=CloudProfileService.fingerprint(local);
+        this.cloudLoading=CloudProfileService.initialize(yandex).then(async data=>{
+            if(data.profile){
+                const sameAccount=previous&&previous.accountId===CloudProfileService.accountId;
+                if(sameAccount&&previous.revision!==data.revision&&previous.profile!==baseline){
+                    CloudProfileService.backup(local);CloudProfileService.conflict(data);return;
+                }
+                if(sameAccount&&previous.revision===data.revision&&previous.profile!==baseline){
+                    CloudProfileService.queueProfile(local);const saved=await CloudProfileService.flush();this.applyCloudSnapshot(saved);return;
+                }
+                this.applyCloudSnapshot(data);
+            }else{
+                const initial=previous&&previous.accountId!==CloudProfileService.accountId?new User():local;
+                CloudProfileService.queueProfile(initial);const saved=await CloudProfileService.flush();this.applyCloudSnapshot(saved);
+            }
+        }).catch(()=>{CloudProfileService.backup(UserService.getUser());if(CloudProfileService.isReady())CloudProfileService.conflict(CloudProfileService.remote);}).then(()=>{CloudProfileService.applying=false;UserService.userLoaded=true;this.cloudLoading=null;});
+        return this.cloudLoading;
+    }
+    private static applyCloudSnapshot(data:any):void {
+        CloudProfileService.backup(UserService.getUser());CloudProfileService.applying=true;
+        try{const loaded=new User(data.profile);this.saveLocalUser(loaded);UserService.setUser(loaded);CloudProfileService.accept(data);}finally{CloudProfileService.applying=false;}
+    }
+
     public static saveUserToServer(upToDateUser:User){
         // let userDataToSend = JSON.stringify(upToDateUser);
             
@@ -150,6 +199,8 @@ export default class ServerStoreComponent extends LocalStoreComponent {
               reject(new Error(this.statusText));
             };
             request.open(method, Settings.HOST + url);
+            request.timeout=8000;
+            request.ontimeout=()=>reject(new Error('Server request timed out'));
             request.send(body);
         });
     }

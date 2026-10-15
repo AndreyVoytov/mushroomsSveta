@@ -5,6 +5,7 @@ import ForestScreen from './../../view/screen/ForestScreen';
 import AnalyticUtils from '../utils/AnalyticUtils';
 import CustomizationType from '../model/enum/CustomizationType';
 import UserService from './UserService';
+import Telemetry from './Telemetry';
 import NeverError from '../utils/NeverError';
 import OkHelper from './integration/OkHelper';
 import YandexGamesHelper from './integration/YandexGamesHelper';
@@ -13,17 +14,23 @@ import TestPaymentStoreComponent from './store/TestPaymentStoreComponent';
 import CircleProgressPanel from '../../view/component/panel/CircleProgressPanel';
 import Game from '../../view/game/Game';
 import Settings from './Settings';
+import CloudProfileService from './CloudProfileService';
 import BuyConfirmPanel from '../../view/component/house/BuyConfirmPanel';
 import LocalizationService from '../localization/LocalizationService';
 
 export default class ShopService {
 
     public static paymentsLoaded = false;
+    public static paymentInProgress=false;
     public static callbackOnBuy:() => void;
     private static circle:CircleProgressPanel;
-    private static YANDEX_PROCESSED_PURCHASES_LS = "yandexProcessedPurchases";
+    private static purchaseQueue:Promise<void>=Promise.resolve();
 
     public static processPayment(game: Phaser.Game, buy: Buy, callbackOnBuy: () => void) {
+        if(this.paymentInProgress)return;
+        if(!this.canPurchase(buy)){const panel=new BuyConfirmPanel(game,LocalizationService.get('ui.shop.unavailableTitle'),LocalizationService.get('ui.ok'),LocalizationService.get('ui.shop.unavailableBody'),false);game.add.existing(panel);panel.show();return;}
+        this.paymentInProgress=true;
+        Telemetry.track('purchase_start',{productId:buy.id});
         this.paymentsLoaded = false;
         this.callbackOnBuy = callbackOnBuy;
 
@@ -33,12 +40,15 @@ export default class ShopService {
             return;
         }
 
-        this.initiatePayment(buy);
-
         if (AnalyticUtils.getCustomization() == CustomizationType.webDev) {
-            this.checkAndApplyLastBuys(true);
+            if(CloudProfileService.isTestPaymentMode()){this.initiatePayment(buy);this.checkAndApplyLastBuys(true);}
+            else{this.showProgress(game);CloudProfileService.intent('web',buy.id).then(intent=>CloudProfileService.call('web_checkout',{intentId:intent.intentId})).then(result=>{
+                const url=new URL(result.checkoutUrl);if(url.protocol!=='https:')throw new Error('INVALID_CHECKOUT');window.location.assign(url.href);
+            }).catch(()=>{Telemetry.track('purchase_failed',{productId:buy.id,reason:'checkout_unavailable'});this.onFinishPaymentProcessing();});}
             return;
         }
+
+        this.initiatePayment(buy);
 
         //РџРѕРґСЃС‚СЂР°С…РѕРІРєР°: 10 РјРёРЅСѓС‚ РїС‹С‚Р°РµРјСЃСЏ РїРѕР»СѓС‡РёС‚СЊ РїР»Р°С‚РµР¶ РЅР°РїСЂСЏРјСѓСЋ СЃ СЃРµСЂРІРµСЂР°
         let loop = game.time.events.repeat(3000, 400, () => {
@@ -51,11 +61,19 @@ export default class ShopService {
     }
 
     public static getPriceLabel(buy: Buy): string {
+        if(!this.canPurchase(buy))return LocalizationService.get('ui.shop.unavailableShort');
         let fallback = buy.price + " " + AnalyticUtils.getValuteName();
         if (AnalyticUtils.getCustomization() == CustomizationType.yandexGames) {
             return YandexGamesHelper.getCatalogPrice(buy.id, fallback);
         }
         return fallback;
+    }
+
+    public static canPurchase(buy:Buy):boolean {
+        const platform=AnalyticUtils.getCustomization();
+        if(platform===CustomizationType.yandexGames)return CloudProfileService.isReady()&&YandexGamesHelper.canPurchase(buy.id);
+        if(platform===CustomizationType.webDev)return CloudProfileService.isTestPaymentMode()||(CloudProfileService.isReady()&&CloudProfileService.config().webPaymentsEnabled===true);
+        return true;
     }
 
     private static initiatePayment(buy: Buy){
@@ -88,7 +106,7 @@ export default class ShopService {
         
         switch(cust){
             case CustomizationType.webDev:
-                this.applyTestBuy();
+                if(CloudProfileService.isTestPaymentMode())this.applyTestBuy();
                 break;
             case CustomizationType.android:
                 //TODO add payment checking with server
@@ -98,7 +116,7 @@ export default class ShopService {
                 this.applyBuys(silentMode);
                 break;
             case CustomizationType.yandexGames:
-                this.applyYandexBuys(silentMode);
+                if(CloudProfileService.isReady())this.applyYandexBuys(silentMode);
                 break;
             default:
                 throw new NeverError(cust);
@@ -124,13 +142,7 @@ export default class ShopService {
         let appliedBuys: Buy[] = [];
 
         YandexGamesHelper.getPurchases()
-            .then((purchases: any[]) => {
-                let actualPurchases = (purchases || []).filter(purchase => this.findBuy(this.getYandexProductId(purchase)));
-
-                return actualPurchases.reduce((chain, purchase) => {
-                    return chain.then(() => this.applyYandexPurchase(purchase, appliedBuys));
-                }, Promise.resolve());
-            })
+            .then(proof => this.applySignedYandexPurchases(proof,appliedBuys))
             .then(() => {
                 if (appliedBuys.length > 0 && ShopService.callbackOnBuy) {
                     ShopService.callbackOnBuy();
@@ -140,7 +152,6 @@ export default class ShopService {
             })
             .catch((error: any) => {
                 console.log('ShopService: Yandex purchases sync failed');
-                console.log(error);
                 this.onFinishPaymentProcessing();
             });
     }
@@ -150,7 +161,7 @@ export default class ShopService {
         TestPaymentStoreComponent.setNewBuyProductCode("");
         let buy = Settings.BUYS.filter(b => b.id == productCode).shift();
         if(buy) {
-            Buy.applyToUser(buy, UserService.getUser());
+            Buy.applyToUser(buy, UserService.getUser(), 'test_purchase_grant');
             if (ShopService.callbackOnBuy) this.callbackOnBuy();
             this.onFinishPaymentProcessing();
             this.showBuyConfirmation(buy);
@@ -158,19 +169,22 @@ export default class ShopService {
     }
 
     public static onFinishPaymentProcessing():void{
+        ShopService.paymentInProgress=false;
         ShopService.paymentsLoaded = true;
         ShopService.callbackOnBuy = null;
         if(this.circle) {
             this.circle.hide();
             this.circle = null;
         }
+        if(typeof window.dispatchEvent==='function')window.dispatchEvent(new Event('mushrooms-payment-updated'));
     }
 
     private static processYandexPayment(buy: Buy): void {
         let appliedBuys: Buy[] = [];
 
-        YandexGamesHelper.purchase(buy.id)
-            .then((purchase: any) => this.applyYandexPurchase(purchase, appliedBuys))
+        CloudProfileService.intent('yandex',buy.id)
+            .then(intent=>YandexGamesHelper.purchase(buy.id,intent.intentId))
+            .then(proof => this.applySignedYandexPurchases(proof,appliedBuys))
             .then(() => {
                 if (appliedBuys.length > 0 && ShopService.callbackOnBuy) {
                     ShopService.callbackOnBuy();
@@ -181,36 +195,32 @@ export default class ShopService {
             })
             .catch((error: any) => {
                 console.log('ShopService: Yandex payment failed');
-                console.log(error);
+                Telemetry.track('purchase_failed',{productId:buy.id,reason:'platform_or_save'});
                 this.onFinishPaymentProcessing();
             });
     }
 
-    private static applyYandexPurchase(purchase: any, appliedBuys: Buy[]): Promise<void> {
-        let buy = this.findBuy(this.getYandexProductId(purchase));
-        let purchaseToken = this.getYandexPurchaseToken(purchase);
-
-        if (!buy) {
-            return this.consumeYandexPurchase(purchaseToken);
-        }
-
-        if (purchaseToken && this.isProcessedYandexPurchase(purchaseToken)) {
-            return this.consumeYandexPurchase(purchaseToken);
-        }
-
-        Buy.applyToUser(buy, UserService.getUser());
-        appliedBuys.push(buy);
-
-        if (purchaseToken) {
-            this.markYandexPurchaseProcessed(purchaseToken);
-        }
-
-        AnalyticUtils.logPurchase(buy, Game.getInstance().state.getCurrentState() instanceof ForestScreen ? "forestScreen" : "houseScreen");
-
-        return this.consumeYandexPurchase(purchaseToken).catch((error: any) => {
-            console.log('ShopService: failed to consume Yandex purchase');
-            console.log(error);
-        });
+    private static applySignedYandexPurchases(proof:any,appliedBuys:Buy[]):Promise<void> {
+        const work=async()=>{
+            if(!proof||typeof proof.signature!=='string')throw new Error('SIGNED_RECEIPT_REQUIRED');
+            const reply=await CloudProfileService.claimYandex(proof.signature),user=UserService.getUser();
+            if(!reply.results.length){CloudProfileService.claiming=false;await CloudProfileService.flush();return;}
+            try{
+                PaymentStoreComponent.atomic(user,()=>{
+                    reply.results.forEach(result=>{
+                        if(user.processedPurchaseTokens.indexOf(result.tokenHash)>=0)return;
+                        Buy.applyServerGrant(result.grantData,result.seasonId,user);
+                        user.processedPurchaseTokens.push(result.tokenHash);
+                        const buy=this.findBuy(result.productId);if(buy)appliedBuys.push(buy);
+                        Telemetry.track('purchase_granted',{productId:result.productId,verified:true});
+                    });
+                });
+                CloudProfileService.claiming=false;CloudProfileService.queueProfile(user);await CloudProfileService.flush();
+            }catch(error){CloudProfileService.claiming=false;CloudProfileService.backup(user);CloudProfileService.conflict(reply);throw error;}
+            // Consume only after the local write and versioned cloud acknowledgement.
+            for(const result of reply.results)await this.consumeYandexPurchase(result.token);
+        };
+        const next=this.purchaseQueue.then(work,work);this.purchaseQueue=next.catch(()=>{});return next;
     }
 
     private static consumeYandexPurchase(purchaseToken: string): Promise<void> {
@@ -247,39 +257,4 @@ export default class ShopService {
         return Settings.BUYS.filter(b => b.id == productId).shift();
     }
 
-    private static getYandexProductId(purchase: any): string {
-        return purchase ? (purchase.productID || purchase.productId || purchase.id) : null;
-    }
-
-    private static getYandexPurchaseToken(purchase: any): string {
-        return purchase ? (purchase.purchaseToken || purchase.token) : null;
-    }
-
-    private static isProcessedYandexPurchase(purchaseToken: string): boolean {
-        return this.getProcessedYandexPurchases().indexOf(purchaseToken) != -1;
-    }
-
-    private static markYandexPurchaseProcessed(purchaseToken: string): void {
-        let purchases = this.getProcessedYandexPurchases();
-        if (purchases.indexOf(purchaseToken) != -1) {
-            return;
-        }
-
-        purchases.push(purchaseToken);
-        localStorage.setItem(this.YANDEX_PROCESSED_PURCHASES_LS, JSON.stringify(purchases));
-    }
-
-    private static getProcessedYandexPurchases(): string[] {
-        let raw = localStorage.getItem(this.YANDEX_PROCESSED_PURCHASES_LS);
-        if (!raw) {
-            return [];
-        }
-
-        try {
-            let parsed = JSON.parse(raw);
-            return Array.isArray(parsed) ? parsed : [];
-        } catch (_error) {
-            return [];
-        }
-    }
 }

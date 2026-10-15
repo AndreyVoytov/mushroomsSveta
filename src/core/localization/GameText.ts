@@ -1,3 +1,4 @@
+import GameClock from "../service/GameClock";
 import BoosterType from '../model/enum/BoosterType';
 import AimType from '../model/enum/AimType';
 import LocalizationKey from './LocalizationKey';
@@ -105,7 +106,7 @@ export default class GameText {
     }
 
     public static remainShort(time: number): string {
-        const diff = Math.max(0, time - Date.now());
+        const diff = Math.max(0, time - GameClock.now());
         const seconds = Math.round(diff / 1000);
         const minutes = Math.round(seconds / 60);
         const hours = Math.round(minutes / 60);
@@ -127,7 +128,7 @@ export default class GameText {
     }
 
     public static remain(time: number): string {
-        const diff = Math.max(0, time - Date.now());
+        const diff = Math.max(0, time - GameClock.now());
         const seconds = Math.floor(diff / 1000);
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);

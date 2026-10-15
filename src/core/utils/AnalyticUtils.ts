@@ -2,6 +2,7 @@ import { EGAProgressionStatus, GameAnalytics } from 'gameanalytics';
 import Buy from '../model/shop/Buy';
 import CustomizationType from '../model/enum/CustomizationType';
 import UserService from '../service/UserService';
+import Telemetry from '../service/Telemetry';
 import Settings from '../service/Settings';
 import NeverError from './NeverError';
 import LocalizationService from '../localization/LocalizationService';
@@ -79,7 +80,10 @@ export default class AnalyticUtils {
         GameAnalytics.setEnabledInfoLog(true);
         GameAnalytics.setEnabledVerboseLog(true);
         GameAnalytics.configureBuild(Settings.ANALYTICS_BUILD_VERSION);
+        GameAnalytics.configureAvailableResourceCurrencies(['gems','energy','wood','clover']);
+        GameAnalytics.configureAvailableResourceItemTypes(['economy']);
         GameAnalytics.initialize(Settings.ANALYTICS_GAME_KEY, Settings.ANALYTICS_GAME_SECRET)
+        Telemetry.start();
     }
 
     public static logPurchase(b: Buy, location: string) {
@@ -92,22 +96,25 @@ export default class AnalyticUtils {
     public static logLevelStart() {
         if(!this.needLogging()) return;
 
-        let user = UserService.getUser();
-        GameAnalytics.addProgressionEvent(EGAProgressionStatus.Start, "level" + this.toFourNumbers(user.getCurrentForest() + 1));
+        if(!Telemetry.progressionStart())return;
+        const c=Telemetry.context;
+        GameAnalytics.addProgressionEvent(EGAProgressionStatus.Start, c.mode, c.branchId, c.levelId);
     }
 
     public static logLevelComplete(steps: number) {
         if(!this.needLogging()) return;
 
-        GameAnalytics.addProgressionEvent(EGAProgressionStatus.Complete, "level" + this.toFourNumbers(UserService.getUser().getCurrentForest() + 1),
-            "", "", steps);
+        const c=Telemetry.context;
+        GameAnalytics.addProgressionEvent(EGAProgressionStatus.Complete,c.mode,c.branchId,c.levelId,steps);
+        Telemetry.end('complete',{netEnergyLeft:steps});
     }
 
     public static logLevelFail(aims: number) {
         if(!this.needLogging()) return;
 
-        GameAnalytics.addProgressionEvent(EGAProgressionStatus.Fail, "level" + this.toFourNumbers(UserService.getUser().getCurrentForest()+ 1),
-            "", "", aims);
+        const c=Telemetry.context;
+        GameAnalytics.addProgressionEvent(EGAProgressionStatus.Fail,c.mode,c.branchId,c.levelId,aims);
+        Telemetry.end('abandoned',{remainingAims:aims});
     }
 
     public static logContinueLevelComplete(aims: number) {

@@ -34,6 +34,7 @@ export default class Settings {
     public static OK_GROUP_URL = "https://ok.ru/group/1";
 
     public static BUYS: Buy[] = (<Buy[]>[
+        {id:'seasonPass',name:'buy.seasonPass.name',gems:0,price:49,seasonPass:true},
         { id: "r110", gems: 110, price: 19/*39*/ },
         { id: "r200", gems: 200, price: 39/*75*/ },
         { id: "r1100", gems: 1100, price: 179/*379*/ },

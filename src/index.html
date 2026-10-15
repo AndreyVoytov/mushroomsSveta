@@ -12,7 +12,13 @@
     <title>Грибы!</title>
     <link rel="stylesheet" type="text/css" href="style.css">
     <script src="assets/other/js/xxtea.min.js" type="text/javascript"></script>
-    <script src="https://yandex.ru/games/sdk/v2"></script>
+    <script src="assets/platform-config.js" type="text/javascript"></script>
+    <script>
+        if (/platform=(?:yandex-games|yandex|yg)(?:[&#]|$)/i.test(location.search)
+            || /yandex\.(?:ru|com)\/games|games\.s3\.yandex\.net/i.test(location.href + document.referrer)) {
+            document.write('<script src="https://yandex.ru/games/sdk/v2"><' + '/script>');
+        }
+    </script>
     
     <meta name="theme-color" content="#000000">
     <script>

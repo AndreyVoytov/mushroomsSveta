@@ -4,10 +4,33 @@ import User from '../../model/user/User';
 import AnalyticUtils from '../../utils/AnalyticUtils';
 import CustomizationType from '../../model/enum/CustomizationType';
 import Game from '../../../view/game/Game';
+import Telemetry from '../Telemetry';
+import GameClock from '../GameClock';
+import YandexGamesHelper from '../integration/YandexGamesHelper';
+import CloudProfileService from '../CloudProfileService';
 export default class LocalStoreComponent {
 
     private static LS_USER = "user3456789012";
     private static LS_PRINCIPAL = "principal";
+    private static batchDepth = 0;
+
+    public static atomic<T>(user: User, work: () => T): T {
+        if (this.batchDepth) return work();
+        const before = JSON.stringify(user);
+        this.batchDepth++;
+        try {
+            const result = work();
+            this.batchDepth--;
+            this.saveLocalUser(user);
+            return result;
+        } catch (error) {
+            this.batchDepth = 0;
+            const restored = new User(JSON.parse(before));
+            Object.keys(user).forEach(key => delete user[key]);
+            Object.assign(user, restored);
+            throw error;
+        }
+    }
 
     public static getLocalUser(){
         if(!AnalyticUtils.haveLocalStorage()){
@@ -29,17 +52,23 @@ export default class LocalStoreComponent {
     }
 
     public static saveLocalUser(user: User) {
+        if (this.batchDepth) return;
         if(!AnalyticUtils.haveLocalStorage()){
             return;
         }
 
         let userData = JSON.stringify(user);
+        user.updatedAt=GameClock.now();
+        userData=JSON.stringify(user);
         
         if(!Settings.PLAIN_MODE){
             userData = this.encryptUserData(userData, this.getLocalUserId())
         }
 
         localStorage.setItem(this.LS_USER, userData);
+        Telemetry.economy(user.economyJournal);
+        if(CloudProfileService.isConfigured())CloudProfileService.queueProfile(user);
+        else YandexGamesHelper.queueProfile(user);
     }
 
 

@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-14",
+  "bundleHash": "8198aa5bbd6472f82090",
+  "build": "PASS",
+  "typescript": "PASS",
+  "denoCheck": "PASS (Deno 2.5.4; game-api; no code execution)",
+  "behaviorChecks": {
+    "world": "PASS",
+    "worldFields": "PASS (960 seeded boards)",
+    "telemetry": "PASS",
+    "adCallbacks": "PASS",
+    "journeyEvents": "PASS",
+    "animalGeneration": "PASS",
+    "mushroomHarvest": "PASS",
+    "sapphireReward": "PASS",
+    "tintInterpolation": "PASS",
+    "serverless": "PASS (actual PostgreSQL/PLpgSQL in PGlite; all catalog SKUs, revisions, rollback, permissions and signed fixtures)",
+    "cloudClient": "PASS (actual game/store/client classes with controlled SDK and network; startup/offline reconciliation, save failures and receipt recovery)"
+  },
+  "browser": {
+    "viewport": "390 x 844 after page load",
+    "bodyWidth": 390,
+    "bookWidth": 378,
+    "bookAfterShop": "PASS",
+    "disabledPurchase": "PASS (unchanged test balance: 220; message fits)",
+    "profileExport": "PASS (downloaded JSON; schema 2; test campaign index 20; 10584 bytes)",
+    "cloudProof": "cloud-mobile.jpg",
+    "shopProof": "shop-unavailable-mobile.jpg",
+    "liveCloudUI": "Not tested; game project configuration is blank",
+    "resizeExistingDesktopSession": "Known remaining issue: canvas retains its original scale after narrowing the viewport"
+  },
+  "limitations": {
+    "realAuthAndEmail": "Not connected",
+    "realYandexReceipts": "Not tested on platform staging",
+    "multiConnectionDatabaseConcurrency": "Not tested; PGlite serializes requests",
+    "webPaymentProvider": "Not selected; checkout disabled",
+    "gameplayServerAuthority": "Not complete; client gameplay profiles are accepted with CAS",
+    "crossPlatformAccountMerge": "Not implemented",
+    "deployment": "Not performed"
+  }
+}

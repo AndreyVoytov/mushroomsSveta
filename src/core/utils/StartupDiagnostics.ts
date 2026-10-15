@@ -1,5 +1,6 @@
 import Game from '../../view/game/Game';
 import UserService from '../service/UserService';
+import Telemetry from '../service/Telemetry';
 
 // Opt-in, local-only report: no saved player data or network upload.
 export default class StartupDiagnostics {
@@ -48,6 +49,7 @@ export default class StartupDiagnostics {
         panel.appendChild(title);
         panel.appendChild(report);
         panel.appendChild(copy);
+        const exportEvents=document.createElement('button');exportEvents.textContent='Экспорт событий';exportEvents.onclick=()=>Telemetry.export();panel.appendChild(exportEvents);
         document.body.appendChild(panel);
 
         const refresh = () => {

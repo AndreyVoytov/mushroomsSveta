@@ -1,3 +1,4 @@
+import GameClock from "../../core/service/GameClock";
 import StripsPanel from '../component/dialog/StripsPanel';
 import UserService from '../../core/service/UserService';
 import AnimationUtils from './../../core/utils/AnimationUtils';
@@ -54,6 +55,9 @@ import CharacterPanel from '../component/house/CharacterPanel';
 import ShopArtifactItemsConfiguration from '../../core/configuration/ShopArtifactItemsConfiguration';
 import RewardItemsPanel, { RewardItemsShowOptions } from '../component/panel/RewardItemsPanel';
 import TaskService from '../../core/service/TaskService';
+import WorldPanel from '../component/house/WorldPanel';
+import WorldService from '../../core/service/WorldService';
+import LiveConfig from '../../core/service/LiveConfig';
 import { getAtlasGroupNames } from '../../generated/atlasManifest';
 
 interface LazyAssetDefinition {
@@ -165,8 +169,8 @@ export default class HouseScreen extends DialogScreen {
         this.loadOptionalAtlases()
         this.loadOptionalConfiguredEventResources(true);
 
-        // let start = Date.now();
-        // while (Date.now() - start < 1500) {
+        // let start = GameClock.now();
+        // while (GameClock.now() - start < 1500) {
         //     // Пустой цикл, ожидаем истечения времени
         //   }
     }
@@ -353,7 +357,7 @@ export default class HouseScreen extends DialogScreen {
 
         this.characterButton = SpriteUtils.createButton(this.game, 90, this.game.height - 200 - 75 - 145, 'actionCircle', () => {
             if (!this.isLocked()) {
-                this.characterPanel.show();
+                WorldPanel.show('heroes');
             }
         });
         this.characterButton.anchor.set(0.5);
@@ -363,13 +367,23 @@ export default class HouseScreen extends DialogScreen {
         characterIcon.anchor.set(0.5);
         characterIcon.scale.set(0.82);
         this.characterButton.addChild(characterIcon);
-        if (user.getMarkers().indexOf("catFound") >= 0 && ShopArtifactItemsConfiguration.getAvailableForForest(user.getCurrentForest()).length > 0) {
+        if (user.getCurrentForest() >= LiveConfig.get('worldLevel')) {
             this.registerSideButton(this.characterButton);
             this.addButton(this.characterButton);
         } else {
             this.characterButton.visible = false;
             this.characterButton.inputEnabled = false;
         }
+
+        WorldService.prepare(user);
+        const worldButton = SpriteUtils.createButton(this.game, 100, this.game.height - 620, 'actionCircle', () => {
+            if(!this.isLocked()) WorldPanel.show('journey');
+        });
+        worldButton.anchor.set(0.5);
+        const worldIcon=SpriteUtils.createSprite(this.game,0,0,WorldService.encounters(user).some(e=>e.id==='ghostDoor')?'actionDoor':'diary');
+        worldIcon.anchor.set(0.5);worldIcon.scale.set(0.7);worldButton.addChild(worldIcon);
+        if(user.getCurrentForest()>=LiveConfig.get('worldLevel')){this.registerSideButton(worldButton);this.addButton(worldButton);}
+        else worldButton.destroy();
 
         let currentRecipe = DiaryConfiguration.getCurrentRecipe(user.getCurrentForest());
         if (currentRecipe) {
@@ -421,7 +435,7 @@ export default class HouseScreen extends DialogScreen {
         });
         this.tasksButton.anchor.set(0.5);
         this.tasksButton.scale.set(1);
-        const dailyTasksUnlocked = user.getCurrentForest() >= 10;
+        const dailyTasksUnlocked = user.getCurrentForest() >= LiveConfig.get('tasksLevel');
         if (dailyTasksUnlocked) {
             this.registerSideButton(this.tasksButton);
         } else {
@@ -505,8 +519,8 @@ export default class HouseScreen extends DialogScreen {
             AnimationUtils.primeForShow(trees);
             trees.reveal();
             this.fakeTrees = null;
-            // let start = Date.now();
-            // while (Date.now() - start < 500) {
+            // let start = GameClock.now();
+            // while (GameClock.now() - start < 500) {
             //     // Пустой цикл, ожидаем истечения времени
             // }
         }
@@ -560,7 +574,7 @@ export default class HouseScreen extends DialogScreen {
             });
         }
 
-        // let p = new EventPanel(this.game, new EventInfo(EventType.lukoshko, Date.now(), Date.now() +  1000 * 60*60*24));
+        // let p = new EventPanel(this.game, new EventInfo(EventType.lukoshko, GameClock.now(), GameClock.now() +  1000 * 60*60*24));
         // this.addPanel(p);
         // p.show();
 
@@ -754,7 +768,7 @@ export default class HouseScreen extends DialogScreen {
         this.registerSideButton(eventDuration);
         let expiryHandled = false;
         this.game.time.events.loop(1000, ()=>{
-            if(eventInfo.eventEndAt <= Date.now()) {
+            if(eventInfo.eventEndAt <= GameClock.now()) {
                 if (!expiryHandled) {
                     expiryHandled = true;
                     if (eventInfo.eventType == EventType.configured) {

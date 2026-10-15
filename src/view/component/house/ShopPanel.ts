@@ -1,4 +1,5 @@
 import HouseScreen from './../../screen/HouseScreen';
+import WorldPanel from './WorldPanel';
 import ClosablePanel from './../../component/panel/ClosablePanel';
 import Label from '../panel/Label';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
@@ -143,7 +144,7 @@ export default class ShopPanel extends ClosablePanel {
         this.activeTabSprite.scale.set(0.93);
 
         this.tabs.bank = new ShopTabButton(this.game, "bankTab", this.getTabLabel('bank'), () => this.selectTab('bank', true, false));
-        this.tabs.items = new ShopTabButton(this.game, "itemsTab", this.getTabLabel('items'), () => this.selectTab('items', true, false));
+        this.tabs.items = new ShopTabButton(this.game, "itemsTab", this.getTabLabel('items'), () => {this.close();WorldPanel.show('wardrobe');});
         this.tabs.heroes = new ShopTabButton(this.game, "heroesTab", this.getTabLabel('heroes'), () => this.selectTab('heroes', true, false));
 
         this.addSprite(this.tabs.bank);

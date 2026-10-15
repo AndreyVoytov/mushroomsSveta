@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Грибы · serverless</title>
+<style>body{margin:0;background:#f4efe1;color:#3e382d;font:16px/1.65 system-ui}main{max-width:950px;margin:40px auto;padding:0 20px}h1{font:36px Georgia}h2{font-size:22px}section{background:#fffcf3;border:1px solid #dfd1b7;border-radius:16px;padding:22px;margin:20px 0}pre{background:#ede6d5;padding:14px;border-radius:10px;overflow:auto;font-size:14px}code{font-size:14px}table{border-collapse:collapse;width:100%;font-size:14px}td,th{padding:10px;text-align:left;border-bottom:1px solid #ded2bb}a{color:#306349}.note{border-left:3px solid #c5994f;padding-left:14px}@media(max-width:550px){main{padding:0 12px}section{padding:16px}h1{font-size:28px}}</style></head><body><main>
+<a href="index.html">← Статус выбранных правок</a><h1>Обе платформы, один serverless-адаптер</h1>
+<p>14 октября 2026 · подготовлен код для отдельного игрового проекта Supabase. Публикация, создание аккаунтов и реальные платежи не выполнялись. Проект трекера механик остаётся отдельным.</p>
+<section><h2>Что реализовано</h2><ul>
+<li>Облачные профили с версиями, последовательной очередью записей и резервной местной копией при конфликте двух устройств.</li>
+<li>Яндекс: подписанное подтверждение личности, заказ с непредсказуемым UUID, проверка HMAC SHA-256 на сервере, привязка заказа к аккаунту/SKU/платформе, неизменяемый состав награды.</li>
+<li>Рубины, весь набор бустеров, пропуск конкретного сезона, журнал покупки и версия профиля записываются одной транзакцией PostgreSQL. Повтор токена не начисляет награду второй раз. В базе хранится хеш токена.</li>
+<li>Клиент вызывает consumePurchase после успешной местной записи и подтверждённой облачной версии. Ошибка оставляет покупку для повторной проверки; раздел «Сохранение» позволяет принять облачную копию и экспортировать резервную.</li>
+<li>Веб: анонимный вход в игровое облако, привязка почты и вход по ссылке для другого устройства. Платёжный адаптер имеет точку подключения, но checkout выключен до выбора провайдера. Публичная веб-версия больше не выдаёт тестовые покупки.</li>
+</ul><p class="note">Облако поддерживает обе платформы. Автоматического объединения Яндекс-аккаунта и веб-аккаунта сейчас нет. Веб-восстановление требует подтверждённой почты; до привязки доступ зависит от сохранённой сессии браузера.</p></section>
+<section><h2>Подключение стенда</h2><ol>
+<li>Создать отдельный игровой проект Supabase. Включить Anonymous Sign-ins. Настроить почтовый канал и разрешённые Auth redirect URLs для игровых адресов. Добавить домены игры в CORS функции.</li>
+<li>Проверить миграцию <code>supabase/migrations/202610140001_game_profiles.sql</code> и применить её к игровому проекту. Она создаёт только таблицы <code>game_*</code> и функции доступа с правами service_role; прямой доступ ролей anon/authenticated закрыт.</li>
+<li>В серверных секретах Edge Functions задать значения из таблицы ниже. Клиент получает только URL проекта и публичный publishable key.</li>
+<li>На стенде Яндекса проверить структуру настоящего подписанного player envelope и указать путь до ID в <code>YANDEX_PLAYER_ID_PATH</code>. Схема ID не угадывается; без этого значения вход закрыт. Проверить формат signed purchase: status <code>waiting</code>, product.id, token, developerPayload. Зарегистрировать SKU из game_products, включая seasonPass, и цены в каталоге платформы.</li>
+<li>Развернуть функцию <code>game-api</code>. В config.toml отключена внешняя JWT-проверка, чтобы подписанный вход Яндекса работал до создания сессии. Каждый защищённый action внутри функции проверяет bearer через <code>auth.getUser</code>.</li>
+<li>Заполнить <code>assets/platform-config.js</code> публичными данными игрового проекта, оставить <code>webPaymentsEnabled: false</code>. Собрать игру и выполнить проверку стенда перед включением покупок.</li>
+</ol>
+<table><thead><tr><th>Секрет/настройка сервера</th><th>Назначение</th></tr></thead><tbody>
+<tr><td>SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY</td><td>Автоматические переменные проекта для Edge Functions. Service role существует только на сервере.</td></tr>
+<tr><td>GAME_ALLOWED_ORIGINS</td><td>Точные origin через запятую, без путей и завершающего слеша; включить origin стенда Яндекса и веб-игры.</td></tr>
+<tr><td>YANDEX_PURCHASE_SECRET</td><td>Секрет подписей из консоли игры Яндекса. Используется только для серверной проверки.</td></tr>
+<tr><td>YANDEX_PLAYER_ID_PATH</td><td>Путь до идентификатора в проверенном signed player envelope, подтверждённый на стенде.</td></tr>
+</tbody></table>
+<p>Команды после выбора игрового проекта; в этой работе они не выполнялись:</p><pre>supabase link --project-ref GAME_PROJECT_REF
+supabase db push
+supabase functions deploy game-api</pre>
+<p>Секреты задаются в панели Edge Functions. Не помещать их в браузерный конфиг, Git или экспорт игрового профиля.</p></section>
+<section><h2>Контракт веб-провайдера</h2><p><code>webProvider</code> и <code>getIntent</code> в game-api пока отключены и возвращают 503. После выбора провайдера нужно реализовать checkout для принадлежащего пользователю веб-заказа: сервер получает цену из своего каталога, передаёт intentId в metadata и возвращает HTTPS checkoutUrl.</p><p>Отдельная функция webhook должна проверить подпись провайдера, статус, сумму, валюту, productId и владельца заказа. Только после проверки она вызывает <code>game_purchase_claim</code> с хешем ID транзакции и актуальной версией. При конфликте профиль перечитывается и операция повторяется. Redirect браузера не является подтверждением оплаты. До этого адаптера веб-покупки остаются выключены.</p></section>
+<section><h2>Проверено локально</h2><pre>node tools/test-serverless.mjs
+node tools/test-cloud-client.js
+npx tsc --noEmit
+npx --yes deno@2.5.4 check --no-config --no-lock --node-modules-dir=none supabase/functions/game-api/index.ts</pre>
+<p>Тест миграции запускает PostgreSQL/PLpgSQL через PGlite без сети, Docker и файлов игроков: все SKU/наборы, повтор, чужой аккаунт, устаревшая версия, неизменяемый заказ, сезон, откат поздней ошибки, права доступа, авторизация, CORS и подписи. Клиентские проверки используют управляемую имитацию SDK: отказ localStorage, обрыв облачной записи, повтор consume и восстановление.</p><p>Сериализованный PostgreSQL в PGlite проверяет конфликт версий, но не конкуренцию отдельных соединений. На стенде остаются реальные SDK, Auth/почта, CORS платформы, два устройства, одновременные транзакции, перезапуск между оплатой и выдачей, длительный офлайн и смена сезона.</p></section>
+<section><h2>Границы текущего этапа</h2><ul>
+<li>Игровые награды, траты и результаты уровней ещё поступают от клиента. CAS защищает от случайного перезаписывания оплаченной версии, но не заменяет серверную экономику и античит. Следующий этап — серверные команды с operationId и проверкой правил для подарков, энергии, наград и трат.</li>
+<li>Первый профиль импортируется с устройства. Маркеры чеков и premium-флаги при обычном save назначаются сервером; остальные исходные игровые данные пока доверенные. Нужен согласованный регламент миграции старых игроков.</li>
+<li>Старые покупки без созданного сервером developerPayload не принимаются автоматически и не consume-ятся. Их необходимо отдельно сверить/мигрировать перед запуском магазина. Ошибочный старый чек в списке блокирует пакет проверки, оставляя чеки на платформе.</li>
+<li>Нет веб-провайдера, обработки возвратов/отмен и автоматического объединения аккаунтов. Операторские инструменты лайв-опса и централизованный сбор полной телеметрии остаются отдельными пунктами отчёта.</li>
+</ul><p>Тестовая выдача доступна только на localhost/127.0.0.1 при явном <code>?testpayments=1</code>. Использовать отдельный тестовый профиль; в публичной версии этот параметр не включает покупки.</p></section>
+<section><h2>Основания API</h2><p><a href="https://yandex.ru/dev/games/doc/ru/sdk/sdk-purchases">Подписанные покупки Яндекс Игр</a>, <a href="https://yandex.ru/dev/games/doc/ru/sdk/sdk-player">подписанный player</a>, <a href="https://supabase.com/docs/guides/functions/auth">проверка Auth в Edge Functions</a>, <a href="https://supabase.com/docs/reference/javascript/auth-signinanonymously">анонимный вход</a>, <a href="https://supabase.com/docs/reference/javascript/auth-admin-generatelink">серверный generateLink</a>, <a href="https://supabase.com/docs/reference/javascript/auth-verifyotp">обмен verifyOtp</a>, <a href="https://pglite.dev/docs/about">PGlite</a>.</p></section>
+</main></body></html>

@@ -17,6 +17,8 @@ import { Easing } from 'phaser-ce';
 import Settings from '../../../core/service/Settings';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
+import WorldService from '../../../core/service/WorldService';
+import WorldPanel from '../house/WorldPanel';
 export default class ForestBottomPanel extends BasePanel {
     private bottomPanel: Phaser.Sprite;
     private boosterpanel:InGameBoostersPanel;
@@ -35,7 +37,8 @@ export default class ForestBottomPanel extends BasePanel {
         this.addSprite(this.boosterpanel = new InGameBoostersPanel(game, <ForestScreen>screen));
 
         let forestsTotal = ForestDao.getAllForests().length;
-        let currentForest = EventUtils.hasActiveLevelSession()
+        const user=UserService.getUser(),adventure=WorldService.activeAdventure;
+        let currentForest = adventure ? user.world.adventures[adventure].progress+1 : WorldService.expedition ? user.world.expeditionsCompleted+1 : EventUtils.hasActiveLevelSession()
             ? Number(EventUtils.getActiveLevelOrder())
             : Math.min(ForestDao.indexOf(forestType) + 1, forestsTotal);
         let levelLabel = new Label(this.game, 155, this.game.height + 3 , "" + currentForest, { font: "bold 45px Arial", fill: "#fff5bc"});
@@ -43,11 +46,15 @@ export default class ForestBottomPanel extends BasePanel {
         levelLabel.addStrokeColor("#924d1d", 0);
         levelLabel.anchor = new Phaser.Point(0.5, 1);
         this.addSprite(levelLabel);
-        let levelLabel2 = new Label(this.game, 80, this.game.height - 50, LocalizationService.get(LocalizationKey.ui('levelLower')), { font: "bold 35px Arial", fill: "#fff0ab"});
+        let levelLabel2 = new Label(this.game, 80, this.game.height - 50, adventure?'история':WorldService.expedition?'поход':LocalizationService.get(LocalizationKey.ui('levelLower')), { font: "bold 35px Arial", fill: "#fff0ab"});
         levelLabel2.anchor = new Phaser.Point(0, 1);
         levelLabel2.strokeThickness = 4;
         levelLabel2.addStrokeColor("#924d1d", 0);
         this.addSprite(levelLabel2);
+        if(adventure){
+            const note=new Label(this.game,this.game.width/2,this.game.height-65,'Прочитать записку',{font:'22px Arial',fill:'#fff0ab'});
+            note.anchor.set(0.5);note.inputEnabled=true;note.events.onInputDown.add(()=>WorldPanel.show('journey'));this.addSprite(note);
+        }
 
         
 

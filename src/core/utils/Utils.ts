@@ -3,6 +3,12 @@ import BasePanel from "../../view/component/panel/BasePanel";
 import GameText from '../localization/GameText';
 
 export default class Utils {
+    private static randomSource:()=>number=()=>Math.random();
+    public static withRandomSeed<T>(seed:number,work:()=>T):T {
+        const previous=this.randomSource;let state=(seed>>>0)||1;
+        this.randomSource=()=>{state^=state<<13;state^=state>>>17;state^=state<<5;return (state>>>0)/4294967296;};
+        try{return work();}finally{this.randomSource=previous;}
+    }
 
     public static dist(x1: number, y1: number, x2: number, y2: number): number {
         return Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
@@ -28,7 +34,7 @@ export default class Utils {
         var currentIndex = array.length, temporaryValue, randomIndex;
       
         while (0 !== currentIndex) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
+            randomIndex = Math.floor(this.randomSource() * currentIndex);
             currentIndex -= 1;
       
             temporaryValue = array[currentIndex];
@@ -40,7 +46,7 @@ export default class Utils {
       }
 
     public static random(maxValue: number): number {
-        return Math.floor(Math.random() * maxValue);
+        return Math.floor(this.randomSource() * maxValue);
     }
 
     public static randomBoolean(): boolean {
