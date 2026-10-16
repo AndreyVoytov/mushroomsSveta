@@ -27,3 +27,13 @@ This revision unifies low-attention states through pale, desaturated materials. 
 Centered bitmap labels now use their visible glyph envelopes; top-aligned story copy and right-aligned numeric/form labels preserve their respective alignment. Text measurement uses the actual font glyphs, and remains stable after text, style and font-size updates.
 
 The review covers the implemented Russian layouts plus representative English/German lengths. Contrast sampling and bounds checks supplement visual inspection; they are not a linguistic audit of every translation.
+
+## Published verification — 2026-10-16
+
+- [Production](https://andreyvoytov-mushrooms-arcane.pages.dev/) · [deployment preview](https://d777eb13.andreyvoytov-mushrooms-arcane.pages.dev/) · deployed game commit `1203b73357287652301143df8e673dc28664a0a6`.
+- 71 final captures with measured text, including 12 published mobile screens; 618 labels, minimum sampled contrast **4.79:1**, no remaining UI text-box intersections or runtime errors in the final datasets. Long-dialogue, DOM-tab, transition and pointer-flow checks are recorded separately.
+- 114 labels checked against their actual glyph envelopes: 112 centered horizontally and 99 vertically, with no residual local offset. Loading-caption contrast is at least **12.28:1** across the three tested viewport formats.
+- The actual House→Forest transition was observed over 621 rendered frames. A click on an inactive cell leaves it closed and spends zero energy; an active-cell click opens it and spends one energy. All 17 regression checks passed.
+- 66 deployed files verified byte-for-byte; original production bundle checksum, tracker card and companion download redirect verified. The original working checkout remains separate.
+- All 609 original texture canvases retain their dimensions. The two 180×191 replacements are 22,506 bytes each. Atlas WebP bytes decreased by 286; cold published same-origin resources measured **22,466,028 encoded body bytes (21.43 MiB)**.
+- [Full results and deployed hashes](qa-final.json).

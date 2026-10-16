@@ -4,8 +4,8 @@
   "reviewIterations": 10,
   "bundleSha256": "bf0fef67fe2dd76cfa9b3f8a44c9130f99c87e46abbf100ecfc817f2e67d3fe4",
   "visualReview": {
-    "capturesWithMeasuredText": 59,
-    "measuredLabels": 517,
+    "capturesWithMeasuredText": 71,
+    "measuredLabels": 618,
     "minimumSampledContrast": 4.79,
     "contrastFailures": [],
     "textBoxIntersections": [],
@@ -364,6 +364,78 @@
         "scene": "12-bank",
         "labels": 26,
         "minimumSampledContrast": 4.94
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "01-redhood-house",
+        "labels": 3,
+        "minimumSampledContrast": 8.83
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "02-cat-interior",
+        "labels": 4,
+        "minimumSampledContrast": 5.53
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "03-forest-hub",
+        "labels": 6,
+        "minimumSampledContrast": 5.97
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "04-dark-forest-start",
+        "labels": 6,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "05-level-08",
+        "labels": 7,
+        "minimumSampledContrast": 6.84
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "06-puzzle-victory",
+        "labels": 7,
+        "minimumSampledContrast": 4.91
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "07-settings",
+        "labels": 5,
+        "minimumSampledContrast": 6.21
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "08-heroes",
+        "labels": 7,
+        "minimumSampledContrast": 5.95
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "09-tasks",
+        "labels": 21,
+        "minimumSampledContrast": 5.45
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "10-diary",
+        "labels": 3,
+        "minimumSampledContrast": 16.97
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "11-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.06
+      },
+      {
+        "folder": "polish-published-mobile",
+        "scene": "12-bank",
+        "labels": 26,
+        "minimumSampledContrast": 4.94
       }
     ],
     "notes": [
@@ -547,7 +619,27 @@
     "modifiedByThisPass": false
   },
   "production": {
-    "url": "https://andreyvoytov-mushrooms-arcane.pages.dev/",
-    "verification": "Pending deployment verification."
+    "branch": "reskin/arcane-watercolor",
+    "commit": "1203b73357287652301143df8e673dc28664a0a6",
+    "journeyLevels": 25,
+    "theme": "arcane-watercolor",
+    "builtAt": "2026-10-16T17:40:53.627Z",
+    "bundleSha256": "bf0fef67fe2dd76cfa9b3f8a44c9130f99c87e46abbf100ecfc817f2e67d3fe4",
+    "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+    "previewUrl": "https://d777eb13.andreyvoytov-mushrooms-arcane.pages.dev",
+    "verifiedFiles": 66,
+    "tracker": "https://andreyvoytov-studio-board.pages.dev/?project=mushrooms-arcane",
+    "originalVersion": {
+      "branch": "main",
+      "bundleSha256": "c255eb79dbd9d8bc3a2075f16c388b2b20a43ccf2c4dcacdc35b664c6a3448a3",
+      "unchanged": true
+    },
+    "archiveRedirect": 302,
+    "verification": "Exact deployed file bytes and metadata verified.",
+    "coldLoad": {
+      "encodedBodyBytes": 22466028,
+      "resources": 133
+    },
+    "mobileScreens": 12
   }
 }
