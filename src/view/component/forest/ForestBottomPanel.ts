@@ -15,6 +15,7 @@ import LocalizationKey from '../../../core/localization/LocalizationKey';
 import WorldService from '../../../core/service/WorldService';
 import WorldPanel from '../house/WorldPanel';
 import HeroTeamPanel from './HeroTeamPanel';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class ForestBottomPanel extends BasePanel {
     private bottomPanel: Phaser.Sprite;
     public heroes: HeroTeamPanel;
@@ -29,7 +30,7 @@ export default class ForestBottomPanel extends BasePanel {
         this.bottomPanel.scale = new Phaser.Point(1, -1);
         this.addSprite(this.bottomPanel);
 
-        this.addChild(this.heroes = new HeroTeamPanel(game,game.width/2,game.height-72,true));
+        this.addChild(this.heroes = new HeroTeamPanel(game,game.width/2,game.height-84,true));
 
         let forestsTotal = ForestDao.getAllForests().length;
         const user=UserService.getUser(),adventure=WorldService.activeAdventure;
@@ -46,11 +47,13 @@ export default class ForestBottomPanel extends BasePanel {
         levelLabel2.strokeThickness = 4;
         levelLabel2.addStrokeColor("#924d1d", 0);
         this.addSprite(levelLabel2);
-        levelLabel.anchor.set(0.5);levelLabel.position.set(150, this.game.height - 43);levelLabel.fontSize = 42;
-        levelLabel2.anchor.set(0.5);levelLabel2.position.set(150, this.game.height - 90);levelLabel2.fontSize = 30;
+        levelLabel.anchor.set(0.5);levelLabel.position.set(150, this.game.height - 53);levelLabel.fontSize = 44;
+        levelLabel2.anchor.set(0.5);levelLabel2.position.set(150, this.game.height - 101);levelLabel2.fontSize = 36;
+        UiLayout.fit(levelLabel, 190, 44);UiLayout.fit(levelLabel2, 190, 36);
         if(adventure){
-            const note=new Label(this.game,this.game.width/2,this.game.height-65,'Прочитать записку',{font:'22px Arial',fill:'#fff0ab'});
-            note.anchor.set(0.5);note.inputEnabled=true;note.events.onInputDown.add(()=>WorldPanel.show('journey'));this.addSprite(note);
+            levelLabel2.text = 'Записка';UiLayout.fit(levelLabel2, 190, 36);
+            const note = this.attachButton('blank', () => WorldPanel.show('journey'), 'adventureNote');
+            note.position.set(150, this.game.height - 80);note.width = 210;note.height = 130;note.alpha = 0.001;
         }
 
         
@@ -74,6 +77,7 @@ export default class ForestBottomPanel extends BasePanel {
             exitButton.alpha = 0.8;
             exitButton.y += 10 -5 - 45;
             exitButton.x += 5;
+            exitButton.y = this.game.height - 80;
     }
 
     public getHeight(): number {

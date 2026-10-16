@@ -65,4 +65,4 @@ existing GitHub Pages download redirect. The original game origin is untouched.
 
 ## Current UI revision
 
-The current UI adds the [alignment and state polish pass](iteration-4/README.md) to the [purpose-designed ensembles](iteration-3/README.md). It uses pale inactive cells, visible-glyph text centering and a readable trees-transition caption. The earlier generic generators and the old dark-cover preparation path are guarded against overwriting current artwork.
+The current UI adds [20 typography and layout reviews](iteration-5/README.md) to the [alignment and state polish pass](iteration-4/README.md) and the [purpose-designed ensembles](iteration-3/README.md). It includes a painted backpack, rebuilt equipment chooser, larger readable task rows and counters, controlled bitmap line gaps, pale inactive cells and a readable trees-transition caption. The earlier generic generators and the old dark-cover preparation path are guarded against overwriting current artwork.

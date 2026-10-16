@@ -597,6 +597,8 @@
         "ui.energy.buyPack": "{price}で+100",
         "ui.energy.fieldTip": "Finds help conserve energy",
         "ui.energy.full": "エネルギー満タン",
+        "ui.energy.fullShort": "MAX",
+        "ui.energy.overShort": "+",
         "ui.energy.hint": "宝石で100エネルギー。1日の購入回数ごとに価格が上がります。",
         "ui.energy.leave": "レベルを終了",
         "ui.energy.leaveWarning": "エネルギーを購入せずにレベルを終了しますか？このレベルの進行状況は保存されません。",

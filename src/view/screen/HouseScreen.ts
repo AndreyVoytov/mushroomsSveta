@@ -55,6 +55,7 @@ import CharacterPanel from '../component/house/CharacterPanel';
 import ShopArtifactItemsConfiguration from '../../core/configuration/ShopArtifactItemsConfiguration';
 import RewardItemsPanel, { RewardItemsShowOptions } from '../component/panel/RewardItemsPanel';
 import TaskService from '../../core/service/TaskService';
+import UiLayout from '../../core/utils/UiLayout';
 import WorldPanel from '../component/house/WorldPanel';
 import WorldService from '../../core/service/WorldService';
 import LiveConfig from '../../core/service/LiveConfig';
@@ -769,8 +770,8 @@ export default class HouseScreen extends DialogScreen {
         this.addSprite(banner);
         this.registerSideButton(banner);
 
-        let eventDuration = new Label(this.game, banner.x, banner.y-10, EventUtils.getRemainTimeShort(eventInfo.eventEndAt), { font: "bold 33px Bookman Old Style ", fill: "#ffffff" });
-        eventDuration.anchor.set(0.5);
+        let eventDuration = new Label(this.game, banner.x, banner.y-10, EventUtils.getRemainTimeShort(eventInfo.eventEndAt), { font: "bold 39px Bookman Old Style ", fill: "#ffffff" });
+        eventDuration.anchor.set(0.5);UiLayout.fit(eventDuration, 144, 48);
         this.addSprite(eventDuration);
         this.registerSideButton(eventDuration);
         let expiryHandled = false;
@@ -796,6 +797,7 @@ export default class HouseScreen extends DialogScreen {
                 return;
             }
             eventDuration.text = EventUtils.getRemainTimeShort(eventInfo.eventEndAt);
+            UiLayout.fit(eventDuration, 144, 48);
         })
 
         this.game.add.tween(flash).to({alpha: 0.8}, 1000, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Quadratic.InOut, true, 500);

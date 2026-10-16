@@ -84,8 +84,8 @@ export default class ConfirmPanel extends ClosablePanel {
         label.fill = '#142b2d';UiLayout.fit(label, big ? 660 : 580, 80, true);
         labelText.position.set(0, big ? -10 : -5);labelText.alpha = 1;
         if (labelText instanceof Label) {
-            labelText.fontSize = big ? 30 : 36;labelText.fill = Label.INK;
-            UiLayout.fit(labelText, big ? 690 : 600, big ? 470 : 245, true);
+            labelText.fontSize = 36;labelText.fill = Label.INK;
+            UiLayout.fit(labelText, big ? 620 : 600, big ? 440 : 245, true);
         } else {
             labelText.fill = '#343c35';
             labelText.scale.set(Math.min(1, 600 / Math.max(1, labelText.width), (big ? 470 : 245) / Math.max(1, labelText.height)));

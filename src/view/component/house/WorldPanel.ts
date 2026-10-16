@@ -27,14 +27,14 @@ const paintedCss = `
 .world-shell{box-sizing:border-box;border:0;border-radius:10px;background:#f4ecda url('assets/base/ui/diary/bookBg.png?ui=ensembles3') center/100% 100%;padding:20px 22px 20px 38px;box-shadow:0 12px 48px #152c3780}
 .world-header{background:transparent url('assets/base/ui/statusPanel.png?ui=ensembles3') center/100% 100%;color:#253a35;padding:16px 22px;gap:16px}
 .world-header h2{font-weight:600;color:#343c35}
-.world-balance{color:#465348;line-height:1.8}.world-currency{width:20px;height:22px;object-fit:contain;vertical-align:middle;margin-right:4px}
+.world-balance{color:#343c35;line-height:1.8}.world-currency{width:20px;height:22px;object-fit:contain;vertical-align:middle;margin-right:4px}
 .world-header button{flex:0 0 44px;width:44px;height:44px;background:transparent url('assets/base/ui/closeButton.png?ui=painted2') center/contain no-repeat;border:0;border-radius:0;color:transparent;font-size:0}
-.world-tabs{background:transparent;padding:10px 4px;gap:5px}
-.world-tabs button{box-sizing:border-box;border:0;border-radius:0;background:transparent url('assets/base/ui/arcane/secondary-control.png?ui=ensembles3') center/100% 100% no-repeat;color:#253a35;padding:8px 14px;min-height:44px}
+.world-tabs{background:transparent;padding:10px 4px;gap:5px;scrollbar-width:thin;scroll-padding:4px}
+.world-tabs button{flex:0 0 auto;box-sizing:border-box;border:0;border-radius:0;background:transparent url('assets/base/ui/arcane/secondary-control.png?ui=ensembles3') center/100% 100% no-repeat;color:#253a35;padding:8px 14px;min-height:44px}
 .world-tabs button.active{border-color:transparent;border-image:url('assets/base/ui/pnlButton.png?ui=painted2') 42 fill / 11px;background:transparent;color:#243f37;font-weight:700}
 .world-body{padding:10px 7px}
 .world-card{border:0;border-bottom:1px solid #aa9875;border-radius:0;background:transparent;padding:15px 8px 22px;margin-bottom:8px}
-.world-card p,.world-note{color:#485348}.world-note{font-size:14px}
+.world-card p,.world-note{color:#485348}.world-note{font-size:15px}
 .world-button,.world-button.secondary{box-sizing:border-box;border:12px solid transparent;border-image:url('assets/base/ui/pnlButton.png?ui=painted2') 42 fill / 12px;border-radius:0;background:transparent;color:#293e35;padding:6px 12px;min-height:48px}
 .world-button.secondary{border-image-source:url('assets/base/ui/helperPanel.png?ui=painted2')}
 .world-button:disabled{background:transparent;color:#465348;border-color:transparent;filter:grayscale(.6);opacity:.7}
@@ -95,6 +95,8 @@ export default class WorldPanel {
     private static render():void {
         const previousShell=this.overlay.querySelector('.world-shell');
         const scrollTop=previousShell&&this.renderedTab===this.active?previousShell.scrollTop:0;
+        const previousTabs=this.overlay.querySelector('.world-tabs');
+        const tabScroll=previousTabs?previousTabs.scrollLeft:0;
         const focused=<HTMLElement>document.activeElement;
         const focusAction=focused&&focused.dataset?focused.dataset.action:null;
         this.renderedTab=this.active;
@@ -194,6 +196,9 @@ export default class WorldPanel {
         const selected=<HTMLElement>tabs.querySelector('button.active');
         tabs.scrollLeft=selected.getBoundingClientRect().left-tabs.getBoundingClientRect().left-(tabs.clientWidth-selected.offsetWidth)/2;
         shell.scrollTop=scrollTop;
+        tabs.scrollLeft=tabScroll;
+        const activeTab=tabs.querySelector('button.active');
+        if(activeTab){const view=tabs.getBoundingClientRect(),selected=activeTab.getBoundingClientRect();if(selected.left<view.left)tabs.scrollLeft-=view.left-selected.left;else if(selected.right>view.right)tabs.scrollLeft+=selected.right-view.right;}
         if(focusAction){const matching=Array.prototype.find.call(shell.querySelectorAll('button[data-action]'),b=>b.dataset.action===focusAction&&!b.disabled);if(matching)(matching.focus as any)({preventScroll:true});}
     }
 

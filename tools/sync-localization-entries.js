@@ -86,6 +86,8 @@ const manualKeys = [
     'ui.energy.fieldTip',
     'ui.energy.overLimit',
     'ui.energy.full',
+    'ui.energy.fullShort',
+    'ui.energy.overShort',
     'ui.energy.restoreIn',
     'ui.energy.buyPack',
     'ui.energy.reset',

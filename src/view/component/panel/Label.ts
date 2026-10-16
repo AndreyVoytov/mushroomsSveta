@@ -30,6 +30,8 @@
     private styleDef: Phaser.PhaserTextStyle;
     public strokeThickness: number;
     public lineSpacing: number;
+    /** Extra pixels between bitmap lines; Phaser CE ignores Text.lineSpacing. */
+    public lineGap: number = 0;
     private ignoreVioletHighlight: boolean;
     private symbolsInRow: number;
     private sourceTextValue: string = '';
@@ -78,10 +80,38 @@
     /** Center the visible glyphs, not the font's invisible line-height padding. */
     public updateText(): void {
         super.updateText();
+        if (this.lineGap) {
+            const bitmap: any = this;
+            const data = bitmap._data && bitmap._data.font;
+            if (data) {
+                let remaining = this.text, row = 0, glyphIndex = 0, line: any;
+                do {
+                    line = bitmap.scanLine(data, this.fontSize / data.size, remaining);
+                    for (let i = 0; i < line.text.length; i++) bitmap._glyphs[glyphIndex++].y += row * this.lineGap;
+                    row++;
+                    remaining = remaining.substr(line.text.length + 1);
+                } while (line.end === false);
+                const delta = (row - 1) * this.lineGap;
+                this.textHeight += delta;
+                if (this.anchor && this.anchor.y) bitmap._glyphs.forEach(g => { if (g.parent === this) g.y -= delta * this.anchor.y; });
+            }
+        }
         if (!this.anchor) return;
         const centerX = this.anchor.x === 0.5;
         const centerY = this.anchor.y === 0.5;
         if (!centerX && !centerY) return;
+        const bounds = this.getInkBounds();
+        if (!bounds) return;
+        const glyphs: any[] = (<any>this)._glyphs || [];
+        const dx = centerX ? bounds.x + bounds.width / 2 : 0;
+        const dy = centerY ? bounds.y + bounds.height / 2 : 0;
+        glyphs.forEach(glyph => {
+            if (glyph.parent === this) { glyph.x -= dx;glyph.y -= dy; }
+        });
+    }
+
+    /** Local visible bounds, independent of parent scale and font line padding. */
+    public getInkBounds(): { x: number, y: number, width: number, height: number } {
         const glyphs: any[] = (<any>this)._glyphs || [];
         let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
         glyphs.forEach(glyph => {
@@ -89,12 +119,7 @@
             left = Math.min(left, glyph.x);top = Math.min(top, glyph.y);
             right = Math.max(right, glyph.x + glyph.width);bottom = Math.max(bottom, glyph.y + glyph.height);
         });
-        if (left === Infinity) return;
-        const dx = centerX ? (left + right) / 2 : 0;
-        const dy = centerY ? (top + bottom) / 2 : 0;
-        glyphs.forEach(glyph => {
-            if (glyph.parent === this) { glyph.x -= dx;glyph.y -= dy; }
-        });
+        return left === Infinity ? null : { x: left, y: top, width: right - left, height: bottom - top };
     }
 
     public setStyle(style: Phaser.PhaserTextStyle): Label {

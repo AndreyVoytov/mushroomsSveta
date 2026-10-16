@@ -17,6 +17,7 @@ import Settings from '../../../core/service/Settings';
 import GameText from '../../../core/localization/GameText';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class ReplicaPanel extends BasePanel {
     private static REVEAL_DELAY_MS = 40;
     private static TEXT_OFFSCREEN_X = -5000;
@@ -110,9 +111,9 @@ export default class ReplicaPanel extends BasePanel {
 
     private createSkipButton(parentCont: DialogPanel): Phaser.Button {
         const skipText = LocalizationService.get(LocalizationKey.ui('skip'));
-        const height = 84, width = 220;
-        const label = new Label(this.game, 128, 30, skipText + ' →', {
-            font: "32px Manrope",
+        const height = 84, width = 270;
+        const label = new Label(this.game, 128, 30, skipText, {
+            font: "36px Manrope",
             fill: Label.INK
         });
         label.anchor.set(0.5);
@@ -323,11 +324,12 @@ export default class ReplicaPanel extends BasePanel {
         this.textHolder.inputEnableChildren = false;
 
         this.text = new Label(this.game, 0, 0, replicaText, Label.DIALOG_STYLE, false);
+        this.text.lineGap = -10;
         this.text.maxWidth = this.game.width - 224;
         this.text.updateText();
-        const bodyScale = Math.min(1, 165 / Math.max(1, this.text.textHeight));
+        const bodyInk = this.text.getInkBounds();
+        const bodyScale = Math.min(1, 165 / Math.max(1, bodyInk ? bodyInk.y + bodyInk.height : this.text.textHeight));
         this.text.scale.set(bodyScale, bodyScale);
-        this.text.lineSpacing = ReplicaPanel.DIALOG_LINE_SPACING;
         this.text.alpha = 1;
         this.text.visible = false;
         this.text.renderable = false;
@@ -403,7 +405,7 @@ export default class ReplicaPanel extends BasePanel {
             // console.log("Y:" + (this.y + gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 25))
 
             this.actionButton = SpriteUtils.createButton(this.game, this.game.width / 2 - 25, gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 20, "dialogActionButton", callback);
-            if (UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL) this.actionButton.x = this.game.width / 2 + 60;
+            if (UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL) this.actionButton.x = this.game.width / 2 + 90;
             this.actionButton.anchor.set(0.5);
             this.actionButton.alpha = 0;
             // this.addButton(this.actionButton);
@@ -417,6 +419,7 @@ export default class ReplicaPanel extends BasePanel {
             const actionTextStyle: Phaser.PhaserTextStyle = { font: "38px Lora", fill: Label.ON_DARK, wordWrap: true, wordWrapWidth: 800 };
             let label = new Label(this.game, -13, 0, replicaButtonName, actionTextStyle);
             label.anchor.set(0.5);
+            UiLayout.fit(label, this.actionButton.width - 90, 68, true);
             this.actionButton.addChild(label);
 
             let image = SpriteUtils.createSprite(this.game, 0, 0, r.buttonImage ? r.buttonImage : "actionMushroom");

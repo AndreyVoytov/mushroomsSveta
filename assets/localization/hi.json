@@ -597,6 +597,8 @@
         "ui.energy.buyPack": "{price} में +100",
         "ui.energy.fieldTip": "Finds help conserve energy",
         "ui.energy.full": "ऊर्जा पूरी है",
+        "ui.energy.fullShort": "MAX",
+        "ui.energy.overShort": "+",
         "ui.energy.hint": "रत्नों के बदले 100 ऊर्जा। दिन में हर खरीद के साथ कीमत बढ़ती है।",
         "ui.energy.leave": "लेवल छोड़ें",
         "ui.energy.leaveWarning": "ऊर्जा खरीदे बिना लेवल छोड़ना चाहते हैं? इस लेवल की प्रगति सेव नहीं होगी।",

@@ -41,7 +41,7 @@ export default class SettingsPanel extends ClosablePanel {
         this.closeButton.name = "closeButton";
         this.addButton(this.closeButton);
 
-        const soundText = this.attachText('soundText', settingsSound, {font:'36px Manrope', fill:Label.INK});
+        const soundText = this.attachText('soundText', settingsSound, {font:'42px Manrope', fill:Label.INK});
         soundText.position.set(-88, -161);UiLayout.fit(soundText, 310, 58);
 
 
@@ -100,12 +100,13 @@ export default class SettingsPanel extends ClosablePanel {
         creditsButton.addChild(creditsButtonLabel)
 
         this.closeButton.position.set(286, -292);this.closeButton.width = this.closeButton.height = 64;
+        UiLayout.touchTarget(this.closeButton);
         [supportButton, groupButton, creditsButton].forEach((button, i) => {
             button.position.set(0, -12 + i * 120);button.width = 490;button.height = 98;
         });
         [supportButtonLabel, groupButtonLabel, creditsButtonLabel].forEach(label => {
             label.position.set(0, 0);
-            label.fontSize = 36;label.fill = Label.INK;UiLayout.fit(label, 340, 55);
+            label.fontSize = 40;label.fill = Label.INK;UiLayout.fit(label, 340, 55);
         });
     }
 

@@ -136,7 +136,8 @@ export default class ProgressBar extends BasePanel {
         }
         this.taskText.fill = Label.ON_DARK;
         this.taskText.anchor.set(0.5);this.taskText.position.set(-20, 104);
-        UiLayout.fit(this.taskText, 430, 70, true);
+        this.taskText.lineGap = -10;
+        UiLayout.fit(this.taskText, 470, 96, true);
 
         this.progressBarBody.x = this.progressLineBg.x + 7 - this.progressLineBg.width  + 15;
         this.progressBarBody.y = this.progressBarTail.y;

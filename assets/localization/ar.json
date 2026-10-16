@@ -597,6 +597,8 @@
         "ui.energy.buyPack": "+100 مقابل {price}",
         "ui.energy.fieldTip": "Finds help conserve energy",
         "ui.energy.full": "الطاقة ممتلئة",
+        "ui.energy.fullShort": "MAX",
+        "ui.energy.overShort": "+",
         "ui.energy.hint": "100 طاقة مقابل الجواهر. يزداد السعر مع كل عملية شراء خلال اليوم.",
         "ui.energy.leave": "مغادرة المستوى",
         "ui.energy.leaveWarning": "هل تريد مغادرة المستوى دون شراء طاقة؟ لن يتم حفظ تقدمك في هذا المستوى.",

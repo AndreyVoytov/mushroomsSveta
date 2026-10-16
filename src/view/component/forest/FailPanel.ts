@@ -173,8 +173,8 @@ export default class FailPanel extends ClosablePanel {
             if (['helperPanel', 'ribbon2', 'lightFrame'].indexOf(child.name) >= 0) child.visible = false;
             if(child.name === 'panel'){child.position.set(0, 20);child.width = 749;child.height = 800;}
             if(child.name === 'levelLabel'){child.position.set(0, -280);child.fill = Label.INK;UiLayout.fit(child, 540, 72, true);}
-            if(child.name === 'itemsLeft'){child.y = -185;child.fontSize = 32;child.fill = Label.INK;UiLayout.fit(child, 540, 58, true);}
-            if(child.name === 'info'){child.position.set(60, 110);child.fontSize = 35;child.fill = Label.INK;UiLayout.fit(child, 400, 95, true);}
+            if(child.name === 'itemsLeft'){child.y = -185;child.fontSize = 36;child.fill = Label.INK;UiLayout.fit(child, 540, 58, true);}
+            if(child.name === 'info'){child.position.set(60, 110);child.fontSize = 38;child.fill = Label.INK;UiLayout.fit(child, 400, 95, true);}
         });
         this.closeButton.position.set(306, -288);this.closeButton.width = this.closeButton.height = 64;
         this.playButton.position.set(0, this.rewardedButton ? 238 : 286);this.playButton.width = 440;this.playButton.height = 96;

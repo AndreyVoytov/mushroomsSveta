@@ -83,12 +83,12 @@ export default class LevelCompletePanel extends BasePanel {
         this.createResultText('title', LocalizationService.get('ui.energy.winTitle', 'Level Complete'), {
             font: '46px Lora',
             fill: '#001012'
-        }, { x: 0, y: -127, width: 550, height: 64 });
+        }, { x: 0, y: -139, width: 550, height: 64 });
 
         this.createResultText('spentLabel', LocalizationService.get('ui.energy.spent', 'Energy spent'), {
-            font: 'bold 26px Arial',
+            font: 'bold 36px Arial',
             fill: Label.INK
-        }, { x: resultsX - 8, y: -65, width: 280, height: 36 });
+        }, { x: resultsX, y: -57, width: 320, height: 72, wrap: true });
 
         if (sapphireStarCount > 0) {
             this.sapphireTotal = sapphireStarCount;
@@ -130,12 +130,12 @@ export default class LevelCompletePanel extends BasePanel {
 
         const lightning = this.attachSprite('lightning', 'lightning');
         lightning.scale.set(0.61);
-        lightning.y = 18;
+        lightning.y = 33;
 
         const spentValue = this.attachText('spentValue', '' + spentEnergy, Label.PanelDigitsBrown(72));
         const spentValueScale = Math.min(1, 126 / Math.max(1, spentValue.textWidth));
         spentValue.scale.set(spentValueScale, spentValueScale);
-        spentValue.y = 18;
+        spentValue.y = 33;
 
         // Center the icon + value together, including two- and three-digit values.
         const energyWidth = lightning.width + 4 + spentValue.textWidth * spentValue.scale.x;
@@ -155,16 +155,16 @@ export default class LevelCompletePanel extends BasePanel {
             'betterLabel',
             LocalizationService.get('ui.energy.fieldTip', 'Finds help conserve energy'),
             {
-                font: 'bold 30px Arial',
+                font: 'bold 34px Arial',
                 fill: Label.INK
             },
-            { x: resultsX, y: 138, width: 320, height: 108, wrap: true }
+            { x: resultsX, y: 137, width: 326, height: 86, wrap: true }
         );
 
         this.createResultText('aimsLabel', ForestAim.getCompleteInfo(resolvedAims), {
             font: 'bold 34px Gilroy',
             fill: '#fff5ce'
-        }, { x: resultsX, y: 220, width: 300, height: 70, wrap: true });
+        }, { x: resultsX, y: 242, width: 310, height: 70, wrap: true });
 
         this.continueButton = this.attachButton('rewardButton', () => this.onContinue(), 'continueButton');
         this.continueButton.position.set(0, 350);
@@ -223,11 +223,13 @@ export default class LevelCompletePanel extends BasePanel {
         const label = new Label(this.game, 0, 0, '', textStyle);
         label.name = name;
         label.anchor.set(0.5);
+        label.lineGap = -8;
         // Phaser's native wrapping measures glyphs; Label's legacy wrap estimates
         // character counts and can overflow a narrow column in some languages.
         label.maxWidth = box.wrap ? box.width : 0;
         label.text = text;
-        group.scale.set(Math.min(1, box.width / Math.max(1, label.textWidth), box.height / Math.max(1, label.textHeight)));
+        const ink = label.getInkBounds();
+        group.scale.set(Math.min(1, box.width / Math.max(1, label.textWidth), box.height / Math.max(1, ink ? ink.height : label.textHeight)));
 
         group.add(label);
         return group;

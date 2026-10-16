@@ -17,7 +17,7 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
     private static readonly CARD_SCALE = 1.25;
     private static readonly COLUMN_OFFSET = 232;
     private static readonly ROW_START_Y = -158;
-    private static readonly ROW_STEP = 390;
+    private static readonly ROW_STEP = 440;
 
     private cards: ShopArtifactCardPanel[] = [];
     private onOpenBank?: () => void;

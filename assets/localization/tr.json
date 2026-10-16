@@ -597,6 +597,8 @@
         "ui.energy.buyPack": "{price} karşılığında +100",
         "ui.energy.fieldTip": "Finds help conserve energy",
         "ui.energy.full": "Enerji dolu",
+        "ui.energy.fullShort": "Dolu",
+        "ui.energy.overShort": "Fazla",
         "ui.energy.hint": "Mücevherler karşılığında 100 enerji. Fiyat, gün içindeki her satın alımla artar.",
         "ui.energy.leave": "Bölümden çık",
         "ui.energy.leaveWarning": "Enerji satın almadan bölümden çıkılsın mı? Bu bölümdeki ilerlemen kaydedilmeyecek.",

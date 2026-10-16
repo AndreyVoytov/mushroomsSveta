@@ -29,6 +29,7 @@ interface ArtifactInfoPanelOptions {
     onUpgrade?: () => void;
     onSkillInfo?: (skillId: ShopArtifactSkillId) => void;
     maxBonusLines?: number;
+    compactDetails?: boolean;
 }
 
 interface ArtifactSkillRowView {
@@ -40,13 +41,13 @@ interface ArtifactSkillRowView {
 export default class ArtifactInfoPanel extends BasePanel {
     private static readonly TITLE_CENTER_Y = -18;
     private static readonly PLAIN_BODY_TOP_Y = 42;
-    private static readonly RESTRICTION_CENTER_Y = 24;
+    private static readonly RESTRICTION_CENTER_Y = 39;
     private static readonly PROGRESS_LEFT_X = -77;
-    private static readonly PROGRESS_CENTER_Y = 82;
+    private static readonly PROGRESS_CENTER_Y = 100;
     private static readonly SKILLS_BG_CENTER_Y = 215;
-    private static readonly DESCRIPTION_TOP_Y = 296;
-    private static readonly UPGRADE_BUTTON_CENTER_Y = 432;
-    private static readonly ACTION_LINK_TOP_Y = 520;
+    private static readonly DESCRIPTION_TOP_Y = 285;
+    private static readonly UPGRADE_BUTTON_CENTER_Y = 450;
+    private static readonly ACTION_LINK_TOP_Y = 528;
     private static readonly BODY_WORD_WRAP_WIDTH = 430;
 
     private contentTitle: Label;
@@ -68,6 +69,7 @@ export default class ArtifactInfoPanel extends BasePanel {
     private upgradeHandler: () => void;
     private skillInfoHandler: (skillId: ShopArtifactSkillId) => void;
     private maxBonusLines: number;
+    private compactDetails: boolean;
 
     constructor(game: Phaser.Game, x: number, y: number, options?: ArtifactInfoPanelOptions) {
         super(game, x, y, "artifactInfoPanel");
@@ -76,16 +78,19 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.skillInfoHandler = options && options.onSkillInfo ? options.onSkillInfo : null;
         this.maxBonusLines = options && options.maxBonusLines ? options.maxBonusLines : 2;
 
+        this.compactDetails = !!(options && options.compactDetails);
         this.createLayout();
     }
 
     public setTitle(text: string): void {
         this.contentTitle.text = text || "";
+        UiLayout.fit(this.contentTitle, 380, 52);
     }
 
     public setBodyPlain(text: string): void {
         this.contentBody.visible = true;
         this.contentBody.text = text || "";
+        UiLayout.fit(this.contentBody, 430, 460, true);
         this.hideArtifactDetails();
         this.hideActionLink();
         this.setUpgradeButtonVisible(false);
@@ -108,6 +113,8 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.progressLabel.text = Math.max(0, options.level) + "/" + Math.max(1, options.maxLevel);
         this.updateProgressCrop(options.level, options.maxLevel);
         this.descriptionLabel.text = options.description || "";
+        UiLayout.fit(this.restrictionLabel, 410, 44);
+        UiLayout.fit(this.descriptionLabel, 420, 128, true);
         this.showArtifactBonusLines(options.skillIds, options.bonusLines);
     }
 
@@ -129,6 +136,7 @@ export default class ArtifactInfoPanel extends BasePanel {
             SpriteUtils.loadTexture(row.icon, skill.icon);
             row.icon.visible = true;
             row.label.text = line.text;
+            UiLayout.fit(row.label, 250, 42);
             row.label.visible = true;
 
             (<any>row.infoButton).skillId = skillId;
@@ -149,13 +157,14 @@ export default class ArtifactInfoPanel extends BasePanel {
         }
 
         this.actionLinkText.text = text;
+        UiLayout.fit(this.actionLinkText, 400, 52);
         this.actionLinkText.visible = true;
 
         const textWidth = Math.ceil(this.actionLinkText.width);
         const textHeight = Math.ceil(this.actionLinkText.height);
 
         this.actionLinkUnderline.clear();
-        this.actionLinkUnderline.lineStyle(2, 0x3f82ff, 1);
+        this.actionLinkUnderline.lineStyle(2, 0x315e49, 1);
         this.actionLinkUnderline.moveTo(this.actionLinkText.x - textWidth / 2, this.actionLinkText.y + textHeight + 2);
         this.actionLinkUnderline.lineTo(this.actionLinkText.x + textWidth / 2, this.actionLinkText.y + textHeight + 2);
         this.actionLinkUnderline.visible = true;
@@ -192,7 +201,7 @@ export default class ArtifactInfoPanel extends BasePanel {
             this.upgradeButton.alpha = 1;
             this.upgradeButton.inputEnabled = false;
             this.upgradeButtonLabel.text = LocalizationService.get("ui.character.maxLevel", "Max level");
-            this.upgradeButtonLabel.x = 0;UiLayout.fit(this.upgradeButtonLabel, 245, 55);
+            this.layoutUpgradeCaption(false);
             this.upgradeButtonGemIcon.alpha = 0;
             return;
         }
@@ -204,7 +213,16 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.upgradeButtonLabel.text = LocalizationService.get("ui.character.upgrade", "Upgrade for {price}", {
             price: ShopArtifactService.getUpgradePrice(item, currentLevel)
         });
-        this.upgradeButtonLabel.x = -22;UiLayout.fit(this.upgradeButtonLabel, 205, 52);
+        this.layoutUpgradeCaption(true);
+    }
+
+    private layoutUpgradeCaption(withPrice: boolean): void {
+        const sx = this.upgradeButton.scale.x, sy = this.upgradeButton.scale.y;
+        this.upgradeButtonLabel.position.set((withPrice ? -22 : 0) / sx, 0);
+        UiLayout.fit(this.upgradeButtonLabel, withPrice ? 300 : 330, 58);
+        this.upgradeButtonLabel.scale.x /= sx;this.upgradeButtonLabel.scale.y /= sy;
+        this.upgradeButtonGemIcon.position.set(158 / sx, 0);
+        this.upgradeButtonGemIcon.width = 38 / sx;this.upgradeButtonGemIcon.height = 38 / sy;
     }
 
     public setUpgradeButtonVisible(visible: boolean): void {
@@ -216,7 +234,7 @@ export default class ArtifactInfoPanel extends BasePanel {
     public showUpgradeSuccessFeedback(): void {
         const label = new Label(this.game, this.upgradeButton.x, this.upgradeButton.y - 74, LocalizationService.get("ui.character.upgradedSuccess", "Upgraded!"), {
             font: "bold 34px Gilroy",
-            fill: "#8ef26d",
+            fill: "#214634",
             align: "center"
         });
         label.anchor.set(0.5);
@@ -247,7 +265,7 @@ export default class ArtifactInfoPanel extends BasePanel {
         titlePaper.position.set(0, ArtifactInfoPanel.TITLE_CENTER_Y);
         titlePaper.width = 420;titlePaper.height = 68;
         this.contentTitle = this.attachText("contentTitle", "", {
-            font: "bold 35px Bookman Old Style",
+            font: "bold 40px Bookman Old Style",
             fill: Label.INK,
             align: "center",
             wordWrap: true,
@@ -258,7 +276,7 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.contentTitle.y = ArtifactInfoPanel.TITLE_CENTER_Y;
 
         this.restrictionLabel = this.attachText("restrictionLabel", "", {
-            font: "bold 28px Gilroy",
+            font: "bold 34px Gilroy",
             fill: "#7f187e",
             align: "center",
             wordWrap: true,
@@ -278,7 +296,7 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.progressFull.y = ArtifactInfoPanel.PROGRESS_CENTER_Y;
 
         this.progressLabel = this.attachText("progressLabel", "", {
-            font: "bold 29px Gilroy",
+            font: "bold 34px Gilroy",
             fill: "#fff1cf",
             align: "center"
         });
@@ -288,28 +306,29 @@ export default class ArtifactInfoPanel extends BasePanel {
 
         this.skillsBg = this.attachSprite("characterItemSkillsDetailsBg", "skillsDetailsBg");
         this.skillsBg.x = 0;
-        this.skillsBg.y = ArtifactInfoPanel.SKILLS_BG_CENTER_Y;
+        this.skillsBg.y = ArtifactInfoPanel.SKILLS_BG_CENTER_Y - (this.compactDetails ? 16 : 0);
+        this.skillsBg.width = 400;this.skillsBg.height = 132;
 
         for (let i = 0; i < this.maxBonusLines; i++) {
-            const rowY = ArtifactInfoPanel.SKILLS_BG_CENTER_Y - 24 + i * 45;
+            const rowY = this.skillsBg.y - 24 + i * 45;
             const icon = this.attachSprite("shopSkillEnergy", "skillIcon" + i);
-            icon.x = -126;
+            icon.x = -156;
             icon.y = rowY;
             icon.scale.set(0.22);
             icon.visible = false;
 
             const label = this.attachText("skillLabel" + i, "", {
-                font: "32px Bookman Old Style",
+                font: "38px Bookman Old Style",
                 fill: Label.INK,
                 align: "left"
             });
             label.anchor.set(0, 0.5);
-            label.x = -98;
+            label.x = -124;
             label.y = rowY + 1;
             label.visible = false;
 
             const infoButton = this.attachButton("characterItemInfoDetailsButton", () => this.showArtifactBonusSkillInfo(i), "artifactBonusInfo" + i);
-            infoButton.x = 126;
+            infoButton.x = 156;infoButton.width = 38;infoButton.height = 40;
             infoButton.y = rowY;
             infoButton.visible = false;
             infoButton.inputEnabled = false;
@@ -321,8 +340,8 @@ export default class ArtifactInfoPanel extends BasePanel {
             });
         }
 
-        this.descriptionLabel = new Label(this.game, 0, ArtifactInfoPanel.DESCRIPTION_TOP_Y, "", {
-            font: "italic 27px Times New Roman",
+        this.descriptionLabel = new Label(this.game, 0, ArtifactInfoPanel.DESCRIPTION_TOP_Y - (this.compactDetails ? 24 : 0), "", {
+            font: "italic 38px Times New Roman",
             fill: Label.INK,
             align: "center",
             wordWrap: true,
@@ -330,11 +349,11 @@ export default class ArtifactInfoPanel extends BasePanel {
         });
         this.descriptionLabel.name = "descriptionLabel";
         this.descriptionLabel.anchor.set(0.5, 0);
-        this.descriptionLabel.lineSpacing = 4;
+        this.descriptionLabel.lineGap = -8;
         this.addSprite(this.descriptionLabel);
 
         this.contentBody = this.attachText("contentBody", "", {
-            font: "bold 30px Arial",
+            font: "bold 36px Arial",
             fill: Label.INK,
             align: "center",
             wordWrap: true,
@@ -347,12 +366,13 @@ export default class ArtifactInfoPanel extends BasePanel {
 
         this.upgradeButton = this.attachButton("characterCloseButton", () => this.handleUpgrade(), "upgradeButton");
         this.upgradeButton.x = 0;
-        this.upgradeButton.y = ArtifactInfoPanel.UPGRADE_BUTTON_CENTER_Y;
+        this.upgradeButton.y = ArtifactInfoPanel.UPGRADE_BUTTON_CENTER_Y - (this.compactDetails ? 36 : 0);
+        this.upgradeButton.width = 400;this.upgradeButton.height = 116;
         this.upgradeButton.alpha = 0;
         this.upgradeButton.inputEnabled = false;
 
         this.upgradeButtonLabel = this.addButtonText(this.upgradeButton, "", {
-            font: "bold 28px Gilroy",
+            font: "bold 34px Gilroy",
             fill: "#efffdd",
             align: "center"
         }, -2);
@@ -364,9 +384,9 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.upgradeButtonGemIcon.alpha = 0;
         this.upgradeButton.addChild(this.upgradeButtonGemIcon);
 
-        this.actionLinkText = new Label(this.game, 0, ArtifactInfoPanel.ACTION_LINK_TOP_Y, "", {
-            font: "bold 28px Arial",
-            fill: "#3f82ff",
+        this.actionLinkText = new Label(this.game, 0, ArtifactInfoPanel.ACTION_LINK_TOP_Y - (this.compactDetails ? 48 : 0), "", {
+            font: "bold 36px Arial",
+            fill: "#315e49",
             align: "center"
         });
         this.actionLinkText.name = "actionLinkText";

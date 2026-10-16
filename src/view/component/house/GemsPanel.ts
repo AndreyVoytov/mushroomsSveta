@@ -12,7 +12,7 @@ export default class GemsPanel extends BasePanel {
     public startX: number;
 
     constructor(game: Phaser.Game, houseScreen: HouseScreen) {
-        super(game, 808, 50, 'gemsPanel');
+        super(game, game.width - 176, 50, 'gemsPanel');
         this.startX = this.x;
 
         this.scale.set(0.9)
@@ -35,16 +35,16 @@ export default class GemsPanel extends BasePanel {
         this.gemsLabel = this.attachText('gemsLabel', "" + UserService.getUser().getSupermoney(), { "font": "bold 45px Arial", "fill": "#ffffff" })
 
 
-        this.applyPreset([{ "spriteId": "statusPanel", "x": 5, "y": 14, "scaleX": 1.04, "scaleY": 1.1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "gems", "x": 98, "y": 10, "scaleX": 1/ 1.5, "scaleY": 1/ 1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "plusButton", "x": -103, "y": 14, "scaleX": 1.08, "scaleY": 1.1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "gemsLabel", "x": -6, "y": 16, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 45 }])
-        UiLayout.fit(this.gemsLabel, 88, 56);
+        this.applyPreset([{ "spriteId": "statusPanel", "x": 5, "y": 14, "scaleX": 1.20, "scaleY": 1.1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+        { "spriteId": "gems", "x": 135, "y": 14, "scaleX": 0.60, "scaleY": 0.60, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+        { "spriteId": "plusButton", "x": -134, "y": 14, "scaleX": 1.08, "scaleY": 1.1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+        { "spriteId": "gemsLabel", "x": -8, "y": 14, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 45 }])
+        UiLayout.fit(this.gemsLabel, 140, 56);
 
 
         this.game.time.events.loop(1000, ()=>{
             this.gemsLabel.text = "" + UserService.getUser().getSupermoney();
-            UiLayout.fit(this.gemsLabel, 88, 56);
+            UiLayout.fit(this.gemsLabel, 140, 56);
         })
     }
 

@@ -6,6 +6,7 @@ import HouseScreen from "../../screen/HouseScreen";
 import ClosablePanel from "../panel/ClosablePanel";
 import BasePanel from "../panel/BasePanel";
 import Label from "../panel/Label";
+import UiLayout from "../../../core/utils/UiLayout";
 import InfoPanel from "../panel/InfoPanel";
 import StackContainer from "../panel/StackContainer";
 import {
@@ -22,19 +23,19 @@ type TasksPanelHooks = {
 
 class TaskCardPanel extends BasePanel {
     public static WIDTH: number = 727;
-    public static HEIGHT: number = 147;
+    public static HEIGHT: number = 190;
     private static CLAIMED_ALPHA: number = 1;
     private static ITEM_LEFT: number = 24;
-    private static ITEM_TOP: number = 23;
+    private static ITEM_TOP: number = 38;
     private static ITEM_WIDTH: number = 117;
     private static ITEM_HEIGHT: number = 100;
     private static REWARD_LEFT: number = 522;
-    private static REWARD_TOP: number = 11;
+    private static REWARD_TOP: number = 29;
     private static REWARD_WIDTH: number = 194;
     private static REWARD_HEIGHT: number = 125;
     private static PROGRESS_LEFT: number = 154;
-    private static PROGRESS_EMPTY_TOP: number = 80;
-    private static PROGRESS_FULL_TOP: number = 79;
+    private static PROGRESS_EMPTY_TOP: number = 104;
+    private static PROGRESS_FULL_TOP: number = 103;
     private static TITLE_CENTER_X: number = 344;
     private static TITLE_TOP: number = 23;
 
@@ -63,6 +64,7 @@ class TaskCardPanel extends BasePanel {
 
         this.background = this.attachSprite("uiQuestRow", "background");
         this.background.anchor.set(0);
+        this.background.width = TaskCardPanel.WIDTH;this.background.height = TaskCardPanel.HEIGHT;
 
         this.itemBackground = this.attachSprite("tasksPanelTaskItemBg", "itemBackground");
         this.itemBackground.anchor.set(0);
@@ -94,18 +96,18 @@ class TaskCardPanel extends BasePanel {
         this.icon.y = TaskCardPanel.ITEM_TOP + TaskCardPanel.ITEM_HEIGHT / 2;
 
         this.titleLabel = this.attachText("taskTitle", "", {
-            font: "bold 26px Arial",
+            font: "bold 34px Arial",
             fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 370
         });
-        this.titleLabel.anchor.set(0.5, 0);
+        this.titleLabel.anchor.set(0.5);
         this.titleLabel.x = TaskCardPanel.TITLE_CENTER_X;
-        this.titleLabel.y = TaskCardPanel.TITLE_TOP;
+        this.titleLabel.y = 62;this.titleLabel.lineGap = -14;
 
         this.progressLabel = this.attachText("taskProgress", "", {
-            font: "bold 26px Gilroy",
+            font: "bold 32px Gilroy",
             fill: "#f7f1d8",
             align: "center",
             wordWrap: true,
@@ -116,34 +118,34 @@ class TaskCardPanel extends BasePanel {
         this.progressLabel.y = TaskCardPanel.PROGRESS_FULL_TOP + this.progressFull.height / 2 + 1;
 
         this.rewardTitleLabel = this.attachText("rewardTitle", LocalizationService.get("ui.tasks.reward", "Reward"), {
-            font: "bold 24px Arial",
+            font: "bold 34px Arial",
             fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 160
         });
-        this.rewardTitleLabel.anchor.set(0.5, 0);
+        this.rewardTitleLabel.anchor.set(0.5);
         this.rewardTitleLabel.x = TaskCardPanel.REWARD_LEFT + TaskCardPanel.REWARD_WIDTH / 2;
-        this.rewardTitleLabel.y = TaskCardPanel.REWARD_TOP + 16;
+        this.rewardTitleLabel.y = TaskCardPanel.REWARD_TOP + 33;
 
         this.claimTitleLabel = this.attachText("claimTitle", LocalizationService.get("ui.tasks.claim", "Claim"), {
-            font: "bold 22px Gilroy",
+            font: "bold 32px Gilroy",
             fill: "#6d9a1f",
             align: "center",
             wordWrap: true,
             wordWrapWidth: 160
         });
-        this.claimTitleLabel.anchor.set(0.5, 0);
+        this.claimTitleLabel.anchor.set(0.5);
         this.claimTitleLabel.x = TaskCardPanel.REWARD_LEFT + TaskCardPanel.REWARD_WIDTH / 2;
-        this.claimTitleLabel.y = TaskCardPanel.REWARD_TOP + 14;
+        this.claimTitleLabel.y = TaskCardPanel.REWARD_TOP + 33;
 
         this.rewardIcon = this.attachSprite("gems", "rewardIcon");
         this.rewardIcon.anchor.set(0.5);
         this.rewardIcon.x = TaskCardPanel.REWARD_LEFT + 62;
-        this.rewardIcon.y = TaskCardPanel.REWARD_TOP + 77;
+        this.rewardIcon.y = TaskCardPanel.REWARD_TOP + 81;
 
         this.rewardLabel = this.attachText("rewardLabel", "2", {
-            font: "bold 28px Gilroy",
+            font: "bold 36px Gilroy",
             fill: "#855539",
             align: "center",
             wordWrap: true,
@@ -151,7 +153,7 @@ class TaskCardPanel extends BasePanel {
         });
         this.rewardLabel.anchor.set(0.5);
         this.rewardLabel.x = TaskCardPanel.REWARD_LEFT + 120;
-        this.rewardLabel.y = TaskCardPanel.REWARD_TOP + 75;
+        this.rewardLabel.y = TaskCardPanel.REWARD_TOP + 81;
 
         this.claimedCheckIcon = this.attachSprite("check", "claimedCheckIcon");
         this.claimedCheckIcon.anchor.set(0.5);
@@ -193,7 +195,7 @@ class TaskCardPanel extends BasePanel {
             : ((taskView.task.reward && taskView.task.reward.gems) || 2);
 
         SpriteUtils.loadTexture(this.rewardIcon, rewardIcon);
-        SpriteUtils.fitIcon(this.rewardIcon, 52, 48);
+        SpriteUtils.fitIcon(this.rewardIcon, 52, 40);
         this.rewardLabel.text = "" + rewardCount;
         this.titleLabel.text = taskView.task.title;
         this.progressLabel.text = taskView.progress + "/" + taskView.task.target;
@@ -221,6 +223,11 @@ class TaskCardPanel extends BasePanel {
         this.claimTitleLabel.fill = "#214634";
         this.titleLabel.fill = Label.INK;
         this.alpha = isClaimed ? TaskCardPanel.CLAIMED_ALPHA : 1;
+        UiLayout.fit(this.titleLabel, 358, 68, true);
+        UiLayout.fit(this.progressLabel, this.progressEmpty.width - 26, 38);
+        UiLayout.fit(this.rewardTitleLabel, 164, 76, true);
+        UiLayout.fit(this.claimTitleLabel, 164, 56, true);
+        UiLayout.fit(this.rewardLabel, 74, 48);
     }
 
     private updateProgressBar(progressRatio: number): void {
@@ -253,9 +260,9 @@ export default class TasksPanel extends ClosablePanel {
     private static PANEL_SHORTEN_BY: number = 159;
     private static PANEL_VERTICAL_SHIFT: number = 159;
     private static TASK_CARD_GAP: number = 12;
-    private static VISIBLE_TASK_CARDS: number = 3.85;
+    private static VISIBLE_TASK_CARDS: number = 3;
     private static SCROLL_CONTENT_TOP_PADDING: number = 5;
-    private static TAB_FONT_SIZE: number = 33;
+    private static TAB_FONT_SIZE: number = 36;
     private static TAB_TEXT_OFFSET_Y: number = 4;
     private static TAB_TOP: number = 237;
     private static TAB_HIT_HEIGHT: number = 87;
@@ -416,7 +423,7 @@ export default class TasksPanel extends ClosablePanel {
         this.campaignTabLabel.anchor.set(0.5);
 
         this.progressTitle = this.attachText("progressTitle", "", {
-            font: "bold 24px Arial",
+            font: "bold 34px Arial",
             fill: Label.INK,
             align: "center",
             wordWrap: true,
@@ -427,7 +434,7 @@ export default class TasksPanel extends ClosablePanel {
         this.progressTitle.y = this.psdY(334);
 
         this.resetLabel = this.attachText("resetLabel", "", {
-            font: "bold 23px Arial",
+            font: "bold 34px Arial",
             fill: "#a27148",
             align: "center",
             wordWrap: true,
@@ -661,7 +668,7 @@ export default class TasksPanel extends ClosablePanel {
             const totalTasks = dailyTasks.length || 1;
 
             this.progressTitle.setStyle({
-                font: "bold 24px Arial",
+                font: "bold 34px Arial",
                 fill: Label.INK,
                 align: "center",
                 wordWrap: true,
@@ -681,7 +688,7 @@ export default class TasksPanel extends ClosablePanel {
         const rewardView = TaskService.getCampaignRewardView(this.selectedChapterIndex);
 
         this.progressTitle.setStyle({
-            font: "bold 26px Arial",
+            font: "bold 32px Arial",
             fill: Label.INK,
             align: "center",
             wordWrap: true,

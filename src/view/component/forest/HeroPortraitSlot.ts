@@ -30,9 +30,9 @@ export default class HeroPortraitSlot extends Phaser.Group {
             // Only the changing sector is procedural; its painted artwork is shared with the empty frame.
             this.ringMask = new Phaser.Graphics(game, 0, 0);this.add(this.ringMask);
             this.ring.mask = this.ringMask;
-            const badge = this.paintedSprite('uiChargeBadge', 86, 32);
-            badge.y = diameter * .35 + 14;
-            this.counter = new Label(game, 0, diameter * .35 + 14, '0/' + hero.energy, {font:'bold 26px Arial',fill:Label.INK});
+            const badge = this.paintedSprite('uiChargeBadge', 98, 40);
+            badge.y = diameter * .35 + 16;
+            this.counter = new Label(game, 0, diameter * .35 + 16, '0/' + hero.energy, {font:'bold 32px Arial',fill:Label.INK});
             this.counter.anchor.set(.5);this.add(this.counter);
             this.setCharge(0);
         }

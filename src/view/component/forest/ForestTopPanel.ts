@@ -22,6 +22,7 @@ import MushroomHarvestEffects from './MushroomHarvestEffects';
 import ItemGroundShadow from './ItemGroundShadow';
 import Environment from '../../../core/model/enum/Environment';
 import BiomType from '../../../core/model/enum/BiomType';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class ForestTopPanel extends BasePanel {
 
     private energyCount: number;
@@ -102,6 +103,7 @@ export default class ForestTopPanel extends BasePanel {
         this.aims.forEach(aim => {
             this.game.time.events.add(delay + 200, () => {
                 aim.label.text = "" + aim.countLeft;
+                UiLayout.fit(aim.label, 122, 44);
 
                 if (aim.countLeft <= 0) {
                     aim.label.visible = false;
@@ -641,7 +643,7 @@ export default class ForestTopPanel extends BasePanel {
         this.addSprite(image);
 
         let label = new Label(this.game, 370 + shiftX, 105, "" + aim.countLeft, Label.AIM_STYLE);
-        label.anchor.set(0.5);label.fontSize = 34;label.fill = Label.INK;
+        label.anchor.set(0.5);label.fontSize = 38;label.fill = Label.INK;UiLayout.fit(label, 122, 44);
         this.addSprite(label);
 
         aim.label = label;

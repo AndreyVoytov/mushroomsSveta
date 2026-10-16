@@ -597,6 +597,8 @@
         "ui.energy.buyPack": "+100 untuk {price}",
         "ui.energy.fieldTip": "Finds help conserve energy",
         "ui.energy.full": "Energi penuh",
+        "ui.energy.fullShort": "Penuh",
+        "ui.energy.overShort": "Bonus",
         "ui.energy.hint": "100 energi untuk permata. Harga naik setiap pembelian per hari.",
         "ui.energy.leave": "Keluar level",
         "ui.energy.leaveWarning": "Keluar dari level tanpa membeli energi? Progres di level ini tidak akan disimpan.",

@@ -12,6 +12,7 @@ import SpriteUtils from "../../../core/utils/SpriteUtils";
 import HouseScreen from "../../screen/HouseScreen";
 import ClosablePanel from "../panel/ClosablePanel";
 import Label from "../panel/Label";
+import UiLayout from "../../../core/utils/UiLayout";
 import ArtifactEquipPanel from "./ArtifactEquipPanel";
 import ArtifactInfoPanel, { ArtifactInfoLine } from "./ArtifactInfoPanel";
 import ConfirmPanel from "./ConfirmPanel";
@@ -27,18 +28,18 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
     private static readonly PSD_WIDTH = 960;
     private static readonly PSD_HEIGHT = 1669;
     private static readonly GRID_POSITIONS: { x: number, y: number }[] = [
-        { x: 178, y: 373 },
-        { x: 379, y: 373 },
-        { x: 580, y: 373 },
-        { x: 781, y: 373 },
-        { x: 178, y: 573 },
-        { x: 379, y: 573 },
-        { x: 580, y: 573 },
-        { x: 781, y: 573 },
-        { x: 178, y: 773 },
-        { x: 379, y: 773 },
-        { x: 580, y: 773 },
-        { x: 781, y: 773 }
+        { x: 191, y: 378 },
+        { x: 392, y: 378 },
+        { x: 597, y: 378 },
+        { x: 801, y: 378 },
+        { x: 191, y: 583 },
+        { x: 392, y: 583 },
+        { x: 597, y: 583 },
+        { x: 801, y: 583 },
+        { x: 191, y: 787 },
+        { x: 392, y: 787 },
+        { x: 597, y: 787 },
+        { x: 801, y: 787 }
     ];
 
     private screen: HouseScreen;
@@ -107,9 +108,10 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
             wordWrapWidth: 520
         });
         this.bannerTitle.anchor.set(0.5);
-        this.placeAtPsdCenter(this.bannerTitle, 490, 117);
+        this.placeAtPsdCenter(this.bannerTitle, 490, 202);this.bannerTitle.fill = Label.ON_DARK;
 
         this.artifactInfoPanel = new ArtifactInfoPanel(this.game, 0, 0, {
+            compactDetails: true,
             onAction: () => this.openEquipPanel(),
             onUpgrade: () => this.tryUpgradeSelectedArtifact(),
             onSkillInfo: skillId => this.openSkillInfoPanel(skillId)
@@ -150,6 +152,7 @@ export default class ArtifactBackpackPanel extends ClosablePanel {
 
     private refreshStaticTexts(): void {
         this.bannerTitle.text = LocalizationService.get("ui.character.backpackTitle", "Backpack");
+        UiLayout.fit(this.bannerTitle, 540, 70);
         this.closeButtonLabel.text = LocalizationService.get("ui.character.close", "Close");
     }
 

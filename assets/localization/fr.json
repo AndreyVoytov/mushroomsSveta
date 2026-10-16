@@ -597,6 +597,8 @@
         "ui.energy.buyPack": "+100 pour {price}",
         "ui.energy.fieldTip": "Finds help conserve energy",
         "ui.energy.full": "Énergie pleine",
+        "ui.energy.fullShort": "Pleine",
+        "ui.energy.overShort": "Bonus",
         "ui.energy.hint": "100 d'énergie contre des gemmes. Le prix augmente à chaque achat dans la journée.",
         "ui.energy.leave": "Quitter le niveau",
         "ui.energy.leaveWarning": "Quitter le niveau sans acheter d’énergie ? Votre progression dans ce niveau ne sera pas sauvegardée.",

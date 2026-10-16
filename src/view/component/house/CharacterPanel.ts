@@ -46,7 +46,7 @@ export default class CharacterPanel extends ClosablePanel {
 
     private static readonly SKILL_ROWS = [
         { iconX: 551, iconY: 410.5, valueX: 663.5, valueY: 409.5, infoX: 774.5, infoY: 408 },
-        { iconX: 551, iconY: 549.5, valueX: 663.5, valueY: 539.5, infoX: 774.5, infoY: 548 },
+        { iconX: 551, iconY: 549.5, valueX: 663.5, valueY: 549.5, infoX: 774.5, infoY: 548 },
         { iconX: 558.5, iconY: 669, valueX: 663.5, valueY: 668.5, infoX: 774.5, infoY: 672 }
     ];
 

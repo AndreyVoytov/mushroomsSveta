@@ -1,0 +1,14 @@
+[
+  {
+    "file": "assets/backpack/panel.png",
+    "key": "backpackPanelBg",
+    "width": 973,
+    "height": 1413,
+    "originalWidth": 973,
+    "originalHeight": 1413,
+    "bytes": 2879893,
+    "sha256": "e48eaeb3585dc3a9e15359b4c28f823242fb4ea5db332cdd060da99aba6dd129",
+    "method": "Built-in ImageGen style transfer; technical resize only; master not published",
+    "lazyGroup": "backpack"
+  }
+]

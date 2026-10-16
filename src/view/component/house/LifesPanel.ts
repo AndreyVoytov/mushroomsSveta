@@ -26,7 +26,7 @@ export default class LifesPanel extends BasePanel {
 
         this.lifesLabel = this.attachText("lifesLabel", "" + UserService.getUser().getEnergy(), Label.PanelDigitsBrown(42));
 
-        this.lifesStatus = this.attachText("lifesStatus", LocalizationService.get('ui.energy.full', 'FULL'), { "font": "bold 28px Arial ", "fill": "#d6b08b" });
+        this.lifesStatus = this.attachText("lifesStatus", LocalizationService.get('ui.energy.full', 'FULL'), { "font": "bold 34px Arial ", "fill": "#d6b08b" });
 
         const plusButton = this.attachButton('plusButton', () => {
             if (houseScreen.isTasksPanelBlockingUI()) {
@@ -51,11 +51,11 @@ export default class LifesPanel extends BasePanel {
         });
 
         this.applyPreset([
-            { "spriteId": "statusPanel", "x": 142, "y": 20, "scaleX": 1.10, "scaleY": 0.95, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "statusPanel", "x": 157, "y": 20, "scaleX": 1.24, "scaleY": 0.95, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
             { "spriteId": "lightning", "x": 0, "y": 19, "scaleX": 0.72, "scaleY": 0.72, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-            { "spriteId": "lifesLabel", "x": 97, "y": 17, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 42 },
-            { "spriteId": "lifesStatus", "x": 198, "y": 20, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 28 },
-            { "spriteId": "plusButton", "x": 281, "y": 19, "scaleX": 0.94, "scaleY": 0.96, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+            { "spriteId": "lifesLabel", "x": 97, "y": 20, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 42 },
+            { "spriteId": "lifesStatus", "x": 218, "y": 20, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 34 },
+            { "spriteId": "plusButton", "x": 310, "y": 19, "scaleX": 0.94, "scaleY": 0.96, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
         ]);
 
         this.game.time.events.loop(1000, () => {
@@ -88,10 +88,10 @@ export default class LifesPanel extends BasePanel {
 
         this.lifesLabel.text = "" + energy;
         if(this.measuredEnergy !== this.lifesLabel.text){
-            this.measuredEnergy = this.lifesLabel.text;UiLayout.fit(this.lifesLabel, 82, 56);
+            this.measuredEnergy = this.lifesLabel.text;UiLayout.fit(this.lifesLabel, 100, 56);
         }
         if(this.measuredStatus !== this.lifesStatus.text){
-            this.measuredStatus = this.lifesStatus.text;UiLayout.fit(this.lifesStatus, 90, 42);
+            this.measuredStatus = this.lifesStatus.text;UiLayout.fit(this.lifesStatus, 100, 42);
         }
     }
 }

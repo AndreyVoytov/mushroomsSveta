@@ -597,6 +597,8 @@
         "ui.energy.buyPack": "+100 for {price}",
         "ui.energy.fieldTip": "Finds help conserve energy",
         "ui.energy.full": "Energy is full",
+        "ui.energy.fullShort": "Full",
+        "ui.energy.overShort": "Bonus",
         "ui.energy.hint": "100 energy for gems. The price increases with each purchase per day.",
         "ui.energy.leave": "Leave level",
         "ui.energy.leaveWarning": "Leave the level without buying energy? Your progress in this level will not be saved.",

@@ -597,6 +597,8 @@
         "ui.energy.buyPack": "+100 für {price}",
         "ui.energy.fieldTip": "Finds help conserve energy",
         "ui.energy.full": "Energie voll",
+        "ui.energy.fullShort": "Voll",
+        "ui.energy.overShort": "Bonus",
         "ui.energy.hint": "100 Energie für Edelsteine. Der Preis steigt mit jedem Kauf pro Tag.",
         "ui.energy.leave": "Level verlassen",
         "ui.energy.leaveWarning": "Das Level ohne zusätzliche Energie verlassen? Dein Fortschritt in diesem Level wird nicht gespeichert.",

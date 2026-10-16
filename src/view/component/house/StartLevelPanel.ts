@@ -260,9 +260,9 @@ export default class StartLevelPanel extends ClosablePanel {
         });
         if (this.headerText) {
             this.headerText.position.set(0, -265);this.headerText.anchor.set(0.5);
-            this.headerText.fontSize = 40;this.headerText.fill = Label.ON_DARK;
+            this.headerText.fontSize = 44;this.headerText.fill = Label.ON_DARK;
             UiLayout.fit(this.headerText, 510, 58);
-            label.position.set(0, -176);label.fontSize = 26;label.fill = Label.INK;
+            label.position.set(0, -176);label.fontSize = 36;label.fill = Label.INK;
         } else {
             label.position.set(0, -265);label.fill = Label.ON_DARK;
             UiLayout.fit(label, 500, 62);
@@ -271,10 +271,10 @@ export default class StartLevelPanel extends ClosablePanel {
             const icon: any = this.children.filter((c: any) => c.name === 'goalIcon' + i)[0];
             const count: any = this.children.filter((c: any) => c.name === 'goalCount' + i)[0];
             icon.y = -100;SpriteUtils.fitIcon(icon, 106, 92);
-            count.y = -25;count.fontSize = 36;count.fill = Label.INK;
+            count.y = -25;count.fontSize = 40;count.fill = Label.INK;UiLayout.fit(count, 170, 48);
         });
         const partyTitle: any = this.children.filter((c: any) => c.name === 'chooseBostersLabel')[0];
-        partyTitle.position.set(0, 70);partyTitle.fontSize = 34;partyTitle.fill = Label.INK;
+        partyTitle.position.set(0, 70);partyTitle.fontSize = 38;partyTitle.fill = Label.INK;
         this.heroTeamPanel.y = 204;
         this.playButton.position.set(0, 355);this.playButton.tint = 0xffffff;
         this.playButton.width = 440;this.playButton.height = 108;

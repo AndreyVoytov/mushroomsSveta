@@ -1,0 +1,15 @@
+[
+  {
+    "file": "assets/backpack/panel.png",
+    "tool": "built-in image_gen",
+    "mode": "style-transfer",
+    "masterPublished": false,
+    "references": [
+      "assets/backpack/panel.png (before)",
+      "assets/base/ui/character/character_panel.png",
+      "assets/base/ui/arcane/quest-ledger.png"
+    ],
+    "prompt": "Use case: style-transfer. Asset type: production transparent mobile fantasy game inventory board sprite, no text. Image 1 is the edit target; preserve its entire exact tall silhouette, layout, 4 columns by 3 rows of square inventory slots and the large lower blank description panel. Image 2 is the existing character inventory material reference. Image 3 is the approved watercolor Arcane UI style reference. Redesign image 1 to belong to that watercolor Arcane ensemble: pale sage upholstered empty slot interiors, fine aged champagne brass frames with restrained angular Art Nouveau inlays, a dark desaturated teal header ribbon with generous empty center for cream game-rendered text, warm light parchment lower description card. Travel satchel subtly behind lower card in muted olive leather, elegant tailored seams with a small fashion-forward detail, no orange glossy leather and no blue banner. Keep 12 equally sized square slots, exact original centres and gaps. Keep source canvas framing and dimensions/aspect ratio 973x1413; retain transparent outer corners; nothing cut off. Slot centres are approximately x=185,386,587,788 and y=245,445,645 on that canvas. Lower large blank parchment is approximately x=220..755,y=790..1390. All game text, icons and equipment will be added by runtime: draw NO letters, words, digits, icons, items, characters or labels anywhere. Painterly clean and deliberate, nuanced watercolor pigment and readable material separation, polished premium casual game asset, no repetitive noisy patterns, no excessive black, not a screenshot. Prioritize the original functional geometry while changing the painted styling.",
+    "transparent_background": true
+  }
+]

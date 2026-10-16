@@ -1,0 +1,840 @@
+{
+  "theme": "arcane-watercolor",
+  "branch": "reskin/arcane-watercolor",
+  "reviewIterations": 20,
+  "bundleSha256": "1004b8260ef4dd2d01ff910bb6d7d32bfaef69a49b786b7c20c97dd117ce348e",
+  "generatedAt": "2026-10-16T20:31:09.567Z",
+  "visualReview": {
+    "capturesWithMeasuredText": 79,
+    "measuredLabels": 646,
+    "minimumSampledContrast": 4.69,
+    "contrastFailures": [],
+    "textBoxIntersections": [],
+    "runtimeErrors": [],
+    "missing": [],
+    "scenes": [
+      {
+        "folder": "twenty/01-after",
+        "scene": "01-field-typography",
+        "labels": 7,
+        "minimumSampledContrast": 6.91
+      },
+      {
+        "folder": "twenty/01-after",
+        "scene": "02-tasks",
+        "labels": 17,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty/01-after",
+        "scene": "03-character",
+        "labels": 7,
+        "minimumSampledContrast": 5.96
+      },
+      {
+        "folder": "twenty/01-after",
+        "scene": "04-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "twenty/02-after",
+        "scene": "01-hero-charges",
+        "labels": 7,
+        "minimumSampledContrast": 6.91
+      },
+      {
+        "folder": "twenty/03-after",
+        "scene": "01-large-balances",
+        "labels": 6,
+        "minimumSampledContrast": 6.02
+      },
+      {
+        "folder": "twenty/03-after",
+        "scene": "02-zero-balances",
+        "labels": 6,
+        "minimumSampledContrast": 6
+      },
+      {
+        "folder": "twenty/04-after",
+        "scene": "aims-7",
+        "labels": 7,
+        "minimumSampledContrast": 6.91
+      },
+      {
+        "folder": "twenty/04-after",
+        "scene": "aims-32",
+        "labels": 8,
+        "minimumSampledContrast": 6.71
+      },
+      {
+        "folder": "twenty/05-after",
+        "scene": "start-2",
+        "labels": 4,
+        "minimumSampledContrast": 4.85
+      },
+      {
+        "folder": "twenty/05-after",
+        "scene": "start-4",
+        "labels": 5,
+        "minimumSampledContrast": 4.8
+      },
+      {
+        "folder": "twenty/05-after",
+        "scene": "start-7",
+        "labels": 5,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "twenty/05-after",
+        "scene": "start-three-goals",
+        "labels": 7,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "twenty/06-after",
+        "scene": "01-hard",
+        "labels": 7,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "twenty/06-after",
+        "scene": "02-one-hero",
+        "labels": 7,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "twenty/07-after",
+        "scene": "01-victory",
+        "labels": 7,
+        "minimumSampledContrast": 5.03
+      },
+      {
+        "folder": "twenty/08-after",
+        "scene": "01-failure",
+        "labels": 5,
+        "minimumSampledContrast": 5.3
+      },
+      {
+        "folder": "twenty/08-after",
+        "scene": "02-exit",
+        "labels": 3,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "twenty/09-after",
+        "scene": "energy-0",
+        "labels": 6,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "twenty/09-after",
+        "scene": "energy-120",
+        "labels": 6,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "twenty/09-after",
+        "scene": "energy-150",
+        "labels": 6,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "twenty/09-after",
+        "scene": "energy-5000",
+        "labels": 6,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "twenty/10-after",
+        "scene": "settings-01-support",
+        "labels": 5,
+        "minimumSampledContrast": 6.23
+      },
+      {
+        "folder": "twenty/10-after",
+        "scene": "01-support",
+        "labels": 3,
+        "minimumSampledContrast": 5.39
+      },
+      {
+        "folder": "twenty/10-after",
+        "scene": "settings-02-about",
+        "labels": 5,
+        "minimumSampledContrast": 6.23
+      },
+      {
+        "folder": "twenty/10-after",
+        "scene": "02-about",
+        "labels": 3,
+        "minimumSampledContrast": 5.56
+      },
+      {
+        "folder": "twenty/10-after",
+        "scene": "03-close-target",
+        "labels": 5,
+        "minimumSampledContrast": 6.23
+      },
+      {
+        "folder": "twenty/11-after",
+        "scene": "01-hood",
+        "labels": 7,
+        "minimumSampledContrast": 5.96
+      },
+      {
+        "folder": "twenty/11-after",
+        "scene": "02-cat",
+        "labels": 7,
+        "minimumSampledContrast": 5.96
+      },
+      {
+        "folder": "twenty/11-after",
+        "scene": "03-owl",
+        "labels": 7,
+        "minimumSampledContrast": 5.96
+      },
+      {
+        "folder": "twenty/12-after",
+        "scene": "01-max-equipment",
+        "labels": 13,
+        "minimumSampledContrast": 5.14
+      },
+      {
+        "folder": "twenty/12-after",
+        "scene": "02-upgrade",
+        "labels": 13,
+        "minimumSampledContrast": 5.34
+      },
+      {
+        "folder": "twenty/13-after",
+        "scene": "01-character",
+        "labels": 7,
+        "minimumSampledContrast": 5.96
+      },
+      {
+        "folder": "twenty/13-after",
+        "scene": "02-backpack",
+        "labels": 4,
+        "minimumSampledContrast": 5.24
+      },
+      {
+        "folder": "twenty/13-after",
+        "scene": "03-backpack-filled",
+        "labels": 10,
+        "minimumSampledContrast": 5.24
+      },
+      {
+        "folder": "twenty/13-after",
+        "scene": "04-equip",
+        "labels": 11,
+        "minimumSampledContrast": 5.34
+      },
+      {
+        "folder": "twenty/13-after",
+        "scene": "05-equipped",
+        "labels": 13,
+        "minimumSampledContrast": 5.35
+      },
+      {
+        "folder": "twenty/13-after",
+        "scene": "06-four-targets",
+        "labels": 14,
+        "minimumSampledContrast": 5.19
+      },
+      {
+        "folder": "twenty/14-after",
+        "scene": "01-bank",
+        "labels": 26,
+        "minimumSampledContrast": 4.94
+      },
+      {
+        "folder": "twenty/15-after",
+        "scene": "01-items",
+        "labels": 28,
+        "minimumSampledContrast": 4.69
+      },
+      {
+        "folder": "twenty/15-after",
+        "scene": "02-receipt",
+        "labels": 3,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty/16-after",
+        "scene": "01-daily",
+        "labels": 17,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty/16-after",
+        "scene": "02-campaign",
+        "labels": 16,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty/16-after",
+        "scene": "03-claim-ready",
+        "labels": 17,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty/16-after",
+        "scene": "04-claimed",
+        "labels": 16,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty/16-after",
+        "scene": "05-scrolled",
+        "labels": 17,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty/17-after",
+        "scene": "01-current",
+        "labels": 3,
+        "minimumSampledContrast": 16.97
+      },
+      {
+        "folder": "twenty/17-after",
+        "scene": "02-navigation",
+        "labels": 3,
+        "minimumSampledContrast": 16.96
+      },
+      {
+        "folder": "twenty/18-after",
+        "scene": "01-short",
+        "labels": 4,
+        "minimumSampledContrast": 5.52
+      },
+      {
+        "folder": "twenty/18-after",
+        "scene": "02-long",
+        "labels": 4,
+        "minimumSampledContrast": 5.52
+      },
+      {
+        "folder": "twenty/20-after",
+        "scene": "settings-320",
+        "labels": 5,
+        "minimumSampledContrast": 6.11
+      },
+      {
+        "folder": "twenty/20-after",
+        "scene": "start-320",
+        "labels": 6,
+        "minimumSampledContrast": 4.92
+      },
+      {
+        "folder": "twenty/20-after",
+        "scene": "settings-390",
+        "labels": 5,
+        "minimumSampledContrast": 6.23
+      },
+      {
+        "folder": "twenty/20-after",
+        "scene": "start-390",
+        "labels": 6,
+        "minimumSampledContrast": 4.8
+      },
+      {
+        "folder": "twenty/20-after",
+        "scene": "settings-768",
+        "labels": 5,
+        "minimumSampledContrast": 6.29
+      },
+      {
+        "folder": "twenty/20-after",
+        "scene": "start-768",
+        "labels": 6,
+        "minimumSampledContrast": 4.92
+      },
+      {
+        "folder": "twenty/20-after",
+        "scene": "adventure-footer",
+        "labels": 8,
+        "minimumSampledContrast": 6.87
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "01-redhood-house",
+        "labels": 3,
+        "minimumSampledContrast": 8.83
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "02-cat-interior",
+        "labels": 4,
+        "minimumSampledContrast": 5.52
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "03-forest-hub",
+        "labels": 6,
+        "minimumSampledContrast": 6
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "04-dark-forest-start",
+        "labels": 6,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "05-level-08",
+        "labels": 7,
+        "minimumSampledContrast": 6.91
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "06-puzzle-victory",
+        "labels": 7,
+        "minimumSampledContrast": 5.03
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "07-settings",
+        "labels": 5,
+        "minimumSampledContrast": 6.23
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "08-heroes",
+        "labels": 7,
+        "minimumSampledContrast": 5.96
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "09-tasks",
+        "labels": 17,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "10-diary",
+        "labels": 3,
+        "minimumSampledContrast": 16.97
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "11-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "twenty-final-mobile",
+        "scene": "12-bank",
+        "labels": 26,
+        "minimumSampledContrast": 4.94
+      },
+      {
+        "folder": "twenty-de",
+        "scene": "01-start",
+        "labels": 6,
+        "minimumSampledContrast": 4.79
+      },
+      {
+        "folder": "twenty-de",
+        "scene": "02-settings",
+        "labels": 5,
+        "minimumSampledContrast": 5.99
+      },
+      {
+        "folder": "twenty-de",
+        "scene": "03-tasks",
+        "labels": 17,
+        "minimumSampledContrast": 5.43
+      },
+      {
+        "folder": "twenty-de",
+        "scene": "04-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.24
+      },
+      {
+        "folder": "twenty-de",
+        "scene": "05-victory",
+        "labels": 7,
+        "minimumSampledContrast": 4.97
+      },
+      {
+        "folder": "twenty-en",
+        "scene": "01-start",
+        "labels": 6,
+        "minimumSampledContrast": 4.86
+      },
+      {
+        "folder": "twenty-en",
+        "scene": "02-settings",
+        "labels": 5,
+        "minimumSampledContrast": 5.99
+      },
+      {
+        "folder": "twenty-en",
+        "scene": "03-tasks",
+        "labels": 17,
+        "minimumSampledContrast": 5.37
+      },
+      {
+        "folder": "twenty-en",
+        "scene": "04-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.24
+      },
+      {
+        "folder": "twenty-en",
+        "scene": "05-victory",
+        "labels": 7,
+        "minimumSampledContrast": 5.03
+      }
+    ]
+  },
+  "legibility": {
+    "method": "Median visible bitmap-glyph height in CSS pixels at 390px viewport; excludes empty font padding. This is a comparative measure, not nominal CSS font size.",
+    "measurements": [
+      {
+        "label": "Hero charge",
+        "beforeMedianGlyphCssPx": 8.91,
+        "afterMedianGlyphCssPx": 10.97
+      },
+      {
+        "label": "Six-digit star balance",
+        "beforeMedianGlyphCssPx": 7.65,
+        "afterMedianGlyphCssPx": 12.17
+      },
+      {
+        "label": "Hub objective",
+        "beforeMedianGlyphCssPx": 6.74,
+        "afterMedianGlyphCssPx": 9.14
+      },
+      {
+        "label": "Event duration",
+        "beforeMedianGlyphCssPx": 7.96,
+        "afterMedianGlyphCssPx": 9.41
+      },
+      {
+        "label": "Quest progress heading",
+        "beforeMedianGlyphCssPx": 6.68,
+        "afterMedianGlyphCssPx": 9.47
+      },
+      {
+        "label": "Long quest title",
+        "beforeMedianGlyphCssPx": 7.24,
+        "afterMedianGlyphCssPx": 9.47
+      },
+      {
+        "label": "Character description",
+        "beforeMedianGlyphCssPx": 7.81,
+        "afterMedianGlyphCssPx": 9.6
+      },
+      {
+        "label": "Energy status",
+        "beforeMedianGlyphCssPx": 7.64,
+        "afterMedianGlyphCssPx": 9.83
+      },
+      {
+        "label": "Energy explanation",
+        "beforeMedianGlyphCssPx": 7.1,
+        "afterMedianGlyphCssPx": 8.74
+      },
+      {
+        "label": "Level subtitle",
+        "beforeMedianGlyphCssPx": 7.1,
+        "afterMedianGlyphCssPx": 9.83
+      },
+      {
+        "label": "About text",
+        "beforeMedianGlyphCssPx": 7.81,
+        "afterMedianGlyphCssPx": 9.37
+      },
+      {
+        "label": "Artifact description",
+        "beforeMedianGlyphCssPx": 6.51,
+        "afterMedianGlyphCssPx": 9.17
+      },
+      {
+        "label": "Artifact upgrade action",
+        "beforeMedianGlyphCssPx": 7.15,
+        "afterMedianGlyphCssPx": 9.07
+      },
+      {
+        "label": "Long dialogue",
+        "beforeMedianGlyphCssPx": 7.58,
+        "afterMedianGlyphCssPx": 8.69
+      }
+    ]
+  },
+  "domReview": {
+    "tabs": 4,
+    "measuredLabels": 73,
+    "minimumSampledContrast": 4.55,
+    "contrastFailures": [],
+    "documentOverflow": false,
+    "activeTabsVisible": true,
+    "keyboardFocusLoopAndEscape": "Physically tested"
+  },
+  "regressions": [
+    {
+      "name": "world",
+      "status": "passed"
+    },
+    {
+      "name": "serverless",
+      "status": "passed"
+    },
+    {
+      "name": "cloud-client",
+      "status": "passed"
+    },
+    {
+      "name": "world-fields",
+      "status": "passed"
+    },
+    {
+      "name": "telemetry",
+      "status": "passed"
+    },
+    {
+      "name": "ad-callbacks",
+      "status": "passed"
+    },
+    {
+      "name": "journey-events",
+      "status": "passed"
+    },
+    {
+      "name": "animals-generation",
+      "status": "passed"
+    },
+    {
+      "name": "mushroom-harvest",
+      "status": "passed"
+    },
+    {
+      "name": "ladybug-movement",
+      "status": "passed"
+    },
+    {
+      "name": "hero-abilities",
+      "status": "passed"
+    },
+    {
+      "name": "house-discovery",
+      "status": "passed"
+    },
+    {
+      "name": "item-ground-shadow",
+      "status": "passed"
+    },
+    {
+      "name": "forest-presentation",
+      "status": "passed"
+    },
+    {
+      "name": "snail-sparks",
+      "status": "passed"
+    },
+    {
+      "name": "sapphire-reward",
+      "status": "passed"
+    },
+    {
+      "name": "tint-interpolation",
+      "status": "passed"
+    }
+  ],
+  "assetBudget": {
+    "originalTexturesChecked": 609,
+    "originalCanvasIncreases": 0,
+    "newMastersPublished": false,
+    "purposeDesignedSurfaces": 43,
+    "surfaceBytes": 7277747,
+    "atlasPages": 31,
+    "atlasBytes": 14497258,
+    "openedTile": "Opaque filled face; transparent corners",
+    "inactive": {
+      "treatment": "Pale sage with faint retained motif",
+      "normalLuma": 158.92857362914805,
+      "inactiveLuma": 200.90059058441722,
+      "ratio": 1.2640935861741815
+    }
+  },
+  "notes": [
+    "Final captures supersede diagnostic intermediate versions, including the initial failed equip/backpack color audit.",
+    "Quest list shows three larger readable rows and scrolls through all tasks.",
+    "Intentional cell-content layering is excluded from UI text intersection checks.",
+    "Extra synthetic three-objective and long-counter cases are UI stress fixtures, not new gameplay levels.",
+    "A few secondary captions at the narrowest 320px width remain smaller than main action text."
+  ],
+  "transition": [
+    {
+      "w": 390,
+      "h": 844,
+      "bounds": {
+        "caption": {
+          "x": 200,
+          "y": 1605.6000000000004,
+          "w": 560,
+          "h": 112
+        },
+        "label": {
+          "x": 341.71875,
+          "y": 1634.6468750000004,
+          "w": 257.8125,
+          "h": 53.90625
+        },
+        "game": {
+          "w": 960,
+          "h": 2077
+        },
+        "tint": 16776173
+      },
+      "labels": [
+        {
+          "text": "Загрузка..",
+          "name": "",
+          "font": "bm_arcane_ui",
+          "size": 50,
+          "tint": 16776173,
+          "x": 341.71875,
+          "y": 1634.6468750000004,
+          "width": 257.8125,
+          "height": 53.90625,
+          "gameWidth": 960,
+          "gameHeight": 2077,
+          "foreground": [
+            255,
+            251,
+            237
+          ],
+          "background": [
+            20,
+            56,
+            55
+          ],
+          "contrast": 12.28
+        }
+      ]
+    },
+    {
+      "w": 900,
+      "h": 1600,
+      "bounds": {
+        "caption": {
+          "x": 200,
+          "y": 1308.8000000000002,
+          "w": 560,
+          "h": 112
+        },
+        "label": {
+          "x": 341.71875,
+          "y": 1337.8468750000002,
+          "w": 257.8125,
+          "h": 53.90625
+        },
+        "game": {
+          "w": 960,
+          "h": 1706
+        },
+        "tint": 16776173
+      },
+      "labels": [
+        {
+          "text": "Загрузка..",
+          "name": "",
+          "font": "bm_arcane_ui",
+          "size": 50,
+          "tint": 16776173,
+          "x": 341.71875,
+          "y": 1337.8468750000002,
+          "width": 257.8125,
+          "height": 53.90625,
+          "gameWidth": 960,
+          "gameHeight": 1706,
+          "foreground": [
+            255,
+            251,
+            237
+          ],
+          "background": [
+            19,
+            56,
+            55
+          ],
+          "contrast": 12.3
+        }
+      ]
+    },
+    {
+      "w": 390,
+      "h": 640,
+      "bounds": {
+        "caption": {
+          "x": 200,
+          "y": 1204,
+          "w": 560,
+          "h": 112
+        },
+        "label": {
+          "x": 341.71875,
+          "y": 1233.046875,
+          "w": 257.8125,
+          "h": 53.90625
+        },
+        "game": {
+          "w": 960,
+          "h": 1575
+        },
+        "tint": 16776173
+      },
+      "labels": [
+        {
+          "text": "Загрузка..",
+          "name": "",
+          "font": "bm_arcane_ui",
+          "size": 50,
+          "tint": 16776173,
+          "x": 341.71875,
+          "y": 1233.046875,
+          "width": 257.8125,
+          "height": 53.90625,
+          "gameWidth": 960,
+          "gameHeight": 1575,
+          "foreground": [
+            255,
+            251,
+            237
+          ],
+          "background": [
+            20,
+            56,
+            55
+          ],
+          "contrast": 12.28
+        }
+      ]
+    }
+  ],
+  "actualFlow": {
+    "framesObserved": 624,
+    "states": [
+      "function t(){var e;return r(this,t),e=u(this,t,arguments),e.rightButtons=[],e.activeEventPanel=null,e.preDialogSideEventPanel=null,e.activeRewardPanel=null,e.pendingRewardPanels=[],e.rewardQueueOwnsLock=!1,e.uiHidden=!1,e.canNotTouchUI=!1,e.shopShown=!1,e.lifeDetailsShown=!1,e.progressAnimation=!1,e.fakeTrees=null,e.useCloverReturnTransition=!1,e.backpackAssetsLoading=!1,e.backpackAssetCallbacks=[],e.renderedEventKeys=[],e.configuredEventOffsetY=0,e.sideEventOffsetY=0,e.notebookButtonStartX=90,e}",
+      "function t(){var e;return r(this,t),e=u(this,t,arguments),e.justOpenedCells=[],e.bottomArrows=[],e.spawnedCells=0,e.spawnCellsCountdown=0,e.forceSpawn=!1,e.canSpawn=!1,e.haveShells=!1,e.haveMoonflowers=!1,e.haveBushes=!1,e}"
+    ],
+    "captionVisibleDuringTransition": true,
+    "coverRevealed": true,
+    "inactive": {
+      "opened": false,
+      "input": false,
+      "spent": 0
+    },
+    "active": {
+      "opened": true,
+      "spent": 1
+    }
+  },
+  "localColdLoad": {
+    "encodedBodyBytes": 26312004,
+    "resources": 133
+  }
+}

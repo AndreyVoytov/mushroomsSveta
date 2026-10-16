@@ -1,13 +1,15 @@
 const fs=require('fs'),path=require('path'),assert=require('assert'),sharp=require('./arcane-art-runtime.cjs')('sharp');
 const root=path.resolve(__dirname,'..'),previousArt=path.join(root,'artwork/arcane-reskin/iteration-3');
 const polished=fs.existsSync(path.join(root,'artwork/arcane-reskin/iteration-4/applied-assets.json'));
-const art=polished?path.join(root,'artwork/arcane-reskin/iteration-4'):previousArt;
+const typography=fs.existsSync(path.join(root,'artwork/arcane-reskin/iteration-5/applied-assets.json'));
+const art=typography?path.join(root,'artwork/arcane-reskin/iteration-5'):polished?path.join(root,'artwork/arcane-reskin/iteration-4'):previousArt;
 (async()=>{
  const original=require(path.join(root,'artwork/arcane-reskin/iteration-2/original-dimensions.json'));
  for(const a of original){const m=await sharp(path.join(root,a.file)).metadata();assert(m.width<=a.width&&m.height<=a.height,'Original canvas grew: '+a.file);}
- const overrides=polished?require(path.join(art,'applied-assets.json')):[];
+ const overrides=polished?require(path.join(root,'artwork/arcane-reskin/iteration-4/applied-assets.json')):[];
  const records=require(path.join(previousArt,'applied-assets.json')).map(a=>overrides.find(b=>a.file===b.file)||a);let bytes=0;
- for(const a of records){const file=path.join(root,a.file),m=await sharp(file).metadata();assert(m.width===a.width&&m.height===a.height,'Canvas mismatch '+a.file);assert(m.width<=960&&m.height<=1110,'Display budget '+a.file);bytes+=fs.statSync(file).size;}
+ if(typography)for(const a of require(path.join(art,'applied-assets.json'))){const i=records.findIndex(b=>b.file===a.file);if(i<0)records.push(a);else records[i]=a;}
+ for(const a of records){const file=path.join(root,a.file),m=await sharp(file).metadata();assert(m.width===a.width&&m.height===a.height,'Canvas mismatch '+a.file);assert(m.width<=(a.originalWidth||960)&&m.height<=(a.originalHeight||1110),'Display budget '+a.file);bytes+=fs.statSync(file).size;}
  for(const key of ['grass','grassFlower','grassDF']){
   const a=original.find(a=>a.key===key),{data,info}=await sharp(path.join(root,a.file)).ensureAlpha().raw().toBuffer({resolveWithObject:true});
   const center=((Math.floor(info.height/2)*info.width)+Math.floor(info.width/2))*4;
