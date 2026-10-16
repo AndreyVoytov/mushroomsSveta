@@ -3,10 +3,10 @@
   "branch": "reskin/arcane-watercolor",
   "reviewIterations": 20,
   "bundleSha256": "1004b8260ef4dd2d01ff910bb6d7d32bfaef69a49b786b7c20c97dd117ce348e",
-  "generatedAt": "2026-10-16T20:31:09.567Z",
+  "generatedAt": "2026-10-16T20:39:44.455Z",
   "visualReview": {
-    "capturesWithMeasuredText": 79,
-    "measuredLabels": 646,
+    "capturesWithMeasuredText": 97,
+    "measuredLabels": 802,
     "minimumSampledContrast": 4.69,
     "contrastFailures": [],
     "textBoxIntersections": [],
@@ -486,6 +486,114 @@
         "scene": "05-victory",
         "labels": 7,
         "minimumSampledContrast": 5.03
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "01-redhood-house",
+        "labels": 3,
+        "minimumSampledContrast": 8.83
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "02-cat-interior",
+        "labels": 4,
+        "minimumSampledContrast": 5.52
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "03-forest-hub",
+        "labels": 6,
+        "minimumSampledContrast": 6
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "04-dark-forest-start",
+        "labels": 6,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "05-level-08",
+        "labels": 7,
+        "minimumSampledContrast": 6.91
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "06-puzzle-victory",
+        "labels": 7,
+        "minimumSampledContrast": 5.03
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "07-settings",
+        "labels": 5,
+        "minimumSampledContrast": 6.23
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "08-heroes",
+        "labels": 7,
+        "minimumSampledContrast": 5.96
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "09-tasks",
+        "labels": 17,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "10-diary",
+        "labels": 3,
+        "minimumSampledContrast": 16.97
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "11-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "twenty-published-mobile",
+        "scene": "12-bank",
+        "labels": 26,
+        "minimumSampledContrast": 4.94
+      },
+      {
+        "folder": "twenty/13-published",
+        "scene": "01-character",
+        "labels": 7,
+        "minimumSampledContrast": 5.96
+      },
+      {
+        "folder": "twenty/13-published",
+        "scene": "02-backpack",
+        "labels": 4,
+        "minimumSampledContrast": 5.24
+      },
+      {
+        "folder": "twenty/13-published",
+        "scene": "03-backpack-filled",
+        "labels": 10,
+        "minimumSampledContrast": 5.24
+      },
+      {
+        "folder": "twenty/13-published",
+        "scene": "04-equip",
+        "labels": 11,
+        "minimumSampledContrast": 5.34
+      },
+      {
+        "folder": "twenty/13-published",
+        "scene": "05-equipped",
+        "labels": 13,
+        "minimumSampledContrast": 5.35
+      },
+      {
+        "folder": "twenty/13-published",
+        "scene": "06-four-targets",
+        "labels": 14,
+        "minimumSampledContrast": 5.19
       }
     ]
   },
@@ -833,8 +941,38 @@
       "spent": 1
     }
   },
+  "production": {
+    "branch": "reskin/arcane-watercolor",
+    "commit": "df64917754c51785e0205e8b3015b9fa1eea7540",
+    "journeyLevels": 25,
+    "theme": "arcane-watercolor",
+    "builtAt": "2026-10-16T20:32:55.332Z",
+    "bundleSha256": "1004b8260ef4dd2d01ff910bb6d7d32bfaef69a49b786b7c20c97dd117ce348e",
+    "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+    "previewUrl": "https://26f05605.andreyvoytov-mushrooms-arcane.pages.dev",
+    "verifiedFiles": 80,
+    "tracker": "https://andreyvoytov-studio-board.pages.dev/?project=mushrooms-arcane",
+    "originalVersion": {
+      "branch": "main",
+      "bundleSha256": "c255eb79dbd9d8bc3a2075f16c388b2b20a43ccf2c4dcacdc35b664c6a3448a3",
+      "unchanged": true
+    },
+    "archiveRedirect": 302,
+    "mobileScreens": 12,
+    "inventoryStateScreens": 6,
+    "inventoryPhysicalEquip": true
+  },
   "localColdLoad": {
     "encodedBodyBytes": 26312004,
-    "resources": 133
-  }
+    "resources": 133,
+    "backpackAtlasAtStartup": false
+  },
+  "productionColdLoad": {
+    "encodedBodyBytes": 22466845,
+    "resources": 133,
+    "backpackAtlasAtStartup": false,
+    "previousEncodedBodyBytes": 22466028,
+    "deltaBytes": 817
+  },
+  "exactNewAssetMetadataHashesChecked": 1
 }
