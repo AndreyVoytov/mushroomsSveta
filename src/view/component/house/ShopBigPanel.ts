@@ -34,7 +34,6 @@ export default class ShopBigPanel extends BasePanel {
         let ribbon = this.attachSprite("ribbon2")
         // ribbon.tint  = 0xff5544;
         ribbon.inputEnabled = false;
-        ribbon.tint  = 0xAA7755;
         this.attachSprite("chest1").inputEnabled = false;
         this.attachSprite("gems").inputEnabled = false;
         
@@ -63,7 +62,6 @@ export default class ShopBigPanel extends BasePanel {
         
         // if(AnalyticUtils.getCustomization() == CustomizationType.android){
             let btn0 = this.attachSprite("pnlButton", "pnlButton0");
-            btn0.tint = 0x00FF00;
             let btn = this.attachSprite("pnlButton");
             btn.alpha = 0.5;
             this.events.onInputDown.add(() => ShopService.processPayment(this.game, buy, callbackOnBuy), this);
@@ -116,23 +114,19 @@ export default class ShopBigPanel extends BasePanel {
 
     if(haveDiscount){
         let gr = game.add.graphics(priceOld.x-priceOld.width/2, priceOld.y);
-        gr.lineStyle(2, 0xffffff, 1);
+        gr.lineStyle(2, 0x343c35, 1);
         gr.lineTo(priceOld.width, 0);
         gr.alpha = 0.5;
         this.addChild(gr);
 
         price.y = 76;
 
-        btn.tint = 0x7700FF;
-        btn0.tint = 0x7700FF;
-        panel2.tint = 0x6600FF;
         helperPanel.alpha = 0.5;// = 0x222255;
 
         boosterCounts.forEach(b => {
             b.fill = "#3a001e";
         })
 
-        ribbon.tint  = 0x774455;
     }
 
 

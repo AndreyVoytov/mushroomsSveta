@@ -240,9 +240,12 @@ export default class ArtifactInfoPanel extends BasePanel {
     }
 
     private createLayout(): void {
+        const titlePaper = this.attachSprite('helperPanel', 'contentTitlePaper');
+        titlePaper.position.set(0, ArtifactInfoPanel.TITLE_CENTER_Y);
+        titlePaper.width = 420;titlePaper.height = 68;
         this.contentTitle = this.attachText("contentTitle", "", {
             font: "bold 35px Bookman Old Style",
-            fill: "#8e5532",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 380
@@ -328,8 +331,8 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.addSprite(this.descriptionLabel);
 
         this.contentBody = this.attachText("contentBody", "", {
-            font: "bold 23px Arial",
-            fill: "#855331",
+            font: "bold 30px Arial",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: ArtifactInfoPanel.BODY_WORD_WRAP_WIDTH

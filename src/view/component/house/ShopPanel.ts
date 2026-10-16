@@ -41,7 +41,7 @@ export default class ShopPanel extends ClosablePanel {
         this.createNavigation();
 
         this.header = this.attachSprite("shopHeader");
-        this.header.scale.set(0.78);
+        this.header.width = 470;this.header.height = 100;
 
         this.titleLabel = this.attachText("shopTitle", LocalizationService.get('ui.shopTitle', 'Shop'), {
             font: "50px Bookman Old Style",
@@ -52,16 +52,8 @@ export default class ShopPanel extends ClosablePanel {
         });
         this.titleLabel.anchor.set(0.5);
 
-        this.closeButton = this.attachButton("circleOrange", () => this.close());
+        this.closeButton = this.attachButton("closeButton", () => this.close());
         this.closeButton.name = "closeButton";
-        this.closeButton.tint = 0xCC7777;
-
-        const cross = SpriteUtils.createSprite(game, 0, 0, "closeButton", "cross");
-        cross.anchor.set(0.5);
-        cross.scale.set(1 / 1.34 * 2);
-        cross.alpha = 0.5;
-        cross.tint = 0x333333;
-        this.closeButton.addChild(cross);
 
         this.layout();
         this.selectTab(this.defaultTab, false, false);
@@ -163,7 +155,7 @@ export default class ShopPanel extends ClosablePanel {
         this.activeTabSprite.y = -283;
 
         this.header.x = 0;
-        this.header.y = -385;
+        this.header.y = -402;
 
         this.titleLabel.x = 0;
         this.titleLabel.y = -402;

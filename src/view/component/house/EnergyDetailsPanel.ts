@@ -31,15 +31,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         this.hooks = hooks || {};
         this.visible = false;
         this.fixedToCamera = true;
-        // The panel artwork has a clear center; keep the game dimmed subtly
-        // while drawing an opaque parchment surface inside that frame.
         this.backdropAlpha = 0.55;
-
-        const parchment = new Phaser.Graphics(this.game, 0, 0);
-        parchment.beginFill(0xf2c779, 1);
-        parchment.drawRoundedRect(-325, -148, 650, 380, 30);
-        parchment.endFill();
-        this.addChild(parchment);
 
         const panel = this.attachSprite('energyPanelFrame', 'panel');
         panel.inputEnabled = true;
@@ -48,7 +40,10 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         panel.width = 840;
         panel.height = 560;
 
-        const closeHitArea = new Phaser.Graphics(this.game, 344, -173);
+        const closeIcon = this.attachSprite('closeButton', 'energyCloseIcon');
+        closeIcon.position.set(344, -216);
+        closeIcon.width = closeIcon.height = 64;
+        const closeHitArea = new Phaser.Graphics(this.game, 344, -216);
         closeHitArea.beginFill(0xffffff, 0.001);
         closeHitArea.drawCircle(0, 0, 78);
         closeHitArea.endFill();
@@ -65,20 +60,13 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         title.position.set(0, -209);
 
         const energyOrb = this.attachSprite('energyPanelOrb', 'energyOrb');
-        energyOrb.position.set(-95, -92);
-        energyOrb.width = 112;
-        energyOrb.height = 106;
+        energyOrb.position.set(-110, -92);
+        energyOrb.width = 96;
+        energyOrb.height = 90;
 
-        const counterPlaque = new Phaser.Graphics(this.game, 46, -88);
-        counterPlaque.beginFill(0x6b3514, 0.82);
-        counterPlaque.lineStyle(4, 0xffcf67, 0.95);
-        counterPlaque.drawRoundedRect(-82, -31, 164, 62, 25);
-        counterPlaque.endFill();
-        this.addChild(counterPlaque);
-
-        const lightning = this.attachSprite('lightning', 'lightning');
-        lightning.position.set(2, -88);
-        lightning.scale.set(0.42, 0.42);
+        const counterPlaque = this.attachSprite('helperPanel', 'energyCounterPlaque');
+        counterPlaque.position.set(46, -88);
+        counterPlaque.width = 164;counterPlaque.height = 72;
 
         this.energyLabel = this.attachText("energyCount", "" + UserService.getUser().getEnergy(), {
             font: "bold 54px Gilroy",
@@ -86,10 +74,10 @@ export default class EnergyDetailsPanel extends ClosablePanel {
             stroke: "#713a12",
             strokeThickness: 5
         });
-        this.energyLabel.position.set(66, -88);
+        this.energyLabel.position.set(46, -88);
 
         this.statusLabel = this.attachText("energyStatus", "", {
-            font: "bold 23px Arial",
+            font: "bold 28px Arial",
             fill: "#70401d",
             stroke: "#603014",
             strokeThickness: 0,
@@ -100,7 +88,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         this.statusLabel.position.set(0, -5);
 
         this.resetLabel = this.attachText("energyReset", "", {
-            font: "bold 19px Arial",
+            font: "bold 24px Arial",
             fill: "#70401d",
             stroke: "#603014",
             strokeThickness: 0,
@@ -108,7 +96,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
             wordWrap: true,
             wordWrapWidth: 520
         });
-        this.resetLabel.position.set(0, 161);
+        this.resetLabel.position.set(0, 151);
 
         const actionButton = this.attachButton('energyPanelBuyButton', () => this.tryBuyEnergy(), 'buyButton');
         actionButton.position.set(0, 93);
@@ -123,7 +111,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         this.addChild(gemsIcon);
 
         this.actionLabel = new Label(this.game, 0, 0, "", {
-            font: "bolder 26px Gilroy",
+            font: "bolder 28px Gilroy",
             fill: "#fff8db"
         });
         this.actionLabel.name = "buyLabel";
@@ -134,16 +122,16 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         this.addChild(this.actionLabel);
 
         const energyHint = this.attachText("energyHint", LocalizationService.get('ui.energy.hint', '100 energy for gems. The price increases with each purchase per day.'), {
-            font: "bold 19px Arial",
+            font: "bold 24px Arial",
             fill: "#70401d",
             stroke: "#603014",
             strokeThickness: 0,
             align: "center",
             wordWrap: true,
-            wordWrapWidth: 570
+            wordWrapWidth: 620
         });
-        energyHint.fontSize = 15;
-        energyHint.position.set(0, 198);
+        energyHint.fontSize = 28;
+        energyHint.position.set(0, 213);
 
         const refreshTimer = this.game.time.events.loop(1000, () => {
             if (this.visible) this.refreshTexts();

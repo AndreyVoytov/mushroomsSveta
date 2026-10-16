@@ -23,7 +23,7 @@ type TasksPanelHooks = {
 class TaskCardPanel extends BasePanel {
     public static WIDTH: number = 727;
     public static HEIGHT: number = 147;
-    private static CLAIMED_ALPHA: number = 0.5;
+    private static CLAIMED_ALPHA: number = 0.8;
     private static ITEM_LEFT: number = 24;
     private static ITEM_TOP: number = 23;
     private static ITEM_WIDTH: number = 117;
@@ -36,7 +36,7 @@ class TaskCardPanel extends BasePanel {
     private static PROGRESS_EMPTY_TOP: number = 80;
     private static PROGRESS_FULL_TOP: number = 79;
     private static TITLE_CENTER_X: number = 344;
-    private static TITLE_TOP: number = 33;
+    private static TITLE_TOP: number = 23;
 
     private background: Phaser.Sprite;
     private itemBackground: Phaser.Sprite;
@@ -92,8 +92,8 @@ class TaskCardPanel extends BasePanel {
         this.icon.y = TaskCardPanel.ITEM_TOP + TaskCardPanel.ITEM_HEIGHT / 2;
 
         this.titleLabel = this.attachText("taskTitle", "", {
-            font: "bold 20px Arial",
-            fill: "#855539",
+            font: "bold 26px Arial",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 370
@@ -103,7 +103,7 @@ class TaskCardPanel extends BasePanel {
         this.titleLabel.y = TaskCardPanel.TITLE_TOP;
 
         this.progressLabel = this.attachText("taskProgress", "", {
-            font: "bold 22px Gilroy",
+            font: "bold 26px Gilroy",
             fill: "#f7f1d8",
             align: "center",
             wordWrap: true,
@@ -114,8 +114,8 @@ class TaskCardPanel extends BasePanel {
         this.progressLabel.y = TaskCardPanel.PROGRESS_FULL_TOP + this.progressFull.height / 2 + 1;
 
         this.rewardTitleLabel = this.attachText("rewardTitle", LocalizationService.get("ui.tasks.reward", "Reward"), {
-            font: "bold 20px Arial",
-            fill: "#9a6842",
+            font: "bold 24px Arial",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 160
@@ -213,11 +213,11 @@ class TaskCardPanel extends BasePanel {
         this.claimHitArea.inputEnabled = isClaimable;
         this.claimHitArea.visible = isClaimable;
         this.rewardBackground.tint = isClaimable ? 0xf0ffd7 : 0xffffff;
-        this.progressLabel.fill = isClaimable ? "#6c9518" : (isClaimed ? "#8d816c" : "#fff6db");
-        this.rewardLabel.fill = isClaimable ? "#6c9518" : "#855539";
-        this.rewardTitleLabel.fill = isClaimed ? "#8d816c" : "#9a6842";
-        this.claimTitleLabel.fill = "#6c9518";
-        this.titleLabel.fill = isClaimed ? "#9e927e" : "#855539";
+        this.progressLabel.fill = isClaimable ? "#315e49" : Label.INK;
+        this.rewardLabel.fill = isClaimable ? "#315e49" : Label.INK;
+        this.rewardTitleLabel.fill = Label.INK;
+        this.claimTitleLabel.fill = "#315e49";
+        this.titleLabel.fill = Label.INK;
         this.alpha = isClaimed ? TaskCardPanel.CLAIMED_ALPHA : 1;
     }
 
@@ -349,18 +349,19 @@ export default class TasksPanel extends ClosablePanel {
         this.panel.alpha = 0.001;
         this.panel.inputEnabled = true;
 
-        this.createFixedSprite("tasksPanelBgTop", "backgroundTop", 64, 176);
-        this.createFixedStretchYSprite("tasksPanelBgCenter", "backgroundCenter", 94, 263, TasksPanel.PANEL_CENTER_HEIGHT);
-        this.createFixedSprite("tasksPanelBgBottom", "backgroundBottom", 95, TasksPanel.PANEL_BOTTOM_TOP);
-        this.createFixedSprite("tasksPanelHeaderRibbon", "headerRibbon", 84, 91);
-        this.createFixedSprite("tasksPanelListTop", "listTop", 109, 309);
-        this.createFixedStretchYSprite("tasksPanelListCenter", "listCenter", 109, 385, TasksPanel.LIST_CENTER_HEIGHT);
-        this.createFixedSprite("tasksPanelListBottom", "listBottom", 109, TasksPanel.LIST_BOTTOM_TOP);
-        this.createFixedSprite("tasksPanelProgressEmpty", "progressBarEmpty", 133, 354);
-        this.progressBarFull = this.createFixedSprite("tasksPanelProgressFull", "progressBarFull", 133, 354);
+        const paper = this.createFixedSprite("panel", "paintedBackground", 64, 111);
+        paper.width = TasksPanel.PANEL_WIDTH;paper.height = TasksPanel.PANEL_HEIGHT + 65;
+        const heading = this.createFixedSprite("ribbon", "headerRibbon", 241, 128);
+        heading.width = 540;heading.height = 78;
+        const listPaper = this.createFixedSprite("helperPanel", "listPaper", 109, 309);
+        listPaper.width = 810;listPaper.height = TasksPanel.LIST_BOTTOM_TOP + 93 - 309;
+        const progressTrack = this.createFixedSprite("tasksPanelProgressEmpty", "progressBarEmpty", 153, 402);
+        progressTrack.width = 710;progressTrack.height = 40;
+        this.progressBarFull = this.createFixedSprite("tasksPanelProgressFull", "progressBarFull", 153, 402);
+        this.progressBarFull.width = 710;this.progressBarFull.height = 40;
         this.progressBarChest = this.createFixedSprite("tasksPanelChest", "progressBarChest", 710, 348);
-        this.progressBarFullBaseWidth = this.progressBarFull.width;
-        this.progressBarCropRect = new Phaser.Rectangle(0, 0, this.progressBarFullBaseWidth, this.progressBarFull.height);
+        this.progressBarFullBaseWidth = this.progressBarFull.texture.frame.width;
+        this.progressBarCropRect = new Phaser.Rectangle(0, 0, this.progressBarFullBaseWidth, this.progressBarFull.texture.frame.height);
 
         this.closeButton = this.attachButton("tasksPanelClose", () => this.close(), "closeButton");
         this.closeButton.anchor.set(0.5);
@@ -422,7 +423,7 @@ export default class TasksPanel extends ClosablePanel {
         this.progressTitle.y = this.psdY(334);
 
         this.resetLabel = this.attachText("resetLabel", "", {
-            font: "bold 18px Arial",
+            font: "bold 23px Arial",
             fill: "#a27148",
             align: "center",
             wordWrap: true,
@@ -430,7 +431,7 @@ export default class TasksPanel extends ClosablePanel {
         });
         this.resetLabel.anchor.set(0.5);
         this.resetLabel.x = this.psdCenterX(TasksPanel.MAIN_PROGRESS_LEFT, TasksPanel.MAIN_PROGRESS_WIDTH);
-        this.resetLabel.y = this.psdY(487);
+        this.resetLabel.y = this.psdY(493);
 
         this.progressBarEndReward = this.attachSprite("gems", "progressBarEndReward");
         this.progressBarEndReward.anchor.set(0.5);
@@ -634,7 +635,7 @@ export default class TasksPanel extends ClosablePanel {
 
         label.setStyle({
             font: "bold " + TasksPanel.TAB_FONT_SIZE + "px Gilroy",
-            fill: selected ? "#81543a" : "#f7ead5",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: TasksPanel.TAB_LABEL_WRAP_WIDTH
@@ -870,7 +871,7 @@ export default class TasksPanel extends ClosablePanel {
             this.progressBarCropRect.x = 0;
             this.progressBarCropRect.y = 0;
             this.progressBarCropRect.width = Math.max(1, cropWidth);
-            this.progressBarCropRect.height = this.progressBarFull.height;
+            // Keep the source canvas height; the painted track is scaled down on screen.
             (<any>this.progressBarFull).crop(this.progressBarCropRect, false);
         }
 

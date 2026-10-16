@@ -6,7 +6,8 @@ export default class HeroPortraitSlot extends Phaser.Group {
     public hero: HeroAbilityDefinition;
     private diameter: number;
     private portrait: Phaser.Sprite;
-    private ring: Phaser.Graphics;
+    private ring: Phaser.Sprite;
+    private ringMask: Phaser.Graphics;
     private counter: Label;
     private value = -1;
 
@@ -15,33 +16,32 @@ export default class HeroPortraitSlot extends Phaser.Group {
         this.position.set(x, y);
         this.diameter = diameter;
         this.hero = hero;
-        const frame = new Phaser.Graphics(game, 0, 0);
-        frame.beginFill(0x685c43, .23); frame.drawCircle(0, 4, diameter + 5); frame.endFill();
-        frame.lineStyle(3, hero ? 0xb28e53 : 0xbaa77b, 1);
-        frame.beginFill(hero ? 0xd4d5b8 : 0xe5ddc7); frame.drawCircle(0, 0, diameter); frame.endFill();
-        frame.lineStyle(1, 0xfff3cb, hero ? .9 : .5); frame.drawCircle(0, 0, diameter - 11);
-        this.add(frame);
         if (hero) {
             this.portrait = new Phaser.Sprite(game, 0, 0, this.portraitTexture(game, hero));
             this.portrait.anchor.set(.5);
-            this.portrait.width = this.portrait.height = diameter - 17;
+            this.portrait.width = this.portrait.height = diameter - 20;
             this.add(this.portrait);
         } else {
-            const placeholder = new Phaser.Graphics(game, 0, 0);
-            placeholder.beginFill(0xc6b28c, .23);
-            placeholder.drawCircle(0, -diameter * .11, diameter * .23);
-            placeholder.drawEllipse(0, diameter * .19, diameter * .26, diameter * .18);
-            placeholder.endFill();this.add(placeholder);
+            this.paintedSprite('uiEmptyHero', diameter, diameter);
         }
+        if (hero) this.paintedSprite('uiPortraitFrame', diameter, diameter);
         if (progress && hero) {
-            this.ring = new Phaser.Graphics(game, 0, 0);this.add(this.ring);
-            const badge = new Phaser.Graphics(game, 0, 0);
-            badge.lineStyle(1, 0xad8c56, .9);badge.beginFill(0xf4ead2);
-            badge.drawRoundedRect(-37, diameter * .35, 74, 25, 10);badge.endFill();this.add(badge);
-            this.counter = new Label(game, 0, diameter * .35 + 12, '0/' + hero.energy, {font:'bold 20px Arial',fill:'#fff1c4'});
+            this.ring = this.paintedSprite('uiChargeRing', diameter, diameter);
+            // Only the changing sector is procedural; its painted artwork is shared with the empty frame.
+            this.ringMask = new Phaser.Graphics(game, 0, 0);this.add(this.ringMask);
+            this.ring.mask = this.ringMask;
+            const badge = this.paintedSprite('uiChargeBadge', 86, 32);
+            badge.y = diameter * .35 + 14;
+            this.counter = new Label(game, 0, diameter * .35 + 14, '0/' + hero.energy, {font:'bold 26px Arial',fill:Label.INK});
             this.counter.anchor.set(.5);this.add(this.counter);
             this.setCharge(0);
         }
+    }
+
+    private paintedSprite(key: string, width: number, height: number): Phaser.Sprite {
+        const sprite = SpriteUtils.createSprite(this.game, 0, 0, key);
+        sprite.anchor.set(.5);sprite.width = width;sprite.height = height;
+        this.add(sprite);return sprite;
     }
 
     private portraitTexture(game: Phaser.Game, hero: HeroAbilityDefinition): Phaser.BitmapData {
@@ -51,8 +51,9 @@ export default class HeroPortraitSlot extends Phaser.Group {
         bitmap = game.make.bitmapData(128, 128);
         const ctx = bitmap.ctx;
         ctx.save();ctx.beginPath();ctx.arc(64,64,64,0,Math.PI*2);ctx.clip();
-        const gradient = ctx.createLinearGradient(0,0,0,128);
-        gradient.addColorStop(0,'#d9dfc0');gradient.addColorStop(1,'#9cac8d');ctx.fillStyle=gradient;ctx.fillRect(0,0,128,128);
+        const backing = SpriteUtils.createSprite(game,0,0,'actionCircle'),back=backing.texture.crop;
+        ctx.drawImage(backing.texture.baseTexture.source,back.x,back.y,back.width,back.height,0,0,128,128);
+        backing.destroy();
         const source = SpriteUtils.createSprite(game,0,0,hero.image),crop=source.texture.crop;
         const scale=128/(crop.width*hero.faceWidth);
         ctx.drawImage(source.texture.baseTexture.source,crop.x,crop.y,crop.width,crop.height,
@@ -64,11 +65,14 @@ export default class HeroPortraitSlot extends Phaser.Group {
     public setCharge(charge: number): void {
         if (!this.ring || !this.hero || this.value == charge) return;
         this.value=charge;
-        const progress=Math.max(0,Math.min(1,charge/this.hero.energy)),radius=this.diameter/2-3;
-        this.ring.clear();this.ring.lineStyle(6,0xc2c6a7,.9);this.ring.drawCircle(0,0,radius*2);
+        const progress=Math.max(0,Math.min(1,charge/this.hero.energy)),radius=this.diameter/2+2;
+        this.ring.visible=progress>0;
+        this.ringMask.clear();
         if(progress>0){
-            this.ring.lineStyle(7,this.hero.color,1);
-            this.ring.arc(0,0,radius,-Math.PI/2,-Math.PI/2+Math.PI*2*progress,false);
+            this.ringMask.beginFill(0xffffff);
+            this.ringMask.moveTo(0,0);
+            this.ringMask.arc(0,0,radius,-Math.PI/2,-Math.PI/2+Math.PI*2*progress,false);
+            this.ringMask.lineTo(0,0);this.ringMask.endFill();
         }
         this.counter.text=Math.min(this.hero.energy,Math.floor(charge))+'/'+this.hero.energy;
     }

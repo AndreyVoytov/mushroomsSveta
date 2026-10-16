@@ -1,0 +1,11 @@
+{
+  "measurement": "Same-origin encoded resource bodies on fresh browser first navigation, same local server, no cache",
+  "beforeBytes": 48274529,
+  "afterBytes": 25200657,
+  "beforeMiB": 46.03817844390869,
+  "afterMiB": 24.03321933746338,
+  "reductionPercent": 47.79719756561478,
+  "baselineWebpAtlasMiB": 42.910362,
+  "fonts": "Bitmap fonts kept lossless",
+  "masters": "Never copied to assets or publication"
+}

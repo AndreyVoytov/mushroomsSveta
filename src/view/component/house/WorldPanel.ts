@@ -21,6 +21,33 @@ import CustomizationType from '../../../core/model/enum/CustomizationType';
 
 const css = `
 .world-overlay{position:fixed;inset:0;z-index:500;background:#071d20bb;display:flex;align-items:center;justify-content:center;padding:14px;color:#493323;font:16px/1.5 Gilroy,'Segoe UI',sans-serif}.world-shell{width:min(700px,100%);max-height:calc(100dvh - 28px);max-height:calc(100vh - 28px);background:#f6ebd4;border:3px solid #ab7847;border-radius:24px;box-shadow:0 18px 65px #00191ecc;overflow:auto}.world-header{position:sticky;top:0;background:#67412c;color:#fff2c9;padding:17px 22px;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px}.world-header h2{margin:0;font:26px 'Bookman Old Style',Georgia,serif}.world-header button{background:#a7794a;color:#fff9dd;border:0;border-radius:50%;width:42px;height:42px;font-size:26px;cursor:pointer}.world-tabs{display:flex;gap:6px;padding:12px;overflow:auto;background:#eadab7}.world-tabs button{white-space:nowrap;min-height:42px;border:1px solid #b69d72;background:#f9f1dd;border-radius:12px;color:#67412c;padding:8px 13px;font:inherit;cursor:pointer}.world-tabs button.active{background:#306349;color:#fff5d5;border-color:#306349}.world-body{padding:18px 22px}.world-card{background:#fff8e8;border:1px solid #d9c39b;border-radius:16px;padding:16px;margin-bottom:13px}.world-card h3{font:22px 'Bookman Old Style',Georgia,serif;margin:0 0 8px}.world-card p{margin:7px 0;font-size:15px;color:#70583f}.world-note{font-size:13px;color:#886f4d;margin:0 0 13px}.world-button{border:1px solid #476942;border-radius:12px;background:linear-gradient(#74a158,#386340);color:#fff6df;font:inherit;font-weight:bold;padding:11px 15px;min-height:44px;cursor:pointer;margin:6px 6px 0 0}.world-button:disabled{background:#d8cbaa;color:#82735b;border-color:#bcae8e;cursor:default}.world-button.secondary{background:#efdfbe;color:#67482e;border-color:#c3a477}.world-check{display:block;width:100%;text-align:left;display:flex;justify-content:space-between;gap:10px}.world-stat{background:#ede1c3;border-radius:10px;padding:9px 12px;display:flex;align-items:center;justify-content:space-between;gap:10px;margin:7px 0}.world-stat b{font-size:20px;color:#285543}.world-stat button{font-size:13px;margin:0;padding:8px}.world-art{display:block;width:100%;border-radius:12px;margin-bottom:12px}.world-choice{font-size:12px;display:block;font-weight:normal;opacity:.85}.world-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.world-progress{height:8px;background:#dfceac;border-radius:10px;margin:10px 0;overflow:hidden}.world-progress span{display:block;height:100%;background:#638548}.world-balance{font-size:13px;color:#edd6a5}.world-toast{position:sticky;bottom:0;background:#f2dfb6;border-top:1px solid #c7aa77;padding:10px 18px;font-size:14px}.world-portrait{width:85px;height:100px;object-fit:contain;float:right;filter:drop-shadow(0 3px 3px #bba079)}.world-item-icon{width:60px;height:65px;object-fit:contain;float:right}.world-help details{border-bottom:1px solid #dccba9;padding:12px 0}.world-help summary{cursor:pointer;font-weight:bold}.world-shell button:focus-visible,.world-shell summary:focus-visible{outline:3px solid #db9826;outline-offset:3px}@media(max-width:500px){.world-overlay{padding:6px}.world-shell{max-height:calc(100vh - 12px);border-radius:18px}.world-body{padding:13px}.world-header{padding:12px 15px}.world-header h2{font-size:22px}.world-grid{grid-template-columns:1fr}.world-tabs{padding:8px}.world-card{padding:13px}}`;
+// The DOM overlay shares the game's ImageGen paper, brass and enamel textures.
+const paintedCss = `
+.world-overlay{color:#343c35;background:#102a32b8}
+.world-shell{box-sizing:border-box;border:20px solid transparent;border-image:url('assets/base/ui/panel.png?ui=painted2') 60 fill / 20px;border-radius:0;background:#f6f0e3;box-shadow:0 12px 48px #152c3780}
+.world-header{background:#f4eddf url('assets/base/ui/helperPanel.png?ui=painted2') center/100% 100%;color:#343c35;padding:15px 17px;gap:16px}
+.world-header h2{font-weight:600;color:#343c35}
+.world-balance{color:#465348;line-height:1.8}.world-currency{width:20px;height:22px;object-fit:contain;vertical-align:middle;margin-right:4px}
+.world-header button{flex:0 0 44px;width:44px;height:44px;background:transparent url('assets/base/ui/closeButton.png?ui=painted2') center/contain no-repeat;border:0;border-radius:0;color:transparent;font-size:0}
+.world-tabs{background:transparent;padding:10px 4px;gap:5px}
+.world-tabs button{box-sizing:border-box;border:7px solid transparent;border-image:url('assets/base/ui/helperPanel.png?ui=painted2') 24 fill / 7px;border-radius:0;background:transparent;color:#343c35;padding:5px 8px;min-height:44px}
+.world-tabs button.active{border-color:transparent;border-image:url('assets/base/ui/pnlButton.png?ui=painted2') 42 fill / 11px;background:transparent;color:#243f37;font-weight:700}
+.world-body{padding:10px 7px}
+.world-card{border:12px solid transparent;border-image:url('assets/base/ui/helperPanel.png?ui=painted2') 32 fill / 12px;border-radius:0;background:transparent;padding:12px;margin-bottom:14px}
+.world-card p,.world-note{color:#485348}.world-note{font-size:14px}
+.world-button,.world-button.secondary{box-sizing:border-box;border:12px solid transparent;border-image:url('assets/base/ui/pnlButton.png?ui=painted2') 42 fill / 12px;border-radius:0;background:transparent;color:#293e35;padding:6px 12px;min-height:48px}
+.world-button.secondary{border-image-source:url('assets/base/ui/helperPanel.png?ui=painted2')}
+.world-button:disabled{background:transparent;color:#465348;border-color:transparent;filter:grayscale(.6);opacity:.7}
+.world-button,.world-button.secondary,.world-tabs button.active{border-image:none;border:0;background:transparent url('assets/base/ui/pnlButton.png?ui=painted2') center/100% 100% no-repeat;padding:14px 18px}
+.world-button.secondary,.world-stat button{background-image:url('assets/base/ui/helperPanel.png?ui=painted2')}
+.world-tabs button.active{padding:9px 15px}.world-button:disabled{background-color:transparent}
+.world-button .world-currency{width:17px;height:18px;margin:0 2px}
+.world-stat{background:#e3e6d6;color:#343c35}.world-stat b{color:#284d41}
+.world-progress{height:12px;background:transparent url('assets/base/ui/progressbar/progressLineBg.png?ui=painted2') center/100% 100%;border-radius:0}
+.world-progress span{background:transparent url('assets/base/ui/progressbar/body.jpg?ui=painted2') center/auto 100%}
+.world-toast{background:#e8eddd;color:#343c35;border-top-color:#b6a16e}
+@media(max-width:500px){.world-shell{border-width:12px;border-image-width:12px;max-height:calc(100dvh - 12px)}.world-header{padding:12px}.world-body{padding:8px 2px}.world-card{padding:8px}.world-tabs{padding:8px 0}.world-tabs button{padding:5px}.world-header h2{font-size:22px}}
+`;
 function node(tag:string,text?:string,cls?:string):HTMLElement {const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;return e;}
 export default class WorldPanel {
     private static overlay: HTMLElement;
@@ -43,7 +70,7 @@ export default class WorldPanel {
     public static show(tab:string='journey'):void {
         const user=UserService.getUser();WorldService.prepare(user);user.saveWorld();
         this.active=tab;this.notice='';
-        if(!document.getElementById('world-styles')){const style=node('style');style.id='world-styles';style.textContent=css;document.head.appendChild(style);}
+        if(!document.getElementById('world-styles')){const style=node('style');style.id='world-styles';style.textContent=css+paintedCss;document.head.appendChild(style);}
         if(!this.overlay){this.focusBefore=<HTMLElement>document.activeElement;this.overlay=node('div',null,'world-overlay');document.body.appendChild(this.overlay);document.addEventListener('keydown',this.keys);window.addEventListener('mushrooms-payment-updated',this.paymentUpdated);}
         this.overlay.setAttribute('role','dialog');this.overlay.setAttribute('aria-modal','true');this.overlay.setAttribute('aria-label','Путевая книга');
         YandexGamesHelper.stopGameplay();
@@ -57,6 +84,7 @@ export default class WorldPanel {
     }
     private static button(parent:HTMLElement,label:string,action:()=>void,disabled:boolean=false,secondary:boolean=false):HTMLButtonElement {
         const b=<HTMLButtonElement>node('button',label,'world-button'+(secondary?' secondary':''));b.type='button';b.disabled=disabled;
+        if(label.indexOf('♦')>=0){b.textContent='';const parts=label.split('♦');parts.forEach((text,index)=>{b.appendChild(document.createTextNode(text));if(index<parts.length-1){const star=<HTMLImageElement>node('img',null,'world-currency');star.src='assets/base/ui/gems.png';star.alt='звёзд';b.appendChild(star);}});}
         b.dataset.action=parent.dataset.key||label;
         b.onclick=()=>{b.disabled=true;try{action();}catch(e){this.notice='Не удалось сохранить изменения. Попробуйте ещё раз.';}if(this.overlay)this.render();};parent.appendChild(b);return b;
     }
@@ -70,7 +98,12 @@ export default class WorldPanel {
         this.renderedTab=this.active;
         const user=UserService.getUser();WorldService.prepare(user);
         this.overlay.textContent='';const shell=node('div',null,'world-shell');this.overlay.appendChild(shell);
-        const header=node('header',null,'world-header'),title=node('div');title.appendChild(node('h2','Путевая книга'));title.appendChild(node('div','♦ '+user.getSupermoney()+' · ⚡ '+user.getEnergy()+' · Древесина '+(user.world.materials.wood||0)+' · Клевер '+(user.world.materials.clover||0),'world-balance'));header.appendChild(title);
+        const header=node('header',null,'world-header'),title=node('div');title.appendChild(node('h2','Путевая книга'));
+        const balance=node('div',null,'world-balance');
+        const stars=<HTMLImageElement>node('img',null,'world-currency');stars.src='assets/base/ui/gems.png';stars.alt='Звёзды';balance.appendChild(stars);
+        balance.appendChild(document.createTextNode(user.getSupermoney()+' · '));
+        const energy=<HTMLImageElement>node('img',null,'world-currency');energy.src='assets/base/ui/energyPanelOrb.png';energy.alt='Энергия';balance.appendChild(energy);
+        balance.appendChild(document.createTextNode(user.getEnergy()+' · Древесина '+(user.world.materials.wood||0)+' · Клевер '+(user.world.materials.clover||0)));title.appendChild(balance);header.appendChild(title);
         const close=<HTMLButtonElement>node('button','×');close.setAttribute('aria-label','Закрыть путевую книгу');close.onclick=()=>this.close();header.appendChild(close);shell.appendChild(header);
         const tabs=node('nav',null,'world-tabs');tabs.setAttribute('aria-label','Разделы путевой книги');
         [['journey','Тропа'],['heroes','Герои'],['wardrobe','Вещи'],['relations','Отношения'],['season','Сезон'],['cloud','Сохранение'],['help','Правила']].forEach(pair=>{const b=<HTMLButtonElement>node('button',pair[1],this.active===pair[0]?'active':'');b.setAttribute('aria-pressed',String(this.active===pair[0]));b.dataset.action='tab-'+pair[0];b.onclick=()=>{this.active=pair[0];this.notice='';this.render();};tabs.appendChild(b);});shell.appendChild(tabs);

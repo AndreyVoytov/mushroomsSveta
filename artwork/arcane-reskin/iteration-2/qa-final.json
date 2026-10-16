@@ -1,0 +1,129 @@
+{
+  "branch": "reskin/arcane-watercolor",
+  "reviewCycles": 5,
+  "imageGeneration": "built-in image_gen",
+  "selectedGenerations": 58,
+  "desktop": {
+    "viewport": [
+      900,
+      1600
+    ],
+    "states": 12,
+    "sampledLabels": 101,
+    "minimumContrast": 4.87
+  },
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "states": 12,
+    "sampledLabels": 101,
+    "minimumContrast": 4.87
+  },
+  "longDialogue": {
+    "tested": 3,
+    "overlaps": 0
+  },
+  "domMenus": [
+    {
+      "viewport": 390,
+      "scrollWidth": 390,
+      "images": true
+    },
+    {
+      "viewport": 390,
+      "scrollWidth": 390,
+      "images": true
+    },
+    {
+      "viewport": 390,
+      "scrollWidth": 390,
+      "images": true
+    },
+    {
+      "viewport": 390,
+      "scrollWidth": 390,
+      "images": true
+    }
+  ],
+  "extraRuntimeErrors": [],
+  "regressions": [
+    {
+      "name": "world",
+      "status": "passed"
+    },
+    {
+      "name": "serverless",
+      "status": "passed"
+    },
+    {
+      "name": "cloud-client",
+      "status": "passed"
+    },
+    {
+      "name": "world-fields",
+      "status": "passed"
+    },
+    {
+      "name": "telemetry",
+      "status": "passed"
+    },
+    {
+      "name": "ad-callbacks",
+      "status": "passed"
+    },
+    {
+      "name": "journey-events",
+      "status": "passed"
+    },
+    {
+      "name": "animals-generation",
+      "status": "passed"
+    },
+    {
+      "name": "mushroom-harvest",
+      "status": "passed"
+    },
+    {
+      "name": "ladybug-movement",
+      "status": "passed"
+    },
+    {
+      "name": "hero-abilities",
+      "status": "passed"
+    },
+    {
+      "name": "house-discovery",
+      "status": "passed"
+    },
+    {
+      "name": "item-ground-shadow",
+      "status": "passed"
+    },
+    {
+      "name": "forest-presentation",
+      "status": "passed"
+    },
+    {
+      "name": "snail-sparks",
+      "status": "passed"
+    },
+    {
+      "name": "sapphire-reward",
+      "status": "passed"
+    },
+    {
+      "name": "tint-interpolation",
+      "status": "passed"
+    }
+  ],
+  "heroAbilitiesBrowser": "passed, including restart and refund exclusion",
+  "boardThemes": [
+    3,
+    11,
+    33,
+    93,
+    134
+  ]
+}

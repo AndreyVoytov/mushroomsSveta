@@ -1,4 +1,5 @@
-// A new code-native UI system; logical canvases and hit areas match the game presets.
+// Archived v1 experiment. The current UI uses ImageGen pixels; never overwrite it by accident.
+if (!process.argv.includes('--legacy-v1')) throw Error('Superseded by tools/apply-painted-ui.cjs. --legacy-v1 is only for reproducing the archived first experiment.');
 const fs=require('fs'),path=require('path');
 const sharp=require('./arcane-art-runtime.cjs')('sharp');
 const mappings={

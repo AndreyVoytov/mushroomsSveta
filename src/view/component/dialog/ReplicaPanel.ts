@@ -109,46 +109,22 @@ export default class ReplicaPanel extends BasePanel {
 
     private createSkipButton(parentCont: DialogPanel): Phaser.Button {
         const skipText = LocalizationService.get(LocalizationKey.ui('skip'));
-        const height = 50;
-        const leftPadding = 18;
-        const labelArrowGap = 18;
-        const rightPadding = 16;
-        const arrowScale = 1.8;
-        const arrowWidth = Math.round(7 * arrowScale);
-        const arrowHalfHeight = Math.round(5 * arrowScale);
-
-        const label = new Label(this.game, 0, height / 2 - 2, skipText, {
-            font: "bold 30px Arial",
-            fill: "#8d8d8d"
+        const height = 60, width = 256;
+        const label = new Label(this.game, width / 2, height / 2, skipText + ' →', {
+            font: "26px Manrope",
+            fill: Label.INK
         });
         label.anchor.set(0.5);
         label.inputEnabled = false;
 
-        const width = Math.ceil(leftPadding + label.width + labelArrowGap + arrowWidth + rightPadding);
-        const background = this.game.add.graphics(0, 0);
-
-        background.beginFill(0xf2f2f2, 0.96);
-        background.lineStyle(2, 0xb7b7b7, 1);
-        background.drawRoundedRect(0, 0, width, height, 14);
-        background.endFill();
-
-        const texture = background.generateTexture();
-        background.destroy(true);
-
-        const button = new Phaser.Button(this.game, this.dialogPnl.width - width - 44, this.dialogPnl.height - height - 24, <any>texture, () => {
+        const button = SpriteUtils.createButton(this.game, this.dialogPnl.width - width - 44, this.dialogPnl.height - height - 10, 'uiQuietButton', () => {
             parentCont.skip();
         });
         button.anchor.set(0);
         button.alpha = 0.96;
 
-        label.x = leftPadding + label.width / 2;
+        if (label.textWidth > width - 34) label.fontSize *= (width - 34) / label.textWidth;
         button.addChild(label);
-
-        const arrow = this.game.add.graphics(width - rightPadding - arrowWidth, height / 2);
-        arrow.beginFill(0x8d8d8d, 1);
-        arrow.drawPolygon([0, -arrowHalfHeight, arrowWidth, 0, 0, arrowHalfHeight]);
-        arrow.endFill();
-        button.addChild(arrow);
 
         return button;
     }
@@ -354,7 +330,7 @@ export default class ReplicaPanel extends BasePanel {
         this.textHolder.add(this.text);
 
         if (r.rightSide) {
-            this.titlePnl = SpriteUtils.createSprite(this.game, this.game.width - 50, -500, 'titlePnl');
+            this.titlePnl = SpriteUtils.createSprite(this.game, this.game.width - 50, -500, 'dialogNameplate');
             this.titlePnl.alpha = 0;
             this.titlePnl.anchor = new Phaser.Point(1, 0.5);
             this.titlePnl.scale = new Phaser.Point(1, 1.1)
@@ -371,7 +347,7 @@ export default class ReplicaPanel extends BasePanel {
             // this.addChild(this.title);
             // parentCont.addChild(this.title); this.title.x += this.x; this.title.y += this.y;
         } else {
-            this.titlePnl = SpriteUtils.createSprite(this.game, 50, -500, 'titlePnl');
+            this.titlePnl = SpriteUtils.createSprite(this.game, 50, -500, 'dialogNameplate');
             this.titlePnl.alpha = 0;
             this.titlePnl.anchor = new Phaser.Point(0, 0.5);
             this.titlePnl.scale = new Phaser.Point(1, 1.1)
@@ -409,18 +385,18 @@ export default class ReplicaPanel extends BasePanel {
 
             // console.log("Y:" + (this.y + gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 25))
 
-            this.actionButton = SpriteUtils.createButton(this.game, this.game.width / 2 - 25, gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 20, "pnlButton", callback);
+            this.actionButton = SpriteUtils.createButton(this.game, this.game.width / 2 - 25, gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 20, "dialogActionButton", callback);
             this.actionButton.anchor.set(0.5);
             this.actionButton.alpha = 0;
             // this.addButton(this.actionButton);
             this.actionButton.x += this.x; this.actionButton.y += this.y;
             parentCont.addChild(this.actionButton);
 
-            let actionCircle = SpriteUtils.createSprite(this.game, this.actionButton.width / 2 + 10, 0, 'actionCircle');
+            let actionCircle = SpriteUtils.createSprite(this.game, this.actionButton.width / 2 + 10, 0, 'dialogMedallion');
             actionCircle.anchor.set(0.5);
             this.actionButton.addChild(actionCircle);
 
-            const actionTextStyle: Phaser.PhaserTextStyle = { font: "bold 40px Manrope", fill: "#344333", wordWrap: true, wordWrapWidth: 800 };
+            const actionTextStyle: Phaser.PhaserTextStyle = { font: "38px Lora", fill: Label.ON_DARK, wordWrap: true, wordWrapWidth: 800 };
             let label = new Label(this.game, -13, 0, replicaButtonName, actionTextStyle);
             label.anchor.set(0.5);
             this.actionButton.addChild(label);

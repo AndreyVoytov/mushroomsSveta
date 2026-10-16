@@ -1,0 +1,36 @@
+{
+  "codec": "WebP quality 92, method 6, alpha quality 100",
+  "bitmapFonts": "Original lossless PNG; not part of lossy atlases",
+  "samples": [
+    {
+      "file": "base-0",
+      "bytes": 346584,
+      "opaquePSNR": 38.48,
+      "changedAlphaPixels": 0
+    },
+    {
+      "file": "base-7",
+      "bytes": 802260,
+      "opaquePSNR": 36.83,
+      "changedAlphaPixels": 0
+    },
+    {
+      "file": "additional0",
+      "bytes": 1028540,
+      "opaquePSNR": 34.99,
+      "changedAlphaPixels": 0
+    },
+    {
+      "file": "screens/forestHouseBg",
+      "bytes": 453830,
+      "opaquePSNR": 36.6,
+      "changedAlphaPixels": 0
+    },
+    {
+      "file": "screens/houseBg",
+      "bytes": 305710,
+      "opaquePSNR": 38.98,
+      "changedAlphaPixels": 0
+    }
+  ]
+}

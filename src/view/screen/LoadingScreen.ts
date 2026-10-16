@@ -246,6 +246,14 @@ export default class LoadingScreen extends BaseScreen {
         this.load.bitmapFont('bm_arcane_ui', 'assets/base/fonts/bitmap/bm_arcane_ui.png', 'assets/base/fonts/bitmap/bm_arcane_ui.fnt');
         this.load.bitmapFont('bm_arcane_title', 'assets/base/fonts/bitmap/bm_arcane_title.png', 'assets/base/fonts/bitmap/bm_arcane_title.fnt');
         this.loadImage('blank', 'assets/base/ui/blank.png');
+        this.loadImage('dialogNameplate', 'assets/base/ui/arcane/dialogNameplate.png');
+        this.loadImage('dialogActionButton', 'assets/base/ui/arcane/dialogButton.png');
+        this.loadImage('dialogMedallion', 'assets/base/ui/arcane/dialogMedallion.png');
+        this.loadImage('uiQuietButton', 'assets/base/ui/arcane/quietButton.png');
+        this.loadImage('uiPortraitFrame', 'assets/base/ui/arcane/portraitFrame.png');
+        this.loadImage('uiChargeRing', 'assets/base/ui/arcane/chargeRing.png');
+        this.loadImage('uiEmptyHero', 'assets/base/ui/arcane/emptyHero.png');
+        this.loadImage('uiChargeBadge', 'assets/base/ui/arcane/chargeBadge.png');
 
         // this.loadImage('houseFrame', 'assets/screens/houseFrame.png');
 

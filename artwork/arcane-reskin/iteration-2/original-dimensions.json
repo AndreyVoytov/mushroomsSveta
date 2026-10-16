@@ -1,0 +1,3656 @@
+[
+  {
+    "key": "blank",
+    "file": "assets/base/ui/blank.png",
+    "width": 1,
+    "height": 1
+  },
+  {
+    "key": "houseFrame",
+    "file": "assets/screens/houseFrame.png",
+    "width": 206,
+    "height": 384
+  },
+  {
+    "key": "skipButton",
+    "file": "assets/base/ui/skipButton.png",
+    "width": 218,
+    "height": 55
+  },
+  {
+    "key": "progressBody",
+    "file": "assets/base/ui/progressbar/body.jpg",
+    "width": 47,
+    "height": 41
+  },
+  {
+    "key": "progressLineBg",
+    "file": "assets/base/ui/progressbar/progressLineBg.png",
+    "width": 696,
+    "height": 82
+  },
+  {
+    "key": "progressTail",
+    "file": "assets/base/ui/progressbar/tail.png",
+    "width": 18,
+    "height": 31
+  },
+  {
+    "key": "flash",
+    "file": "assets/base/ui/progressbar/flash.png",
+    "width": 196,
+    "height": 200
+  },
+  {
+    "key": "scale",
+    "file": "assets/base/ui/progressbar/scale.png",
+    "width": 14,
+    "height": 45
+  },
+  {
+    "key": "shadow",
+    "file": "assets/base/ui/progressbar/shadow.png",
+    "width": 100,
+    "height": 232
+  },
+  {
+    "key": "ribbon",
+    "file": "assets/base/ui/progressbar/ribbon.png",
+    "width": 772,
+    "height": 125
+  },
+  {
+    "key": "ribbon2",
+    "file": "assets/base/ui/progressbar/ribbon2.png",
+    "width": 300,
+    "height": 78
+  },
+  {
+    "key": "circle",
+    "file": "assets/base/ui/progressbar/circle.png",
+    "width": 164,
+    "height": 164
+  },
+  {
+    "key": "circleSmall",
+    "file": "assets/base/ui/progressbar/circleSmall.png",
+    "width": 100,
+    "height": 100
+  },
+  {
+    "key": "forestHeader",
+    "file": "assets/base/ui/progressbar/forestHeader.png",
+    "width": 839,
+    "height": 287
+  },
+  {
+    "key": "potionHeader",
+    "file": "assets/base/ui/progressbar/potionsHeader.png",
+    "width": 839,
+    "height": 287
+  },
+  {
+    "key": "progressCheck",
+    "file": "assets/base/ui/progressbar/progressCheck.png",
+    "width": 49,
+    "height": 47
+  },
+  {
+    "key": "progressCircle",
+    "file": "assets/base/ui/progressCircle.png",
+    "width": 150,
+    "height": 150
+  },
+  {
+    "key": "boots",
+    "file": "assets/chapter1/attic/boots.png",
+    "width": 271,
+    "height": 270
+  },
+  {
+    "key": "bootsBroken",
+    "file": "assets/chapter1/attic/bootsBroken.png",
+    "width": 271,
+    "height": 270
+  },
+  {
+    "key": "batteryLow",
+    "file": "assets/chapter1/attic/batteryLow.png",
+    "width": 45,
+    "height": 82
+  },
+  {
+    "key": "batteryFull",
+    "file": "assets/chapter1/attic/batteryFull.png",
+    "width": 45,
+    "height": 82
+  },
+  {
+    "key": "battery1",
+    "file": "assets/chapter1/attic/battery1.png",
+    "width": 45,
+    "height": 82
+  },
+  {
+    "key": "battery2",
+    "file": "assets/chapter1/attic/battery2.png",
+    "width": 45,
+    "height": 82
+  },
+  {
+    "key": "battery3",
+    "file": "assets/chapter1/attic/battery3.png",
+    "width": 45,
+    "height": 82
+  },
+  {
+    "key": "actionBoots",
+    "file": "assets/base/action/actionBoots.png",
+    "width": 100,
+    "height": 100
+  },
+  {
+    "key": "actionSphere",
+    "file": "assets/base/action/actionSphere.png",
+    "width": 150,
+    "height": 144
+  },
+  {
+    "key": "pot1",
+    "file": "assets/base/action/pot1.png",
+    "width": 250,
+    "height": 247
+  },
+  {
+    "key": "pot2",
+    "file": "assets/base/action/pot2.png",
+    "width": 250,
+    "height": 250
+  },
+  {
+    "key": "pot3",
+    "file": "assets/base/action/pot3.png",
+    "width": 250,
+    "height": 250
+  },
+  {
+    "key": "pot4",
+    "file": "assets/base/action/pot4.png",
+    "width": 250,
+    "height": 250
+  },
+  {
+    "key": "dish1",
+    "file": "assets/base/action/dish1.png",
+    "width": 180,
+    "height": 180
+  },
+  {
+    "key": "dish2",
+    "file": "assets/base/action/dish2.png",
+    "width": 180,
+    "height": 180
+  },
+  {
+    "key": "catAim",
+    "file": "assets/base/action/cat.png",
+    "width": 124,
+    "height": 124
+  },
+  {
+    "key": "joystick",
+    "file": "assets/other/editor/joystick.png",
+    "width": 100,
+    "height": 97
+  },
+  {
+    "key": "character",
+    "file": "assets/base/ui/progressbar/character.png",
+    "width": 43,
+    "height": 98
+  },
+  {
+    "key": "gift",
+    "file": "assets/base/ui/progressbar/gift.png",
+    "width": 90,
+    "height": 77
+  },
+  {
+    "key": "bushes",
+    "file": "assets/base/ui/bushes.png",
+    "width": 338,
+    "height": 641
+  },
+  {
+    "key": "bushes2",
+    "file": "assets/base/ui/bushes2.png",
+    "width": 106,
+    "height": 90
+  },
+  {
+    "key": "bushDark",
+    "file": "assets/base/ui/bushDark.png",
+    "width": 344,
+    "height": 623
+  },
+  {
+    "key": "bushDark2",
+    "file": "assets/base/ui/bushDark2.png",
+    "width": 90,
+    "height": 83
+  },
+  {
+    "key": "bushClover",
+    "file": "assets/base/ui/bushClover.png",
+    "width": 338,
+    "height": 641
+  },
+  {
+    "key": "bushClover2",
+    "file": "assets/base/ui/bushClover2.png",
+    "width": 106,
+    "height": 90
+  },
+  {
+    "key": "bushCloverDark",
+    "file": "assets/base/ui/bushCloverDark.png",
+    "width": 344,
+    "height": 623
+  },
+  {
+    "key": "bushCloverDark2",
+    "file": "assets/base/ui/bushCloverDark2.png",
+    "width": 90,
+    "height": 83
+  },
+  {
+    "key": "darkStump",
+    "file": "assets/minigame3/darkStump.png",
+    "width": 272,
+    "height": 183
+  },
+  {
+    "key": "flowersBg",
+    "file": "assets/base/ui/flowersBg.png",
+    "width": 101,
+    "height": 67
+  },
+  {
+    "key": "stoneBig",
+    "file": "assets/base/ui/stoneBig.png",
+    "width": 360,
+    "height": 215
+  },
+  {
+    "key": "dwarfs",
+    "file": "assets/chapter1/fields/dwarfs.png",
+    "width": 450,
+    "height": 504
+  },
+  {
+    "key": "cage",
+    "file": "assets/chapter1/fields/cage.png",
+    "width": 408,
+    "height": 461
+  },
+  {
+    "key": "boombox",
+    "file": "assets/chapter1/fields/boombox.png",
+    "width": 300,
+    "height": 231
+  },
+  {
+    "key": "boombox2",
+    "file": "assets/chapter1/fields/boombox2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "solovei",
+    "file": "assets/chapter1/fields/solovei.png",
+    "width": 100,
+    "height": 75
+  },
+  {
+    "key": "owlVision",
+    "file": "assets/chapter1/attic/owlVision.png",
+    "width": 400,
+    "height": 341
+  },
+  {
+    "key": "sphere1",
+    "file": "assets/chapter1/attic/sphere1.png",
+    "width": 300,
+    "height": 285
+  },
+  {
+    "key": "sphere2",
+    "file": "assets/chapter1/attic/sphere2.png",
+    "width": 300,
+    "height": 285
+  },
+  {
+    "key": "cloudBig",
+    "file": "assets/chapter1/attic/vision/cloudBig.png",
+    "width": 330,
+    "height": 274
+  },
+  {
+    "key": "everest",
+    "file": "assets/chapter1/attic/vision/everest.png",
+    "width": 556,
+    "height": 371
+  },
+  {
+    "key": "everestSky",
+    "file": "assets/chapter1/attic/vision/sky.png",
+    "width": 660,
+    "height": 525
+  },
+  {
+    "key": "vedmaEverest",
+    "file": "assets/chapter1/attic/vision/vedmaEverest.png",
+    "width": 258,
+    "height": 426
+  },
+  {
+    "key": "voltorna",
+    "file": "assets/chapter1/darkForest/voltorna.png",
+    "width": 360,
+    "height": 381
+  },
+  {
+    "key": "strawberryBucket",
+    "file": "assets/chapter1/darkForest/strawberryBucket.png",
+    "width": 300,
+    "height": 309
+  },
+  {
+    "key": "monocle",
+    "file": "assets/chapter1/darkForest/monocle.png",
+    "width": 252,
+    "height": 174
+  },
+  {
+    "key": "cyclop",
+    "file": "assets/chapter1/darkForest/cyclop.png",
+    "width": 546,
+    "height": 523
+  },
+  {
+    "key": "unicorn1",
+    "file": "assets/chapter1/darkForest/unicorn1.png",
+    "width": 447,
+    "height": 494
+  },
+  {
+    "key": "unicorn2",
+    "file": "assets/chapter1/darkForest/unicorn2.png",
+    "width": 505,
+    "height": 636
+  },
+  {
+    "key": "unicorn3",
+    "file": "assets/chapter1/darkForest/unicorn3.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "flour",
+    "file": "assets/chapter1/forest/flour.png",
+    "width": 180,
+    "height": 245
+  },
+  {
+    "key": "topPanelFrame",
+    "file": "assets/base/ui/topPanelFrame.png",
+    "width": 482,
+    "height": 106
+  },
+  {
+    "key": "topPanel",
+    "file": "assets/base/ui/topPanel.png",
+    "width": 960,
+    "height": 155
+  },
+  {
+    "key": "decor",
+    "file": "assets/base/ui/decor.png",
+    "width": 30,
+    "height": 80
+  },
+  {
+    "key": "panel",
+    "file": "assets/base/ui/panel.png",
+    "width": 749,
+    "height": 765
+  },
+  {
+    "key": "panel2",
+    "file": "assets/base/ui/panel2.png",
+    "width": 749,
+    "height": 532
+  },
+  {
+    "key": "statusPanel",
+    "file": "assets/base/ui/statusPanel.png",
+    "width": 285,
+    "height": 98
+  },
+  {
+    "key": "slotOpened",
+    "file": "assets/base/ui/slotOpened.png",
+    "width": 161,
+    "height": 158
+  },
+  {
+    "key": "helperPanel2",
+    "file": "assets/base/ui/helperPanel.png",
+    "width": 656,
+    "height": 268
+  },
+  {
+    "key": "helperPanel2",
+    "file": "assets/base/ui/helperPanel2.png",
+    "width": 656,
+    "height": 268
+  },
+  {
+    "key": "steps",
+    "file": "assets/base/ui/steps.png",
+    "width": 71,
+    "height": 78
+  },
+  {
+    "key": "heart",
+    "file": "assets/base/ui/heart.png",
+    "width": 211,
+    "height": 199
+  },
+  {
+    "key": "lightning",
+    "file": "assets/base/ui/lightnin_draft.png",
+    "width": 300,
+    "height": 315
+  },
+  {
+    "key": "energyPanelFrame",
+    "file": "assets/base/ui/energyPanelFrame.png",
+    "width": 1536,
+    "height": 1024
+  },
+  {
+    "key": "energyPanelBuyButton",
+    "file": "assets/base/ui/energyPanelBuyButton.png",
+    "width": 1900,
+    "height": 678
+  },
+  {
+    "key": "energyPanelOrb",
+    "file": "assets/base/ui/energyPanelOrb.png",
+    "width": 1292,
+    "height": 1217
+  },
+  {
+    "key": "gems",
+    "file": "assets/base/ui/gems.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "sapphireStar",
+    "file": "assets/base/ui/sapphireStar.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "sapphireStarBackdrop",
+    "file": "assets/base/ui/sapphireStarBackdrop.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexFrameLootYellow",
+    "file": "assets/base/hex/hexFrameLootYellow.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "gemsCloud",
+    "file": "assets/base/ui/gemsCloud.png",
+    "width": 283,
+    "height": 300
+  },
+  {
+    "key": "tasks",
+    "file": "assets/base/ui/tasks.png",
+    "width": 225,
+    "height": 237
+  },
+  {
+    "key": "tasksPanelBgTop",
+    "file": "assets/base/task/bg_top.png",
+    "width": 897,
+    "height": 103
+  },
+  {
+    "key": "tasksPanelBgCenter",
+    "file": "assets/base/task/bg_center.png",
+    "width": 837,
+    "height": 16
+  },
+  {
+    "key": "tasksPanelBgBottom",
+    "file": "assets/base/task/bg_bottom.png",
+    "width": 840,
+    "height": 138
+  },
+  {
+    "key": "tasksPanelHeaderRibbon",
+    "file": "assets/base/task/header_ribbon.png",
+    "width": 981,
+    "height": 297
+  },
+  {
+    "key": "tasksPanelTabActive",
+    "file": "assets/base/task/tab_active.png",
+    "width": 346,
+    "height": 76
+  },
+  {
+    "key": "tasksPanelTabInactive",
+    "file": "assets/base/task/tab_inactive.png",
+    "width": 346,
+    "height": 76
+  },
+  {
+    "key": "tasksPanelListTop",
+    "file": "assets/base/task/taks_list_bg_top.png",
+    "width": 810,
+    "height": 78
+  },
+  {
+    "key": "tasksPanelListCenter",
+    "file": "assets/base/task/taks_list_bg_center.png",
+    "width": 810,
+    "height": 38
+  },
+  {
+    "key": "tasksPanelListBottom",
+    "file": "assets/base/task/taks_list_bg_bottom.png",
+    "width": 810,
+    "height": 93
+  },
+  {
+    "key": "tasksPanelProgressEmpty",
+    "file": "assets/base/task/progress_empty.png",
+    "width": 766,
+    "height": 174
+  },
+  {
+    "key": "tasksPanelProgressFull",
+    "file": "assets/base/task/progress_full.png",
+    "width": 766,
+    "height": 174
+  },
+  {
+    "key": "energy_chest",
+    "file": "assets/base/task/energy_chest.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "tasksPanelChest",
+    "file": "assets/base/task/chest.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "tasksPanelChest2",
+    "file": "assets/base/task/chest2.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "tasksPanelChest3",
+    "file": "assets/base/task/chest3.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "tasksPanelChest4",
+    "file": "assets/base/task/chest4.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "tasksPanelChest5",
+    "file": "assets/base/task/chest5.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "tasksPanelChest6",
+    "file": "assets/base/task/chest6.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "tasksPanelChest7",
+    "file": "assets/base/task/chest7.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "tasksPanelOrnament",
+    "file": "assets/base/task/ornament.png",
+    "width": 1466,
+    "height": 131
+  },
+  {
+    "key": "tasksPanelTaskBg",
+    "file": "assets/base/task/task_bg.png",
+    "width": 727,
+    "height": 147
+  },
+  {
+    "key": "tasksPanelTaskItemBg",
+    "file": "assets/base/task/task_item_bg.png",
+    "width": 117,
+    "height": 100
+  },
+  {
+    "key": "tasksPanelTaskRewardBg",
+    "file": "assets/base/task/task_reward_bg.png",
+    "width": 194,
+    "height": 125
+  },
+  {
+    "key": "tasksPanelClose",
+    "file": "assets/base/task/task_panel_close.png",
+    "width": 60,
+    "height": 65
+  },
+  {
+    "key": "tasksPanelTaskProgressEmpty",
+    "file": "assets/base/task/task_progress_empty.png",
+    "width": 362,
+    "height": 50
+  },
+  {
+    "key": "tasksPanelTaskProgressFull",
+    "file": "assets/base/task/task_progress_full.png",
+    "width": 362,
+    "height": 52
+  },
+  {
+    "key": "keyUI",
+    "file": "assets/base/ui/key.png",
+    "width": 115,
+    "height": 111
+  },
+  {
+    "key": "point",
+    "file": "assets/base/ui/point.png",
+    "width": 50,
+    "height": 48
+  },
+  {
+    "key": "cloud",
+    "file": "assets/base/ui/cloud.png",
+    "width": 283,
+    "height": 246
+  },
+  {
+    "key": "check",
+    "file": "assets/base/ui/check.png",
+    "width": 100,
+    "height": 92
+  },
+  {
+    "key": "cross",
+    "file": "assets/base/ui/cross.png",
+    "width": 50,
+    "height": 50
+  },
+  {
+    "key": "circleGray",
+    "file": "assets/base/ui/circleGray.png",
+    "width": 110,
+    "height": 110
+  },
+  {
+    "key": "circleOrange",
+    "file": "assets/base/ui/circleOrange.png",
+    "width": 110,
+    "height": 110
+  },
+  {
+    "key": "circleBooster",
+    "file": "assets/base/ui/circle.png",
+    "width": 110,
+    "height": 110
+  },
+  {
+    "key": "circleBoosterBlue",
+    "file": "assets/base/ui/circleB.png",
+    "width": 110,
+    "height": 110
+  },
+  {
+    "key": "arrow",
+    "file": "assets/base/ui/arrow.png",
+    "width": 142,
+    "height": 214
+  },
+  {
+    "key": "diary",
+    "file": "assets/base/ui/diary.png",
+    "width": 225,
+    "height": 237
+  },
+  {
+    "key": "newMark",
+    "file": "assets/base/ui/newMark.png",
+    "width": 59,
+    "height": 59
+  },
+  {
+    "key": "plusSteps",
+    "file": "assets/base/ui/plusSteps.png",
+    "width": 152,
+    "height": 146
+  },
+  {
+    "key": "frameLight",
+    "file": "assets/base/ui/frameLight.png",
+    "width": 36,
+    "height": 295
+  },
+  {
+    "key": "settingsButton",
+    "file": "assets/base/ui/settingsButton.png",
+    "width": 83,
+    "height": 83
+  },
+  {
+    "key": "playButton",
+    "file": "assets/base/ui/playButton.png",
+    "width": 165,
+    "height": 179
+  },
+  {
+    "key": "closeButton",
+    "file": "assets/base/ui/closeButton.png",
+    "width": 70,
+    "height": 70
+  },
+  {
+    "key": "closeButtonViolet",
+    "file": "assets/base/ui/closeButtonViolet.png",
+    "width": 70,
+    "height": 70
+  },
+  {
+    "key": "pnlButton",
+    "file": "assets/base/ui/pnlButton.png",
+    "width": 467,
+    "height": 120
+  },
+  {
+    "key": "wooden_tab",
+    "file": "assets/base/ui/wooden_tab.png",
+    "width": 356,
+    "height": 60
+  },
+  {
+    "key": "banner1",
+    "file": "assets/base/ui/banner1.png",
+    "width": 960,
+    "height": 488
+  },
+  {
+    "key": "banner2",
+    "file": "assets/minigame2/banner2.png",
+    "width": 960,
+    "height": 488
+  },
+  {
+    "key": "diaryShine",
+    "file": "assets/base/ui/diary/diaryShine.png",
+    "width": 206,
+    "height": 212
+  },
+  {
+    "key": "diaryArrowLeft",
+    "file": "assets/base/ui/diary/diaryArrowLeft.png",
+    "width": 91,
+    "height": 68
+  },
+  {
+    "key": "bookBg",
+    "file": "assets/base/ui/diary/bookBg.png",
+    "width": 890,
+    "height": 1085
+  },
+  {
+    "key": "bookPage",
+    "file": "assets/base/ui/diary/bookPage.png",
+    "width": 333,
+    "height": 407
+  },
+  {
+    "key": "diaryArrowsBg",
+    "file": "assets/base/ui/diary/diaryArrowsBg.png",
+    "width": 225,
+    "height": 69
+  },
+  {
+    "key": "closeBook",
+    "file": "assets/base/ui/diary/closeBook.png",
+    "width": 95,
+    "height": 120
+  },
+  {
+    "key": "dialogPnl",
+    "file": "assets/base/ui/dialogPnl.png",
+    "width": 960,
+    "height": 259
+  },
+  {
+    "key": "actionCircle",
+    "file": "assets/base/action/actionCircle.png",
+    "width": 150,
+    "height": 147
+  },
+  {
+    "key": "actionChest",
+    "file": "assets/base/action/actionChest.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "actionMap",
+    "file": "assets/base/action/actionMap.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "actionKey",
+    "file": "assets/base/action/actionKey.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "actionBoiler",
+    "file": "assets/base/action/actionBoiler.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "loupe",
+    "file": "assets/base/action/loupe.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "actionHouse",
+    "file": "assets/base/action/actionHouse.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "houseGround",
+    "file": "assets/base/action/houseGround.png",
+    "width": 180,
+    "height": 75
+  },
+  {
+    "key": "actionDoor",
+    "file": "assets/base/action/actionDoor.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "titlePnl",
+    "file": "assets/base/ui/titlePnl.png",
+    "width": 286,
+    "height": 75
+  },
+  {
+    "key": "actionCream",
+    "file": "assets/base/action/actionCream.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "actionMushroom",
+    "file": "assets/base/action/actionMushroom.png",
+    "width": 130,
+    "height": 130
+  },
+  {
+    "key": "sparkle",
+    "file": "assets/base/ui/sparkle.png",
+    "width": 100,
+    "height": 100
+  },
+  {
+    "key": "glint",
+    "file": "assets/base/ui/glint.png",
+    "width": 432,
+    "height": 527
+  },
+  {
+    "key": "grassLight",
+    "file": "assets/base/ui/grassLight.png",
+    "width": 960,
+    "height": 149
+  },
+  {
+    "key": "grassDark",
+    "file": "assets/minigame3/grassDark.png",
+    "width": 960,
+    "height": 149
+  },
+  {
+    "key": "bg",
+    "file": "assets/base/ui/bg.jpg",
+    "width": 118,
+    "height": 118
+  },
+  {
+    "key": "bgHouse",
+    "file": "assets/minigame2/bgHouse.jpg",
+    "width": 308,
+    "height": 322
+  },
+  {
+    "key": "bgDark",
+    "file": "assets/minigame3/bgDark.jpg",
+    "width": 118,
+    "height": 118
+  },
+  {
+    "key": "bgLake",
+    "file": "assets/minigame4/bgLake.jpg",
+    "width": 118,
+    "height": 118
+  },
+  {
+    "key": "bgLight",
+    "file": "assets/minigame5/bgLight.jpg",
+    "width": 118,
+    "height": 118
+  },
+  {
+    "key": "bgClover",
+    "file": "assets/minigame9/bgClover.png",
+    "width": 118,
+    "height": 118
+  },
+  {
+    "key": "flowersBig",
+    "file": "assets/minigame5/flowersBig.png",
+    "width": 150,
+    "height": 213
+  },
+  {
+    "key": "flowersFieldHeader",
+    "file": "assets/minigame5/flowersFieldHeader.png",
+    "width": 960,
+    "height": 634
+  },
+  {
+    "key": "mountinesHeader",
+    "file": "assets/minigame1/mountinesHeader.png",
+    "width": 960,
+    "height": 590
+  },
+  {
+    "key": "junglesHeader",
+    "file": "assets/minigame6/junglesHeader.png",
+    "width": 960,
+    "height": 590
+  },
+  {
+    "key": "bugForestHeader",
+    "file": "assets/minigame7/bugForestHeader.png",
+    "width": 960,
+    "height": 590
+  },
+  {
+    "key": "snailForestHeader",
+    "file": "assets/minigame8/snailForestHeader.png",
+    "width": 960,
+    "height": 590
+  },
+  {
+    "key": "cloverHeader",
+    "file": "assets/minigame9/cloverHeader.png",
+    "width": 960,
+    "height": 590
+  },
+  {
+    "key": "hiveHeader",
+    "file": "assets/minigame10/hiveheader.png",
+    "width": 960,
+    "height": 590
+  },
+  {
+    "key": "forestHeader1",
+    "file": "assets/base/ui/forestHeader1.png",
+    "width": 960,
+    "height": 529
+  },
+  {
+    "key": "forestHeader2",
+    "file": "assets/minigame3/forestHeader2.png",
+    "width": 960,
+    "height": 546
+  },
+  {
+    "key": "envLake",
+    "file": "assets/other/editor/envLake.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "envJungle",
+    "file": "assets/other/editor/envJungle.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "envBugForest",
+    "file": "assets/other/editor/envBugForest.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "envSnailForest",
+    "file": "assets/other/editor/envSnailForest.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "envMountines",
+    "file": "assets/other/editor/envMountines.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "envForest",
+    "file": "assets/other/editor/envForest.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "envDarkForest",
+    "file": "assets/other/editor/envDarkFrst.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "envFlowerFields",
+    "file": "assets/other/editor/envFlowerFields.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "envHome",
+    "file": "assets/other/editor/envHome.png",
+    "width": 80,
+    "height": 85
+  },
+  {
+    "key": "plusButton",
+    "file": "assets/base/ui/plusButton.png",
+    "width": 73,
+    "height": 73
+  },
+  {
+    "key": "rainbow",
+    "file": "assets/chapter1/forest/rainbow.png",
+    "width": 143,
+    "height": 269
+  },
+  {
+    "key": "watermill",
+    "file": "assets/chapter1/forest/watermill.png",
+    "width": 607,
+    "height": 370
+  },
+  {
+    "key": "cat3floar",
+    "file": "assets/chapter1/forest/cat3floar.png",
+    "width": 271,
+    "height": 237
+  },
+  {
+    "key": "tent",
+    "file": "assets/chapter1/forest/tent.png",
+    "width": 458,
+    "height": 280
+  },
+  {
+    "key": "campfire",
+    "file": "assets/chapter1/forest/campfire.png",
+    "width": 180,
+    "height": 250
+  },
+  {
+    "key": "sveta2Mushrooms",
+    "file": "assets/chapter1/forest/sveta2_mushrooms.png",
+    "width": 514,
+    "height": 336
+  },
+  {
+    "key": "table",
+    "file": "assets/minigame2/table.png",
+    "width": 348,
+    "height": 305
+  },
+  {
+    "key": "carpet",
+    "file": "assets/minigame2/carpet.png",
+    "width": 747,
+    "height": 295
+  },
+  {
+    "key": "leafs1",
+    "file": "assets/minigame2/leafs1.png",
+    "width": 199,
+    "height": 400
+  },
+  {
+    "key": "leafs2",
+    "file": "assets/minigame2/leafs2.png",
+    "width": 107,
+    "height": 118
+  },
+  {
+    "key": "leafs3",
+    "file": "assets/minigame2/leafs3.png",
+    "width": 107,
+    "height": 95
+  },
+  {
+    "key": "crack",
+    "file": "assets/minigame2/crack.png",
+    "width": 238,
+    "height": 110
+  },
+  {
+    "key": "cat1",
+    "file": "assets/base/characters/cat1.png",
+    "width": 464,
+    "height": 522
+  },
+  {
+    "key": "cat2",
+    "file": "assets/base/characters/cat2.png",
+    "width": 420,
+    "height": 461
+  },
+  {
+    "key": "cat3",
+    "file": "assets/base/characters/cat3.png",
+    "width": 478,
+    "height": 536
+  },
+  {
+    "key": "cat4",
+    "file": "assets/base/characters/cat4.png",
+    "width": 1254,
+    "height": 1254
+  },
+  {
+    "key": "sveta1",
+    "file": "assets/base/characters/sveta1.png",
+    "width": 510,
+    "height": 553
+  },
+  {
+    "key": "sveta2",
+    "file": "assets/base/characters/sveta2.png",
+    "width": 510,
+    "height": 553
+  },
+  {
+    "key": "sveta3",
+    "file": "assets/base/characters/sveta3.png",
+    "width": 510,
+    "height": 553
+  },
+  {
+    "key": "sveta4",
+    "file": "assets/base/characters/sveta4.png",
+    "width": 510,
+    "height": 553
+  },
+  {
+    "key": "sveta5",
+    "file": "assets/base/characters/sveta5.png",
+    "width": 510,
+    "height": 553
+  },
+  {
+    "key": "sveta6",
+    "file": "assets/base/characters/sveta6.png",
+    "width": 510,
+    "height": 553
+  },
+  {
+    "key": "sova1",
+    "file": "assets/additional/characters/sova1.png",
+    "width": 496,
+    "height": 461
+  },
+  {
+    "key": "sova2",
+    "file": "assets/additional/characters/sova2.png",
+    "width": 496,
+    "height": 461
+  },
+  {
+    "key": "sova3",
+    "file": "assets/additional/characters/sova3.png",
+    "width": 496,
+    "height": 461
+  },
+  {
+    "key": "leshii1",
+    "file": "assets/additional/characters/leshii1.png",
+    "width": 496,
+    "height": 576
+  },
+  {
+    "key": "leshii2",
+    "file": "assets/additional/characters/leshii2.png",
+    "width": 496,
+    "height": 576
+  },
+  {
+    "key": "leshii3",
+    "file": "assets/additional/characters/leshii3.png",
+    "width": 496,
+    "height": 576
+  },
+  {
+    "key": "belka1",
+    "file": "assets/additional/characters/belka1.png",
+    "width": 394,
+    "height": 451
+  },
+  {
+    "key": "belka2",
+    "file": "assets/additional/characters/belka2.png",
+    "width": 394,
+    "height": 451
+  },
+  {
+    "key": "belka3",
+    "file": "assets/additional/characters/belka3.png",
+    "width": 482,
+    "height": 550
+  },
+  {
+    "key": "yaga1",
+    "file": "assets/additional/characters/yaga1.png",
+    "width": 458,
+    "height": 606
+  },
+  {
+    "key": "yaga2",
+    "file": "assets/additional/characters/yaga2.png",
+    "width": 458,
+    "height": 606
+  },
+  {
+    "key": "yaga3",
+    "file": "assets/additional/characters/yaga3.png",
+    "width": 458,
+    "height": 606
+  },
+  {
+    "key": "splash1",
+    "file": "assets/base/room/boiler/splash1.png",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "key": "splash2",
+    "file": "assets/base/room/boiler/splash2.png",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "key": "splash3",
+    "file": "assets/base/room/boiler/splash3.png",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "key": "splash4",
+    "file": "assets/base/room/boiler/splash4.png",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "key": "p1",
+    "file": "assets/base/particles/p1.png",
+    "width": 70,
+    "height": 67
+  },
+  {
+    "key": "p2",
+    "file": "assets/base/particles/p2.png",
+    "width": 70,
+    "height": 67
+  },
+  {
+    "key": "p5",
+    "file": "assets/base/particles/p5.png",
+    "width": 70,
+    "height": 67
+  },
+  {
+    "key": "p6",
+    "file": "assets/base/particles/p6.png",
+    "width": 70,
+    "height": 67
+  },
+  {
+    "key": "p7",
+    "file": "assets/base/particles/p7.png",
+    "width": 70,
+    "height": 67
+  },
+  {
+    "key": "p8",
+    "file": "assets/base/particles/p8.png",
+    "width": 70,
+    "height": 67
+  },
+  {
+    "key": "p9",
+    "file": "assets/base/particles/p9.png",
+    "width": 70,
+    "height": 67
+  },
+  {
+    "key": "dust",
+    "file": "assets/base/particles/dust.png",
+    "width": 33,
+    "height": 32
+  },
+  {
+    "key": "dustYellow",
+    "file": "assets/base/particles/dustYellow.png",
+    "width": 34,
+    "height": 33
+  },
+  {
+    "key": "dustYellow2",
+    "file": "assets/base/particles/dustYellow2.png",
+    "width": 34,
+    "height": 33
+  },
+  {
+    "key": "dustRed",
+    "file": "assets/base/particles/dustRed.png",
+    "width": 33,
+    "height": 32
+  },
+  {
+    "key": "dustViolet",
+    "file": "assets/base/particles/dustViolet.png",
+    "width": 33,
+    "height": 32
+  },
+  {
+    "key": "dustGreen",
+    "file": "assets/base/particles/dustGreen.png",
+    "width": 34,
+    "height": 33
+  },
+  {
+    "key": "dustBlue",
+    "file": "assets/base/particles/dustBlue.png",
+    "width": 33,
+    "height": 32
+  },
+  {
+    "key": "keyDecor",
+    "file": "assets/base/scenario/room/chest/key.png",
+    "width": 139,
+    "height": 93
+  },
+  {
+    "key": "keyRotatedDecor",
+    "file": "assets/base/scenario/room/chest/keyRotated.png",
+    "width": 160,
+    "height": 93
+  },
+  {
+    "key": "lock",
+    "file": "assets/base/scenario/room/chest/lock.png",
+    "width": 55,
+    "height": 74
+  },
+  {
+    "key": "shining",
+    "file": "assets/base/scenario/room/chest/light.png",
+    "width": 681,
+    "height": 367
+  },
+  {
+    "key": "chestBox",
+    "file": "assets/base/scenario/room/chest/chestBox.png",
+    "width": 528,
+    "height": 276
+  },
+  {
+    "key": "chestClosed",
+    "file": "assets/base/scenario/room/chest/chestClosed.png",
+    "width": 535,
+    "height": 212
+  },
+  {
+    "key": "chestOpened",
+    "file": "assets/base/scenario/room/chest/chestOpened.png",
+    "width": 408,
+    "height": 314
+  },
+  {
+    "key": "chestShadow",
+    "file": "assets/base/scenario/room/chest/chest_shadow100.png",
+    "width": 100,
+    "height": 31
+  },
+  {
+    "key": "boilBig",
+    "file": "assets/base/room/boiler/boiler.png",
+    "width": 619,
+    "height": 610
+  },
+  {
+    "key": "cat1cheeks",
+    "file": "assets/base/replicaDecor/cat1cheeks.png",
+    "width": 238,
+    "height": 111
+  },
+  {
+    "key": "replicaHeart",
+    "file": "assets/base/replicaDecor/heart.png",
+    "width": 100,
+    "height": 93
+  },
+  {
+    "key": "brokenHeart",
+    "file": "assets/base/replicaDecor/brokenHeart.png",
+    "width": 173,
+    "height": 160
+  },
+  {
+    "key": "mirror2b",
+    "file": "assets/base/replicaDecor/mirror2.png",
+    "width": 135,
+    "height": 183
+  },
+  {
+    "key": "bookDecor",
+    "file": "assets/base/replicaDecor/book.png",
+    "width": 382,
+    "height": 174
+  },
+  {
+    "key": "plate1",
+    "file": "assets/base/replicaDecor/plate1.png",
+    "width": 180,
+    "height": 116
+  },
+  {
+    "key": "plate2",
+    "file": "assets/base/replicaDecor/plate2.png",
+    "width": 180,
+    "height": 116
+  },
+  {
+    "key": "question",
+    "file": "assets/base/replicaDecor/question.png",
+    "width": 107,
+    "height": 172
+  },
+  {
+    "key": "foo",
+    "file": "assets/base/replicaDecor/foo.png",
+    "width": 126,
+    "height": 161
+  },
+  {
+    "key": "idea",
+    "file": "assets/base/replicaDecor/idea.png",
+    "width": 121,
+    "height": 173
+  },
+  {
+    "key": "eat",
+    "file": "assets/base/replicaDecor/eat.png",
+    "width": 140,
+    "height": 165
+  },
+  {
+    "key": "drink",
+    "file": "assets/base/replicaDecor/drink.png",
+    "width": 111,
+    "height": 181
+  },
+  {
+    "key": "keyBig",
+    "file": "assets/base/replicaDecor/keyBig.png",
+    "width": 299,
+    "height": 228
+  },
+  {
+    "key": "jelly",
+    "file": "assets/base/hex/jelly.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "jellyMushroom",
+    "file": "assets/base/hex/jellyMushroom.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "hexFlower",
+    "file": "assets/base/hex/hexFlower.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexSand",
+    "file": "assets/base/hex/hexSand.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "sandPyramid",
+    "file": "assets/base/hex/sandPyramid.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "pinkFlower",
+    "file": "assets/base/hex/pinkFlower.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "sandPyramidg",
+    "file": "assets/base/hex/sandPyramidG.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "pinkFlowerg",
+    "file": "assets/base/hex/pinkFlowerG.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "sand",
+    "file": "assets/base/hex/sand.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "grass",
+    "file": "assets/base/hex/grass.png",
+    "width": 123,
+    "height": 138
+  },
+  {
+    "key": "grassFlower",
+    "file": "assets/base/hex/grassFlower.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "water",
+    "file": "assets/base/hex/water.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "cactus",
+    "file": "assets/base/items/cactus.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "lakeHeader",
+    "file": "assets/minigame4/lakeHeader.png",
+    "width": 960,
+    "height": 680
+  },
+  {
+    "key": "lakeHeaderDecor",
+    "file": "assets/base/ui/lakeHeaderDecor.png",
+    "width": 50,
+    "height": 47
+  },
+  {
+    "key": "cold",
+    "file": "assets/base/hex/cold.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexDF",
+    "file": "assets/base/hex/hexDF.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexFrame",
+    "file": "assets/base/hex/hexFrame.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexFrame2",
+    "file": "assets/base/hex/hexFrame2.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "grassDF",
+    "file": "assets/base/hex/grassDF.png",
+    "width": 123,
+    "height": 138
+  },
+  {
+    "key": "hex",
+    "file": "assets/base/hex/hex.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hex2",
+    "file": "assets/base/hex/hex2.png",
+    "width": 150,
+    "height": 150
+  },
+  {
+    "key": "hexDark",
+    "file": "assets/base/hex/hexDark.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexWater",
+    "file": "assets/base/hex/hexWater.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "leaf1",
+    "file": "assets/base/hex/leaf1.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leaf1g",
+    "file": "assets/base/hex/leaf1g.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leaf2",
+    "file": "assets/base/hex/leaf2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leaf2g",
+    "file": "assets/base/hex/leaf2g.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leaf3",
+    "file": "assets/base/hex/leaf3.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leaf3g",
+    "file": "assets/base/hex/leaf3g.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leaf4",
+    "file": "assets/base/hex/leaf4.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leaf4g",
+    "file": "assets/base/hex/leaf4g.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leafClover",
+    "file": "assets/base/hex/leafClover.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "leafCloverg",
+    "file": "assets/base/hex/leafCloverg.png",
+    "width": 123,
+    "height": 130
+  },
+  {
+    "key": "liana",
+    "file": "assets/base/hex/liana.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "liana2",
+    "file": "assets/base/hex/liana2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "liana3",
+    "file": "assets/base/hex/liana3.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "hexMountain",
+    "file": "assets/base/hex/hexMountain.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "mount",
+    "file": "assets/base/hex/mount.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "mountg",
+    "file": "assets/base/hex/mountG.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "drop",
+    "file": "assets/base/hex/drop.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "dropg",
+    "file": "assets/base/hex/dropG.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "hexHouse",
+    "file": "assets/base/hex/hexHouse.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexHouseDark",
+    "file": "assets/base/hex/hexHouseDark.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexWood",
+    "file": "assets/base/hex/hexWood.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "hexChest",
+    "file": "assets/base/hex/hexChest.png",
+    "width": 90,
+    "height": 84
+  },
+  {
+    "key": "hexChestg",
+    "file": "assets/base/hex/hexChestG.png",
+    "width": 94,
+    "height": 77
+  },
+  {
+    "key": "stone",
+    "file": "assets/base/items/environment/stone.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "tree",
+    "file": "assets/base/items/environment/tree.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "mushroomHole",
+    "file": "assets/base/items/environment/mushroomHole.png",
+    "width": 180,
+    "height": 80
+  },
+  {
+    "key": "soilClod",
+    "file": "assets/base/particles/soilClod.png",
+    "width": 32,
+    "height": 32
+  },
+  {
+    "key": "beanLeaf",
+    "file": "assets/base/items/environment/beanLeaf.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "mirror",
+    "file": "assets/base/items/environment/mirror.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "stump",
+    "file": "assets/base/items/environment/stump.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "wlilly1",
+    "file": "assets/base/items/environment/wlilly1.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "wlilly2",
+    "file": "assets/base/items/environment/wlilly2.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "log",
+    "file": "assets/base/items/environment/log.png",
+    "width": 180,
+    "height": 191
+  },
+  {
+    "key": "mossStone",
+    "file": "assets/base/items/environment/mossStone.png",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "key": "darkTree",
+    "file": "assets/base/items/environment/darkTree.png",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "key": "rottenStump",
+    "file": "assets/base/items/environment/rottenStump.png",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "key": "cobwebDarkLog",
+    "file": "assets/base/items/environment/cobwebDarkLog.png",
+    "width": 512,
+    "height": 512
+  },
+  {
+    "key": "wheat",
+    "file": "assets/base/items/wheat.png",
+    "width": 333,
+    "height": 333
+  },
+  {
+    "key": "poleno",
+    "file": "assets/base/items/poleno.png",
+    "width": 529,
+    "height": 529
+  },
+  {
+    "key": "book1",
+    "file": "assets/base/items/book1.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "book2",
+    "file": "assets/base/items/book2.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "book3",
+    "file": "assets/base/items/book3.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "lockpick",
+    "file": "assets/base/items/lockpick.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "boat",
+    "file": "assets/base/items/boat.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bee",
+    "file": "assets/base/items/bee.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "moonflower",
+    "file": "assets/base/items/moonflower.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "moonflower1",
+    "file": "assets/base/items/moonflower1.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "moonflowerClosed1",
+    "file": "assets/base/items/moonflowerClosed1.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "moonflower2",
+    "file": "assets/base/items/moonflower2.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "moonflowerClosed2",
+    "file": "assets/base/items/moonflowerClosed2.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "moonflower3",
+    "file": "assets/base/items/moonflower3.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "moonflowerClosed3",
+    "file": "assets/base/items/moonflowerClosed3.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "hedgehog",
+    "file": "assets/base/items/hedgehog.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "chamomileSmall",
+    "file": "assets/base/items/chamomileSmall.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "dragonfly",
+    "file": "assets/base/items/dragonfly.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "hive",
+    "file": "assets/base/items/hive.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "mega-hive",
+    "file": "assets/base/items/hive_big.png",
+    "width": 240,
+    "height": 254
+  },
+  {
+    "key": "bumblebee",
+    "file": "assets/base/items/bumblebee.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "honey",
+    "file": "assets/base/items/honey.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "honey2",
+    "file": "assets/base/items/honey2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "mushroom",
+    "file": "assets/base/items/mushroom.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "mushroom3",
+    "file": "assets/base/items/mushroom3.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "mushroom4",
+    "file": "assets/base/items/mushroom4.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "mushroom5",
+    "file": "assets/base/items/mushroom5.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "acorn",
+    "file": "assets/base/items/acorn.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "acorn2",
+    "file": "assets/base/items/acorn2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "blueberry",
+    "file": "assets/base/items/berry.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "redberry",
+    "file": "assets/base/items/berry2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "lilly",
+    "file": "assets/base/items/lilly.png",
+    "width": 343,
+    "height": 343
+  },
+  {
+    "key": "amber",
+    "file": "assets/base/items/amber.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "amber2",
+    "file": "assets/base/items/amber2.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "amber3",
+    "file": "assets/base/items/amber3.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "clover",
+    "file": "assets/base/items/clover.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "hat",
+    "file": "assets/base/items/hat.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "homeHex",
+    "file": "assets/base/items/homeHex.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "catHex",
+    "file": "assets/base/items/catHex.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "goldRoot",
+    "file": "assets/base/items/goldRoot.png",
+    "width": 320,
+    "height": 320
+  },
+  {
+    "key": "musicTool1",
+    "file": "assets/chapter1/darkForest/musicTool1.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "musicTool2",
+    "file": "assets/chapter1/darkForest/musicTool2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "musicTool3",
+    "file": "assets/chapter1/darkForest/musicTool3.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "ladybug",
+    "file": "assets/base/items/ladybug.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "ladybugBrush",
+    "file": "assets/base/ui/ladybugBrush.png",
+    "width": 120,
+    "height": 134
+  },
+  {
+    "key": "horn",
+    "file": "assets/base/ui/horn.png",
+    "width": 240,
+    "height": 254
+  },
+  {
+    "key": "rabbit",
+    "file": "assets/base/items/rabbit.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "sheep",
+    "file": "assets/base/items/ship.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "butterfly",
+    "file": "assets/base/items/butterfly.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "butterfly2",
+    "file": "assets/base/items/butterfly2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bet",
+    "file": "assets/base/items/bet.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "owl",
+    "file": "assets/base/items/owl.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "owlPink",
+    "file": "assets/base/items/owlPink.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "owlFlying",
+    "file": "assets/base/items/owlFlying.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "fish",
+    "file": "assets/base/items/fish.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bird",
+    "file": "assets/base/items/bird.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "horseshoe",
+    "file": "assets/base/items/horseshoe.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bug1",
+    "file": "assets/base/items/bug1.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bug2",
+    "file": "assets/base/items/bug2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bug3",
+    "file": "assets/base/items/bug3.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "duck",
+    "file": "assets/base/items/duck.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "crab",
+    "file": "assets/base/items/crab.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bush",
+    "file": "assets/base/items/bush.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bush2",
+    "file": "assets/base/items/bush2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "bushberry",
+    "file": "assets/base/items/bushberry.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "lavanda",
+    "file": "assets/base/items/lavanda.png",
+    "width": 311,
+    "height": 311
+  },
+  {
+    "key": "maple",
+    "file": "assets/base/ui/maple.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "mapleFace",
+    "file": "assets/base/ui/mapleFace.png",
+    "width": 500,
+    "height": 500
+  },
+  {
+    "key": "mapleSeed",
+    "file": "assets/base/ui/mapleSeed.png",
+    "width": 56,
+    "height": 150
+  },
+  {
+    "key": "chest1",
+    "file": "assets/base/ui/shop/chest1.png",
+    "width": 150,
+    "height": 150
+  },
+  {
+    "key": "chest2",
+    "file": "assets/base/ui/shop/chest2.png",
+    "width": 150,
+    "height": 150
+  },
+  {
+    "key": "chest3",
+    "file": "assets/base/ui/shop/chest3.png",
+    "width": 150,
+    "height": 150
+  },
+  {
+    "key": "chest4",
+    "file": "assets/base/ui/shop/chest4.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "chest4cap",
+    "file": "assets/base/ui/shop/chest4cap.png",
+    "width": 103,
+    "height": 44
+  },
+  {
+    "key": "shopHeader",
+    "file": "assets/base/ui/shop/header.png",
+    "width": 554,
+    "height": 317
+  },
+  {
+    "key": "shopNavBg",
+    "file": "assets/base/ui/shop/nav_bg.png",
+    "width": 911,
+    "height": 106
+  },
+  {
+    "key": "shopNavSelected",
+    "file": "assets/base/ui/shop/nav_selected.png",
+    "width": 335,
+    "height": 89
+  },
+  {
+    "key": "shopBuyItemButton",
+    "file": "assets/base/ui/shop/buy_item_button.png",
+    "width": 218,
+    "height": 85
+  },
+  {
+    "key": "shopInfoButton",
+    "file": "assets/base/ui/shop/info_button.png",
+    "width": 31,
+    "height": 32
+  },
+  {
+    "key": "shopItemBg",
+    "file": "assets/base/ui/shop/itemBg.png",
+    "width": 150,
+    "height": 150
+  },
+  {
+    "key": "shopSkillBravery",
+    "file": "assets/base/ui/skills/skill_bravery.png",
+    "width": 196,
+    "height": 160
+  },
+  {
+    "key": "shopSkillEnergy",
+    "file": "assets/base/ui/skills/skill_energy.png",
+    "width": 196,
+    "height": 160
+  },
+  {
+    "key": "shopSkillFriendship",
+    "file": "assets/base/ui/skills/skill_frendship.png",
+    "width": 196,
+    "height": 160
+  },
+  {
+    "key": "shopSkillKnowledge",
+    "file": "assets/base/ui/skills/skill_knowledge.png",
+    "width": 196,
+    "height": 160
+  },
+  {
+    "key": "shopItem1",
+    "file": "assets/base/ui/items/item1.png",
+    "width": 217,
+    "height": 231
+  },
+  {
+    "key": "shopItem2",
+    "file": "assets/base/ui/items/item2.png",
+    "width": 217,
+    "height": 231
+  },
+  {
+    "key": "shopItem3",
+    "file": "assets/base/ui/items/item3.png",
+    "width": 217,
+    "height": 231
+  },
+  {
+    "key": "shopItem4",
+    "file": "assets/base/ui/items/item4.png",
+    "width": 217,
+    "height": 231
+  },
+  {
+    "key": "characterPanelBg",
+    "file": "assets/base/ui/character/character_panel.png",
+    "width": 960,
+    "height": 649
+  },
+  {
+    "key": "characterMenuIcon",
+    "file": "assets/base/ui/character/character_menu_icon.png",
+    "width": 128,
+    "height": 128
+  },
+  {
+    "key": "characterPanelBanner",
+    "file": "assets/base/ui/character/banner.png",
+    "width": 654,
+    "height": 162
+  },
+  {
+    "key": "characterSkillsBg",
+    "file": "assets/base/ui/character/skills_bg.png",
+    "width": 447,
+    "height": 566
+  },
+  {
+    "key": "characterArrowLeft",
+    "file": "assets/base/ui/character/arrow_left.png",
+    "width": 154,
+    "height": 128
+  },
+  {
+    "key": "characterArrowRight",
+    "file": "assets/base/ui/character/arrow_right.png",
+    "width": 154,
+    "height": 127
+  },
+  {
+    "key": "characterBackpackButton",
+    "file": "assets/base/ui/character/backpack_button.png",
+    "width": 229,
+    "height": 196
+  },
+  {
+    "key": "characterShopButton",
+    "file": "assets/base/ui/character/shop_button.png",
+    "width": 229,
+    "height": 205
+  },
+  {
+    "key": "characterCloseButton",
+    "file": "assets/base/ui/character/close_button.png",
+    "width": 331,
+    "height": 137
+  },
+  {
+    "key": "characterEquippedBg",
+    "file": "assets/base/ui/character/equipped_bg.png",
+    "width": 209,
+    "height": 183
+  },
+  {
+    "key": "characterArtifactHighlight",
+    "file": "assets/base/ui/character/highlight.png",
+    "width": 200,
+    "height": 215
+  },
+  {
+    "key": "characterSkillInfoButton",
+    "file": "assets/base/ui/character/info_button1.png",
+    "width": 63,
+    "height": 66
+  },
+  {
+    "key": "characterArtifactInfoButton",
+    "file": "assets/base/ui/character/info_button_item.png",
+    "width": 63,
+    "height": 66
+  },
+  {
+    "key": "characterSlotItemInfoButton",
+    "file": "assets/base/ui/character/slot_item_info_buttom.png",
+    "width": 84,
+    "height": 89
+  },
+  {
+    "key": "characterItemInfoDetailsButton",
+    "file": "assets/base/ui/character/item_info_panel_details.png",
+    "width": 35,
+    "height": 37
+  },
+  {
+    "key": "characterItemSkillsDetailsBg",
+    "file": "assets/base/ui/character/item_skills_details_bg.png",
+    "width": 329,
+    "height": 117
+  },
+  {
+    "key": "characterLevelProgressEmpty",
+    "file": "assets/base/ui/character/level_progress_empty.png",
+    "width": 154,
+    "height": 48
+  },
+  {
+    "key": "characterLevelProgressFull",
+    "file": "assets/base/ui/character/level_progress_full.png",
+    "width": 154,
+    "height": 48
+  },
+  {
+    "key": "cankerberry",
+    "file": "assets/base/items/cankerberry.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "witchMushroom",
+    "file": "assets/base/items/witchMushroom.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "blackberry",
+    "file": "assets/base/items/blackberry.png",
+    "width": 301,
+    "height": 301
+  },
+  {
+    "key": "strawberry",
+    "file": "assets/base/items/strawberry.png",
+    "width": 331,
+    "height": 331
+  },
+  {
+    "key": "pearl",
+    "file": "assets/base/items/pearl.png",
+    "width": 323,
+    "height": 323
+  },
+  {
+    "key": "shell2",
+    "file": "assets/base/items/shell2.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "shell",
+    "file": "assets/base/items/shell.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "plank1",
+    "file": "assets/base/items/plank1.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "plank2",
+    "file": "assets/base/items/plank2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "separator",
+    "file": "assets/base/ui/separator.png",
+    "width": 34,
+    "height": 106
+  },
+  {
+    "key": "separator2",
+    "file": "assets/base/ui/separator2.png",
+    "width": 34,
+    "height": 106
+  },
+  {
+    "key": "plank3",
+    "file": "assets/base/items/plank3.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "amanita",
+    "file": "assets/base/items/amanita.png",
+    "width": 295,
+    "height": 295
+  },
+  {
+    "key": "boil",
+    "file": "assets/base/items/boil.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "feather",
+    "file": "assets/base/items/feather.png",
+    "width": 299,
+    "height": 299
+  },
+  {
+    "key": "greenApple",
+    "file": "assets/base/items/greenApple.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "redApple",
+    "file": "assets/base/items/redApple.png",
+    "width": 314,
+    "height": 314
+  },
+  {
+    "key": "key",
+    "file": "assets/base/items/key.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "skull",
+    "file": "assets/base/items/skull.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "milk",
+    "file": "assets/base/items/milk.png",
+    "width": 480,
+    "height": 508
+  },
+  {
+    "key": "smth",
+    "file": "assets/base/items/smth.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "voodoo",
+    "file": "assets/base/items/voodoo.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "diaryHex",
+    "file": "assets/base/items/hexDiary.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t1",
+    "file": "assets/additional/items/t1.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t2",
+    "file": "assets/additional/items/t2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t3",
+    "file": "assets/additional/items/t3.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t4",
+    "file": "assets/additional/items/t4.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t5",
+    "file": "assets/additional/items/t5.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t6",
+    "file": "assets/additional/items/t6.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t7",
+    "file": "assets/additional/items/t7.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t8",
+    "file": "assets/additional/items/t8.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t9",
+    "file": "assets/additional/items/t9.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t10",
+    "file": "assets/additional/items/t10.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t11",
+    "file": "assets/additional/items/t11.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t12",
+    "file": "assets/additional/items/t12.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t13",
+    "file": "assets/additional/items/t13.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t14",
+    "file": "assets/additional/items/t14.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t15",
+    "file": "assets/additional/items/t15.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t16",
+    "file": "assets/additional/items/t16.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t17",
+    "file": "assets/additional/items/t17.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t18",
+    "file": "assets/additional/items/t18.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t19",
+    "file": "assets/additional/items/t19.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t20",
+    "file": "assets/additional/items/t20.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t21",
+    "file": "assets/additional/items/t21.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t22",
+    "file": "assets/additional/items/t22.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t23",
+    "file": "assets/additional/items/t23.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t24",
+    "file": "assets/additional/items/t24.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t25",
+    "file": "assets/additional/items/t25.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t26",
+    "file": "assets/additional/items/t26.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t27",
+    "file": "assets/additional/items/t27.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t28",
+    "file": "assets/additional/items/t28.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t29",
+    "file": "assets/additional/items/t29.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t30",
+    "file": "assets/additional/items/t30.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t31",
+    "file": "assets/additional/items/t31.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t32",
+    "file": "assets/additional/items/t32.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t33",
+    "file": "assets/additional/items/t33.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t34",
+    "file": "assets/additional/items/t34.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "t35",
+    "file": "assets/additional/items/t35.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "circleFlow",
+    "file": "assets/base/ui/diary/circleFlow.png",
+    "width": 527,
+    "height": 527
+  },
+  {
+    "key": "circleSign",
+    "file": "assets/base/ui/diary/circleSign.png",
+    "width": 373,
+    "height": 394
+  },
+  {
+    "key": "ingredientBg",
+    "file": "assets/base/ui/diary/ingredientBg.png",
+    "width": 150,
+    "height": 151
+  },
+  {
+    "key": "forestPic",
+    "file": "assets/base/ui/diary/forestPic.png",
+    "width": 505,
+    "height": 430
+  },
+  {
+    "key": "dForestPic",
+    "file": "assets/base/ui/diary/dForestPic.png",
+    "width": 526,
+    "height": 492
+  },
+  {
+    "key": "housePic",
+    "file": "assets/base/ui/diary/housePic.png",
+    "width": 505,
+    "height": 430
+  },
+  {
+    "key": "fieldsPic",
+    "file": "assets/base/ui/diary/fieldsPic.png",
+    "width": 542,
+    "height": 521
+  },
+  {
+    "key": "atticPic",
+    "file": "assets/base/ui/diary/atticPic.png",
+    "width": 505,
+    "height": 430
+  },
+  {
+    "key": "catSad",
+    "file": "assets/base/ui/map/catSad.png",
+    "width": 96,
+    "height": 163
+  },
+  {
+    "key": "compassMap",
+    "file": "assets/base/ui/map/compassMap.png",
+    "width": 193,
+    "height": 178
+  },
+  {
+    "key": "evilTree",
+    "file": "assets/base/ui/map/evilTree.png",
+    "width": 118,
+    "height": 192
+  },
+  {
+    "key": "evilTreeSecond",
+    "file": "assets/base/ui/map/evilTreeSecond.png",
+    "width": 134,
+    "height": 155
+  },
+  {
+    "key": "evilTreeThird",
+    "file": "assets/base/ui/map/evilTreeThird.png",
+    "width": 111,
+    "height": 150
+  },
+  {
+    "key": "fog",
+    "file": "assets/base/ui/map/fog.png",
+    "width": 120,
+    "height": 34
+  },
+  {
+    "key": "mapAim",
+    "file": "assets/base/ui/map/aim.png",
+    "width": 100,
+    "height": 95
+  },
+  {
+    "key": "mapAimSecond",
+    "file": "assets/base/ui/map/aimSecond.png",
+    "width": 118,
+    "height": 104
+  },
+  {
+    "key": "mapAimThird",
+    "file": "assets/base/ui/map/aimThird.png",
+    "width": 118,
+    "height": 104
+  },
+  {
+    "key": "mapAimFourth",
+    "file": "assets/base/ui/map/aimFourth.png",
+    "width": 118,
+    "height": 104
+  },
+  {
+    "key": "mapPoint",
+    "file": "assets/base/ui/map/dot.png",
+    "width": 33,
+    "height": 31
+  },
+  {
+    "key": "mapBirch",
+    "file": "assets/base/ui/map/birch.png",
+    "width": 164,
+    "height": 149
+  },
+  {
+    "key": "mapCat",
+    "file": "assets/base/ui/map/cat.png",
+    "width": 124,
+    "height": 124
+  },
+  {
+    "key": "mapHouse",
+    "file": "assets/base/ui/map/house.png",
+    "width": 249,
+    "height": 187
+  },
+  {
+    "key": "mapMountain",
+    "file": "assets/base/ui/map/mountain.png",
+    "width": 250,
+    "height": 169
+  },
+  {
+    "key": "mapMushroom",
+    "file": "assets/base/ui/map/mapMushroom.png",
+    "width": 58,
+    "height": 60
+  },
+  {
+    "key": "jellyMushroomSmall",
+    "file": "assets/base/ui/map/jellyMushroomSmall.png",
+    "width": 50,
+    "height": 50
+  },
+  {
+    "key": "mapPath",
+    "file": "assets/base/ui/map/path.png",
+    "width": 34,
+    "height": 160
+  },
+  {
+    "key": "mapPine",
+    "file": "assets/base/ui/map/pine.png",
+    "width": 71,
+    "height": 133
+  },
+  {
+    "key": "mapPointer",
+    "file": "assets/base/ui/map/mapPointer.png",
+    "width": 120,
+    "height": 23
+  },
+  {
+    "key": "mapTent",
+    "file": "assets/base/ui/map/tent.png",
+    "width": 84,
+    "height": 59
+  },
+  {
+    "key": "campfireSmall",
+    "file": "assets/base/ui/map/campfireSmall.png",
+    "width": 50,
+    "height": 69
+  },
+  {
+    "key": "mountainGlow",
+    "file": "assets/base/ui/map/mountainGlow.png",
+    "width": 100,
+    "height": 65
+  },
+  {
+    "key": "snowMap",
+    "file": "assets/base/ui/map/snowMap.png",
+    "width": 264,
+    "height": 112
+  },
+  {
+    "key": "darkGrassMap",
+    "file": "assets/base/ui/map/darkGrass.png",
+    "width": 264,
+    "height": 112
+  },
+  {
+    "key": "waterMap",
+    "file": "assets/base/ui/map/water.png",
+    "width": 206,
+    "height": 74
+  },
+  {
+    "key": "flowersMap",
+    "file": "assets/base/ui/map/flowers.png",
+    "width": 82,
+    "height": 78
+  },
+  {
+    "key": "flowersSecondMap",
+    "file": "assets/base/ui/map/flowersSecond.png",
+    "width": 75,
+    "height": 106
+  },
+  {
+    "key": "flowersThirdMap",
+    "file": "assets/base/ui/map/flowersThird.png",
+    "width": 135,
+    "height": 79
+  },
+  {
+    "key": "compass",
+    "file": "assets/base/items/boosters/compass.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "vision",
+    "file": "assets/base/items/boosters/vision.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "beans",
+    "file": "assets/base/items/boosters/beans.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "glove",
+    "file": "assets/base/items/boosters/glove.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "rainbowPotion",
+    "file": "assets/base/items/boosters/rainbow.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "rainbowPotionBig",
+    "file": "assets/base/items/boosters/rainbowBig.png",
+    "width": 360,
+    "height": 381
+  },
+  {
+    "key": "halfrocket",
+    "file": "assets/base/items/boosters/halfrocket.png",
+    "width": 53,
+    "height": 59
+  },
+  {
+    "key": "rocket1",
+    "file": "assets/base/items/boosters/rocket1.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "rocket2",
+    "file": "assets/base/items/boosters/rocket2.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "rocket3",
+    "file": "assets/base/items/boosters/rocket3.png",
+    "width": 120,
+    "height": 127
+  },
+  {
+    "key": "chamomile",
+    "file": "assets/base/ui/chamomile.png",
+    "width": 200,
+    "height": 200
+  },
+  {
+    "key": "arrowEditor",
+    "file": "assets/other/editor/arrow.png",
+    "width": 46,
+    "height": 51
+  },
+  {
+    "key": "brushSelection",
+    "file": "assets/other/editor/brushSelection.png",
+    "width": 82,
+    "height": 92
+  },
+  {
+    "key": "downloadButton",
+    "file": "assets/other/editor/downloadButton.png",
+    "width": 152,
+    "height": 122
+  },
+  {
+    "key": "editBtn",
+    "file": "assets/other/editor/editBtn.png",
+    "width": 181,
+    "height": 235
+  },
+  {
+    "key": "editReplicaBtn",
+    "file": "assets/other/editor/editReplicaBtn.png",
+    "width": 181,
+    "height": 235
+  },
+  {
+    "key": "editorBottomPanel",
+    "file": "assets/other/editor/editorBottomPanel.png",
+    "width": 958,
+    "height": 737
+  },
+  {
+    "key": "editorTopPanel",
+    "file": "assets/other/editor/editorTopPanel.png",
+    "width": 960,
+    "height": 128
+  },
+  {
+    "key": "newButton",
+    "file": "assets/other/editor/newButton.png",
+    "width": 152,
+    "height": 122
+  },
+  {
+    "key": "objectBg",
+    "file": "assets/other/editor/objectBg.png",
+    "width": 100,
+    "height": 116
+  },
+  {
+    "key": "openButton",
+    "file": "assets/other/editor/openButton.png",
+    "width": 151,
+    "height": 122
+  },
+  {
+    "key": "playButtonEditor",
+    "file": "assets/other/editor/playButton.png",
+    "width": 152,
+    "height": 122
+  },
+  {
+    "key": "playMaxButtonEditor",
+    "file": "assets/other/editor/playButtonMax.png",
+    "width": 152,
+    "height": 122
+  },
+  {
+    "key": "playAutoButtonEditor",
+    "file": "assets/other/editor/playButtonAuto.png",
+    "width": 152,
+    "height": 122
+  },
+  {
+    "key": "renameButton",
+    "file": "assets/other/editor/renameButton.png",
+    "width": 50,
+    "height": 49
+  },
+  {
+    "key": "editorPlusButton",
+    "file": "assets/other/editor/editorPlusButton.png",
+    "width": 50,
+    "height": 49
+  },
+  {
+    "key": "saveButton",
+    "file": "assets/other/editor/saveButton.png",
+    "width": 152,
+    "height": 122
+  },
+  {
+    "key": "v",
+    "file": "assets/other/editor/v.png",
+    "width": 76,
+    "height": 30
+  },
+  {
+    "key": "vm",
+    "file": "assets/other/editor/vm.png",
+    "width": 76,
+    "height": 30
+  },
+  {
+    "key": "v1",
+    "file": "assets/other/editor/v1.png",
+    "width": 76,
+    "height": 30
+  },
+  {
+    "key": "vm1",
+    "file": "assets/other/editor/vm1.png",
+    "width": 76,
+    "height": 30
+  },
+  {
+    "key": "panelCorner",
+    "file": "assets/base/ui/panelCorner.png",
+    "width": 86,
+    "height": 75
+  },
+  {
+    "key": "panelBody",
+    "file": "assets/base/ui/panelBody.png",
+    "width": 34,
+    "height": 75
+  },
+  {
+    "key": "editorNextButton",
+    "file": "assets/other/editor/editorNextButton.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "editorArrowPanel",
+    "file": "assets/other/editor/editorArrowPanel.png",
+    "width": 62,
+    "height": 44
+  },
+  {
+    "key": "editorArrow2Panel",
+    "file": "assets/other/editor/editorArrow2Panel.png",
+    "width": 62,
+    "height": 44
+  },
+  {
+    "key": "editorButtonPanel",
+    "file": "assets/other/editor/editorButtonPanel.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "editorValuePanel",
+    "file": "assets/other/editor/editorValuePanel.png",
+    "width": 259,
+    "height": 72
+  },
+  {
+    "key": "exportIcon",
+    "file": "assets/other/editor/exportIcon.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "folderIcon",
+    "file": "assets/other/editor/folderIcon.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "glintDeleteButton",
+    "file": "assets/other/editor/glintDeleteButton.png",
+    "width": 34,
+    "height": 38
+  },
+  {
+    "key": "glintIcon",
+    "file": "assets/other/editor/glintIcon.png",
+    "width": 63,
+    "height": 72
+  },
+  {
+    "key": "moveIcon",
+    "file": "assets/other/editor/moveIcon.png",
+    "width": 72,
+    "height": 72
+  },
+  {
+    "key": "importIcon",
+    "file": "assets/other/editor/importIcon.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "playIcon",
+    "file": "assets/other/editor/playIcon.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "repeatIcon",
+    "file": "assets/other/editor/repeatIcon.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "resetIcon",
+    "file": "assets/other/editor/resetIcon.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "switchIcon",
+    "file": "assets/other/editor/switchIcon.png",
+    "width": 123,
+    "height": 72
+  },
+  {
+    "key": "winButton",
+    "file": "assets/other/editor/winButton.png",
+    "width": 143,
+    "height": 80
+  },
+  {
+    "key": "plusOne",
+    "file": "assets/other/editor/plusOne.png",
+    "width": 50,
+    "height": 49
+  },
+  {
+    "key": "minusOne",
+    "file": "assets/other/editor/minusOne.png",
+    "width": 50,
+    "height": 49
+  },
+  {
+    "key": "fadeStrip",
+    "file": "assets/base/ui/fadeStrip.png",
+    "width": 118,
+    "height": 118
+  },
+  {
+    "key": "arrowSmall",
+    "file": "assets/base/ui/arrowSmall.png",
+    "width": 355,
+    "height": 62
+  },
+  {
+    "key": "snowflake1",
+    "file": "assets/base/particles/snowflake1.png",
+    "width": 40,
+    "height": 40
+  },
+  {
+    "key": "snowflake2",
+    "file": "assets/base/particles/snowflake2.png",
+    "width": 40,
+    "height": 40
+  },
+  {
+    "key": "snowflake3",
+    "file": "assets/base/particles/snowflake3.png",
+    "width": 40,
+    "height": 40
+  },
+  {
+    "key": "petalRed",
+    "file": "assets/base/particles/petalRed.png",
+    "width": 50,
+    "height": 38
+  },
+  {
+    "key": "petalWhite",
+    "file": "assets/base/particles/petalWhite.png",
+    "width": 50,
+    "height": 38
+  },
+  {
+    "key": "petalBlue",
+    "file": "assets/base/particles/petalBlue.png",
+    "width": 50,
+    "height": 38
+  },
+  {
+    "key": "petalBrown",
+    "file": "assets/base/particles/petalBrown.png",
+    "width": 50,
+    "height": 38
+  },
+  {
+    "key": "petalSky",
+    "file": "assets/base/particles/petalSky.png",
+    "width": 50,
+    "height": 38
+  },
+  {
+    "key": "petalPink",
+    "file": "assets/base/particles/petalPink.png",
+    "width": 50,
+    "height": 38
+  },
+  {
+    "key": "petalGreen",
+    "file": "assets/base/particles/petalGreen.png",
+    "width": 50,
+    "height": 38
+  },
+  {
+    "key": "petalOrange",
+    "file": "assets/base/particles/petalOrange.png",
+    "width": 50,
+    "height": 38
+  },
+  {
+    "key": "splashV",
+    "file": "assets/base/particles/splashV.png",
+    "width": 200,
+    "height": 215
+  },
+  {
+    "key": "splashY",
+    "file": "assets/base/particles/splashY.png",
+    "width": 200,
+    "height": 215
+  },
+  {
+    "key": "splashG",
+    "file": "assets/base/particles/splashG.png",
+    "width": 200,
+    "height": 215
+  },
+  {
+    "key": "vaxDrop",
+    "file": "assets/base/room/vaxDrop.png",
+    "width": 12,
+    "height": 28
+  },
+  {
+    "key": "flame1",
+    "file": "assets/base/room/flame1.png",
+    "width": 23,
+    "height": 34
+  },
+  {
+    "key": "flame2",
+    "file": "assets/base/room/flame2.png",
+    "width": 23,
+    "height": 34
+  },
+  {
+    "key": "flame3",
+    "file": "assets/base/room/flame3.png",
+    "width": 23,
+    "height": 34
+  },
+  {
+    "key": "note1",
+    "file": "assets/base/scenario/room/notes/note1.png",
+    "width": 111,
+    "height": 199
+  },
+  {
+    "key": "note2",
+    "file": "assets/base/scenario/room/notes/note2.png",
+    "width": 137,
+    "height": 138
+  },
+  {
+    "key": "note3",
+    "file": "assets/base/scenario/room/notes/note3.png",
+    "width": 133,
+    "height": 148
+  },
+  {
+    "key": "note4",
+    "file": "assets/base/scenario/room/notes/note4.png",
+    "width": 119,
+    "height": 132
+  },
+  {
+    "key": "line1",
+    "file": "assets/base/scenario/room/notes/line1.png",
+    "width": 774,
+    "height": 770
+  },
+  {
+    "key": "liquid",
+    "file": "assets/base/room/boiler/liquid.png",
+    "width": 354,
+    "height": 99
+  },
+  {
+    "key": "turnOff",
+    "file": "assets/basehq/turnOff.png",
+    "width": 120,
+    "height": 113
+  },
+  {
+    "key": "sound1",
+    "file": "assets/basehq/sound1.png",
+    "width": 120,
+    "height": 113
+  },
+  {
+    "key": "sound2",
+    "file": "assets/basehq/sound2.png",
+    "width": 120,
+    "height": 113
+  },
+  {
+    "key": "support",
+    "file": "assets/basehq/support.png",
+    "width": 120,
+    "height": 113
+  },
+  {
+    "key": "settingsMain",
+    "file": "assets/basehq/settingsMain.png",
+    "width": 73,
+    "height": 73
+  },
+  {
+    "key": "lukoshkoIcon",
+    "file": "assets/event1/lukoshko.png",
+    "width": 190,
+    "height": 190
+  },
+  {
+    "key": "lukoshkoIcon2",
+    "file": "assets/event1/lukoshko2.png",
+    "width": 170,
+    "height": 170
+  },
+  {
+    "key": "lukoshkoHeader",
+    "file": "assets/event1/lukoshkoHeader.png",
+    "width": 415,
+    "height": 401
+  },
+  {
+    "key": "leshiiSign",
+    "file": "assets/event1/leshiiSign.png",
+    "width": 150,
+    "height": 152
+  },
+  {
+    "key": "circleViolet",
+    "file": "assets/event1/circleViolet.png",
+    "width": 110,
+    "height": 110
+  },
+  {
+    "key": "clock",
+    "file": "assets/event1/clock.png",
+    "width": 25,
+    "height": 40
+  }
+]

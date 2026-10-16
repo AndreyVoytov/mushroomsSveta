@@ -18,7 +18,7 @@ if ([string]::IsNullOrWhiteSpace($AtlasesDir)) {
 if ([string]::IsNullOrWhiteSpace($ManifestPath)) {
     $ManifestPath = Join-Path $projectRoot "src/generated/atlasManifest.ts"
 }
-$cacheVersion = "atlas-cache-v1"
+$cacheVersion = "atlas-cache-v2-webp-q92"
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 $magickCommand = Get-Command magick.exe, magick -ErrorAction SilentlyContinue | Select-Object -First 1
@@ -501,7 +501,7 @@ function Save-Webp([string]$PngPath, [string]$WebpPath) {
 
     # Workspace image previews can briefly hold the existing WebP open on Windows.
     for ($attempt = 0; $attempt -lt 6; $attempt++) {
-        & $magickExe $PngPath '-define' 'webp:lossless=true' $WebpPath | Out-Null
+        & $magickExe $PngPath '-quality' '92' '-define' 'webp:lossless=false' '-define' 'webp:alpha-quality=100' '-define' 'webp:method=6' $WebpPath | Out-Null
         if ($LASTEXITCODE -eq 0) { return }
         if ($attempt -lt 5) { Start-Sleep -Milliseconds (250 * ($attempt + 1)) }
     }

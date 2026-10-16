@@ -1,0 +1,45 @@
+{
+  "originalTexturesChecked": 609,
+  "resolutionIncreases": 0,
+  "reducedTextures": [
+    {
+      "file": "assets/base/ui/energyPanelFrame.png",
+      "before": [
+        1536,
+        1024
+      ],
+      "after": [
+        960,
+        640
+      ]
+    },
+    {
+      "file": "assets/base/ui/energyPanelBuyButton.png",
+      "before": [
+        1900,
+        678
+      ],
+      "after": [
+        512,
+        160
+      ]
+    },
+    {
+      "file": "assets/base/ui/energyPanelOrb.png",
+      "before": [
+        1292,
+        1217
+      ],
+      "after": [
+        160,
+        150
+      ]
+    }
+  ],
+  "paintedAssets": 148,
+  "newUiAssets": 8,
+  "atlasPages": 30,
+  "atlasBytes": 13281462,
+  "alpha": "Original ground masks retained at 8% opacity; validated on output PNG pixels",
+  "masterImagesPublished": false
+}

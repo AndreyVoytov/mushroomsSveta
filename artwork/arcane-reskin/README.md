@@ -8,7 +8,8 @@ Production: https://andreyvoytov-mushrooms-arcane.pages.dev
 The art direction combines painterly, faceted character lighting with clean,
 grouped foliage shapes and restrained couture silhouettes. The interface uses
 light parchment, sage, brass, Manrope body text and Lora headings. Puzzle boards,
-their cell artwork and mechanics retain the baseline behavior.
+their geometry and mechanics retain the baseline behavior. The second revision
+also brings field greens into a softer sage/jade palette.
 
 ## Artwork
 
@@ -17,8 +18,16 @@ their cell artwork and mechanics retain the baseline behavior.
   the built-in `image_gen` tool (not the CLI).
 - `validation.json`: dimensions, transparency and before/after image hashes.
 - `generation-results.json`: selected original generation output paths.
-- `ui/*.svg`: editable source of 68 interface assets.
+- `ui/*.svg` and `ui-manifest.json`: archived v1 experiment / canvas mapping,
+  superseded by the painted assets below.
 - `derived-icons.json`: small character images derived from the new sprites.
+- `iteration-2/generation-results.json`: 58 selected built-in ImageGen UI,
+  foliage and field prompts, with their original generation paths.
+- `iteration-2/applied-assets.json`: shipped painted sprite paths, dimensions
+  and hashes. The full resolution generation masters are kept outside assets.
+- `iteration-2/derived-surfaces.json`: technical alpha-mask and repeat-fill prep.
+- `iteration-2/review-cycles.md`: five visual review / improvement cycles.
+- `iteration-2/asset-budget.json`: checked dimensions and atlas size budget.
 
 43 generated images cover 22 character poses, six locations, ten level headers
 and five props/menu illustrations. Five small character icons reuse these
@@ -35,12 +44,20 @@ deploy. Optional art scripts require `sharp` and, for bitmap fonts, `playwright`
 with Chrome. They also support the bundled Codex document runtime.
 
 1. `node tools/normalize-arcane-art.cjs` (requires generation source files).
-2. `node tools/generate-arcane-ui.cjs`
-3. `node tools/derive-arcane-icons.cjs`
-4. `node tools/generate-arcane-fonts.cjs`
-5. `npm run atlases`
-6. `npm run pages:build`
-7. `node tools/prepare-arcane-publication.cjs`
+2. `node tools/apply-painted-ui.cjs`
+3. `node tools/apply-painted-ui.cjs --group=character`
+4. `node tools/apply-painted-ui.cjs --group=field`
+5. `node tools/derive-painted-surfaces.cjs`
+6. `node tools/derive-arcane-icons.cjs` / `node tools/generate-arcane-fonts.cjs`
+   only when the original character / font sources changed.
+7. `npm run atlases` (WebP quality 92, alpha quality 100; PNG fallback retained).
+8. `node tools/check-painted-art.cjs`
+9. `npm run pages:build`
+10. `node tools/prepare-arcane-publication.cjs`
+
+Never run the archived SVG UI generator over the current painted UI. Logical
+texture canvases do not grow. Energy modal images were reduced to their actual
+display needs; new portrait frames are 148×148 and rendered at up to 136×136.
 
 The publication script requires the reskin branch and stages a separate static
 site for `andreyvoytov-mushrooms-arcane`. The oversized companion ZIP retains its

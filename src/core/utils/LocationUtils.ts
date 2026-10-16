@@ -151,6 +151,12 @@ export default class LocationUtils {
             const bitmap = game.make.bitmapData(game.width, height);
             const sourceHeight = Math.min(crop.height, crop.width * height / game.width);
             bitmap.context.drawImage(source.texture.baseTexture.source, crop.x, crop.y + (crop.height - sourceHeight) * 0.25, crop.width, sourceHeight, 0, 0, game.width, height);
+            // Feather the painted illustration into the matching ground, avoiding a hard green strip.
+            const fade = bitmap.context.createLinearGradient(0, height * .84, 0, height);
+            fade.addColorStop(0, 'rgba(255,255,255,1)');fade.addColorStop(1, 'rgba(255,255,255,0)');
+            bitmap.context.globalCompositeOperation = 'destination-in';
+            bitmap.context.fillStyle = fade;bitmap.context.fillRect(0, 0, game.width, height);
+            bitmap.context.globalCompositeOperation = 'source-over';
             bitmap.dirty = true;
             source.destroy();
             const header = new Phaser.Sprite(game, 0, 0, bitmap);
@@ -542,6 +548,8 @@ export default class LocationUtils {
                 break;
                 // throw new NeverError(environment);
         }
+        // The painted scenic headers already fade to transparent. Legacy opaque grass strips create a seam over the new ground.
+        res.forEach(sprite => { if (sprite.name === 'grassLight2') sprite.visible = false; });
         return res;
     }
 

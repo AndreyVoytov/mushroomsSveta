@@ -57,6 +57,22 @@ export default class SpriteUtils {
 
     public static createTileSprite(game: Phaser.Game, x:number, y:number, width:number, height:number, key:string):Phaser.TileSprite{
         let keyAndFrame = this.getAtlasKeyAndFrame(game, key);
+        if (['bg','bgDark','bgLake','bgLight','bgClover'].indexOf(key) >= 0) {
+            // Reflect the painted tile at both joins; no hard grid where watercolor edges meet.
+            const cacheKey='painted-ground-'+key;
+            let bitmap=game.cache.getBitmapData(cacheKey);
+            if(!bitmap){
+                const source=this.createSprite(game,0,0,key),crop=source.texture.crop;
+                const w=Math.round(crop.width),h=Math.round(crop.height);bitmap=game.make.bitmapData(w*2,h*2);const ctx=bitmap.context;
+                for(let row=0;row<2;row++)for(let col=0;col<2;col++){
+                    ctx.save();ctx.translate(col?w*2:0,row?h*2:0);ctx.scale(col?-1:1,row?-1:1);
+                    ctx.drawImage(source.texture.baseTexture.source,crop.x,crop.y,w,h,0,0,w,h);ctx.restore();
+                }
+                bitmap.dirty=true;source.destroy();game.cache.addBitmapData(cacheKey,bitmap);
+            }
+            // Cache these tiny canvases for the game lifetime; a transition can still render its outgoing texture.
+            const floor=new Phaser.TileSprite(game,x,y,width,height,bitmap);floor.tileScale.set(3,3);return floor;
+        }
         if (key == 'bgHouse') {
             // Tile the actual floor, not the hexes above it. A reflected pair
             // has identical edge texels at both joins, including atlas mode.

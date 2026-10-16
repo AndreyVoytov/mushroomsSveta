@@ -18,7 +18,6 @@ export default class ShopSmallPanel extends BasePanel {
         
         // if(AnalyticUtils.getCustomization() == CustomizationType.android){
             let btn0 = this.attachSprite("pnlButton", "pnlButton0");
-            btn0.tint = 0x00FF00;
             let btn = this.attachSprite("pnlButton");
             btn.alpha = 0.5;
             this.events.onInputDown.add(() => ShopService.processPayment(this.game, buy, callbackOnBuy), this);

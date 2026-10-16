@@ -1,0 +1,78 @@
+[
+  {
+    "file": "assets/base/hex/grass.png",
+    "sourceId": "field-grass",
+    "width": 123,
+    "height": 138,
+    "bytes": 8789,
+    "adaptation": "ImageGen ground through original alpha; opened patches at 8% opacity, header strips retain original alpha",
+    "sha256": "6d74e02deedffed04f54b887c205663d42a514897589a630db910a2d003744ad"
+  },
+  {
+    "file": "assets/base/hex/grassFlower.png",
+    "sourceId": "field-pale-ground",
+    "width": 180,
+    "height": 191,
+    "bytes": 19675,
+    "adaptation": "ImageGen ground through original alpha; opened patches at 8% opacity, header strips retain original alpha",
+    "sha256": "803a356f155ac6e7c90768ac1dfdd793ae19154265b9d5e2eec8bd299d2dcbb6"
+  },
+  {
+    "file": "assets/base/hex/grassDF.png",
+    "sourceId": "field-dark-ground",
+    "width": 123,
+    "height": 138,
+    "bytes": 7339,
+    "adaptation": "ImageGen ground through original alpha; opened patches at 8% opacity, header strips retain original alpha",
+    "sha256": "47f584565cf3c77fc3d89c72cec2b835624096b5852f2b0118791569ac403672"
+  },
+  {
+    "file": "assets/base/ui/grassLight.png",
+    "sourceId": "field-grass",
+    "width": 960,
+    "height": 149,
+    "bytes": 124008,
+    "adaptation": "ImageGen ground through original alpha; opened patches at 8% opacity, header strips retain original alpha",
+    "sha256": "425029d77c85dcbf50b825885ca7679b07ae0181907ad03dbb2dbdf776a9b383"
+  },
+  {
+    "file": "assets/minigame3/grassDark.png",
+    "sourceId": "field-dark-ground",
+    "width": 960,
+    "height": 149,
+    "bytes": 133521,
+    "adaptation": "ImageGen ground through original alpha; opened patches at 8% opacity, header strips retain original alpha",
+    "sha256": "aa65aa166343ba1ccc23cacedfcfce15696fd4b9e9cb74a1db0053d3ae953102"
+  },
+  {
+    "file": "assets/minigame9/bgClover.png",
+    "sourceId": "field-pale-ground",
+    "width": 118,
+    "height": 118,
+    "bytes": 25997,
+    "adaptation": "same quiet meadow ground at original dimensions"
+  },
+  {
+    "file": "assets/base/hex/leaf4.png",
+    "sourceId": "field-leaf2",
+    "width": 120,
+    "height": 127,
+    "adaptation": "same leaf variant at original dimensions"
+  },
+  {
+    "file": "assets/base/ui/progressbar/body.jpg",
+    "sourceId": "progress-fill",
+    "width": 47,
+    "height": 41,
+    "bytes": 511,
+    "adaptation": "quiet central painted fill for seamless repeat"
+  },
+  {
+    "file": "assets/base/ui/progressbar/tail.png",
+    "sourceId": "progress-fill",
+    "width": 18,
+    "height": 31,
+    "bytes": 839,
+    "adaptation": "quiet central painted fill for seamless repeat"
+  }
+]

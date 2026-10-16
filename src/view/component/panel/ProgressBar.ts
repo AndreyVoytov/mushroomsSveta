@@ -136,7 +136,10 @@ export default class ProgressBar extends BasePanel {
 
         this.progressBarBody.x = this.progressLineBg.x + 7 - this.progressLineBg.width  + 15;
         this.progressBarBody.y = this.progressBarTail.y;
-        this.progressBarBody.scale = this.progressBarTail.scale;
+        this.progressBarBody.scale.set(1, 1);
+        this.progressBarBody.height = 32;
+        this.progressBarTail.height = 32;
+        progressStart.height = 32;
 
 
         if (user.isJustCompletedLevel() && this.currentCount > 0) {
@@ -273,7 +276,7 @@ export default class ProgressBar extends BasePanel {
     private getProgressBodyWidth(currentCount): number {
         let ratio = currentCount / this.totalCount;
 
-        return ratio * (this.progressLineBg.width);
+        return ratio * Math.max(0, this.progressLineBg.width - 44);
     }
 
     public getCurrent(): number {

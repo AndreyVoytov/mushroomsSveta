@@ -1,4 +1,6 @@
 ﻿export default class Label extends Phaser.BitmapText {
+    public static INK = '#343c35';
+    public static ON_DARK = 'arcane-on-dark';
     private static GREEN_ESCAPE_SYMBOL = '~';
     private static VIOLET_ESCAPE_SYMBOL = '@';
 
@@ -20,8 +22,8 @@
 
     public static TASK_TITLE_STYLE: Phaser.PhaserTextStyle = { font: 'bold 45px Bookman Old Style', fill: '#000000', fontStyle: 'italic', align: 'center', wordWrap: true, wordWrapWidth: 430 };
     public static TASK_STYLE: Phaser.PhaserTextStyle = { font: '35px Bookman Old Style', fill: '#000000', fontStyle: 'italic', align: 'center', wordWrap: true, wordWrapWidth: 510 };
-    public static DIALOG_STYLE: Phaser.PhaserTextStyle = { font: 'bold 40px Arial', fill: '#734f3f' };
-    public static DIALOG_TITLE_STYLE: Phaser.PhaserTextStyle = { font: '45px Lora', fill: '#514739', wordWrap: true, wordWrapWidth: 880 };
+    public static DIALOG_STYLE: Phaser.PhaserTextStyle = { font: '36px Lora', fill: '#3e352b' };
+    public static DIALOG_TITLE_STYLE: Phaser.PhaserTextStyle = { font: '44px Lora', fill: Label.ON_DARK, wordWrap: true, wordWrapWidth: 880 };
 
     private static DEFAULT_STYLE: Phaser.PhaserTextStyle = { font: '40px Arial', fill: '#ffffff', wordWrap: true, wordWrapWidth: 800 };
 
@@ -209,6 +211,7 @@
     }
 
     private static toTint(value: any): number {
+        if (value === Label.ON_DARK) return 0xfff3d7;
         if (!value) return 0xffffff;
         if (typeof value === 'number') return value;
 
@@ -220,12 +223,22 @@
             normalized = normalized[0] + normalized[0] + normalized[1] + normalized[1] + normalized[2] + normalized[2];
         }
 
-        // These legacy light labels sat on dark wood. The reskin uses light parchment.
-        if (['ffffff', 'fff5bc', 'fff0ab', 'fff1c4', 'fff3c6', 'fff5ce', 'f0f1ec', 'e8c38f', 'fff7dc', 'fff7d6'].indexOf(normalized.toLowerCase()) >= 0) {
-            return 0x514739;
-        }
-
         const parsed = parseInt(normalized, 16);
+        if (!isNaN(parsed)) {
+            const rgb = [(parsed >> 16) & 255, (parsed >> 8) & 255, parsed & 255];
+            const linear = rgb.map(channel => {
+                const component = channel / 255;
+                return component <= 0.04045 ? component / 12.92 : Math.pow((component + 0.055) / 1.055, 2.4);
+            });
+            const luminance = linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722;
+            // Standard surfaces are now light paper. Dark enamel captions
+            // explicitly opt into ON_DARK instead of depending on a color list.
+            if (luminance > 0.18) {
+                if (rgb[1] > rgb[0] * 1.18 && rgb[1] > rgb[2] * 1.1) return 0x315e49;
+                if (rgb[0] > rgb[1] * 1.15 && rgb[2] > rgb[1] * 1.15) return 0x6a486d;
+                return 0x343c35;
+            }
+        }
         return isNaN(parsed) ? 0xffffff : parsed;
     }
 

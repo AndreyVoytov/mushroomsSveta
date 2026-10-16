@@ -34,19 +34,10 @@ export default class SettingsPanel extends ClosablePanel {
         this.attachSprite("panel2")
         this.attachSprite("helperPanel")
         let titleBg = this.attachSprite("statusPanel")
-        titleBg.tint = 0xaa5577;
         this.attachText("title", settingsTitle,  { font: "58px Bookman Old Style", fill: "#f0f1ec" })
 
-        this.closeButton = this.attachButton("circleOrange", () => this.close())
+        this.closeButton = this.attachButton("closeButton", () => this.close())
         this.closeButton.name = "closeButton";
-        this.closeButton.tint = 0xCC7777;
-        let cross = SpriteUtils.createSprite(game,  0, 0, "closeButton", "cross");
-        cross.anchor.set(0.5)
-        cross.scale.set(1/1.34 *2)
-        cross.alpha = 0.5;
-        // cross.tint = 0x994444;
-        cross.tint = 0x333333;
-        this.closeButton.addChild(cross);
         this.addButton(this.closeButton);
 
         this.attachText("soundText", settingsSound, { font: "40px Arial bold", fill: "#6b2e06", wordWrap: true, wordWrapWidth: 800 })

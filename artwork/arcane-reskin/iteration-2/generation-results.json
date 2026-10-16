@@ -1,0 +1,380 @@
+[
+  {
+    "id": "dialog",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-a4c4d88a-bd24-46e3-946e-11abe5526d95.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A wide horizontal dialogue text panel with 3.7:1 outer aspect ratio. Ivory watercolor paper center with soft warm sage washes near the edges; center luminance very high, reads clearly with dark brown text. Thin double brass frame and meticulously painted interlocking angular corner brackets, small teal enamel details, same sophistication as the reference. 90% of width and 37% of canvas height, centered on a landscape transparent canvas. No nameplate or buttons.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "dialog-name",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-11acd3e6-a69d-4fad-ab73-448df047cc86.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single wide speaker nameplate, outer aspect ratio 4.0:1, elegantly chamfered pointed short ends, deep muted teal enamel center for IVORY text (no actual text), finely illustrated gold double edging, diamond inset ornaments at the far ends. Rich but restrained, matching the speaker-name plaque in the reference. Wide thin object centered with transparent padding.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "dialog-button",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-e17e3eeb-5ab0-4cd2-8245-a91bd1499304.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single wide primary dialogue button, outer aspect ratio 4.0:1, elegantly rounded / chamfered rectangle, deep muted petrol teal enamel face, softly brushed jade highlights, fine old gold bevel edge, two delicate Art Deco corner details on far ends. The reference Continue button is the aesthetic guide, but NO label and NO circular mushroom medallion attached; only the main button. Center clear for IVORY text. Full silhouette with transparency.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "button",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-e5660883-b8f6-446a-8155-d264b9ffff48.png",
+    "prompt": "Use case: precise-object-edit. Edit only the colored central face of this UI button. Keep the EXACT silhouette, rounded/chamfered button shape, exquisite handpainted gold rim, two diamond end clasps, aspect ratio and transparent exterior. Change the deep dark teal face into LIGHT muted sage/jade ceramic, center around #bbcfaa, upper highlight #dce5c9, lower edge #8fae91. It must support DARK charcoal lettering with strong contrast. Retain fine watercolor grain and softly painted bevel. Keep frame and gems unchanged. No text, no extra objects. Actual transparency outside.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "panel",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-788f9fc8-5d56-449a-a58a-0e277bd50922.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single large almost-square modal panel, aspect ratio 0.98:1. Light ivory paper with quiet watercolor sage/tea washes in margins. Slightly substantial handpainted aged brass and warm light wood structural frame, finely etched corner joints and small teal enamel facets. Sophisticated matching the reference dialogue frame. Broad nearly uniform cream center occupies 85% of interior, no partitions, no header or button attached, no leafy decorations inside content. Clean premium hand-painted game UI, very subtle grain not mottled noisy pattern.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "inset",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-008ae1d5-5967-4b2a-9054-61b3c9d4b489.png",
+    "prompt": "Use case: precise-object-edit. Refine this inset card for a hierarchy beneath ornate parent panels. Keep the wide rectangle silhouette, pale ivory paper texture, muted sage watercolor edging, exact aspect ratio and transparency. Reduce the large ornate corner brackets into small simple thin brass corner clips, remove the large teal triangular corner plaques, and make the border visually much thinner and quieter. The interior must remain very light and calm for dark text. This is a subordinate inset, not a main dialog panel. Handpainted premium refinement, no text, no new decoration. Actual transparent exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "header",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-bf6db23a-ce35-458a-9db6-5a773ac46261.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single wide ornamental heading plaque, aspect ratio 4.8:1, light ivory paper center intended for dark serif headings. Carefully painted sculptural brass/wooden rim with interlocking Art Deco corners and tiny teal enamel facets, slightly extended short ends, elegant same-craft as reference. NO ribbon tails dangling under it. Center completely blank, broad and bright. Wide thin object centered on transparent canvas.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "hud",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-1799734d-336d-43d6-b032-00e9af5ea8d5.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single very wide shallow game HUD bar, outer aspect ratio 6.2:1. Light ivory watercolor parchment inside refined aged brass frame with small carefully crafted angular corner brackets and muted teal enamel tips. Small delicate sage watercolor traces only near extreme ends. Center and entire long inner strip completely clear for resource labels and circular hero portraits. No compartments, no icons, no text. Single very wide thin object centered on landscape transparent canvas.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "circle",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-f81fb51f-c7b9-4e51-9d1b-5382fb48b37a.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single circular small action button / medallion. Complete perfectly round rim made of finely handpainted aged brass, delicate concentric etched edge and small subtle teal enamel clasps at four compass points. The INSIDE IS SOLID pale ivory/sage ceramic intended behind a separate icon. No symbol, no letters. Camera directly front-on orthographic. Circle centered with transparent exterior. Light center.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "portrait-ring",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-05b6cc87-095b-4597-a25d-4f5d1b49aec8.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single perfectly circular character portrait FRAME, front-on orthographic, aged brass illustrated rim, thin dark muted teal outer channel and small delicate Art Deco metal joints at cardinal points. The entire INSIDE circular aperture is EMPTY AND ACTUALLY TRANSPARENT alpha so a character can be seen through it; exterior also transparent. Only the annular frame ring is opaque. Inner hole diameter 82% of total outer diameter. No person, no background filling the hole. Refined handpainted bevel with warm soft highlights, crisp at small size.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "progress-track",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-84e47561-eb58-4697-b1fe-62e40c5b2703.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single very wide shallow horizontal EMPTY progress bar, outer aspect ratio 9:1. A painted elegant rounded capsule brass rim surrounding light desaturated grey-sage ceramic inner channel. The channel is nearly uniform, empty, no ticks, no decoration inside, no filling. The fine golden outer rim may have restrained Art Deco clasps only on the two rounded ends. Entire object is low and slender, centered with transparent exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "progress-fill",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-c19c34a5-834a-4812-809f-3040819a1652.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: A single very wide shallow horizontal progress FILL strip, outer aspect ratio 12:1. Muted sea glass / pale sage green smoothly shaded watercolor enamel. It should read full of gentle glowing jade energy, softly highlighted along its top edge, pale and calm; no neon lime, no saturated emerald or black. NO frame, NO text, NO ticks, no ornaments. Rounded capsule silhouette, centered on transparent canvas.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "gear",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-bddf3b66-87e8-48d2-9dc9-de796bab4106.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round settings button: solid warm ivory face, finely painted antique brass circular rim and teal enamel details, one clear dark petrol-teal metal gear cog with six substantial teeth and round center hole, centered. A readable handcrafted gear symbol at tiny mobile size, not a thin-line symbol.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "close",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d8f9bd68-e9e1-404b-9980-96411db19395.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round close button: ivory ceramic face, fine illustrated aged brass rim with two subtle teal clasps, a clear dark petrol-teal raised X cross in the center. X is thick and readable at tiny mobile size. No outer extra frame.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "plus",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-dfdc681e-45cb-4def-94e4-7cd353ae6d08.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round add button: ivory ceramic face, illustrated aged brass rim with subtle teal inlay, a clear substantial dark petrol-teal PLUS symbol centered. Exact plus, not cross/X. Calm premium watercolor UI.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "sound",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-fd27b3cc-edd0-46ef-9cd3-bbeefd16cf40.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round audio toggle button: ivory ceramic face, aged brass illustrated rim, a clear raised dark teal loudspeaker symbol with two sound-wave arcs. Icon readability at 40 CSS pixels. Do not use text.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "mute",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-4f615cc2-5f43-4e7d-b795-72bd6b91b683.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round muted audio toggle button: ivory ceramic face, aged brass illustrated rim, a clear raised dark teal loudspeaker symbol crossed with a simple small X on its right. Same design as enabled sound toggle.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "info",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-b18481cd-d415-4fd3-9471-9f48654da7ff.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round information button: warm ivory face, thin illustrated brass rim with subtle teal inset, one substantial dark teal lower-case information symbol i with one dot. This i is the icon, do not add other letters or words. Readable small UI.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "exit",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-0369b24f-2e52-48e2-be22-10e6892628da.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round exit/return button: ivory ceramic face, elegant illustrated brass rim, one clear dark teal OPEN DOOR outline with an arrow pointing right out through it. No writing.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "arrow",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-4ad05a8b-c911-4a57-9764-221dfb042f21.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One LEFT-pointing navigation arrow button. The silhouette is a simple substantial left arrow, illustrated brass bevel with warm ivory/sage ceramic center and dark teal inset inner line. No circular plate behind it, no extra symbols. Entire isolated arrow on transparent exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "play",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-5eda5718-18e5-449c-a7e0-c186fb87e3ee.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One RIGHT-pointing triangular Play flag button, tall rounded triangular ivory/sage ceramic flag face within refined painted aged brass bevel edge and small teal enamel corner insets. Center large, blank and LIGHT, intended for a dark level number. NOT a triangle drawn inside a disc; the outside silhouette IS the right pointing triangular flag itself. Premium same UI family. No text.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "empty-hero",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-f48db093-3afb-43ef-8439-b3b28a8bd13a.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round pale ivory character-slot placeholder medallion with aged brass illustrated rim and a simple debossed dark sage neutral head-and-shoulders silhouette centered. A placeholder, no distinct person or face, just a clean outline bust. Muted, understated.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "energy",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-10c31b2e-bbfe-467d-ae35-beebcba27ca1.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One small game energy resource icon: golden lightning bolt over a single softly painted sage green leaf, finely crafted warm brass rim, clean silhouette and bold readable golden bolt. Muted forest greens rather than neon acid green. Handpainted faceted watercolor with warm luminous gold, not shiny plastic. No circular backdrop.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "star",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-7cab2859-5674-42ec-8694-1b112d27a222.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One small five-point golden star currency icon, soft rounded friendly points, warm lemon/golden yellow with carefully handpainted faceted highlights and amber shadow edge. Pleasant inviting premium casual currency, matches painterly Arcane-inspired UI materials. No face, no outline badge, no rim, no gems, no special effects. Entire isolated star.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "basket",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-b45ddda0-e0a5-4aca-8ebd-98e51ca35042.png",
+    "prompt": "Use case: stylized-concept. Asset type: a production-ready standalone 2D raster UI sprite for a portrait fantasy casual game. The reference is the approved Arcane-inspired dialogue screen: match its refined painted brass edging, dark teal enamel corner inlays, elegant interlocking corner brackets and light watercolor paper. Hand-painted premium illustration, restrained Art Deco / Piltover craft, subtle irregular brushwork, warm highlights, no plastic glossy mobile-game rendering, no flat vector appearance. Absolutely no writing, letters, numbers, logos, watermarks, scene, characters, objects behind the sprite or extra separate components. Every decorative detail belongs to the single requested component. The complete outer silhouette must be visible with transparent padding. Actual transparent RGBA background outside the asset, no checkerboard, no backdrop, no cast shadow plane. Center filling intended for text must be calm and unpatterned; details stay close to the rim. Avoid dark overall UI, noisy repeating marks, ornate clutter intruding into text.\nPrimary request: One round side-event medallion. A beautiful small wicker basket holding three or four mushrooms, warm straw, cream and soft rust caps, two sage leaves. Painted brass circular frame surrounding a light muted sage paper center. No bright neon green or violet halo. Clearly readable tiny UI illustration with carefully grouped shapes, same painterly craftsmanship as the reference.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-hex",
+    "file": "assets/base/hex/hex.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-35ea58a7-503a-4e7b-be2c-7867cf83a39e.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its single asset identity and layout. Image 2 is only the approved painterly style reference. Primary request: Preserve this single beveled hexagonal tile footprint, exact outline and 3D bevel direction. Replace the neon saturated green with light desaturated sage jade: center around #91b89c, warmer pale edge highlights #bdd0ac and shadow #4e7967. Clear single tile on transparency. No symbols, no extra decoration. Soft painterly material, calm but readable.\nNo text, no logos, no watermark. Export only the asset, preserving its original transparency unless it is an opaque tiling texture.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-hexDF",
+    "file": "assets/base/hex/hexDF.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-14b799c8-b184-4f95-b68f-811542bee07a.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its single asset identity and layout. Image 2 is only the approved painterly style reference. Primary request: Preserve the single hexagonal tile footprint, exact outline and bevel. Muted blue-jade/sage, slightly cooler and deeper than normal forest tiles, center #72a898, edge shadow #416e64, highlight #a8c6af. No neon green. No symbols. Keep genuinely transparent exterior.\nNo text, no logos, no watermark. Export only the asset, preserving its original transparency unless it is an opaque tiling texture.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-hexMountain",
+    "file": "assets/base/hex/hexMountain.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-3ea59420-3dc4-4358-87f8-f620de536306.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its single asset identity and layout. Image 2 is only the approved painterly style reference. Primary request: Preserve this exact single hexagonal tile footprint and bevel. Desaturate acid green into soft olive sage (#9fb583), warm pale highlights (#c7cfaa), natural muted shadow (#67816b). No symbols. Transparent exterior.\nNo text, no logos, no watermark. Export only the asset, preserving its original transparency unless it is an opaque tiling texture.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-grass",
+    "file": "assets/base/ui/bg.jpg",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-a7ce3b4d-0039-4e45-87fd-51d73739e7d8.png",
+    "prompt": "Use case: game-asset. Create a seamless flat game-ground tile matching the muted sage/jade field palette of the hexagon style reference. A quiet watercolor meadow floor, soft middle-value sage/olive washes, a few very broad irregular moss color clouds. Almost no local texture contrast. Absolutely NO individual blades, NO visible repeating motifs, NO diamonds, NO checker pattern, NO rows, NO flowers, no stones, no shadows, no horizon. It will tile at only 118x118 pixels, so fine details create unwanted noise. A calm desaturated ground surface over which light jade hexagons will read clearly. The reference hex is only the palette/style guide: do NOT draw a hexagon. Opaque tile, seamless on all four edges.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-leaf1",
+    "file": "assets/base/hex/leaf1.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-0336b93f-c480-4b6d-9174-050f0217a069.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its single asset identity, footprint and layout. Image 2 is only the approved painterly style reference. Primary request: Keep the exact silhouette, angle, position and single-leaf identity. Change to a hand-painted muted pale sage leaf, softly faceted #c4d4a4 highlight, #83a77d center, #4d7a67 edge. Fine clean leaf vein. No lime/neon green, no extra leaves, no medallion, no background. Transparent exterior.\nNo text, no logos, no watermark. Export only the asset, actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-leaf2",
+    "file": "assets/base/hex/leaf2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-c859c2cb-7102-40dd-b050-461244188619.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its single asset identity, footprint and layout. Image 2 is only the approved painterly style reference. Primary request: Keep the exact silhouette, angle, position and oak-leaf identity. Change to a hand-painted muted pale sage oak leaf, #c8d7ad highlight, #91ac80 center, #557865 shadow. Natural gentle veins and softly faceted paint. No neon green, no extra leaves, no background.\nNo text, no logos, no watermark. Export only the asset, actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-leaf3",
+    "file": "assets/base/hex/leaf3.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-3b262a61-dee3-4bdc-8de9-2c5c101bd0e2.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its single asset identity, footprint and layout. Image 2 is only the approved painterly style reference. Primary request: Preserve the precise seven-leaf sprig silhouette, branch arrangement, angle and centered placement. Repaint the flat neon icon into a subtly handpainted pale sage sprig, not too realistic or detailed at small size. Light ivory-sage leaves #d2deb7 with darker muted green lower faces #8ca77c, olive stems. Gentle painted leaf veins. No fluorescent lime, no background, no badge. Transparent exterior.\nNo text, no logos, no watermark. Export only the asset, actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-clover",
+    "file": "assets/base/hex/leafClover.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-f5d652d4-c6bf-498f-a9be-4179015eeba4.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its single asset identity, footprint and layout. Image 2 is only the approved painterly style reference. Primary request: Keep the same four-leaf clover silhouette and stem, centered icon footprint. Repaint in soft handpainted sage green, pale watercolor highlights and gently faceted natural shading. #a8c392, #769774, #486b58. No intense glossy neon green, no jewel droplets, no background. Transparent exterior.\nNo text, no logos, no watermark. Export only the asset, actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-liana1",
+    "file": "assets/base/hex/liana.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-fc53dca1-8437-4bad-a23d-feaf64c2882b.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its asset identity, footprint and layout. Image 2 is only the approved style reference. Primary request: Preserve the exact curled vine with leaves: same silhouette, curl direction, single stem count, positions and object footprint. Repaint softly in handpainted warm bark #846443 and desaturated sage foliage #8da676 with soft natural veins and small amber edge highlights. Maintain readable obstacles at tiny game scale; no extra objects, no badge, no background.\nNo text, no logos, no watermark. Export only the asset, preserving actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-liana2",
+    "file": "assets/base/hex/liana2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-eeee9ce3-c59e-4c6b-bf37-082f158d958e.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its asset identity, footprint and layout. Image 2 is only the approved style reference. Primary request: Preserve exact paired curled vine arrangement, same silhouette, curl directions, stem count, positions and object footprint. Repaint softly handpainted warm bark #846443 and muted sage foliage #8da676. Readable branching obstacle at tiny scale, no neon lime, no extra objects, no background.\nNo text, no logos, no watermark. Export only the asset, preserving actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-liana3",
+    "file": "assets/base/hex/liana3.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ea0f2fa3-cd9d-4e1d-b948-476521d5a65e.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its asset identity, footprint and layout. Image 2 is only the approved style reference. Primary request: Preserve the exact dense three-vine arrangement, same silhouette, curl directions, stem count, positions and object footprint. Repaint softly handpainted warm bark #846443 and desaturated sage foliage #8da676 with small natural highlights. Keep density readable and distinct from one/two vines. No extra foliage beyond original, no background.\nNo text, no logos, no watermark. Export only the asset, preserving actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "character-panel",
+    "file": "assets/base/ui/character/character_panel.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-4057f45f-a741-48d4-a2f0-bd88334ec1b9.png",
+    "prompt": "Use case: style-transfer. Input image 1 is the EDIT TARGET; preserve its asset identity, footprint and layout. Image 2 is only the approved style reference. Primary request: Restyle this hero equipment panel in the approved illustrated UI style while preserving its exact composition and slot positions. Retain the large central vertical parchment rectangle and the three stacked equipment recesses on the left and three on the right. Keep the same embossed helmet, sword, boots, necklace, armor, ring glyphs in those exact recesses. Replace plain grey and muddy dark brown material with refined handpainted aged brass structure, pale sage-grey ceramic recesses and ivory paper. Center must be uniformly bright and unobstructed for a character. Carefully illustrated Arcane/Piltover craft, high-end premium casual watercolor. No words or numbers, no new slots or different layout. Transparent exterior.\nNo text, no logos, no watermark. Export only the asset, preserving actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "nature-bushes",
+    "file": "assets/base/ui/bushes.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-1ee116b1-2c40-4f36-97a3-d96d11ff7881.png",
+    "prompt": "The first image is the exact EDIT TARGET, an isolated border foliage sprite. Preserve its silhouette, empty area, branch structure, size balance and position, so it remains a decorative edge on the game board. Repaint the leaves as carefully grouped handpainted natural shapes, refined Arcane-inspired watercolor foliage, subtle veins and facet-like brushwork. Use pale subdued sage olive #92ac78 with soft warm cream-green highlights #c2d0a0, and woody stems. No neon green, no very dark black shapes, no noisy repetitive leaf patterns, no extra branches crossing into the empty area. Keep elliptical leaf identity. No text, no icon frame, no environment. Actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "nature-bushes2",
+    "file": "assets/base/ui/bushes2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-784c87a6-ee1b-49c3-9391-f70693df123c.png",
+    "prompt": "The first image is the exact EDIT TARGET, an isolated border foliage sprite. Preserve its silhouette, empty area, branch structure, size balance and position, so it remains a decorative edge on the game board. Repaint the leaves as carefully grouped handpainted natural shapes, refined Arcane-inspired watercolor foliage, subtle veins and facet-like brushwork. Use pale subdued sage olive #92ac78 with soft warm cream-green highlights #c2d0a0, and woody stems. No neon green, no very dark black shapes, no noisy repetitive leaf patterns, no extra branches crossing into the empty area. Keep elliptical leaf identity. No text, no icon frame, no environment. Actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "nature-bushDark",
+    "file": "assets/base/ui/bushDark.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-cd02a9f7-46da-45f4-8e8e-07b76ca36761.png",
+    "prompt": "The first image is the exact EDIT TARGET, an isolated border foliage sprite. Preserve its silhouette, empty area, branch structure, size balance and position, so it remains a decorative edge on the game board. Repaint the leaves as carefully grouped handpainted natural shapes, refined Arcane-inspired watercolor foliage, subtle veins and facet-like brushwork. Use dark subdued forest teal #3d665d with gently lit sage edges #739380. No neon green, no very dark black shapes, no noisy repetitive leaf patterns, no extra branches crossing into the empty area. Keep elliptical leaf identity. No text, no icon frame, no environment. Actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "nature-bushDark2",
+    "file": "assets/base/ui/bushDark2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-52db09ea-956d-46b7-b393-4ad146ba9610.png",
+    "prompt": "The first image is the exact EDIT TARGET, an isolated border foliage sprite. Preserve its silhouette, empty area, branch structure, size balance and position, so it remains a decorative edge on the game board. Repaint the leaves as carefully grouped handpainted natural shapes, refined Arcane-inspired watercolor foliage, subtle veins and facet-like brushwork. Use dark subdued forest teal #3d665d with gently lit sage edges #739380. No neon green, no very dark black shapes, no noisy repetitive leaf patterns, no extra branches crossing into the empty area. Keep elliptical leaf identity. No text, no icon frame, no environment. Actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "nature-bushClover",
+    "file": "assets/base/ui/bushClover.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-9adf2fd7-3125-4018-bc16-6e153f9fcc28.png",
+    "prompt": "The first image is the exact EDIT TARGET, an isolated border foliage sprite. Preserve its silhouette, empty area, branch structure, size balance and position, so it remains a decorative edge on the game board. Repaint the leaves as carefully grouped handpainted natural shapes, refined Arcane-inspired watercolor foliage, subtle veins and facet-like brushwork. Use pale subdued sage olive #92ac78 with soft warm cream-green highlights #c2d0a0, and woody stems. No neon green, no very dark black shapes, no noisy repetitive leaf patterns, no extra branches crossing into the empty area. Keep four-leaf clover identity. No text, no icon frame, no environment. Actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "nature-bushClover2",
+    "file": "assets/base/ui/bushClover2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d9a9a76b-d48b-4426-97b5-595bc744fc06.png",
+    "prompt": "The first image is the exact EDIT TARGET, an isolated border foliage sprite. Preserve its silhouette, empty area, branch structure, size balance and position, so it remains a decorative edge on the game board. Repaint the leaves as carefully grouped handpainted natural shapes, refined Arcane-inspired watercolor foliage, subtle veins and facet-like brushwork. Use pale subdued sage olive #92ac78 with soft warm cream-green highlights #c2d0a0, and woody stems. No neon green, no very dark black shapes, no noisy repetitive leaf patterns, no extra branches crossing into the empty area. Keep four-leaf clover identity. No text, no icon frame, no environment. Actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "nature-bushCloverDark",
+    "file": "assets/base/ui/bushCloverDark.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-2654b443-25a6-4ff4-9ecf-996ad1473655.png",
+    "prompt": "The first image is the exact EDIT TARGET, an isolated border foliage sprite. Preserve its silhouette, empty area, branch structure, size balance and position, so it remains a decorative edge on the game board. Repaint the leaves as carefully grouped handpainted natural shapes, refined Arcane-inspired watercolor foliage, subtle veins and facet-like brushwork. Use dark subdued forest teal #3d665d with gently lit sage edges #739380. No neon green, no very dark black shapes, no noisy repetitive leaf patterns, no extra branches crossing into the empty area. Keep four-leaf clover identity. No text, no icon frame, no environment. Actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "nature-bushCloverDark2",
+    "file": "assets/base/ui/bushCloverDark2.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-f3bc2549-947e-40fd-a65c-0ee9b6203932.png",
+    "prompt": "The first image is the exact EDIT TARGET, an isolated border foliage sprite. Preserve its silhouette, empty area, branch structure, size balance and position, so it remains a decorative edge on the game board. Repaint the leaves as carefully grouped handpainted natural shapes, refined Arcane-inspired watercolor foliage, subtle veins and facet-like brushwork. Use dark subdued forest teal #3d665d with gently lit sage edges #739380. No neon green, no very dark black shapes, no noisy repetitive leaf patterns, no extra branches crossing into the empty area. Keep four-leaf clover identity. No text, no icon frame, no environment. Actual transparent RGBA exterior.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "portrait-charge",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-5785c2f5-4de4-42e6-86ce-6658879709b2.png",
+    "prompt": "Use case: precise-object-edit. Keep this EXACT circular frame, same complete silhouette, warm brass rim, four metal joints, inner opening and all transparency. Change ONLY the dark teal circular channel band into a softly luminous pale jade/golden-sage enamel band so it represents charged energy progress. The channel should be clearly lighter and warmer than its original dark teal. Fine painted highlights, no bloom cloud or particles. Same perfectly round radius and geometry, no text, no new objects. Center hole must remain actually transparent.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "backpack",
+    "file": "assets/base/ui/character/backpack_button.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-17b925ed-e754-45d4-8375-7b0e981885ae.png",
+    "prompt": "Use case: style-transfer. Restyle this exact small backpack action button while preserving composition and transparent silhouette. A carefully illustrated handpainted travel satchel in muted plum/brown leather, fine brass buckles and a sage ribbon, standing on an elegant light IVORY label plaque across the bottom third. The plaque has refined brass/teal Art Deco edging from the UI reference and must be completely BLANK and BRIGHT for dark text. Keep the proportions and perspective of the backpack, no extra icons, no writing. Painterly Arcane-inspired craft, not shiny plastic, no neon.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "shop-button",
+    "file": "assets/base/ui/character/shop_button.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-4f8cc7e1-9684-48e8-a443-2d9ac3cb362f.png",
+    "prompt": "Use case: style-transfer. Restyle this exact small shop action button while preserving composition and transparent silhouette. A carefully handpainted miniature fantasy boutique storefront with a plum roof, cream stone, sage fabric awning and fine brass details, standing on an elegant light IVORY label plaque across the bottom third. The plaque has refined brass/teal Art Deco edging from the UI reference and must be completely BLANK and BRIGHT for dark text. Preserve the building's general size balance, no extra icons, no writing. Painterly Arcane-inspired craft, restrained couture architecture, not shiny plastic.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "skill-energy",
+    "file": "assets/base/ui/skills/skill_energy.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-e7e744a9-7d57-4ded-bc44-7fac981effc4.png",
+    "prompt": "Use case: game-asset. The reference is the approved Arcane-inspired watercolor/brass UI material palette, not a composition to copy. Create a standalone matching UI icon. One compact stat icon: a small elegant deep-teal shield with a pale golden lightning bolt inset. Matte enamel, thin handpainted warm brass bevel, no electric glow, no lettering, no extra backing circle. Clean readable silhouette. Face-on with subtle dimensional painterly facets. Actual transparent alpha background; no white backdrop, no text, no watermark. Intended final icon only196x160 pixels so broad grouped forms, avoid tiny noise.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "skill-bravery",
+    "file": "assets/base/ui/skills/skill_bravery.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-e8255fc8-5177-4d24-a7cf-b702d3c0cd78.png",
+    "prompt": "Use case: game-asset. The reference is the approved Arcane-inspired watercolor/brass UI material palette, not a composition to copy. Create a standalone matching UI icon. One compact stat icon: a small elegant sage-teal shield bearing a warm brass lion head relief. A dignified simplified lion silhouette, not a cute animal face. Matte enamel, thin brass bevel, no lettering, no extra backing circle. Clean readable painterly facets. Actual transparent alpha background; no white backdrop, no text, no watermark. Intended final icon only196x160 pixels so broad grouped forms, avoid tiny noise.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "skill-knowledge",
+    "file": "assets/base/ui/skills/skill_knowledge.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-72954fad-7c21-40d8-8931-6fef80775bfa.png",
+    "prompt": "Use case: game-asset. The reference is the approved Arcane-inspired watercolor/brass UI material palette, not a composition to copy. Create a standalone matching UI icon. One compact stat icon: an open ivory book with a thin plum leather cover, neat brass corner details and a muted teal ribbon bookmark. Blank pages, no glyphs, no text, no extra backing circle. Clean readable handpainted dimensional silhouette. Actual transparent alpha background; no white backdrop, no text, no watermark. Intended final icon only196x160 pixels so broad grouped forms, avoid tiny noise.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "skill-friendship",
+    "file": "assets/base/ui/skills/skill_frendship.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-a348c9d7-c863-4e0d-8144-6545c1ced3af.png",
+    "prompt": "Use case: game-asset. The reference is the approved Arcane-inspired watercolor/brass UI material palette, not a composition to copy. Create a standalone matching UI icon. One compact stat icon: two small warm brass hands clasped in friendship, with muted sage cuffs, inside an elegant small teal shield. No hearts, no eyes, no lettering, no extra backing circle. Clean readable matte handpainted silhouette. Actual transparent alpha background; no white backdrop, no text, no watermark. Intended small game UI art, grouped forms and deliberate brushwork, avoid tiny noise.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "reward-chest",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-903385f3-7199-4551-8a9d-4557a9c4be12.png",
+    "prompt": "Use case: game-asset. The reference is the approved Arcane-inspired watercolor/brass UI material palette, not a composition to copy. Create a standalone matching UI icon. One small fantasy reward chest in three-quarter view, lid closed, dark desaturated walnut and softly warm brass fittings, refined teal enamel diamond clasp. Elegant Arcane Piltover craftsmanship, restrained handpainted facets and subtle highlights. No saturated yellow plastic, no gold coins, no floating particles, no backing disk. Centered isolated inventory icon. Actual transparent alpha background; no white backdrop, no text, no watermark. Intended small game UI art, grouped forms and deliberate brushwork, avoid tiny noise.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "divider",
+    "file": "assets/base/task/ornament.png",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-ee7b198a-a94e-48df-b421-6a76224acc22.png",
+    "prompt": "Use case: game-asset. The reference is the approved Arcane-inspired watercolor/brass UI material palette, not a composition to copy. Create a standalone matching UI icon. One very wide and very slim decorative UI divider. A thin warm brass rule with a tiny subtle teal Art Deco diamond at its exact center and delicate tapered ends. Quiet refined painterly metal, no curls, no text, no large symbol, no panels. Wide horizontal silhouette, almost all canvas transparent. Actual transparent alpha background; no white backdrop, no text, no watermark. Intended small game UI art, grouped forms and deliberate brushwork, avoid tiny noise.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "dialog-medallion",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-84d51f64-ac5f-442e-9e62-97f9e661e89f.png",
+    "prompt": "Use case: game-asset. Create one standalone perfectly round UI medallion exactly like the round mushroom button socket in the approved dialogue reference: a softly painted desaturated plum-purple interior disk with subtle watercolor depth, surrounded by a thick warm brass double rim and one tiny understated Art Deco metal joint. No mushroom and no other icon inside; empty unmarked plum face. No text, no sparkle, no glow. Refined painterly Arcane/Piltover craft, not shiny plastic. Full object in frame, no cropped edge. Real transparent background outside the medallion; opaque plum center. Its final game size is only 136x136 pixels, so keep details grouped and readable.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-dark-ground",
+    "file": "assets/minigame3/bgDark.jpg",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-86f79ea9-81ec-45ae-81dc-8ab928231e29.png",
+    "prompt": "Use case: game-asset. Create a seamless opaque flat watercolor game-ground tile. dark forest ground: desaturated deep gray-teal moss, calm medium-dark values, no emerald or neon green. Very quiet broad irregular watercolor clouds, almost no local contrast, NO visible blades of grass, NO flowers, no stones, no horizon, no lines, no checkerboard, no diamond texture, no rows or directional repeat. It tiles at 118x118 pixels, so avoid all tiny texture and recurring motifs. Match the reference's painted material style, but do NOT draw a hexagon. Seamless all four edges, opaque square image.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-lake-ground",
+    "file": "assets/minigame4/bgLake.jpg",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-e2071f92-b47b-4034-8676-2bb317e6e06c.png",
+    "prompt": "Use case: game-asset. Create a seamless opaque flat watercolor game-ground tile. lake-side ground: desaturated cool sage-gray meadow, medium-light values, no blue water and no neon green. Very quiet broad irregular watercolor clouds, almost no local contrast, NO visible blades of grass, NO flowers, no stones, no horizon, no lines, no checkerboard, no diamond texture, no rows or directional repeat. It tiles at 118x118 pixels, so avoid all tiny texture and recurring motifs. Match the reference's painted material style, but do NOT draw a hexagon. Seamless all four edges, opaque square image.",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "field-pale-ground",
+    "file": "assets/minigame5/bgLight.jpg",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-dcf86885-4b12-4f92-8e26-84ee1f9d0ac9.png",
+    "prompt": "Use case: game-asset. Create a seamless opaque flat watercolor game-ground tile. sunlit meadow ground: soft desaturated pale sage and warm gray-olive washes, medium-light values, no yellow neon. Very quiet broad irregular watercolor clouds, almost no local contrast, NO visible blades of grass, NO flowers, no stones, no horizon, no lines, no checkerboard, no diamond texture, no rows or directional repeat. It tiles at 118x118 pixels, so avoid all tiny texture and recurring motifs. Match the reference's painted material style, but do NOT draw a hexagon. Seamless all four edges, opaque square image.",
+    "tool": "built-in image_gen"
+  }
+]
