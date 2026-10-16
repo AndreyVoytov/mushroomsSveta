@@ -21,8 +21,8 @@
     }
   },
   "visualReview": {
-    "scenes": 63,
-    "measuredLabels": 513,
+    "scenes": 75,
+    "measuredLabels": 614,
     "minimumSampledContrast": 4.51,
     "contrastFailures": [],
     "runtimeErrors": [],
@@ -412,6 +412,78 @@
         "scene": "05-diary-turn",
         "labels": 3,
         "minContrast": 16.97
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "01-redhood-house",
+        "labels": 3,
+        "minContrast": 8.83
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "02-cat-interior",
+        "labels": 4,
+        "minContrast": 5.53
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "03-forest-hub",
+        "labels": 6,
+        "minContrast": 6.17
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "04-dark-forest-start",
+        "labels": 6,
+        "minContrast": 5.2
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "05-level-08",
+        "labels": 7,
+        "minContrast": 6.91
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "06-puzzle-victory",
+        "labels": 7,
+        "minContrast": 4.78
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "07-settings",
+        "labels": 5,
+        "minContrast": 6.33
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "08-heroes",
+        "labels": 7,
+        "minContrast": 6.22
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "09-tasks",
+        "labels": 21,
+        "minContrast": 5.78
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "10-diary",
+        "labels": 3,
+        "minContrast": 17.03
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "11-energy",
+        "labels": 6,
+        "minContrast": 4.77
+      },
+      {
+        "folder": "ensembles-published-mobile",
+        "scene": "12-bank",
+        "labels": 26,
+        "minContrast": 4.56
       }
     ]
   },
@@ -426,7 +498,77 @@
   },
   "regressions": {
     "passed": 17,
-    "heroPartyBrowser": "Three slots, no-op selection, energy thresholds, summons, owl ranking, refunds and restart cleanup passed"
+    "heroPartyBrowser": "Three slots, no-op selection, energy thresholds, summons, owl ranking, refunds and restart cleanup passed",
+    "cases": [
+      {
+        "name": "world",
+        "status": "passed"
+      },
+      {
+        "name": "serverless",
+        "status": "passed"
+      },
+      {
+        "name": "cloud-client",
+        "status": "passed"
+      },
+      {
+        "name": "world-fields",
+        "status": "passed"
+      },
+      {
+        "name": "telemetry",
+        "status": "passed"
+      },
+      {
+        "name": "ad-callbacks",
+        "status": "passed"
+      },
+      {
+        "name": "journey-events",
+        "status": "passed"
+      },
+      {
+        "name": "animals-generation",
+        "status": "passed"
+      },
+      {
+        "name": "mushroom-harvest",
+        "status": "passed"
+      },
+      {
+        "name": "ladybug-movement",
+        "status": "passed"
+      },
+      {
+        "name": "hero-abilities",
+        "status": "passed"
+      },
+      {
+        "name": "house-discovery",
+        "status": "passed"
+      },
+      {
+        "name": "item-ground-shadow",
+        "status": "passed"
+      },
+      {
+        "name": "forest-presentation",
+        "status": "passed"
+      },
+      {
+        "name": "snail-sparks",
+        "status": "passed"
+      },
+      {
+        "name": "sapphire-reward",
+        "status": "passed"
+      },
+      {
+        "name": "tint-interpolation",
+        "status": "passed"
+      }
+    ]
   },
   "coldLoad": {
     "encodedBodyBytes": 26307943,
@@ -439,8 +581,32 @@
     "modifiedByThisPass": false
   },
   "production": {
+    "branch": "reskin/arcane-watercolor",
+    "commit": "162fe75b54167c51dac39eaec6ea42ab51d2381f",
+    "journeyLevels": 25,
+    "theme": "arcane-watercolor",
+    "builtAt": "2026-10-16T15:11:50.151Z",
+    "bundleSha256": "f39402814632133d4c91ae5bc24d63c9a643ad9f029d1c80de2c72b98082d6c6",
     "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+    "previewUrl": "https://4af4940b.andreyvoytov-mushrooms-arcane.pages.dev",
+    "verifiedFiles": 66,
     "tracker": "https://andreyvoytov-studio-board.pages.dev/?project=mushrooms-arcane",
-    "verification": "Pending publication verification; local review complete."
+    "originalVersion": {
+      "branch": "main",
+      "bundleSha256": "c255eb79dbd9d8bc3a2075f16c388b2b20a43ccf2c4dcacdc35b664c6a3448a3",
+      "unchanged": true
+    },
+    "archiveRedirect": 302,
+    "verification": "Passed exact deployed bytes, metadata, preview and production routes, tracker, original-site checksum, and 12 published mobile scenes.",
+    "mobileScenes": 12,
+    "measuredLabels": 101,
+    "runtimeErrors": [],
+    "contrastFailures": [],
+    "coldLoad": {
+      "encodedBodyBytes": 22465891,
+      "mebibytes": 21.425143241882324,
+      "resourceCount": 133,
+      "note": "Cold browser context; same-origin resources, encoded body bytes including HTTP compression. Local-server measurement above uses its own compression settings."
+    }
   }
 }

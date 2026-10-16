@@ -38,3 +38,12 @@ This pass replaces repeated nested paper rectangles with painted ensembles that 
 The review checks the implemented Russian layouts and representative English/German lengths. It does not claim a linguistic audit of every translation. One simultaneous three-browser stress run lost its WebGL context; final verification is run serially as well to distinguish browser resource pressure from game errors.
 
 The original working checkout and original production site are kept separate from this reskin branch.
+
+## Published verification — 2026-10-16
+
+- [Production](https://andreyvoytov-mushrooms-arcane.pages.dev/) and [immutable preview](https://4af4940b.andreyvoytov-mushrooms-arcane.pages.dev/): deployed game commit `162fe75b54167c51dac39eaec6ea42ab51d2381f`.
+- Five review cycles; 75 screen/state captures including 12 final published mobile screens. 614 measured labels, minimum sampled contrast 4.51:1, zero remaining text-box intersections or runtime errors in the final datasets. Superseded diary capture and its verified replacement are recorded explicitly.
+- 17 regression checks passed. Hero party thresholds, summons, owl targeting, refund exclusion and restart cleanup passed browser verification.
+- 66 deployed files checked against local bytes, including the 42 prepared surfaces, bitmap fonts and all 13 base atlas pages. Preview and production metadata match; tracker card and download redirect verified. Original production checksum remains unchanged.
+- 609 original texture canvases checked; none increased. No full-size generation masters ship. Cold published browser load measured 22,465,891 encoded body bytes (21.43 MiB); the local-server measurement is separately recorded because HTTP compression differs.
+- [Complete machine-readable results](qa-final.json), including deployment hashes, asset budget, per-scene text measurements and regression names.
