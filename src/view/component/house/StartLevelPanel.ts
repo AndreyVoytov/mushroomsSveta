@@ -24,6 +24,7 @@ import LocalizationKey from '../../../core/localization/LocalizationKey';
 import DiaryContentType from '../../../core/model/diary/DiaryContentType';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import HeroTeamPanel from '../forest/HeroTeamPanel';
+import UiLayout from '../../../core/utils/UiLayout';
 
 export default class StartLevelPanel extends ClosablePanel {
     public static hardLevelAwardAddition = 25;
@@ -97,6 +98,7 @@ export default class StartLevelPanel extends ClosablePanel {
         aims.forEach((aim, i) => {
             let shiftX = startShift + i * step;
             let image = SpriteUtils.createSprite(this.game, shiftX, -160, aim.image);
+            image.name = 'goalIcon' + i;
             image.anchor = new Phaser.Point(0.5, 0.5);
             // image.scale = new Phaser.Point(2.5, 2.5);
             let imageScale = 170 / Math.max(image.width, image.height);
@@ -108,6 +110,7 @@ export default class StartLevelPanel extends ClosablePanel {
 
             // let label = new Label(this.game, shiftX, -160 + 80, "" + aim.count, Label.WHITE_STYLE_SMALLEST);
             let label = new Label(this.game, shiftX, -160 + 115, "" + aim.countLeft, Label.PanelDigitsBrown(45));
+            label.name = 'goalCount' + i;
             label.anchor = new Phaser.Point(0.5, 0.5);
             this.addChild(label);
         })
@@ -140,14 +143,6 @@ export default class StartLevelPanel extends ClosablePanel {
         }
 
         if(isHard){
-            let panel2 = this.attachSprite('panel', 'panelColor');
-            panel2.anchor.set(panel.anchor.x, panel.anchor.y)
-            panel.addChild(panel2);
-            panel2.tint = 0xAA00FF;
-            // panel2.tint = 0x4455FF;
-            panel2.alpha = 0.7;
-
-
             helperPanel.alpha = 0.7;
 
             this.playButton.tint = 0xAADDAA;
@@ -252,6 +247,50 @@ export default class StartLevelPanel extends ClosablePanel {
                 AnimationUtils.appear3(this.game, compass, 1900 + delta)
             }
         };
+
+        // The illustration is a complete briefing folio; do not stack generic paper panels on it.
+        SpriteUtils.loadTexture(panel, 'uiExpeditionBoard');
+        panel.anchor.set(0.5);panel.position.set(0, 0);panel.width = 749;panel.height = 820;
+        helperPanel.visible = false;
+        this.children.forEach((child: any) => {
+            if (['header', 'ribbon', 'panelColor', 'lukoshkoIcon'].indexOf(child.name) >= 0) child.visible = false;
+            if (child.name === 'closeButton' || child.name === 'closeButtonViolet') {
+                child.position.set(314, -294);child.width = child.height = 64;
+            }
+        });
+        if (this.headerText) {
+            this.headerText.position.set(0, -258);this.headerText.anchor.set(0.5);
+            this.headerText.fontSize = 40;this.headerText.fill = Label.ON_DARK;
+            UiLayout.fit(this.headerText, 510, 58);
+            label.position.set(0, -176);label.fontSize = 26;label.fill = Label.INK;
+        } else {
+            label.position.set(0, -265);label.fill = Label.ON_DARK;
+            UiLayout.fit(label, 500, 62);
+        }
+        aims.forEach((aim, i) => {
+            const icon: any = this.children.filter((c: any) => c.name === 'goalIcon' + i)[0];
+            const count: any = this.children.filter((c: any) => c.name === 'goalCount' + i)[0];
+            icon.y = -100;SpriteUtils.fitIcon(icon, 106, 92);
+            count.y = -25;count.fontSize = 36;count.fill = Label.INK;
+        });
+        const partyTitle: any = this.children.filter((c: any) => c.name === 'chooseBostersLabel')[0];
+        partyTitle.position.set(0, 70);partyTitle.fontSize = 34;partyTitle.fill = Label.INK;
+        this.heroTeamPanel.y = 204;
+        this.playButton.position.set(0, 355);this.playButton.tint = 0xffffff;
+        this.playButton.width = 440;this.playButton.height = 108;
+        continueLabel.fontSize = 48;UiLayout.fit(continueLabel, 360, 64);
+        if (this.hardLevelPrizeInfo) {
+            const badge = this.hardLevelPrizeInfo;
+            SpriteUtils.loadTexture(badge, 'dialogMedallion');badge.tint = 0xffffff;badge.rotation = 0;
+            badge.position.set(318, 20);badge.width = badge.height = 132;
+            const badgeScale = Math.abs(badge.scale.x);
+            const star: any = badge.children.filter((c: any) => c.name === 'gems')[0];
+            const bonus: any = badge.children.filter((c: any) => c.name === 'x2')[0];
+            star.rotation = 0;star.position.set(0, -22 / badgeScale);SpriteUtils.fitIcon(star, 46 / badgeScale, 46 / badgeScale);
+            bonus.rotation = 0;bonus.position.set(0, 26 / badgeScale);bonus.fontSize = 34 / badgeScale;
+            bonus.scale.set(1, 1);
+            bonus.fill = Label.ON_DARK;
+        }
     }
     private getTaskTitle(currentTask: DiaryContentType): string {
         return LocalizationService.get(currentTask.titleForProgress || currentTask.title);
@@ -301,6 +340,7 @@ export default class StartLevelPanel extends ClosablePanel {
                 this.header.loadTexture(SpriteUtils.key(texture), SpriteUtils.frame(texture));
                 if (this.headerText) {
                     this.headerText.text = this.getTaskTitle(currentTask);
+                    UiLayout.fit(this.headerText, 510, 58);
                 }
             }
         }

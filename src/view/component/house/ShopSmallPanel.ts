@@ -1,52 +1,22 @@
-
-import ShopService from './../../../core/service/ShopService';
-import BasePanel from '../../component/panel/BasePanel';
+import ShopService from '../../../core/service/ShopService';
+import BasePanel from '../panel/BasePanel';
 import Buy from '../../../core/model/shop/Buy';
+import SpriteUtils from '../../../core/utils/SpriteUtils';
+import UiLayout from '../../../core/utils/UiLayout';
+import Label from '../panel/Label';
+
 export default class ShopSmallPanel extends BasePanel {
-
     constructor(game: Phaser.Game, name: string, x: number, y: number, buy: Buy, callbackOnBuy: () => void) {
-        super(game, x, y, name, "blank");
-
-        this.inputEnabled = true;
-
-        let panel2 = this.attachSprite("panel2")
-        let helperPanel =this.attachSprite("helperPanel")
-        helperPanel.alpha = 0.8;
-        helperPanel.inputEnabled = false;
-
-        this.attachText("gemsCount", "" + buy.gems, {font: "bold 43px Gilroy", fill: "#804119"})
-        
-        // if(AnalyticUtils.getCustomization() == CustomizationType.android){
-            let btn0 = this.attachSprite("pnlButton", "pnlButton0");
-            let btn = this.attachSprite("pnlButton");
-            btn.alpha = 0.5;
-            this.events.onInputDown.add(() => ShopService.processPayment(this.game, buy, callbackOnBuy), this);
-            btn.events.onInputDown.add(() => ShopService.processPayment(this.game, buy, callbackOnBuy), this);
-            panel2.events.onInputDown.add(() => ShopService.processPayment(this.game, buy, callbackOnBuy), this);
-            // this.events.onInputDown.add(() => ShopService.processPayment(this.game, buy, callbackOnBuy), this);
-        // } else {
-            //В Одноклассниках повторный платеж срабатывает без подтверждения
-            // let btn0 = this.attachSprite("pnlButton", "pnlButton0");
-            // btn0.tint = 0x00FF00;
-            // let btn = this.attachButton("pnlButton", () => {
-            //     console.log("Shop button clicked")
-            //     ShopService.processPayment(this.game, buy, callbackOnBuy);
-            // })
-            // btn.alpha = 0.5;
-        // }
-
-        let gems = this.attachSprite("gems", "gemsBig")
-        gems.inputEnabled = false;
-
-        let price = this.attachText("price", ShopService.getPriceLabel(buy),  { font: "bold 40px Arial", fill: "#ffffff"} );
-        price.inputEnabled = false;
-
-        this.applyPreset([{"spriteId":"panel2","x":6,"y":-7,"scaleX":0.4199999999999995,"scaleY":0.5799999999999996,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"helperPanel","x":6,"y":-8,"scaleX":0.37999999999999945,"scaleY":0.8599999999999999,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"gemsCount","x":8.448275862068954,"y":-88.03202479338842,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":43},
-        {"spriteId":"pnlButton","x":7,"y":85,"scaleX":0.49999999999999956,"scaleY":0.7199999999999998,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"pnlButton0","x":7,"y":85,"scaleX":0.49999999999999956,"scaleY":0.7199999999999998,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"gemsBig","x":6,"y":1,"scaleX":1.3800000000000003/ 1.5,"scaleY":1.3600000000000003/ 1.5,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"price","x":10,"y":85,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":40}])
+        super(game, x, y, name, 'blank');
+        const panel = this.attachSprite('uiShopCard', 'display');
+        panel.width = 294;panel.height = 282;
+        const count = this.attachText('gemsCount', '' + buy.gems, {font:'bold 40px Manrope',fill:Label.INK});
+        count.y = -65;UiLayout.fit(count, 200, 50);
+        const gems = this.attachSprite('gems', 'gemsBig');
+        gems.y = 8;SpriteUtils.fitIcon(gems, 104, 100);
+        const button = this.attachButton('pnlButton', () => ShopService.processPayment(this.game, buy, callbackOnBuy), 'purchase');
+        button.position.set(0, 95);button.width = 240;button.height = 72;
+        const price = this.attachText('price', ShopService.getPriceLabel(buy), {font:'bold 34px Manrope',fill:Label.INK});
+        price.position.set(0, 95);UiLayout.fit(price, 180, 46);price.inputEnabled = false;
     }
 }

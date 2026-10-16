@@ -1,0 +1,446 @@
+{
+  "theme": "arcane-watercolor",
+  "branch": "reskin/arcane-watercolor",
+  "reviewCycles": 5,
+  "imageTool": "built-in image_gen",
+  "selectedImageFamilies": 26,
+  "preparedSurfaces": 42,
+  "budget": {
+    "originalTexturesChecked": 609,
+    "originalCanvasIncreases": 0,
+    "newMastersPublished": false,
+    "purposeDesignedSurfaces": 42,
+    "surfaceBytes": 4400398,
+    "atlasPages": 31,
+    "atlasBytes": 14350342,
+    "openedTile": "Opaque filled face; transparent corners",
+    "grayed": {
+      "normalLuma": 158.92857362914805,
+      "darkLuma": 70.47421125541159,
+      "ratio": 0.4434332332199726
+    }
+  },
+  "visualReview": {
+    "scenes": 63,
+    "measuredLabels": 513,
+    "minimumSampledContrast": 4.51,
+    "contrastFailures": [],
+    "runtimeErrors": [],
+    "textBoxIntersections": [],
+    "supersededCaptures": [
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "09-diary-recipe",
+        "reason": "Stale navigation number found and fixed; replaced by cycle-5 conditional 05-diary-turn, which asserts exactly one current page number."
+      }
+    ],
+    "scenesReviewed": [
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "01-redhood-house",
+        "labels": 3,
+        "minContrast": 8.83
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "02-cat-interior",
+        "labels": 4,
+        "minContrast": 5.53
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "03-forest-hub",
+        "labels": 6,
+        "minContrast": 5.92
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "04-dark-forest-start",
+        "labels": 6,
+        "minContrast": 5.2
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "05-level-08",
+        "labels": 7,
+        "minContrast": 6.91
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "06-puzzle-victory",
+        "labels": 7,
+        "minContrast": 4.78
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "07-settings",
+        "labels": 5,
+        "minContrast": 6.33
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "08-heroes",
+        "labels": 7,
+        "minContrast": 6.22
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "09-tasks",
+        "labels": 21,
+        "minContrast": 5.78
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "10-diary",
+        "labels": 3,
+        "minContrast": 17.03
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "11-energy",
+        "labels": 6,
+        "minContrast": 4.77
+      },
+      {
+        "folder": "ensembles-cycle-5-mobile",
+        "scene": "12-bank",
+        "labels": 26,
+        "minContrast": 4.56
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "01-redhood-house",
+        "labels": 3,
+        "minContrast": 8.7
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "02-cat-interior",
+        "labels": 4,
+        "minContrast": 5.68
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "03-forest-hub",
+        "labels": 6,
+        "minContrast": 6.09
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "04-dark-forest-start",
+        "labels": 6,
+        "minContrast": 5.24
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "05-level-08",
+        "labels": 7,
+        "minContrast": 6.91
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "06-puzzle-victory",
+        "labels": 7,
+        "minContrast": 4.8
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "07-settings",
+        "labels": 5,
+        "minContrast": 6.33
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "08-heroes",
+        "labels": 7,
+        "minContrast": 6.19
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "09-tasks",
+        "labels": 21,
+        "minContrast": 5.79
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "10-diary",
+        "labels": 3,
+        "minContrast": 16.96
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "11-energy",
+        "labels": 6,
+        "minContrast": 4.99
+      },
+      {
+        "folder": "ensembles-cycle-5-desktop",
+        "scene": "12-bank",
+        "labels": 26,
+        "minContrast": 4.51
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "01-artifact-details",
+        "labels": 13,
+        "minContrast": 5.22
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "02-skill-energy",
+        "labels": 2,
+        "minContrast": 8.58
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "03-hero-cat",
+        "labels": 7,
+        "minContrast": 6.22
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "04-hero-owl",
+        "labels": 7,
+        "minContrast": 6.22
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "05-support",
+        "labels": 3,
+        "minContrast": 5.25
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "06-about",
+        "labels": 3,
+        "minContrast": 5.75
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "07-tasks-campaign",
+        "labels": 20,
+        "minContrast": 5.8
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "08-shop-heroes",
+        "labels": 6,
+        "minContrast": 5.27
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "10-confirm-exit",
+        "labels": 3,
+        "minContrast": 5.57
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "11-failure",
+        "labels": 5,
+        "minContrast": 5.51
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "field-3",
+        "labels": 7,
+        "minContrast": 6.91
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "field-11",
+        "labels": 9,
+        "minContrast": 6.87
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "field-33",
+        "labels": 8,
+        "minContrast": 6.91
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "field-93",
+        "labels": 8,
+        "minContrast": 6.91
+      },
+      {
+        "folder": "ensembles-cycle-3-extras",
+        "scene": "field-134",
+        "labels": 8,
+        "minContrast": 6.97
+      },
+      {
+        "folder": "ensembles-cycle-4-de",
+        "scene": "01-start",
+        "labels": 6,
+        "minContrast": 5.19
+      },
+      {
+        "folder": "ensembles-cycle-4-de",
+        "scene": "02-settings",
+        "labels": 5,
+        "minContrast": 6.29
+      },
+      {
+        "folder": "ensembles-cycle-4-de",
+        "scene": "03-tasks",
+        "labels": 21,
+        "minContrast": 5.58
+      },
+      {
+        "folder": "ensembles-cycle-4-de",
+        "scene": "04-energy",
+        "labels": 6,
+        "minContrast": 4.97
+      },
+      {
+        "folder": "ensembles-cycle-4-de",
+        "scene": "05-victory",
+        "labels": 7,
+        "minContrast": 4.89
+      },
+      {
+        "folder": "ensembles-cycle-4-en",
+        "scene": "01-start",
+        "labels": 6,
+        "minContrast": 5.23
+      },
+      {
+        "folder": "ensembles-cycle-4-en",
+        "scene": "02-settings",
+        "labels": 5,
+        "minContrast": 6.17
+      },
+      {
+        "folder": "ensembles-cycle-4-en",
+        "scene": "03-tasks",
+        "labels": 21,
+        "minContrast": 5.52
+      },
+      {
+        "folder": "ensembles-cycle-4-en",
+        "scene": "04-energy",
+        "labels": 6,
+        "minContrast": 5.21
+      },
+      {
+        "folder": "ensembles-cycle-4-en",
+        "scene": "05-victory",
+        "labels": 7,
+        "minContrast": 5.34
+      },
+      {
+        "folder": "ensembles-cycle-4-states",
+        "scene": "states-3",
+        "labels": 7,
+        "minContrast": 6.91
+      },
+      {
+        "folder": "ensembles-cycle-4-states",
+        "scene": "states-33",
+        "labels": 11,
+        "minContrast": 6.62
+      },
+      {
+        "folder": "ensembles-cycle-4-states",
+        "scene": "states-93",
+        "labels": 8,
+        "minContrast": 6.91
+      },
+      {
+        "folder": "ensembles-cycle-4-states",
+        "scene": "tutorial-93",
+        "labels": 2,
+        "minContrast": 5.17
+      },
+      {
+        "folder": "ensembles-cycle-4-states",
+        "scene": "states-134",
+        "labels": 8,
+        "minContrast": 6.97
+      },
+      {
+        "folder": "ensembles-cycle-4-states",
+        "scene": "tutorial-134",
+        "labels": 2,
+        "minContrast": 5.17
+      },
+      {
+        "folder": "ensembles-cycle-5-edge",
+        "scene": "01-hard-level",
+        "labels": 7,
+        "minContrast": 5.2
+      },
+      {
+        "folder": "ensembles-cycle-5-edge",
+        "scene": "02-longest-title",
+        "labels": 7,
+        "minContrast": 5.2
+      },
+      {
+        "folder": "ensembles-cycle-5-edge",
+        "scene": "03-large-balances",
+        "labels": 7,
+        "minContrast": 6.17
+      },
+      {
+        "folder": "ensembles-cycle-5-conditional",
+        "scene": "01-equipment-upgrade",
+        "labels": 13,
+        "minContrast": 5.22
+      },
+      {
+        "folder": "ensembles-cycle-5-conditional",
+        "scene": "02-equipment-max",
+        "labels": 13,
+        "minContrast": 5.22
+      },
+      {
+        "folder": "ensembles-cycle-5-conditional",
+        "scene": "03-task-states",
+        "labels": 20,
+        "minContrast": 5.78
+      },
+      {
+        "folder": "ensembles-cycle-5-conditional",
+        "scene": "04-long-nameplate",
+        "labels": 4,
+        "minContrast": 5.53
+      },
+      {
+        "folder": "ensembles-cycle-5-conditional",
+        "scene": "05-diary-turn",
+        "labels": 3,
+        "minContrast": 16.97
+      }
+    ]
+  },
+  "longestDialogues": {
+    "cases": 3,
+    "skipOverlaps": 0
+  },
+  "domPanels": {
+    "cases": 4,
+    "overflow": 0,
+    "missingImages": 0
+  },
+  "regressions": {
+    "passed": 17,
+    "heroPartyBrowser": "Three slots, no-op selection, energy thresholds, summons, owl ranking, refunds and restart cleanup passed"
+  },
+  "coldLoad": {
+    "encodedBodyBytes": 26307943,
+    "mebibytes": 25.08920955657959,
+    "previousPaintedVersionBytes": 25200657,
+    "originalReskinBytes": 48274529
+  },
+  "originalCheckout": {
+    "dirtyEntriesUnchanged": 80,
+    "modifiedByThisPass": false
+  },
+  "production": {
+    "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+    "tracker": "https://andreyvoytov-studio-board.pages.dev/?project=mushrooms-arcane",
+    "verification": "Pending publication verification; local review complete."
+  }
+}

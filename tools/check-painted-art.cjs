@@ -1,6 +1,7 @@
 // Resolution / transparency budget for the shipped assets, independent of ImageGen master size.
 const fs=require('fs'),path=require('path'),assert=require('assert'),crypto=require('crypto'),sharp=require('./arcane-art-runtime.cjs')('sharp');
 const root=path.resolve(__dirname,'..'),art=path.join(root,'artwork/arcane-reskin/iteration-2');
+if(fs.existsSync(path.join(root,'artwork/arcane-reskin/iteration-3/applied-assets.json'))){require('./check-arcane-ensembles.cjs');return;}
 (async()=>{const originals=require(path.join(art,'original-dimensions.json')),painted=require(path.join(art,'applied-assets.json')),derived=require(path.join(art,'derived-surfaces.json')),rows=[];
 const records=new Map(painted.map(a=>[a.file,a]));for(const a of derived){const original=originals.find(o=>o.file===a.file);records.set(a.file,{...records.get(a.file),...a,originalWidth:original?.width,originalHeight:original?.height,tool:'built-in image_gen'});}
 for(const a of records.values()){const data=fs.readFileSync(path.join(root,a.file)),m=await sharp(data).metadata();a.width=m.width;a.height=m.height;a.bytes=data.length;a.sha256=crypto.createHash('sha256').update(data).digest('hex');}

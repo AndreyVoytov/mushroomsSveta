@@ -2,6 +2,7 @@ import ShopArtifactSkillsConfiguration from "../../../core/configuration/ShopArt
 import LocalizationService from "../../../core/localization/LocalizationService";
 import { ShopArtifactSkillId } from "../../../core/model/shop/ShopArtifactModels";
 import ClosablePanel from "../panel/ClosablePanel";
+import Label from '../panel/Label';
 
 export interface SkillInfoPanelOptions {
     currentValue?: number;
@@ -26,21 +27,22 @@ export default class SkillInfoPanel extends ClosablePanel {
         this.fixedToCamera = true;
 
         const panel = this.attachSprite("panel2", "panel");
-        panel.scale.set(1.08, 0.84);
+        panel.width = 820;panel.height = 600;
         panel.inputEnabled = true;
 
         const helperPanel = this.attachSprite("helperPanel", "helperPanel");
         helperPanel.scale.set(1.02, 1.2);
         helperPanel.y = 18;
+        helperPanel.visible = false;
 
         const closeButton = this.attachButton("closeButton", () => this.close(), "closeButton");
-        closeButton.x = 314;
-        closeButton.y = -246;
+        closeButton.x = 350;
+        closeButton.y = -244;
 
         if (skill) {
             const icon = this.attachSprite(skill.icon, "icon");
-            icon.y = -160;
-            icon.scale.set(0.62);
+            icon.y = -236;
+            icon.width = 100;icon.height = 110;
         }
 
         const title = this.attachText("title", skill ? this.capitalize(LocalizationService.get(skill.name)) : "", {
@@ -51,13 +53,13 @@ export default class SkillInfoPanel extends ClosablePanel {
             wordWrapWidth: 560
         });
         title.anchor.set(0.5);
-        title.y = -74;
+        title.y = -143;
         title.strokeThickness = 4;
         title.addStrokeColor("#b6691b", 0);
 
-        this.bodyText = new Phaser.Text(this.game, 0, -18, "", {
-            font: "bold 31px Arial",
-            fill: "#855331",
+        this.bodyText = new Phaser.Text(this.game, 0, -70, "", {
+            font: "bold 32px Gilroy",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 560
@@ -68,6 +70,8 @@ export default class SkillInfoPanel extends ClosablePanel {
         this.addSprite(this.bodyText);
 
         this.applyBodyLines(this.buildBodyLines(skillId, safeOptions));
+        this.bodyText.fill = '#343c35';
+        this.bodyText.scale.set(Math.min(1, 560 / Math.max(1, this.bodyText.width), 280 / Math.max(1, this.bodyText.height)));
     }
 
     private buildBodyLines(skillId: ShopArtifactSkillId, options: SkillInfoPanelOptions): SkillInfoTextLine[] {
@@ -78,7 +82,7 @@ export default class SkillInfoPanel extends ClosablePanel {
 
         const lines: SkillInfoTextLine[] = [{
             text: LocalizationService.get(skill.descriptionText, ""),
-            color: "#855331"
+            color: Label.INK
         }];
 
         if (options.currentValue != null) {
@@ -86,7 +90,7 @@ export default class SkillInfoPanel extends ClosablePanel {
                 text: LocalizationService.get("ui.character.currentValue", "Current value: {value}", {
                     value: options.currentValue
                 }),
-                color: "#855331"
+                color: Label.INK
             });
         }
 
@@ -113,7 +117,7 @@ export default class SkillInfoPanel extends ClosablePanel {
             text += line.text;
 
             if (line.color) {
-                colorRanges.push({ start: text.length, color: "#855331" });
+                colorRanges.push({ start: text.length, color: Label.INK });
             }
         });
 

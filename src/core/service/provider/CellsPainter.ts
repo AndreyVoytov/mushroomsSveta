@@ -514,20 +514,34 @@ export default class CellsPainter extends CellsProvider {
         if (!this.isDarkForestDecoration(cell)) return;
         let label = cell.state.numberedDecorationLabel;
         if (count < 1 || count > 5) {
-            if (label) { label.destroy(); cell.state.numberedDecorationLabel = null; }
+            if (label) {
+                if ((<any>label).numberPlaque) (<any>label).numberPlaque.destroy();
+                label.destroy();cell.state.numberedDecorationLabel = null;
+            }
             return;
         }
         if (!label) {
+            const plaque = SpriteUtils.createSprite(cell.state.sprite.game, 34, 31, 'dialogMedallion');
+            plaque.anchor.set(0.5);plaque.inputEnabled = false;
+            cell.state.sprite.addChild(plaque);
             label = new Label(cell.state.sprite.game, 34, 31, '' + count, {
-                font: 'bold 38px Gilroy', fill: '#fff2bc', stroke: '#34402a', strokeThickness: 6,
+                font: 'bold 30px Gilroy', fill: Label.ON_DARK,
                 align: 'center'
             });
+            (<any>label).numberPlaque = plaque;
             label.anchor.set(0.5);
             label.inputEnabled = false;
             cell.state.sprite.addChild(label);
             cell.state.numberedDecorationLabel = label;
         }
         label.text = '' + count;
+        // A decoration's source canvas can be much larger than its cell footprint.
+        // Keep this clue at a readable world size, independent of that artwork scale.
+        const sx = Math.max(0.01, Math.abs(cell.state.sprite.scale.x));
+        const sy = Math.max(0.01, Math.abs(cell.state.sprite.scale.y));
+        label.scale.set(1 / sx, 1 / sy);
+        const plaque = (<any>label).numberPlaque;
+        plaque.width = 46 / sx;plaque.height = 46 / sy;
     }
 
     // Water decorations keep their artwork, with hand-painted number glyphs

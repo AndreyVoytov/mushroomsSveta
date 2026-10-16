@@ -1,0 +1,217 @@
+[
+  {
+    "id": "expedition-board",
+    "w": 749,
+    "h": 820,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, hand-painted Arcane inspired watercolor and gouache, crisp faceted brass with restrained art deco geometry, soft pale sage, desaturated teal, subtle mauve, warm linen. Premium casual fantasy, readable and airy, no repetitive noise. Orthographic flat front view, no text, numbers or glyphs, no surrounding scene, isolated on actual transparent background. Keep ornament at perimeter and text zones smooth, no glowing busy patterns. One bespoke tall expedition briefing board, aspect 0.91:1. Silhouette is a beautiful layered travel folio with clipped corners, a small sculptural brass compass crest above, muted teal fabric wrap and pale linen inset. Top 16% is a muted deep teal blank title band with angular ends, suitable for cream title. Below this, a shallow pale sage tray from y22% to y49% for game objective icons and counts. Below it an open smooth warm linen area from y52% to y84% for three round hero portraits (do NOT draw the circles or portraits). Bottom corners have sculptural botanical brass clasps; center of bottom is clear for separate button overlapping it. NO extra rectangles or nested white borders. Elaborate coherent outer silhouette, restrained text interior, dominant light pastel tones.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-8b611aae-deee-46dc-83c0-e7111c4f955f.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "victory-board",
+    "w": 820,
+    "h": 650,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, hand-painted Arcane inspired watercolor and gouache, crisp faceted brass with restrained art deco geometry, soft pale sage, desaturated teal, subtle mauve, warm linen. Premium casual fantasy, readable and airy, no repetitive noise. Orthographic flat front view, no text, numbers or glyphs, no surrounding scene, isolated on actual transparent background. Keep ornament at perimeter and text zones smooth, no glowing busy patterns. One bespoke landscape victory result plaque aspect 1.26:1. Festive but sophisticated. A sweeping wide desaturated teal silk banner forming top 20% for cream title, curved ends and an angular brass sunrise medallion at top center. Main lower panel is soft warm linen held by thin sculptural brass corners and small watercolor laurel branches confined to left and right perimeter. Left half y30-77% blank for a character illustration; right half y30-78% smooth very pale sage for result text; do not separate with rectangular frames, only a subtle thin vertical engraved brass line. Bottom center gap free for separate button. Scalloped shaped silhouette rather than a rectangle. No drawn character, icons or text.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-51bbf53a-0117-40d0-b545-cff0f218a099.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "settings-board",
+    "w": 720,
+    "h": 840,
+    "prompt": "Use case: precise-object-edit. Edit the provided production UI panel. Change ONLY the inner fabric/enamel face of the curved title ribbon at the very top: make its teal substantially deeper and darker (dark desaturated petrol teal, approximate #24464c, and NO pale central highlight). This ribbon must provide uniformly high contrast for small ivory heading letters across its full interior. Preserve its same watercolor brush texture, brass edges, exact shape and position. Keep every other pixel region visually unchanged: same very light sage main panel, pale linen lower insert, all brass ornaments and botanical cornerwork, same airy watercolor Arcane style, same dimensions and transparent outer background. Do not add text, icons, buttons or any extra objects. The main body must remain bright and pale; only the narrow title ribbon becomes dark teal.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-72106533-2682-4200-81b2-7252dbe2da50.png",
+    "tool": "built-in image_gen",
+    "revisions": [
+      {
+        "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-c8feb6bd-3d71-460e-827a-7f147bca8c64.png",
+        "prompt": "Use case: stylized-concept. Production raster game UI asset, hand-painted Arcane inspired watercolor and gouache, crisp faceted brass with restrained art deco geometry, soft pale sage, desaturated teal, subtle mauve, warm linen. Premium casual fantasy, readable and airy, no repetitive noise. Orthographic flat front view, no text, numbers or glyphs, no surrounding scene, isolated on actual transparent background. Keep ornament at perimeter and text zones smooth, no glowing busy patterns. One bespoke tall fantasy control panel, aspect 1.04:1. Beautiful softened octagonal frame of sage enamel and brushed brass, with a blank teal ribbon across the upper 16% for a cream title. Inner broad pale sage ceramic area with a quiet smooth center. Tiny brass radial tuning markings only on outer rim and two small sculptural wing-like corner fittings. A little warm linen lower insert occupying only lowest 10%. No stacked rectangle insets, no buttons, no lettering. Positive airy watercolor look, matching an elegant fairy tale game, generous blank middle for controls."
+      }
+    ],
+    "mode": "edit"
+  },
+  {
+    "id": "energy-board",
+    "w": 840,
+    "h": 620,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, hand-painted Arcane inspired watercolor and gouache, crisp faceted brass with restrained art deco geometry, soft pale sage, desaturated teal, subtle mauve, warm linen. Premium casual fantasy, readable and airy, no repetitive noise. Orthographic flat front view, no text, numbers or glyphs, no surrounding scene, isolated on actual transparent background. Keep ornament at perimeter and text zones smooth, no glowing busy patterns. One bespoke energy recharge panel, aspect 1.35:1. Design like a delicate botanical alchemist instrument, airy faceted brass frame with very pale sea glass/ivory satin interior, shaped shoulders. Blank deep teal horizontal title crest integrated across top 17%. At left edge small tasteful botanical sprig and amber glass capsule, both at perimeter. Center y25-65% blank very pale smooth surface for icon, value and timer. Lower y68-94% pale sage smooth surface for purchase CTA and explanatory text. No inner rectangular borders or drawn circles, no letters. Very subtle embossed radial strokes around left periphery only. Shape has chamfered shoulders and arched top, not a white rectangle.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-b9302ca7-dea0-4003-9b43-a12f1b7e991a.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "shop-card",
+    "w": 294,
+    "h": 282,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, hand-painted Arcane inspired watercolor and gouache, crisp faceted brass with restrained art deco geometry, soft pale sage, desaturated teal, subtle mauve, warm linen. Premium casual fantasy, readable and airy, no repetitive noise. Orthographic flat front view, no text, numbers or glyphs, no surrounding scene, isolated on actual transparent background. Keep ornament at perimeter and text zones smooth, no glowing busy patterns. One compact vertical market price card, aspect .94:1. A jewel-box display pedestal with a muted mauve fabric back, desaturated dusty lilac center and a sage/brass beveled plinth at the bottom 20%, decorated only with tiny brass star rivets at top corners. Middle 70% very light mauve for dark overlaid value and currency illustration. Slightly rounded shoulder silhouette, layered satin with a refined brass edge, no white parchment or inner rectangle. Bottom is reserved for separate CTA. No icons or text.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-9b3ebe07-3282-4861-bc7b-7f3f0f2ddbef.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "quest-ledger",
+    "w": 897,
+    "h": 1109,
+    "prompt": "Use case: stylized-concept. Production game UI raster artwork in painterly Arcane watercolor/gouache, faceted elegant art deco brass, sage green and desaturated teal, warm parchment only where text is read. Light, beautifully crafted casual fairy tale game, no harsh black, no noisy repeating pattern. Front orthographic view, no text or numbers, isolated on transparent background. Tall open quest dossier, aspect .81:1. One integrated thin antique brass and sage leather outer folio with scalloped clipped top corners and subtle three binding rings at far left. A deep teal title ribbon integrated into the top 12%, blank. Rest of page warm linen with very subtle watercolor botanical drawings at bottom corners only. Quiet pale sage horizontal section occupying y20%-36% for daily progress, smoothly merged into linen list area y40%-95%. No multiple rectangular frames or boxes, no contents, no icons, no lines through middle. The outer sage leather edge is visible, smooth clean writing area and thin brass lower clasps. Not a white rectangle.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-cd2575be-9c2b-493c-87d5-d83a873e59d2.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "quest-row",
+    "w": 727,
+    "h": 147,
+    "prompt": "Use case: stylized-concept. Production game UI raster artwork in painterly Arcane watercolor/gouache, faceted elegant art deco brass, sage green and desaturated teal, warm parchment only where text is read. Light, beautifully crafted casual fairy tale game, no harsh black, no noisy repeating pattern. Front orthographic view, no text or numbers, isolated on transparent background. One long slim quest ledger entry card aspect 5:1. Clean pale desaturated sage silk band with an understated scalloped left end, brass bookmark clasp at far left and muted lavender accent at far right. Warm light gray central area completely empty for task title and progress. A thin vertical brass seam at 72% width indicates reward column. No inset rectangles, no icons, no text. Very slim brass edge only on bottom. Rounded beveled ends, graceful premium construction rather than paper rectangle.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-41e9572e-ecff-4fa5-83da-05e63ce2e67c.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "shop-bundle",
+    "w": 600,
+    "h": 280,
+    "prompt": "Use case: stylized-concept. Production game UI raster artwork in painterly Arcane watercolor/gouache, faceted elegant art deco brass, sage green and desaturated teal, warm parchment only where text is read. Light, beautifully crafted casual fairy tale game, no harsh black, no noisy repeating pattern. Front orthographic view, no text or numbers, isolated on transparent background. Wide premium shop bundle display card, aspect 2.14:1. Dusty lilac satin and cool pale sage brass presentation tray, broad empty ivory tinted upper-middle band across top 22% for a name. Left third bottom70% empty for a treasure chest illustration, right two thirds empty smooth sage area for contents icons and button. Small angular brass corner fittings and slim bottom plinth. Clip-cut shoulders and fabric folds only at edges. No nested rectangles, no actual chest, no objects, no circles, no text. Distinct coherent boutique display fixture.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-f3185fba-1ae4-4980-88c4-56d996ca37ba.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "game-hud",
+    "w": 960,
+    "h": 155,
+    "prompt": "Use case: stylized-concept. Production game UI raster artwork in painterly Arcane watercolor/gouache, faceted elegant art deco brass, sage green and desaturated teal, warm parchment only where text is read. Light, beautifully crafted casual fairy tale game, no harsh black, no noisy repeating pattern. Front orthographic view, no text or numbers, isolated on transparent background. A very wide slim gameplay HUD frame, aspect 6.2:1. Airy warm pale sage ceramic instrument rail with a subtle brass rim, tapered bevels, clipped outer corners. Top rim muted teal and thin brass, lower edge two elegant stepped brass joints at x8% and x92%. Inner surface very pale celadon, uniform and smooth for black digits. Minimal decorative side corners only. Single horizontal rail, no separate inset boxes, no pockets or icons, no text. Substantial beautiful contour visible at tiny game screen size, no white parchment.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-6830e58c-b698-41ac-a34f-250eec2fa0a2.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "section-ribbon",
+    "w": 680,
+    "h": 120,
+    "prompt": "Use case: stylized-concept. Production game UI raster artwork in painterly Arcane watercolor/gouache, faceted elegant art deco brass, sage green and desaturated teal, warm parchment only where text is read. Light, beautifully crafted casual fairy tale game, no harsh black, no noisy repeating pattern. Front orthographic view, no text or numbers, isolated on transparent background. One wide sculptural title ribbon, aspect 5.7:1. Desaturated medium deep teal velvet enamel with brass beveled edge and angular folded ribbon ends. Broad quiet dark teal blank center for cream overlaid heading. Subtle faceted brushwork, asymmetrical tiny amber clasp at left. No central emblem or gems blocking words. No white panels, no letters.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-0f36c707-2c10-498b-9fad-f313699c8e39.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "open-hex",
+    "w": 180,
+    "h": 191,
+    "prompt": "Use case: stylized-concept. Production game UI raster artwork in painterly Arcane watercolor/gouache, faceted elegant art deco brass, sage green and desaturated teal, warm parchment only where text is read. Light, beautifully crafted casual fairy tale game, no harsh black, no noisy repeating pattern. Front orthographic view, no text or numbers, isolated on transparent background. One single flat top-down POINTY TOP hexagonal uncovered game board cell, regular geometric hexagon with a vertex at top and bottom. Surface warm pale gray sage stone with subtle soft watercolor grain, solid opaque fill. Very shallow beveled brass-gray rim, a barely darker narrow side wall at bottom, like a floor tile viewed almost straight down. Clean exact six-sided silhouette, no surrounding grass and no shadow beyond the tile, no leaves or objects, no internal pattern. Center bright enough for dark numeric hints and items. Palette lighter and less saturated than muted green closed game tiles, reads as an EMPTY uncovered tile.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-7fe848b3-1f8b-46e4-8c53-8bb3e2250262.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "locked-hex",
+    "w": 180,
+    "h": 191,
+    "prompt": "Use case: stylized-concept. Production game UI raster artwork in painterly Arcane watercolor/gouache, faceted elegant art deco brass, sage green and desaturated teal, warm parchment only where text is read. Light, beautifully crafted casual fairy tale game, no harsh black, no noisy repeating pattern. Front orthographic view, no text or numbers, isolated on transparent background. One single POINTY TOP hexagonal grayed unavailable game board cell, regular hexagon vertex at top and bottom. Opaque desaturated dark slate teal stone, medium-dark gray green, clearly darker than ordinary light sage closed tiles. Top face uniform calm dark cool gray teal, darker beveled side wall, restrained small rim highlight. No central emboss, no objects, no leaves, no shadow beyond tile. It must read as disabled / in shade, no glowing green. Precisely clean six-sided silhouette, nearly top-down view.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-5e106373-8a58-4677-9daf-08a23de64986.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "resource-capsule",
+    "w": 300,
+    "h": 102,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, Arcane inspired painterly watercolor and gouache, clean art deco brass construction, quiet sage and desaturated teal with tiny mauve accents, light airy premium fairy tale casual game. Front flat orthographic view, crisp contour, isolated on true transparent background. No letters, numbers or icons. No noisy pattern. Single horizontal resource meter capsule aspect 3:1. Satin pale sage enamel face and sculptural antique brass frame, clipped/faceted softly rounded ends, slight bottom depth, a little teal accent rivet at each end. Smooth light inner surface for dark digits, NOT white paper and not a rectangle. Leave middle blank, all detail at edges. Slim enough for mobile header, gentle concise silhouette.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-9fa28ba3-0dae-4b2f-a34f-d534ab3ae7fa.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "result-badge",
+    "w": 300,
+    "h": 100,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, Arcane inspired painterly watercolor and gouache, clean art deco brass construction, quiet sage and desaturated teal with tiny mauve accents, light airy premium fairy tale casual game. Front flat orthographic view, crisp contour, isolated on true transparent background. No letters, numbers or icons. No noisy pattern. Single wide reward lozenge aspect 3:1. Muted dusty lavender satin cloth center in a beautifully shaped brass and plum jewel setting. Quiet very pale lilac center for dark currency value. Left rounded and right angled corners, tiny sculptural gold star on rim top right only. No text, no central icon, no white paper. Compact and decorative.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-40e16caa-d7d4-4b5a-899c-a0ffdb9fc4a9.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "dialogue-board",
+    "w": 960,
+    "h": 259,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, Arcane inspired painterly watercolor and gouache, clean art deco brass construction, quiet sage and desaturated teal with tiny mauve accents, light airy premium fairy tale casual game. Front flat orthographic view, crisp contour, isolated on true transparent background. No letters, numbers or icons. No noisy pattern. Single exceptionally beautiful very wide dialogue window aspect 3.7:1. A gently curved sheet of warm smooth linen inset in sculptural faceted brass frame, muted sage enamel side wings with tasteful asymmetrical botanical metalwork. Strong angular art deco corner clasps, depth and layered contour like an illustrated prop. Top and bottom rims thin and elegant, blank broad uninterrupted center is at least 86% width and 75% height for dark multi-line dialogue. No internal divider, no internal boxes, no titleplate or button, no leaves inside text zone. Outer silhouette subtly scalloped with clipped shoulders, no straight white rectangle look. Details must stay legible at mobile scale.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-5dde9deb-cc41-415e-a230-22e7db5b3839.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "secondary-control",
+    "w": 420,
+    "h": 88,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, Arcane inspired painterly watercolor and gouache, clean art deco brass construction, quiet sage and desaturated teal with tiny mauve accents, light airy premium fairy tale casual game. Front flat orthographic view, crisp contour, isolated on true transparent background. No letters, numbers or icons. No noisy pattern. A single wide elegant secondary action button aspect 4.77:1. Muted soft lavender enamel set in angular brass bevels, soft sage folded cloth tabs at ends. Smooth very pale cool mauve central surface, blank for dark ink label. Tasteful tiny brass diamond only at outer ends. No white paper, no nested rectangles. Crisp tactile quality and subtle watercolor shading.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-62204c64-767b-415b-a7e1-c194bf4b82e4.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "stats-plaque",
+    "w": 440,
+    "h": 540,
+    "prompt": "Use case: stylized-concept. Production raster game UI asset, Arcane inspired painterly watercolor and gouache, clean art deco brass construction, quiet sage and desaturated teal with tiny mauve accents, light airy premium fairy tale casual game. Front flat orthographic view, crisp contour, isolated on true transparent background. No letters, numbers or icons. No noisy pattern. One tall hero statistics plaque aspect .81:1. Antique sage leather folio back with brass faceted corners and subtly clipped shoulders. Smooth pale celadon center with a desaturated mauve vertical accent seam at far right. Thin scalloped lower brass edge, blank top-to-bottom for three rows of hero ability icons and numbers. No lettering, no actual icons, no inset rectangles, no white paper. Delicate small leaves engraved ONLY on bottom two corners. Airy quiet surface, tactile hand-painted construction.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-bb1d7550-4c34-4a59-95e3-e27593e3d702.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "notice-board",
+    "w": 749,
+    "h": 532,
+    "prompt": "Use case: stylized-concept. Game UI raster art, hand-painted Arcane inspired watercolor and gouache, elegant faceted brass, sage and desaturated teal, warm linen, subtle mauve accents, refined casual fairy tale. Readable quiet center, all ornament at perimeter. Straight front orthographic view, no lettering, numbers or contents, isolated on real transparent background. One horizontal light pastel notice plaque aspect 1.4:1. Warm pale apricot enamel central smooth face for a short message, a narrow quiet muted sage title area at top 16%, sculptural angular antique brass frame with small curled plant clasps at four corners. Clipped shoulders and gentle curved lower silhouette, subtle teal leather wrapping on left and right outer rim only. No internal rectangular boxes. No hanging banner, no emblem in center, no buttons.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-44ee85f2-19f5-4274-916d-5de69840d3d5.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "retry-board",
+    "w": 749,
+    "h": 765,
+    "prompt": "Use case: stylized-concept. Game UI raster art, hand-painted Arcane inspired watercolor and gouache, elegant faceted brass, sage and desaturated teal, warm linen, subtle mauve accents, refined casual fairy tale. Readable quiet center, all ornament at perimeter. Straight front orthographic view, no lettering, numbers or contents, isolated on real transparent background. One vertical second-chance panel aspect .98:1. Distinct pale lavender and sage pastel satin folio with elegant concave curved side edges and sculptural brass frame. Quiet light sage top header band taking up 19% for dark title, a broad smooth pale mauve center for objectives and explanatory text, bottom 25% blank warm linen for separate action buttons. Faceted teal tiny clasp on lower left edge, no central emblem, no contents, no nested rectangles.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-436d413b-a6f1-49c8-87b7-f9b73b69983d.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "journal-page",
+    "w": 900,
+    "h": 1100,
+    "prompt": "Use case: stylized-concept. Game UI raster art, hand-painted Arcane inspired watercolor and gouache, elegant faceted brass, sage and desaturated teal, warm linen, subtle mauve accents, refined casual fairy tale. Readable quiet center, all ornament at perimeter. Straight front orthographic view, no lettering, numbers or contents, isolated on real transparent background. One open botanical journal page aspect .82:1. Single broad pale warm linen page with subtle natural edge curl, teal leather spine on far left, 3 restrained brass binding rings, several fine stacked paper edges visible at right. Thin brass art deco margin accents only in extreme corners, tiny sage and muted lavender botanical illustrations confined to bottom corners. Blank smooth clean page for long dark story text and a large illustration. No ruled lines, no writing, no central drawings. A small desaturated plum ribbon bookmark at top right. Quiet fine watercolor texture without noise.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-08e1be4f-3f76-4360-8fec-d6cef68771c5.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "extra-steps",
+    "w": 128,
+    "h": 128,
+    "prompt": "Use case: stylized-concept. One production game UI icon: two delicate walking footprints in warm brushed brass on a small pale sage enamel rounded medallion, a restrained teal forward chevron at upper right. Premium hand-painted Arcane watercolor/gouache art deco fantasy casual game. Softer desaturated sage, brass and a hint of muted mauve. Footprints are readable clean symbolic impressions, no cartoon smiley, no emoji, no text or numbers. Almost flat front orthographic view, crisp silhouette, transparent background. A small icon for extra moves; graceful crafted material, no noisy texture, no black outline.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-d32b9524-3b90-493b-8a06-d4a8644b9c66.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "hex-water",
+    "w": 180,
+    "h": 191,
+    "prompt": "Use case: stylized-concept. Production game tile artwork, painterly Arcane watercolor and gouache, clean faceted geometry, quiet low-contrast surface detail, light airy pastel casual fairy tale game. ONE regular POINTY TOP hexagon with a top and bottom vertex, very nearly top-down orthographic view, shallow beveled side wall at bottom, crisp six-sided contour. Surface is fully opaque, outside truly transparent. No central object, no leaf, no text or numbers, no extra shadow outside. Must remain clear at 120px game cell size. Material: calm pale mist-blue sea glass and desaturated sage-blue ceramic, subtle watercolor watery movement, slightly darker slate blue bevel, gentle top rim highlight. No acid cyan, no yellow. Light but recognizably blue water biome.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-799fac93-a62b-4097-b405-f00498722525.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "hex-sand",
+    "w": 180,
+    "h": 191,
+    "prompt": "Use case: stylized-concept. Production game tile artwork, painterly Arcane watercolor and gouache, clean faceted geometry, quiet low-contrast surface detail, light airy pastel casual fairy tale game. ONE regular POINTY TOP hexagon with a top and bottom vertex, very nearly top-down orthographic view, shallow beveled side wall at bottom, crisp six-sided contour. Surface is fully opaque, outside truly transparent. No central object, no leaf, no text or numbers, no extra shadow outside. Must remain clear at 120px game cell size. Material: soft pale warm ochre and cream sandstone, subtle fine watercolor sand grain, delicate muted brass-beige bevel. No bright yellow, no orange, no gold glow. Distinct beige sandy biome, harmonious with sage green forest tiles.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-f9f82881-cb85-46f1-8c39-f42940a7cc5c.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "hex-flower",
+    "w": 180,
+    "h": 191,
+    "prompt": "Use case: stylized-concept. Production game tile artwork, painterly Arcane watercolor and gouache, clean faceted geometry, quiet low-contrast surface detail, light airy pastel casual fairy tale game. ONE regular POINTY TOP hexagon with a top and bottom vertex, very nearly top-down orthographic view, shallow beveled side wall at bottom, crisp six-sided contour. Surface is fully opaque, outside truly transparent. No central object, no leaf, no text or numbers, no extra shadow outside. Must remain clear at 120px game cell size. Material: desaturated muted mauve and dusty lavender enamel stone, very subtle soft botanical watercolor wash with no actual plants. Gentle muted plum beveled edge. No magenta or fuchsia, no bright pink, no glow. Distinct lavender meadow biome harmonious with sage forest tiles.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-84d650cb-8bf0-47df-982f-fc5d0851692e.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "flower-motif",
+    "w": 120,
+    "h": 127,
+    "prompt": "Use case: stylized-concept. One simple five petal meadow flower game tile emblem, front top-down view. Hand-painted Arcane watercolor/gouache, soft dusty rose and lavender petals, pale warm brass seed center, small sage green leaf. Delicate faceted sculptural form, subtle restrained highlights, no noisy texture, no background disk, isolated on true transparent background. Readable at 60px, no fuchsia, no bright magenta, no text or numbers.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-df6af72f-3ec3-4968-94df-8d67a27f5594.png",
+    "tool": "built-in image_gen"
+  },
+  {
+    "id": "sand-motif",
+    "w": 120,
+    "h": 127,
+    "prompt": "Use case: stylized-concept. One small geometric sand dune mound game tile emblem, consisting of three gentle faceted triangular sandstone shapes as a compact sculpted motif. Hand-painted Arcane watercolor and gouache, warm pale ivory and desaturated ochre, subtle brass-gray shadows. Orthographic front/top view, delicate low relief, no background disk, no scene, isolated on real transparent background. Clean readable at 60px, no acid yellow or glow, no text or numbers.",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a13fc6-7025-7c23-b28c-31413ce12a00\\exec-1d2c084b-51ba-4b4f-8a08-9bbad2f491bf.png",
+    "tool": "built-in image_gen"
+  }
+]

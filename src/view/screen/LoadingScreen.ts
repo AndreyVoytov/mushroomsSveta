@@ -254,6 +254,15 @@ export default class LoadingScreen extends BaseScreen {
         this.loadImage('uiChargeRing', 'assets/base/ui/arcane/chargeRing.png');
         this.loadImage('uiEmptyHero', 'assets/base/ui/arcane/emptyHero.png');
         this.loadImage('uiChargeBadge', 'assets/base/ui/arcane/chargeBadge.png');
+        this.loadImage('uiExpeditionBoard', 'assets/base/ui/arcane/expedition-board.png');
+        this.loadImage('uiVictoryBoard', 'assets/base/ui/arcane/victory-board.png');
+        this.loadImage('uiSettingsBoard', 'assets/base/ui/arcane/settings-board.png');
+        this.loadImage('uiQuestLedger', 'assets/base/ui/arcane/quest-ledger.png');
+        this.loadImage('uiQuestRow', 'assets/base/ui/arcane/quest-row.png');
+        this.loadImage('uiShopCard', 'assets/base/ui/arcane/shop-card.png');
+        this.loadImage('uiShopBundle', 'assets/base/ui/arcane/shop-bundle.png');
+        this.loadImage('uiSectionRibbon', 'assets/base/ui/arcane/section-ribbon.png');
+        this.loadImage('uiSecondaryControl', 'assets/base/ui/arcane/secondary-control.png');
 
         // this.loadImage('houseFrame', 'assets/screens/houseFrame.png');
 

@@ -62,3 +62,7 @@ display needs; new portrait frames are 148×148 and rendered at up to 136×136.
 The publication script requires the reskin branch and stages a separate static
 site for `andreyvoytov-mushrooms-arcane`. The oversized companion ZIP retains its
 existing GitHub Pages download redirect. The original game origin is untouched.
+
+## Current UI revision
+
+The current shipped UI is the [purpose-designed ensemble pass](iteration-3/README.md). It replaces the generic painted rectangles from iteration 2 and restores the opened-cell backgrounds. Use its preparation script and manifests for further changes; the earlier generic generators are archived.

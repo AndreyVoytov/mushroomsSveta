@@ -13,6 +13,7 @@ import Settings from '../../../core/service/Settings';
 import GameText from '../../../core/localization/GameText';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class FailPanel extends ClosablePanel {
 
     private forestType: ForestType;
@@ -75,6 +76,7 @@ export default class FailPanel extends ClosablePanel {
         let info = this.attachText("info", GameText.extraMovesInfo(ForestUtils.ADDITIONAL_STEPS_COUNT), { font: "bold 45px Arial", fill: "#78512c", align:"center", wordWrap: true, wordWrapWidth: 400})
 
         let gems = SpriteUtils.createSprite(this.game, this.playButton.width / 2 - 20, 0, 'gems');
+        gems.name = 'gemsCost';
         gems.anchor = new Phaser.Point(1, 0.5);
         gems.scale = new Phaser.Point(0.8 / 1.5, 0.8 / 1.5)
         this.playButton.addChild(gems);
@@ -100,10 +102,10 @@ export default class FailPanel extends ClosablePanel {
         aims.forEach((aim, i) => {
             console.log("aim type: " + aim.image)
             let shiftX = startShift + i * step;
-            let image = SpriteUtils.createSprite(this.game, shiftX, -160 + 30, aim.image);
+            let image = SpriteUtils.createSprite(this.game, shiftX, -95, aim.image);
             image.anchor = new Phaser.Point(0.5, 0.5);
             // image.scale = new Phaser.Point(2.5, 2.5);
-            let imageScale = 170 / Math.max(image.width, image.height);
+            let imageScale = 126 / Math.max(image.width, image.height);
             image.scale.set(imageScale, imageScale);
             this.addChild(image);
 
@@ -119,7 +121,7 @@ export default class FailPanel extends ClosablePanel {
             // label.strokeThickness = 4;
             // label.addStrokeColor("#b6691b", 0);
             console.log("aim.count: " + aim.countLeft)
-            let label = new Label(this.game, shiftX + 40, -160 + 50+ 30, "" + aim.countLeft, Label.PanelDigitsBrown(50));
+            let label = new Label(this.game, shiftX, -4, "" + aim.countLeft, Label.PanelDigitsBrown(42));
             label.anchor = new Phaser.Point(0.5, 0.5);
             this.addChild(label);
             label.visible = aim.countLeft > 0;
@@ -167,6 +169,20 @@ export default class FailPanel extends ClosablePanel {
     }
 
     public show(): void {
+        this.children.forEach((child: any) => {
+            if (['helperPanel', 'ribbon2', 'lightFrame'].indexOf(child.name) >= 0) child.visible = false;
+            if(child.name === 'panel'){child.position.set(0, 20);child.width = 749;child.height = 800;}
+            if(child.name === 'levelLabel'){child.position.set(0, -280);child.fill = Label.INK;UiLayout.fit(child, 540, 72, true);}
+            if(child.name === 'itemsLeft'){child.y = -185;child.fontSize = 32;child.fill = Label.INK;UiLayout.fit(child, 540, 58, true);}
+            if(child.name === 'info'){child.position.set(60, 110);child.fontSize = 35;child.fill = Label.INK;UiLayout.fit(child, 400, 95, true);}
+        });
+        this.closeButton.position.set(306, -288);this.closeButton.width = this.closeButton.height = 64;
+        this.playButton.position.set(0, this.rewardedButton ? 238 : 286);this.playButton.width = 440;this.playButton.height = 96;
+        const caption = <Label>this.playButton.children.filter((c: any) => c.name === 'continueLabel')[0];
+        caption.fill = Label.INK;caption.x = -30;caption.fontSize = 40;UiLayout.fit(caption, 265, 58);
+        const costIcon: any = this.playButton.children.filter((c: any) => c.name === 'gemsCost')[0];
+        costIcon.anchor.set(0.5);costIcon.position.set(174, 0);SpriteUtils.fitIcon(costIcon, 46, 46);
+        if(this.rewardedButton){this.rewardedButton.position.set(0, 345);this.rewardedButton.width = 400;this.rewardedButton.height = 88;}
         super.show();
 
         SoundUtils.noStepsLeft()

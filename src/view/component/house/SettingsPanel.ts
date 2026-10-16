@@ -12,6 +12,7 @@ import ConfirmPanel from './ConfirmPanel';
 import GameText from '../../../core/localization/GameText';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
+import UiLayout from '../../../core/utils/UiLayout';
 
 export default class SettingsPanel extends ClosablePanel {
 
@@ -31,19 +32,21 @@ export default class SettingsPanel extends ClosablePanel {
         const aboutDescription = LocalizationService.get(LocalizationKey.ui('settings.aboutText'));
         const okText = LocalizationService.get(LocalizationKey.ui('ok'));
 
-        this.attachSprite("panel2")
-        this.attachSprite("helperPanel")
-        let titleBg = this.attachSprite("statusPanel")
-        this.attachText("title", settingsTitle,  { font: "58px Bookman Old Style", fill: "#f0f1ec" })
+        const board = this.attachSprite('uiSettingsBoard', 'settingsBoard');
+        board.width = 720;board.height = 840;board.inputEnabled = true;
+        const title = this.attachText('title', settingsTitle, {font:'48px Lora', fill:Label.ON_DARK});
+        title.position.set(0, -311);UiLayout.fit(title, 470, 62);
 
         this.closeButton = this.attachButton("closeButton", () => this.close())
         this.closeButton.name = "closeButton";
         this.addButton(this.closeButton);
 
-        this.attachText("soundText", settingsSound, { font: "40px Arial bold", fill: "#6b2e06", wordWrap: true, wordWrapWidth: 800 })
+        const soundText = this.attachText('soundText', settingsSound, {font:'36px Manrope', fill:Label.INK});
+        soundText.position.set(-88, -161);UiLayout.fit(soundText, 310, 58);
 
 
-        let soundButton = this.attachSprite("sound1")
+        let soundButton = this.attachSprite(Game.SOUND_ENABLED ? "sound1" : "sound2")
+        soundButton.position.set(178, -161);soundButton.width = soundButton.height = 90;
         soundButton.inputEnabled = true;
         soundButton.events.onInputDown.add(()=>{
             if(Game.SOUND_ENABLED){
@@ -57,7 +60,7 @@ export default class SettingsPanel extends ClosablePanel {
         })
 
         
-        let supportButton = this.attachButton("statusPanel", ()=>{
+        let supportButton = this.attachButton("uiSecondaryControl", ()=>{
             this.close();
             let info = new ConfirmPanel(this.game, supportText, okText, GameText.supportMessage(Settings.SUPPORT_MAIL));
             Game.getInstance().add.existing(info);
@@ -72,7 +75,7 @@ export default class SettingsPanel extends ClosablePanel {
         
         supportButton.addChild(supportButtonLabel)
 
-        let groupButton = this.attachButton("statusPanel", ()=>{
+        let groupButton = this.attachButton("uiSecondaryControl", ()=>{
             window.open(Settings.OK_GROUP_URL, "_blank");
         }, "groupButton")
         
@@ -82,7 +85,7 @@ export default class SettingsPanel extends ClosablePanel {
         groupButton.addChild(groupButtonLabel)
 
 
-        let creditsButton =  this.attachButton("statusPanel", ()=>{
+        let creditsButton =  this.attachButton("uiSecondaryControl", ()=>{
             this.close();
             let info = new ConfirmPanel(this.game, aboutText, okText, aboutDescription, ()=>{}, true);
             Game.getInstance().add.existing(info); 
@@ -94,16 +97,13 @@ export default class SettingsPanel extends ClosablePanel {
         
         creditsButton.addChild(creditsButtonLabel)
 
-        this.applyPreset([{"spriteId":"panel2","x":0,"y":-28,"scaleX":1.0200000000000002,"scaleY":1.4200000000000004,"anchorX":0.5,"anchorY":0.5,"rotation":1.57},
-        {"spriteId":"helperPanel","x":0,"y":-26,"scaleX":0.9399999999999998,"scaleY":2.0600000000000005,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"statusPanel","x":-58,"y":-381,"scaleX":1.5800000000000005,"scaleY":1.4600000000000004,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"title","x":-60,"y":-385,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":58},
-        {"spriteId":"closeButton","x":236,"y":-381,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"soundText","x":-72,"y":-214,"scaleX":1.12,"scaleY":1.12,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":38},
-        {"spriteId":"sound1","x":106,"y":-229,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"supportButton","x":0,"y":-108,"scaleX":1.5800000000000005,"scaleY":1.3400000000000003,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"groupButton","x":0,"y":24,"scaleX":1.5800000000000005,"scaleY":1.3400000000000003,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        {"spriteId":"creditsButton","x":0,"y":156,"scaleX":1.5800000000000005,"scaleY":1.3400000000000003,"anchorX":0.5,"anchorY":0.5,"rotation":0}])
+        this.closeButton.position.set(286, -292);this.closeButton.width = this.closeButton.height = 64;
+        [supportButton, groupButton, creditsButton].forEach((button, i) => {
+            button.position.set(0, -12 + i * 120);button.width = 490;button.height = 98;
+        });
+        [supportButtonLabel, groupButtonLabel, creditsButtonLabel].forEach(label => {
+            label.fontSize = 36;label.fill = Label.INK;UiLayout.fit(label, 340, 55);
+        });
     }
 
     protected onClose() {

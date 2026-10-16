@@ -24,29 +24,31 @@ const css = `
 // The DOM overlay shares the game's ImageGen paper, brass and enamel textures.
 const paintedCss = `
 .world-overlay{color:#343c35;background:#102a32b8}
-.world-shell{box-sizing:border-box;border:20px solid transparent;border-image:url('assets/base/ui/panel.png?ui=painted2') 60 fill / 20px;border-radius:0;background:#f6f0e3;box-shadow:0 12px 48px #152c3780}
-.world-header{background:#f4eddf url('assets/base/ui/helperPanel.png?ui=painted2') center/100% 100%;color:#343c35;padding:15px 17px;gap:16px}
+.world-shell{box-sizing:border-box;border:0;border-radius:10px;background:#f4ecda url('assets/base/ui/diary/bookBg.png?ui=ensembles3') center/100% 100%;padding:20px 22px 20px 38px;box-shadow:0 12px 48px #152c3780}
+.world-header{background:transparent url('assets/base/ui/statusPanel.png?ui=ensembles3') center/100% 100%;color:#253a35;padding:16px 22px;gap:16px}
 .world-header h2{font-weight:600;color:#343c35}
 .world-balance{color:#465348;line-height:1.8}.world-currency{width:20px;height:22px;object-fit:contain;vertical-align:middle;margin-right:4px}
 .world-header button{flex:0 0 44px;width:44px;height:44px;background:transparent url('assets/base/ui/closeButton.png?ui=painted2') center/contain no-repeat;border:0;border-radius:0;color:transparent;font-size:0}
 .world-tabs{background:transparent;padding:10px 4px;gap:5px}
-.world-tabs button{box-sizing:border-box;border:7px solid transparent;border-image:url('assets/base/ui/helperPanel.png?ui=painted2') 24 fill / 7px;border-radius:0;background:transparent;color:#343c35;padding:5px 8px;min-height:44px}
+.world-tabs button{box-sizing:border-box;border:0;border-radius:0;background:transparent url('assets/base/ui/arcane/secondary-control.png?ui=ensembles3') center/100% 100% no-repeat;color:#253a35;padding:8px 14px;min-height:44px}
 .world-tabs button.active{border-color:transparent;border-image:url('assets/base/ui/pnlButton.png?ui=painted2') 42 fill / 11px;background:transparent;color:#243f37;font-weight:700}
 .world-body{padding:10px 7px}
-.world-card{border:12px solid transparent;border-image:url('assets/base/ui/helperPanel.png?ui=painted2') 32 fill / 12px;border-radius:0;background:transparent;padding:12px;margin-bottom:14px}
+.world-card{border:0;border-bottom:1px solid #aa9875;border-radius:0;background:transparent;padding:15px 8px 22px;margin-bottom:8px}
 .world-card p,.world-note{color:#485348}.world-note{font-size:14px}
 .world-button,.world-button.secondary{box-sizing:border-box;border:12px solid transparent;border-image:url('assets/base/ui/pnlButton.png?ui=painted2') 42 fill / 12px;border-radius:0;background:transparent;color:#293e35;padding:6px 12px;min-height:48px}
 .world-button.secondary{border-image-source:url('assets/base/ui/helperPanel.png?ui=painted2')}
 .world-button:disabled{background:transparent;color:#465348;border-color:transparent;filter:grayscale(.6);opacity:.7}
-.world-button,.world-button.secondary,.world-tabs button.active{border-image:none;border:0;background:transparent url('assets/base/ui/pnlButton.png?ui=painted2') center/100% 100% no-repeat;padding:14px 18px}
-.world-button.secondary,.world-stat button{background-image:url('assets/base/ui/helperPanel.png?ui=painted2')}
+.world-button,.world-button.secondary,.world-tabs button.active{border-image:none;border:0;background:transparent url('assets/base/ui/pnlButton.png?ui=painted2') center/100% 100% no-repeat;padding:14px 40px;max-width:100%;overflow-wrap:anywhere}
+.world-button.secondary,.world-stat button{background-image:url('assets/base/ui/arcane/secondary-control.png?ui=ensembles3')}
 .world-tabs button.active{padding:9px 15px}.world-button:disabled{background-color:transparent}
+.world-tabs button,.world-tabs button.active{padding:10px 25px}
+.world-button:disabled{opacity:1;color:#465348;filter:grayscale(.8)}
 .world-button .world-currency{width:17px;height:18px;margin:0 2px}
 .world-stat{background:#e3e6d6;color:#343c35}.world-stat b{color:#284d41}
 .world-progress{height:12px;background:transparent url('assets/base/ui/progressbar/progressLineBg.png?ui=painted2') center/100% 100%;border-radius:0}
 .world-progress span{background:transparent url('assets/base/ui/progressbar/body.jpg?ui=painted2') center/auto 100%}
 .world-toast{background:#e8eddd;color:#343c35;border-top-color:#b6a16e}
-@media(max-width:500px){.world-shell{border-width:12px;border-image-width:12px;max-height:calc(100dvh - 12px)}.world-header{padding:12px}.world-body{padding:8px 2px}.world-card{padding:8px}.world-tabs{padding:8px 0}.world-tabs button{padding:5px}.world-header h2{font-size:22px}}
+@media(max-width:500px){.world-shell{padding:12px 18px 14px 42px;max-height:calc(100dvh - 12px)}.world-header{padding:12px 17px}.world-body{padding:8px 2px}.world-card{padding:12px 3px 20px}.world-tabs{padding:8px 0}.world-tabs button{padding:10px 25px}.world-header h2{font-size:22px}}
 `;
 function node(tag:string,text?:string,cls?:string):HTMLElement {const e=document.createElement(tag);if(text)e.textContent=text;if(cls)e.className=cls;return e;}
 export default class WorldPanel {

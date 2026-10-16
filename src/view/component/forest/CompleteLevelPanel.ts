@@ -67,45 +67,35 @@ export default class LevelCompletePanel extends BasePanel {
         inputBlocker.inputEnabled = true;
         this.addChild(inputBlocker);
 
-        const panel = this.attachSprite('rewardBoard', 'panel');
+        const panel = this.attachSprite('uiVictoryBoard', 'panel');
         panel.width = 820;
-        panel.height = sapphireStarCount > 0 ? 614 : 574;
+        panel.height = 650;
         panel.position.set(0, 20);
         panel.inputEnabled = true;
 
         // Keep the illustration and the results in separate, fixed local boxes.
         // Text/children must not change the bounds used to position other elements.
         const resultsX = 156;
-        const helperPanel = this.attachSprite('rewardCard', 'helperPanel');
-        helperPanel.width = 392;
-        helperPanel.height = 320;
-        helperPanel.position.set(resultsX, -22);
-
-        const titleBg = this.attachSprite('rewardHeader', 'titleBg');
-        titleBg.width = 680;
-        titleBg.height = 150;
-        titleBg.position.set(0, -258);
-
         const cat = this.attachSprite('cat4', 'cat');
-        SpriteUtils.fitIcon(cat, 330, 410);
-        cat.position.set(-237, -12);
+        SpriteUtils.fitIcon(cat, 300, 350);
+        cat.position.set(-213, 45);
 
         this.createResultText('title', LocalizationService.get('ui.energy.winTitle', 'Level Complete'), {
             font: '46px Lora',
-            fill: '#514739'
-        }, { x: 0, y: -254, width: 478, height: 64 });
+            fill: '#001012'
+        }, { x: 0, y: -127, width: 550, height: 64 });
 
         this.createResultText('spentLabel', LocalizationService.get('ui.energy.spent', 'Energy spent'), {
             font: 'bold 26px Arial',
-            fill: '#87552b'
-        }, { x: resultsX - 8, y: -116, width: 280, height: 36 });
+            fill: Label.INK
+        }, { x: resultsX - 8, y: -65, width: 280, height: 36 });
 
         if (sapphireStarCount > 0) {
             this.sapphireTotal = sapphireStarCount;
             SpriteUtils.fitIcon(cat, 260, 260);
-            cat.position.set(-237, -83);
+            cat.position.set(-213, -15);
             this.sapphireStarReward = new Phaser.Group(this.game, this, 'sapphireStarReward');
-            this.sapphireStarReward.position.set(-237, 106);
+            this.sapphireStarReward.position.set(-213, 153);
             const badge = SpriteUtils.createSprite(this.game, 0, 0, 'rewardBadge');
             badge.anchor.set(0.5);
             badge.width = 300;
@@ -140,19 +130,19 @@ export default class LevelCompletePanel extends BasePanel {
 
         const lightning = this.attachSprite('lightning', 'lightning');
         lightning.scale.set(0.61);
-        lightning.y = -30;
+        lightning.y = 18;
 
         const spentValue = this.attachText('spentValue', '' + spentEnergy, Label.PanelDigitsBrown(72));
         const spentValueScale = Math.min(1, 126 / Math.max(1, spentValue.textWidth));
         spentValue.scale.set(spentValueScale, spentValueScale);
-        spentValue.y = -30;
+        spentValue.y = 18;
 
         // Center the icon + value together, including two- and three-digit values.
         const energyWidth = lightning.width + 4 + spentValue.textWidth * spentValue.scale.x;
         lightning.x = resultsX - energyWidth / 2 + lightning.width / 2;
         spentValue.x = resultsX + energyWidth / 2 - spentValue.textWidth * spentValue.scale.x / 2;
 
-        const divider = new Phaser.Graphics(this.game, resultsX, 38);
+        const divider = new Phaser.Graphics(this.game, resultsX, 87);
         divider.lineStyle(2, 0xb8874c, 0.35);
         divider.moveTo(-152, 0);
         divider.lineTo(152, 0);
@@ -166,18 +156,18 @@ export default class LevelCompletePanel extends BasePanel {
             LocalizationService.get('ui.energy.fieldTip', 'Finds help conserve energy'),
             {
                 font: 'bold 30px Arial',
-                fill: '#87552b'
+                fill: Label.INK
             },
-            { x: resultsX, y: 86, width: 326, height: 64, wrap: true }
+            { x: resultsX, y: 138, width: 320, height: 108, wrap: true }
         );
 
         this.createResultText('aimsLabel', ForestAim.getCompleteInfo(resolvedAims), {
             font: 'bold 34px Gilroy',
             fill: '#fff5ce'
-        }, { x: resultsX, y: 180, width: 360, height: 80, wrap: true });
+        }, { x: resultsX, y: 220, width: 300, height: 70, wrap: true });
 
         this.continueButton = this.attachButton('rewardButton', () => this.onContinue(), 'continueButton');
-        this.continueButton.position.set(0, sapphireStarCount > 0 ? 318 : 282);
+        this.continueButton.position.set(0, 350);
         this.continueButton.inputEnabled = false;
 
         const continueLabel = this.createResultText('continueLabel', LocalizationService.get('ui.ok', 'OK'), {
@@ -196,14 +186,14 @@ export default class LevelCompletePanel extends BasePanel {
                 ? previewGemsCount
                 : ForestUtils.getPrizeGemsCount(screen.topPanel.getStepsLeft()) + hardLevelAddition;
             if (!this.sapphireStarReward) {
-                SpriteUtils.fitIcon(cat, 330, 410);
-                cat.y = -12;
+                SpriteUtils.fitIcon(cat, 300, 350);
+                cat.y = 45;
             }
 
             // Reserve a reward row below the cat instead of covering its face
             // or the heading with the old floating cloud.
             this.gemsReward = this.attachSprite('blank', 'gemsReward');
-            this.gemsReward.position.set(-237, this.sapphireStarReward ? 217 : 186);
+            this.gemsReward.position.set(-213, this.sapphireStarReward ? 253 : 260);
             const rewardBg = SpriteUtils.createSprite(this.game, 0, 0, 'rewardBadge');
             rewardBg.anchor.set(0.5);
             rewardBg.width = 236;

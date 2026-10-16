@@ -2,6 +2,7 @@
 const fs=require('fs'),path=require('path'),crypto=require('crypto');
 const sharp=require('./arcane-art-runtime.cjs')('sharp');
 const root=path.resolve(__dirname,'..'),art=path.join(root,'artwork/arcane-reskin/iteration-2');
+if(fs.existsSync(path.join(root,'artwork/arcane-reskin/iteration-3/applied-assets.json'))&&!process.argv.includes('--legacy-v2'))throw Error('Iteration 2 is archived. Use tools/prepare-arcane-ensembles.cjs for the current purpose-designed UI.');
 const originals=JSON.parse(fs.readFileSync(path.join(art,'original-dimensions.json')));
 const sources=JSON.parse(fs.readFileSync(path.join(art,'generation-results.json')));
 const previous=fs.existsSync(path.join(art,'applied-assets.json'))?JSON.parse(fs.readFileSync(path.join(art,'applied-assets.json'))):[];

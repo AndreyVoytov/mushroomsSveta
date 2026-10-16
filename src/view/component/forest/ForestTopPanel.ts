@@ -55,6 +55,7 @@ export default class ForestTopPanel extends BasePanel {
         let topPanelFrame = SpriteUtils.createSprite(this.game, this.game.width / 2, 3, 'topPanelFrame');
         topPanelFrame.anchor = new Phaser.Point(0.5, 0);
         this.addSprite(topPanelFrame);
+        topPanelFrame.visible = false;
 
         this.steps = SpriteUtils.createSprite(this.game, 96, 55, 'lightning');
         this.steps.anchor = new Phaser.Point(0.5, 0.5);
@@ -235,6 +236,7 @@ export default class ForestTopPanel extends BasePanel {
     public refreshEnergyLabel(): void {
         this.energyCount = UserService.getUser().getEnergy();
         this.energyLabel.text = "" + this.energyCount;
+        this.energyLabel.fontSize = Math.min(55, 220 / Math.max(1, this.energyLabel.text.length));
     }
 
     private getNetLevelEnergySpent(): number {
@@ -631,14 +633,15 @@ export default class ForestTopPanel extends BasePanel {
     }
 
     private addAimWithLabel(aim: ForestAim, shiftX: number): void {
-        let image = SpriteUtils.createSprite(this.game, 370 + shiftX, 57, aim.image);
+        let image = SpriteUtils.createSprite(this.game, 370 + shiftX, 47, aim.image);
         image.anchor = new Phaser.Point(0.5, 0.5);
-        let imageScale = 82 / Math.max(image.width, image.height);
+        let imageScale = 66 / Math.max(image.width, image.height);
         image.scale.set(imageScale, imageScale);
         // image.scale = new Phaser.Point(1.5, 1.5);
         this.addSprite(image);
 
-        let label = new Label(this.game, 370 + 18 + shiftX, 60, "" + aim.countLeft, Label.AIM_STYLE);
+        let label = new Label(this.game, 370 + shiftX, 105, "" + aim.countLeft, Label.AIM_STYLE);
+        label.anchor.set(0.5);label.fontSize = 34;label.fill = Label.INK;
         this.addSprite(label);
 
         aim.label = label;

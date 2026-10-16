@@ -3,6 +3,7 @@ import LocalizationService from "../../../core/localization/LocalizationService"
 import { ShopArtifactItemConfig, ShopArtifactSkillId } from "../../../core/model/shop/ShopArtifactModels";
 import ShopArtifactService from "../../../core/service/ShopArtifactService";
 import SpriteUtils from "../../../core/utils/SpriteUtils";
+import UiLayout from '../../../core/utils/UiLayout';
 import BasePanel from "../panel/BasePanel";
 import Label from "../panel/Label";
 
@@ -187,10 +188,11 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.setUpgradeButtonVisible(true);
 
         if (currentLevel >= item.maxLevel) {
-            this.upgradeButton.tint = 0x8f8f8f;
-            this.upgradeButton.alpha = 0.92;
+            this.upgradeButton.tint = 0xebe9e6;
+            this.upgradeButton.alpha = 1;
             this.upgradeButton.inputEnabled = false;
             this.upgradeButtonLabel.text = LocalizationService.get("ui.character.maxLevel", "Max level");
+            this.upgradeButtonLabel.x = 0;UiLayout.fit(this.upgradeButtonLabel, 245, 55);
             this.upgradeButtonGemIcon.alpha = 0;
             return;
         }
@@ -202,6 +204,7 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.upgradeButtonLabel.text = LocalizationService.get("ui.character.upgrade", "Upgrade for {price}", {
             price: ShopArtifactService.getUpgradePrice(item, currentLevel)
         });
+        this.upgradeButtonLabel.x = -22;UiLayout.fit(this.upgradeButtonLabel, 205, 52);
     }
 
     public setUpgradeButtonVisible(visible: boolean): void {
@@ -240,7 +243,7 @@ export default class ArtifactInfoPanel extends BasePanel {
     }
 
     private createLayout(): void {
-        const titlePaper = this.attachSprite('helperPanel', 'contentTitlePaper');
+        const titlePaper = this.attachSprite('uiSecondaryControl', 'contentTitlePaper');
         titlePaper.position.set(0, ArtifactInfoPanel.TITLE_CENTER_Y);
         titlePaper.width = 420;titlePaper.height = 68;
         this.contentTitle = this.attachText("contentTitle", "", {
@@ -297,7 +300,7 @@ export default class ArtifactInfoPanel extends BasePanel {
 
             const label = this.attachText("skillLabel" + i, "", {
                 font: "32px Bookman Old Style",
-                fill: "#705136",
+                fill: Label.INK,
                 align: "left"
             });
             label.anchor.set(0, 0.5);
@@ -320,7 +323,7 @@ export default class ArtifactInfoPanel extends BasePanel {
 
         this.descriptionLabel = new Label(this.game, 0, ArtifactInfoPanel.DESCRIPTION_TOP_Y, "", {
             font: "italic 27px Times New Roman",
-            fill: "#805a3c",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 390
@@ -357,6 +360,7 @@ export default class ArtifactInfoPanel extends BasePanel {
         this.upgradeButtonGemIcon = SpriteUtils.createSprite(this.game, 118, -1, "gems");
         this.upgradeButtonGemIcon.anchor.set(0.5);
         this.upgradeButtonGemIcon.scale.set(0.35);
+        SpriteUtils.fitIcon(this.upgradeButtonGemIcon, 38, 38);
         this.upgradeButtonGemIcon.alpha = 0;
         this.upgradeButton.addChild(this.upgradeButtonGemIcon);
 

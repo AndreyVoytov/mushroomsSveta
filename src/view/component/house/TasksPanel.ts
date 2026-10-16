@@ -23,7 +23,7 @@ type TasksPanelHooks = {
 class TaskCardPanel extends BasePanel {
     public static WIDTH: number = 727;
     public static HEIGHT: number = 147;
-    private static CLAIMED_ALPHA: number = 0.8;
+    private static CLAIMED_ALPHA: number = 1;
     private static ITEM_LEFT: number = 24;
     private static ITEM_TOP: number = 23;
     private static ITEM_WIDTH: number = 117;
@@ -61,18 +61,20 @@ class TaskCardPanel extends BasePanel {
         super(game, 0, 0, name, "blank");
         this.onClaim = onClaim;
 
-        this.background = this.attachSprite("tasksPanelTaskBg", "background");
+        this.background = this.attachSprite("uiQuestRow", "background");
         this.background.anchor.set(0);
 
         this.itemBackground = this.attachSprite("tasksPanelTaskItemBg", "itemBackground");
         this.itemBackground.anchor.set(0);
         this.itemBackground.x = TaskCardPanel.ITEM_LEFT;
         this.itemBackground.y = TaskCardPanel.ITEM_TOP;
+        this.itemBackground.visible = false;
 
         this.rewardBackground = this.attachSprite("tasksPanelTaskRewardBg", "rewardBackground");
         this.rewardBackground.anchor.set(0);
         this.rewardBackground.x = TaskCardPanel.REWARD_LEFT;
         this.rewardBackground.y = TaskCardPanel.REWARD_TOP;
+        this.rewardBackground.visible = false;
 
         this.progressEmpty = this.attachSprite("tasksPanelTaskProgressEmpty", "progressEmpty");
         this.progressEmpty.anchor.set(0);
@@ -153,9 +155,9 @@ class TaskCardPanel extends BasePanel {
 
         this.claimedCheckIcon = this.attachSprite("check", "claimedCheckIcon");
         this.claimedCheckIcon.anchor.set(0.5);
-        this.claimedCheckIcon.scale.set(0.392);
+        SpriteUtils.fitIcon(this.claimedCheckIcon, 42, 32);
         this.claimedCheckIcon.x = TaskCardPanel.REWARD_LEFT + TaskCardPanel.REWARD_WIDTH / 2;
-        this.claimedCheckIcon.y = TaskCardPanel.REWARD_TOP + TaskCardPanel.REWARD_HEIGHT / 2 + 20;
+        this.claimedCheckIcon.y = TaskCardPanel.REWARD_TOP + TaskCardPanel.REWARD_HEIGHT - 26;
 
         this.claimHitArea = this.attachSprite("blank", "claimHitArea");
         this.claimHitArea.anchor.set(0);
@@ -213,10 +215,10 @@ class TaskCardPanel extends BasePanel {
         this.claimHitArea.inputEnabled = isClaimable;
         this.claimHitArea.visible = isClaimable;
         this.rewardBackground.tint = isClaimable ? 0xf0ffd7 : 0xffffff;
-        this.progressLabel.fill = isClaimable ? "#315e49" : Label.INK;
-        this.rewardLabel.fill = isClaimable ? "#315e49" : Label.INK;
+        this.progressLabel.fill = isClaimable ? "#214634" : Label.INK;
+        this.rewardLabel.fill = isClaimable ? "#214634" : Label.INK;
         this.rewardTitleLabel.fill = Label.INK;
-        this.claimTitleLabel.fill = "#315e49";
+        this.claimTitleLabel.fill = "#214634";
         this.titleLabel.fill = Label.INK;
         this.alpha = isClaimed ? TaskCardPanel.CLAIMED_ALPHA : 1;
     }
@@ -349,12 +351,14 @@ export default class TasksPanel extends ClosablePanel {
         this.panel.alpha = 0.001;
         this.panel.inputEnabled = true;
 
-        const paper = this.createFixedSprite("panel", "paintedBackground", 64, 111);
+        const paper = this.createFixedSprite("uiQuestLedger", "paintedBackground", 64, 111);
         paper.width = TasksPanel.PANEL_WIDTH;paper.height = TasksPanel.PANEL_HEIGHT + 65;
         const heading = this.createFixedSprite("ribbon", "headerRibbon", 241, 128);
         heading.width = 540;heading.height = 78;
+        heading.visible = false;
         const listPaper = this.createFixedSprite("helperPanel", "listPaper", 109, 309);
         listPaper.width = 810;listPaper.height = TasksPanel.LIST_BOTTOM_TOP + 93 - 309;
+        listPaper.visible = false;
         const progressTrack = this.createFixedSprite("tasksPanelProgressEmpty", "progressBarEmpty", 153, 402);
         progressTrack.width = 710;progressTrack.height = 40;
         this.progressBarFull = this.createFixedSprite("tasksPanelProgressFull", "progressBarFull", 153, 402);
@@ -370,14 +374,14 @@ export default class TasksPanel extends ClosablePanel {
 
         this.titleLabel = this.attachText("title", LocalizationService.get("ui.tasks.title", "Tasks"), {
             font: "46px Bookman Old Style",
-            fill: "#fdf6ff",
+            fill: Label.ON_DARK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 500
         });
         this.titleLabel.anchor.set(0.5);
         this.titleLabel.x = 0;
-        this.titleLabel.y = this.psdY(182 - 15);
+        this.titleLabel.y = this.psdY(220);
 
         this.dailyTabSprite = this.attachSprite("tasksPanelTabActive", "dailyTabSprite");
         this.dailyTabSprite.anchor.set(0);
@@ -413,7 +417,7 @@ export default class TasksPanel extends ClosablePanel {
 
         this.progressTitle = this.attachText("progressTitle", "", {
             font: "bold 24px Arial",
-            fill: "#895d3f",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 620
@@ -658,7 +662,7 @@ export default class TasksPanel extends ClosablePanel {
 
             this.progressTitle.setStyle({
                 font: "bold 24px Arial",
-                fill: "#895d3f",
+                fill: Label.INK,
                 align: "center",
                 wordWrap: true,
                 wordWrapWidth: 620
@@ -677,8 +681,8 @@ export default class TasksPanel extends ClosablePanel {
         const rewardView = TaskService.getCampaignRewardView(this.selectedChapterIndex);
 
         this.progressTitle.setStyle({
-            font: "bold 22px Arial",
-            fill: "#895d3f",
+            font: "bold 26px Arial",
+            fill: Label.INK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 620

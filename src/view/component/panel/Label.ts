@@ -211,7 +211,7 @@
     }
 
     private static toTint(value: any): number {
-        if (value === Label.ON_DARK) return 0xfff3d7;
+        if (value === Label.ON_DARK) return 0xfffbed;
         if (!value) return 0xffffff;
         if (typeof value === 'number') return value;
 

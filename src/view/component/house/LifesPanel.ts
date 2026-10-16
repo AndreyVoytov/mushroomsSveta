@@ -6,11 +6,14 @@ import Label from '../panel/Label';
 import EnergyUtils from '../../../core/utils/EnergyUtils';
 import EnergyDetailsPanel from './EnergyDetailsPanel';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import UiLayout from '../../../core/utils/UiLayout';
 
 export default class LifesPanel extends BasePanel {
 
     private lifesLabel: Label;
     private lifesStatus: Label;
+    private measuredEnergy: string;
+    private measuredStatus: string;
     public startX: number;
 
     constructor(game: Phaser.Game, houseScreen: HouseScreen) {
@@ -48,11 +51,11 @@ export default class LifesPanel extends BasePanel {
         });
 
         this.applyPreset([
-            { "spriteId": "statusPanel", "x": 127, "y": 20, "scaleX": 0.92, "scaleY": 0.95, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
+            { "spriteId": "statusPanel", "x": 142, "y": 20, "scaleX": 1.10, "scaleY": 0.95, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
             { "spriteId": "lightning", "x": 0, "y": 19, "scaleX": 0.72, "scaleY": 0.72, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
             { "spriteId": "lifesLabel", "x": 97, "y": 17, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 42 },
-            { "spriteId": "lifesStatus", "x": 178, "y": 20, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 28 },
-            { "spriteId": "plusButton", "x": 251, "y": 19, "scaleX": 0.94, "scaleY": 0.96, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
+            { "spriteId": "lifesStatus", "x": 198, "y": 20, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 28 },
+            { "spriteId": "plusButton", "x": 281, "y": 19, "scaleX": 0.94, "scaleY": 0.96, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }
         ]);
 
         this.game.time.events.loop(1000, () => {
@@ -84,5 +87,11 @@ export default class LifesPanel extends BasePanel {
         }
 
         this.lifesLabel.text = "" + energy;
+        if(this.measuredEnergy !== this.lifesLabel.text){
+            this.measuredEnergy = this.lifesLabel.text;UiLayout.fit(this.lifesLabel, 82, 56);
+        }
+        if(this.measuredStatus !== this.lifesStatus.text){
+            this.measuredStatus = this.lifesStatus.text;UiLayout.fit(this.lifesStatus, 90, 42);
+        }
     }
 }

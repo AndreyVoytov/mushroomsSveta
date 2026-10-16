@@ -3,6 +3,7 @@ import ClosablePanel from '../panel/ClosablePanel';
 import Label from '../panel/Label';
 import InGameSettingsPanel from './../forest/InGameSettingsPanel';
 import SettingsPanel from './SettingsPanel';
+import UiLayout from '../../../core/utils/UiLayout';
 
 export default class ConfirmPanel extends ClosablePanel {
 
@@ -76,6 +77,22 @@ export default class ConfirmPanel extends ClosablePanel {
             panel.scale.set(panel.scale.x/0.8, panel.scale.y/0.8);
             helperPanel.scale.set(helperPanel.scale.x/0.8, helperPanel.scale.y/0.7)
         }
+        helperPanel.visible = false;
+        panel.anchor.set(0.5);panel.position.set(0, 0);
+        panel.width = big ? 850 : 780;panel.height = big ? 850 : 540;
+        label.position.set(0, big ? -320 : -182);label.fontSize = big ? 40 : 44;
+        label.fill = '#142b2d';UiLayout.fit(label, big ? 660 : 580, 80, true);
+        labelText.position.set(0, big ? -10 : -5);labelText.alpha = 1;
+        if (labelText instanceof Label) {
+            labelText.fontSize = big ? 30 : 36;labelText.fill = Label.INK;
+            UiLayout.fit(labelText, big ? 690 : 600, big ? 470 : 245, true);
+        } else {
+            labelText.fill = '#343c35';
+            labelText.scale.set(Math.min(1, 600 / Math.max(1, labelText.width), (big ? 470 : 245) / Math.max(1, labelText.height)));
+        }
+        closeButton.position.set(big ? 365 : 332, big ? -320 : -190);closeButton.width = closeButton.height = 64;
+        this.actionButton.position.set(0, big ? 365 : 245);this.actionButton.width = 430;this.actionButton.height = 100;
+        continueLabel.fontSize = 46;continueLabel.fill = Label.INK;UiLayout.fit(continueLabel, 350, 60);
     }
 
     protected onClose() {
@@ -96,14 +113,14 @@ export default class ConfirmPanel extends ClosablePanel {
         }
 
         const parsed = this.parseGreenHighlightText(text);
-        const label = new Phaser.Text(this.game, 0, 0, parsed.text, style);
+        const label = new Phaser.Text(this.game, 0, 0, parsed.text, Object.assign({}, style, {fill:Label.INK}));
         label.name = name;
         label.anchor.set(0.5);
         label.align = style.align || 'center';
 
         parsed.ranges.forEach(range => {
-            label.addColor('#2fa512', range.start);
-            label.addColor(style.fill ? style.fill.toString() : '#804119', range.end);
+            label.addColor('#315e49', range.start);
+            label.addColor(Label.INK, range.end);
         });
 
         this.addSprite(label);

@@ -105,8 +105,8 @@ export default class DiaryPanel extends ClosablePanel {
         let closeBtn2 = SpriteUtils.createButton(this.game, this.game.width / 2 - 91, -512, 'closeButton', () => this.close());
         closeBtn2.name = "closeBtn2";
         Utils.applyPreset(closeBtn2, {"spriteId":"closeBtn2","x":313,"y":-484,"scaleX":0.9,"scaleY":0.9,"anchorX":0,"anchorY":0,"rotation":0})
-        closeBtn2.tint = 0x999999;
-        closeBtn2.alpha = 0.5;
+        closeBtn2.tint = 0xffffff;
+        closeBtn2.alpha = 1;
         this.addButton(closeBtn2);
 
         let diaryArrowBg = SpriteUtils.createSprite(this.game, this.game.width / 2 - 91, -512, 'diaryArrowsBg');
@@ -508,9 +508,10 @@ export default class DiaryPanel extends ClosablePanel {
             this.layout.onKill();
             this.layout.destroy(true);
         }
-        this.children.forEach(c => {
-            if(c instanceof Phaser.Sprite){
-                c.destroy(true);
+        this.children.slice().forEach(c => {
+            if(c instanceof Phaser.Sprite || c instanceof Phaser.BitmapText || c instanceof Phaser.Text){
+                this.game.tweens.removeFrom(c);
+                (<any>c).destroy(true);
             }
         });
         this.ensurePersistentPageBackground();

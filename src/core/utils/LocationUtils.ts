@@ -548,8 +548,10 @@ export default class LocationUtils {
                 break;
                 // throw new NeverError(environment);
         }
-        // The painted scenic headers already fade to transparent. Legacy opaque grass strips create a seam over the new ground.
-        res.forEach(sprite => { if (sprite.name === 'grassLight2') sprite.visible = false; });
+        // Painted headers have their own fade; legacy grass strips and the enlarged shoreline wash use the old palette.
+        res.forEach(sprite => {
+            if (sprite.name === 'grassLight2' || sprite.name === 'lakeDecor') sprite.visible = false;
+        });
         return res;
     }
 

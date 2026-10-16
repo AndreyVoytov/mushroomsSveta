@@ -4,6 +4,7 @@ import InfoPanel from './../../component/panel/InfoPanel';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import Settings from '../../../core/service/Settings';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class HelperPanel extends BasePanel {
 
     private personImage: Phaser.Sprite;
@@ -34,20 +35,30 @@ export default class HelperPanel extends BasePanel {
         this.personImage.scale.set(0.7);
         this.addChild(this.personImage);
 
-        let textWidth = 656*1.1 - 80 - 200;// this.dialogPnl.width - 80 - 200-60;
-        this.text = new Label(this.game, -110, okButton? 0: -7, text, { font: "bold 40px Arial", fill: "#804119", wordWrap: true, wordWrapWidth: textWidth });
-        this.text.anchor = new Phaser.Point(0.5, 0.5);
+        const textWidth = 470;
+        const hasImages = images && images.length > 0;
+        this.text = new Label(this.game, -130, 0, text, { font: "bold 34px Arial", fill: Label.INK, wordWrap: true, wordWrapWidth: textWidth });
+        this.text.anchor = new Phaser.Point(0.5, 0);
         this.text.lineSpacing = -5;
         this.addChild(this.text);
+        UiLayout.fit(this.text, textWidth, 1000, true);
+        const baseHeight = okButton ? (hasImages ? 540 : 440) : (hasImages ? 480 : 350);
+        const bodyBudget = hasImages ? 170 : 220;
+        const panelHeight = Math.min(800, baseHeight + Math.max(0, this.text.textHeight - bodyBudget));
+        this.dialogPnl.anchor.set(0.5);this.dialogPnl.position.set(0, 0);
+        this.dialogPnl.width = 880;this.dialogPnl.height = panelHeight;
+        this.text.y = -panelHeight / 2 + 100;
+        UiLayout.fit(this.text, textWidth, panelHeight - (hasImages ? 370 : 220), true);
+        this.personImage.position.set(420, panelHeight / 2 - 28);
+        SpriteUtils.fitIcon(this.personImage, 270, Math.min(430, panelHeight - 45));
 
         if (images && images.length > 0) {
-            this.text.y -= 60;
             let imagesLength = images.filter(i => !i.startsWith("-")).length
-            this.addChild(new InfoPanel(this.game, this.text.x - 58 * imagesLength, this.text.y + 50 + (okButton ? 20 : 0), [], images, true))
+            this.addChild(new InfoPanel(this.game, this.text.x - 58 * imagesLength, panelHeight / 2 - 185 - 84, [], images, true))
         }
 
         if (okButton) {
-            let okButtin = SpriteUtils.createSprite(this.game, -135, this.dialogPnl.height / 2 - 27, 'pnlButton');
+            let okButtin = SpriteUtils.createSprite(this.game, -135, this.dialogPnl.height / 2 - 60, 'pnlButton');
             okButtin.anchor = new Phaser.Point(0.5, 0.5);
             okButtin.scale = new Phaser.Point(0.7, 0.7);
             this.addChild(okButtin);

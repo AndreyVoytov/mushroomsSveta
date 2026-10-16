@@ -7,6 +7,8 @@ import UserService from './../../../core/service/UserService';
 import EventUtils from './../../../core/utils/EventUtils';
 import EventType from '../../../core/model/event/EventType';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import UiLayout from '../../../core/utils/UiLayout';
+import SpriteUtils from '../../../core/utils/SpriteUtils';
 export default class ConfirmDefeatPanel extends ClosablePanel {
 
     constructor(game: Phaser.Game, x: number, y: number, okCallback: () => void) {
@@ -41,7 +43,7 @@ export default class ConfirmDefeatPanel extends ClosablePanel {
         okLabel.anchor.set(0.5)
         okLabel.scale.set(1.2, 1)
         okButton.addChild(okLabel)
-        okButton.tint = 0xff0000;
+        SpriteUtils.loadTexture(<any>okButton, 'uiSecondaryControl');
         okLabel.strokeThickness = 4;
         okLabel.addStrokeColor('#b72b2b', 0);
 
@@ -68,6 +70,14 @@ export default class ConfirmDefeatPanel extends ClosablePanel {
         {"spriteId":"okButton","x":4,"y":77,"scaleX":0.98,"scaleY":1.1600000000000001,"anchorX":0.5,"anchorY":0.5,"rotation":0},
         {"spriteId":"noButton","x":4,"y":192,"scaleX":0.7199999999999998,"scaleY":0.8599999999999999,"anchorX":0.5,"anchorY":0.5,"rotation":0},
         {"spriteId":"closeButton","x":280,"y":-222,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0}])
+        textBg.visible = false;
+        this.children.forEach((child: any) => {
+            if(child.name === 'label'){child.fill = Label.INK;UiLayout.fit(child, 530, 230, true);}
+        });
+        okButton.width = 400;okButton.height = 96;
+        noButton.width = 360;noButton.height = 90;
+        okLabel.fill = Label.INK;noLabel.fill = Label.INK;
+        UiLayout.fit(okLabel, 320, 58);UiLayout.fit(noLabel, 290, 58);
 
     }
 

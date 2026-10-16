@@ -6,7 +6,7 @@ export type ShopTabId = 'bank' | 'items' | 'heroes';
 export default class ShopTabButton extends BasePanel {
     private static readonly ACTIVE_LABEL_STYLE: Phaser.PhaserTextStyle = {
         font: "40px Bookman Old Style",
-        fill: "#7f3113",
+        fill: Label.INK,
         align: "center",
         wordWrap: true,
         wordWrapWidth: 250
@@ -14,7 +14,7 @@ export default class ShopTabButton extends BasePanel {
 
     private static readonly INACTIVE_LABEL_STYLE: Phaser.PhaserTextStyle = {
         font: "40px Bookman Old Style",
-        fill: "#7e5523",
+        fill: Label.INK,
         align: "center",
         wordWrap: true,
         wordWrapWidth: 250

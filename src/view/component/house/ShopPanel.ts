@@ -40,12 +40,12 @@ export default class ShopPanel extends ClosablePanel {
         this.createSections(callbackOnBuy);
         this.createNavigation();
 
-        this.header = this.attachSprite("shopHeader");
-        this.header.width = 470;this.header.height = 100;
+        this.header = this.attachSprite("uiSectionRibbon");
+        this.header.width = 580;this.header.height = 108;
 
         this.titleLabel = this.attachText("shopTitle", LocalizationService.get('ui.shopTitle', 'Shop'), {
             font: "50px Bookman Old Style",
-            fill: "#f7efe8",
+            fill: Label.ON_DARK,
             align: "center",
             wordWrap: true,
             wordWrapWidth: 360

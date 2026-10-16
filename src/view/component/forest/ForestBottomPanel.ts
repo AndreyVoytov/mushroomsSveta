@@ -46,6 +46,8 @@ export default class ForestBottomPanel extends BasePanel {
         levelLabel2.strokeThickness = 4;
         levelLabel2.addStrokeColor("#924d1d", 0);
         this.addSprite(levelLabel2);
+        levelLabel.anchor.set(0.5);levelLabel.position.set(150, this.game.height - 43);levelLabel.fontSize = 42;
+        levelLabel2.anchor.set(0.5);levelLabel2.position.set(150, this.game.height - 90);levelLabel2.fontSize = 30;
         if(adventure){
             const note=new Label(this.game,this.game.width/2,this.game.height-65,'Прочитать записку',{font:'22px Arial',fill:'#fff0ab'});
             note.anchor.set(0.5);note.inputEnabled=true;note.events.onInputDown.add(()=>WorldPanel.show('journey'));this.addSprite(note);

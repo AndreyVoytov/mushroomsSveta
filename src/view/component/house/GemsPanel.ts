@@ -4,6 +4,7 @@ import HouseScreen from './../../screen/HouseScreen';
 import BasePanel from '../panel/BasePanel';
 import Label from '../panel/Label';
 import ShopPanel from './ShopPanel';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class GemsPanel extends BasePanel {
 
     private gemsLabel: Label;
@@ -38,10 +39,12 @@ export default class GemsPanel extends BasePanel {
         { "spriteId": "gems", "x": 98, "y": 10, "scaleX": 1/ 1.5, "scaleY": 1/ 1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
         { "spriteId": "plusButton", "x": -103, "y": 14, "scaleX": 1.08, "scaleY": 1.1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
         { "spriteId": "gemsLabel", "x": -6, "y": 16, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 45 }])
+        UiLayout.fit(this.gemsLabel, 88, 56);
 
 
         this.game.time.events.loop(1000, ()=>{
             this.gemsLabel.text = "" + UserService.getUser().getSupermoney();
+            UiLayout.fit(this.gemsLabel, 88, 56);
         })
     }
 

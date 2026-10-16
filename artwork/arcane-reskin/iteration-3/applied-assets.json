@@ -1,0 +1,422 @@
+[
+  {
+    "file": "assets/base/ui/arcane/expedition-board.png",
+    "sourceId": "expedition-board",
+    "width": 749,
+    "height": 820,
+    "bytes": 352251,
+    "sha256": "46c2b61bc28b2e2e3a903d4c4ca95642afd7daeb141243604f84699359309d4b",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/arcane/victory-board.png",
+    "sourceId": "victory-board",
+    "width": 820,
+    "height": 650,
+    "bytes": 291153,
+    "sha256": "bd0b4291acbc1099c596c8211618acfd2ada82bfa158d13b655c280645c1bd09",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/arcane/settings-board.png",
+    "sourceId": "settings-board",
+    "width": 720,
+    "height": 840,
+    "bytes": 308264,
+    "sha256": "a9d965f36ede4471a793922ae7d551d403f8585a481f9abc35f5778dc6a69c86",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/arcane/shop-card.png",
+    "sourceId": "shop-card",
+    "width": 294,
+    "height": 282,
+    "bytes": 46330,
+    "sha256": "dc9e9b1365f8e844fa94c3cf145d1389782f8712504fb538c0f3c0a3be672861",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/arcane/quest-ledger.png",
+    "sourceId": "quest-ledger",
+    "width": 897,
+    "height": 1109,
+    "bytes": 604341,
+    "sha256": "0519a80826a705c387953ae4028a71e2fb0fe783a1f6718a23dc8f2019f06ab5",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/arcane/quest-row.png",
+    "sourceId": "quest-row",
+    "width": 727,
+    "height": 147,
+    "bytes": 57173,
+    "sha256": "54d4d727e28e625d1efe34dfc2138dcecefbb130d7698c18d16302f5196cc599",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/arcane/shop-bundle.png",
+    "sourceId": "shop-bundle",
+    "width": 600,
+    "height": 280,
+    "bytes": 84812,
+    "sha256": "157771c89d1e34b2abeab482f1098b4781198dc50b2c446bf21e2f4d47e2e02c",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/arcane/section-ribbon.png",
+    "sourceId": "section-ribbon",
+    "width": 680,
+    "height": 120,
+    "bytes": 42289,
+    "sha256": "471a470e54802b4d71594888a4ee8b81b8a107bdd2b85bf6acc685ad80acebdc",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/arcane/secondary-control.png",
+    "sourceId": "secondary-control",
+    "width": 420,
+    "height": 88,
+    "bytes": 21282,
+    "sha256": "88941c90fef9df9021f542c042fe2bf99c69ce8381983b51c5f3da47328e1dd7",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/energyPanelFrame.png",
+    "sourceId": "energy-board",
+    "width": 960,
+    "height": 640,
+    "bytes": 262073,
+    "sha256": "5f2972ba687e21b9bf02b4e48c494d3cb672dbdf365a9475bce2917f2e00d859",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/panel2.png",
+    "sourceId": "notice-board",
+    "width": 749,
+    "height": 532,
+    "bytes": 201367,
+    "sha256": "04f3daa6fc54fa3ac740a11cce1aba4cd8da57f01d9d219d8a09b8eefd0afd41",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/panel.png",
+    "sourceId": "retry-board",
+    "width": 749,
+    "height": 765,
+    "bytes": 292446,
+    "sha256": "9314317b096eb1205d26056828dd45885571d8fd839a3e84baf8baa7848bed80",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/helperPanel2.png",
+    "sourceId": "notice-board",
+    "width": 656,
+    "height": 268,
+    "bytes": 92487,
+    "sha256": "6915596f728c6ca1a56589ec2ae89c6e507a19153cf8d412783f68cf59c183fe",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/plusSteps.png",
+    "sourceId": "extra-steps",
+    "width": 152,
+    "height": 146,
+    "bytes": 15857,
+    "sha256": "a567779440775ad6a02b2442774723e40bd56dbc6b008ee3a914e87ef683e1c4",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/steps.png",
+    "sourceId": "extra-steps",
+    "width": 71,
+    "height": 78,
+    "bytes": 5339,
+    "sha256": "eb9781a9f82467d4eae8eff0a63d8ac15b92b58697ea3df7d60310cde0b42f08",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/diary/bookBg.png",
+    "sourceId": "journal-page",
+    "width": 890,
+    "height": 1085,
+    "bytes": 728240,
+    "sha256": "ee21df0562e853c3372c96508ec0594eea71ab73d1f06fac87a0ef4747a42406",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/diary/bookPage.png",
+    "sourceId": "journal-page",
+    "width": 333,
+    "height": 407,
+    "bytes": 92882,
+    "sha256": "14d420182c39627de5cd07b12b85022bac31ba997aba1ecced4f5f9e7199ee67",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/topPanel.png",
+    "sourceId": "game-hud",
+    "width": 960,
+    "height": 155,
+    "bytes": 85760,
+    "sha256": "21e8015176bab6d935853bf90ba59363e1acb57779a72706c5de4f8c70ef5a14",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/statusPanel.png",
+    "sourceId": "resource-capsule",
+    "width": 285,
+    "height": 98,
+    "bytes": 18070,
+    "sha256": "a597dc325044f3deaaa407233ff7e0dfedf977c3555ec07a873f439a6f8ee27b",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/reward/rewardCard.png",
+    "sourceId": "resource-capsule",
+    "width": 392,
+    "height": 320,
+    "bytes": 69715,
+    "sha256": "467bf27a48217abdd624e889bca0a78a886d2710365fecda901403cc144a1bac",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/diary/ingredientBg.png",
+    "sourceId": "resource-capsule",
+    "width": 150,
+    "height": 151,
+    "bytes": 16480,
+    "sha256": "8e987fed9f64c08b0b5212b361170d2b533c2b442531d883a1332181f0a45a57",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/reward/rewardBadge.png",
+    "sourceId": "result-badge",
+    "width": 300,
+    "height": 122,
+    "bytes": 23268,
+    "sha256": "b25e8e2ab031d6ac33386aa6c06545d729c84ea8b232a530127020f5898e87c1",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/dialogPnl.png",
+    "sourceId": "dialogue-board",
+    "width": 960,
+    "height": 259,
+    "bytes": 130878,
+    "sha256": "b97c9fc9201e28a2a2dc218da5e91bd2fbf943d5632ec71292345f2f7dde26b5",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/character/skills_bg.png",
+    "sourceId": "stats-plaque",
+    "width": 447,
+    "height": 566,
+    "bytes": 178160,
+    "sha256": "62072689ca1dd8ecc05310d309f52dc18825577fe0faaaddd19534bceafe86b2",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/hex/grass.png",
+    "sourceId": "open-hex",
+    "width": 123,
+    "height": 138,
+    "bytes": 13288,
+    "sha256": "b746be13deefc1e65a9c0f3cd6a294eb6335568e24b3e5df0aba1d1427198daa",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/grassFlower.png",
+    "sourceId": "open-hex",
+    "width": 180,
+    "height": 191,
+    "bytes": 24497,
+    "sha256": "97f5d12afab8640124064ad615beb97ea840556fa088cb96236c6be5f5e502a9",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/grassDF.png",
+    "sourceId": "open-hex",
+    "width": 123,
+    "height": 138,
+    "bytes": 13288,
+    "sha256": "b746be13deefc1e65a9c0f3cd6a294eb6335568e24b3e5df0aba1d1427198daa",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/hexDark.png",
+    "sourceId": "locked-hex",
+    "width": 180,
+    "height": 191,
+    "bytes": 23778,
+    "sha256": "5d2fa684ff1a75cb17b3b392b983b0d0c779f134747c036329dd88ee6869d1b8",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/hexHouseDark.png",
+    "sourceId": "locked-hex",
+    "width": 180,
+    "height": 191,
+    "bytes": 23778,
+    "sha256": "5d2fa684ff1a75cb17b3b392b983b0d0c779f134747c036329dd88ee6869d1b8",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/hexWater.png",
+    "sourceId": "hex-water",
+    "width": 180,
+    "height": 191,
+    "bytes": 24090,
+    "sha256": "173709bc64b3a59d270e65ea04b3e95d214a2b84f52e90d2d5b1be0a6c3985c2",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/water.png",
+    "sourceId": "hex-water",
+    "width": 180,
+    "height": 191,
+    "bytes": 23693,
+    "sha256": "52489adfc8fe92b01a55243702f202c8270b82c8f2ac1560e7afba004ac48d42",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/hexSand.png",
+    "sourceId": "hex-sand",
+    "width": 180,
+    "height": 191,
+    "bytes": 24882,
+    "sha256": "12bcb0ee25856fb9d4c9e27dbca4c50d5046e78c7f223785845940db928424f2",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/sand.png",
+    "sourceId": "hex-sand",
+    "width": 180,
+    "height": 191,
+    "bytes": 24907,
+    "sha256": "b34639fd038fcf458a69056bbe8047e3c24ccfd00651f3aefba05de7096b8a74",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/hexFlower.png",
+    "sourceId": "hex-flower",
+    "width": 180,
+    "height": 191,
+    "bytes": 25368,
+    "sha256": "a517250025dca358c74882cdd05de1bccce14a7a8faf7c33cdc13b16758ef5e6",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/pinkFlower.png",
+    "sourceId": "flower-motif",
+    "width": 120,
+    "height": 127,
+    "bytes": 5631,
+    "sha256": "4510301be228320abbceda3f590ab2e6e4ebdcb556eca893074b4432f90fb0ba",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/hex/sandPyramid.png",
+    "sourceId": "sand-motif",
+    "width": 120,
+    "height": 127,
+    "bytes": 4510,
+    "sha256": "fd199b5f684ca8cddb710ede054f53f923c8df2d1390acc8ec81878d25ad503d",
+    "tool": "built-in image_gen",
+    "adaptation": "fit original visible footprint, full opaque tile surface"
+  },
+  {
+    "file": "assets/base/ui/shop/nav_bg.png",
+    "sourceId": "resource-capsule",
+    "width": 911,
+    "height": 106,
+    "bytes": 47979,
+    "sha256": "73bae23d85cf195094b8e39abc14626f3cb56755b7955c0abb45c87fb67db259",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/task/tab_inactive.png",
+    "sourceId": "resource-capsule",
+    "width": 346,
+    "height": 76,
+    "bytes": 16362,
+    "sha256": "b7a409198f848462d3028639be72b7afb55ac7bde5d7c24ecb1ab676e6ec1eba",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/character/item_skills_details_bg.png",
+    "sourceId": "resource-capsule",
+    "width": 329,
+    "height": 117,
+    "bytes": 23107,
+    "sha256": "016f23c1db2c203f136c6c81123473df7e3860824549adb8cc9cb67194b3432c",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/shop/nav_selected.png",
+    "sourceId": "secondary-control",
+    "width": 335,
+    "height": 89,
+    "bytes": 18058,
+    "sha256": "6b5dbc7f95eac151c5a16ff1371f336ea24a1c0e8b47c5de0e25783033f4ce91",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/task/tab_active.png",
+    "sourceId": "secondary-control",
+    "width": 346,
+    "height": 76,
+    "bytes": 16030,
+    "sha256": "040479cf6e041635c07d34ffc719aa3a4a02eb737373c7988144f9e6bdcad20e",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  },
+  {
+    "file": "assets/base/ui/character/close_button.png",
+    "sourceId": "secondary-control",
+    "width": 331,
+    "height": 137,
+    "bytes": 26235,
+    "sha256": "231aeabecda2cb7dc55c4b2752fb2c9545f5a5df9bff9bf99b59a7ee9b75a192",
+    "tool": "built-in image_gen",
+    "adaptation": "trim alpha margins, resize whole purpose-designed artwork"
+  }
+]

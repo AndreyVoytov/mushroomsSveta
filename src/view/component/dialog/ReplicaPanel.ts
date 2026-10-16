@@ -31,6 +31,9 @@ export default class ReplicaPanel extends BasePanel {
     private bigBublePanel: BigBubblePanel;
     private dialogPnl: Phaser.Sprite;
     private titlePnl: Phaser.Sprite;
+    private nameplateScaleX = 1;
+    private nameTextScaleX = 1;
+    private nameTextScaleY = 1;
     private title: Label;
     private textHolder: Phaser.Group;
     private text: Label;
@@ -58,8 +61,6 @@ export default class ReplicaPanel extends BasePanel {
     private parentCont: DialogPanel;
 
     // private activeAnimations: Phaser.Tween[] = [];
-
-    private SYMBOLS_IN_ROW = 40;
 
     private PERSON_DELTA_X = 750;
 
@@ -109,21 +110,24 @@ export default class ReplicaPanel extends BasePanel {
 
     private createSkipButton(parentCont: DialogPanel): Phaser.Button {
         const skipText = LocalizationService.get(LocalizationKey.ui('skip'));
-        const height = 60, width = 256;
-        const label = new Label(this.game, width / 2, height / 2, skipText + ' →', {
-            font: "26px Manrope",
+        const height = 84, width = 220;
+        const label = new Label(this.game, 128, 30, skipText + ' →', {
+            font: "32px Manrope",
             fill: Label.INK
         });
         label.anchor.set(0.5);
         label.inputEnabled = false;
 
-        const button = SpriteUtils.createButton(this.game, this.dialogPnl.width - width - 44, this.dialogPnl.height - height - 10, 'uiQuietButton', () => {
+        const button = SpriteUtils.createButton(this.game, 32, this.dialogPnl.height + 16, 'uiQuietButton', () => {
             parentCont.skip();
         });
         button.anchor.set(0);
-        button.alpha = 0.96;
+        button.width = width;button.height = height;
+        button.hitArea = new Phaser.Rectangle(0, -9, 256, 78);
+        button.alpha = 1;
 
-        if (label.textWidth > width - 34) label.fontSize *= (width - 34) / label.textWidth;
+        const textScale = Math.min(1, (width - 34) / Math.max(1, label.textWidth));
+        label.scale.set(textScale * 256 / width, textScale * 60 / height);
         button.addChild(label);
 
         return button;
@@ -308,8 +312,8 @@ export default class ReplicaPanel extends BasePanel {
             this.dialogPnl.addChild(skipButton);
         }
 
-        this.textHolderTargetX = this.x + 67;
-        this.textHolderTargetY = this.y + 45;
+        this.textHolderTargetX = this.x + 112;
+        this.textHolderTargetY = this.y + 47;
         this.textHolder = this.game.add.group(parentCont);
         this.textHolder.x = ReplicaPanel.TEXT_OFFSCREEN_X;
         this.textHolder.y = ReplicaPanel.TEXT_OFFSCREEN_Y;
@@ -318,7 +322,11 @@ export default class ReplicaPanel extends BasePanel {
         this.textHolder.renderable = false;
         this.textHolder.inputEnableChildren = false;
 
-        this.text = new Label(this.game, 0, 0, replicaText, Label.DIALOG_STYLE, false, this.SYMBOLS_IN_ROW);
+        this.text = new Label(this.game, 0, 0, replicaText, Label.DIALOG_STYLE, false);
+        this.text.maxWidth = this.game.width - 224;
+        this.text.updateText();
+        const bodyScale = Math.min(1, 165 / Math.max(1, this.text.textHeight));
+        this.text.scale.set(bodyScale, bodyScale);
         this.text.lineSpacing = ReplicaPanel.DIALOG_LINE_SPACING;
         this.text.alpha = 1;
         this.text.visible = false;
@@ -365,6 +373,15 @@ export default class ReplicaPanel extends BasePanel {
             // parentCont.addChild(this.title); this.title.x += this.x; this.title.y += this.y;
         }
 
+        const nameWidth = this.title.textWidth;
+        const plateWidth = Math.min(420, Math.max(286, nameWidth + 64));
+        this.titlePnl.width = plateWidth;
+        this.titlePnl.scale.y = 1;
+        this.nameplateScaleX = this.titlePnl.scale.x;
+        const nameScale = Math.min(1, (plateWidth - 64) / Math.max(1, nameWidth));
+        this.title.scale.set(nameScale / Math.abs(this.titlePnl.scale.x), nameScale);
+        this.nameTextScaleX = this.title.scale.x;this.nameTextScaleY = this.title.scale.y;
+
         if (r.decor && r.decor.overDialog) {
             parentCont.setChildIndex(this.decorImage, parentCont.children.length - 1);
         }
@@ -386,6 +403,7 @@ export default class ReplicaPanel extends BasePanel {
             // console.log("Y:" + (this.y + gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 25))
 
             this.actionButton = SpriteUtils.createButton(this.game, this.game.width / 2 - 25, gameBottomY - DialogPanel.BOTTOM_PADDING / 2 - 20, "dialogActionButton", callback);
+            if (UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL) this.actionButton.x = this.game.width / 2 + 60;
             this.actionButton.anchor.set(0.5);
             this.actionButton.alpha = 0;
             // this.addButton(this.actionButton);
@@ -534,8 +552,8 @@ export default class ReplicaPanel extends BasePanel {
             this.title.scale.set(0, 0);
             this.titlePnl.scale.set(0, 0);
             this.dialogPnl.scale.set(0);
-            this.game.add.tween(this.title.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
-            this.game.add.tween(this.titlePnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
+            this.game.add.tween(this.title.scale).to({ x: this.nameTextScaleX, y: this.nameTextScaleY }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
+            this.game.add.tween(this.titlePnl.scale).to({ x: this.nameplateScaleX, y: 1 }, timeText, Phaser.Easing.Linear.None, true, titleDelay, 0, false)
             this.game.add.tween(this.dialogPnl.scale).to({ x: 1, y: 1 }, timeText, Phaser.Easing.Linear.None, true, timePerson, 0, false)
                 .onComplete.addOnce(() => {
                     if (token === this.eventToken) this.markEntranceFinished();

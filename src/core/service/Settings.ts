@@ -9,7 +9,7 @@ export default class Settings {
     // Atlas PNG/JSON pairs are cached aggressively by GitHub Pages.  Bump this
     // whenever they change so a reload cannot combine a new frame map with an
     // older texture (which leaves part of a level invisible).
-    public static ATLASES_VERSION = "arcane-painted-ui-v2";
+    public static ATLASES_VERSION = "arcane-ensembles-v3";
     public static isGraphicsFromAtlases():boolean{
         return Settings.GRAPHICS_FROM_ATLASES && !AdminService.isEditMode();
     }

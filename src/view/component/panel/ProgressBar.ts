@@ -12,6 +12,7 @@ import AnimationUtils from '../../../core/utils/AnimationUtils';
 import RewardUtils from '../../../core/utils/RewardUtils';
 import Settings from '../../../core/service/Settings';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class ProgressBar extends BasePanel {
     private static readonly PROGRESS_VISUALIZE_DELAY = 1000;
     private static readonly PROGRESS_VISUALIZE_DURATION = 500;
@@ -90,7 +91,7 @@ export default class ProgressBar extends BasePanel {
         this.addSprite(this.progressBarTail);
 
         this.attachSprite('circle')
-        this.attachSprite('ribbon')
+        this.attachSprite('uiSectionRibbon', 'ribbon')
         const taskTitle = LocalizationService.get(currentTask.titleForProgress || currentTask.title);
         this.taskText = new Label(this.game, 0, 0, taskTitle, { font: "40px Bookman Old Style", fill: "#ffffff" })
         this.taskText.name = "taskText";
@@ -133,6 +134,9 @@ export default class ProgressBar extends BasePanel {
             this.resultImage.width = 180 * this.resultImage.scale.x;
             this.resultImage.height = 180 * this.resultImage.scale.y;
         }
+        this.taskText.fill = Label.ON_DARK;
+        this.taskText.anchor.set(0.5);this.taskText.position.set(-20, 104);
+        UiLayout.fit(this.taskText, 430, 70, true);
 
         this.progressBarBody.x = this.progressLineBg.x + 7 - this.progressLineBg.width  + 15;
         this.progressBarBody.y = this.progressBarTail.y;
