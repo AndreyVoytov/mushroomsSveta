@@ -31,7 +31,7 @@ export default class ShopTabButton extends BasePanel {
 
         this.label = this.attachText("label", text, ShopTabButton.INACTIVE_LABEL_STYLE);
         this.label.anchor.set(0.5);
-        this.label.y = -3;
+        this.label.y = 0;
 
         this.setHitAreaSize(290, 94);
     }
@@ -43,6 +43,6 @@ export default class ShopTabButton extends BasePanel {
 
     public setActive(active: boolean): void {
         this.label.setStyle(active ? ShopTabButton.ACTIVE_LABEL_STYLE : ShopTabButton.INACTIVE_LABEL_STYLE);
-        this.label.y = -3;
+        this.label.y = 0;
     }
 }

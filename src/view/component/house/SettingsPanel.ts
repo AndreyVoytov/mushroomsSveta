@@ -47,6 +47,8 @@ export default class SettingsPanel extends ClosablePanel {
 
         let soundButton = this.attachSprite(Game.SOUND_ENABLED ? "sound1" : "sound2")
         soundButton.position.set(178, -161);soundButton.width = soundButton.height = 90;
+        soundText.x = -(88 + soundButton.width) / 2;
+        soundButton.x = (soundText.width + 88) / 2;
         soundButton.inputEnabled = true;
         soundButton.events.onInputDown.add(()=>{
             if(Game.SOUND_ENABLED){
@@ -102,6 +104,7 @@ export default class SettingsPanel extends ClosablePanel {
             button.position.set(0, -12 + i * 120);button.width = 490;button.height = 98;
         });
         [supportButtonLabel, groupButtonLabel, creditsButtonLabel].forEach(label => {
+            label.position.set(0, 0);
             label.fontSize = 36;label.fill = Label.INK;UiLayout.fit(label, 340, 55);
         });
     }

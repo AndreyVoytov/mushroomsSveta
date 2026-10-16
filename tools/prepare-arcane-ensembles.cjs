@@ -2,6 +2,7 @@
 const fs=require('fs'),path=require('path'),crypto=require('crypto');
 const sharp=require('./arcane-art-runtime.cjs')('sharp');
 const root=path.resolve(__dirname,'..'),art=path.join(root,'artwork/arcane-reskin/iteration-3');
+if(fs.existsSync(path.join(root,'artwork/arcane-reskin/iteration-4/applied-assets.json'))&&!process.argv.includes('--legacy-v3'))throw Error('Iteration 4 supersedes the inactive covers. Use prepare-arcane-polish.cjs; --legacy-v3 explicitly restores the old artwork.');
 const sources=require(path.join(art,'generation-results.json'));
 const originals=require(path.join(root,'artwork/arcane-reskin/iteration-2/original-dimensions.json'));
 const previous=require(path.join(root,'artwork/arcane-reskin/iteration-2/applied-assets.json'));

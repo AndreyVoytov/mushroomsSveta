@@ -1,0 +1,22 @@
+[
+  {
+    "file": "assets/base/hex/hexDark.png",
+    "sourceId": "inactive-hex",
+    "width": 180,
+    "height": 191,
+    "bytes": 22506,
+    "sha256": "f24d1f2555eff172017614fad9f40bc33187e13c00943589cd96e8cb2841eddf",
+    "tool": "built-in image_gen",
+    "adaptation": "Trim alpha margin and fit original visible footprint; original canvas retained."
+  },
+  {
+    "file": "assets/base/hex/hexHouseDark.png",
+    "sourceId": "inactive-hex",
+    "width": 180,
+    "height": 191,
+    "bytes": 22506,
+    "sha256": "f24d1f2555eff172017614fad9f40bc33187e13c00943589cd96e8cb2841eddf",
+    "tool": "built-in image_gen",
+    "adaptation": "Trim alpha margin and fit original visible footprint; original canvas retained."
+  }
+]

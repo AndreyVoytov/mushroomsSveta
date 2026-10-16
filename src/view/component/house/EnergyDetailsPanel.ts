@@ -20,6 +20,8 @@ export default class EnergyDetailsPanel extends ClosablePanel {
     private screen: Phaser.State;
     private hooks: EnergyPanelHooks;
     private energyLabel: Label;
+    private energyOrb: Phaser.Sprite;
+    private priceIcon: Phaser.Sprite;
     private statusLabel: Label;
     private resetLabel: Label;
     private actionLabel: Label;
@@ -61,6 +63,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
         title.position.set(0, -214);UiLayout.fit(title, 500, 62);
 
         const energyOrb = this.attachSprite('energyPanelOrb', 'energyOrb');
+        this.energyOrb = energyOrb;
         energyOrb.position.set(-90, -98);
         energyOrb.width = 96;
         energyOrb.height = 90;
@@ -82,7 +85,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
             wordWrap: true,
             wordWrapWidth: 520
         });
-        this.statusLabel.position.set(32, -15);UiLayout.fit(this.statusLabel, 560, 76, true);
+        this.statusLabel.position.set(0, -15);UiLayout.fit(this.statusLabel, 560, 76, true);
         this.statusLabel.fill = Label.INK;
 
         this.resetLabel = this.attachText("energyReset", "", {
@@ -94,14 +97,15 @@ export default class EnergyDetailsPanel extends ClosablePanel {
             wordWrap: true,
             wordWrapWidth: 520
         });
-        this.resetLabel.position.set(25, 173);this.resetLabel.fill = Label.INK;
+        this.resetLabel.position.set(0, 173);this.resetLabel.fill = Label.INK;
 
         const actionButton = this.attachButton('energyPanelBuyButton', () => this.tryBuyEnergy(), 'buyButton');
-        actionButton.position.set(24, 80);
+        actionButton.position.set(0, 80);
         actionButton.width = 360;
         actionButton.height = 94;
 
         const gemsIcon = SpriteUtils.createSprite(this.game, 0, 0, "gems");
+        this.priceIcon = gemsIcon;
         gemsIcon.name = "gemsIcon";
         gemsIcon.anchor.set(0.5);
         gemsIcon.position.set(148, 80);
@@ -129,7 +133,7 @@ export default class EnergyDetailsPanel extends ClosablePanel {
             wordWrapWidth: 620
         });
         energyHint.fontSize = 26;energyHint.fill = Label.INK;
-        energyHint.position.set(26, 239);UiLayout.fit(energyHint, 580, 76, true);
+        energyHint.position.set(0, 239);UiLayout.fit(energyHint, 580, 76, true);
 
         const refreshTimer = this.game.time.events.loop(1000, () => {
             if (this.visible) this.refreshTexts();
@@ -214,6 +218,9 @@ export default class EnergyDetailsPanel extends ClosablePanel {
             const scale = 100 / this.energyLabel.width;
             this.energyLabel.scale.set(scale, scale);
         }
+        const energyWidth = this.energyOrb.width + 14 + this.energyLabel.width;
+        this.energyOrb.x = -energyWidth / 2 + this.energyOrb.width / 2;
+        this.energyLabel.x = energyWidth / 2 - this.energyLabel.width / 2;
 
         if (energy > maxEnergy) {
             this.statusLabel.text = LocalizationService.get('ui.energy.overLimit', 'Above the limit. Regeneration will resume after you spend some energy.');
@@ -234,6 +241,8 @@ export default class EnergyDetailsPanel extends ClosablePanel {
 
         this.actionLabel.scale.set(1, 1);
         if (this.actionLabel.width > 220) this.actionLabel.scale.set(220 / this.actionLabel.width, 220 / this.actionLabel.width);
+        this.actionLabel.x = -(14 + this.priceIcon.width) / 2;
+        this.priceIcon.x = (this.actionLabel.width + 14) / 2;
 
         this.resetLabel.text = LocalizationService.get(
             'ui.energy.reset',

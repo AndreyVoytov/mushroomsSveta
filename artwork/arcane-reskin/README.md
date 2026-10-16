@@ -65,4 +65,4 @@ existing GitHub Pages download redirect. The original game origin is untouched.
 
 ## Current UI revision
 
-The current shipped UI is the [purpose-designed ensemble pass](iteration-3/README.md). It replaces the generic painted rectangles from iteration 2 and restores the opened-cell backgrounds. Use its preparation script and manifests for further changes; the earlier generic generators are archived.
+The current UI adds the [alignment and state polish pass](iteration-4/README.md) to the [purpose-designed ensembles](iteration-3/README.md). It uses pale inactive cells, visible-glyph text centering and a readable trees-transition caption. The earlier generic generators and the old dark-cover preparation path are guarded against overwriting current artwork.

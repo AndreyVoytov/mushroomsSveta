@@ -94,7 +94,7 @@ export default class StartLevelPanel extends ClosablePanel {
         }
 
         let step = 222;
-        let startShift = aims.length == 1 ? 0 : (aims.length == 2 ? -108 : -220);
+        let startShift = -(aims.length - 1) * step / 2;
         aims.forEach((aim, i) => {
             let shiftX = startShift + i * step;
             let image = SpriteUtils.createSprite(this.game, shiftX, -160, aim.image);
@@ -259,7 +259,7 @@ export default class StartLevelPanel extends ClosablePanel {
             }
         });
         if (this.headerText) {
-            this.headerText.position.set(0, -258);this.headerText.anchor.set(0.5);
+            this.headerText.position.set(0, -265);this.headerText.anchor.set(0.5);
             this.headerText.fontSize = 40;this.headerText.fill = Label.ON_DARK;
             UiLayout.fit(this.headerText, 510, 58);
             label.position.set(0, -176);label.fontSize = 26;label.fill = Label.INK;

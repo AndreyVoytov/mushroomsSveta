@@ -171,7 +171,7 @@ export default class ShopPanel extends ClosablePanel {
 
     private layoutTab(tab: ShopTabButton, id: ShopTabId): void {
         tab.x = this.getTabCenterX(id);
-        tab.y = -286;
+        tab.y = this.navBackground.y;
         tab.setHitAreaSize(292, 94);
     }
 

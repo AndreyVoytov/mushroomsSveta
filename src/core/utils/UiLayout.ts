@@ -3,6 +3,7 @@ import Label from '../../view/component/panel/Label';
 /** Text boxes are measured independently of the painted sprite's decorative bounds. */
 export default class UiLayout {
     public static fit(label: Label, width: number, height: number, wrap: boolean = false): void {
+        if (wrap && label.anchor.x === 0.5) label.align = 'center';
         label.maxWidth = wrap ? width : 0;
         // Use glyph widths once. Legacy character-count wrapping followed by
         // BitmapText wrapping can add a third line and shrink an otherwise short label.

@@ -173,7 +173,7 @@ export default class LevelCompletePanel extends BasePanel {
         const continueLabel = this.createResultText('continueLabel', LocalizationService.get('ui.ok', 'OK'), {
             font: 'bold 46px Gilroy',
             fill: '#344333'
-        }, { x: 0, y: -3, width: 390, height: 62 });
+        }, { x: 0, y: 0, width: 390, height: 62 });
         this.continueButton.addChild(continueLabel);
 
         const previewGemsCount = previewData && previewData.gemsCount != null ? previewData.gemsCount : null;

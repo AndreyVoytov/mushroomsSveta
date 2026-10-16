@@ -23,7 +23,7 @@ export default class TreesTransitionPanel extends BasePanel {
     private overlay: Phaser.Graphics;
     private branches: TreesPart[];
     private loadingLabel: Label;
-    private loadingOutlineLabels: Label[] = [];
+    private loadingCaption: Phaser.Group;
     private loadingBaseText: string;
     private loadingDots = 1;
     private loadingDotsEvent: Phaser.TimerEvent;
@@ -119,32 +119,28 @@ export default class TreesTransitionPanel extends BasePanel {
         let showLoadingLabel = from || time == 0;
         this.loadingBaseText = GameText.loading().replace(/(?:\.\.\.|…)+\s*$/, '');
         let loadingText = this.loadingBaseText + '.';
-        let loadingX = this.game.width / 2;
-        let loadingY = this.game.height * 4 / 5;
-        let loadingStyle = { "font": "bold 60px Arial", "fill": "#ffffff" };
-        let loading = new Label(this.game, loadingX, loadingY, loadingText, loadingStyle);
-        loading.anchor.set(0.5, 0.5);
-        // Preserve the centered position of the initial one-dot label, then pin
-        // its left edge so subsequent dots grow to the right without shifting it.
-        const loadingLeft = loadingX - loading.textWidth / 2;
-        loading.x = loadingLeft;
+        // Branches scale to cover tall screens; the caption keeps a fixed screen
+        // size and screen-relative position instead of inheriting that overscan.
+        this.loadingCaption = new Phaser.Group(this.game, this, 'loadingCaption');
+        this.loadingCaption.position.set((this.game.width / 2 - this.x) / this.scale.x,
+            this.game.height * 0.80 / this.scale.y);
+        this.loadingCaption.scale.set(1 / this.scale.x, 1 / this.scale.y);
+        const plaque = SpriteUtils.createSprite(this.game, 0, 0, 'uiSectionRibbon');
+        plaque.anchor.set(0.5);plaque.width = 560;plaque.height = 112;
+        this.loadingCaption.addChild(plaque);
+        let loadingStyle = { font: 'bold 50px Manrope', fill: Label.ON_DARK };
+        let loading = new Label(this.game, 0, 0, this.loadingBaseText + '...', loadingStyle);
         loading.anchor.set(0, 0.5);
-
-        const outlineOffsets = [[-3, 0], [3, 0], [0, -3], [0, 3]];
-        outlineOffsets.forEach(offset => {
-            const outline = new Label(this.game, loadingLeft + offset[0], loadingY + offset[1], loadingText,
-                Object.assign({}, loadingStyle, { fill: "#194c3f" }));
-            outline.anchor.set(0, 0.5);
-            outline.visible = showLoadingLabel;
-            outline.alpha = showLoadingLabel ? 1 : 0;
-            this.addChild(outline);
-            this.loadingOutlineLabels.push(outline);
-        });
+        // Reserve the full three-dot width so the word stays still while dots animate.
+        loading.x = -loading.textWidth / 2;
+        loading.text = loadingText;
+        this.loadingCaption.visible = showLoadingLabel;
+        this.loadingCaption.alpha = showLoadingLabel ? 1 : 0;
 
         loading.visible = showLoadingLabel;
         loading.alpha = showLoadingLabel ? 1 : 0;
 
-        this.addChild(loading);
+        this.loadingCaption.addChild(loading);
         this.loadingLabel = loading;
         this.loadingDotsEvent = this.game.time.events.loop(400, this.animateLoadingDots, this);
 
@@ -247,13 +243,9 @@ export default class TreesTransitionPanel extends BasePanel {
             tweens.push(game.add.tween(tp0).to({ alpha:0.8}, 300, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Sinusoidal.Out, true, delay + delay2 + 250 , 0, false))
 
             loading.visible = true;
-            loading.alpha = 0;
-            tweens.push(AnimationUtils.fadeIn(this.game, loading, delay + 250 + delay2  ))
-            this.loadingOutlineLabels.forEach(outline => {
-                outline.visible = true;
-                outline.alpha = 0;
-                tweens.push(AnimationUtils.fadeIn(this.game, outline, delay + 250 + delay2));
-            });
+            this.loadingCaption.visible = true;
+            this.loadingCaption.alpha = 0;
+            tweens.push(AnimationUtils.fadeIn(this.game, this.loadingCaption, delay + 250 + delay2))
         } else if (time != 0 && window.location.href.indexOf("treesStop") == -1 ){
             this.reveal();
         } else {
@@ -279,7 +271,6 @@ export default class TreesTransitionPanel extends BasePanel {
         this.loadingDots = (this.loadingDots + 1) % 4;
         const text = this.loadingBaseText + new Array(this.loadingDots + 1).join('.');
         this.loadingLabel.text = text;
-        this.loadingOutlineLabels.forEach(label => label.text = text);
     }
 
     private stopLoadingDots(): void {
@@ -367,10 +358,7 @@ export default class TreesTransitionPanel extends BasePanel {
         this.overlay.alpha = 0;
         this.loadingLabel.visible = false;
         this.loadingLabel.alpha = 0;
-        this.loadingOutlineLabels.forEach(outline => {
-            outline.visible = false;
-            outline.alpha = 0;
-        });
+        this.loadingCaption.visible = false;
 
         const tp0 = this.branches[0];
         const branchesForHide = [this.branches[5], this.branches[7], this.branches[8], this.branches[6],

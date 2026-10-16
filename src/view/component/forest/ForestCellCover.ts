@@ -109,6 +109,9 @@ export default class ForestCellCover extends Phaser.Group {
         this.darkLeaf.height = height;
         this.darkLeaf.scale = new Phaser.Point(1.5, 1.5);
         this.darkLeaf.inputEnabled = false;
+        // Inactive cells recede through a pale face and a faint motif, matching
+        // disabled UI. Keep the motif so they cannot be mistaken for opened cells.
+        this.darkLeaf.alpha = 0.28;
         this.darkCover.addChild(this.darkLeaf);
 
         let decorationKey = this.getDecorationKey(cellType);

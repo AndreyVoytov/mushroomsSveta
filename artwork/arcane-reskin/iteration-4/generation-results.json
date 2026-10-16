@@ -1,0 +1,11 @@
+[
+  {
+    "id": "inactive-hex",
+    "source": "C:/Users/voito/.codex/generated_images/01a13fc6-7025-7c23-b28c-31413ce12a00/exec-63e7496f-7ca8-44b9-8495-45944e87ea11.png",
+    "tool": "built-in image_gen",
+    "prompt": "Use case: precise-object-edit. Asset type: transparent sprite for an INACTIVE hexagonal tile in a painterly watercolor fantasy casual puzzle game. Edit target/reference: supplied green hex sprite. Preserve its exact upright pointy-top hexagonal silhouette, bevel, clean watercolor finish and fully opaque tile face, transparent outside. Change only the material/color treatment: a LIGHT, low-contrast pearl gray / pale sage limestone face, softly desaturated, approximately RGB 207 215 204, subtle pearly edge rather than dark bevel; the center must be light but distinguishable from warm cream uncovered tiles. No symbols, no leaf motif, no cracks, no text, no glow, no external drop shadow. Strongly avoid the very dark slate version. Soft brushed watercolor texture, sparse elegant detail, restrained edges, calm low attention state. One single hex centered, ample transparent margin. Keep geometry matching reference.",
+    "reference": "assets/base/hex/hex.png",
+    "intendedWidth": 180,
+    "intendedHeight": 191
+  }
+]

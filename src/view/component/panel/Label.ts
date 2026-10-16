@@ -75,6 +75,28 @@
         this.text = text;
     }
 
+    /** Center the visible glyphs, not the font's invisible line-height padding. */
+    public updateText(): void {
+        super.updateText();
+        if (!this.anchor) return;
+        const centerX = this.anchor.x === 0.5;
+        const centerY = this.anchor.y === 0.5;
+        if (!centerX && !centerY) return;
+        const glyphs: any[] = (<any>this)._glyphs || [];
+        let left = Infinity, top = Infinity, right = -Infinity, bottom = -Infinity;
+        glyphs.forEach(glyph => {
+            if (glyph.parent !== this || !glyph.texture || !glyph.texture.frame.width || !glyph.texture.frame.height) return;
+            left = Math.min(left, glyph.x);top = Math.min(top, glyph.y);
+            right = Math.max(right, glyph.x + glyph.width);bottom = Math.max(bottom, glyph.y + glyph.height);
+        });
+        if (left === Infinity) return;
+        const dx = centerX ? (left + right) / 2 : 0;
+        const dy = centerY ? (top + bottom) / 2 : 0;
+        glyphs.forEach(glyph => {
+            if (glyph.parent === this) { glyph.x -= dx;glyph.y -= dy; }
+        });
+    }
+
     public setStyle(style: Phaser.PhaserTextStyle): Label {
         this.styleDef = style || Label.DEFAULT_STYLE;
 

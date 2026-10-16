@@ -1,0 +1,553 @@
+{
+  "theme": "arcane-watercolor",
+  "branch": "reskin/arcane-watercolor",
+  "reviewIterations": 10,
+  "bundleSha256": "bf0fef67fe2dd76cfa9b3f8a44c9130f99c87e46abbf100ecfc817f2e67d3fe4",
+  "visualReview": {
+    "capturesWithMeasuredText": 59,
+    "measuredLabels": 517,
+    "minimumSampledContrast": 4.79,
+    "contrastFailures": [],
+    "textBoxIntersections": [],
+    "runtimeErrors": [],
+    "scenes": [
+      {
+        "folder": "polish-02-field",
+        "scene": "states-3",
+        "labels": 7,
+        "minimumSampledContrast": 6.84
+      },
+      {
+        "folder": "polish-02-field",
+        "scene": "states-14",
+        "labels": 7,
+        "minimumSampledContrast": 6.84
+      },
+      {
+        "folder": "polish-03-field",
+        "scene": "states-33",
+        "labels": 11,
+        "minimumSampledContrast": 6.8
+      },
+      {
+        "folder": "polish-03-field",
+        "scene": "states-93",
+        "labels": 8,
+        "minimumSampledContrast": 6.84
+      },
+      {
+        "folder": "polish-03-field",
+        "scene": "tutorial-93",
+        "labels": 2,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "polish-03-field",
+        "scene": "states-134",
+        "labels": 8,
+        "minimumSampledContrast": 6.87
+      },
+      {
+        "folder": "polish-03-field",
+        "scene": "tutorial-134",
+        "labels": 2,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "polish-05-panels",
+        "scene": "01-settings",
+        "labels": 5,
+        "minimumSampledContrast": 6.21
+      },
+      {
+        "folder": "polish-05-panels",
+        "scene": "03-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.06
+      },
+      {
+        "folder": "polish-07-shop-after",
+        "scene": "01-bank",
+        "labels": 26,
+        "minimumSampledContrast": 4.94
+      },
+      {
+        "folder": "polish-07-shop-after",
+        "scene": "02-items",
+        "labels": 28,
+        "minimumSampledContrast": 4.93
+      },
+      {
+        "folder": "polish-07-shop-after",
+        "scene": "03-purchase-received",
+        "labels": 3,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "polish-07-shop-after",
+        "scene": "04-purchased-card",
+        "labels": 27,
+        "minimumSampledContrast": 4.93
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "01-artifact-details",
+        "labels": 13,
+        "minimumSampledContrast": 5.22
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "02-skill-energy",
+        "labels": 2,
+        "minimumSampledContrast": 8.62
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "03-hero-cat",
+        "labels": 7,
+        "minimumSampledContrast": 5.95
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "04-hero-owl",
+        "labels": 7,
+        "minimumSampledContrast": 5.95
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "05-support",
+        "labels": 3,
+        "minimumSampledContrast": 5.39
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "06-about",
+        "labels": 3,
+        "minimumSampledContrast": 5.56
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "07-tasks-campaign",
+        "labels": 20,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "08-shop-heroes",
+        "labels": 6,
+        "minimumSampledContrast": 5.3
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "09-diary-recipe",
+        "labels": 3,
+        "minimumSampledContrast": 16.96
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "10-confirm-exit",
+        "labels": 3,
+        "minimumSampledContrast": 5.38
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "11-failure",
+        "labels": 5,
+        "minimumSampledContrast": 5.3
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "field-3",
+        "labels": 7,
+        "minimumSampledContrast": 6.84
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "field-11",
+        "labels": 9,
+        "minimumSampledContrast": 6.84
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "field-33",
+        "labels": 8,
+        "minimumSampledContrast": 6.8
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "field-93",
+        "labels": 8,
+        "minimumSampledContrast": 6.84
+      },
+      {
+        "folder": "polish-08-secondary",
+        "scene": "field-134",
+        "labels": 8,
+        "minimumSampledContrast": 6.87
+      },
+      {
+        "folder": "polish-08-conditional",
+        "scene": "01-equipment-upgrade",
+        "labels": 13,
+        "minimumSampledContrast": 5.22
+      },
+      {
+        "folder": "polish-08-conditional",
+        "scene": "02-equipment-max",
+        "labels": 13,
+        "minimumSampledContrast": 5.22
+      },
+      {
+        "folder": "polish-08-conditional",
+        "scene": "03-task-states",
+        "labels": 20,
+        "minimumSampledContrast": 5.45
+      },
+      {
+        "folder": "polish-08-conditional",
+        "scene": "04-long-nameplate",
+        "labels": 4,
+        "minimumSampledContrast": 5.53
+      },
+      {
+        "folder": "polish-08-conditional",
+        "scene": "05-diary-turn",
+        "labels": 3,
+        "minimumSampledContrast": 16.96
+      },
+      {
+        "folder": "polish-09-de",
+        "scene": "01-start",
+        "labels": 6,
+        "minimumSampledContrast": 4.79
+      },
+      {
+        "folder": "polish-09-de",
+        "scene": "02-settings",
+        "labels": 5,
+        "minimumSampledContrast": 6.17
+      },
+      {
+        "folder": "polish-09-de",
+        "scene": "03-tasks",
+        "labels": 21,
+        "minimumSampledContrast": 5.37
+      },
+      {
+        "folder": "polish-09-de",
+        "scene": "04-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.06
+      },
+      {
+        "folder": "polish-09-de",
+        "scene": "05-victory",
+        "labels": 7,
+        "minimumSampledContrast": 4.97
+      },
+      {
+        "folder": "polish-09-en",
+        "scene": "01-start",
+        "labels": 6,
+        "minimumSampledContrast": 4.86
+      },
+      {
+        "folder": "polish-09-en",
+        "scene": "02-settings",
+        "labels": 5,
+        "minimumSampledContrast": 5.99
+      },
+      {
+        "folder": "polish-09-en",
+        "scene": "03-tasks",
+        "labels": 21,
+        "minimumSampledContrast": 5.46
+      },
+      {
+        "folder": "polish-09-en",
+        "scene": "04-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.01
+      },
+      {
+        "folder": "polish-09-en",
+        "scene": "05-victory",
+        "labels": 7,
+        "minimumSampledContrast": 5.03
+      },
+      {
+        "folder": "polish-09-edge",
+        "scene": "01-hard-level",
+        "labels": 7,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "polish-09-edge",
+        "scene": "02-longest-title",
+        "labels": 7,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "polish-09-edge",
+        "scene": "03-large-balances",
+        "labels": 7,
+        "minimumSampledContrast": 5.97
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "01-redhood-house",
+        "labels": 3,
+        "minimumSampledContrast": 8.83
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "02-cat-interior",
+        "labels": 4,
+        "minimumSampledContrast": 5.53
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "03-forest-hub",
+        "labels": 6,
+        "minimumSampledContrast": 6
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "04-dark-forest-start",
+        "labels": 6,
+        "minimumSampledContrast": 4.84
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "05-level-08",
+        "labels": 7,
+        "minimumSampledContrast": 6.84
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "06-puzzle-victory",
+        "labels": 7,
+        "minimumSampledContrast": 4.92
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "07-settings",
+        "labels": 5,
+        "minimumSampledContrast": 6.21
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "08-heroes",
+        "labels": 7,
+        "minimumSampledContrast": 5.95
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "09-tasks",
+        "labels": 21,
+        "minimumSampledContrast": 5.45
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "10-diary",
+        "labels": 3,
+        "minimumSampledContrast": 16.97
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "11-energy",
+        "labels": 6,
+        "minimumSampledContrast": 5.06
+      },
+      {
+        "folder": "polish-10-mobile",
+        "scene": "12-bank",
+        "labels": 26,
+        "minimumSampledContrast": 4.94
+      }
+    ],
+    "notes": [
+      "Round 4 bank quantity contrast and round 7 pre-fix item/receipt captures were diagnostic findings; final component captures supersede them.",
+      "Normal/open/inactive cells use intentional cell content layering; field text is reviewed for contrast and placement rather than classified as overlapping UI copy."
+    ]
+  },
+  "visibleGlyphAlignment": {
+    "measuredLabels": 114,
+    "horizontallyCentered": 112,
+    "verticallyCentered": 99,
+    "maximumLocalHorizontalError": 0,
+    "maximumLocalVerticalError": 0
+  },
+  "transition": {
+    "aspectRatios": [
+      {
+        "width": 390,
+        "height": 844,
+        "contrast": 12.28,
+        "caption": {
+          "x": 200,
+          "y": 1605.6000000000004,
+          "w": 560,
+          "h": 112
+        },
+        "viewport": {
+          "w": 960,
+          "h": 2077
+        }
+      },
+      {
+        "width": 900,
+        "height": 1600,
+        "contrast": 12.3,
+        "caption": {
+          "x": 200,
+          "y": 1308.8000000000002,
+          "w": 560,
+          "h": 112
+        },
+        "viewport": {
+          "w": 960,
+          "h": 1706
+        }
+      },
+      {
+        "width": 390,
+        "height": 640,
+        "contrast": 12.28,
+        "caption": {
+          "x": 200,
+          "y": 1204,
+          "w": 560,
+          "h": 112
+        },
+        "viewport": {
+          "w": 960,
+          "h": 1575
+        }
+      }
+    ],
+    "actualFlow": {
+      "framesObserved": 621,
+      "statesObserved": 2,
+      "captionVisibleDuringTransition": true,
+      "coverRevealed": true,
+      "inactiveCell": {
+        "opened": false,
+        "input": false,
+        "spent": 0
+      },
+      "activeCell": {
+        "opened": true,
+        "spent": 1
+      }
+    }
+  },
+  "longDialogue": {
+    "cases": 3,
+    "overlapsSkip": 0
+  },
+  "domOverlay": {
+    "tabs": 4,
+    "documentOverflow": 0,
+    "missingImages": 0
+  },
+  "regressions": [
+    {
+      "name": "world",
+      "status": "passed"
+    },
+    {
+      "name": "serverless",
+      "status": "passed"
+    },
+    {
+      "name": "cloud-client",
+      "status": "passed"
+    },
+    {
+      "name": "world-fields",
+      "status": "passed"
+    },
+    {
+      "name": "telemetry",
+      "status": "passed"
+    },
+    {
+      "name": "ad-callbacks",
+      "status": "passed"
+    },
+    {
+      "name": "journey-events",
+      "status": "passed"
+    },
+    {
+      "name": "animals-generation",
+      "status": "passed"
+    },
+    {
+      "name": "mushroom-harvest",
+      "status": "passed"
+    },
+    {
+      "name": "ladybug-movement",
+      "status": "passed"
+    },
+    {
+      "name": "hero-abilities",
+      "status": "passed"
+    },
+    {
+      "name": "house-discovery",
+      "status": "passed"
+    },
+    {
+      "name": "item-ground-shadow",
+      "status": "passed"
+    },
+    {
+      "name": "forest-presentation",
+      "status": "passed"
+    },
+    {
+      "name": "snail-sparks",
+      "status": "passed"
+    },
+    {
+      "name": "sapphire-reward",
+      "status": "passed"
+    },
+    {
+      "name": "tint-interpolation",
+      "status": "passed"
+    }
+  ],
+  "assetBudget": {
+    "originalTexturesChecked": 609,
+    "originalCanvasIncreases": 0,
+    "newMastersPublished": false,
+    "purposeDesignedSurfaces": 42,
+    "surfaceBytes": 4397854,
+    "atlasPages": 31,
+    "atlasBytes": 14350056,
+    "openedTile": "Opaque filled face; transparent corners",
+    "inactive": {
+      "treatment": "Pale sage with faint retained motif",
+      "normalLuma": 158.92857362914805,
+      "inactiveLuma": 200.90059058441722,
+      "ratio": 1.2640935861741815
+    }
+  },
+  "exactPreparedAssetHashesChecked": 42,
+  "localColdLoad": {
+    "encodedBodyBytes": 26309446,
+    "note": "Same-origin resources; local HTTP compression differs from Pages."
+  },
+  "originalCheckout": {
+    "dirtyEntriesUnchanged": 80,
+    "modifiedByThisPass": false
+  },
+  "production": {
+    "url": "https://andreyvoytov-mushrooms-arcane.pages.dev/",
+    "verification": "Pending deployment verification."
+  }
+}

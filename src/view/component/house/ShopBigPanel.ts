@@ -22,7 +22,7 @@ export default class ShopBigPanel extends BasePanel {
             const bx = -20 + i * 106 + (buy.boosters.length === 2 ? 44 : 0);
             const icon = this.attachSprite(booster.type, 'booster' + i);
             icon.position.set(bx, 22);SpriteUtils.fitIcon(icon, 52, 54);
-            const count = this.attachText('boosterCount' + i, '' + booster.count, {font:'bold 28px Manrope',fill:'#071d20'});
+            const count = this.attachText('boosterCount' + i, '' + booster.count, {font:'bold 28px Manrope',fill:'#001014'});
             count.position.set(bx + 37, 22);UiLayout.fit(count, 35, 38);
         });
         const button = this.attachButton('pnlButton', () => ShopService.processPayment(this.game, buy, callbackOnBuy), 'purchase');

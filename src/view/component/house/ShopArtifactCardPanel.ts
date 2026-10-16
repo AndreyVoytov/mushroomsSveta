@@ -4,6 +4,8 @@ import { ShopArtifactItemConfig, ShopArtifactSkillId } from '../../../core/model
 import ShopArtifactService from '../../../core/service/ShopArtifactService';
 import BasePanel from '../panel/BasePanel';
 import Label from '../panel/Label';
+import SpriteUtils from '../../../core/utils/SpriteUtils';
+import UiLayout from '../../../core/utils/UiLayout';
 
 export default class ShopArtifactCardPanel extends BasePanel {
     private item: ShopArtifactItemConfig;
@@ -21,6 +23,8 @@ export default class ShopArtifactCardPanel extends BasePanel {
     private itemIcon: Phaser.Sprite;
     private disabledShade: Phaser.Sprite;
     private purchasedCheck: Phaser.Sprite;
+    private titleLabel: Label;
+    private usageLabel: Label;
 
     constructor(game: Phaser.Game, name: string, item: ShopArtifactItemConfig, sortIndex: number, onBuy?: (item: ShopArtifactItemConfig) => void, onSkillInfo?: (skillId: ShopArtifactSkillId) => void) {
         super(game, 0, 0, name, "blank");
@@ -49,6 +53,7 @@ export default class ShopArtifactCardPanel extends BasePanel {
             wordWrap: true,
             wordWrapWidth: 305
         });
+        this.titleLabel = title;
         title.anchor.set(0.5);
         title.y = -105;
 
@@ -90,6 +95,7 @@ export default class ShopArtifactCardPanel extends BasePanel {
             wordWrap: true,
             wordWrapWidth: 180
         });
+        this.usageLabel = usageLabel;
         usageLabel.lineSpacing = 26;
         usageLabel.anchor.set(1, 1);
         usageLabel.x = 138;
@@ -160,7 +166,30 @@ export default class ShopArtifactCardPanel extends BasePanel {
         this.disabledShade.tint = 0x6f6258;
         this.disabledShade.visible = false;
 
-       
+        // A single painted display card gives every row its own reserved area.
+        SpriteUtils.loadTexture(this.panel, 'uiShopCard');this.panel.width = 350;this.panel.height = 300;
+        helperPanel.visible = false;
+        title.position.set(0, -80);title.fontSize = 30;title.fill = Label.INK;
+        this.skillLabels.forEach((row, i) => {
+            const y = -40 + i * 34;
+            row.label.position.set(-110, y);row.label.fontSize = 25;row.label.fill = Label.INK;
+            const icon: any = this.children.filter((c: any) => c.name === 'skillIcon' + i)[0];
+            const info: any = this.children.filter((c: any) => c.name === 'skillInfo' + i)[0];
+            icon.position.set(-135, y);SpriteUtils.fitIcon(icon, 30, 30);info.position.set(142, y);
+        });
+        usageLabel.anchor.set(1, 0.5);usageLabel.position.set(142, 36);usageLabel.fontSize = 22;usageLabel.fill = Label.INK;
+        this.levelLabel.position.set(142, 74);this.levelLabel.fill = Label.INK;
+        SpriteUtils.loadTexture(this.itemBackground, 'dialogMedallion');
+        this.game.tweens.removeFrom(this.itemBackground);
+        this.itemBackground.position.set(-112, 78);this.itemBackground.width = this.itemBackground.height = 104;
+        this.itemSplash.visible = false;
+        this.itemIcon.position.set(-112, 78);SpriteUtils.fitIcon(this.itemIcon, 80, 92);
+        SpriteUtils.loadTexture(this.buyButton, 'pnlButton');
+        this.buyButton.position.set(67, 117);this.buyButton.width = 180;this.buyButton.height = 54;
+        this.priceGemIcon.y = 117;SpriteUtils.fitIcon(this.priceGemIcon, 36, 36);
+        this.priceLabel.anchor.set(0.5);this.priceLabel.y = 117;this.priceLabel.fontSize = 32;this.priceLabel.fill = Label.INK;
+        this.purchasedCheck.position.set(67, 117);SpriteUtils.fitIcon(this.purchasedCheck, 38, 32);
+        this.disabledShade.visible = false;
 
         this.refreshState();
     }
@@ -183,13 +212,22 @@ export default class ShopArtifactCardPanel extends BasePanel {
             max: this.item.maxLevel
         });
 
-        this.disabledShade.visible = purchased;
+        UiLayout.fit(this.titleLabel, 300, 48, true);
+        UiLayout.fit(this.usageLabel, 180, 60, true);
+        UiLayout.fit(this.levelLabel, 190, 28);
+        this.skillLabels.forEach(row => UiLayout.fit(row.label, 210, 34));
+        UiLayout.fit(this.priceLabel, 96, 44);
+        const priceWidth = this.priceLabel.width + 10 + this.priceGemIcon.width;
+        this.priceGemIcon.x = 67 - priceWidth / 2 + this.priceGemIcon.width / 2;
+        this.priceLabel.x = 67 + priceWidth / 2 - this.priceLabel.width / 2;
+
+        this.disabledShade.visible = false;
         this.purchasedCheck.visible = purchased;
         this.buyButton.visible = !purchased;
         this.priceLabel.visible = !purchased;
         this.priceGemIcon.visible = !purchased;
         this.itemBackground.visible = !purchased;
-        this.itemSplash.visible = !purchased;
+        this.itemSplash.visible = false;
         this.itemIcon.alpha = purchased ? 0.72 : 1;
         this.panel.inputEnabled = !purchased;
         this.buyButton.inputEnabled = !purchased;
