@@ -35,26 +35,50 @@ export default class HelperPanel extends BasePanel {
         this.personImage.scale.set(0.7);
         this.addChild(this.personImage);
 
-        const textWidth = 470;
+        const textWidth = 450;
         const hasImages = images && images.length > 0;
         this.text = new Label(this.game, -130, 0, text, { font: "bold 34px Arial", fill: Label.INK, wordWrap: true, wordWrapWidth: textWidth });
-        this.text.anchor = new Phaser.Point(0.5, 0);
+        this.text.anchor = new Phaser.Point(0.5, 0.5);
         this.text.lineSpacing = -5;
         this.addChild(this.text);
         UiLayout.fit(this.text, textWidth, 1000, true);
-        const baseHeight = okButton ? (hasImages ? 540 : 440) : (hasImages ? 480 : 350);
+        const baseHeight = okButton ? (hasImages ? 480 : 440) : (hasImages ? 430 : 350);
         const bodyBudget = hasImages ? 170 : 220;
         const panelHeight = Math.min(800, baseHeight + Math.max(0, this.text.textHeight - bodyBudget));
         this.dialogPnl.anchor.set(0.5);this.dialogPnl.position.set(0, 0);
         this.dialogPnl.width = 880;this.dialogPnl.height = panelHeight;
-        this.text.y = -panelHeight / 2 + 100;
-        UiLayout.fit(this.text, textWidth, panelHeight - (hasImages ? 370 : 220), true);
-        this.personImage.position.set(420, panelHeight / 2 - 28);
-        SpriteUtils.fitIcon(this.personImage, 270, Math.min(430, panelHeight - 45));
+        const contentTop = -panelHeight / 2 + 56;
+        const contentBottom = panelHeight / 2 - (okButton ? 124 : 54);
+        const textBottom = contentBottom - (hasImages ? 132 : 0);
+        this.text.y = (contentTop + textBottom) / 2;
+        UiLayout.fit(this.text, textWidth, textBottom - contentTop, true);
+        this.personImage.anchor.set(0.5, 1);
+        this.personImage.position.set(260, panelHeight / 2 - 42);
+        // Reserve a full-height illustration column inside the parchment.
+        SpriteUtils.fitIcon(this.personImage, 304, panelHeight - 82);
 
         if (images && images.length > 0) {
-            let imagesLength = images.filter(i => !i.startsWith("-")).length
-            this.addChild(new InfoPanel(this.game, this.text.x - 58 * imagesLength, panelHeight / 2 - 185 - 84, [], images, true))
+            const icons = new InfoPanel(this.game, 0, 0, [], images, true);
+            // Sprite.getLocalBounds describes the blank root texture in CE.
+            // Measure the actual children so the row cannot drift onto OK.
+            let left = Infinity, right = -Infinity, top = Infinity, bottom = -Infinity;
+            icons.children.forEach((child: any) => {
+                left = Math.min(left, child.x - child.anchor.x * child.width);
+                right = Math.max(right, child.x + (1 - child.anchor.x) * child.width);
+                top = Math.min(top, child.y - child.anchor.y * child.height);
+                bottom = Math.max(bottom, child.y + (1 - child.anchor.y) * child.height);
+            });
+            const bounds = {x:left,y:top,width:right-left,height:bottom-top};
+            const scale = Math.min(1, textWidth / Math.max(1, bounds.width), 112 / Math.max(1, bounds.height));
+            icons.scale.set(scale);
+            const ink = this.text.getInkBounds();
+            const textHeight = (ink ? ink.height : this.text.textHeight) * this.text.scale.y;
+            const iconsHeight = bounds.height * scale;
+            const totalHeight = textHeight + 26 + iconsHeight;
+            this.text.y = (contentTop + contentBottom - totalHeight + textHeight) / 2;
+            icons.position.set(this.text.x - (bounds.x + bounds.width / 2) * scale,
+                this.text.y + textHeight / 2 + 26 + iconsHeight / 2 - (bounds.y + bounds.height / 2) * scale);
+            this.addChild(icons);
         }
 
         if (okButton) {

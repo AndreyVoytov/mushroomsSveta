@@ -22,7 +22,7 @@ export default class SpriteUtils {
     }
 
     /** Fit the visible atlas frame while preserving the original aspect ratio. */
-    public static fitIcon(sprite: Phaser.Sprite, width: number, height: number): void {
+    public static fitIcon(sprite: Phaser.Sprite | Phaser.Button, width: number, height: number): void {
         sprite.scale.set(1);
         const crop = sprite.texture.crop;
         const visibleWidth = crop ? crop.width : sprite.width;

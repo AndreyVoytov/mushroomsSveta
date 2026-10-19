@@ -35,7 +35,7 @@ export default class SettingsPanel extends ClosablePanel {
         const board = this.attachSprite('uiSettingsBoard', 'settingsBoard');
         board.width = 720;board.height = 840;board.inputEnabled = true;
         const title = this.attachText('title', settingsTitle, {font:'48px Lora', fill:Label.ON_DARK});
-        title.position.set(0, -311);UiLayout.fit(title, 470, 62);
+        title.position.set(0, -322);UiLayout.fit(title, 440, 62);
 
         this.closeButton = this.attachButton("closeButton", () => this.close())
         this.closeButton.name = "closeButton";
@@ -99,7 +99,7 @@ export default class SettingsPanel extends ClosablePanel {
         
         creditsButton.addChild(creditsButtonLabel)
 
-        this.closeButton.position.set(286, -292);this.closeButton.width = this.closeButton.height = 64;
+        this.closeButton.position.set(286, -276);this.closeButton.width = this.closeButton.height = 82;
         UiLayout.touchTarget(this.closeButton);
         [supportButton, groupButton, creditsButton].forEach((button, i) => {
             button.position.set(0, -12 + i * 120);button.width = 490;button.height = 98;

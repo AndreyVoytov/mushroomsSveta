@@ -38,6 +38,7 @@ jobs:
           node tools/test-house-discovery.js
           node tools/test-item-ground-shadow.js
           node tools/test-forest-presentation.js
+          node tools/test-settings-menu.js
           node tools/test-snail-sparks.js
           node tools/test-sapphire-reward.js
           node tools/test-tint-interpolation.js

@@ -335,9 +335,23 @@ export default class HouseScreen extends DialogScreen {
         this.playButton.anchor = new Phaser.Point(0.5, 0.5);
         this.addButton(this.playButton);
 
-        this.level = new Label(this.game, -10, 5, "" + (user.getCurrentForest() + 1), { "font": "bold 60px Arial", "fill": "#ffffff" });
+        this.level = new Label(this.game, -24, 0, "" + (user.getCurrentForest() + 1), { "font": "bold 60px Arial", "fill": Label.INK });
         this.level.anchor = new Phaser.Point(0.5, 0.5)
         this.playButton.addChild(this.level);
+        UiLayout.fit(this.level, 78, 74);
+        const playGlint = SpriteUtils.createSprite(this.game, -48, -50, 'glint');
+        playGlint.anchor.set(0.5);SpriteUtils.fitIcon(playGlint, 28, 28);playGlint.alpha = 0;
+        this.playButton.addChild(playGlint);
+        this.game.add.tween(playGlint).to({alpha: 0.8}, 900, Phaser.Easing.Sinusoidal.InOut, true, 1800, -1, true).repeatDelay(2400);
+        const playScale = this.playButton.scale.x;
+        this.playButton.events.onInputOver.add(() => {
+            this.game.tweens.removeFrom(this.playButton.scale);
+            this.game.add.tween(this.playButton.scale).to({x: playScale * 1.06, y: playScale * 1.06}, 140, Phaser.Easing.Quadratic.Out, true);
+        });
+        this.playButton.events.onInputOut.add(() => {
+            this.game.tweens.removeFrom(this.playButton.scale);
+            this.game.add.tween(this.playButton.scale).to({x: playScale, y: playScale}, 140, Phaser.Easing.Quadratic.Out, true);
+        });
 
         this.notebookButton = SpriteUtils.createButton(this.game, 90, this.game.height - 200 - 75, 'diary', () => {
             if (!this.isLocked()) { this.diaryPanel.show() }
@@ -408,7 +422,9 @@ export default class HouseScreen extends DialogScreen {
         //     this.playButton.tint = 0xDDAAAA;
         // }
 
-        AnimationUtils.wiggle(this.game, this.playButton, 0);
+        // A slow pulse complements the brass glint without shaking the level number.
+        this.game.add.tween(this.playButton.scale).to({x: 1.035, y: 1.035}, 1700,
+            Phaser.Easing.Sinusoidal.InOut, true, 0, -1, true);
 
         let forestType = ForestDao.getForestType(UserService.getUser().getCurrentForest());
         let level = user.getCurrentForest() + 1;

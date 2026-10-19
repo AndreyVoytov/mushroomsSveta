@@ -1,7 +1,7 @@
 const fs=require('fs'),path=require('path'),crypto=require('crypto'),{execFileSync}=require('child_process');
 const root=path.resolve(__dirname,'..'),source=path.join(root,'.pages-dist');
 const branch=execFileSync('git',['branch','--show-current'],{cwd:root,encoding:'utf8'}).trim();
-if(branch!=='reskin/arcane-watercolor')throw Error('Arcane publication requires its isolated reskin branch.');
+if(!['reskin/arcane-watercolor','codex/arcane-ui-polish'].includes(branch))throw Error('Arcane publication requires its isolated reskin branch.');
 const outputRoot=path.join(root,'.local-workbench'),output=path.join(outputRoot,'arcane-publish-'+crypto.randomUUID());
 if(!output.startsWith(outputRoot+path.sep))throw Error('Invalid staging directory');
 fs.mkdirSync(output,{recursive:true});
@@ -23,7 +23,7 @@ copyTree(source);
 fs.writeFileSync(path.join(output,'_redirects'),'/'+download+' https://andreyvoytov.github.io/mushroomsSveta/'+download+' 302\n');
 const bundleSha256=crypto.createHash('sha256').update(fs.readFileSync(path.join(output,'js/bundle.js'))).digest('hex');
 const metadataPath=path.join(output,'deployment.json'),metadata=JSON.parse(fs.readFileSync(metadataPath,'utf8'));
-Object.assign(metadata,{branch,commit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),theme:'arcane-watercolor',builtAt:new Date().toISOString(),bundleSha256});
+Object.assign(metadata,{branch,commit:execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),dirty:!!execFileSync('git',['status','--porcelain'],{cwd:root,encoding:'utf8'}).trim(),theme:'arcane-watercolor',builtAt:new Date().toISOString(),bundleSha256});
 fs.writeFileSync(metadataPath,JSON.stringify(metadata,null,2)+'\n');
 const state={output,projectName:'andreyvoytov-mushrooms-arcane',accountId:'95c932141b4454d6ab28ef6f7693e7bc',url:'https://andreyvoytov-mushrooms-arcane.pages.dev',files,bytes,bundleSha256,commit:metadata.commit};
 fs.writeFileSync(path.join(outputRoot,'arcane-publication-state.json'),JSON.stringify(state,null,2));console.log(JSON.stringify(state));

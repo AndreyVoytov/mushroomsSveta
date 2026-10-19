@@ -7,6 +7,7 @@ import SpriteUtils from '../../../core/utils/SpriteUtils';
 import BasePanel from '../panel/BasePanel';
 import SoundUtils from '../../../core/utils/SoundUtils';
 import Settings from '../../../core/service/Settings';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class AimsStartPanel extends BasePanel {
 
     private aimsPanelShowed: boolean = false;
@@ -22,18 +23,19 @@ export default class AimsStartPanel extends BasePanel {
             return;
         }
 
-        let environment = forestType.environment;
         let level = ForestDao.indexOf(forestType);
 
-        let background = SpriteUtils.createSprite(this.game, 0, 23, LocationUtils.getBanner(environment));
-        background.anchor = new Phaser.Point(0, 0.5);
+        let background = SpriteUtils.createSprite(this.game, game.width / 2, 0, 'helperPanel2');
+        background.anchor.set(0.5);
+        background.width = game.width - 48;
+        background.height = 300;
         this.addChild(background);
 
         let catHelper : boolean = level >= LocationUtils.CAT_FROM_LEVEL;
 
-        let helper = SpriteUtils.createSprite(this.game, 10 - 3 - 45, background.height / 2 - 69 + (catHelper? 30:0),  catHelper ? 'cat1' : 'sveta1');
-        helper.anchor = new Phaser.Point(0, 1);
-        // helper.scale.set(0.8)
+        let helper = SpriteUtils.createSprite(this.game, 186, 120, catHelper ? 'cat1' : 'sveta1');
+        helper.anchor.set(0.5, 1);
+        SpriteUtils.fitIcon(helper, 240, 246);
         this.addChild(helper);
 
         if (aims.length > 1) {
@@ -41,56 +43,24 @@ export default class AimsStartPanel extends BasePanel {
         }
 
         if (shortInfo) {
-            let shiftX = aims.length == 3 ? -110 : 0;
-            aims.forEach(aim => {
-                let labelShift = aims.length == 3? -5 : 0;
-
-                let wideImages = ["lilly", "book3", "dragonfly"]
-
-                console.log("Aim.image: " + aim.image)
-                if(wideImages.indexOf(aim.image) != -1){
-                    labelShift += 5*(Math.floor(aim.countLeft+10)/10);
-                }
-
-                let label = new Label(this.game, 550 + 90 + shiftX + labelShift, 3, "" + aim.countLeft, Label.PanelDigitsBrown(aims.length > 1 ? 55 : 60));
+            aims.forEach((aim, index) => {
+                const centerX = 604 + (index - (aims.length - 1) / 2) * 185;
+                let label = new Label(this.game, centerX + 44, 0, "" + aim.countLeft, {font:'bold 56px Manrope',fill:Label.INK});
                 this.addChild(label);
                 label.anchor = new Phaser.Point(0.5, 0.5);
+                UiLayout.fit(label, 80, 64);
 
-                let image = SpriteUtils.createSprite(this.game, 550 + shiftX, 0, aim.image);
+                let image = SpriteUtils.createSprite(this.game, centerX - 45, 0, aim.image);
                 image.anchor = new Phaser.Point(0.5, 0.5);
-                // image.scale = new Phaser.Point(2.5, 2.5);
-                const targetSize = aims.length > 1 ? 140 : 158;
-                const imageScale = targetSize / Math.max(image.width, image.height);
-                image.scale.set(imageScale, imageScale);
-                
-                if(wideImages.indexOf(aim.image) != -1){
-                    image.scale.x = image.scale.x * 0.85;
-                    image.scale.y = image.scale.y * 0.85;
-                }
+                SpriteUtils.fitIcon(image, 112, 112);
                 this.addChild(image);
-
-                shiftX += aims.length == 3 ? 187 : 200;
             });
         } else {
             let info = ForestAim.getAimsInfo(aims[0]);
 
-            let label = new Label(this.game, 470 + 70 + 108, 3, info, Label.COMMON_MEDIUM_STYLE);
+            let label = new Label(this.game, 606, 0, info, {font:'bold 46px Manrope',fill:Label.INK,align:'center'});
             label.anchor = new Phaser.Point(0.5, 0.5);
-
-            // Phaser BitmapText ignores the normal text-stroke API. A small
-            // ring of dark glyphs gives the target a clean outline without
-            // adding another panel over the scene artwork.
-            const outlineStyle: Phaser.PhaserTextStyle = {
-                font: 'bold 50px Arial',
-                fill: '#194233',
-                wordWrap: true,
-                wordWrapWidth: 600
-            };
-            [[-2, 0], [2, 0], [0, -2], [0, 2], [-1, -1], [-1, 1], [1, -1], [1, 1]].forEach(offset => {
-                const outline = new Label(this.game, label.x + offset[0], label.y + offset[1], info, outlineStyle);
-                outline.anchor = new Phaser.Point(0.5, 0.5);
-                this.addChild(outline);
-            });
+            UiLayout.fit(label, 526, 180, true);
             this.addChild(label);
         }
 

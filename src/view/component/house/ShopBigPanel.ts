@@ -10,9 +10,11 @@ export default class ShopBigPanel extends BasePanel {
     constructor(game: Phaser.Game, name: string, x: number, y: number, buy: Buy, callbackOnBuy: () => void) {
         super(game, x, y, name, 'blank');
         const panel = this.attachSprite('uiShopBundle', 'display');
-        panel.width = 600;panel.height = 282;
-        const title = this.attachText('shopSetName', Buy.getName(buy), {font:'38px Lora',fill:Label.INK});
-        title.position.set(0, -91);UiLayout.fit(title, 480, 44);
+        panel.width = 600;panel.height = 312;
+        const ribbon = this.attachSprite('uiSectionRibbon', 'titleRibbon');
+        ribbon.position.set(0, -112);ribbon.width = 550;ribbon.height = 78;
+        const title = this.attachText('shopSetName', Buy.getName(buy), {font:'38px Lora',fill:Label.ON_DARK});
+        title.position.set(0, -112);UiLayout.fit(title, 450, 50);
         const chest = this.attachSprite('chest1');chest.position.set(-185, 37);
         SpriteUtils.fitIcon(chest, 180, 170);
         const gems = this.attachSprite('gems');gems.position.set(38, -34);SpriteUtils.fitIcon(gems, 42, 42);

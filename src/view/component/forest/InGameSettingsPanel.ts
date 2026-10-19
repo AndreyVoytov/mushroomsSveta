@@ -1,106 +1,115 @@
 import ClosablePanel from '../panel/ClosablePanel';
-import AnimationUtils from '../../../core/utils/AnimationUtils';
-import Label from '../panel/Label';
 import SoundUtils from '../../../core/utils/SoundUtils';
-import Game from '../../game/Game';
-import ForestScreen from '../../screen/ForestScreen';
 import BaseForestScreen from '../../screen/BaseForestScreen';
 import ConfirmPanel from '../house/ConfirmPanel';
 import Settings from '../../../core/service/Settings';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
-import { Easing } from 'phaser-ce';
-import UserService from '../../../core/service/UserService';
+import Game from '../../game/Game';
 import GameText from '../../../core/localization/GameText';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
+import UiLayout from '../../../core/utils/UiLayout';
+
 export default class InGameSettingsPanel extends ClosablePanel {
-
+    public static shown: boolean = false;
     private settingsButton: Phaser.Button;
-    public static shown:boolean;
+    private gear: Phaser.Button;
+    private actions: Phaser.Button[] = [];
+    private afterClose: () => void;
+    private transition: number = 0;
 
-    constructor(game: Phaser.Game, screen:BaseForestScreen, settingsButton:Phaser.Button) {
+    constructor(game: Phaser.Game, screen: BaseForestScreen, settingsButton: Phaser.Button) {
         super(game, 0, 0, true, 'settings', 1, true);
-        this.game = game;
         this.settingsButton = settingsButton;
-        this.inputEnabled = true;
-        const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'));
-        const okText = LocalizationService.get(LocalizationKey.ui('ok'));
         this.fixedToCamera = true;
-
-        let closeButton = this.attachButton("settingsMain", ()=>{
-            this.close();
-        })
-        closeButton.x = this.game.width - 98;
-        closeButton.y = this.game.height - 52;
-        closeButton.scale.set(1.3)
-        // closeButton.alpha = 0.5;
-
-        this.game.add.tween(closeButton).to({angle: this.settingsButton.angle - 120}, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None : Easing.Sinusoidal.InOut, true)
-        // this.game.add.tween(closeButton).to({alpha: 1}, 300, Easing.Linear.None, true)
-
-        let support = this.attachButton("support", ()=>{
-            this.close();
-            let info = new ConfirmPanel(this.game, supportText, okText, GameText.supportMessage(Settings.SUPPORT_MAIL));
-            Game.getInstance().add.existing(info);
+        this.visible = false;
+        this.gear = this.attachButton('settingsMain', () => this.close(), 'settingsGear');
+        this.gear.position.set(settingsButton.x, settingsButton.y);
+        this.gear.scale.copyFrom(settingsButton.scale);
+        UiLayout.touchTarget(this.gear);
+        const supportText = LocalizationService.get(LocalizationKey.ui('settings.support'));
+        const support = this.attachButton('support', () => this.closeTo(() => {
+            const info = new ConfirmPanel(game, supportText,
+                LocalizationService.get(LocalizationKey.ui('ok')), GameText.supportMessage(Settings.SUPPORT_MAIL));
+            game.add.existing(info);
             info.show();
-
-        })
-        support.x = this.game.width - 98;
-        support.y = this.game.height - 45*3 - 8;
-
-       
-        let soundButton = this.attachSprite(Game.SOUND_ENABLED ? "sound1" : "sound2")
-        soundButton.inputEnabled = true;
-        soundButton.events.onInputDown.add(()=>{
-            console.log("sound clicked! " + Game.SOUND_ENABLED)
-            if(Game.SOUND_ENABLED){
-                SoundUtils.disableSound();
-                // this.game.time.events.add(50, ()=>{
-                    SpriteUtils.loadTexture(soundButton, "sound2")
-                // })
-            } else {
-                SoundUtils.enableSound();
-                SoundUtils.simpleCellOpen();
-                // this.game.time.events.add(50, ()=>{
-                    SpriteUtils.loadTexture(soundButton, "sound1")
-                // })
-            }
+        }), 'support');
+        const sound = this.attachButton(Game.SOUND_ENABLED ? 'sound1' : 'sound2', () => {
+            if (this.processing || !this.opened) return;
+            if (Game.SOUND_ENABLED) SoundUtils.disableSound();
+            else { SoundUtils.enableSound();SoundUtils.simpleCellOpen(); }
+            const texture = SpriteUtils.getAtlasKeyAndFrame(game, Game.SOUND_ENABLED ? 'sound1' : 'sound2');
+            sound.loadTexture(texture.atlasKey, texture.frameName);
+            SpriteUtils.fitIcon(sound, 82, 82);
+        }, 'sound');
+        const exit = this.attachButton('turnOff', () => this.closeTo(() => screen.confirmPanel.show()), 'exit');
+        this.actions = [support, sound, exit];
+        this.actions.forEach((button, index) => {
+            SpriteUtils.fitIcon(button, 82, 82);
+            button.position.set(settingsButton.x, settingsButton.y - (index + 1) * 112);
+            UiLayout.touchTarget(button, 96, 96);
         });
-        soundButton.x = this.game.width - 98;
-        soundButton.y = this.game.height - 45*5- 8;
-
-
-        let exit = this.attachButton("turnOff", ()=>{
-            this.close();
-            screen.confirmPanel.show();
-        })
-
-        exit.x = this.game.width - 98;
-        exit.y = this.game.height - 45*7- 8;
-
-        // this.applyPreset([{"spriteId":"panel","x":0,"y":0,"scaleX":0.94,"scaleY":0.7399999999999998,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        // {"spriteId":"helperPanel","x":0,"y":-91,"scaleX":0.9199999999999999,"scaleY":0.7399999999999998,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        // {"spriteId":"label","x":13,"y":-99,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0,"fontSize":43},
-        // {"spriteId":"okButton","x":4,"y":77,"scaleX":0.98,"scaleY":1.1600000000000001,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        // {"spriteId":"noButton","x":4,"y":192,"scaleX":0.7199999999999998,"scaleY":0.8599999999999999,"anchorX":0.5,"anchorY":0.5,"rotation":0},
-        // {"spriteId":"closeButton","x":280,"y":-222,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0}])
-
-        // if (UserService.getUser().getCurrentForest() == 0) {
-        //         closeButton.visible = false;
-        // }
-
     }
 
-    protected onShow():void{
-        this.game.time.events.add(200, ()=>{
-            InGameSettingsPanel.shown = true;
-        })
+    public show(): void {
+        if (this.processing || this.opened) return;
+        const version = ++this.transition;
+        this.opened = true;
+        this.processing = true;
+        InGameSettingsPanel.shown = true;
+        this.visible = true;
+        this.alpha = 1;
+        this.scale.set(1);
+        this.settingsButton.visible = false;
+        this.gear.angle = this.settingsButton.angle;
+        this.game.tweens.removeFrom(this.gear);
+        this.game.add.tween(this.gear).to({angle: this.gear.angle - 120}, 260, Phaser.Easing.Sinusoidal.InOut, true);
+        this.blackTransparent.alpha = 0.35;
+        this.blackTransparent.inputEnabled = true;
+        this.blackTransparent.events.onInputDown.removeAll();
+        this.blackTransparent.events.onInputDown.add(() => this.close());
+        this.actions.forEach((button, index) => {
+            this.game.tweens.removeFrom(button);
+            button.y = this.settingsButton.y;
+            button.alpha = 0;
+            this.game.add.tween(button).to({y: this.settingsButton.y - (index + 1) * 112, alpha: 1},
+                220, Phaser.Easing.Quadratic.Out, true, index * 35);
+        });
+        this.bringToTop();
+        this.game.time.events.add(310, () => { if (version === this.transition) this.processing = false; });
+        SoundUtils.panelOpen();
     }
 
-    protected onClose():void{
-        this.game.add.tween(this.settingsButton).to({angle: this.settingsButton.angle + 120}, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Sinusoidal.InOut, true)
-        this.game.time.events.add(200, ()=>{
+    private closeTo(callback: () => void): void {
+        if (this.processing || !this.opened) return;
+        this.afterClose = callback;
+        this.close();
+    }
+
+    public close(): void {
+        if (this.processing || !this.opened) return;
+        const version = ++this.transition;
+        this.opened = false;
+        this.processing = true;
+        this.actions.forEach(button => {
+            this.game.tweens.removeFrom(button);
+            this.game.add.tween(button).to({y: this.settingsButton.y, alpha: 0}, 180, Phaser.Easing.Quadratic.In, true);
+        });
+        this.game.tweens.removeFrom(this.gear);
+        this.game.add.tween(this.gear).to({angle: this.gear.angle + 120}, 180, Phaser.Easing.Sinusoidal.InOut, true);
+        this.game.time.events.add(190, () => {
+            if (version !== this.transition) return;
+            this.visible = false;
+            this.blackTransparent.alpha = 0;
+            this.blackTransparent.inputEnabled = false;
+            this.settingsButton.angle = this.gear.angle % 360;
+            this.settingsButton.visible = true;
+            this.processing = false;
             InGameSettingsPanel.shown = false;
-        })
+            const callback = this.afterClose;
+            this.afterClose = null;
+            if (callback) callback();
+        });
+        SoundUtils.panelClose();
     }
 }

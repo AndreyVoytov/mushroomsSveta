@@ -1,0 +1,60 @@
+{
+  "sourceProject": "C:/proj/mushroomsArcane",
+  "sourceBranch": "reskin/arcane-watercolor",
+  "sourceBase": "ea7dc09",
+  "workingBranch": "codex/arcane-ui-polish",
+  "originalProjectRestored": true,
+  "separateGitDirectory": true,
+  "tests": {
+    "workflowChecks": "passed",
+    "settingsMenu": "80 rapid inputs; fixed gear; one menu; cleanup; single support handoff",
+    "supportEmail": "literal @ preserved"
+  },
+  "visualChecks": {
+    "phoneViewport": [
+      390,
+      844
+    ],
+    "desktopViewport": [
+      500,
+      860
+    ],
+    "panels": [
+      "aims intro",
+      "tutorial with and without icons",
+      "horizontal HUD goals",
+      "energy alignment",
+      "settings actions",
+      "support header and close",
+      "victory",
+      "shop artifacts",
+      "shop bundles",
+      "home settings",
+      "level start triangle"
+    ]
+  },
+  "deployment": {
+    "id": "f63a2ece",
+    "verified": [
+      {
+        "url": "https://f63a2ece.andreyvoytov-mushrooms-arcane.pages.dev",
+        "status": 200,
+        "theme": "arcane-watercolor",
+        "branch": "codex/arcane-ui-polish",
+        "bundleSha256": "3dc22c22a818bae271d0105c4ad6e62587cf4b5a27c9fd41bcdacd49abeec3af"
+      },
+      {
+        "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+        "status": 200,
+        "theme": "arcane-watercolor",
+        "branch": "codex/arcane-ui-polish",
+        "bundleSha256": "3dc22c22a818bae271d0105c4ad6e62587cf4b5a27c9fd41bcdacd49abeec3af"
+      }
+    ]
+  },
+  "browser": {
+    "productionLoaded": true,
+    "consoleErrors": [],
+    "screenshot": "published.png"
+  }
+}

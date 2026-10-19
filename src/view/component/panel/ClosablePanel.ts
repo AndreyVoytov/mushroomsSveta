@@ -31,7 +31,7 @@ export default class ClosablePanel extends BasePanel {
         this.game.add.existing(this.blackTransparent);
 
         game.time.events.add(100, () => {
-            this.sendToBack();
+            if (!this.opened) this.sendToBack();
         })
     }
 

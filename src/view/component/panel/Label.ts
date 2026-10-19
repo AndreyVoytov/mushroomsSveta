@@ -187,6 +187,11 @@
         return this.sourceTextValue;
     }
 
+    public get layoutText(): string {
+        return Label.prepareText(this.sourceTextValue, Object.assign({}, this.styleDef, {wordWrap: false}),
+            this.ignoreVioletHighlight, this.symbolsInRow);
+    }
+
     public setPreparedText(value: string): void {
         const prepared = value || '';
         const bitmapText: any = this as any;

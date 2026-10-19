@@ -385,11 +385,12 @@ export default class ForestCellCover extends Phaser.Group {
         // This is deliberately a separate, stationary sprite. The sapphire
         // leaves it behind when it flies to the reward panel, making the
         // collection feel like an item has been lifted from its slot.
-        const starOutline = SpriteUtils.createSprite(this.game, -2, -3.5, 'sapphireStarBackdrop');
+        const starOutline = SpriteUtils.createSprite(this.game, -2, -2, 'sapphireStar');
         starOutline.anchor.set(0.5);
-        // Keep the original dark imprint on the shaded hex. Its shared
-        // 180x191 canvas centers it beneath the new gold currency sprite.
-        starOutline.scale.set(targetScaleX, targetScaleY);
+        // The same silhouette, slightly expanded about the same center, gives
+        // a continuous border even if the currency artwork changes again.
+        starOutline.scale.set(targetScaleX * 1.14, targetScaleY * 1.14);
+        starOutline.tint = 0x263b39;
         starOutline.alpha = 0;
         starOutline.inputEnabled = false;
         this.darkCover.addChild(starOutline);

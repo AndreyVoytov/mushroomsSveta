@@ -3,7 +3,6 @@ import LocalizationService from '../../../core/localization/LocalizationService'
 import ShopArtifactItemsConfiguration from '../../../core/configuration/ShopArtifactItemsConfiguration';
 import { ShopArtifactItemConfig } from '../../../core/model/shop/ShopArtifactModels';
 import ShopArtifactService, { ShopArtifactGrantResult } from '../../../core/service/ShopArtifactService';
-import AnimationUtils from '../../../core/utils/AnimationUtils';
 import CharacterTextUtils from '../../../core/utils/CharacterTextUtils';
 import UserService from '../../../core/service/UserService';
 import BuyConfirmPanel from './BuyConfirmPanel';
@@ -14,10 +13,10 @@ import SkillInfoPanel from './SkillInfoPanel';
 import { ShopArtifactSkillId } from '../../../core/model/shop/ShopArtifactModels';
 
 export default class ShopItemsSectionPanel extends ShopSectionPanel {
-    private static readonly CARD_SCALE = 1.25;
+    private static readonly CARD_SCALE = 1.19;
     private static readonly COLUMN_OFFSET = 232;
-    private static readonly ROW_START_Y = -158;
-    private static readonly ROW_STEP = 440;
+    private static readonly ROW_START_Y = -76;
+    private static readonly ROW_STEP = 530;
 
     private cards: ShopArtifactCardPanel[] = [];
     private onOpenBank?: () => void;
@@ -54,7 +53,7 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
         super.showSection(animate);
 
         if (!animate) {
-            this.cards.forEach(card => card.alpha = 1);
+            this.cards.forEach(card => {card.alpha = 1;card.scale.set(ShopItemsSectionPanel.CARD_SCALE);});
             return;
         }
 
@@ -116,7 +115,15 @@ export default class ShopItemsSectionPanel extends ShopSectionPanel {
     private animateRow(row: number, delay: number): void {
         this.cards
             .filter((_card, index) => Math.floor(index / 2) == row)
-            .forEach(card => AnimationUtils.appear2(this.game, card, delay, 1, 1, 1));
+            .forEach(card => {
+                this.game.tweens.removeFrom(card);
+                this.game.tweens.removeFrom(card.scale);
+                const scale = ShopItemsSectionPanel.CARD_SCALE;
+                card.scale.set(scale * 0.94);
+                card.alpha = 0;
+                this.game.add.tween(card.scale).to({x: scale, y: scale}, 260, Phaser.Easing.Quadratic.Out, true, delay);
+                this.game.add.tween(card).to({alpha: 1}, 260, Phaser.Easing.Linear.None, true, delay);
+            });
     }
 
     private showSkillInfo(skillId: ShopArtifactSkillId): void {

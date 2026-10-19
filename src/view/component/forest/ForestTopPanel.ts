@@ -58,15 +58,15 @@ export default class ForestTopPanel extends BasePanel {
         this.addSprite(topPanelFrame);
         topPanelFrame.visible = false;
 
-        this.steps = SpriteUtils.createSprite(this.game, 96, 55, 'lightning');
+        this.steps = SpriteUtils.createSprite(this.game, 96, 80, 'lightning');
         this.steps.anchor = new Phaser.Point(0.5, 0.5);
         this.steps.scale.set(0.54);
-        this.steps.alpha = 0.8;
+        this.steps.alpha = 1;
         this.steps.inputEnabled = true;
         this.steps.events.onInputDown.add(() => this.screen.showEnergyPanel(), this);
         this.addSprite(this.steps);
 
-        this.addSprite(this.energyLabel = new Label(this.game, 193, 62, "" + this.energyCount, Label.COMMON_BIG_STYLE));
+        this.addSprite(this.energyLabel = new Label(this.game, 193, 80, "" + this.energyCount, Label.COMMON_BIG_STYLE));
         this.energyLabel.anchor = new Phaser.Point(0.5, 0.5);
         this.energyLabel.addStrokeColor("#924d1d", 0);
         this.energyLabel.strokeThickness = 4;
@@ -110,7 +110,7 @@ export default class ForestTopPanel extends BasePanel {
 
                     let checkLabel = SpriteUtils.createSprite(this.game, aim.label.x, aim.label.y-500, "check");
                     checkLabel.alpha = 0;
-                    checkLabel.anchor = new Phaser.Point(0.5, 0);
+                    checkLabel.anchor = new Phaser.Point(0.5, 0.5);
                     checkLabel.scale = new Phaser.Point(0.5, 0.5);
                     this.addChild(checkLabel);
                     checkLabel.y+= 500;
@@ -635,15 +635,15 @@ export default class ForestTopPanel extends BasePanel {
     }
 
     private addAimWithLabel(aim: ForestAim, shiftX: number): void {
-        let image = SpriteUtils.createSprite(this.game, 370 + shiftX, 47, aim.image);
+        let image = SpriteUtils.createSprite(this.game, 346 + shiftX, 80, aim.image);
         image.anchor = new Phaser.Point(0.5, 0.5);
-        let imageScale = 66 / Math.max(image.width, image.height);
+        let imageScale = 98 / Math.max(image.width, image.height);
         image.scale.set(imageScale, imageScale);
         // image.scale = new Phaser.Point(1.5, 1.5);
         this.addSprite(image);
 
-        let label = new Label(this.game, 370 + shiftX, 105, "" + aim.countLeft, Label.AIM_STYLE);
-        label.anchor.set(0.5);label.fontSize = 38;label.fill = Label.INK;UiLayout.fit(label, 122, 44);
+        let label = new Label(this.game, 438 + shiftX, 80, "" + aim.countLeft, Label.AIM_STYLE);
+        label.anchor.set(0.5);label.fontSize = 46;label.fill = Label.INK;UiLayout.fit(label, 92, 48);
         this.addSprite(label);
 
         aim.label = label;

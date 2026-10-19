@@ -15,7 +15,7 @@ export default class UiLayout {
         label.maxWidth = wrap ? width : 0;
         // Use glyph widths once. Legacy character-count wrapping followed by
         // BitmapText wrapping can add a third line and shrink an otherwise short label.
-        label.setPreparedText(label.sourceText.replace(/[~@]/g, ''));
+        label.setPreparedText(label.layoutText);
         label.updateText();
         const ink = label.getInkBounds();
         // A centered box constrains visible letters. Counting the font's empty

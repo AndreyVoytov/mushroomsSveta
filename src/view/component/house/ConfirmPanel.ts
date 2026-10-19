@@ -80,7 +80,7 @@ export default class ConfirmPanel extends ClosablePanel {
         helperPanel.visible = false;
         panel.anchor.set(0.5);panel.position.set(0, 0);
         panel.width = big ? 850 : 780;panel.height = big ? 850 : 540;
-        label.position.set(0, big ? -320 : -182);label.fontSize = big ? 40 : 44;
+        label.position.set(0, big ? -320 : -198);label.fontSize = big ? 40 : 44;
         label.fill = '#142b2d';UiLayout.fit(label, big ? 660 : 580, 80, true);
         labelText.position.set(0, big ? -10 : -5);labelText.alpha = 1;
         if (labelText instanceof Label) {
@@ -90,21 +90,18 @@ export default class ConfirmPanel extends ClosablePanel {
             labelText.fill = '#343c35';
             labelText.scale.set(Math.min(1, 600 / Math.max(1, labelText.width), (big ? 470 : 245) / Math.max(1, labelText.height)));
         }
-        closeButton.position.set(big ? 365 : 332, big ? -320 : -190);closeButton.width = closeButton.height = 64;
+        closeButton.position.set(big ? 352 : 318, big ? -320 : -198);closeButton.width = closeButton.height = 86;
+        UiLayout.touchTarget(closeButton, 104, 104);
         this.actionButton.position.set(0, big ? 365 : 245);this.actionButton.width = 430;this.actionButton.height = 100;
         continueLabel.fontSize = 46;continueLabel.fill = Label.INK;UiLayout.fit(continueLabel, 350, 60);
     }
 
     protected onClose() {
-        this.game.time.events.add(200, () => {
-           InGameSettingsPanel.shown = false;
-        })
+        InGameSettingsPanel.shown = false;
     }
 
     protected onShow() {
-        this.game.time.events.add(210, () => {
-            InGameSettingsPanel.shown = true;
-        })
+        InGameSettingsPanel.shown = true;
     }
 
     private createMessageLabel(name: string, text: string, style: Phaser.PhaserTextStyle): Label | Phaser.Text {
@@ -128,6 +125,8 @@ export default class ConfirmPanel extends ClosablePanel {
     }
 
     private parseGreenHighlightText(source: string): { text: string, ranges: { start: number, end: number }[] } {
+        // Strip paired legacy emphasis markers while retaining literal email @.
+        source = source.replace(/@([^@\s]+)@/g, '$1');
         let clean = '';
         let ranges: { start: number, end: number }[] = [];
         let markerOpenAt: number = null;
@@ -142,10 +141,6 @@ export default class ConfirmPanel extends ClosablePanel {
                     ranges.push({ start: markerOpenAt, end: clean.length });
                     markerOpenAt = null;
                 }
-                continue;
-            }
-
-            if (char == '@') {
                 continue;
             }
 

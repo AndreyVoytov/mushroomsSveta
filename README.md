@@ -1,4 +1,17 @@
-# Phaser 2 Typescript Webpack Boilerplate
+# Mushrooms — Arcane
+
+Independent checkout: `C:\proj\mushroomsArcane`, created from
+`reskin/arcane-watercolor` at `ea7dc09`. UI fixes use `codex/arcane-ui-polish`.
+The original game remains in `C:\proj\mushroomsSveta`.
+
+Arcane production: https://andreyvoytov-mushrooms-arcane.pages.dev
+
+Run `npm ci --legacy-peer-deps`, then `npm run build`. For a local preview:
+`$env:GAME_PREVIEW_PORT='8895'; node tools/serve-game-preview.js`.
+Package with `npm run pages:build` and `node tools/prepare-arcane-publication.cjs`.
+That script targets only the separate Arcane Cloudflare project.
+
+## Original project documentation
 
 Development and publication use the single `main` branch. Each push to `main` runs
 the game checks, builds the site and deploys it to

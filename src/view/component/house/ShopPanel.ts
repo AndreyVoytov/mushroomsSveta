@@ -28,7 +28,7 @@ export default class ShopPanel extends ClosablePanel {
     private sections: { [key: string]: ShopSectionPanel } = {};
 
     constructor(game: Phaser.Game, screen: Phaser.State, callbackOnBuy?: () => void, defaultTab: ShopTabId = 'bank', preferredCharacterId?: string, callbackOnClose?: () => void) {
-        super(game, game.width / 2 - 1, game.height / 2 - 45, true, "blank", 1.04);
+        super(game, game.width / 2 - 1, game.height / 2 - 45, true, "blank", Math.min(1.04, (game.height / 2 + 5) / 816));
         this.game = game;
         this.screen = screen;
         this.defaultTab = defaultTab;

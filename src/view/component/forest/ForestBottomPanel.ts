@@ -61,10 +61,10 @@ export default class ForestBottomPanel extends BasePanel {
         
             // let exitButton = this.attachButton("settingsButton", () => {
             let exitButton = this.attachButton("settingsMain", () => {
-                this.settingsPanel = new InGameSettingsPanel(this.game, screen, exitButton);
-                screen.addPanel(this.settingsPanel);
-                this.game.add.tween(exitButton).to({angle: exitButton.angle - 120}, 500, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Easing.Sinusoidal.InOut, true)
-                
+                if (!this.settingsPanel) {
+                    this.settingsPanel = new InGameSettingsPanel(this.game, screen, exitButton);
+                    screen.addPanel(this.settingsPanel);
+                }
                 this.settingsPanel.show();
             });
 

@@ -10,10 +10,10 @@ export default class ShopBankSectionPanel extends ShopSectionPanel {
         { x: -313, y: -182 },
         { x: -6, y: -181 },
         { x: 302, y: -181 },
-        { x: -313, y: 111 },
-        { x: 146, y: 107 },
-        { x: -311, y: 404 },
-        { x: 146, y: 402 }
+        { x: -313, y: 143 },
+        { x: 146, y: 143 },
+        { x: -311, y: 468 },
+        { x: 146, y: 468 }
     ];
 
     private panels: BasePanel[] = [];
