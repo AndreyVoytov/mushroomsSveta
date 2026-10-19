@@ -1,0 +1,11 @@
+{
+  "prompt": "Create one portrait 2:3 watercolor storybook game background of a cozy woodland companion's small attic room inside a tree cottage. Arcane-inspired painterly hand-painted gouache and watercolor, soft desaturated sage green, cream parchment, moss, warm amber sunlight, nuanced paper grain, charming fairytale nature, no heavy black outlines, no glossy 3D. A round window to leafy forest in upper center, curved wooden beams and ivy, a low bench on left, empty shelf on right with three clearly empty places for later player-placed keepsake artifacts, small table near center, bottom 35 percent calm muted cream-green floor for readable dialogue overlay. Entire room visible, warm inviting, no characters, no skulls, no text, no letters, no UI, no frames. Atmospheric depth and gentle shadows. This is a full single-background scene for personal relationship conversations and decorating a room in a woodland game.",
+  "tool": "image_gen.imagegen",
+  "mode": "built-in",
+  "file": "C:/proj/mushroomsArcane/assets/arcane/story/companion-room-v1.webp",
+  "source": "C:\\proj\\mushroomsArcane\\artwork\\relationships-2026-10-19\\companion-room-source.png",
+  "width": 1000,
+  "height": 1500,
+  "bytes": 441176,
+  "sha256": "52edc5b5d2cbd18a2271f25d9020bccf14a8ea2dd9eb639465a59c4a859e4cdd"
+}

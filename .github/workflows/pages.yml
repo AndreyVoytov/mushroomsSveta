@@ -25,6 +25,8 @@ jobs:
       - name: Check game behavior
         run: |
           node tools/test-world.js
+          node tools/test-relationships.js
+          node tools/test-character-progression.js
           node tools/test-serverless.mjs
           node tools/test-cloud-client.js
           node tools/test-world-fields.js

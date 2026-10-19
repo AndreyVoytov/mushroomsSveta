@@ -1135,7 +1135,7 @@ export default class EditorScreen extends BaseScreen {
 
         //redraw layout
         this.layoutHolder.children.forEach(c => { c.visible = false; this.layoutHolder.removeChild(c) });
-        LocationUtils.getMiniGameLayout(this.game, this.cellsProvider, this.forestType).forEach(
+        LocationUtils.getMiniGameLayout(this.game, this.cellsProvider, this.forestType, true).forEach(
             d => { d.y += EditorScreen.OFFSET_LAYOUT_Y; this.layoutHolder.addChild(d) }
         );
 

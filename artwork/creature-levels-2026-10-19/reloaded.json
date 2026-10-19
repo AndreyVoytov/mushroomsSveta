@@ -1,0 +1,74 @@
+{
+  "ready": true,
+  "size": [
+    960,
+    2077
+  ],
+  "character": "boris",
+  "xp": 11719,
+  "growth": {
+    "level": 40,
+    "seed": 1272063819,
+    "bonuses": {
+      "energy": 47,
+      "knowledge": 46,
+      "friendship": 35
+    },
+    "announcedLevel": 40,
+    "pending": {},
+    "lastGain": {
+      "fromLevel": 39,
+      "toLevel": 40,
+      "bonuses": {
+        "energy": 1,
+        "friendship": 2,
+        "knowledge": 2
+      }
+    }
+  },
+  "skills": [
+    {
+      "skillId": "energy",
+      "value": 53
+    },
+    {
+      "skillId": "friendship",
+      "value": 42
+    },
+    {
+      "skillId": "knowledge",
+      "value": 52
+    }
+  ],
+  "header": [
+    {
+      "number": "53",
+      "color": "#343c35",
+      "scale": [
+        1,
+        1
+      ]
+    },
+    {
+      "number": "42",
+      "color": "#343c35",
+      "scale": [
+        1,
+        1
+      ]
+    },
+    {
+      "number": "52",
+      "color": "#343c35",
+      "scale": [
+        1,
+        1
+      ]
+    }
+  ],
+  "levelLabel": "Ур. 40",
+  "levelColor": "#343c35",
+  "tweens": 0,
+  "deltas": [],
+  "errors": []
+}

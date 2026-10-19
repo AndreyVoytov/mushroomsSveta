@@ -138,9 +138,9 @@ export default class LocationUtils {
     }
 
     //MINIGAME 
-    public static getMiniGameLayout(game: Phaser.Game, cellProvider: CellsProvider, forestType: ForestType): (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text)[] {
+    public static getMiniGameLayout(game: Phaser.Game, cellProvider: CellsProvider, forestType: ForestType, forEditor: boolean = false): (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text)[] {
         const res: (Phaser.Sprite | Phaser.TileSprite | Phaser.BitmapText | Phaser.Text)[] = [
-            LevelBackdrop.create(game, forestType, LocationUtils.getVisibleHeaderHeight(game, forestType))
+            LevelBackdrop.create(game, forestType, LocationUtils.getVisibleHeaderHeight(game, forestType), forEditor)
         ];
         this.addMaple(game, cellProvider, forestType, res);
         // The basket is an event badge, rather than a landscape header.

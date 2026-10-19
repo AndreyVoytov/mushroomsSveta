@@ -1,0 +1,207 @@
+{
+  "checkedAt": "2026-10-19T15:12:08.061Z",
+  "bundleSha256": "3c83f37431ca224fcdf68b85bbdfefa02e8f209152d70877c7f5ee70b36ef12f",
+  "results": [
+    {
+      "url": "https://dbc3d6ad.andreyvoytov-mushrooms-arcane.pages.dev",
+      "verified": true,
+      "files": [
+        {
+          "file": "js/bundle.js",
+          "bytes": 2464287,
+          "sha256": "3c83f37431ca224fcdf68b85bbdfefa02e8f209152d70877c7f5ee70b36ef12f"
+        },
+        {
+          "file": "assets/base/characters/cat4.png",
+          "bytes": 392580,
+          "sha256": "7e3ccb0150bb4269b5095f7966318fecfb512851e54c5b311d1e49721720b44f"
+        },
+        {
+          "file": "assets/atlases/base-0.json",
+          "bytes": 837,
+          "sha256": "fca048c0bddd1ab14ca500785fcfa38cd44213267110455bfdd04a497532a091"
+        },
+        {
+          "file": "assets/atlases/base-0.png",
+          "bytes": 392685,
+          "sha256": "2dff721a0dfbaea2e0826abf22bd532033a6f278311c130fb21e34fae45145f8"
+        },
+        {
+          "file": "assets/atlases/base-0.webp",
+          "bytes": 78210,
+          "sha256": "d5be78d9775240130e144d7d8d81fa79f52bdb5442206bd2800e698ef024e1fb"
+        }
+      ]
+    },
+    {
+      "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+      "verified": true,
+      "files": [
+        {
+          "file": "js/bundle.js",
+          "bytes": 2464287,
+          "sha256": "3c83f37431ca224fcdf68b85bbdfefa02e8f209152d70877c7f5ee70b36ef12f"
+        },
+        {
+          "file": "assets/base/characters/cat4.png",
+          "bytes": 392580,
+          "sha256": "7e3ccb0150bb4269b5095f7966318fecfb512851e54c5b311d1e49721720b44f"
+        },
+        {
+          "file": "assets/atlases/base-0.json",
+          "bytes": 837,
+          "sha256": "fca048c0bddd1ab14ca500785fcfa38cd44213267110455bfdd04a497532a091"
+        },
+        {
+          "file": "assets/atlases/base-0.png",
+          "bytes": 392685,
+          "sha256": "2dff721a0dfbaea2e0826abf22bd532033a6f278311c130fb21e34fae45145f8"
+        },
+        {
+          "file": "assets/atlases/base-0.webp",
+          "bytes": 78210,
+          "sha256": "d5be78d9775240130e144d7d8d81fa79f52bdb5442206bd2800e698ef024e1fb"
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "checkedAt": "2026-10-19T15:05:01.164Z",
+    "portrait": {
+      "width": 464,
+      "height": 522,
+      "hasAlpha": true
+    },
+    "atlasFrame": {
+      "frame": {
+        "x": 1,
+        "y": 1,
+        "w": 464,
+        "h": 522
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 464,
+        "h": 522
+      },
+      "sourceSize": {
+        "w": 464,
+        "h": 522
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "volumes": [
+      {
+        "key": "mirrorGlass",
+        "volume": 0.0105
+      },
+      {
+        "key": "waterLilySway",
+        "volume": 0.012
+      }
+    ],
+    "passed": true
+  },
+  "regressionSuites": [
+    "tools/test-house-discovery.js",
+    "tools/test-diary-navigation.js"
+  ],
+  "browserChecks": {
+    "replacement": {
+      "ready": true,
+      "size": [
+        960,
+        2077
+      ],
+      "portrait": {
+        "key": "cat1",
+        "width": -464,
+        "height": 522
+      },
+      "skipButtons": [
+        {
+          "x": 658,
+          "y": 28,
+          "width": 270,
+          "height": 84,
+          "inputEnabled": true
+        }
+      ],
+      "dialog": {
+        "y": 1682,
+        "height": 259
+      },
+      "soundCalls": [],
+      "errors": []
+    },
+    "skipped": {
+      "ready": true,
+      "size": [
+        960,
+        2077
+      ],
+      "portrait": null,
+      "skipButtons": [],
+      "dialog": null,
+      "soundCalls": [],
+      "errors": []
+    },
+    "short": {
+      "ready": true,
+      "size": [
+        960,
+        1344
+      ],
+      "portrait": {
+        "key": "cat4",
+        "width": -464,
+        "height": 522
+      },
+      "skipButtons": [
+        {
+          "x": 658,
+          "y": 28,
+          "width": 270,
+          "height": 84,
+          "inputEnabled": true
+        }
+      ],
+      "dialog": {
+        "y": 949,
+        "height": 259
+      },
+      "soundCalls": [],
+      "errors": []
+    },
+    "sounds": {
+      "ready": true,
+      "size": [
+        960,
+        2077
+      ],
+      "portrait": null,
+      "skipButtons": [],
+      "dialog": null,
+      "soundCalls": [
+        {
+          "key": "mirrorGlass",
+          "volume": 0.056,
+          "ratio": 4
+        },
+        {
+          "key": "waterLilySway",
+          "volume": 0.064,
+          "ratio": 4
+        }
+      ],
+      "errors": []
+    },
+    "publishedErrors": []
+  }
+}

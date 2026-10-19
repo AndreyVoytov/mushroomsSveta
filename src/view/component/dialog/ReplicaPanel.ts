@@ -53,6 +53,7 @@ export default class ReplicaPanel extends BasePanel {
     private mapPartPanel: ReplicaMapPartPanel;
     private actionButton: Phaser.Button;
     private clickToSkipInfo: Label;
+    private skipButton: Phaser.Button;
 
     private playAnimation : (animation:string)=> void;
     private entranceFinished = false;
@@ -119,9 +120,10 @@ export default class ReplicaPanel extends BasePanel {
         label.anchor.set(0.5);
         label.inputEnabled = false;
 
-        const button = SpriteUtils.createButton(this.game, 32, this.dialogPnl.height + 16, 'uiQuietButton', () => {
+        const button = SpriteUtils.createButton(this.game, this.game.width - width - 32, 28, 'uiQuietButton', () => {
             parentCont.skip();
         });
+        button.name = 'dialogSkipButton';
         button.anchor.set(0);
         button.width = width;button.height = height;
         button.hitArea = new Phaser.Rectangle(0, -9, 256, 78);
@@ -132,6 +134,13 @@ export default class ReplicaPanel extends BasePanel {
         button.addChild(label);
 
         return button;
+    }
+
+    private hideSkipButton(): void {
+        if (this.skipButton) {
+            this.skipButton.inputEnabled = false;
+            this.skipButton.kill();
+        }
     }
 
     private hasIntroPanel(): boolean {
@@ -309,8 +318,8 @@ export default class ReplicaPanel extends BasePanel {
         this.dialogPnl.inputEnabled = false;
 
         if (UserService.getUser().getCurrentForest() >= LocationUtils.SKIP_DIALOG_BUTTON_FROM_LEVEL) {
-            let skipButton = this.createSkipButton(parentCont);
-            this.dialogPnl.addChild(skipButton);
+            this.skipButton = this.createSkipButton(parentCont);
+            parentCont.addChild(this.skipButton);
         }
 
         this.textHolderTargetX = this.x + 112;
@@ -749,6 +758,7 @@ export default class ReplicaPanel extends BasePanel {
     }
 
     private hide(): void {
+        this.hideSkipButton();
         this.cleanAnimations();
 
         this.hideActionButton()
@@ -789,6 +799,7 @@ export default class ReplicaPanel extends BasePanel {
         }
     }
     public lastHide(): void {
+        this.hideSkipButton();
         // this.dialogPnl.bringToTop();
         // this.text.bringToTop();
         // this.titlePnl.bringToTop();

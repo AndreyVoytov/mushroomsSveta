@@ -57,6 +57,7 @@ import RewardItemsPanel, { RewardItemsShowOptions } from '../component/panel/Rew
 import TaskService from '../../core/service/TaskService';
 import UiLayout from '../../core/utils/UiLayout';
 import WorldPanel from '../component/house/WorldPanel';
+import LocationEncounters from '../component/house/LocationEncounters';
 import WorldService from '../../core/service/WorldService';
 import LiveConfig from '../../core/service/LiveConfig';
 import { getAtlasGroupNames } from '../../generated/atlasManifest';
@@ -402,10 +403,11 @@ export default class HouseScreen extends DialogScreen {
             if(!this.isLocked()) WorldPanel.show('journey');
         });
         worldButton.anchor.set(0.5);
-        const worldIcon=SpriteUtils.createSprite(this.game,0,0,WorldService.encounters(user).some(e=>e.id==='ghostDoor')?'actionDoor':'diary');
+        const worldIcon=SpriteUtils.createSprite(this.game,0,0,'diary');
         worldIcon.anchor.set(0.5);worldIcon.scale.set(0.7);worldButton.addChild(worldIcon);
         if(user.getCurrentForest()>=LiveConfig.get('worldLevel')){this.registerSideButton(worldButton);this.addButton(worldButton);}
         else worldButton.destroy();
+        this.add.existing(new LocationEncounters(this));
 
         let currentRecipe = DiaryConfiguration.getCurrentRecipe(user.getCurrentForest());
         if (currentRecipe) {

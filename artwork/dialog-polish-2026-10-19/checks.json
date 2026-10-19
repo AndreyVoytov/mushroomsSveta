@@ -1,0 +1,43 @@
+{
+  "checkedAt": "2026-10-19T15:05:01.164Z",
+  "portrait": {
+    "width": 464,
+    "height": 522,
+    "hasAlpha": true
+  },
+  "atlasFrame": {
+    "frame": {
+      "x": 1,
+      "y": 1,
+      "w": 464,
+      "h": 522
+    },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": {
+      "x": 0,
+      "y": 0,
+      "w": 464,
+      "h": 522
+    },
+    "sourceSize": {
+      "w": 464,
+      "h": 522
+    },
+    "pivot": {
+      "x": 0.5,
+      "y": 0.5
+    }
+  },
+  "volumes": [
+    {
+      "key": "mirrorGlass",
+      "volume": 0.0105
+    },
+    {
+      "key": "waterLilySway",
+      "volume": 0.012
+    }
+  ],
+  "passed": true
+}

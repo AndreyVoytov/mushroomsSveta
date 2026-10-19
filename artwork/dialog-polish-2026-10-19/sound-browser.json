@@ -1,0 +1,23 @@
+{
+  "ready": true,
+  "size": [
+    960,
+    2077
+  ],
+  "portrait": null,
+  "skipButtons": [],
+  "dialog": null,
+  "soundCalls": [
+    {
+      "key": "mirrorGlass",
+      "volume": 0.056,
+      "ratio": 4
+    },
+    {
+      "key": "waterLilySway",
+      "volume": 0.064,
+      "ratio": 4
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,67 @@
+{
+  "checkedAt": "2026-10-19T14:57:52.040Z",
+  "results": [
+    {
+      "url": "https://dcc59b51.andreyvoytov-mushrooms-arcane.pages.dev",
+      "deployment": {
+        "branch": "codex/arcane-ui-polish",
+        "commit": "666f08236d06b1c9b79176cea01b87d7398b9794",
+        "journeyLevels": 25,
+        "dirty": true,
+        "theme": "arcane-watercolor",
+        "builtAt": "2026-10-19T14:53:19.418Z",
+        "bundleSha256": "15a83f57bf81e043a9f87b44de069ccd5fbca41334e85c30729de287bc583a9d"
+      },
+      "bundleBytes": 2464097,
+      "roomBytes": 441176,
+      "roomSha256": "52edc5b5d2cbd18a2271f25d9020bccf14a8ea2dd9eb639465a59c4a859e4cdd",
+      "verified": true
+    },
+    {
+      "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+      "deployment": {
+        "branch": "codex/arcane-ui-polish",
+        "commit": "666f08236d06b1c9b79176cea01b87d7398b9794",
+        "journeyLevels": 25,
+        "dirty": true,
+        "theme": "arcane-watercolor",
+        "builtAt": "2026-10-19T14:53:19.418Z",
+        "bundleSha256": "15a83f57bf81e043a9f87b44de069ccd5fbca41334e85c30729de287bc583a9d"
+      },
+      "bundleBytes": 2464097,
+      "roomBytes": 441176,
+      "roomSha256": "52edc5b5d2cbd18a2271f25d9020bccf14a8ea2dd9eb639465a59c4a859e4cdd",
+      "verified": true
+    }
+  ],
+  "behaviorSuites": 24,
+  "visualChecks": [
+    "phone character tabs",
+    "speech bubble in character header",
+    "four companions",
+    "gift crafting and story gift",
+    "dialogue branches",
+    "two saved room decorations",
+    "48-hour door and free preparation",
+    "portrait changes with chosen hero",
+    "scrolling in short viewport",
+    "encounters removed from travel book",
+    "save/reload"
+  ],
+  "publishedBrowserErrors": [],
+  "previewDiagnostics": {
+    "consoleFile": "preview-console.json",
+    "notes": [
+      "The preview browser reported a MutationObserver error without a source URL during iframe reload. No MutationObserver occurs in the game source or bundles; production boot reported no errors.",
+      "A QA Home-state selector was corrected after its undefined key cleared the preview canvas. The game files were unaffected, and the final capture was repeated with the corrected toolbar."
+    ]
+  },
+  "screenshots": [
+    "relationships-final.png",
+    "items-phone.png",
+    "encounter-phone.png",
+    "relationships-short.png",
+    "book-final.png",
+    "published-final.png"
+  ]
+}

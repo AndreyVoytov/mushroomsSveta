@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-10-19T15:40:10.418Z",
+  "results": [
+    {
+      "url": "https://d9b06cef.andreyvoytov-mushrooms-arcane.pages.dev",
+      "verified": true,
+      "theme": "arcane-watercolor",
+      "bundleSha256": "3ecd84930407489b5aecb389141dafb3763ac6c581374aefe576d05d0bdbded6",
+      "bytes": 2472596
+    },
+    {
+      "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+      "verified": true,
+      "theme": "arcane-watercolor",
+      "bundleSha256": "3ecd84930407489b5aecb389141dafb3763ac6c581374aefe576d05d0bdbded6",
+      "bytes": 2472596
+    }
+  ],
+  "checks": {
+    "checkedAt": "2026-10-19T15:39:57.286Z",
+    "levels": [
+      {
+        "level": 2,
+        "points": 1
+      },
+      {
+        "level": 5,
+        "points": 2
+      },
+      {
+        "level": 10,
+        "points": 3
+      },
+      {
+        "level": 20,
+        "points": 4
+      }
+    ],
+    "level40Points": 5,
+    "switchDuringAnimation": true,
+    "reload": true,
+    "shortViewport": true,
+    "consoleErrors": [],
+    "suitesPassed": 25
+  },
+  "restoredSemanticallyIdenticalTranslations": [
+    "assets/localization/ar.json",
+    "assets/localization/de.json",
+    "assets/localization/en.json",
+    "assets/localization/es.json",
+    "assets/localization/fr.json",
+    "assets/localization/hi.json",
+    "assets/localization/id.json",
+    "assets/localization/it.json",
+    "assets/localization/ja.json",
+    "assets/localization/pt.json",
+    "assets/localization/ru.json",
+    "assets/localization/tr.json"
+  ]
+}

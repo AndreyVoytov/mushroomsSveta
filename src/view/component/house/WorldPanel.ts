@@ -113,22 +113,7 @@ export default class WorldPanel {
         [['journey','Тропа'],['heroes','Герои'],['wardrobe','Вещи'],['relations','Отношения'],['season','Сезон'],['cloud','Сохранение'],['help','Правила']].forEach(pair=>{const b=<HTMLButtonElement>node('button',pair[1],this.active===pair[0]?'active':'');b.setAttribute('aria-pressed',String(this.active===pair[0]));b.dataset.action='tab-'+pair[0];b.onclick=()=>{this.active=pair[0];this.notice='';this.render();};tabs.appendChild(b);});shell.appendChild(tabs);
         const body=node('div',null,'world-body');shell.appendChild(body);
         if(this.active==='journey'){
-            body.appendChild(node('p','Встречи необязательны. Неудачная проверка ничего не расходует; основной путь всегда открыт.','world-note'));
-            const encounters=WorldService.encounters(user);
-            encounters.forEach(e=>{
-                const c=this.card(body,e.name,e.description);
-                if(e.id==='ghostDoor'){const img=<HTMLImageElement>node('img',null,'world-art');img.src='assets/world/ghost-door.png';img.alt='Светящаяся дверь в древнем дубе';c.insertBefore(img,c.firstChild);}
-                c.appendChild(node('p',e.chapter+' · '+(e.persistent?'Осталось '+Math.max(0,Math.ceil((user.world.encounters[e.id].discoveredAt+2*WorldService.DAY-GameClock.now())/3600000))+' ч':'Встреча на уровнях '+e.from+'–'+e.until),'world-note'));
-                const char=user.getCurrentCharacterId();
-                e.choices.forEach((choice,index)=>{
-                    const value=choice.stat?WorldService.stat(user,char,choice.stat):user.world.materials.wood||0,required=choice.required||choice.wood||0;
-                    const b=this.button(c,choice.text+' · '+(choice.stat?WorldConfiguration.statNames[choice.stat]:'Древесина')+' '+value+'/'+required,()=>{if(WorldService.check(user,e.id,index,char))this.notice='Получено: '+this.rewardText(choice.reward)+(e.adventure?' · Открыто приключение':'');},value<required);
-                    b.classList.add('world-check');
-                });
-                c.appendChild(node('p','Награда: '+this.rewardText(e.choices[0].reward),'world-note'));
-                this.button(c,'Выбрать героя / развить навык',()=>this.active='heroes',false,true);
-            });
-            if(!encounters.length)this.card(body,'Тропа спокойна','Новые встречи откроются по мере путешествия. Собирайте вещи и узнавайте спутников — их навыки пригодятся в следующих главах.');
+            this.card(body,'Истории на тропе','Лесные жители встречают вас прямо на локации. Ищите значки встреч и дверей на карте: там можно поговорить, выбрать ответ и помочь спутникам.');
             Object.keys(user.world.adventures).forEach(id=>{
                 const a=WorldConfiguration.adventures.filter(a=>a.id===id).shift(),s=user.world.adventures[id];if(!a)return;
                 const expired=s.startedAt&&GameClock.now()>=s.startedAt+3*WorldService.DAY&&!s.completedAt;
@@ -140,7 +125,6 @@ export default class WorldPanel {
                 this.button(c,playing?'Вернуться на поляну':s.startedAt?'Продолжить':'Начать приключение',()=>{if(playing){this.close();return;}if(WorldService.startAdventure(user,id)){this.close();Game.getInstance().startScene(ForestScreen,true,false);}else this.notice='Сначала завершите активное приключение.';},!!s.completedAt||!!expired);
             });
             if(user.getCurrentForest()>=153){const c=this.card(body,'Лесные экспедиции','Кампания пройдена. Возвращайтесь на знакомые поляны: прогресс экспедиций считается отдельно, отношения и сезон продолжают расти.');this.button(c,'В экспедицию',()=>{WorldService.expedition=true;WorldService.activeAdventure=null;this.close();Game.getInstance().startScene(ForestScreen,true,false);});}
-            const next=WorldConfiguration.encounters.filter(e=>e.from>user.getCurrentForest()).sort((a,b)=>a.from-b.from)[0];if(next)this.card(body,'Дальше по тропе',next.chapter+' · новая встреча после '+next.from+' уровней.');
             user.world.memories.filter(id=>id.indexOf('set:')===0).forEach(id=>{const scene=WorldConfiguration.setScenes[id.slice(4)];if(scene)this.card(body,scene.title,scene.text);});
         }else if(this.active==='heroes'){
             body.appendChild(node('p','Развитие по сюжету: '+WorldService.stage(user).title+'. Вещи дают постоянные бонусы; надетый образ не меняет силу.','world-note'));
@@ -169,14 +153,8 @@ export default class WorldPanel {
                 const recipe=WorldConfiguration.recipes[item.id];if(recipe&&!owned)this.button(c,'Создать · '+recipe.wood+' древесины · '+recipe.clover+' клевера',()=>WorldService.craft(user,item.id),user.world.materials.wood<recipe.wood||user.world.materials.clover<recipe.clover,true);
             });
         }else if(this.active==='relations'){
-            body.appendChild(node('p','Беседа доступна бесплатно раз в игровой день. Подарок — ещё один шаг к доверию. Совместное прохождение тоже укрепляет связи.','world-note'));
-            WorldConfiguration.relationships.filter(r=>user.hasCharacter(r.character)).forEach(r=>{
-                const level=WorldService.relationshipLevel(user,r.id),xp=user.world.relationships[r.id]||0,next=WorldConfiguration.relationshipThresholds[level],c=this.card(body,r.name,WorldConfiguration.relationshipNames[level-1]+' · '+xp+' опыта'+(next?' / '+next:' · максимальное доверие'));
-                const progress=node('div',null,'world-progress'),fill=node('span');fill.style.width=Math.min(100,xp/(next||160)*100)+'%';progress.appendChild(fill);c.appendChild(progress);
-                this.button(c,'Поговорить · +10',()=>WorldService.relationAction(user,r.id,false),user.world.dailyActions[r.id+':talk']===GameClock.day()||level>=5);
-                this.button(c,'Подарить · 10 ♦ · +20',()=>WorldService.relationAction(user,r.id,true),user.world.dailyActions[r.id+':gift']===GameClock.day()||user.getSupermoney()<10||level>=5);
-                WorldConfiguration.adventures.filter(a=>a.pair===r.id).forEach(a=>c.appendChild(node('p','При доверии '+a.relationshipLevel+': «'+a.title+'». Таймер начнётся по вашему выбору.','world-note')));
-            });
+            this.card(body,'Истории ваших спутников','Отношения теперь находятся в панели персонажа. Там можно говорить с героем, готовить подарки и развивать его комнату.');
+            this.button(body,'Открыть персонажа',()=>{const screen:any=Game.getInstance().state.getCurrentState();if(screen.characterPanel){this.close();screen.characterPanel.show();}else this.notice='Панель персонажа доступна на локации. Вернитесь к спутникам после поляны.';});
         }else if(this.active==='season'){
             const weekly=WorldService.weekly(user),wc=this.card(body,'Лесная почта · неделя','Пройдите 12 полян и помогите доставить письма между опушками. '+weekly.points+'/12 · награда: 3 древесины и 20 энергии. До новой недели '+Math.ceil((WorldService.weeklyEndsAt()-GameClock.now())/3600000)+' ч.');
             this.button(wc,weekly.claimed?'Почта доставлена':'Забрать недельную награду',()=>WorldService.claimWeekly(user),weekly.claimed||weekly.points<12);

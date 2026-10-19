@@ -8,6 +8,8 @@ import WorldLevels from '../configuration/WorldLevels';
 import UserService from './UserService';
 import ForestType from '../model/forest/ForestType';
 import LiveConfig from './LiveConfig';
+import RelationshipConfiguration from '../configuration/RelationshipConfiguration';
+import CharacterProgressionService from './CharacterProgressionService';
 export default class WorldService {
     public static DAY = 86400000;
     public static activeAdventure: string = null;
@@ -17,6 +19,7 @@ export default class WorldService {
         const before = JSON.stringify(user.world);
         const defaults: any = emptyWorldState();
         Object.keys(defaults).forEach(k => {if (user.world[k] == null) user.world[k] = defaults[k];});
+        CharacterProgressionService.sync(user);
         WorldConfiguration.items.filter(x=>x.legacy).forEach(x=>{
             if(user.hasOwnedArtifact(x.legacy)&&user.world.wardrobe.indexOf(x.id)<0)user.world.wardrobe.push(x.id);
         });
@@ -113,17 +116,80 @@ export default class WorldService {
         this.prepare(user);
         return WorldConfiguration.encounters.filter(e=>{
             const state=user.world.encounters[e.id];
-            return state&&!state.completedAt&&(e.persistent?GameClock.now()<state.discoveredAt+2*this.DAY:user.getCurrentForest()<=e.until);
+            return state&&!state.completedAt&&(e.persistent?GameClock.now()<state.discoveredAt+2*this.DAY:user.getCurrentForest()>=e.from&&user.getCurrentForest()<=e.until);
         });
+    }
+    // Ordinary encounters always have an affordable skill route for an owned hero.
+    // Event doors retain their authored challenge and their original discovery clock.
+    public static encounterRequirement(user:User,e:WorldEncounter,index:number):number {
+        const c=e.choices[index];if(!c)return Infinity;
+        if(!c.stat)return c.wood||0;
+        if(e.persistent)return c.required||0;
+        const best=user.getCharacters().reduce((n,char)=>Math.max(n,this.stat(user,char.id,c.stat)),0);
+        return Math.min(c.required||0,best);
+    }
+    public static practiceDoor(user:User,id:string,character:string,stat:WorldStat):boolean {
+        const e=this.encounters(user).filter(x=>x.id===id&&x.persistent)[0],key='door:'+id+':practice';
+        if(!e||!user.hasCharacter(character)||!e.choices.some(c=>c.stat===stat)||user.world.dailyActions[key]===GameClock.day())return false;
+        ServerStoreComponent.atomic(user,()=>{
+            user.world.dailyActions[key]=GameClock.day();
+            if(!user.world.training[character])user.world.training[character]={};
+            user.world.training[character][stat]=(user.world.training[character][stat]||0)+3;user.saveWorld();
+        });return true;
+    }
+    public static makeGift(user:User,character:string):boolean {
+        this.prepare(user);const g=RelationshipConfiguration.companions[character];
+        if(!g||!user.hasCharacter(character)||user.world.materials.wood<g.wood||user.world.materials.clover<g.clover)return false;
+        ServerStoreComponent.atomic(user,()=>{
+            user.world.materials.wood-=g.wood;user.world.materials.clover-=g.clover;
+            user.recordEconomy('wood',-g.wood,'gift:'+g.gift,user.world.materials.wood);
+            if(g.clover)user.recordEconomy('clover',-g.clover,'gift:'+g.gift,user.world.materials.clover);
+            user.world.gifts[g.gift]=(user.world.gifts[g.gift]||0)+1;user.saveWorld();
+        });return true;
+    }
+    public static giveGift(user:User,character:string):boolean {
+        this.prepare(user);const g=RelationshipConfiguration.companions[character],id='player:'+character,key=id+':gift';
+        if(!g||!user.hasCharacter(character)||!user.world.gifts[g.gift]||user.world.dailyActions[key]===GameClock.day())return false;
+        ServerStoreComponent.atomic(user,()=>{
+            user.world.gifts[g.gift]--;user.world.dailyActions[key]=GameClock.day();
+            user.world.relationships[id]=(user.world.relationships[id]||0)+20;this.prepare(user);user.saveWorld();
+        });return true;
+    }
+    public static canCompleteRelationshipStep(user:User,character:string,index:number):boolean {
+        this.prepare(user);const step=RelationshipConfiguration.steps[index],g=RelationshipConfiguration.companions[character];
+        if(!g||!step||!user.hasCharacter(character)||user.world.relationshipSteps.indexOf(character+':'+index)>=0)return false;
+        if(index>0&&user.world.relationshipSteps.indexOf(character+':'+(index-1))<0)return false;
+        if((user.world.relationships['player:'+character]||0)<step.xp)return false;
+        return step.kind!=='gift'||(user.world.gifts[g.gift]||0)>0;
+    }
+    public static completeRelationshipStep(user:User,character:string,index:number,choice:string=''):boolean {
+        if(!this.canCompleteRelationshipStep(user,character,index))return false;
+        const step=RelationshipConfiguration.steps[index],g=RelationshipConfiguration.companions[character];
+        ServerStoreComponent.atomic(user,()=>{
+            user.world.relationshipSteps.push(character+':'+index);
+            if(choice)user.world.relationshipChoices[character+':'+index]=choice.slice(0,160);
+            if(step.kind==='gift')user.world.gifts[g.gift]--;
+            if(index>=3){
+                if(!user.world.roomDecor[character])user.world.roomDecor[character]=[];
+                user.world.roomDecor[character].push(index===3?'lantern':'keepsake');
+            }
+            const memory='relationship:'+character+':'+index;
+            if(step.kind==='scene'&&user.world.memories.indexOf(memory)<0)user.world.memories.push(memory);
+            user.world.relationships['player:'+character]=(user.world.relationships['player:'+character]||0)+5;
+            this.prepare(user);user.saveWorld();
+        });Telemetry.track('relationship_step',{characterId:character,step:index});return true;
     }
     public static check(user:User,encounterId:string,choiceIndex:number,character:string):boolean {
         const e=this.encounters(user).filter(x=>x.id===encounterId).shift();
         if(!e||!user.hasCharacter(character))return false;
         const c=e.choices[choiceIndex];if(!c)return false;
-        if(c.stat&&this.stat(user,character,c.stat)<c.required)return false;
+        if(c.stat&&this.stat(user,character,c.stat)<this.encounterRequirement(user,e,choiceIndex)){
+            user.world.encounters[e.id].attempts=(user.world.encounters[e.id].attempts||0)+1;user.saveWorld();return false;
+        }
         if(c.wood&&(user.world.materials.wood||0)<c.wood)return false;
         ServerStoreComponent.atomic(user,()=>{
             user.world.encounters[e.id].completedAt=GameClock.now();
+            user.world.encounters[e.id].choice=choiceIndex;
             if(c.wood){user.world.materials.wood-=c.wood;user.recordEconomy('wood',-c.wood,'encounter:'+e.id,user.world.materials.wood);}
             this.reward(user,c.reward,'encounter:'+e.id);
             if(user.world.memories.indexOf(e.id)<0)user.world.memories.push(e.id);
@@ -138,7 +204,10 @@ export default class WorldService {
         if(reward.wood){user.world.materials.wood=(user.world.materials.wood||0)+reward.wood;user.recordEconomy('wood',reward.wood,reason,user.world.materials.wood);}
         if(reward.clover){user.world.materials.clover=(user.world.materials.clover||0)+reward.clover;user.recordEconomy('clover',reward.clover,reason,user.world.materials.clover);}
         if(reward.item)this.grantItem(user,reward.item);
-        if(reward.relationship)user.world.relationships[reward.relationship]=(user.world.relationships[reward.relationship]||0)+(reward.relationshipXp||0);
+        if(reward.relationship){
+            user.world.relationships[reward.relationship]=(user.world.relationships[reward.relationship]||0)+(reward.relationshipXp||0);
+            this.prepare(user);
+        }
         user.saveWorld();
     }
     public static startAdventure(user:User,id:string):boolean {

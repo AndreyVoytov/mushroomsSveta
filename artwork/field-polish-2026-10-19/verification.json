@@ -1,0 +1,213 @@
+{
+  "verifiedAt": "2026-10-19T14:14:12.214Z",
+  "project": "andreyvoytov-mushrooms-arcane",
+  "bundleSha256": "aa40836decb5e0f0a188f17e5857d972480e4fd036f123d1c200fe8330c5a896",
+  "deployments": [
+    {
+      "url": "https://aa5263ce.andreyvoytov-mushrooms-arcane.pages.dev",
+      "bundleSha256": "aa40836decb5e0f0a188f17e5857d972480e4fd036f123d1c200fe8330c5a896",
+      "metadataMatches": true
+    },
+    {
+      "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+      "bundleSha256": "aa40836decb5e0f0a188f17e5857d972480e4fd036f123d1c200fe8330c5a896",
+      "metadataMatches": true
+    }
+  ],
+  "publishedAssets": [
+    {
+      "file": "assets/arcane/levels/forest-v1.webp",
+      "sha256": "b09cfd706f5073800e3ef9dece28d93f42495c10c828b83616576e821a121980"
+    },
+    {
+      "file": "assets/arcane/levels/mountains-v1.webp",
+      "sha256": "51732dfa4d6abbeb70522612d352541cd45b2ed1027e137a66f75978d0885acf"
+    },
+    {
+      "file": "assets/arcane/levels/dark-v1.webp",
+      "sha256": "3951b5b7ecf163811945b4c33a87420f05c9b502365cf3c108bb8148dd3be167"
+    },
+    {
+      "file": "assets/arcane/levels/lake-v1.webp",
+      "sha256": "2081d070cf72bebf55f1285e80c1936ca841fb2d98c64669b2a0250c2365ee01"
+    },
+    {
+      "file": "assets/arcane/levels/flowers-v1.webp",
+      "sha256": "ac2d4f808d0ca898a75eaea435671fe24b1fa6cdbc1caf41211aa683056c3b89"
+    },
+    {
+      "file": "assets/arcane/levels/jungle-v1.webp",
+      "sha256": "11633ca0f70eec32996417dac82749c70540126f815fc4151331508e300ed507"
+    },
+    {
+      "file": "assets/arcane/levels/bug-v1.webp",
+      "sha256": "60b72a5e255a593d090aaf770621f13ac09e7152bf5b3d1a0d11ebafef6b97ef"
+    },
+    {
+      "file": "assets/arcane/levels/snail-v1.webp",
+      "sha256": "39a2e57a9e348da3fceaff87d3a0bf649834ce7879bfdee41e8c6095dec67e8c"
+    },
+    {
+      "file": "assets/arcane/levels/clover-v1.webp",
+      "sha256": "211a04fe63dd0c9cac77a8ca7d1c8d50cf9854a426dfee56c43e92dce4be3c4d"
+    },
+    {
+      "file": "assets/arcane/levels/hive-v1.webp",
+      "sha256": "ad45cffe065f8a8e29002419c463e57cf1abb0a0761bd1375d371ba1288c9b5a"
+    },
+    {
+      "file": "assets/arcane/levels/house-v1.webp",
+      "sha256": "cc107d62676cb84484e96ff879a8253a476da9811ec232c86085f1984038f4ec"
+    },
+    {
+      "file": "assets/arcane/levels/journey-river-v1.webp",
+      "sha256": "389dd0cbf0181a6cdd439d075cb294fea598b7a4049802547ba5fad059d90704"
+    },
+    {
+      "file": "assets/arcane/levels/journey-forest-v1.webp",
+      "sha256": "fd517475d857599947da5a6e773bb1944850dc77506cf6036d91ff19f1adcf13"
+    },
+    {
+      "file": "assets/arcane/levels/journey-dungeon-v1.webp",
+      "sha256": "e7b8a6d6842ccab0ee339b28fbae5fa5444df16a87b6f10430a6f81d8200fcaf"
+    },
+    {
+      "file": "assets/arcane/levels/journey-balloon-v1.webp",
+      "sha256": "60e3c5c71f06a6acc2d0f3c7f74ef5c2bdeead2fefed58e90392998486b1befc"
+    },
+    {
+      "file": "assets/arcane/levels/water-cover-v1.png",
+      "sha256": "139731a38447ff3efdaf7573d0628004b6745ed46aa449c78fbde0331a793a5d"
+    }
+  ],
+  "build": "production build passed, TypeScript clean",
+  "checks": [
+    {
+      "suite": "tools/test-world.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-serverless.mjs",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-cloud-client.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-world-fields.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-telemetry.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-ad-callbacks.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-journey-events.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-animals-generation.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-mushroom-harvest.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-ladybug-movement.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-hero-abilities.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-house-discovery.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-item-ground-shadow.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-forest-presentation.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-level-artwork.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-settings-menu.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-ui-goal-state.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-shop-navigation.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-home-progress.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-diary-navigation.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-snail-sparks.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-sapphire-reward.js",
+      "passed": true
+    },
+    {
+      "suite": "tools/test-tint-interpolation.js",
+      "passed": true
+    }
+  ],
+  "targetedRecheck": "test-level-artwork.js passed again after clamped scrolling and matched-mask tests were added",
+  "visualReview": {
+    "scenery": "actual item collection changes empty tree/log/stump opacity to 0.42; numbered objects remain at 1",
+    "kitten": "level-14 discovery: raised resting position and one-shot bounce",
+    "water": "level 15: matte closed covers beside revealed water",
+    "scroll": "level 18: beginning and end, continuous scene and aligned bottom masks",
+    "viewports": [
+      "390x844",
+      "500x700"
+    ]
+  },
+  "artwork": {
+    "tool": "built-in image_gen",
+    "backgrounds": 15,
+    "waterCovers": 1,
+    "prompts": "generation-results.json"
+  },
+  "screenshots": [
+    "scenery-final.png",
+    "kitten-final.png",
+    "water-final.png",
+    "long-top-final.png",
+    "long-bottom-final.png",
+    "field-polish-final.png"
+  ],
+  "publishedBoot": {
+    "url": "https://andreyvoytov-mushrooms-arcane.pages.dev/?lang=ru&ui=aa40836d",
+    "loaded": true,
+    "consoleErrors": [],
+    "screenshot": "published-boot-final.png"
+  },
+  "previewDiagnostics": {
+    "file": "preview-console.json",
+    "note": "Existing level-generation exhaustion/fallback messages occurred for the forced seed 4171; no UI exceptions were observed."
+  }
+}

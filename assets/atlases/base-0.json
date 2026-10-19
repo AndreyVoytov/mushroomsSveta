@@ -1,39 +1,39 @@
 {
-    "frames":  {
-                   "base/characters/cat4.png":  {
-                                                    "frame":  {
-                                                                  "x":  1,
-                                                                  "y":  1,
-                                                                  "w":  1254,
-                                                                  "h":  1254
-                                                              },
-                                                    "rotated":  false,
-                                                    "trimmed":  false,
-                                                    "spriteSourceSize":  {
-                                                                             "x":  0,
-                                                                             "y":  0,
-                                                                             "w":  1254,
-                                                                             "h":  1254
-                                                                         },
-                                                    "sourceSize":  {
-                                                                       "w":  1254,
-                                                                       "h":  1254
-                                                                   },
-                                                    "pivot":  {
-                                                                  "x":  0.5,
-                                                                  "y":  0.5
-                                                              }
-                                                }
-               },
-    "meta":  {
-                 "app":  "codex-atlas-packer",
-                 "version":  "1.0",
-                 "image":  "base-0.png",
-                 "format":  "RGBA8888",
-                 "size":  {
-                              "w":  1256,
-                              "h":  1256
-                          },
-                 "scale":  1
-             }
+    "frames": {
+        "base/characters/cat4.png": {
+            "frame": {
+                "x": 1,
+                "y": 1,
+                "w": 464,
+                "h": 522
+            },
+            "rotated": false,
+            "trimmed": false,
+            "spriteSourceSize": {
+                "x": 0,
+                "y": 0,
+                "w": 464,
+                "h": 522
+            },
+            "sourceSize": {
+                "w": 464,
+                "h": 522
+            },
+            "pivot": {
+                "x": 0.5,
+                "y": 0.5
+            }
+        }
+    },
+    "meta": {
+        "app": "codex-atlas-packer",
+        "version": "1.0",
+        "image": "base-0.png",
+        "format": "RGBA8888",
+        "size": {
+            "w": 466,
+            "h": 524
+        },
+        "scale": 1
+    }
 }

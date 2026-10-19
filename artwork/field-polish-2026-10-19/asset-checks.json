@@ -1,0 +1,120 @@
+{
+  "images": [
+    {
+      "id": "forest",
+      "width": 724,
+      "height": 2172,
+      "bytes": 600536,
+      "valid": true
+    },
+    {
+      "id": "mountains",
+      "width": 724,
+      "height": 2172,
+      "bytes": 710274,
+      "valid": true
+    },
+    {
+      "id": "dark",
+      "width": 724,
+      "height": 2172,
+      "bytes": 409282,
+      "valid": true
+    },
+    {
+      "id": "lake",
+      "width": 724,
+      "height": 2172,
+      "bytes": 432170,
+      "valid": true
+    },
+    {
+      "id": "flowers",
+      "width": 724,
+      "height": 2172,
+      "bytes": 632760,
+      "valid": true
+    },
+    {
+      "id": "jungle",
+      "width": 724,
+      "height": 2172,
+      "bytes": 505476,
+      "valid": true
+    },
+    {
+      "id": "bug",
+      "width": 724,
+      "height": 2172,
+      "bytes": 504954,
+      "valid": true
+    },
+    {
+      "id": "snail",
+      "width": 724,
+      "height": 2172,
+      "bytes": 488746,
+      "valid": true
+    },
+    {
+      "id": "clover",
+      "width": 724,
+      "height": 2172,
+      "bytes": 578574,
+      "valid": true
+    },
+    {
+      "id": "hive",
+      "width": 724,
+      "height": 2172,
+      "bytes": 562268,
+      "valid": true
+    },
+    {
+      "id": "house",
+      "width": 724,
+      "height": 2172,
+      "bytes": 265814,
+      "valid": true
+    },
+    {
+      "id": "journey-river",
+      "width": 724,
+      "height": 2172,
+      "bytes": 513458,
+      "valid": true
+    },
+    {
+      "id": "journey-forest",
+      "width": 724,
+      "height": 2172,
+      "bytes": 637494,
+      "valid": true
+    },
+    {
+      "id": "journey-dungeon",
+      "width": 724,
+      "height": 2172,
+      "bytes": 514598,
+      "valid": true
+    },
+    {
+      "id": "journey-balloon",
+      "width": 724,
+      "height": 2172,
+      "bytes": 642904,
+      "valid": true
+    },
+    {
+      "id": "water-cover",
+      "width": 180,
+      "height": 191,
+      "bytes": 51437,
+      "valid": true
+    }
+  ],
+  "water": {
+    "opaqueCenter": true,
+    "transparentOutside": true
+  }
+}

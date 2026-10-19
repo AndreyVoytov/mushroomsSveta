@@ -1,0 +1,197 @@
+[
+  {
+    "id": "forest",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-c2e06611-3cfe-4176-9290-2bdb8dba4986.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: the sunny pine forest with the little rabbit and distant pale mountains stays at the very top. Below the original grassy clearing, extend a broad quiet mossy forest-floor clearing toward the viewer, soft grass and warm earth, flanking tree roots only at the edges.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/base/ui/forestHeader1.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\forest-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\forest.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "mountains",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-bdb39409-f250-47b0-b103-59c2f422d89e.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The alpine mountains, pine line and sunny flower-filled meadow remain at the top. Continue the foreground down into a broad quiet alpine grassy clearing with meadow plants at the edges, warm sunlit grass and sparse earth.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame1/mountinesHeader.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\mountains-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\mountains.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "dark",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-dc74858d-d2e9-4952-b1a3-4e24702372f5.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The blue moonlit enchanted woods and the glowing-faced tree remain at the top. Continue downward into a broad quiet dark mossy forest path and clearing, cool blue-green earth and roots at the very edges. Keep the same mysterious evening atmosphere throughout.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame3/forestHeader2.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\dark-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\dark.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "lake",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-783522ef-6caa-4f06-91b8-4f81fc7c870e.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The blue lake, distant mountains and wooden pier remain at the very top. Extend the sandy shore BELOW THE NEAR END of the pier toward the viewer, quiet warm sand and subtle cool grass at side edges. The lower foreground is shore ground, not a second lake or repeated pier.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame4/lakeHeader.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\lake-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\lake.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "flowers",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-fba055c0-16ab-40c6-b3d4-9834beef1763.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The alpine lake, mountains and flower meadow remain at the top. Continue downward into a spacious quiet meadow with soft grass and subtle paths; flowering plants mainly near the side edges.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame5/flowersFieldHeader.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\flowers-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\flowers.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "jungle",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-313cb69a-3843-4b3f-8fab-663afa897e83.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The bright tropical canopy, hanging vines and distant jungle path remain at the top. Continue down into an open, calm jungle-floor clearing with broad warm/cool ground planes, foliage framing only the side edges.\n\nFinal seam repair: Use case: precise-object-edit. Edit this complete tall 1:3 portrait background painting. There is an unwanted straight HORIZONTAL JOIN across the entire image at roughly 18–21% of the height: a color/scale/edge mismatch between the upper header scene and the lower foreground. REMOVE THAT JOIN completely by carefully repainting the connected vegetation, ground and lighting in the surrounding band (approximately 12–30% of image height), so it becomes one seamless continuous painting with naturally flowing perspective. Match all foliage and tree/root/stone contours crossing that band. Keep the existing upper main subject, the existing large lower foreground composition, the aspect ratio, warm/cool painterly style and all recognizable features intact. No straight cut, no horizontal stripe, no pasted rectangular patch, no blur or gradient mask, no fog, no faded section, no tiling, no duplicated motifs. Fully opaque finished painting. No text, UI or extra creatures. Change only the faulty join and its nearby transitions; preserve the rest.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame6/junglesHeader.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-a8492d1c-e7fc-4557-9cb1-890d0dc04bd4.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\jungle-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\jungle.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "bug",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-46e948de-e2bc-4d19-9715-16802b0ae4b0.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The friendly large ladybug beneath a curled green leaf remains entirely in the upper header area. Continue downward from its clearing into a calm mossy forest floor with occasional leaf edges and stones at the side margins, with no additional insects.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame7/bugForestHeader.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\bug-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\bug.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "snail",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-39202cb2-bc2d-42f3-9f06-c56f1fbd622a.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The friendly golden snail and its surrounding forest remain entirely in the top header area. Continue the lower clearing down into a quiet mossy forest floor path, sparse tiny plants at the side margins. No additional snails.\n\nFinal seam repair: Use case: precise-object-edit. Edit this complete tall 1:3 portrait background painting. There is an unwanted straight HORIZONTAL JOIN across the entire image at roughly 18–21% of the height: a color/scale/edge mismatch between the upper header scene and the lower foreground. REMOVE THAT JOIN completely by carefully repainting the connected vegetation, ground and lighting in the surrounding band (approximately 12–30% of image height), so it becomes one seamless continuous painting with naturally flowing perspective. Match all foliage and tree/root/stone contours crossing that band. Keep the existing upper main subject, the existing large lower foreground composition, the aspect ratio, warm/cool painterly style and all recognizable features intact. No straight cut, no horizontal stripe, no pasted rectangular patch, no blur or gradient mask, no fog, no faded section, no tiling, no duplicated motifs. Fully opaque finished painting. No text, UI or extra creatures. Change only the faulty join and its nearby transitions; preserve the rest.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame8/snailForestHeader.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-45e55430-8d23-4a37-af99-d9eb8af16c96.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\snail-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\snail.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "clover",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-e23bedc5-50c2-4d05-9a53-b38b1a6dd2f0.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The rolling clover hills and distant mountains remain in the top header area. Continue downward into a broad calm clover meadow with sunlit grass and a subtle natural path, the main clover clusters confined to the sides.\n\nFinal seam repair: Use case: precise-object-edit. Edit this complete tall 1:3 portrait background painting. There is an unwanted straight HORIZONTAL JOIN across the entire image at roughly 18–21% of the height: a color/scale/edge mismatch between the upper header scene and the lower foreground. REMOVE THAT JOIN completely by carefully repainting the connected vegetation, ground and lighting in the surrounding band (approximately 12–30% of image height), so it becomes one seamless continuous painting with naturally flowing perspective. Match all foliage and tree/root/stone contours crossing that band. Keep the existing upper main subject, the existing large lower foreground composition, the aspect ratio, warm/cool painterly style and all recognizable features intact. No straight cut, no horizontal stripe, no pasted rectangular patch, no blur or gradient mask, no fog, no faded section, no tiling, no duplicated motifs. Fully opaque finished painting. No text, UI or extra creatures. Change only the faulty join and its nearby transitions; preserve the rest.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame9/cloverHeader.png",
+      "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-0ba5dd72-cedf-40b0-a097-4fa6f5f15b05.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\clover-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\clover.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "hive",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-0cf84b61-f935-4b57-9f8a-9271103d2b06.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The glowing honey hives hanging from the two forest trees stay in the top header area. Continue the same forest clearing downward into a quiet grassy forest floor with a sunlit path, tree roots at the margins. No extra hives or bees in the lower area.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/minigame10/hiveheader.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\hive-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\hive.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "house",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-7e8cd194-c6c5-4bdb-b833-5a055eba895d.png",
+    "prompt": "Use case: illustration-story. Asset type: one continuous 1024 x 3072 portrait 1:3 background painting for an Arcane / Fortiche-inspired fairy-tale puzzle game. Reference image is the room's existing art direction, palette and materials. Create a matching continuous view of this warm timber cottage: the recognizable golden window, red curtains, wooden rafters and lanterns, with a little of the curved table near the sides, occupy only the TOP 20% of the tall painting. Continue the same room down toward the viewer into a very long open timber-floor foreground. Most of the lower 80% should be quiet warmly lit broad wooden floorboards in proper perspective, faint sunlit planes and very restrained details; keep furniture strictly at the far side edges and never in the central play area. One coherent tall room, no repeated rows of furniture or a second window or second room; no tiled texture appearance. Fully paint to the bottom edge. Same warm/cool Arcane sculpted forms and controlled gouache plane changes as the reference, not glossy cartoon art. No characters, text, UI, grids, hexagons, symbols or borders. No transparency, no pale fade and no fog or white overlay baked in (the game adds a controlled white mist).",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/screens/houseBg.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\house-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\house.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "journey-river",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-7c727864-0319-4772-86f9-ad440ea83c74.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The existing raft with the red-hooded girl, cat, owl, sail and lantern stays together in the upper 20% scene, with the same riverbank and warm daylight. Continue the same river water downward toward the viewer as a spacious quiet foreground, banks and sparse reeds only near the very sides. No extra rafts, boats or characters.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/journeys/river.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\journey-river-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\journey-river.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "journey-forest",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-73d5b9f4-81cc-4145-9959-80dec4cb89ba.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The giant friendly mushroom in its purple twilight forest stays in the top scene. Continue downward along its quiet mossy woodland path, restrained ferns and roots at the outer margins. No additional giant mushrooms or faces in the lower play area.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/journeys/forest.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\journey-forest-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\journey-forest.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "journey-dungeon",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-d2846163-a5b5-46cd-9a53-2694d9c68597.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The friendly crowned green slime and the round stone dungeon door stay together at the top. Continue the same stone corridor floor downward toward the viewer, broad irregular paving stones with correct perspective and subtle side walls and very restrained crystals only at the margins. No additional doors, slime or crowns below.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/journeys/dungeon.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\journey-dungeon-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\journey-dungeon.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "journey-balloon",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-a7463737-8cc2-41be-8fab-cd8783819711.png",
+    "prompt": "Use case: illustration-story. Asset type: a single continuous tall background painting for a portrait Arcane / Fortiche-inspired fairy-tale puzzle game. Use the input illustration as the exact world, palette, subject and upper-scene reference. Create a 1024 x 3072 portrait illustration, 1:3 aspect ratio. The recognizable original wide header scene occupies only the TOP 20% of this tall canvas, with the same horizon, camera, characters/animals and light. Continue that SAME scene downward into a very tall foreground, preserving perspective and lighting, so it is ONE coherent painting from top to bottom. The remaining lower 80% is a calm open foreground ground plane with broad painterly shapes and restrained detail, some natural vegetation only near the side margins. No second horizon, no new scene, no duplicated header, no repeated or mirrored motifs. Fully paint the entire image, including the bottom edge. No transparency, no vignette, no pale fade, no fog or white overlay baked in (the game adds a controlled white mist). No UI, tiles, grids, hexagons, text, symbols or borders. The exact visual language is the source: sculpted Arcane forms with warm/cool planes and controlled handmade gouache texture. This is a full scene background, never a tiling texture.\nScene continuation: The same hot-air balloon with its characters, distant alpine mountains and valley stay in the upper header scene. Continue the sunlit meadow and valley foreground downward into a spacious quiet grassy slope with sparse wildflowers near the sides. No extra balloons or characters.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/journeys/balloon.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\journey-balloon-v1.webp",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\journey-balloon.png",
+    "mode": "built-in"
+  },
+  {
+    "id": "water-cover",
+    "source": "C:\\Users\\voito\\.codex\\generated_images\\01a1532e-1785-7a03-ae16-280e698b60c9\\exec-99bcda71-aa8e-4b46-9769-3fb948998c39.png",
+    "prompt": "Use case: style-transfer. Asset type: one transparent-background closed water hex tile for an existing painted Arcane game. Repaint the REFERENCE FOREST COVER TILE as the WATER COVER variant. Preserve exactly the same point-up hex silhouette, camera, broad gently convex beveled face, subdued painterly edge thickness and broad smooth surface, simple quiet cover design. Change its palette to muted blue-grey / soft desaturated aquamarine, clearly a cousin of the reference sage forest cover. The face is OPAQUE painted material, not a view of water: NO ripples, waves, caustics, see-through water, glass or ice. A light upper-left painted highlight and a restrained dark teal bevel. No icons, numbers, drops, writing, decorations, extra shapes or shadows outside the hex. One single hex centered, generous transparent margins, actual transparent alpha outside. This is the CLOSED cover; it must clearly differ from the revealed watery surface below it.",
+    "references": [
+      "C:/proj/mushroomsArcane/assets/base/hex/hex.png"
+    ],
+    "tool": "image_gen",
+    "file": "C:\\proj\\mushroomsArcane\\assets\\arcane\\levels\\water-cover-v1.png",
+    "savedSource": "C:\\proj\\mushroomsArcane\\artwork\\field-polish-2026-10-19\\sources\\water-cover.png",
+    "mode": "built-in"
+  }
+]

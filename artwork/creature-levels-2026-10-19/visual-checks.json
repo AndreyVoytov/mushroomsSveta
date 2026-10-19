@@ -1,0 +1,27 @@
+{
+  "checkedAt": "2026-10-19T15:39:57.286Z",
+  "levels": [
+    {
+      "level": 2,
+      "points": 1
+    },
+    {
+      "level": 5,
+      "points": 2
+    },
+    {
+      "level": 10,
+      "points": 3
+    },
+    {
+      "level": 20,
+      "points": 4
+    }
+  ],
+  "level40Points": 5,
+  "switchDuringAnimation": true,
+  "reload": true,
+  "shortViewport": true,
+  "consoleErrors": [],
+  "suitesPassed": 25
+}

@@ -22,6 +22,7 @@ import LocationUtils from '../../core/utils/LocationUtils';
 import ForestUtils from '../../core/utils/ForestUtils';
 import AnimalsShowcaseConfiguration from '../../core/configuration/AnimalsShowcaseConfiguration';
 import { Easing } from 'phaser-ce';
+import LevelBackdrop from '../component/forest/LevelBackdrop';
 
 export default class LoadingScreen extends BaseScreen {
 
@@ -34,6 +35,7 @@ export default class LoadingScreen extends BaseScreen {
     private preloadBarFullWidth = 0;
 
     preload() {
+        if (AdminService.isEditMode()) LevelBackdrop.preloadForEditor(this.game);
         this.preloadBarRealProgress = 0;
         this.preloadBarVisibleProgress = 0.14;
 

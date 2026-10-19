@@ -28,7 +28,16 @@ export default class LevelBackdrop {
         if (!game.cache.checkImageKey('hexWater')) game.load.image('hexWater', LevelBackdrop.WATER_COVER_PATH);
     }
 
-    public static create(game: Phaser.Game, forest: ForestType, headerHeight: number): Phaser.Sprite {
+    public static preloadForEditor(game: Phaser.Game): void {
+        const names = Object.keys(LevelBackdrop.HEADERS).map(key => LevelBackdrop.HEADERS[key])
+            .concat(['house'], Object.keys(LevelBackdrop.JOURNEYS).map(key => LevelBackdrop.JOURNEYS[key]));
+        names.forEach(name => {
+            if (!game.cache.checkImageKey('arcane-level-' + name)) game.load.image('arcane-level-' + name, 'assets/arcane/levels/' + name + '-v1.webp');
+        });
+        if (!game.cache.checkImageKey('hexWater')) game.load.image('hexWater', LevelBackdrop.WATER_COVER_PATH);
+    }
+
+    public static create(game: Phaser.Game, forest: ForestType, headerHeight: number, forEditor: boolean = false): Phaser.Sprite {
         const art = LevelBackdrop.artwork(forest);
         const source = SpriteUtils.createSprite(game, 0, 0, art.key);
         const crop = source.texture.crop;
@@ -48,25 +57,46 @@ export default class LevelBackdrop {
         bitmap.context.fillStyle = mist;bitmap.context.fillRect(0, headerHeight + 24, game.width, height);
         bitmap.dirty = true;
         const scene = new Phaser.Sprite(game, 0, 0, bitmap);
-        scene.name = 'levelBackdrop';scene.inputEnabled = true;scene.fixedToCamera = true;
+        scene.name = 'levelBackdrop';scene.inputEnabled = true;scene.fixedToCamera = !forEditor;
+        // Follow the field through the spare artwork, then stop before its bottom edge.
+        scene.update = () => {if (!forEditor) scene.cameraOffset.y = -LevelBackdrop.scrollOffset(game, height);};
+        const scenePostUpdate = scene.postUpdate;
+        scene.postUpdate = () => {scene.update();scenePostUpdate.call(scene);};
         scene.events.onDestroy.addOnce(() => bitmap.destroy());
         return scene;
+    }
+
+    private static scrollOffset(game: Phaser.Game, height: number): number {
+        return Math.min(Math.max(0, game.camera ? game.camera.y : 0), Math.max(0, height - game.height - 160));
     }
 
     /** Bottom scroll masks sample the same painting, so their edges cannot reveal a tiled ground. */
     public static slice(game: Phaser.Game, scene: Phaser.Sprite, top: number, height: number, feather: boolean): Phaser.Sprite {
         const bitmap = game.make.bitmapData(game.width, height);
-        bitmap.context.drawImage(scene.texture.baseTexture.source, 0, top, game.width, height, 0, 0, game.width, height);
+        let fade: CanvasGradient;
         if (feather) {
-            const fade = bitmap.context.createLinearGradient(0, 0, 0, height);
+            fade = bitmap.context.createLinearGradient(0, 0, 0, height);
             fade.addColorStop(0, 'rgba(255,255,255,0)');fade.addColorStop(1, 'rgba(255,255,255,1)');
-            bitmap.context.globalCompositeOperation = 'destination-in';
-            bitmap.context.fillStyle = fade;bitmap.context.fillRect(0, 0, game.width, height);
-            bitmap.context.globalCompositeOperation = 'source-over';
         }
-        bitmap.dirty = true;
         const sprite = new Phaser.Sprite(game, 0, top, bitmap);
         sprite.fixedToCamera = true;sprite.inputEnabled = false;
+        let lastOffset: number = null;
+        sprite.update = () => {
+            const offset = LevelBackdrop.scrollOffset(game, scene.height);
+            if (lastOffset === offset) return;
+            lastOffset = offset;
+            bitmap.context.globalCompositeOperation = 'source-over';bitmap.context.clearRect(0, 0, game.width, height);
+            bitmap.context.drawImage(scene.texture.baseTexture.source, 0, top + offset, game.width, height, 0, 0, game.width, height);
+            if (feather) {
+                bitmap.context.globalCompositeOperation = 'destination-in';
+                bitmap.context.fillStyle = fade;bitmap.context.fillRect(0, 0, game.width, height);
+                bitmap.context.globalCompositeOperation = 'source-over';
+            }
+            bitmap.dirty = true;
+        };
+        sprite.update();
+        const slicePostUpdate = sprite.postUpdate;
+        sprite.postUpdate = () => {sprite.update();slicePostUpdate.call(sprite);};
         sprite.events.onDestroy.addOnce(() => bitmap.destroy());
         return sprite;
     }

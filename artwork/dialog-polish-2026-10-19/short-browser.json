@@ -1,0 +1,27 @@
+{
+  "ready": true,
+  "size": [
+    960,
+    1344
+  ],
+  "portrait": {
+    "key": "cat4",
+    "width": -464,
+    "height": 522
+  },
+  "skipButtons": [
+    {
+      "x": 658,
+      "y": 28,
+      "width": 270,
+      "height": 84,
+      "inputEnabled": true
+    }
+  ],
+  "dialog": {
+    "y": 949,
+    "height": 259
+  },
+  "soundCalls": [],
+  "errors": []
+}

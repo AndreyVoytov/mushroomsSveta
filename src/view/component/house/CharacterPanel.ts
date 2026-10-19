@@ -20,6 +20,10 @@ import ArtifactInfoPanel, { ArtifactInfoLine } from "./ArtifactInfoPanel";
 import ConfirmPanel from "./ConfirmPanel";
 import SkillInfoPanel from "./SkillInfoPanel";
 import ShopPanel from "./ShopPanel";
+import CharacterRelationships from './CharacterRelationships';
+import CharacterProgressionService from '../../../core/service/CharacterProgressionService';
+import WorldService from '../../../core/service/WorldService';
+import UiLayout from '../../../core/utils/UiLayout';
 
 interface SkillRowView {
     icon: Phaser.Sprite;
@@ -63,6 +67,7 @@ export default class CharacterPanel extends ClosablePanel {
     private panelScale: number;
     private panelHitArea: Phaser.Sprite;
     private skillsBg: Phaser.Sprite;
+    private equipmentBoard: Phaser.Sprite;
     private portrait: Phaser.Sprite;
     private portraitHitArea: Phaser.Button;
     private bannerTitle: Label;
@@ -96,6 +101,14 @@ export default class CharacterPanel extends ClosablePanel {
     private skillsBgBaseX: number = 0;
     private pendingCharacterId: string = null;
     private pendingArtifactSlot: CharacterArtifactSlotId = null;
+    private relationshipsView: CharacterRelationships;
+    private relationshipsShowing = true;
+    private levelBadge: Phaser.Sprite;
+    private levelLabel: Label;
+    private growthTweens: Phaser.Tween[] = [];
+    private growthDeltas: Label[] = [];
+    private growthResets: (()=>void)[] = [];
+    private growthFeedbackRetryAt = 0;
 
     constructor(game: Phaser.Game, screen: HouseScreen) {
         super(
@@ -139,10 +152,12 @@ export default class CharacterPanel extends ClosablePanel {
                 this.bringDetachedActionButtonsToTop();
             }
         });
-        this.animateBottomActionButtonsIn();
+        if (!this.relationshipsShowing) this.animateBottomActionButtonsIn();
     }
 
     protected onClose(): void {
+        this.stopGrowthFeedback();
+        if(this.relationshipsView)this.relationshipsView.hide();
         this.animateBottomActionButtonsOut();
         this.stopAmbientTweens();
 
@@ -225,6 +240,7 @@ export default class CharacterPanel extends ClosablePanel {
         this.portraitHitArea.alpha = 0.001;
 
         const board = this.attachSprite("characterPanelBg", "board");
+        this.equipmentBoard=board;
         this.placeAtPsdCenter(board, 480, 1121.5);
 
         const banner = this.attachSprite("characterPanelBanner", "banner");
@@ -281,12 +297,19 @@ export default class CharacterPanel extends ClosablePanel {
         this.characterNameLabel.anchor.set(0.5);
         this.placeAtPsdCenter(this.characterNameLabel, 655, 763);
 
+        this.levelBadge=this.attachSprite('uiSecondaryControl','characterLevelBadge');
+        this.levelBadge.width=230;this.levelBadge.height=62;
+        this.placeAtPsdCenter(this.levelBadge,655,325);
+        this.levelLabel=this.attachText('characterLevelLabel','Ур. 1',{font:'bold 38px Gilroy',fill:Label.INK,align:'center'});
+        this.levelLabel.anchor.set(.5);this.placeAtPsdCenter(this.levelLabel,655,325);
+
         this.artifactInfoPanel = new ArtifactInfoPanel(this.game, 0, 0, {
             onAction: () => this.tryTakeOffSelectedArtifact(),
             onUpgrade: () => this.tryUpgradeSelectedArtifact(),
             onSkillInfo: skillId => this.showArtifactBonusSkillInfo(skillId)
         });
         this.addSprite(this.artifactInfoPanel);
+        this.artifactInfoPanel.y = 100;
 
         CharacterPanel.SLOT_LAYOUT.forEach(layout => {
             const equippedBg = this.attachSprite("characterEquippedBg", layout.slotId + "EquippedBg");
@@ -350,6 +373,75 @@ export default class CharacterPanel extends ClosablePanel {
             fill: "#efffdd",
             align: "center"
         }, -1);
+        this.relationshipsView = new CharacterRelationships(this, relations => this.setRelationshipTab(relations));
+    }
+
+    private setRelationshipTab(relations:boolean):void {
+        this.relationshipsShowing=relations;this.artifactInfoPanel.visible=!relations;
+        this.equipmentBoard.visible=!relations;
+        this.setBottomActionButtonsVisible(!relations);
+        this.setBottomActionButtonsInteractive(!relations);
+        if(!relations)this.setBottomActionButtonsShownState();
+        const user=UserService.getUser();
+        CharacterPanel.SLOT_LAYOUT.forEach(layout=>{
+            const view=this.slotViews[layout.slotId],equipped=!!user.getCharacterEquippedArtifact(user.getCurrentCharacterId(),layout.slotId);
+            if(!view)return;
+            view.icon.visible=view.hitArea.visible=view.infoButton.visible=!relations&&equipped;
+            view.hitArea.inputEnabled=view.infoButton.inputEnabled=!relations&&equipped;
+            view.highlight.visible=!relations&&equipped&&this.selectedArtifactSlot===layout.slotId;
+            view.equippedBg.visible=false;
+        });
+    }
+
+    public postUpdate():void {
+        super.postUpdate();if(this.relationshipsView)this.relationshipsView.sync();
+        if(this.opened&&this.visible)this.showGrowthFeedback();
+    }
+    public destroy(destroyChildren?:boolean):void {
+        this.stopGrowthFeedback();
+        if(this.relationshipsView)this.relationshipsView.destroy();this.relationshipsView=null;
+        super.destroy(destroyChildren);
+    }
+
+    private stopGrowthFeedback():void {
+        this.growthTweens.forEach(tween=>this.game.tweens.remove(tween));this.growthTweens=[];
+        this.growthResets.forEach(reset=>reset());this.growthResets=[];
+        this.growthDeltas.forEach(label=>label.destroy());this.growthDeltas=[];
+    }
+
+    private showGrowthFeedback():void {
+        if(this.game.time.now<this.growthFeedbackRetryAt)return;
+        const user=UserService.getUser(),character=user.getCharacters()[this.currentCharacterIndex];
+        if(!character||!CharacterProgressionService.pending(user,character.id))return;
+        let gain;
+        try{gain=CharacterProgressionService.consumeNotice(user,character.id);}
+        catch(error){this.growthFeedbackRetryAt=this.game.time.now+5000;return;}
+        if(!gain)return;
+        this.stopGrowthFeedback();
+        const bonuses=this.getArtifactBonusesBySkill(character.id),green='#287b4a';
+        this.levelLabel.text='Ур. '+gain.toLevel;UiLayout.fit(this.levelLabel,205,48);
+        const levelScale={x:this.levelLabel.scale.x,y:this.levelLabel.scale.y},levelColor=this.levelLabel.fill;
+        this.levelLabel.fill=green;
+        this.growthTweens.push(this.game.add.tween(this.levelLabel.scale).to({x:levelScale.x*1.18,y:levelScale.y*1.18},300,Phaser.Easing.Sinusoidal.Out,true,0,2,true));
+        this.growthResets.push(()=>{this.levelLabel.scale.set(levelScale.x,levelScale.y);this.levelLabel.fill=levelColor;});
+        character.skills.slice(0,CharacterPanel.MAX_VISIBLE_SKILLS).forEach((skill,index)=>{
+            const amount=gain.bonuses[skill.skillId]||0;if(!amount)return;
+            const label=this.skillRows[index].valueLabel,final=this.getCurrentCharacterSkillValue(skill.skillId,character,bonuses);
+            const color=label.fill,scale={x:label.scale.x,y:label.scale.y},counter={value:final-amount};
+            label.fill=green;label.text=''+counter.value;
+            const count=this.game.add.tween(counter).to({value:final},850,Phaser.Easing.Quadratic.Out,true);
+            count.onUpdateCallback(()=>label.text=''+Math.round(counter.value));count.onComplete.addOnce(()=>label.text=''+final);
+            const pulse=this.game.add.tween(label.scale).to({x:scale.x*1.22,y:scale.y*1.22},250,Phaser.Easing.Sinusoidal.Out,true,0,2,true);
+            this.growthTweens.push(count,pulse);
+            this.growthResets.push(()=>{label.text=''+final;label.scale.set(scale.x,scale.y);label.fill=color;});
+            const delta=new Label(this.game,label.x+54,label.y-48,'+'+amount,{font:'bold 32px Gilroy',fill:green,align:'center'});
+            delta.anchor.set(.5);this.addChild(delta);this.growthDeltas.push(delta);
+            this.growthTweens.push(this.game.add.tween(delta).to({y:delta.y-28,alpha:0},1850,Phaser.Easing.Quadratic.Out,true,300));
+        });
+        // A final delayed tween owns the reset, so switching characters can cancel it.
+        const hold={value:0},reset=this.game.add.tween(hold).to({value:1},100,Phaser.Easing.Linear.None,true,2100);
+        reset.onComplete.addOnce(()=>this.stopGrowthFeedback());this.growthTweens.push(reset);
+        if(this.relationshipsView)this.relationshipsView.refresh(character.id);
     }
 
     private prepareBottomActionButtonsForShow(): void {
@@ -471,7 +563,9 @@ export default class CharacterPanel extends ClosablePanel {
     }
 
     private refreshView(): void {
+        this.stopGrowthFeedback();
         const user = UserService.getUser();
+        WorldService.prepare(user);
         const characters = user.getCharacters();
         if (characters.length == 0) {
             this.stopAmbientTweens();
@@ -489,6 +583,8 @@ export default class CharacterPanel extends ClosablePanel {
         }
 
         user.setCurrentCharacterId(character.id);
+        this.levelLabel.text='Ур. '+CharacterProgressionService.level(user,character.id);
+        UiLayout.fit(this.levelLabel,205,48);
         this.bannerTitle.text = "";
         this.characterNameLabel.text = this.getCharacterDisplayName(character.id, config);
         const artifactBonuses = this.getArtifactBonusesBySkill(character.id);
@@ -580,6 +676,7 @@ export default class CharacterPanel extends ClosablePanel {
 
         this.startAmbientTweens();
         this.showCharacterDescription();
+        if(this.relationshipsView)this.relationshipsView.refresh(character.id);
     }
 
     private startAmbientTweens(): void {
@@ -712,6 +809,7 @@ export default class CharacterPanel extends ClosablePanel {
     }
 
     private showArtifactInfo(slotId: CharacterArtifactSlotId): void {
+        if(this.relationshipsView&&this.relationshipsShowing)this.relationshipsView.showItems();
         const user = UserService.getUser();
         const character = user.getCharacters()[this.currentCharacterIndex];
         if (!character) {
@@ -966,7 +1064,8 @@ export default class CharacterPanel extends ClosablePanel {
         }
 
         const totalArtifactBonuses = artifactBonuses || this.getArtifactBonusesBySkill(character.id);
-        return skill.value + (totalArtifactBonuses[skillId] || 0);
+        const training=(UserService.getUser().world.training[character.id]||{})[skillId]||0;
+        return skill.value + (totalArtifactBonuses[skillId] || 0) + training;
     }
 
     private getCharacterDisplayName(characterId: string, config?: CharacterConfig): string {

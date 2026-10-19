@@ -1,142 +1,142 @@
 {
-  "checkedAt": "2026-10-19T13:20:57.969Z",
+  "checkedAt": "2026-10-19T14:06:37.475Z",
   "results": [
     {
       "suite": "tools/test-world.js",
       "passed": true,
-      "durationMs": 1783,
+      "durationMs": 1375,
       "output": "World/economy: PASS — overflow, regeneration, daily boundaries, rollback, actual spend, task reachability/reroll, permanent wardrobe, checks, 2d/3d lifecycle, relationships and season including delayed paid orders."
     },
     {
       "suite": "tools/test-serverless.mjs",
       "passed": true,
-      "durationMs": 5974,
+      "durationMs": 4975,
       "output": "Serverless: PASS — real SQL migration, CAS, ownership, complete bundle, paid season, replay, rollback, RLS, auth/CORS, signed receipts, immutable orders; web checkout disabled."
     },
     {
       "suite": "tools/test-cloud-client.js",
       "passed": true,
-      "durationMs": 1996,
+      "durationMs": 1637,
       "output": "Cloud client: PASS — serialized signed grants, cloud-before-consume, replay, local/server failure recovery, stale-device conflict, stable fingerprints, no production fake payments."
     },
     {
       "suite": "tools/test-world-fields.js",
       "passed": true,
-      "durationMs": 17509,
+      "durationMs": 14976,
       "output": "World fields: PASS — 960 seeded boards, 32 story stops; average generation attempts 1.64, max 16. No claim about completion probability."
     },
     {
       "suite": "tools/test-telemetry.js",
       "passed": true,
-      "durationMs": 171,
+      "durationMs": 126,
       "output": "Telemetry: PASS — cohorts, deduplication, mature retention denominators, separate level modes, duration and gross/refund energy."
     },
     {
       "suite": "tools/test-ad-callbacks.js",
       "passed": true,
-      "durationMs": 810,
+      "durationMs": 381,
       "output": "Ad callbacks: PASS — rapid requests, repeated reward/close/error, and offline completion are idempotent."
     },
     {
       "suite": "tools/test-journey-events.js",
       "passed": true,
-      "durationMs": 6607,
+      "durationMs": 5380,
       "output": "Journey events: PASS (100 distinct levels, 25-stop maps, story pacing, placement, save/reload and completion at level 25)"
     },
     {
       "suite": "tools/test-animals-generation.js",
       "passed": true,
-      "durationMs": 668,
+      "durationMs": 726,
       "output": "Animal showcase generation: PASS (35 cells, all 12 animals, restarts and regular-board retries)"
     },
     {
       "suite": "tools/test-mushroom-harvest.js",
       "passed": true,
-      "durationMs": 424,
+      "durationMs": 472,
       "output": "Mushroom harvest: quick fade, raised anchoring, scaled tile, pooling, reuse and teardown passed."
     },
     {
       "suite": "tools/test-ladybug-movement.js",
       "passed": true,
-      "durationMs": 696,
+      "durationMs": 668,
       "output": "Ladybug movement: synchronized swaps, permanent first-entry removal, shared-cell reservations, anchored escapes, water transport and collected guards passed."
     },
     {
       "suite": "tools/test-hero-abilities.js",
       "passed": true,
-      "durationMs": 1513,
+      "durationMs": 1593,
       "output": "Hero abilities: three-slot roster, gross energy, thresholds/overflow, pending summons, round-robin, ranked sequential owl reveals, landing guard and exit cleanup passed."
     },
     {
       "suite": "tools/test-house-discovery.js",
       "passed": true,
-      "durationMs": 1731,
+      "durationMs": 1966,
       "output": "Kitten discovery: level-14 route, raised position, one-shot bounce and restored scale passed.\nHouse discovery: last mushroom in 19 reveal orders, diary size, first/replacement dialogue readiness, replay and stale callbacks passed."
     },
     {
       "suite": "tools/test-item-ground-shadow.js",
       "passed": true,
-      "durationMs": 464,
+      "durationMs": 438,
       "output": "Item shadows: ground anchoring, spread, altitude fade, tile scaling, texture reuse and cleanup passed."
     },
     {
       "suite": "tools/test-forest-presentation.js",
       "passed": true,
-      "durationMs": 1217,
+      "durationMs": 1309,
       "output": "Forest presentation: persistent transition handoff, neighbor-triggered snail, full turn frames and hex waves passed."
     },
     {
       "suite": "tools/test-level-artwork.js",
       "passed": true,
-      "durationMs": 751,
+      "durationMs": 747,
       "output": "PASS level artwork: continuous proportional scenes, viewport reserve, graded haze, matching scroll masks, cleanup and stable unnumbered-scenery opacity."
     },
     {
       "suite": "tools/test-settings-menu.js",
       "passed": true,
-      "durationMs": 566,
+      "durationMs": 603,
       "output": "PASS settings: 80 rapid inputs, fixed gear, separate action targets, reuse, blocker cleanup, single support handoff."
     },
     {
       "suite": "tools/test-ui-goal-state.js",
       "passed": true,
-      "durationMs": 676,
+      "durationMs": 785,
       "output": "PASS UI goals: 100 repeated refreshes, one check, positive count restored, check reused.\nPASS goal geometry: 1–3 digit counts, trimmed artwork, shared center and compact gap."
     },
     {
       "suite": "tools/test-shop-navigation.js",
       "passed": true,
-      "durationMs": 499,
+      "durationMs": 565,
       "output": "PASS shop navigation: 80 actual tab callbacks, Heroes → Items, one active section, shop stays open."
     },
     {
       "suite": "tools/test-home-progress.js",
       "passed": true,
-      "durationMs": 636,
+      "durationMs": 963,
       "output": "PASS home progress: empty/partial/full inner bounds, clamping, zero totals, animated completion, one reward and chapter handoff, tween cleanup."
     },
     {
       "suite": "tools/test-diary-navigation.js",
       "passed": true,
-      "durationMs": 845,
+      "durationMs": 929,
       "output": "PASS diary: viewport fit and animated side margins, first/last boundaries, closed state, 100 rapid page inputs and completed turns."
     },
     {
       "suite": "tools/test-snail-sparks.js",
       "passed": true,
-      "durationMs": 512,
+      "durationMs": 560,
       "output": "Snail sparks: bounded 28-sprite pool, two rising stair paths, varied trajectories, fade and cleanup passed."
     },
     {
       "suite": "tools/test-sapphire-reward.js",
       "passed": true,
-      "durationMs": 1101,
+      "durationMs": 1223,
       "output": "PASS: consecutive wins, no false no-grey reward, duplicate guard, 1/12/180 curved flights, camera/scale, moving target, counter, cleanup, bounded particles."
     },
     {
       "suite": "tools/test-tint-interpolation.js",
       "passed": true,
-      "durationMs": 674,
+      "durationMs": 848,
       "output": "RGB tint interpolation: PASS (3003 intermediate colors, no ARGB or channel wrap)"
     }
   ]
