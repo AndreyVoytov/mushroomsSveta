@@ -13,10 +13,10 @@ import SkillInfoPanel from './SkillInfoPanel';
 import { ShopArtifactSkillId } from '../../../core/model/shop/ShopArtifactModels';
 
 export default class ShopItemsSectionPanel extends ShopSectionPanel {
-    private static readonly CARD_SCALE = 1.19;
-    private static readonly COLUMN_OFFSET = 232;
+    private static readonly CARD_SCALE = 1.08;
+    private static readonly COLUMN_OFFSET = 238;
     private static readonly ROW_START_Y = -76;
-    private static readonly ROW_STEP = 530;
+    private static readonly ROW_STEP = 580;
 
     private cards: ShopArtifactCardPanel[] = [];
     private onOpenBank?: () => void;

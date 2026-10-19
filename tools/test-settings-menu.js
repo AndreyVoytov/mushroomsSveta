@@ -11,9 +11,9 @@ function Base(game){this.game=game;this.scale=point(1);this.buttons=[];this.blac
 Base.prototype.attachButton=function(key,callback,name){const b=button(callback);b.name=name||key;this.buttons.push(b);return b;};
 Base.prototype.bringToTop=function(){};
 const game={time:{events:{add:timer}},tweens:{removeFrom(){}},add:{existing(){},tween:target=>({to(props,duration,ease,start,delay=0){timer(duration+delay,()=>Object.assign(target,props));return this;}})}};
-const sound={panelOpen(){},panelClose(){},disableSound(){},enableSound(){},simpleCellOpen(){}};
+const sound={panelOpen(){},panelClose(){},disableSound(){mocks.Game.SOUND_ENABLED=false;},enableSound(){mocks.Game.SOUND_ENABLED=true;},simpleCellOpen(){}};
 const mocks={ClosablePanel:Base,SoundUtils:sound,Settings:{SUPPORT_MAIL:'test@example.com'},
- SpriteUtils:{fitIcon(){},getAtlasKeyAndFrame:()=>({atlasKey:'atlas',frameName:'sound'})},
+ SpriteUtils:{fitIcon(b,w,h){b.width=w;b.height=h;},setSoundIcon(b,enabled,size){b.enabledIcon=enabled;b.width=b.height=size;}},
  Game:{SOUND_ENABLED:true},GameText:{supportMessage:()=>''},LocalizationService:{get:k=>k},
  LocalizationKey:{ui:k=>k},UiLayout:{touchTarget(){}},ConfirmPanel:function(){created++;this.show=()=>infoShown++;}};
 const exportsObject={};
@@ -24,7 +24,11 @@ const Menu=exportsObject.default,original=button(),menu=new Menu(game,{confirmPa
 menu.show();assert(Menu.shown);assert(!original.visible);
 for(let i=0;i<80;i++){menu.show();menu.close();advance(3);}
 assert(menu.opened,'opening cannot be interrupted by rapid input');
-advance(400);assert(!menu.processing);assert(menu.actions.every((b,i)=>b.y===original.y-(i+1)*112));
+advance(400);assert(!menu.processing);assert(menu.actions.every((b,i)=>b.y===original.y-(i+1)*124));
+assert(menu.actions.every(b=>b.width===104),'action circles keep the enlarged size');
+const soundButton=menu.buttons.find(b=>b.name==='sound');
+soundButton.callback();assert(!mocks.Game.SOUND_ENABLED&&!soundButton.enabledIcon);
+soundButton.callback();assert(mocks.Game.SOUND_ENABLED&&soundButton.enabledIcon);
 assert.equal(menu.gear.position.x,original.x);assert.equal(menu.gear.position.y,original.y);
 for(let i=0;i<80;i++){if(menu.opened)menu.close();else menu.show();advance(18);}
 advance(400);if(menu.opened)menu.close();advance(400);
@@ -33,6 +37,7 @@ menu.show();advance(400);
 const support=menu.buttons.find(b=>b.name==='support');support.callback();support.callback();advance(400);
 assert.equal(created,1);assert.equal(infoShown,1,'support opens once, after closing the menu');
 assert(!menu.blackTransparent.inputEnabled);assert(original.visible);
+sound.disableSound();menu.show();advance(400);assert(!soundButton.enabledIcon,'opening synchronizes a sound state changed elsewhere');menu.close();advance(400);
 // The support address is highlighted text; its @ is content, not a marker.
 const confirmExports={};
 vm.runInNewContext(ts.transpileModule(fs.readFileSync(path.join(__dirname,'../src/view/component/house/ConfirmPanel.ts'),'utf8'),

@@ -25,18 +25,19 @@ class TaskCardPanel extends BasePanel {
     public static WIDTH: number = 727;
     public static HEIGHT: number = 190;
     private static CLAIMED_ALPHA: number = 1;
-    private static ITEM_LEFT: number = 24;
-    private static ITEM_TOP: number = 38;
-    private static ITEM_WIDTH: number = 117;
-    private static ITEM_HEIGHT: number = 100;
-    private static REWARD_LEFT: number = 522;
-    private static REWARD_TOP: number = 29;
-    private static REWARD_WIDTH: number = 194;
-    private static REWARD_HEIGHT: number = 125;
-    private static PROGRESS_LEFT: number = 154;
-    private static PROGRESS_EMPTY_TOP: number = 104;
-    private static PROGRESS_FULL_TOP: number = 103;
-    private static TITLE_CENTER_X: number = 344;
+    // The left clasp and the curved right end are decorative, not content space.
+    private static ITEM_LEFT: number = 108;
+    private static ITEM_TOP: number = 50;
+    private static ITEM_WIDTH: number = 90;
+    private static ITEM_HEIGHT: number = 90;
+    private static REWARD_LEFT: number = 532;
+    private static REWARD_TOP: number = 32;
+    private static REWARD_WIDTH: number = 112;
+    private static REWARD_HEIGHT: number = 132;
+    private static PROGRESS_LEFT: number = 226;
+    private static PROGRESS_EMPTY_TOP: number = 114;
+    private static PROGRESS_FULL_TOP: number = 114;
+    private static TITLE_CENTER_X: number = 354;
     private static TITLE_TOP: number = 23;
 
     private background: Phaser.Sprite;
@@ -82,13 +83,15 @@ class TaskCardPanel extends BasePanel {
         this.progressEmpty.anchor.set(0);
         this.progressEmpty.x = TaskCardPanel.PROGRESS_LEFT;
         this.progressEmpty.y = TaskCardPanel.PROGRESS_EMPTY_TOP;
+        this.progressEmpty.width = 256;this.progressEmpty.height = 34;
 
         this.progressFull = this.attachSprite("tasksPanelTaskProgressFull", "progressFull");
         this.progressFull.anchor.set(0);
         this.progressFull.x = TaskCardPanel.PROGRESS_LEFT;
         this.progressFull.y = TaskCardPanel.PROGRESS_FULL_TOP;
-        this.progressFullBaseWidth = this.progressFull.width;
-        this.progressCropRect = new Phaser.Rectangle(0, 0, this.progressFullBaseWidth, this.progressFull.height);
+        this.progressFull.width = 256;this.progressFull.height = 34;
+        this.progressFullBaseWidth = this.progressFull.texture.frame.width;
+        this.progressCropRect = new Phaser.Rectangle(0, 0, this.progressFullBaseWidth, this.progressFull.texture.frame.height);
 
         this.icon = this.attachSprite("mushroom", "taskIcon");
         this.icon.anchor.set(0.5);
@@ -96,7 +99,7 @@ class TaskCardPanel extends BasePanel {
         this.icon.y = TaskCardPanel.ITEM_TOP + TaskCardPanel.ITEM_HEIGHT / 2;
 
         this.titleLabel = this.attachText("taskTitle", "", {
-            font: "bold 34px Arial",
+            font: "bold 32px Arial",
             fill: Label.INK,
             align: "center",
             wordWrap: true,
@@ -104,7 +107,7 @@ class TaskCardPanel extends BasePanel {
         });
         this.titleLabel.anchor.set(0.5);
         this.titleLabel.x = TaskCardPanel.TITLE_CENTER_X;
-        this.titleLabel.y = 62;this.titleLabel.lineGap = -14;
+        this.titleLabel.y = 65;this.titleLabel.lineGap = -6;
 
         this.progressLabel = this.attachText("taskProgress", "", {
             font: "bold 32px Gilroy",
@@ -118,7 +121,7 @@ class TaskCardPanel extends BasePanel {
         this.progressLabel.y = TaskCardPanel.PROGRESS_FULL_TOP + this.progressFull.height / 2 + 1;
 
         this.rewardTitleLabel = this.attachText("rewardTitle", LocalizationService.get("ui.tasks.reward", "Reward"), {
-            font: "bold 34px Arial",
+            font: "bold 28px Arial",
             fill: Label.INK,
             align: "center",
             wordWrap: true,
@@ -141,19 +144,19 @@ class TaskCardPanel extends BasePanel {
 
         this.rewardIcon = this.attachSprite("gems", "rewardIcon");
         this.rewardIcon.anchor.set(0.5);
-        this.rewardIcon.x = TaskCardPanel.REWARD_LEFT + 62;
-        this.rewardIcon.y = TaskCardPanel.REWARD_TOP + 81;
+        this.rewardIcon.x = TaskCardPanel.REWARD_LEFT + 28;
+        this.rewardIcon.y = 122;
 
         this.rewardLabel = this.attachText("rewardLabel", "2", {
-            font: "bold 36px Gilroy",
+            font: "bold 32px Gilroy",
             fill: "#855539",
             align: "center",
             wordWrap: true,
             wordWrapWidth: 90
         });
         this.rewardLabel.anchor.set(0.5);
-        this.rewardLabel.x = TaskCardPanel.REWARD_LEFT + 120;
-        this.rewardLabel.y = TaskCardPanel.REWARD_TOP + 81;
+        this.rewardLabel.x = TaskCardPanel.REWARD_LEFT + 76;
+        this.rewardLabel.y = 122;
 
         this.claimedCheckIcon = this.attachSprite("check", "claimedCheckIcon");
         this.claimedCheckIcon.anchor.set(0.5);
@@ -185,7 +188,7 @@ class TaskCardPanel extends BasePanel {
         this.currentTaskId = taskView.task.id;
 
         SpriteUtils.loadTexture(this.icon, taskView.task.icon);
-        SpriteUtils.fitIcon(this.icon, TaskCardPanel.ITEM_WIDTH - 22, TaskCardPanel.ITEM_HEIGHT - 18);
+        SpriteUtils.fitIcon(this.icon, 82, 90);
 
         const rewardIcon = taskView.task.reward && taskView.task.reward.boosters && taskView.task.reward.boosters.length > 0
             ? taskView.task.reward.boosters[0].type
@@ -195,7 +198,7 @@ class TaskCardPanel extends BasePanel {
             : ((taskView.task.reward && taskView.task.reward.gems) || 2);
 
         SpriteUtils.loadTexture(this.rewardIcon, rewardIcon);
-        SpriteUtils.fitIcon(this.rewardIcon, 52, 40);
+        SpriteUtils.fitIcon(this.rewardIcon, 38, 38);
         this.rewardLabel.text = "" + rewardCount;
         this.titleLabel.text = taskView.task.title;
         this.progressLabel.text = taskView.progress + "/" + taskView.task.target;
@@ -223,11 +226,11 @@ class TaskCardPanel extends BasePanel {
         this.claimTitleLabel.fill = "#214634";
         this.titleLabel.fill = Label.INK;
         this.alpha = isClaimed ? TaskCardPanel.CLAIMED_ALPHA : 1;
-        UiLayout.fit(this.titleLabel, 358, 68, true);
+        UiLayout.fit(this.titleLabel, 256, 64, true);
         UiLayout.fit(this.progressLabel, this.progressEmpty.width - 26, 38);
-        UiLayout.fit(this.rewardTitleLabel, 164, 76, true);
-        UiLayout.fit(this.claimTitleLabel, 164, 56, true);
-        UiLayout.fit(this.rewardLabel, 74, 48);
+        UiLayout.fit(this.rewardTitleLabel, 110, 54, true);
+        UiLayout.fit(this.claimTitleLabel, 110, 54, true);
+        UiLayout.fit(this.rewardLabel, 48, 40);
     }
 
     private updateProgressBar(progressRatio: number): void {
@@ -240,7 +243,7 @@ class TaskCardPanel extends BasePanel {
         this.progressCropRect.x = 0;
         this.progressCropRect.y = 0;
         this.progressCropRect.width = Math.max(1, cropWidth);
-        this.progressCropRect.height = this.progressFull.height;
+        this.progressCropRect.height = this.progressFull.texture.frame.height;
         (<any>this.progressFull).crop(this.progressCropRect, false);
     }
 
@@ -389,6 +392,7 @@ export default class TasksPanel extends ClosablePanel {
         this.titleLabel.anchor.set(0.5);
         this.titleLabel.x = 0;
         this.titleLabel.y = this.psdY(220);
+        UiLayout.fit(this.titleLabel, 500, 64);
 
         this.dailyTabSprite = this.attachSprite("tasksPanelTabActive", "dailyTabSprite");
         this.dailyTabSprite.anchor.set(0);
@@ -654,6 +658,7 @@ export default class TasksPanel extends ClosablePanel {
         label.anchor.set(0.5);
         label.x = this.psdX(buttonLeft + TasksPanel.TAB_SLOT_WIDTH / 2);
         label.y = this.psdY(TasksPanel.TAB_TOP + TasksPanel.TAB_HIT_HEIGHT / 2 + TasksPanel.TAB_TEXT_OFFSET_Y);
+        UiLayout.fit(label, 260, 48, true);
     }
 
     private loadTabTexture(sprite: Phaser.Sprite, texture: string): void {
@@ -676,9 +681,11 @@ export default class TasksPanel extends ClosablePanel {
             });
             this.progressTitle.y = this.psdY(338 + 17);
             this.progressTitle.text = LocalizationService.get("ui.tasks.dailyProgress", "Daily progress");
+            UiLayout.fit(this.progressTitle, 590, 48);
             this.resetLabel.visible = true;
             this.resetLabel.text = LocalizationService.get("ui.tasks.refreshIn", "Refresh in {time}")
                 .replace("{time}", this.formatDuration(EnergyUtils.getMillisToNextMoscowMidnight()));
+            UiLayout.fit(this.resetLabel, 620, 42);
             this.updateProgressBar(claimedTasks / totalTasks, dailyRewards);
             return;
         }
@@ -696,6 +703,7 @@ export default class TasksPanel extends ClosablePanel {
         });
         this.progressTitle.y = this.psdY(338 + 17);
         this.progressTitle.text = chapterView.chapter.title;
+        UiLayout.fit(this.progressTitle, 590, 48);
         this.resetLabel.visible = false;
         this.updateProgressBar(chapterView.claimedTasks / Math.max(1, chapterView.totalTasks), [rewardView]);
     }
@@ -892,12 +900,15 @@ export default class TasksPanel extends ClosablePanel {
 
         if (this.progressBarChest.visible) {
             SpriteUtils.loadTexture(this.progressBarChest, this.getProgressChestTexture());
-            this.progressBarChest.scale.set(this.getProgressChestScale());
+            SpriteUtils.fitIcon(this.progressBarChest, 136, 112);
+            this.progressBarEndReward.position.set(this.progressBarChest.x + this.progressBarChest.width / 2,
+                this.progressBarChest.y + this.progressBarChest.height / 2 + 12);
+            this.progressBarEndCheck.position.set(this.progressBarEndReward.x + 30, this.progressBarEndReward.y - 24);
         }
 
         if (finalReward && this.progressBarEndReward.visible) {
             SpriteUtils.loadTexture(this.progressBarEndReward, finalReward.icon);
-            this.progressBarEndReward.scale.set(this.getProgressEndRewardScale(finalReward.icon));
+            SpriteUtils.fitIcon(this.progressBarEndReward, 58, 52);
         }
 
         this.rewardIcons.forEach((icon, index) => {

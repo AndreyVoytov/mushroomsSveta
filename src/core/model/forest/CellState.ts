@@ -23,6 +23,8 @@ export default class CellState {
     renderedContentImage: string;
     renderedAdjucentCount: number;
     numberedDecoration: boolean = false;
+    decorationAlpha: number = 1;
+    decorationRevealTween: Phaser.Tween;
     hadNumberedTree: boolean = false;
     numberlessDecorationImage: string;
     finalTreeImage: string;

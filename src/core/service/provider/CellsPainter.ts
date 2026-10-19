@@ -91,6 +91,7 @@ export default class CellsPainter extends CellsProvider {
         cell.state.baseScaleY = cellSprite.scale.y;
         this.updateWaterNumberLabel(cell, adjucentCount);
         this.updateDarkForestNumberLabel(cell, adjucentCount);
+        this.updateDecorationOpacity(cell);
 
         if (boostersProvider && ForestUtils.isBoosterType(cell.type)) {
             cellSprite.events.onInputDown.add(() => {
@@ -196,6 +197,7 @@ export default class CellsPainter extends CellsProvider {
         }
         this.updateWaterNumberLabel(cell, adjucentCount);
         this.updateDarkForestNumberLabel(cell, adjucentCount);
+        this.updateDecorationOpacity(cell);
 
         this.updateNumberedTreeEffect(cell);
         if (cell.state.opened && wasNumberedTree && previousCount != null && adjucentCount < previousCount
@@ -205,6 +207,31 @@ export default class CellsPainter extends CellsProvider {
         }
 
         return cell.state.numberedDecoration;
+    }
+
+    private updateDecorationOpacity(cell: ForestCell): void {
+        const state = cell.state;
+        const quietScenery = ['tree', 'stump', 'log', 'darkTree', 'rottenStump', 'cobwebDarkLog'];
+        const alpha = state.renderedAdjucentCount === 0 && quietScenery.indexOf(state.renderedContentImage) >= 0 ? 0.42 : 1;
+        if (state.decorationRevealTween && state.decorationAlpha !== alpha) {
+            state.decorationRevealTween.stop();state.decorationRevealTween = null;
+        }
+        state.decorationAlpha = alpha;
+        if (state.sprite && !state.decorationRevealTween) state.sprite.alpha = alpha;
+    }
+
+    public revealCellContent(cell: ForestCell): void {
+        const state = cell.state, sprite = state.sprite;
+        if (!sprite) return;
+        if (state.decorationRevealTween) state.decorationRevealTween.stop();
+        AnimationUtils.primeForShow(sprite);sprite.visible = true;sprite.alpha = 0;
+        const tween = sprite.game.add.tween(sprite).to({alpha: state.decorationAlpha}, 80, Phaser.Easing.Linear.None, true);
+        state.decorationRevealTween = tween;
+        tween.onComplete.addOnce(() => {
+            if (state.decorationRevealTween !== tween) return;
+            state.decorationRevealTween = null;
+            if (sprite.exists) sprite.alpha = state.decorationAlpha;
+        });
     }
 
     private animateNumberedTreeReaction(cell: ForestCell, image: string): void {

@@ -47,15 +47,16 @@ export default class HelperPanel extends BasePanel {
         const panelHeight = Math.min(800, baseHeight + Math.max(0, this.text.textHeight - bodyBudget));
         this.dialogPnl.anchor.set(0.5);this.dialogPnl.position.set(0, 0);
         this.dialogPnl.width = 880;this.dialogPnl.height = panelHeight;
-        const contentTop = -panelHeight / 2 + 56;
-        const contentBottom = panelHeight / 2 - (okButton ? 124 : 54);
-        const textBottom = contentBottom - (hasImages ? 132 : 0);
+        const contentTop = -panelHeight / 2 + 96;
+        const contentBottom = panelHeight / 2 - (okButton ? 124 : 72);
+        const textBottom = contentBottom - (hasImages ? 138 : 0);
         this.text.y = (contentTop + textBottom) / 2;
         UiLayout.fit(this.text, textWidth, textBottom - contentTop, true);
         this.personImage.anchor.set(0.5, 1);
-        this.personImage.position.set(260, panelHeight / 2 - 42);
-        // Reserve a full-height illustration column inside the parchment.
-        SpriteUtils.fitIcon(this.personImage, 304, panelHeight - 82);
+        // The painted parchment ends before the texture's transparent margins.
+        // Keep the illustration inside that visible edge, including its feet.
+        this.personImage.position.set(240, panelHeight / 2 - 88);
+        SpriteUtils.fitIcon(this.personImage, 284, panelHeight - 144);
 
         if (images && images.length > 0) {
             const icons = new InfoPanel(this.game, 0, 0, [], images, true);
@@ -82,16 +83,18 @@ export default class HelperPanel extends BasePanel {
         }
 
         if (okButton) {
-            let okButtin = SpriteUtils.createSprite(this.game, -135, this.dialogPnl.height / 2 - 60, 'pnlButton');
-            okButtin.anchor = new Phaser.Point(0.5, 0.5);
-            okButtin.scale = new Phaser.Point(0.7, 0.7);
-            this.addChild(okButtin);
+            const okButtonY = panelHeight / 2 - 60;
+            const okArtwork = SpriteUtils.createSprite(this.game, -135, okButtonY, 'pnlButton');
+            okArtwork.anchor.set(0.5);
+            okArtwork.width = 300;okArtwork.height = 84;
+            this.addChild(okArtwork);
 
-            let okLabel = new Label(this.game, 0, 0, LocalizationService.get('ui.goodLower'), { font: "bolder 60px Gilroy", fill: "#f0f1ec" });
-            okLabel.anchor = new Phaser.Point(0.5, 0.5);
-            okLabel.strokeThickness = 4;
-            okLabel.addStrokeColor('#61b019', 0);
-            okButtin.addChild(okLabel);
+            const okLabel = new Label(this.game, -135, okButtonY, LocalizationService.get('ui.goodLower'), {
+                font: 'bold 40px Arial', fill: Label.INK
+            });
+            okLabel.anchor.set(0.5);
+            UiLayout.fit(okLabel, 242, 48);
+            this.addChild(okLabel);
         }
     }
 

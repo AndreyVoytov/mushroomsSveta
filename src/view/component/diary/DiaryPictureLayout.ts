@@ -6,6 +6,7 @@ import BasePanel from '../../component/panel/BasePanel';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import LocalizationKey from '../../../core/localization/LocalizationKey';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class DiaryPictureLayout extends BasePanel {
 
     constructor(game: Phaser.Game, recipeContent: DiaryContentType, x: number, y: number) {
@@ -27,11 +28,14 @@ export default class DiaryPictureLayout extends BasePanel {
         title.lineSpacing = -15;
         Utils.applyPreset(title, { "spriteId": "title", "x": 510 - 480, "y": 130 - 512, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 53 })
         this.addSprite(title);
+        title.fontSize = 46;title.lineGap = -6;UiLayout.fit(title, 590, 88, true);
 
         let details = new Label(game, 0, 100, detailsText, Label.TASK_STYLE);
         details.name = "details";
         Utils.applyPreset(details, { "spriteId": "details", "x": 516 - 480, "y": 228 - 512, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0, "rotation": 0, "fontSize": 40 })
         this.addSprite(details);
+        details.anchor.set(0.5);details.position.set(30, -265);details.fontSize = 34;
+        details.lineGap = -6;UiLayout.fit(details, 590, 112, true);
 
 
         let center = new Phaser.Point(510 - 480, 630 - 512);

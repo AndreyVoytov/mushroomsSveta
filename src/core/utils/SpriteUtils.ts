@@ -31,6 +31,46 @@ export default class SpriteUtils {
         sprite.scale.set(scale);
     }
 
+    /** Stretch the painted center while retaining narrow, fixed-size borders. */
+    public static fitPanel(sprite: Phaser.Sprite, width: number, height: number, left: number, top: number, right: number = left, bottom: number = top): void {
+        const texture = sprite.texture, crop = texture.crop;
+        const id = ['ui-panel', sprite.key, sprite.frameName, width, height, left, top, right, bottom].join(':');
+        let bitmap = sprite.game.cache.getBitmapData(id);
+        if (!bitmap) {
+            bitmap = sprite.game.make.bitmapData(width, height);
+            const sx = [0, left, crop.width - right, crop.width];
+            const sy = [0, top, crop.height - bottom, crop.height];
+            const dx = [0, left, width - right, width];
+            const dy = [0, top, height - bottom, height];
+            for (let row = 0; row < 3; row++) for (let col = 0; col < 3; col++) {
+                if (sx[col + 1] === sx[col] || sy[row + 1] === sy[row]) continue;
+                bitmap.context.drawImage(texture.baseTexture.source,
+                    crop.x + sx[col], crop.y + sy[row], sx[col + 1] - sx[col], sy[row + 1] - sy[row],
+                    dx[col], dy[row], dx[col + 1] - dx[col], dy[row + 1] - dy[row]);
+            }
+            bitmap.dirty = true;
+            sprite.game.cache.addBitmapData(id, bitmap);
+        }
+        sprite.loadTexture(bitmap);sprite.scale.set(1);
+    }
+
+    public static setSoundIcon(sprite: Phaser.Sprite | Phaser.Button, enabled: boolean, size: number): void {
+        SpriteUtils.loadTexture(sprite, 'sound1');
+        SpriteUtils.fitIcon(sprite, size, size);
+        let slash: Phaser.Graphics = <any>sprite.children.filter((child: any) => child.name === 'muteSlash')[0];
+        if (!slash) {
+            slash = new Phaser.Graphics(sprite.game, 0, 0);slash.name = 'muteSlash';
+            const width = sprite.texture.frame.width, height = sprite.texture.frame.height;
+            const x = width * (0.5 - sprite.anchor.x), y = height * (0.5 - sprite.anchor.y);
+            slash.lineStyle(width * 0.085, 0xfff1d2, 1);
+            slash.moveTo(x - width * 0.24, y - height * 0.23);slash.lineTo(x + width * 0.24, y + height * 0.23);
+            slash.lineStyle(width * 0.045, 0x8b3e2c, 1);
+            slash.moveTo(x - width * 0.24, y - height * 0.23);slash.lineTo(x + width * 0.24, y + height * 0.23);
+            sprite.addChild(slash);
+        }
+        slash.visible = !enabled;
+    }
+
     /** Preset coordinates use the original item canvases, independent of texture resolution. */
     public static preserveItemPresetSize(sprite: Phaser.Sprite, imageKey?: string): void {
         const image = this.images.filter(entry => entry.key == (imageKey || sprite.key))[0];
@@ -95,7 +135,7 @@ export default class SpriteUtils {
         return new Phaser.TileSprite(game, x, y, width, height, keyAndFrame.atlasKey, keyAndFrame.frameName);
     }
 
-    public static loadTexture(sprite:Phaser.Sprite, texture:string){
+    public static loadTexture(sprite:Phaser.Sprite | Phaser.Button, texture:string){
         sprite.loadTexture(SpriteUtils.key(texture), SpriteUtils.frame(texture))
     }
     public static loadTextureForButton(button:Phaser.Button, texture:string){

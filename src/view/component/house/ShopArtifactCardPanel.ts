@@ -167,31 +167,37 @@ export default class ShopArtifactCardPanel extends BasePanel {
         this.disabledShade.visible = false;
 
         // A single painted display card gives every row its own reserved area.
-        SpriteUtils.loadTexture(this.panel, 'uiShopCard');this.panel.width = 370;this.panel.height = 400;
+        SpriteUtils.loadTexture(this.panel, 'uiShopCard');
+        SpriteUtils.fitPanel(this.panel, 432, 500, 32, 62, 32, 66);
         helperPanel.visible = false;
         const titleRibbon = this.attachSprite('uiSectionRibbon', 'titleRibbon');
-        titleRibbon.position.set(0, -152);titleRibbon.width = 350;titleRibbon.height = 86;
-        title.position.set(0, -152);title.fontSize = 34;title.fill = Label.ON_DARK;
+        SpriteUtils.fitPanel(titleRibbon, 432, 100, 64, 0);
+        titleRibbon.position.set(0, -198);
+        title.position.set(0, -198);title.fontSize = 32;title.fill = Label.ON_DARK;
         this.bringChildToTop(title);
         this.skillLabels.forEach((row, i) => {
-            const y = -67 + i * 48;
-            row.label.position.set(-110, y);row.label.fontSize = 28;row.label.fill = Label.INK;
+            const y = -114 + i * 60;
+            row.label.position.set(-114, y);row.label.fontSize = 30;row.label.fill = Label.INK;
             const icon: any = this.children.filter((c: any) => c.name === 'skillIcon' + i)[0];
             const info: any = this.children.filter((c: any) => c.name === 'skillInfo' + i)[0];
-            icon.position.set(-135, y);SpriteUtils.fitIcon(icon, 30, 30);info.position.set(142, y);
+            icon.position.set(-150, y);SpriteUtils.fitIcon(icon, 48, 48);
+            info.position.set(152, y);SpriteUtils.fitIcon(info, 42, 42);
+            UiLayout.touchTarget(info, 72, 56);
         });
-        usageLabel.anchor.set(1, 0.5);usageLabel.position.set(148, 46);usageLabel.fontSize = 28;usageLabel.fill = Label.INK;
-        this.levelLabel.position.set(148, 103);this.levelLabel.fontSize = 27;this.levelLabel.fill = Label.INK;
+        usageLabel.anchor.set(0, 0.5);usageLabel.align = 'left';
+        usageLabel.position.set(-44, 36);usageLabel.fontSize = 28;usageLabel.fill = Label.INK;
+        this.levelLabel.anchor.set(0.5);this.levelLabel.align = 'center';
+        this.levelLabel.position.set(0, 132);this.levelLabel.fontSize = 28;this.levelLabel.fill = Label.INK;
         SpriteUtils.loadTexture(this.itemBackground, 'dialogMedallion');
         this.game.tweens.removeFrom(this.itemBackground);
-        this.itemBackground.position.set(-112, 90);this.itemBackground.width = this.itemBackground.height = 108;
+        this.itemBackground.position.set(-130, 36);this.itemBackground.width = this.itemBackground.height = 104;
         this.itemSplash.visible = false;
-        this.itemIcon.position.set(-112, 90);SpriteUtils.fitIcon(this.itemIcon, 86, 102);
+        this.itemIcon.position.set(-130, 36);SpriteUtils.fitIcon(this.itemIcon, 96, 102);
         SpriteUtils.loadTexture(this.buyButton, 'pnlButton');
-        this.buyButton.position.set(40, 163);this.buyButton.width = 230;this.buyButton.height = 66;
-        this.priceGemIcon.y = 163;SpriteUtils.fitIcon(this.priceGemIcon, 36, 36);
-        this.priceLabel.anchor.set(0.5);this.priceLabel.y = 163;this.priceLabel.fontSize = 34;this.priceLabel.fill = Label.INK;
-        this.purchasedCheck.position.set(40, 163);SpriteUtils.fitIcon(this.purchasedCheck, 38, 32);
+        this.buyButton.position.set(0, 214);this.buyButton.width = 330;this.buyButton.height = 64;
+        this.priceGemIcon.y = 214;SpriteUtils.fitIcon(this.priceGemIcon, 42, 42);
+        this.priceLabel.anchor.set(0.5);this.priceLabel.y = 214;this.priceLabel.fontSize = 40;this.priceLabel.fill = Label.INK;
+        this.purchasedCheck.position.set(0, 214);SpriteUtils.fitIcon(this.purchasedCheck, 38, 32);
         this.disabledShade.visible = false;
 
         this.refreshState();
@@ -215,14 +221,14 @@ export default class ShopArtifactCardPanel extends BasePanel {
             max: this.item.maxLevel
         });
 
-        UiLayout.fit(this.titleLabel, 292, 58, true);
-        UiLayout.fit(this.usageLabel, 200, 66, true);
-        UiLayout.fit(this.levelLabel, 210, 32);
-        this.skillLabels.forEach(row => UiLayout.fit(row.label, 225, 38));
+        UiLayout.fit(this.titleLabel, 264, 48);
+        UiLayout.fit(this.usageLabel, 210, 84, true);
+        UiLayout.fit(this.levelLabel, 330, 34);
+        this.skillLabels.forEach(row => UiLayout.fit(row.label, 226, 42));
         UiLayout.fit(this.priceLabel, 96, 44);
         const priceWidth = this.priceLabel.width + 10 + this.priceGemIcon.width;
-        this.priceGemIcon.x = 40 - priceWidth / 2 + this.priceGemIcon.width / 2;
-        this.priceLabel.x = 40 + priceWidth / 2 - this.priceLabel.width / 2;
+        this.priceGemIcon.x = -priceWidth / 2 + this.priceGemIcon.width / 2;
+        this.priceLabel.x = priceWidth / 2 - this.priceLabel.width / 2;
 
         this.disabledShade.visible = false;
         this.purchasedCheck.visible = purchased;

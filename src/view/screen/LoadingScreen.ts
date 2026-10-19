@@ -649,7 +649,7 @@ export default class LoadingScreen extends BaseScreen {
         // this.loadImage('hexRed', 'assets/base/hex/hexRed.png');
         // this.loadImage('hexNet', 'assets/base/hex/hexNet.png');
 
-        this.loadImage('hexWater', 'assets/base/hex/hexWater.png');
+        this.loadImage('hexWater', 'assets/arcane/levels/water-cover-v1.png');
 
         this.loadImage('leaf1', 'assets/base/hex/leaf1.png');
         this.loadImage('leaf1g', 'assets/base/hex/leaf1g.png');

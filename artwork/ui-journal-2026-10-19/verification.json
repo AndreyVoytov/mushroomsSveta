@@ -1,0 +1,88 @@
+{
+  "verifiedAt": "2026-10-19T13:03:55.409Z",
+  "project": "andreyvoytov-mushrooms-arcane",
+  "bundleSha256": "3c0ccc7cafb243067aa6d5d318392a4498c48edcdc9918680f752856b71326de",
+  "deployments": [
+    {
+      "url": "https://82fe4a2c.andreyvoytov-mushrooms-arcane.pages.dev",
+      "sha256": "3c0ccc7cafb243067aa6d5d318392a4498c48edcdc9918680f752856b71326de",
+      "bytes": 2432621,
+      "metadataMatches": true
+    },
+    {
+      "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+      "sha256": "3c0ccc7cafb243067aa6d5d318392a4498c48edcdc9918680f752856b71326de",
+      "bytes": 2432621,
+      "metadataMatches": true
+    }
+  ],
+  "checks": {
+    "workflowSuites": [
+      "tools/test-world.js",
+      "tools/test-serverless.mjs",
+      "tools/test-cloud-client.js",
+      "tools/test-world-fields.js",
+      "tools/test-telemetry.js",
+      "tools/test-ad-callbacks.js",
+      "tools/test-journey-events.js",
+      "tools/test-animals-generation.js",
+      "tools/test-mushroom-harvest.js",
+      "tools/test-ladybug-movement.js",
+      "tools/test-hero-abilities.js",
+      "tools/test-house-discovery.js",
+      "tools/test-item-ground-shadow.js",
+      "tools/test-forest-presentation.js",
+      "tools/test-settings-menu.js",
+      "tools/test-ui-goal-state.js",
+      "tools/test-shop-navigation.js",
+      "tools/test-home-progress.js",
+      "tools/test-diary-navigation.js",
+      "tools/test-snail-sparks.js",
+      "tools/test-sapphire-reward.js",
+      "tools/test-tint-interpolation.js"
+    ],
+    "workflowResult": "all 22 passed; diary geometry rerun after final centering adjustment",
+    "productionBuild": "passed"
+  },
+  "visualReview": {
+    "phone": "390x844",
+    "compactPhone": "360x640",
+    "shortWindow": "500x700",
+    "diaryPages": [
+      "picture",
+      "recipe",
+      "map"
+    ],
+    "diaryNavigation": "real arrows and close button",
+    "tasks": [
+      "daily",
+      "campaign"
+    ],
+    "homeProgress": [
+      "zero",
+      "partial",
+      "full",
+      "long caption"
+    ],
+    "puzzleDiary": "actual dialogue panel; animated side margins checked"
+  },
+  "previewDiagnostics": [
+    "Existing board-generation fallback messages appeared during a forced Forest restart; UI actions completed without exceptions."
+  ],
+  "screenshots": [
+    "home-final.png",
+    "diary-map-final.png",
+    "tasks-final.png",
+    "puzzle-diary-final.png",
+    "progress-zero-final.png",
+    "progress-full-final.png",
+    "progress-long-title-final.png",
+    "journal-tasks-progress-final.png"
+  ],
+  "publishedBoot": {
+    "url": "https://andreyvoytov-mushrooms-arcane.pages.dev/?lang=ru&ui=3c0ccc7c",
+    "loaded": true,
+    "consoleErrors": [],
+    "screenshot": "published-boot-final.png"
+  }
+}

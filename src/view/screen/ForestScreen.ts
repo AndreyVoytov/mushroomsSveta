@@ -614,7 +614,7 @@ export default class ForestScreen extends BaseForestScreen {
                if (contentType in AnimalsContents || contentType in ItemContents || contentType in InteractiveContents) {
                    AnimationUtils.showStable(this.justOpenedCells[0].state.sprite);
                } else {
-                   AnimationUtils.fadeInStable(this.game, this.justOpenedCells[0].state.sprite);
+                   this.cellsProvider.revealCellContent(this.justOpenedCells[0]);
                }
             }
            if(this.justOpenedCells[0].state.label && this.justOpenedCells[0].state.label.text != ""

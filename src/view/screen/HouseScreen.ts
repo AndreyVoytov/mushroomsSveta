@@ -514,7 +514,7 @@ export default class HouseScreen extends DialogScreen {
             this.ensureEventUi(eventInfo);
         });
 
-        this.diaryPanel = new DiaryPanel(this.game, this, this.game.width / 2 -20, this.game.height / 2);
+        this.diaryPanel = new DiaryPanel(this.game, this, this.game.width / 2, this.game.height / 2);
         this.addPanel(this.diaryPanel);
         this.diaryPanel.visible = false;
         this.diaryPanel.fixedToCamera = true;

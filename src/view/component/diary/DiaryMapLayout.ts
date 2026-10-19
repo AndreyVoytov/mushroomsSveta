@@ -15,6 +15,7 @@ import ReplicasConfiguration from '../../../core/configuration/ReplicasConfigura
 import Skewable from '../panel/Skewable';
 import AdminService from '../../../core/service/AdminService';
 import LocalizationService from '../../../core/localization/LocalizationService';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class DiaryMapLayout extends BasePanel {
 
     private mapContent: DiaryContentType;
@@ -36,6 +37,7 @@ export default class DiaryMapLayout extends BasePanel {
         title.lineSpacing = -15;
         Utils.applyPreset(title, { "spriteId": "title", "x": 510 - 480, "y": 130 - 512, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0, "fontSize": 53 })
         this.addSprite(title);
+        title.fontSize = 46;title.lineGap = -6;UiLayout.fit(title, 590, 88, true);
 
         let preset = mapContent.mapPreset? mapContent.mapPreset.preset: [];
         let notes = mapContent.mapPreset? mapContent.mapPreset.notes: [];

@@ -255,34 +255,40 @@ export default class StartLevelPanel extends ClosablePanel {
         this.children.forEach((child: any) => {
             if (['header', 'ribbon', 'panelColor', 'lukoshkoIcon'].indexOf(child.name) >= 0) child.visible = false;
             if (child.name === 'closeButton' || child.name === 'closeButtonViolet') {
-                child.position.set(314, -294);child.width = child.height = 64;
+                child.position.set(302, -282);child.width = child.height = 82;
+                UiLayout.touchTarget(child, 104, 104);
             }
         });
         if (this.headerText) {
             this.headerText.position.set(0, -265);this.headerText.anchor.set(0.5);
             this.headerText.fontSize = 44;this.headerText.fill = Label.ON_DARK;
             UiLayout.fit(this.headerText, 510, 58);
-            label.position.set(0, -176);label.fontSize = 36;label.fill = Label.INK;
+            label.position.set(0, -180);label.fontSize = 38;label.fill = Label.INK;
+            UiLayout.fit(label, 510, 48);
         } else {
-            label.position.set(0, -265);label.fill = Label.ON_DARK;
+            label.position.set(0, -265);label.setStyle({font:'50px Lora',fill:Label.ON_DARK});
             UiLayout.fit(label, 500, 62);
         }
+        const goalStep = aims.length > 2 ? 206 : 256;
         aims.forEach((aim, i) => {
             const icon: any = this.children.filter((c: any) => c.name === 'goalIcon' + i)[0];
             const count: any = this.children.filter((c: any) => c.name === 'goalCount' + i)[0];
-            icon.y = -100;SpriteUtils.fitIcon(icon, 106, 92);
-            count.y = -25;count.fontSize = 40;count.fill = Label.INK;UiLayout.fit(count, 170, 48);
+            const center = (i - (aims.length - 1) / 2) * goalStep;
+            icon.position.set(center - 56, -90);SpriteUtils.fitIcon(icon, 140, 140);
+            count.position.set(center + 69, -90);count.fontSize = 62;count.fill = Label.INK;
+            UiLayout.fit(count, aims.length > 2 ? 78 : 102, 70);
+            UiLayout.goalPair(icon, count, center, -90, 14);
         });
         const partyTitle: any = this.children.filter((c: any) => c.name === 'chooseBostersLabel')[0];
-        partyTitle.position.set(0, 70);partyTitle.fontSize = 38;partyTitle.fill = Label.INK;
-        this.heroTeamPanel.y = 204;
+        partyTitle.position.set(0, 60);partyTitle.fontSize = 40;partyTitle.fill = Label.INK;
+        this.heroTeamPanel.y = 196;
         this.playButton.position.set(0, 355);this.playButton.tint = 0xffffff;
         this.playButton.width = 440;this.playButton.height = 108;
         continueLabel.fontSize = 48;UiLayout.fit(continueLabel, 360, 64);
         if (this.hardLevelPrizeInfo) {
             const badge = this.hardLevelPrizeInfo;
             SpriteUtils.loadTexture(badge, 'dialogMedallion');badge.tint = 0xffffff;badge.rotation = 0;
-            badge.position.set(318, 20);badge.width = badge.height = 132;
+            badge.position.set(274, 64);badge.width = badge.height = 104;
             const badgeScale = Math.abs(badge.scale.x);
             const star: any = badge.children.filter((c: any) => c.name === 'gems')[0];
             const bonus: any = badge.children.filter((c: any) => c.name === 'x2')[0];
@@ -291,6 +297,8 @@ export default class StartLevelPanel extends ClosablePanel {
             bonus.scale.set(1, 1);
             bonus.fill = Label.ON_DARK;
         }
+        // The painted folio replaces the old tall header; discard its legacy shift.
+        this.y = y;
     }
     private getTaskTitle(currentTask: DiaryContentType): string {
         return LocalizationService.get(currentTask.titleForProgress || currentTask.title);

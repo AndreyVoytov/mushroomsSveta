@@ -1,0 +1,30 @@
+{
+  "verifiedAt": "2026-10-19T12:08:20.496Z",
+  "deployment": "26329db1",
+  "behaviorSuitesPassed": 20,
+  "productionBuildPassed": true,
+  "verified": [
+    {
+      "url": "https://26329db1.andreyvoytov-mushrooms-arcane.pages.dev",
+      "status": 200,
+      "bundleSha256": "6e7ed8b33a05255a8a66b28b6357d233e1d02283c081f064941b90fe1c3b8532"
+    },
+    {
+      "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+      "status": 200,
+      "bundleSha256": "6e7ed8b33a05255a8a66b28b6357d233e1d02283c081f064941b90fe1c3b8532"
+    }
+  ],
+  "uiChecks": [
+    "Four widened cards and larger skill icons",
+    "Single-line titles inside ribbon centers",
+    "Item level clear of artwork",
+    "Heroes title and settings title alignment",
+    "Actual Heroes to Items tab callback stays in shop",
+    "Larger menu circles and sound on/off state in both panels",
+    "Visible-pixel goal spacing before level and in HUD",
+    "One- and three-goal compositions, 1–3 digit counters"
+  ],
+  "publishedBrowserErrors": [],
+  "publishedScreenshot": "published.png"
+}

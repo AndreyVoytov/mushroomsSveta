@@ -21,7 +21,8 @@ export default class ReplicaDiaryPanel extends BasePanel {
 
     private gameCenterY;
 
-    private finalScale = 0.9;
+    private finalScale = 0.78;
+    private diaryCenterX: number;
     private emitter: Phaser.Particles.Arcade.Emitter;
     private emitterStarted = false;
     private emitterStartEvent: Phaser.TimerEvent;
@@ -37,6 +38,8 @@ export default class ReplicaDiaryPanel extends BasePanel {
 
     constructor(game: Phaser.Game, x: number, y: number, r: ReplicaType, diaryPrest?: Preset) {
         super(game, x + (r.rightSide? ReplicaDiaryPanel.RIGHT_SIDE_DX : 0), y);
+        this.finalScale = Math.min(0.78, (game.width - 180) / (890 * 1.08), (game.height - 420) / (1085 * 1.04));
+        this.diaryCenterX = game.width / 2 - this.x - 49 * this.finalScale;
         this.diaryPreset = diaryPrest;
 
         //Всегда подсвечиваем дневник!
@@ -69,11 +72,11 @@ export default class ReplicaDiaryPanel extends BasePanel {
         let animationsDelay = diaryPrest ? 1010 : 0;
 
         if (diaryContent.mapPreset) {
-            this.diaryLayout = new DiaryMapLayout(this.game, diaryContent, this.game.width / 2 + 30, this.gameCenterY - 100);
+            this.diaryLayout = new DiaryMapLayout(this.game, diaryContent, this.diaryCenterX, this.gameCenterY - 100);
         } else if (diaryContent.picture) {
-            this.diaryLayout = new DiaryPictureLayout(this.game, diaryContent, this.game.width / 2 + 30, this.gameCenterY - 100);
+            this.diaryLayout = new DiaryPictureLayout(this.game, diaryContent, this.diaryCenterX, this.gameCenterY - 100);
         } else {
-            this.diaryLayout = new DiaryRecipeLayout(this.game, diaryContent, this.game.width / 2 + 30, this.gameCenterY - 100, animationsDelay, !diaryPrest);
+            this.diaryLayout = new DiaryRecipeLayout(this.game, diaryContent, this.diaryCenterX, this.gameCenterY - 100, animationsDelay, !diaryPrest);
         }
 
         this.diaryLayout.anchor.set(0.5, 0.5)
@@ -142,7 +145,7 @@ export default class ReplicaDiaryPanel extends BasePanel {
             this.game.add.tween(this.blackTransparent).to({ alpha: 0.5 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
         }
         this.game.add.tween(this.diaryLayout.scale).to({ x: this.finalScale, y: this.finalScale }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
-        this.game.add.tween(this.diaryLayout).to({ x: this.game.width / 2 + 30, y: this.gameCenterY - 100 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
+        this.game.add.tween(this.diaryLayout).to({ x: this.diaryCenterX, y: this.gameCenterY - 100 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
 
         if (this.diaryPreset) {
             this.game.add.tween(this.diaryLayout).to({ angle: 365 }, time, Settings.isOnlyLinearAnimations()?  Phaser.Easing.Linear.None :Phaser.Easing.Quadratic.In, true, 500, 0, false);
@@ -159,8 +162,8 @@ export default class ReplicaDiaryPanel extends BasePanel {
                 }
                 let animationsDelay = this.diaryPreset ? 1010 : 0;
                 let p = this.diaryLayout;
-                let k = 0.1;
-                let k2 = 2;
+                let k = 0.055;
+                let k2 = 0.55;
                 this.idleTweens.push(this.game.add.tween(this.diaryLayout).to(
                     { angle: [20 * k, -5 * k, 10 * k, -20 * k, 0, -20 * k, 10 * k, -5 * k, 20 * k, 5] },
                     3 * 15000 * Math.abs(k * 10), Phaser.Easing.Linear.None, true, animationsDelay, -1, false

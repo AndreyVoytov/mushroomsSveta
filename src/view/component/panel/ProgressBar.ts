@@ -1,8 +1,8 @@
 import UserService from '../../../core/service/UserService';
 import DiaryContentType from '../../../core/model/diary/DiaryContentType';
 import DiaryConfiguration from '../../../core/configuration/DiaryConfiguration';
-import Label from './../../component/panel/Label';
-import HouseScreen from './../../screen/HouseScreen';
+import Label from './Label';
+import HouseScreen from '../../screen/HouseScreen';
 import BasePanel from './BasePanel';
 import RecipeUtils from '../../../core/utils/RecipeUtils';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
@@ -10,293 +10,154 @@ import PrizesConfiguration from '../../../core/configuration/PrizesConfiguration
 import ForestDao from '../../../core/dao/ForestDao';
 import AnimationUtils from '../../../core/utils/AnimationUtils';
 import RewardUtils from '../../../core/utils/RewardUtils';
-import Settings from '../../../core/service/Settings';
 import LocalizationService from '../../../core/localization/LocalizationService';
 import UiLayout from '../../../core/utils/UiLayout';
+
 export default class ProgressBar extends BasePanel {
     private static readonly PROGRESS_VISUALIZE_DELAY = 1000;
     private static readonly PROGRESS_VISUALIZE_DURATION = 500;
+    private static readonly TRACK_LEFT = -322;
+    private static readonly TRACK_WIDTH = 552;
+    private static readonly TRACK_INSET_LEFT = 43;
+    private static readonly TRACK_INSET_RIGHT = 43;
     private screen: HouseScreen;
-
     private currentTask: DiaryContentType;
-
-    private progressBarBody: Phaser.TileSprite;
-    private progressBarTail: Phaser.Sprite;
-    private progressLineBg: Phaser.Sprite;
+    private progressFill: Phaser.Graphics;
+    private progressValue = { ratio: 0 };
     private characterImage: Phaser.Sprite;
     private taskText: Label;
     private resultImage: Phaser.Sprite;
     private taskCount: Label;
-
     private totalCount: number;
     private currentCount: number;
-
     public startY: number;
 
-    
     constructor(game: Phaser.Game, screen: HouseScreen, x: number, y: number, currentTask: DiaryContentType, hidden?: boolean) {
-        super(game, x, y, "blank");
-        this.startY = this.y;
-        this.screen = screen;
-        this.currentTask = currentTask;
+        super(game, x, y, 'blank');
+        this.startY = y;this.screen = screen;this.currentTask = currentTask;
+        const tweens = game.tweens;
+        this.events.onDestroy.addOnce(() => tweens.removeFrom(this.progressValue));
+        const user = UserService.getUser(), start = RecipeUtils.getRequiredLevel(currentTask);
+        const nextTask = DiaryConfiguration.getNextrecipe(user.getCurrentForest());
+        const finish = nextTask ? RecipeUtils.getRequiredLevel(nextTask) : start;
+        this.totalCount = Math.max(0, finish - start);
+        this.currentCount = Math.min(this.totalCount, Math.max(0, user.getCurrentForest() - start));
 
-        let user = UserService.getUser();
+        const board = this.attachSprite('statusPanel', 'statusPanel');
+        SpriteUtils.fitPanel(board, 720, 170, 26, 24);board.position.set(-15, 0);
+        const contact = new Phaser.Graphics(game, -15, -28);
+        [0.09, 0.08, 0.06].forEach((alpha, i) => {
+            contact.beginFill(0x213b30, alpha);
+            contact.drawEllipse(0, 0, 255 - i * 14, 22 - i * 4);contact.endFill();
+        });
+        this.addChild(contact);
+        const header = this.attachSprite(currentTask.mapPreset ? 'forestHeader' : 'potionHeader', 'header');
+        SpriteUtils.fitIcon(header, 660, 196);header.position.set(-15, -120);
 
-        let start = RecipeUtils.getRequiredLevel(currentTask)
-        this.currentCount = Math.max(0, user.getCurrentForest() - start);
-        
-        let nextTask = DiaryConfiguration.getNextrecipe(user.getCurrentForest());
-        let finish = RecipeUtils.getRequiredLevel(nextTask);
-
-        this.totalCount = finish - start;
-
-        // let progressBg = SpriteUtils.createSprite(this.game, 0, 0, currentTask.mapPreset ? 'forestProgress' : 'boilerProgress');
-        // // let progressBg = SpriteUtils.createSprite(this.game, 0, 0, 'progressBg');
-        // progressBg.name = "progressBg";
-        // progressBg.anchor = new Phaser.Point(0.5, 0.5);
-        // this.addSprite(progressBg);
-
-        // this.attachSprite('wood')
-
-        this.attachSprite('shadow')
-        let sh2 = this.attachSprite('shadow','shadow2');
-        sh2.alpha = 0.5;
-        this.attachSprite('statusPanel')
-        this.attachSprite(currentTask.mapPreset ? 'forestHeader' : 'potionHeader', 'header')
-
-
-
-        // let taskImg = SpriteUtils.createSprite(this.game, 0, 0, currentTask.image);
-        // taskImg.name = "taskImg";
-        // taskImg.anchor = new Phaser.Point(0.5, 0.5);
-        // this.addSprite(taskImg);
-        this.progressLineBg = SpriteUtils.createSprite(this.game, 0, 0, 'progressLineBg');
-        this.progressLineBg.name = "progressLineBg";
-        this.progressLineBg.scale.set(0.5)
-        this.addSprite(this.progressLineBg);
-
-        this.progressBarBody = SpriteUtils.createTileSprite(this.game, - this.progressLineBg.width / 2 , - 3, 50, 31, 'progressBody');
-        this.progressBarBody.anchor = new Phaser.Point(0, 0.5);
-        this.progressBarBody.name = "progressBarBody";
-        this.addSprite(this.progressBarBody);
-
-        let progressStart = SpriteUtils.createSprite(this.game, - this.progressLineBg.width / 2 , - 3, 'progressTail');
-        progressStart.anchor = new Phaser.Point(0.5, 0.5);
-        progressStart.name = "progressBarStart";
-        this.addSprite(progressStart);
-
-        this.progressBarTail = SpriteUtils.createSprite(this.game, - this.progressLineBg.width / 2 , - 3, 'progressTail');
-        this.progressBarTail.anchor = new Phaser.Point(0.5, 0.5);
-        this.progressBarTail.name = "progressBarTail";
-        this.addSprite(this.progressBarTail);
-
-        this.attachSprite('circle')
-        this.attachSprite('uiSectionRibbon', 'ribbon')
-        const taskTitle = LocalizationService.get(currentTask.titleForProgress || currentTask.title);
-        this.taskText = new Label(this.game, 0, 0, taskTitle, { font: "40px Bookman Old Style", fill: "#ffffff" })
-        this.taskText.name = "taskText";
-        this.addSprite(this.taskText);
-
-        if (currentTask.resultImageForProgress || currentTask.resultImage) {
-            this.resultImage = SpriteUtils.createSprite(this.game, 0, 0, currentTask.resultImageForProgress || currentTask.resultImage);
-            this.resultImage.name = "resultImage";
-            this.addSprite(this.resultImage);
+        const track = this.attachSprite('progressLineBg', 'progressLineBg');
+        SpriteUtils.fitPanel(track, ProgressBar.TRACK_WIDTH, 46, 28, 0);
+        track.anchor.set(0, 0.5);track.position.set(ProgressBar.TRACK_LEFT, 4);
+        this.progressFill = new Phaser.Graphics(game, ProgressBar.TRACK_LEFT + ProgressBar.TRACK_INSET_LEFT, 4);
+        this.progressFill.name = 'progressFill';this.addChild(this.progressFill);
+        const ticks = new Phaser.Graphics(game, this.progressFill.x, 4);
+        ticks.lineStyle(1, 0x9b824e, 0.4);
+        if (this.totalCount <= 12) for (let i = 1; i < this.totalCount; i++) {
+            const tickX = this.getProgressBodyWidth(i);ticks.moveTo(tickX, -9);ticks.lineTo(tickX, 9);
         }
-
+        this.addChild(ticks);
+        this.taskCount = this.attachText('taskCount', '', {font: 'bold 28px Arial', fill: Label.INK});
+        this.taskCount.position.set(ProgressBar.TRACK_LEFT + ProgressBar.TRACK_WIDTH / 2, 4);
+        const medal = this.attachSprite('dialogMedallion', 'resultMedallion');
+        medal.position.set(280, 4);SpriteUtils.fitIcon(medal, 100, 100);
+        const resultKey = currentTask.resultImageForProgress || currentTask.resultImage;
+        if (resultKey) {
+            this.resultImage = this.attachSprite(resultKey, 'resultImage');
+            this.resultImage.position.set(280, 4);SpriteUtils.fitIcon(this.resultImage, 76, 76);
+        }
         if (currentTask.mapPreset) {
-            this.characterImage = SpriteUtils.createSprite(this.game, 0, 0, "character");
-            this.characterImage.name = "character";
-            this.characterImage.anchor.set(0.5, 1);
-            this.addSprite(this.characterImage);
+            this.characterImage = this.attachSprite('character', 'character');
+            this.characterImage.anchor.set(0.5, 1);SpriteUtils.fitIcon(this.characterImage, 64, 96);this.characterImage.y = -20;
         }
+        const ribbon = this.attachSprite('uiSectionRibbon', 'ribbon');
+        SpriteUtils.fitPanel(ribbon, 730, 112, 64, 0);ribbon.position.set(-15, 96);
+        this.taskText = this.attachText('taskText', LocalizationService.get(currentTask.titleForProgress || currentTask.title), {
+            font: '34px Lora', fill: Label.ON_DARK, align: 'center'
+        });
+        this.taskText.position.set(-15, 96);this.taskText.lineGap = -6;UiLayout.fit(this.taskText, 520, 72, true);
+        this.scale.set(0.9);
 
-        //for items
-        this.applyPreset([{ "spriteId": "progressBg", "x": -32, "y": -89, "scaleX": 1.44, "scaleY": 1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "progressLineBg", "x": 169, "y": -17, "scaleX": 1.4200000000000004, "scaleY": 1.5000000000000004, "anchorX": 1, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "progressBarBody", "x": -320.16000000000014, "y": -18, "scaleX": 1, "scaleY": 1, "anchorX": 0, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "progressBarStart", "x": -301, "y": -18, "scaleX": -1.0200000000000011, "scaleY": 1.3400000000000003, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "progressBarTail", "x": 9.279999999999916, "y": -18, "scaleX": 1, "scaleY": 1.2800000000000002, "anchorX": 0, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "taskText", "x": -82, "y": 40, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0, "rotation": 0, "fontSize": 40 }, { "spriteId": "taskCount", "x": 183, "y": 41, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0, "rotation": 0, "fontSize": 38 }, { "spriteId": "resultImage", "x": 167, "y": -55, "scaleX": 0.6399999999999997, "scaleY": 0.5999999999999996, "anchorX": 0, "anchorY": 0, "rotation": 0 }, { "spriteId": "", "x": -155.4400000000001, "y": -18, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "", "x": 9.279999999999916, "y": -18, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }])
-        //for forest
-        this.applyPreset([{ "spriteId": "progressBg", "x": -32, "y": -89, "scaleX": 1.44, "scaleY": 1.5, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "progressLineBg", "x": 169, "y": -17, "scaleX": 1.4200000000000004, "scaleY": 1.5000000000000004, "anchorX": 1, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "progressBarBody", "x": -310.16000000000014, "y": -18, "scaleX": 1, "scaleY": 1.3400000000000002, "anchorX": 0, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "progressBarStart", "x": -307, "y": -18, "scaleX": -1.0200000000000011, "scaleY": 1.4500000000000002, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "progressBarTail", "x": -98.37714285714296, "y": -17, "scaleX": 1, "scaleY": 1.4500000000000002, "anchorX": 0, "anchorY": 0.5, "rotation": 0 }, { "spriteId": "taskText", "x": -82, "y": 40, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0, "rotation": 0, "fontSize": 40 }, { "spriteId": "taskCount", "x": 183, "y": 41, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0, "rotation": 0, "fontSize": 38 }, { "spriteId": "character", "x": -98.37714285714296, "y": -54, "scaleX": 1.4600000000000004, "scaleY": 1.5400000000000005, "anchorX": 0.5, "anchorY": 1, "rotation": 0 }])
+        const animateProgress = user.isJustCompletedLevel() && this.currentCount > 0, finalCount = this.currentCount;
+        if (animateProgress) this.currentCount--;
+        this.drawProgress(this.totalCount > 0 ? this.currentCount / this.totalCount : 0);
+        if (animateProgress) this.visualizeAndSetProgress(finalCount, ProgressBar.PROGRESS_VISUALIZE_DELAY);
+        else if (hidden) {this.y += 300;this.alpha = 0;}
 
-        // this.applyPreset([{ "spriteId": "shadow", "x": 0, "y": 0, "scaleX": this.game.width, "scaleY": 4.6, "anchorX": 0, "anchorY": 0, "rotation": 0 },
-        this.applyPreset([
-        { "spriteId": "shadow", "x": 0, "y": this.game.height - this.y + 100, "scaleX": this.game.width * 1.3/100, "scaleY": 7.6/2, "anchorX": 0.5, "anchorY": 1, "rotation": 0 },
-        { "spriteId": "shadow2", "x": 0, "y": this.game.height - this.y + 100, "scaleX": this.game.width * 1.3/100, "scaleY": 7.6/2, "anchorX": 0.5, "anchorY": 1, "rotation": 0 },
-        { "spriteId": "statusPanel", "x": -15, "y": 6, "scaleX": 2.5600000000000014, "scaleY": 2.4200000000000013, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "header", "x": -16, "y": -147, "scaleX": 0.98, "scaleY": 0.8799999999999999, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "progressLineBg", "x": 180, "y": 5, "scaleX": 1.4200000000000004/2, "scaleY": 1.5000000000000004/2, "anchorX": 1, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "progressBarBody", "x": -292.16000000000014, "y": 5, "scaleX": 1, "scaleY": 1.4500000000000002, "anchorX": 0, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "progressBarStart", "x": -296, "y": 5, "scaleX": -1.0200000000000011, "scaleY": 1.4500000000000002, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "progressBarTail", "x": -90.37714285714296, "y": 5, "scaleX": 1, "scaleY": 1.4500000000000002, "anchorX": 0, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "circle", "x": 223, "y": 4, "scaleX": 1.4800000000000004/2, "scaleY": 1.4600000000000004/2, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "ribbon", "x": -20, "y": 105, "scaleX": 0.8199999999999998, "scaleY": 0.96, "anchorX": 0.5, "anchorY": 0.5, "rotation": 0 },
-        { "spriteId": "taskText", "x": -27, "y": 65, "scaleX": 1, "scaleY": 1, "anchorX": 0.5, "anchorY": 0, "rotation": 0, "fontSize": 40 },
-        { "spriteId": "character", "x": -80.37714285714296, "y": -32, "scaleX": 1.4600000000000004, "scaleY": 1.5400000000000005, "anchorX": 0.5, "anchorY": 1, "rotation": 0 }])
-
-        if(this.resultImage){
-            this.resultImage.width = 180 * this.resultImage.scale.x;
-            this.resultImage.height = 180 * this.resultImage.scale.y;
-        }
-        this.taskText.fill = Label.ON_DARK;
-        this.taskText.anchor.set(0.5);this.taskText.position.set(-20, 104);
-        this.taskText.lineGap = -10;
-        UiLayout.fit(this.taskText, 470, 96, true);
-
-        this.progressBarBody.x = this.progressLineBg.x + 7 - this.progressLineBg.width  + 15;
-        this.progressBarBody.y = this.progressBarTail.y;
-        this.progressBarBody.scale.set(1, 1);
-        this.progressBarBody.height = 32;
-        this.progressBarTail.height = 32;
-        progressStart.height = 32;
-
-
-        if (user.isJustCompletedLevel() && this.currentCount > 0) {
-            this.currentCount--;
-
-            this.progressBarBody.width = this.getProgressBodyWidth(this.currentCount);
-            this.progressBarTail.x = this.progressBarBody.x + this.getProgressBodyWidth(this.currentCount) - 10;
-
-            if (this.characterImage) {
-                this.characterImage.x = this.progressBarTail.x;
+        // Preserve reward eligibility and timing independently of the new visual track.
+        PrizesConfiguration.allPrizes.forEach(prize => {
+            const level = ForestDao.getAllForests().indexOf(ForestDao.getEntity().getById(prize.level));
+            if (level > finish || level < start + this.currentCount || user.getMarkers().indexOf(prize.id) >= 0) return;
+            const gift = this.attachSprite('gift', 'progressGift');
+            gift.position.set(this.progressFill.x + this.getProgressBodyWidth(level - start), 4);SpriteUtils.fitIcon(gift, 44, 44);
+            if (level === start + this.currentCount) {
+                const delay = user.isJustCompletedLevel() ? ProgressBar.PROGRESS_VISUALIZE_DELAY + ProgressBar.PROGRESS_VISUALIZE_DURATION : 0;
+                const origin = this.getGlobalPointForChild(gift.x, gift.y);
+                this.game.time.events.add(delay, () => {
+                    this.game.tweens.removeFrom(gift);const rewards = RewardUtils.fromPrize(prize);
+                    AnimationUtils.fadeOut(this.game, gift, 0, 220);
+                    this.screen.showRewardItems(rewards, () => {RewardUtils.applyRewards(user, rewards);user.addMarker(prize.id);}, {firstRewardOrigin: origin});
+                });
             }
-
-            this.visualizeAndSetProgress(this.currentCount + 1, ProgressBar.PROGRESS_VISUALIZE_DELAY);
-        } else {
-            this.progressBarBody.width = this.getProgressBodyWidth(this.currentCount);
-            this.progressBarTail.x = this.progressBarBody.x + this.getProgressBodyWidth(this.currentCount) - 10;
-
-            if (this.characterImage) {
-                this.characterImage.x = this.progressBarTail.x;
-            }
-
-            if (hidden) {
-                this.y += 300;
-                this.alpha = 0;
-            }
-
-            // if (this.currentCount == 0) {
-            //     this.y += 400;
-            //     this.game.add.tween(this).to({ y: this.y - 400 }, 700, Phaser.Easing.Linear.None, true, 500, 0, false);
-            // }
-        }
-
-        for (let i = 1; i < this.totalCount; i++) {
-            let width = this.getProgressBodyWidth(i);
-            let scalePart = SpriteUtils.createSprite(this.game, this.progressBarBody.x + width - 10, this.progressBarBody.y, "scale")
-            scalePart.anchor.set(0.5, 0.5)
-            scalePart.scale.set(1.3)
-            this.addSprite(scalePart)
-        }
-
-        // this.game.time.events.repeat(1000, 10, () => this.onUpdate(10, 0));
-
-        this.scale.set(0.9)
-
-        // console.log("PROGRESS START: " + start)
-        // console.log("PROGRESS FINISH: " + finish)
-        // console.log("PROGRESS CURRENT: " + (start + this.currentCount))
-
-        PrizesConfiguration.allPrizes.forEach(p => {
-            let forestType = ForestDao.getEntity().getById(p.level);
-            let level = ForestDao.getAllForests().indexOf(forestType);
-            // console.log("PROGRESS PRIZE AT: " + level)
-
-            if(level <= finish && level >= start + this.currentCount && UserService.getUser().getMarkers().indexOf(p.id) == -1){
-                let width = this.getProgressBodyWidth(level - start);
-                let gift = SpriteUtils.createSprite(this.game, this.progressBarBody.x + width + 20, this.progressBarBody.y, "gift")
-                gift.anchor.set(0.5, 0.5)
-                this.addSprite(gift);
-                // this.game.add.tween(gift).to({y: gift.y - 8, x: gift.x}, 1000, Easing.Sinusoidal.InOut, true, 0, -1, true)
-
-                if(level == start + this.currentCount){
-                    const rewardDelay = user.isJustCompletedLevel()
-                        ? ProgressBar.PROGRESS_VISUALIZE_DELAY + ProgressBar.PROGRESS_VISUALIZE_DURATION
-                        : 0;
-                    const giftOrigin = this.getGlobalPointForChild(gift.x, gift.y);
-
-                    this.game.time.events.add(rewardDelay, ()=>{
-                        this.game.tweens.removeFrom(gift);
-
-                        let rewards = RewardUtils.fromPrize(p);
-                        AnimationUtils.fadeOut(this.game, gift, 0, 220);
-                        this.screen.showRewardItems(rewards, () => {
-                            RewardUtils.applyRewards(user, rewards);
-                            user.addMarker(p.id);
-                        }, {
-                            firstRewardOrigin: giftOrigin
-                        });
-                    });
-                }
-            }
-        })
+        });
     }
 
-    private visualizeAndSetProgress(currentCount: number, delay: number) {
-
-        let barBodyWidth = this.getProgressBodyWidth(currentCount);
-
-        let animationTime = ProgressBar.PROGRESS_VISUALIZE_DURATION;
-        this.game.add.tween(this.progressBarBody).to({ width: barBodyWidth }, animationTime, Phaser.Easing.Linear.None, true, delay, 0, false);
-        this.game.add.tween(this.progressBarTail).to({ x: this.progressBarBody.x + barBodyWidth - 10 }, animationTime, Phaser.Easing.Linear.None, true, delay, 0, false);
-        if (this.characterImage) {
-            this.game.add.tween(this.characterImage).to({ x: this.progressBarBody.x + barBodyWidth }, animationTime, Phaser.Easing.Linear.None, true, delay, 0, false);
-        }
-
-        // this.game.time.events.add(delay, () => {
-        //     this.taskCount.text = " (" + this.currentCount + "/" + this.totalCount + ")";
-        // })
-        // this.game.time.events.add(delay + 400, () => {
-        //     AnimationUtils.wiggle(this.game, this.taskCount, 0, true)
-        // })
-
-        this.currentCount = currentCount;
-
-        //TODO sparkles
-
-        if (this.currentCount == this.totalCount) {
-            let flash = this.attachSprite("flash");
-            
-            if(this.resultImage){
-                this.setChildIndex(this.resultImage, this.children.length - 1);
-                flash.x = this.resultImage.x + this.resultImage.width / 2;
-                flash.y = this.resultImage.y + this.resultImage.height / 2;
+    /** Zero draws nothing; full progress reaches the painted track's inner right edge. */
+    private drawProgress(ratio: number): void {
+        const value = this.totalCount > 0 ? Math.max(0, Math.min(1, isFinite(ratio) ? ratio : 0)) : 0;
+        this.progressValue.ratio = value;
+        const width = (ProgressBar.TRACK_WIDTH - ProgressBar.TRACK_INSET_LEFT - ProgressBar.TRACK_INSET_RIGHT) * value;
+        this.progressFill.clear();this.progressFill.visible = width > 0;
+        if (width > 0) {
+            this.progressFill.beginFill(0x98b58a, 1);
+            this.progressFill.drawRoundedRect(0, -13, width, 26, Math.min(13, width / 2));this.progressFill.endFill();
+            if (width > 8) {
+                this.progressFill.beginFill(0xe8efca, 0.45);
+                this.progressFill.drawRoundedRect(3, -10, width - 6, 7, 3);this.progressFill.endFill();
             }
-            flash.scale.set(0)
-            flash.alpha = 0;
+        }
+        this.taskCount.text = Math.round(value * this.totalCount) + ' / ' + this.totalCount;UiLayout.fit(this.taskCount, 160, 34);
+        if (this.characterImage) this.characterImage.x = this.progressFill.x + width;
+    }
 
-            this.game.add.tween(flash.scale).to({ x: 3/2, y: 3/2 }, 300, Phaser.Easing.Linear.None, true, delay + animationTime - 100, 0, false);
-            this.game.add.tween(flash).to({ alpha: 0.8 }, 300, Phaser.Easing.Linear.None, true, delay + animationTime - 100, 0, false);
-            this.game.add.tween(flash).to({ angle: 360 }, 6000, Phaser.Easing.Linear.None, true, delay, -1, false);
-
-            this.screen.hideUI(delay + animationTime + 1000 + 700)
-            this.game.add.tween(this).to({ y: this.game.height + 400 }, 700, Phaser.Easing.Linear.None, true, delay + animationTime + 1000, 0, false);
-
-            this.screen.lockScreenFor(delay + animationTime + 1000 + 700 + 300 + 1500);
-            this.game.time.events.add(delay + animationTime + 1000 + 700 + 300, () => {
-                let user = UserService.getUser();
-                user.addCompletedTask(this.currentTask.id);
-                this.screen.progressAnimation = false;
-                this.screen.dialogPanel.updateReplica(true);
-            })
+    private visualizeAndSetProgress(currentCount: number, delay: number): void {
+        this.currentCount = Math.max(0, Math.min(this.totalCount, currentCount));
+        const ratio = this.totalCount > 0 ? this.currentCount / this.totalCount : 0;
+        const animationTime = ProgressBar.PROGRESS_VISUALIZE_DURATION;
+        this.game.tweens.removeFrom(this.progressValue);
+        const tween = this.game.add.tween(this.progressValue).to({ratio}, animationTime, Phaser.Easing.Linear.None, true, delay);
+        tween.onUpdateCallback(() => this.drawProgress(this.progressValue.ratio));
+        tween.onComplete.addOnce(() => this.drawProgress(ratio));
+        if (this.totalCount > 0 && this.currentCount === this.totalCount) {
+            const flash = this.attachSprite('flash');flash.position.set(280, 4);flash.scale.set(0);flash.alpha = 0;
+            if (this.resultImage) this.bringChildToTop(this.resultImage);
+            this.game.add.tween(flash.scale).to({x: 1.5, y: 1.5}, 300, Phaser.Easing.Linear.None, true, delay + animationTime - 100);
+            this.game.add.tween(flash).to({alpha: 0.8}, 300, Phaser.Easing.Linear.None, true, delay + animationTime - 100);
+            this.game.add.tween(flash).to({angle: 360}, 6000, Phaser.Easing.Linear.None, true, delay, -1, false);
+            this.screen.hideUI(delay + animationTime + 1700);
+            this.game.add.tween(this).to({y: this.game.height + 400}, 700, Phaser.Easing.Linear.None, true, delay + animationTime + 1000);
+            this.screen.lockScreenFor(delay + animationTime + 3500);
+            this.game.time.events.add(delay + animationTime + 2000, () => {
+                UserService.getUser().addCompletedTask(this.currentTask.id);this.screen.progressAnimation = false;this.screen.dialogPanel.updateReplica(true);
+            });
         }
     }
 
-    private getProgressBodyWidth(currentCount): number {
-        let ratio = currentCount / this.totalCount;
-
-        return ratio * Math.max(0, this.progressLineBg.width - 44);
+    private getProgressBodyWidth(currentCount: number): number {
+        return this.totalCount > 0 ? Math.max(0, Math.min(1, currentCount / this.totalCount)) *
+            (ProgressBar.TRACK_WIDTH - ProgressBar.TRACK_INSET_LEFT - ProgressBar.TRACK_INSET_RIGHT) : 0;
     }
-
-    public getCurrent(): number {
-        return this.currentCount;
-    }
-
-    public getTotal(): number {
-        return this.totalCount;
-    }
-
+    public getCurrent(): number {return this.currentCount;}
+    public getTotal(): number {return this.totalCount;}
     private getGlobalPointForChild(x: number, y: number): Phaser.Point {
-        if (!(<any>this).toGlobal) {
-            return new Phaser.Point(this.x + x, this.y + y);
-        }
-
-        return (<any>this).toGlobal(new Phaser.Point(x, y));
+        return (<any>this).toGlobal ? (<any>this).toGlobal(new Phaser.Point(x, y)) : new Phaser.Point(this.x + x, this.y + y);
     }
 }

@@ -1,5 +1,4 @@
 import HouseScreen from './../../screen/HouseScreen';
-import WorldPanel from './WorldPanel';
 import ClosablePanel from './../../component/panel/ClosablePanel';
 import Label from '../panel/Label';
 import SpriteUtils from '../../../core/utils/SpriteUtils';
@@ -28,7 +27,7 @@ export default class ShopPanel extends ClosablePanel {
     private sections: { [key: string]: ShopSectionPanel } = {};
 
     constructor(game: Phaser.Game, screen: Phaser.State, callbackOnBuy?: () => void, defaultTab: ShopTabId = 'bank', preferredCharacterId?: string, callbackOnClose?: () => void) {
-        super(game, game.width / 2 - 1, game.height / 2 - 45, true, "blank", Math.min(1.04, (game.height / 2 + 5) / 816));
+        super(game, game.width / 2 - 1, game.height / 2 - 45, true, "blank", Math.min(1, (game.height / 2 + 5) / 902));
         this.game = game;
         this.screen = screen;
         this.defaultTab = defaultTab;
@@ -136,7 +135,7 @@ export default class ShopPanel extends ClosablePanel {
         this.activeTabSprite.scale.set(0.93);
 
         this.tabs.bank = new ShopTabButton(this.game, "bankTab", this.getTabLabel('bank'), () => this.selectTab('bank', true, false));
-        this.tabs.items = new ShopTabButton(this.game, "itemsTab", this.getTabLabel('items'), () => {this.close();WorldPanel.show('wardrobe');});
+        this.tabs.items = new ShopTabButton(this.game, "itemsTab", this.getTabLabel('items'), () => this.selectTab('items', true, false));
         this.tabs.heroes = new ShopTabButton(this.game, "heroesTab", this.getTabLabel('heroes'), () => this.selectTab('heroes', true, false));
 
         this.addSprite(this.tabs.bank);

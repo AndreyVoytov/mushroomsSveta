@@ -34,6 +34,8 @@ export default class ForestTopPanel extends BasePanel {
     private screen: BaseForestScreen;
     private steps: Phaser.Sprite;
     private mushroomHarvestEffects: MushroomHarvestEffects;
+    private aimChecks: Phaser.Sprite[] = [];
+    private aimCenters: number[] = [];
 
     public aims: ForestAim[] = [];
 
@@ -72,9 +74,9 @@ export default class ForestTopPanel extends BasePanel {
         this.energyLabel.strokeThickness = 4;
         this.energyLabel.inputEnabled = true;
         this.energyLabel.events.onInputDown.add(() => this.screen.showEnergyPanel(), this);
-        let step = this.aims.length == 3 ? 165 : 222;
-
-        let shiftX = this.aims.length == 1 ? 108 : (this.aims.length == 2 ? 0 : -55);
+        const step = 570 / Math.max(1, this.aims.length);
+        const center = this.aims.length === 1 ? this.game.width / 2 : 600;
+        const shiftX = center - 370 - (this.aims.length - 1) * step / 2;
         this.aims.forEach((aim, i) => {
             this.addAimWithLabel(aim, shiftX + i * step);
         });
@@ -100,21 +102,25 @@ export default class ForestTopPanel extends BasePanel {
     }
 
     public updateAimCounters(delay: number): void {
-        this.aims.forEach(aim => {
+        this.aims.forEach((aim, index) => {
             this.game.time.events.add(delay + 200, () => {
                 aim.label.text = "" + aim.countLeft;
-                UiLayout.fit(aim.label, 122, 44);
+                UiLayout.fit(aim.label, 88, 48);
+                UiLayout.goalPair(aim.sprite, aim.label, this.aimCenters[index], 80, 14);
 
                 if (aim.countLeft <= 0) {
                     aim.label.visible = false;
 
-                    let checkLabel = SpriteUtils.createSprite(this.game, aim.label.x, aim.label.y-500, "check");
-                    checkLabel.alpha = 0;
-                    checkLabel.anchor = new Phaser.Point(0.5, 0.5);
-                    checkLabel.scale = new Phaser.Point(0.5, 0.5);
-                    this.addChild(checkLabel);
-                    checkLabel.y+= 500;
-                    this.game.add.tween(checkLabel).to({ alpha:1}, 50, Phaser.Easing.Linear.None, true, 0, 0, false);
+                    if (!this.aimChecks[index]) {
+                        const check = SpriteUtils.createSprite(this.game, aim.label.x, aim.label.y, 'check');
+                        check.anchor.set(0.5);SpriteUtils.fitIcon(check, 54, 48);
+                        this.addChild(check);this.aimChecks[index] = check;
+                    }
+                    this.aimChecks[index].position.set(aim.label.x, aim.label.y);
+                    this.aimChecks[index].visible = true;
+                } else {
+                    aim.label.visible = true;
+                    if (this.aimChecks[index]) this.aimChecks[index].visible = false;
                 }
             }, this);
         }
@@ -137,7 +143,7 @@ export default class ForestTopPanel extends BasePanel {
 
     private highlightStepsOnRestore() {
         this.game.tweens.removeFrom(this.energyLabel);
-        this.energyLabel.scale.set(1, 1);
+        UiLayout.fit(this.energyLabel, 142, 64);
         //TODO анимация ломается:
         // AnimationUtils.wiggle(this.game, this.energyLabel, 0, true);
 
@@ -178,6 +184,7 @@ export default class ForestTopPanel extends BasePanel {
     public activateLooseMode(): void {
         this.energyCount = 1;
         this.energyLabel.text = "" + this.energyCount;
+        UiLayout.fit(this.energyLabel, 142, 64);
     }
 
     private restoreSteps(addition: number, openingType?: OpeningType) {
@@ -635,16 +642,18 @@ export default class ForestTopPanel extends BasePanel {
     }
 
     private addAimWithLabel(aim: ForestAim, shiftX: number): void {
-        let image = SpriteUtils.createSprite(this.game, 346 + shiftX, 80, aim.image);
+        let image = SpriteUtils.createSprite(this.game, 330 + shiftX, 80, aim.image);
         image.anchor = new Phaser.Point(0.5, 0.5);
-        let imageScale = 98 / Math.max(image.width, image.height);
-        image.scale.set(imageScale, imageScale);
+        SpriteUtils.fitIcon(image, 96, 96);
         // image.scale = new Phaser.Point(1.5, 1.5);
         this.addSprite(image);
 
-        let label = new Label(this.game, 438 + shiftX, 80, "" + aim.countLeft, Label.AIM_STYLE);
-        label.anchor.set(0.5);label.fontSize = 46;label.fill = Label.INK;UiLayout.fit(label, 92, 48);
+        let label = new Label(this.game, 422 + shiftX, 80, "" + aim.countLeft, Label.AIM_STYLE);
+        label.anchor.set(0.5);label.fontSize = 46;label.fill = Label.INK;UiLayout.fit(label, 88, 48);
         this.addSprite(label);
+        const center = 370 + shiftX;
+        this.aimCenters.push(center);
+        UiLayout.goalPair(image, label, center, 80, 14);
 
         aim.label = label;
         aim.sprite = image;

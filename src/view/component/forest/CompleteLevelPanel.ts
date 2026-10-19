@@ -93,7 +93,7 @@ export default class LevelCompletePanel extends BasePanel {
         if (sapphireStarCount > 0) {
             this.sapphireTotal = sapphireStarCount;
             SpriteUtils.fitIcon(cat, 260, 260);
-            cat.position.set(-235, 14);
+            cat.position.set(-235, -18);
             this.sapphireStarReward = new Phaser.Group(this.game, this, 'sapphireStarReward');
             this.sapphireStarReward.position.set(-235, 190);
             const badge = SpriteUtils.createSprite(this.game, 0, 0, 'rewardBadge');
@@ -109,13 +109,14 @@ export default class LevelCompletePanel extends BasePanel {
                 this.sapphireStarReward.add(glint);
                 this.sapphireGlints.push(glint);
             }
-            const starBackdrop = SpriteUtils.createSprite(this.game, -65, 0, 'sapphireStarBackdrop');
+            const starBackdrop = SpriteUtils.createSprite(this.game, -65, 0, 'sapphireStar');
             starBackdrop.anchor.set(0.5);
-            starBackdrop.width = starBackdrop.height = 124;
+            SpriteUtils.fitIcon(starBackdrop, 134, 134);
+            starBackdrop.tint = 0x40524a;starBackdrop.alpha = 0.38;
             this.sapphireStarReward.addChild(starBackdrop);
             const star = SpriteUtils.createSprite(this.game, -65, 0, 'sapphireStar');
             star.anchor.set(0.5);
-            star.width = star.height = 116;
+            SpriteUtils.fitIcon(star, 116, 116);
             this.sapphireStarIcon = star;
             this.sapphireIconScale = star.scale.x;
             this.sapphireStarReward.addChild(star);
@@ -138,7 +139,7 @@ export default class LevelCompletePanel extends BasePanel {
         spentValue.y = 82;
 
         // Center the icon + value together, including two- and three-digit values.
-        const energyWidth = lightning.width + 4 + spentValue.textWidth * spentValue.scale.x;
+        const energyWidth = lightning.width + 16 + spentValue.textWidth * spentValue.scale.x;
         lightning.x = resultsX + 20 - energyWidth / 2 + lightning.width / 2;
         spentValue.x = resultsX + 20 + energyWidth / 2 - spentValue.textWidth * spentValue.scale.x / 2;
 
@@ -237,6 +238,7 @@ export default class LevelCompletePanel extends BasePanel {
         this.game.add.tween(this.cameraOffset).to({ y: finalY }, animationTime, Phaser.Easing.Sinusoidal.InOut, true, delay, 0, false);
         this.game.add.tween(this.scale).to({ x: 1, y: 1 }, animationTime, Phaser.Easing.Sinusoidal.InOut, true, delay, 0, false);
         this.game.time.events.add(delay + animationTime, () => {
+            if (!this.game || !this.continueButton.game) return;
             this.entranceFinished = true;
             this.continueButton.inputEnabled = this.sapphiresReceived >= this.sapphireTotal;
         }, this);

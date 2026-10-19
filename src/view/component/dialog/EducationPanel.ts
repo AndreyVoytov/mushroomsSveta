@@ -363,6 +363,8 @@ export default class EducationPanel extends BasePanel {
         let openedCell = this.cells.filter(cell => cell.state == cellState).shift();
         if (ForestsDao.indexOf(this.forestType) == 1) {
             this.revealDiscoveredHouse(cellState.sprite, openedCell.bg);
+        } else if (ForestsDao.indexOf(this.forestType) + 1 == 14) {
+            this.revealDiscoveredCat(cellState.sprite, openedCell.bg);
         } else if (ForestsDao.indexOf(this.forestType) + 1 == 37) {
             this.revealDiscoveredUnicorn(cellState.sprite, openedCell.bg);
         }
@@ -404,6 +406,20 @@ export default class EducationPanel extends BasePanel {
             y: [targetScaleY * 1.12, targetScaleY * 0.94, targetScaleY]
         }, 620, Phaser.Easing.Back.Out, true);
         AnimationUtils.highlight(this.game, unicorn.x, unicorn.y - 16, 'splashY', 60, 1.1, 700);
+    }
+
+    private revealDiscoveredCat(cat: Phaser.Sprite, tile: Phaser.Sprite): void {
+        this.game.tweens.removeFrom(cat);this.game.tweens.removeFrom(cat.scale);
+        cat.anchor.set(0.5);cat.x = tile.x;cat.y = tile.y - tile.height * 0.20;
+        AnimationUtils.showStable(cat);cat.bringToTop();
+        const targetX = cat.scale.x, targetY = cat.scale.y, restY = cat.y;
+        cat.scale.set(targetX * 0.88, targetY * 0.72);
+        this.game.add.tween(cat.scale).to({
+            x: [targetX * 1.035, targetX * 0.985, targetX],
+            y: [targetY * 1.08, targetY * 0.97, targetY]
+        }, 520, Phaser.Easing.Sinusoidal.Out, true);
+        this.game.add.tween(cat).to({y: [restY - tile.height * 0.14, restY + 3, restY]},
+            520, Phaser.Easing.Sinusoidal.Out, true);
     }
 
     private startBoosterIdleWiggle(cell: ForestCell, angle: number): void {

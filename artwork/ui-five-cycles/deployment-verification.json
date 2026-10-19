@@ -1,0 +1,24 @@
+{
+  "verifiedAt": "2026-10-19T09:57:05.147Z",
+  "checksPassed": 19,
+  "deployment": "4b1927b2",
+  "verified": [
+    {
+      "url": "https://4b1927b2.andreyvoytov-mushrooms-arcane.pages.dev",
+      "status": 200,
+      "bundleSha256": "5cd7a39b61b551e8047245fd93dfd082f4ad5094200297cd04b4e1172a5b28bf"
+    },
+    {
+      "url": "https://andreyvoytov-mushrooms-arcane.pages.dev",
+      "status": 200,
+      "bundleSha256": "5cd7a39b61b551e8047245fd93dfd082f4ad5094200297cd04b4e1172a5b28bf"
+    }
+  ],
+  "browserErrors": [],
+  "browserScreenshot": "published-full.png",
+  "viewportChecks": [
+    "390x844 shop",
+    "360x640 tutorials 2 and 15",
+    "500x700 shop"
+  ]
+}

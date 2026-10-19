@@ -11,10 +11,13 @@ import LocalizationKey from '../../../core/localization/LocalizationKey';
 import UiLayout from '../../../core/utils/UiLayout';
 
 export default class InGameSettingsPanel extends ClosablePanel {
+    private static readonly ACTION_SIZE = 104;
+    private static readonly ACTION_SPACING = 124;
     public static shown: boolean = false;
     private settingsButton: Phaser.Button;
     private gear: Phaser.Button;
     private actions: Phaser.Button[] = [];
+    private soundButton: Phaser.Button;
     private afterClose: () => void;
     private transition: number = 0;
 
@@ -34,21 +37,20 @@ export default class InGameSettingsPanel extends ClosablePanel {
             game.add.existing(info);
             info.show();
         }), 'support');
-        const sound = this.attachButton(Game.SOUND_ENABLED ? 'sound1' : 'sound2', () => {
+        const sound = this.soundButton = this.attachButton('sound1', () => {
             if (this.processing || !this.opened) return;
             if (Game.SOUND_ENABLED) SoundUtils.disableSound();
             else { SoundUtils.enableSound();SoundUtils.simpleCellOpen(); }
-            const texture = SpriteUtils.getAtlasKeyAndFrame(game, Game.SOUND_ENABLED ? 'sound1' : 'sound2');
-            sound.loadTexture(texture.atlasKey, texture.frameName);
-            SpriteUtils.fitIcon(sound, 82, 82);
+            SpriteUtils.setSoundIcon(sound, Game.SOUND_ENABLED, InGameSettingsPanel.ACTION_SIZE);
         }, 'sound');
         const exit = this.attachButton('turnOff', () => this.closeTo(() => screen.confirmPanel.show()), 'exit');
         this.actions = [support, sound, exit];
         this.actions.forEach((button, index) => {
-            SpriteUtils.fitIcon(button, 82, 82);
-            button.position.set(settingsButton.x, settingsButton.y - (index + 1) * 112);
-            UiLayout.touchTarget(button, 96, 96);
+            SpriteUtils.fitIcon(button, InGameSettingsPanel.ACTION_SIZE, InGameSettingsPanel.ACTION_SIZE);
+            button.position.set(settingsButton.x, settingsButton.y - (index + 1) * InGameSettingsPanel.ACTION_SPACING);
+            UiLayout.touchTarget(button, 116, 116);
         });
+        SpriteUtils.setSoundIcon(sound, Game.SOUND_ENABLED, InGameSettingsPanel.ACTION_SIZE);
     }
 
     public show(): void {
@@ -60,6 +62,7 @@ export default class InGameSettingsPanel extends ClosablePanel {
         this.visible = true;
         this.alpha = 1;
         this.scale.set(1);
+        SpriteUtils.setSoundIcon(this.soundButton, Game.SOUND_ENABLED, InGameSettingsPanel.ACTION_SIZE);
         this.settingsButton.visible = false;
         this.gear.angle = this.settingsButton.angle;
         this.game.tweens.removeFrom(this.gear);
@@ -72,7 +75,7 @@ export default class InGameSettingsPanel extends ClosablePanel {
             this.game.tweens.removeFrom(button);
             button.y = this.settingsButton.y;
             button.alpha = 0;
-            this.game.add.tween(button).to({y: this.settingsButton.y - (index + 1) * 112, alpha: 1},
+            this.game.add.tween(button).to({y: this.settingsButton.y - (index + 1) * InGameSettingsPanel.ACTION_SPACING, alpha: 1},
                 220, Phaser.Easing.Quadratic.Out, true, index * 35);
         });
         this.bringToTop();

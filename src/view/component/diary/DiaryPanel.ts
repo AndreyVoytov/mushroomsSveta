@@ -13,6 +13,7 @@ import DiaryContentType from '../../../core/model/diary/DiaryContentType';
 import Skewable from '../panel/Skewable';
 import { Easing } from 'phaser-ce';
 import SoundUtils from '../../../core/utils/SoundUtils';
+import UiLayout from '../../../core/utils/UiLayout';
 export default class DiaryPanel extends ClosablePanel {
     private static REVEAL_DELAY_MS = 40;
     private static PAGE_BG_X = 49;
@@ -43,9 +44,27 @@ export default class DiaryPanel extends ClosablePanel {
     private stagedLayoutOwner: BasePanel;
 
     constructor(game: Phaser.Game, screen: HouseScreen, x: number, y: number) {
-        super(game, x, y, true, "diaryPanel", 1.18);
+        super(game, x - DiaryPanel.PAGE_BG_X * DiaryPanel.panelScale(game),
+            y - DiaryPanel.PAGE_BG_Y * DiaryPanel.panelScale(game), true, "diaryPanel", DiaryPanel.panelScale(game));
         this.screen = screen;
         this.ensurePersistentPageBackground();
+    }
+
+    private static panelScale(game: Phaser.Game): number {
+        return Math.min(0.90, (game.width - 96) / (890 * DiaryPanel.PAGE_BG_SCALE_X),
+            (game.height - 160) / (1085 * DiaryPanel.PAGE_BG_SCALE_Y));
+    }
+
+    private createPageArrow(name: string, direction: number, x: number, callback: () => void): Phaser.Button {
+        const button = SpriteUtils.createButton(this.game, x, 455, 'blank', callback, name);
+        button.anchor.set(0.5);button.hitArea = new Phaser.Rectangle(-48, -42, 96, 84);
+        button.input.useHandCursor = true;
+        const art = new Phaser.Graphics(this.game, 0, 0);
+        art.beginFill(0xfff4db, 0.35);art.lineStyle(2, 0xa58b59, 0.5);art.drawCircle(0, 0, 74);art.endFill();
+        art.lineStyle(5, 0x526650, 0.95);
+        art.moveTo(-direction * 7, -13);art.lineTo(direction * 7, 0);art.lineTo(-direction * 7, 13);
+        button.addChild(art);this.addButton(button);
+        return button;
     }
 
     private initialize(currentPage?:number, animateReveal:boolean = true) {
@@ -94,44 +113,26 @@ export default class DiaryPanel extends ClosablePanel {
 
        
 
-        // let closeBtn = SpriteUtils.createButton(this.game, this.game.width / 2 - 91, -512, 'closeBook', () => this.close());
-        let closeBtn = SpriteUtils.createSprite(this.game, this.game.width / 2 - 91, -512, 'closeBook');
-        closeBtn.anchor = new Phaser.Point(1, 0);
-        closeBtn.scale = new Phaser.Point(2, 2);
-        Utils.applyPreset(closeBtn, { "spriteId": "", "x": 488 - 209/1.2 -27/1.18 , "y": -475+1118/1.2 + 22/1.18, "scaleX": 0.9599999999999991, "scaleY": 1.0799999999999992, "anchorX": 1, "anchorY": 0, "rotation": 0 })
-        // this.addButton(closeBtn);
-        this.addSprite(closeBtn);
-
         let closeBtn2 = SpriteUtils.createButton(this.game, this.game.width / 2 - 91, -512, 'closeButton', () => this.close());
         closeBtn2.name = "closeBtn2";
-        Utils.applyPreset(closeBtn2, {"spriteId":"closeBtn2","x":313,"y":-484,"scaleX":0.9,"scaleY":0.9,"anchorX":0,"anchorY":0,"rotation":0})
+        closeBtn2.anchor.set(0.5);closeBtn2.position.set(425, -470);
+        SpriteUtils.fitIcon(closeBtn2, 84, 84);UiLayout.touchTarget(closeBtn2, 104, 104);
         closeBtn2.tint = 0xffffff;
         closeBtn2.alpha = 1;
         this.addButton(closeBtn2);
 
-        let diaryArrowBg = SpriteUtils.createSprite(this.game, this.game.width / 2 - 91, -512, 'diaryArrowsBg');
-        diaryArrowBg.name = "diaryArrowsBg"
-        Utils.applyPreset(diaryArrowBg, {"spriteId":"diaryArrowsBg","x":10,"y":433,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0.5,"rotation":0})
-        this.addSprite(diaryArrowBg);
-
-        this.arrowLeft = SpriteUtils.createButton(this.game, this.game.width / 2 - 91, -512, 'diaryArrowLeft', () => this.showPrevPage(currentPage));
-        this.arrowLeft.name = "arrowLeft"
-        Utils.applyPreset(this.arrowLeft, {"spriteId":"arrowLeft","x":-62,"y":432,"scaleX":0.9599999999999991,"scaleY":1.0799999999999992,"anchorX":0.5,"anchorY":0.5,"rotation":0})
-        this.addButton(this.arrowLeft);
+        this.arrowLeft = this.createPageArrow('arrowLeft', -1, -68, () => this.showPrevPage(currentPage));
         this.arrowLeft.visible = currentPage > 1;
 
-        this.arrowRight = SpriteUtils.createButton(this.game, this.game.width / 2 - 91, -512, 'diaryArrowLeft', () => this.showNextPage(currentPage));
-        this.arrowRight.name = "arrowRight"
-        Utils.applyPreset(this.arrowRight, {"spriteId":"arrowRight","x":85,"y":430,"scaleX":-0.9599999999999991,"scaleY":1.0799999999999992,"anchorX":0.5,"anchorY":0.5,"rotation":0})
-        this.addButton(this.arrowRight);
+        this.arrowRight = this.createPageArrow('arrowRight', 1, 166, () => this.showNextPage(currentPage));
         this.arrowRight.visible = currentPage < this.pagesCount;
 
-        let pageNumber = new Label(this.game, 0, 0, "" + currentPage , { font: "bold 40px DiaryDigits", fill: "#000000" });
+        let pageNumber = new Label(this.game, 49, 455, currentPage + ' / ' + this.pagesCount, { font: "32px Lora", fill: Label.INK });
         pageNumber.name = "pageNumber";
-        Utils.applyPreset(pageNumber, {"spriteId":"pageNumber","x":11,"y":412,"scaleX":1,"scaleY":1,"anchorX":0.5,"anchorY":0,"rotation":0,"fontSize":40})
+        pageNumber.anchor.set(0.5);UiLayout.fit(pageNumber, 120, 44);
         this.addSprite(pageNumber);
         if (animateReveal) {
-            this.scheduleNavigationReveal([closeBtn, closeBtn2, diaryArrowBg, this.arrowLeft, this.arrowRight, pageNumber]);
+            this.scheduleNavigationReveal([closeBtn2, this.arrowLeft, this.arrowRight, pageNumber]);
         }
 
         this.screen.attachForDebug(this);
@@ -436,7 +437,7 @@ export default class DiaryPanel extends ClosablePanel {
     }
 
     public showNextPage(currentPage:number){
-        if (this.pageTurnInProgress) {
+        if (this.pageTurnInProgress || !this.opened || currentPage >= this.pagesCount) {
             return;
         }
         this.pageTurnInProgress = true;
@@ -455,7 +456,7 @@ export default class DiaryPanel extends ClosablePanel {
     }
 
     public showPrevPage(currentPage:number){
-        if (this.pageTurnInProgress) {
+        if (this.pageTurnInProgress || !this.opened || currentPage <= 1) {
             return;
         }
         this.pageTurnInProgress = true;

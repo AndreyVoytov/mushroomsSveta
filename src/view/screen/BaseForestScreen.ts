@@ -61,6 +61,7 @@ import ComplexAnimationUtils from './../../core/utils/ComplexAnimationUtils';
 import { Easing } from 'phaser-ce';
 import LocalizationService from '../../core/localization/LocalizationService';
 import TaskService from '../../core/service/TaskService';
+import LevelBackdrop from '../component/forest/LevelBackdrop';
 
 export default abstract class BaseForestScreen extends DialogScreen {
     private static readonly FAKE_TREES_RELEASE_DELAY = 120;
@@ -113,8 +114,8 @@ export default abstract class BaseForestScreen extends DialogScreen {
     protected linesScrolled = 0;
     private scrollToY = 0;
     private longLevelArrow: Phaser.Sprite;
-    private fadeStrip: Phaser.TileSprite;
-    private grassStrip: Phaser.TileSprite;
+    private fadeStrip: Phaser.Sprite;
+    private grassStrip: Phaser.Sprite;
     private fadeBlockers: Phaser.Sprite[] = [];
 
     init() {
@@ -126,6 +127,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
         this.sapphireStars = [];
         this.sapphireStarsPrepared = false;
         this.rewardsCommitted=false;
+        this.fadeStrip = null;this.grassStrip = null;this.fadeBlockers = [];
         this.useCloverTransition = ForestUtils.isCloverReskin(this.getForestType());
 
         this.fakeTrees = TreesTransitionPanel.takeClosedCover(this.game);
@@ -148,6 +150,7 @@ export default abstract class BaseForestScreen extends DialogScreen {
     preload() {
         this.loadBaseAtlases();
         this.loadOptionalAtlases();
+        LevelBackdrop.preload(this.game, this.getForestType());
     }
 
     create() {
@@ -276,23 +279,11 @@ export default abstract class BaseForestScreen extends DialogScreen {
 
         if (!this.cellsProvider.isAllCellsOnScreen) {
 
-            // let keyAndRect = SpriteUtils.getKeyAndRect(this.game, "fadeStrip");
-            // let bmd = this.game.make.bitmapData(keyAndRect.atlasRect.width, keyAndRect.atlasRect.height);
-            let bgImage = LocationUtils.getBg(this.getForestType().environment, this.getForestType());
-
-            let keyAndRect = SpriteUtils.getKeyAndRect(this.game, "fadeStrip");
-            let bmd = this.game.make.bitmapData(keyAndRect.atlasRect.width, keyAndRect.atlasRect.height);
-            console.log("fadeStrip: " + keyAndRect.atlasRect.width + " " + keyAndRect.atlasRect.height)
-
-            bmd.alphaMask(SpriteUtils.createBitmapData(this.game, bgImage), SpriteUtils.createBitmapData(this.game, 'fadeStrip'));
-
-            // let bmd = SpriteUtils.createBitmapData(this.game, "fadeStrip");
-            // bmd.alphaMask(SpriteUtils.createBitmapData(this.game, bgImage), SpriteUtils.createBitmapData(this.game, 'fadeStrip'));
-
-            this.fadeStrip = new Phaser.TileSprite(this.game, 0, this.game.height - 515 + 370 + 56 - 30, this.game.width, 107, bmd);
-            this.fadeStrip.anchor.set(0, 1)
-            this.fadeStrip.inputEnabled = false;
-            this.fadeStrip.fixedToCamera = true;
+            const backdrop = <Phaser.Sprite>this.layoutHolder.children.filter(child => (<Phaser.Sprite>child).name === 'levelBackdrop')[0];
+            const fadeBottom = this.game.height - 119;
+            this.fadeStrip = LevelBackdrop.slice(this.game, backdrop, fadeBottom - 107, 107, true);
+            this.fadeStrip.anchor.set(0, 1);this.fadeStrip.y = fadeBottom;
+            this.fadeStrip.cameraOffset.y = fadeBottom;
             this.addSprite(this.fadeStrip);
 
             this.cellsProvider.getCells().filter(c => this.isUnderFadeStrip(c)).forEach(c => {
@@ -309,10 +300,9 @@ export default abstract class BaseForestScreen extends DialogScreen {
                 }
             })
 
-            this.grassStrip = SpriteUtils.createTileSprite(this.game, 0, this.game.height, this.game.width, this.game.height - this.fadeStrip.y + 2, bgImage);
-            this.grassStrip.anchor.set(0, 1)
-            this.grassStrip.inputEnabled = false;
-            this.grassStrip.fixedToCamera = true;
+            this.grassStrip = LevelBackdrop.slice(this.game, backdrop, fadeBottom - 2, this.game.height - fadeBottom + 2, false);
+            this.grassStrip.anchor.set(0, 1);this.grassStrip.y = this.game.height;
+            this.grassStrip.cameraOffset.y = this.game.height;
             this.addSprite(this.grassStrip);
 
             this.longLevelArrow = SpriteUtils.createSprite(this.game, this.game.width / 2, this.game.height - 115 - 50 - 35, "arrowSmall");

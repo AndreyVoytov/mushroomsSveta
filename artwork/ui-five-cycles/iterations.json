@@ -1,0 +1,46 @@
+{
+  "project": "C:/proj/mushroomsArcane",
+  "previousDeployment": "f63a2ece",
+  "cycles": [
+    {
+      "number": 1,
+      "review": "Start panel still used a vertical goal, small item and small close target; later levels retained a legacy downward offset.",
+      "changes": "Horizontal 140px goal artwork and 62px count, Lora title, 82px close control with 104px target, bounded hard-level badge, centered folio.",
+      "verified": "Built and visually checked the level-one briefing.",
+      "before": "01-before.png",
+      "after": "01-after.png"
+    },
+    {
+      "number": 2,
+      "review": "Three targets crowded the energy region and left the right side empty; completed goals allocated repeated checks.",
+      "changes": "Distribute goals across the full HUD well, fit 4-digit energy, reuse completion checks and restore a positive counter cleanly.",
+      "verified": "Three-goal visual check, 100-refresh regression and hero-ability checks passed.",
+      "before": "02-before.png",
+      "after": "02-after.png"
+    },
+    {
+      "number": 3,
+      "review": "Reward star was stretched and used a mismatched backing; energy icon and count were cramped.",
+      "changes": "Preserved star aspect ratio, matched backing silhouette, moved the cat clear of rewards, increased energy spacing and guarded delayed entrance callbacks.",
+      "verified": "Built; sapphire reward and goal regressions passed; visually checked all 12 stars and the gem reward.",
+      "before": "03-before.png",
+      "after": "03-after.png"
+    },
+    {
+      "number": 4,
+      "review": "Shop descriptions touched the right border, item levels crowded portraits, and prices were off-center.",
+      "changes": "Taller 448px cards, left-aligned descriptions, a separate level row, centered full-width prices, larger info targets and responsive two-row spacing.",
+      "verified": "Built and visually checked all four cards on a phone; moved level captions clear of the painted fold.",
+      "before": "04-before.png",
+      "after": "04-after.png"
+    },
+    {
+      "number": 5,
+      "review": "On a compact phone the tutorial character crossed the painted parchment edge, despite fitting the texture rectangle.",
+      "changes": "Inset the character from the visible frame and added a dark, independently centered OK caption. Increased top text inset and reserved the full icon-row gap for three-line hints.",
+      "verified": "Built and visually checked the level-two tutorial on 360x640; all 19 behavior checks passed. Final production build checked automatic tutorials at levels 2 and 15; the 15th-level menu also survived 80 UI inputs with one menu instance.",
+      "before": "05-before.png",
+      "after": "05-after.png"
+    }
+  ]
+}

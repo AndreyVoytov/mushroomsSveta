@@ -54,6 +54,7 @@ export default class AimsStartPanel extends BasePanel {
                 image.anchor = new Phaser.Point(0.5, 0.5);
                 SpriteUtils.fitIcon(image, 112, 112);
                 this.addChild(image);
+                UiLayout.goalPair(image, label, centerX, 0, 14);
             });
         } else {
             let info = ForestAim.getAimsInfo(aims[0]);

@@ -18,6 +18,7 @@ export default class SettingsPanel extends ClosablePanel {
 
     private screen: HouseScreen;
     private closeButton: Phaser.Button;
+    private soundButton: Phaser.Sprite;
 
     constructor(game: Phaser.Game, screen: HouseScreen, x: number, y: number, aims: ForestAim[], level: number) {
         super(game, x, y, true, "blank");
@@ -35,7 +36,7 @@ export default class SettingsPanel extends ClosablePanel {
         const board = this.attachSprite('uiSettingsBoard', 'settingsBoard');
         board.width = 720;board.height = 840;board.inputEnabled = true;
         const title = this.attachText('title', settingsTitle, {font:'48px Lora', fill:Label.ON_DARK});
-        title.position.set(0, -322);UiLayout.fit(title, 440, 62);
+        title.position.set(0, -338);UiLayout.fit(title, 440, 62);
 
         this.closeButton = this.attachButton("closeButton", () => this.close())
         this.closeButton.name = "closeButton";
@@ -45,20 +46,20 @@ export default class SettingsPanel extends ClosablePanel {
         soundText.position.set(-88, -161);UiLayout.fit(soundText, 310, 58);
 
 
-        let soundButton = this.attachSprite(Game.SOUND_ENABLED ? "sound1" : "sound2")
-        soundButton.position.set(178, -161);soundButton.width = soundButton.height = 90;
+        const soundButton = this.soundButton = this.attachSprite('sound1');
+        SpriteUtils.setSoundIcon(soundButton, Game.SOUND_ENABLED, 90);
+        soundButton.position.set(178, -161);
         soundText.x = -(88 + soundButton.width) / 2;
         soundButton.x = (soundText.width + 88) / 2;
         soundButton.inputEnabled = true;
         soundButton.events.onInputDown.add(()=>{
             if(Game.SOUND_ENABLED){
                 SoundUtils.disableSound();
-                SpriteUtils.loadTexture(soundButton, "sound2")
             } else {
                 SoundUtils.enableSound();
                 SoundUtils.simpleCellOpen();
-                SpriteUtils.loadTexture(soundButton, "sound1")
             }
+            SpriteUtils.setSoundIcon(soundButton, Game.SOUND_ENABLED, 90);
         })
 
         
@@ -115,6 +116,7 @@ export default class SettingsPanel extends ClosablePanel {
     }
 
     protected onShow() {
+        SpriteUtils.setSoundIcon(this.soundButton, Game.SOUND_ENABLED, 90);
         this.screen.hideUI();
     }
 

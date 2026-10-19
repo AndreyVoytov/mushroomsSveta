@@ -179,6 +179,28 @@ dialog.replicaPanel = null;
 dialogReplica.ready();
 assert.equal(actions.length, 1, 'a stale replica cannot arm a transition');
 
+// Finding the level-14 kitten uses the raised, one-shot discovery bounce.
+{
+    const CatEducation=load('src/view/component/dialog/EducationPanel.ts',{
+        ForestDao:{default:{indexOf:()=>13}},ContentType:{ContentType:content},
+        AnimationUtils:{default:{showStable:s=>{s.visible=true;s.alpha=1;}}}
+    },{Easing:{Sinusoidal:{Out:0}}});
+    const tweens=[],removed=[];
+    const scale={x:.8,y:.9,set(x,y){this.x=x;this.y=y;}},cat={scale,exists:true,anchor:{set(){}},bringToTop(){}};
+    const tile={x:240,y:740,height:127};
+    const panel=Object.create(CatEducation.prototype),state={sprite:cat};
+    Object.assign(panel,{cells:[{state,bg:tile}],doShowEducation(){},game:{tweens:{removeFrom:t=>removed.push(t)},add:{tween:target=>({to(props,duration){tweens.push({target,props,duration});return this;}})}},
+        screen:{stopLevelForDialog(){},lockScreenFor(){},dialogPanel:{updateReplica(){}}}});
+    panel.doShowDialogOnSpecificItem(state);
+    const rest=tile.y-tile.height*.2;
+    assert.equal(cat.x,tile.x);assert.equal(cat.y,rest);assert(cat.visible&&cat.alpha===1);
+    assert(removed.includes(cat)&&removed.includes(scale));assert.equal(tweens.length,2);
+    assert(tweens[1].props.y[0]<rest&&tweens[1].props.y[1]>rest);assert.equal(tweens[1].props.y.slice(-1)[0],rest);
+    assert.equal(tweens[0].props.x.slice(-1)[0],.8);assert.equal(tweens[0].props.y.slice(-1)[0],.9);
+    assert(tweens.every(t=>t.duration<=650),'the kitten settles promptly rather than looping');
+    console.log('Kitten discovery: level-14 route, raised position, one-shot bounce and restored scale passed.');
+}
+
 const BaseScreen = load('src/view/screen/BaseForestScreen.ts', {
     Game:{default:{ANIMALS_SHOWCASE:false}},
     ContentType:{AnimalsContents:{}}
